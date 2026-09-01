@@ -1,0 +1,50 @@
+{% extends "base.html" %}{% block titulo %}Catálogo{% endblock %}
+{% block cuerpo %}
+<h1>Qué puedes pedir en tu colonia</h1>
+<p class="sub">Consulta el catálogo sin crear cuenta. Para pedir necesitas registrarte.</p>
+
+<form class="panel" method="get" style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
+  <div style="flex:1;min-width:200px"><label for="q">Buscar producto</label>
+    <input id="q" name="q" value="{{ q }}" placeholder="frijol, leche, jabón…"></div>
+  <div style="min-width:180px"><label for="categoria">Categoría</label>
+    <select id="categoria" name="categoria">
+      <option value="">Todas</option>
+      {% for c in categorias %}<option value="{{ c.id }}" {% if cat==c.id %}selected{% endif %}>{{ c.nombre }}</option>{% endfor %}
+    </select></div>
+  <button class="btn">Buscar</button>
+</form>
+
+{% if not productos %}
+  <div class="panel vacio"><b>No encontramos productos con ese criterio</b><p>Prueba con otra palabra o quita el filtro de categoría.</p></div>
+{% endif %}
+
+<div class="rejilla cols3">
+{% for p in productos %}
+  <div class="panel" style="margin:0;padding:14px">
+    <div style="font-weight:600;line-height:1.3">{{ p.nombre }}</div>
+    <div style="font-size:12.5px;color:var(--ink2)">{{ p.presentacion }} · {{ p.categoria }}</div>
+    <div style="font-size:20px;font-weight:700;margin-top:9px">{{ p.precio|dinero }}</div>
+    {% if p.disponible %}
+      <div style="font-size:12.5px;color:var(--verde);font-weight:600;margin-top:4px">Disponible</div>
+      {% if usuario and 'pedidos.crear' in permisos %}
+        <form method="post" action="{{ url_for('cliente.agregar') }}" style="margin-top:9px;display:flex;gap:6px">
+          <input type="hidden" name="producto_id" value="{{ p.id }}">
+          <input type="number" name="cantidad" value="1" min="1" style="width:66px" aria-label="Cantidad">
+          <button class="btn sec" style="flex:1;padding:8px">Agregar</button>
+        </form>
+      {% else %}
+        <a class="btn sec" style="margin-top:9px;width:100%;text-align:center;padding:8px" href="{{ url_for('auth.entrar') }}">Entrar para pedir</a>
+      {% endif %}
+    {% else %}
+      <div style="font-size:12.5px;color:var(--ink3);margin-top:4px">Sin existencia hoy</div>
+      <button class="btn sec" style="margin-top:9px;width:100%;padding:8px" disabled>Sin existencia</button>
+    {% endif %}
+  </div>
+{% endfor %}
+</div>
+
+<div class="aviso info">
+  <b>Lo que esta página no muestra</b>
+  No aparecen existencias exactas ni la dirección de los microhubs. La consulta pública responde por colonia o código postal.
+</div>
+{% endblock %}

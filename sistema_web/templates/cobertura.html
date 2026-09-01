@@ -1,0 +1,33 @@
+{% extends "base.html" %}{% block titulo %}Cobertura{% endblock %}
+{% block cuerpo %}
+<h1>¿Llegamos a tu colonia?</h1>
+<p class="sub">Escribe tu código postal o el nombre de tu colonia.</p>
+
+<form class="panel" method="get" style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
+  <div style="flex:1;min-width:220px"><label for="zona">Código postal o colonia</label>
+    <input id="zona" name="zona" value="{{ termino }}" placeholder="64103 o Valles de San Bernabé"></div>
+  <button class="btn">Consultar</button>
+</form>
+
+{% if resultado %}
+  {% if resultado.estado == 'cubierto' %}
+    {% set z = resultado.zona %}
+    <div class="aviso ok"><b>Sí llegamos a {{ z.colonia }}</b>
+      Pedido mínimo {{ z.ticket|dinero }} · Envío {{ z.envio|dinero }} · Gratis desde {{ z.gratis|dinero }}</div>
+  {% elif resultado.estado == 'ambiguo' %}
+    <div class="aviso medio"><b>Ese código postal lo comparten {{ resultado.zonas|length }} colonias</b>
+      Las condiciones no son iguales en todas, así que elige la tuya.</div>
+    <table class="panel" style="background:#fff">
+      <thead><tr><th>Colonia</th><th>CP</th><th class="num">Pedido mínimo</th><th class="num">Envío</th><th class="num">Envío gratis desde</th></tr></thead>
+      <tbody>{% for z in resultado.zonas %}
+        <tr><td><b>{{ z.colonia }}</b></td><td>{{ z.codigo_postal }}</td>
+            <td class="num">{{ z.ticket|dinero }}</td><td class="num">{{ z.envio|dinero }}</td>
+            <td class="num">{{ z.gratis|dinero }}</td></tr>
+      {% endfor %}</tbody>
+    </table>
+  {% else %}
+    <div class="aviso alto"><b>Todavía no llegamos ahí</b>
+      Guardamos tu consulta para saber a dónde conviene crecer.</div>
+  {% endif %}
+{% endif %}
+{% endblock %}

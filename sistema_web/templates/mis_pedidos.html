@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% block titulo %}Mis pedidos{% endblock %}
+{% block cuerpo %}
+<h1>Mis pedidos</h1>
+<p class="sub">Solo aparecen los tuyos.</p>
+{% if not pedidos %}
+  <div class="panel vacio"><b>Todavía no has hecho ningún pedido</b>
+    <p style="margin-top:16px"><a class="btn" href="{{ url_for('publico.catalogo') }}">Ver catálogo</a></p></div>
+{% else %}
+<div class="panel">
+<table>
+  <thead><tr><th>Folio</th><th>Fecha</th><th>Microhub</th><th class="num">Total</th><th>Estado</th><th></th></tr></thead>
+  <tbody>{% for p in pedidos %}
+    <tr><td><b>{{ p.folio }}</b></td><td>{{ p.creado_en|fecha }}</td>
+        <td>{{ p.microhub or '—' }}</td><td class="num">{{ p.total|dinero }}</td>
+        <td><span class="est {{ p.estado|clase_estado }}">{{ p.estado|estado }}</span></td>
+        <td class="num"><a href="{{ url_for('cliente.pedido', pid=p.id) }}">Ver</a></td></tr>
+  {% endfor %}</tbody>
+</table>
+</div>
+{% endif %}
+{% endblock %}

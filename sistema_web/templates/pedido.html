@@ -1,0 +1,47 @@
+{% extends "base.html" %}{% block titulo %}{{ p.folio }}{% endblock %}
+{% block cuerpo %}
+<h1>{{ p.folio }}</h1>
+<p class="sub">{{ p.creado_en|fecha }} · {{ p.colonia }} · <span class="est {{ p.estado|clase_estado }}">{{ p.estado|estado }}</span></p>
+
+{% if p.estado == 'pendiente_asignacion' %}
+  <div class="aviso medio"><b>Tu pedido está esperando microhub</b>{{ p.motivo_no_asignacion }}</div>
+{% endif %}
+
+<div class="rejilla cols2">
+  <div class="panel">
+    <h2 style="margin-top:0">Productos</h2>
+    <table><tbody>{% for l in lineas %}
+      <tr><td>{{ l.nombre }}<div style="font-size:12.5px;color:var(--ink2)">{{ l.presentacion }} · {{ l.cantidad }} × {{ l.precio_unitario|dinero }}</div></td>
+          <td class="num"><b>{{ l.importe|dinero }}</b></td></tr>
+    {% endfor %}</tbody></table>
+    <div style="margin-top:14px;font-size:14px">
+      <div style="display:flex;justify-content:space-between;padding:4px 0"><span>Subtotal</span><b>{{ p.subtotal|dinero }}</b></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0;color:var(--ink2)"><span>Envío</span><span>{{ p.costo_envio|dinero }}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:2px solid var(--ink);font-size:16px"><b>Total</b><b>{{ p.total|dinero }}</b></div>
+    </div>
+    <div class="ayuda" style="margin-top:10px">El precio de cada línea es el que tenía el producto cuando compraste. No cambia aunque el catálogo suba.</div>
+  </div>
+
+  <div>
+    <div class="panel">
+      <h2 style="margin-top:0">Seguimiento</h2>
+      <table><tbody>{% for h in historial %}
+        <tr><td style="font-size:13px">{{ h.fecha|fecha }}</td>
+            <td><span class="est {{ h.estado_nuevo|clase_estado }}">{{ h.estado_nuevo|estado }}</span>
+            {% if h.nombre %}<div style="font-size:12px;color:var(--ink2);margin-top:3px">{{ h.nombre }}</div>{% endif %}</td></tr>
+      {% endfor %}</tbody></table>
+    </div>
+
+    {% if p.estado in ['creado','asignado'] %}
+    <form class="panel" method="post" action="{{ url_for('cliente.cancelar', pid=p.id) }}">
+      <h2 style="margin-top:0">Cancelar</h2>
+      <p class="ayuda" style="margin-bottom:12px">Puedes cancelar mientras no empiece la preparación. Después ya no, porque el pedido está armado.</p>
+      <button class="btn peligro">Cancelar pedido</button>
+    </form>
+    {% elif p.estado in ['en_preparacion','en_ruta'] %}
+    <div class="aviso info"><b>Ya no se puede cancelar</b>
+      Tu pedido está {{ p.estado|estado|lower }}. Para cualquier cambio hace falta que intervenga un administrador.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

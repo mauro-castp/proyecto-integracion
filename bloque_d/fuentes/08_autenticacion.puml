@@ -1,0 +1,69 @@
+@startuml
+!include tema.iuml
+title Diagrama 8 · Autenticación, autorización y revocación
+
+actor Usuario as U
+participant "Cliente\nweb / móvil / escritorio" as C
+participant "Blueprint de\nautenticación" as AU
+participant "Middleware de\nautorización" as MW
+database Redis as R
+database PostgreSQL as P
+
+== Inicio de sesión (RF03) ==
+U -> C : credenciales
+C -> AU : POST /login
+AU -> R : GET auth:intentos:{correo_hash}
+alt cuenta bloqueada (RF06)
+  AU --> C : 423 cuenta bloqueada
+  AU -> P : auditar login_fallido
+else
+  AU -> P : verificar hash de contraseña
+  alt credencial inválida
+    AU -> R : INCR intentos, EXPIRE
+    AU -> P : incrementar contador persistente\n+ auditar (HU13 CA3)
+    note right of P
+      Nunca se almacena la
+      contraseña intentada.
+    end note
+    AU --> C : 401
+  else credencial válida
+    AU -> P : leer rol, permisos y ámbito
+    AU -> R : DEL intentos\nSADD auth:sesion:{usuario}
+    AU --> C : token de acceso (corto)\n+ token de renovación
+    AU -> P : auditar login_exitoso
+  end
+end
+
+== Petición autorizada ==
+C -> MW : petición + JWT
+MW -> R : ¿existe auth:jti:revocado:{jti}?
+alt token revocado
+  MW --> C : 401
+else vigente
+  MW -> P : ¿el rol tiene el permiso de la ruta?
+  alt sin permiso (HU10 CA2)
+    MW -> P : auditar acceso_denegado
+    MW --> C : 403
+    note right of MW
+      Devuelve 403 aunque la opción
+      ya no aparezca en el menú:
+      la ruta se cierra en el backend.
+    end note
+  else autorizado
+    MW -> P : consulta CON ÁMBITO aplicado (RN33)
+    MW --> C : 200
+  end
+end
+
+== Cierre de sesión (RF04, HU12) ==
+U -> C : cerrar sesión
+C -> AU : POST /logout
+AU -> R : script Lua: marcar jti revocado\ncon TTL = vida restante\n+ SREM del conjunto de sesiones
+note right of R
+  Se revoca UN token, no todos:
+  cerrar la sesión web no debe
+  cerrar la de la app.
+end note
+AU -> P : auditar logout
+AU --> C : 204
+@enduml

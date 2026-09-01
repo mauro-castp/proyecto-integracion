@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototipos de interfaz · Plataforma de Microhubs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F1F1EC; --card:#FFFFFF; --ink:#141D19; --ink2:#5A635E; --ink3:#8B928D;
+  --line:#D6D6CD; --line2:#E6E6DF;
+  --cobalt:#12429E; --cobalt-l:#E4EAF7;
+  --verde:#0B6E4F;  --verde-l:#E0F0EA;
+  --ambar:#B96C00;  --ambar-l:#FBEEDA;
+  --rojo:#A02420;   --rojo-l:#F8E4E3;
+  --violeta:#5B3E93; --violeta-l:#EDE7F7;
+  --r:3px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:'Archivo',system-ui,-apple-system,sans-serif;
+  font-size:15px; line-height:1.5;
+  font-variant-numeric:tabular-nums;
+  padding:24px 20px 80px;
+}
+.wrap{max-width:1180px;margin:0 auto}
+
+/* ---------- cabecera ---------- */
+.top{border-bottom:3px solid var(--ink);padding-bottom:18px;margin-bottom:22px}
+.top h1{font-family:'Archivo Black',sans-serif;font-size:clamp(26px,4vw,40px);line-height:1.05;letter-spacing:-.02em}
+.top p{color:var(--ink2);margin-top:8px;max-width:66ch}
+.meta{margin-top:12px;font-size:13px;color:var(--ink3)}
+
+/* ---------- selector de plataforma ---------- */
+.plataformas{display:flex;gap:0;margin:0 0 6px;border:2px solid var(--ink);width:max-content;max-width:100%;flex-wrap:wrap}
+.plataformas button{
+  font:inherit;font-weight:600;background:var(--card);color:var(--ink);
+  border:0;border-right:2px solid var(--ink);padding:11px 22px;cursor:pointer;
+}
+.plataformas button:last-child{border-right:0}
+.plataformas button[aria-selected="true"]{background:var(--ink);color:#fff}
+.plataformas button:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px}
+.nota-plat{color:var(--ink2);font-size:14px;margin:10px 0 20px;max-width:70ch}
+
+/* ---------- pantallas ---------- */
+.pantallas{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.pantallas button{
+  font:inherit;font-size:13.5px;background:transparent;border:1px solid var(--line);
+  padding:7px 13px;cursor:pointer;color:var(--ink2);border-radius:var(--r)
+}
+.pantallas button[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:600}
+.pantallas button:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}
+
+.vista{display:none}
+.vista.on{display:block}
+
+/* ---------- marcos ---------- */
+.marco-web,.marco-esc{border:2px solid var(--ink);background:var(--card)}
+.barra{background:var(--ink);color:#fff;padding:7px 12px;font-size:12.5px;display:flex;gap:10px;align-items:center}
+.puntos{display:flex;gap:5px}
+.puntos i{width:9px;height:9px;border-radius:50%;background:#5A635E;display:block}
+.url{background:#242E29;padding:3px 9px;border-radius:2px;color:#C9CFCB;font-size:12px}
+
+.marco-mov{width:392px;max-width:100%;border:2px solid var(--ink);background:var(--card);margin:0 auto}
+.mov-status{background:var(--ink);color:#fff;font-size:11.5px;padding:5px 14px;display:flex;justify-content:space-between}
+
+/* ---------- app web ---------- */
+.app{display:grid;grid-template-columns:212px 1fr;min-height:540px}
+@media(max-width:760px){.app{grid-template-columns:1fr}}
+.nav{background:#EDEDE7;border-right:1px solid var(--line);padding:16px 0}
+.nav .marca{padding:0 16px 14px;font-weight:700;font-size:15px;line-height:1.25}
+.nav .marca span{display:block;font-weight:400;font-size:12px;color:var(--ink2)}
+.nav a{display:block;padding:9px 16px;color:var(--ink2);text-decoration:none;font-size:14px;border-left:3px solid transparent}
+.nav a.sel{background:var(--card);color:var(--ink);font-weight:600;border-left-color:var(--cobalt)}
+.nav .grupo{padding:14px 16px 5px;font-size:11.5px;color:var(--ink3);letter-spacing:.02em}
+.lienzo{padding:22px 24px;overflow:auto}
+
+h2.tit{font-size:21px;font-weight:700;letter-spacing:-.01em}
+.sub{color:var(--ink2);font-size:13.5px;margin-top:3px}
+.fila{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+
+/* ---------- estados ---------- */
+.est{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;padding:3px 9px 3px 7px;border:1px solid;border-radius:var(--r)}
+.est::before{content:"";width:4px;height:13px;background:currentColor;flex:none}
+.e-asig{color:var(--cobalt);background:var(--cobalt-l);border-color:#B7C6E4}
+.e-prep{color:var(--violeta);background:var(--violeta-l);border-color:#CBBEE4}
+.e-ruta{color:var(--ambar);background:var(--ambar-l);border-color:#E8CFA0}
+.e-ent{color:var(--verde);background:var(--verde-l);border-color:#AFD5C7}
+.e-fall{color:var(--rojo);background:var(--rojo-l);border-color:#E6BAB8}
+.e-pend{color:var(--ink2);background:#EAEAE4;border-color:var(--line)}
+
+/* ---------- tablas ---------- */
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:14px}
+th{text-align:left;font-weight:600;font-size:12px;color:var(--ink2);padding:7px 10px;border-bottom:2px solid var(--ink)}
+td{padding:9px 10px;border-bottom:1px solid var(--line2);vertical-align:middle}
+tr:hover td{background:#FAFAF7}
+.num{text-align:right}
+.folio{font-weight:600;font-size:13px}
+
+/* ---------- avisos ---------- */
+.aviso{border-left:5px solid;padding:11px 14px;margin:14px 0;font-size:13.5px;border-radius:0 var(--r) var(--r) 0}
+.a-alto{border-color:var(--rojo);background:var(--rojo-l)}
+.a-medio{border-color:var(--ambar);background:var(--ambar-l)}
+.a-info{border-color:var(--cobalt);background:var(--cobalt-l)}
+.a-ok{border-color:var(--verde);background:var(--verde-l)}
+.aviso b{display:block;margin-bottom:2px}
+
+/* ---------- botones ---------- */
+.btn{font:inherit;font-weight:600;font-size:14px;padding:10px 18px;border:2px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;border-radius:var(--r)}
+.btn.sec{background:transparent;color:var(--ink)}
+.btn.peligro{background:var(--rojo);border-color:var(--rojo)}
+.btn:disabled{background:#C9C9C1;border-color:#C9C9C1;color:#6E736F;cursor:not-allowed}
+.btn:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px}
+.btn.ancho{width:100%;padding:15px;font-size:16px}
+
+/* ---------- kpi ---------- */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:0;border:1px solid var(--line);margin-top:16px}
+.kpi{padding:14px 16px;border-right:1px solid var(--line)}
+.kpi:last-child{border-right:0}
+.kpi .v{font-family:'Archivo Black',sans-serif;font-size:29px;line-height:1.1;letter-spacing:-.02em}
+.kpi .l{font-size:12.5px;color:var(--ink2);margin-top:3px}
+.kpi .d{font-size:11.5px;color:var(--ink3);margin-top:5px}
+
+/* ---------- barras ---------- */
+.barras{margin-top:16px}
+.b-fila{display:grid;grid-template-columns:112px 1fr 52px;gap:11px;align-items:center;margin-bottom:7px;font-size:13px}
+.b-pista{background:#E4E4DD;height:19px}
+.b-val{height:100%;background:var(--cobalt)}
+
+/* ---------- catálogo ---------- */
+.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:12px;margin-top:16px}
+.prod{border:1px solid var(--line);padding:12px;background:var(--card)}
+.prod .n{font-weight:600;font-size:13.5px;line-height:1.3}
+.prod .p{font-size:12px;color:var(--ink2);margin-top:2px}
+.prod .pr{font-family:'Archivo Black',sans-serif;font-size:19px;margin-top:9px}
+.prod .disp{font-size:12px;margin-top:5px}
+.d-si{color:var(--verde);font-weight:600}
+.d-no{color:var(--ink3)}
+.prod button{margin-top:9px;width:100%;font:inherit;font-weight:600;font-size:13px;padding:7px;border:1.5px solid var(--ink);background:transparent;cursor:pointer}
+.prod button:disabled{border-color:var(--line);color:var(--ink3);cursor:not-allowed}
+
+/* ---------- cobertura ---------- */
+.cob{border:1px solid var(--line);padding:15px;margin-top:14px;background:#FAFAF7}
+.cob input{font:inherit;padding:9px 11px;border:1.5px solid var(--ink);width:190px;background:#fff}
+.cob button{font:inherit;font-weight:600;padding:9px 16px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
+
+/* ---------- móvil ---------- */
+.m-top{padding:13px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.m-top h3{font-size:16px;font-weight:700}
+.m-cuerpo{padding:16px;min-height:452px}
+.m-tabs{display:flex;border-top:1px solid var(--line)}
+.m-tabs div{flex:1;text-align:center;padding:11px 4px;font-size:11.5px;color:var(--ink3);border-right:1px solid var(--line2)}
+.m-tabs div:last-child{border-right:0}
+.m-tabs div.sel{color:var(--ink);font-weight:700;box-shadow:inset 0 3px 0 var(--cobalt)}
+.entrega{border:1px solid var(--line);padding:13px;margin-bottom:11px}
+.entrega .h{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px}
+.entrega .dir{font-size:13.5px;color:var(--ink2);line-height:1.4}
+.entrega .cob-m{margin-top:8px;font-size:14px;font-weight:700}
+.sinconex{background:var(--ambar);color:#fff;padding:8px 16px;font-size:12.5px;font-weight:600;display:flex;justify-content:space-between}
+.campo{margin-bottom:14px}
+.campo label{display:block;font-size:13px;font-weight:600;margin-bottom:5px}
+.campo input,.campo select,.campo textarea{font:inherit;width:100%;padding:12px;border:1.5px solid var(--ink);background:#fff}
+.campo .ayuda{font-size:12px;color:var(--ink2);margin-top:4px}
+.opciones{display:grid;gap:8px}
+.opcion{border:1.5px solid var(--line);padding:13px;cursor:pointer;display:flex;gap:11px;align-items:center;font-weight:600;font-size:14px}
+.opcion.sel{border-color:var(--ink);background:#F5F5F0}
+.opcion i{width:17px;height:17px;border:2px solid var(--ink);border-radius:50%;flex:none;display:block}
+.opcion.sel i{background:var(--ink);box-shadow:inset 0 0 0 3px #fff}
+.cambio{background:var(--verde-l);border:1px solid #AFD5C7;padding:13px;margin:14px 0}
+.cambio .v{font-family:'Archivo Black',sans-serif;font-size:25px;color:var(--verde)}
+
+/* ---------- escritorio ---------- */
+.esc-menu{display:flex;gap:0;background:#EDEDE7;border-bottom:1px solid var(--line);font-size:13px}
+.esc-menu div{padding:7px 13px;border-right:1px solid var(--line2);color:var(--ink2)}
+.esc-cuerpo{display:grid;grid-template-columns:1fr 320px;min-height:470px}
+@media(max-width:860px){.esc-cuerpo{grid-template-columns:1fr}}
+.esc-izq{border-right:1px solid var(--line);padding:16px}
+.esc-der{padding:16px;background:#FAFAF7}
+.esc-tabla{font-size:13px}
+.esc-tabla td{padding:6px 9px}
+.esc-tabla tr.sel td{background:var(--cobalt-l);box-shadow:inset 3px 0 0 var(--cobalt)}
+.pick{border:1px solid var(--line);padding:11px;margin-bottom:9px;display:flex;gap:11px;align-items:center}
+.pick .cant{font-family:'Archivo Black',sans-serif;font-size:21px;width:44px;text-align:center;flex:none}
+.pick .info{flex:1;font-size:13.5px;line-height:1.35}
+.pick .ubi{font-size:12px;color:var(--ink2)}
+.pick input[type=checkbox]{width:22px;height:22px;flex:none;accent-color:var(--verde)}
+.pick.listo{background:var(--verde-l);border-color:#AFD5C7}
+.teclas{margin-top:14px;font-size:12px;color:var(--ink2);display:flex;gap:14px;flex-wrap:wrap}
+kbd{font-family:inherit;font-size:11.5px;font-weight:600;border:1px solid var(--line);background:#fff;padding:2px 6px;border-radius:2px}
+
+/* ---------- notas de diseño ---------- */
+.notas{margin-top:26px;border-top:2px solid var(--ink);padding-top:16px}
+.notas h4{font-size:13px;font-weight:700;margin-bottom:9px}
+.notas ul{list-style:none;display:grid;gap:9px;max-width:76ch}
+.notas li{font-size:13.5px;color:var(--ink2);padding-left:16px;position:relative;line-height:1.5}
+.notas li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:2px;background:var(--ink3)}
+.notas b{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1>Prototipos de interfaz</h1>
+  <p>Plataforma de Microhubs y Comercio de Proximidad. Las tres superficies del proyecto sobre el mismo núcleo de reglas: sistema web, aplicación Android y consola de escritorio.</p>
+  <div class="meta">Codex Innovations · Equipo 04 · Entregable 14 · Datos del sector San Bernabé, Monterrey</div>
+</header>
+
+<div class="plataformas" role="tablist" aria-label="Plataforma">
+  <button role="tab" aria-selected="true"  data-plat="web">Sistema web</button>
+  <button role="tab" aria-selected="false" data-plat="mov">Android</button>
+  <button role="tab" aria-selected="false" data-plat="esc">Escritorio</button>
+</div>
+<p class="nota-plat" id="notaPlat"></p>
+
+<div class="pantallas" id="pantallas" role="tablist" aria-label="Pantalla"></div>
+
+<!-- ============================ WEB ============================ -->
+<div class="vista on" data-v="web-catalogo">
+ <div class="marco-web">
+  <div class="barra"><div class="puntos"><i></i><i></i><i></i></div><div class="url">microhubs.mx/catalogo</div></div>
+  <div class="app">
+    <nav class="nav">
+      <div class="marca">Microhubs<span>Sector San Bernabé</span></div>
+      <a href="#" class="sel">Catálogo</a>
+      <a href="#">Cobertura</a>
+      <a href="#">Condiciones de servicio</a>
+      <div class="grupo">Sin sesión iniciada</div>
+      <a href="#">Crear cuenta</a>
+      <a href="#">Iniciar sesión</a>
+    </nav>
+    <div class="lienzo">
+      <div class="fila">
+        <div><h2 class="tit">Qué puedes pedir en tu colonia</h2>
+        <div class="sub">Consulta el catálogo sin crear cuenta. Para pedir necesitas registrarte.</div></div>
+      </div>
+
+      <div class="cob">
+        <div style="font-weight:600;margin-bottom:9px">¿Llegamos a tu colonia?</div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap">
+          <input id="cp" value="64103" aria-label="Código postal o colonia" placeholder="Código postal o colonia">
+          <button onclick="verCobertura()">Consultar</button>
+        </div>
+        <div id="resCob"></div>
+      </div>
+
+      <div class="prods">
+        <div class="prod"><div class="n">Frijol negro a granel</div><div class="p">1 kg</div><div class="pr">$38.50</div><div class="disp d-si">Disponible</div><button>Agregar</button></div>
+        <div class="prod"><div class="n">Leche entera</div><div class="p">1 L</div><div class="pr">$27.50</div><div class="disp d-si">Disponible</div><button>Agregar</button></div>
+        <div class="prod"><div class="n">Tortillas de maíz</div><div class="p">1 kg</div><div class="pr">$24.00</div><div class="disp d-si">Disponible</div><button>Agregar</button></div>
+        <div class="prod"><div class="n">Agua purificada</div><div class="p">Garrafón 20 L</div><div class="pr">$38.00</div><div class="disp d-no">Sin existencia hoy</div><button disabled>Sin existencia</button></div>
+        <div class="prod"><div class="n">Detergente en polvo</div><div class="p">1 kg</div><div class="pr">$42.00</div><div class="disp d-si">Disponible</div><button>Agregar</button></div>
+        <div class="prod"><div class="n">Huevo blanco</div><div class="p">1 kg</div><div class="pr">$42.00</div><div class="disp d-si">Disponible</div><button>Agregar</button></div>
+      </div>
+
+      <div class="aviso a-info" style="margin-top:18px">
+        <b>Lo que esta pantalla no muestra</b>
+        No aparecen existencias exactas ni la dirección del microhub. La consulta pública responde por colonia o código postal y nunca revela dónde está el almacén.
+      </div>
+    </div>
+  </div>
+ </div>
+ <div class="notas">
+   <h4>Decisiones de esta pantalla</h4>
+   <ul>
+     <li><b>Disponible o sin existencia, nunca un número.</b> RN11 y HU27 CA2 prohíben publicar existencias exactas. El botón deshabilitado dice el motivo en vez de quedarse gris sin explicación.</li>
+     <li><b>La consulta de cobertura va antes del catálogo.</b> Es la pregunta que trae a la persona al sitio: saber si le llega. Ponerla después de los productos obliga a recorrer una oferta que quizá no puede comprar.</li>
+     <li><b>Un código postal ambiguo pregunta la colonia.</b> Valles y Paseo de San Bernabé comparten el 64103, y cada uno tiene ticket mínimo distinto. Prueba a consultar ese código.</li>
+   </ul>
+ </div>
+</div>
+
+<div class="vista" data-v="web-carrito">
+ <div class="marco-web">
+  <div class="barra"><div class="puntos"><i></i><i></i><i></i></div><div class="url">microhubs.mx/carrito</div></div>
+  <div class="app">
+    <nav class="nav">
+      <div class="marca">Microhubs<span>Sector San Bernabé</span></div>
+      <a href="#">Catálogo</a>
+      <a href="#" class="sel">Mi carrito</a>
+      <a href="#">Mis pedidos</a>
+      <div class="grupo">María G. · Cliente</div>
+      <a href="#">Mi domicilio</a>
+      <a href="#">Cerrar sesión</a>
+    </nav>
+    <div class="lienzo">
+      <h2 class="tit">Revisa tu pedido</h2>
+      <div class="sub">Valles de San Bernabé · CP 64103 · Entrega a domicilio</div>
+
+      <table>
+        <thead><tr><th>Producto</th><th class="num">Cantidad</th><th class="num">Precio</th><th class="num">Importe</th></tr></thead>
+        <tbody>
+          <tr><td>Frijol negro a granel · 1 kg</td><td class="num">1</td><td class="num">$38.50</td><td class="num">$38.50</td></tr>
+          <tr><td>Leche entera · 1 L</td><td class="num">1</td><td class="num">$27.50</td><td class="num">$27.50</td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:16px;max-width:330px;margin-left:auto;font-size:14px">
+        <div style="display:flex;justify-content:space-between;padding:5px 0"><span>Subtotal de productos</span><b id="sub">$66.00</b></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;color:var(--ink2)"><span>Costo de envío</span><span>$15.00</span></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:2px solid var(--ink);margin-top:5px;font-size:17px"><b>Total</b><b id="tot">$81.00</b></div>
+      </div>
+
+      <div id="avisoTicket" class="aviso a-medio">
+        <b>Te faltan $14.00 para poder pedir</b>
+        El mínimo en Valles de San Bernabé es de $80.00 sobre el subtotal de productos. El costo de envío no cuenta para alcanzarlo.
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <button class="btn" id="btnConf" disabled>Confirmar pedido</button>
+        <button class="btn sec" onclick="agregar()">Agregar otro producto</button>
+      </div>
+
+      <div class="aviso a-info" style="margin-top:20px">
+        <b>Qué se valida al confirmar</b>
+        Cobertura del domicilio, ticket mínimo sobre el subtotal, límite de 20 unidades por línea y existencia completa de todas las líneas. Si algo falla, el pedido no se crea y no se descuenta inventario parcial.
+      </div>
+    </div>
+  </div>
+ </div>
+ <div class="notas">
+   <h4>Decisiones de esta pantalla</h4>
+   <ul>
+     <li><b>El aviso dice cuánto falta, no que faltó.</b> "Te faltan $14.00" es accionable; "no alcanza el mínimo" obliga a la persona a hacer la resta. Prueba el botón de agregar producto.</li>
+     <li><b>El botón está deshabilitado, no oculto.</b> Ver la acción bloqueada junto al motivo enseña la regla. Ocultarla deja a la persona buscando dónde confirmar.</li>
+     <li><b>El envío aparece en el total pero separado del subtotal.</b> RN08 dice que no cuenta para el mínimo, y la única forma de que eso no sorprenda es mostrarlo así desde el principio.</li>
+   </ul>
+ </div>
+</div>
+
+<div class="vista" data-v="web-indicadores">
+ <div class="marco-web">
+  <div class="barra"><div class="puntos"><i></i><i></i><i></i></div><div class="url">microhubs.mx/indicadores</div></div>
+  <div class="app">
+    <nav class="nav">
+      <div class="marca">Microhubs<span>Sector San Bernabé</span></div>
+      <div class="grupo">Operación</div>
+      <a href="#">Pedidos</a>
+      <a href="#">Inventario</a>
+      <a href="#" class="sel">Indicadores</a>
+      <div class="grupo">Administración</div>
+      <a href="#">Usuarios y roles</a>
+      <a href="#">Parámetros</a>
+      <a href="#">Bitácora</a>
+    </nav>
+    <div class="lienzo">
+      <div class="fila">
+        <div><h2 class="tit">Indicadores de operación</h2>
+        <div class="sub">Últimos 45 días · Los tres microhubs · Administrador</div></div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><div class="v">148</div><div class="l">Pedidos</div><div class="d">113 entregados</div></div>
+        <div class="kpi"><div class="v">$247</div><div class="l">Ticket promedio</div><div class="d">sobre subtotal</div></div>
+        <div class="kpi"><div class="v">88%</div><div class="l">Tasa de entrega</div><div class="d">127 cerrados</div></div>
+        <div class="kpi"><div class="v">4</div><div class="l">Pendientes</div><div class="d">esperan al Planeador</div></div>
+      </div>
+
+      <h3 style="font-size:15px;font-weight:700;margin-top:24px">Tasa de entrega por microhub</h3>
+      <div class="barras">
+        <div class="b-fila"><span>MH-02 Valles</span><div class="b-pista"><div class="b-val" style="width:94.7%"></div></div><b class="num">94.7%</b></div>
+        <div class="b-fila"><span>MH-03 Poniente</span><div class="b-pista"><div class="b-val" style="width:85.7%"></div></div><b class="num">85.7%</b></div>
+        <div class="b-fila"><span>MH-01 Centro</span><div class="b-pista"><div class="b-val" style="width:83.3%"></div></div><b class="num">83.3%</b></div>
+      </div>
+
+      <h3 style="font-size:15px;font-weight:700;margin-top:24px">Demanda que no pudimos atender</h3>
+      <table>
+        <thead><tr><th>Colonia</th><th>Motivo</th><th class="num">Eventos</th></tr></thead>
+        <tbody>
+          <tr><td>Alianza Real</td><td>Fuera de cobertura</td><td class="num">21</td></tr>
+          <tr><td>Fomerrey 112</td><td>Fuera de cobertura</td><td class="num">17</td></tr>
+          <tr><td>Valles de San Bernabé</td><td>Sin existencia</td><td class="num">14</td></tr>
+          <tr><td>Sierra Ventana</td><td>Fuera de cobertura</td><td class="num">11</td></tr>
+        </tbody>
+      </table>
+
+      <div class="aviso a-medio" style="margin-top:16px">
+        <b>Esta tabla es la que justifica abrir un microhub</b>
+        Treinta y ocho consultas de dos colonias vecinas que hoy se rechazan. El sistema muestra el dato; la decisión de abrir es del Administrador.
+      </div>
+    </div>
+  </div>
+ </div>
+ <div class="notas">
+   <h4>Decisiones de esta pantalla</h4>
+   <ul>
+     <li><b>La demanda no atendida tiene el mismo peso que las ventas.</b> Casi todos los paneles muestran solo lo que se vendió. Lo que se rechazó es lo que dice dónde crecer, y por eso ocupa espacio propio y no un submenú.</li>
+     <li><b>Las barras están ordenadas por valor, no por nombre.</b> Ordenar por clave de microhub obligaría a comparar tres números; ordenarlas por desempeño responde de un vistazo cuál va peor.</li>
+     <li><b>Cada perfil ve hasta donde llega su ámbito.</b> El Operador abre esta misma pantalla y solo aparece su microhub. El filtro se aplica en la consulta, no ocultando columnas.</li>
+   </ul>
+ </div>
+</div>
+
+<div class="vista" data-v="web-bitacora">
+ <div class="marco-web">
+  <div class="barra"><div class="puntos"><i></i><i></i><i></i></div><div class="url">microhubs.mx/bitacora</div></div>
+  <div class="app">
+    <nav class="nav">
+      <div class="marca">Microhubs<span>Sector San Bernabé</span></div>
+      <div class="grupo">Auditor · solo lectura</div>
+      <a href="#">Pedidos</a>
+      <a href="#">Inventario</a>
+      <a href="#">Conciliación</a>
+      <a href="#" class="sel">Bitácora</a>
+    </nav>
+    <div class="lienzo">
+      <h2 class="tit">Bitácora de auditoría</h2>
+      <div class="sub">3,105 registros · Filtro: módulo pedidos · 30 de agosto</div>
+
+      <table>
+        <thead><tr><th>Fecha</th><th>Usuario</th><th>Acción</th><th>Entidad</th><th>Cambio</th></tr></thead>
+        <tbody>
+          <tr><td>09:42:17</td><td>operador.mh01</td><td>Cambio de estado</td><td>pedido 1042</td><td>asignado → en preparación</td></tr>
+          <tr><td>09:41:02</td><td>sistema</td><td>Alta</td><td>pedido 1042</td><td>PED-20260830-001042</td></tr>
+          <tr><td>09:38:55</td><td>operador.mh02</td><td>Acceso denegado</td><td>pedido 1039</td><td>fuera de su microhub</td></tr>
+          <tr><td>09:31:20</td><td>admin</td><td>Cambio de parámetro</td><td>configuración</td><td>ticket mínimo 80 → 90</td></tr>
+          <tr><td>09:14:08</td><td>repartidor1</td><td>Modificación</td><td>entrega 318</td><td>cierre con cobro $250.00</td></tr>
+        </tbody>
+      </table>
+
+      <div class="aviso a-alto" style="margin-top:18px">
+        <b>Esta tabla no tiene botón de editar ni de borrar</b>
+        No es una omisión de la interfaz. La base rechaza cualquier modificación o borrado sobre la bitácora, incluso ejecutado por el Administrador o directamente contra el motor.
+      </div>
+
+      <div class="aviso a-info">
+        <b>El renglón de las 09:38:55 es un intento fallido</b>
+        Un operador quiso abrir un pedido de otro microhub. La operación se rechazó y quedó registrada. La bitácora guarda lo que no se pudo hacer, no solo lo que sí.
+      </div>
+    </div>
+  </div>
+ </div>
+ <div class="notas">
+   <h4>Decisiones de esta pantalla</h4>
+   <ul>
+     <li><b>Los accesos denegados se muestran con el mismo peso que las operaciones exitosas.</b> HU14 pide detectar accesos fuera de atribuciones; si los intentos fallidos se filtran por omisión, esa historia no se puede cumplir.</li>
+     <li><b>La ausencia de acciones se explica en pantalla.</b> Una tabla sin botones parece incompleta. Decir por qué no los tiene convierte una carencia aparente en una garantía.</li>
+     <li><b>El cambio se muestra como valor anterior y nuevo.</b> "Ticket mínimo 80 → 90" se entiende sin abrir el detalle; "configuración modificada" obligaría a un clic más.</li>
+   </ul>
+ </div>
+</div>
+
+<!-- ============================ MÓVIL ============================ -->
+<div class="vista" data-v="mov-ruta">
+ <div class="marco-mov">
+  <div class="mov-status"><span>9:41</span><span>Turno matutino</span><span>78%</span></div>
+  <div class="m-top"><div><h3>Mi ruta de hoy</h3><div class="sub">MH-02 Valles · 6 entregas</div></div><span class="est e-ruta">En ruta</span></div>
+  <div class="m-cuerpo">
+    <div class="entrega">
+      <div class="h"><span class="folio">PED-...001042</span><span class="est e-ruta">Siguiente</span></div>
+      <div class="dir">Valle de Santiago 208<br>Valles de San Bernabé</div>
+      <div class="cob-m">Cobrar $312.50</div>
+    </div>
+    <div class="entrega">
+      <div class="h"><span class="folio">PED-...001038</span><span class="est e-ent">Entregado</span></div>
+      <div class="dir">Nogal 1140<br>Paseo de San Bernabé</div>
+      <div class="cob-m" style="color:var(--ink3);font-weight:400;font-size:13px">Cobrado $184.00 · cambio $16.00</div>
+    </div>
+    <div class="entrega">
+      <div class="h"><span class="folio">PED-...001035</span><span class="est e-fall">No entregado</span></div>
+      <div class="dir" style="color:var(--ink3)">Domicilio oculto al cerrar</div>
+      <div class="cob-m" style="color:var(--rojo);font-weight:600;font-size:13px">Cliente ausente en dos intentos</div>
+    </div>
+    <div class="aviso a-info" style="font-size:12.5px">
+      <b>Solo aparecen tus entregas</b>
+      La lista trae únicamente lo asignado a ti en el turno de hoy.
+    </div>
+  </div>
+  <div class="m-tabs"><div class="sel">Ruta</div><div>Escanear</div><div>Pendientes</div><div>Perfil</div></div>
+ </div>
+ <div class="notas">
+   <h4>Decisiones de esta pantalla</h4>
+   <ul>
+     <li><b>El monto a cobrar es el dato más grande de cada tarjeta.</b> Es lo que el repartidor necesita leer de un vistazo en la calle, con el teléfono en una mano.</li>
+     <li><b>La entrega ya cerrada muestra el domicilio oculto.</b> No es un error de carga: RN26 limita el acceso a la ventana de la entrega activa. Mostrarlo tachado enseñaría el dato; decir que está oculto explica la regla.</li>
+     <li><b>El estado se lee, no se deduce del color.</b> Bajo el sol un teléfono barato lava los tonos, así que cada estado lleva barra, etiqueta y texto.</li>
+   </ul>
+ </div>
+</div>
+
+<div class="vista" data-v="mov-cierre">
+ <div class="marco-mov">
+  <div class="mov-status"><span>10:07</span><span>Turno matutino</span><span>76%</span></div>
+  <div class="m-top"><div><h3>Cerrar entrega</h3><div class="sub">PED-20260830-001042</div></div></div>
+  <div class="m-cuerpo">
+    <div style="border:1px solid var(--line);padding:12px;margin-bottom:16px">
+      <div style="font-size:13px;color:var(--ink2)">Total del pedido</div>
+      <div style="font-family:'Archivo Black',sans-serif;font-size:27px">$312.50</div>
+    </div>
+
+    <div class="campo">
+      <label>¿Cómo terminó la entrega?</label>
+      <div class="opciones">
+        <div class="opcion sel" onclick="res(this,'ok')"><i></i>Entregado completo</div>
+        <div class="opcion" onclick="res(this,'parcial')"><i></i>Entregado parcial</div>
+        <div class="opcion" onclick="res(this,'fallida')"><i></i>No se entregó</div>
+      </div>
+    </div>
+
+    <div id="bloqueCobro">
+      <div class="campo">
+        <label for="rec">¿Con cuánto pagó?</label>
+        <input id="rec" type="number" inputmode="numeric" value="350" oninput="calc()">
+        <div class="ayuda">Escribe el billete que recibiste, no el total.</div>
+      </div>
+      <div class="cambio"><div style="font-size:13px">Cambio a devolver</div><div class="v" id="cam">$37.50</div></div>
+    </div>
+
+    <div id="bloqueMotivo" style="display:none">
+      <div class="campo">
+        <label for="mot">¿Por qué no se entregó?</label>
+        <select id="mot">
+          <option>Cliente ausente</option>
+          <option>Domicilio no localizado</option>
+          <option>El cliente rechazó el pedido</option>
+          <option>Ya no quiso recibirlo</option>
+        </select>
+        <div class="ayuda">El motivo es obligatorio para poder cerrar.</div>
+      </div>
+    </div>
+
+    <button class="btn ancho" onclick="cerrar()">Cerrar entrega</button>
+    <div id="msgCierre"></div>
+  </div>
+  <div class="m-tabs"><div>Ruta</div><div>Escanear</div><div class="sel">Cierre</div><div>Perfil</div></div>
+ </div>
+ <div class="notas">
+   <h4>Decisiones de esta pantalla</h4>
+   <ul>
+     <li><b>El repartidor captura el billete y la app calcula el cambio.</b> Pedir "monto cobrado" y "cambio entregado" por separado, como los nombra la base, obliga a hacer una resta parado en la banqueta. Prueba a cambiar la cantidad.</li>
+     <li><b>Elegir "no se entregó" cambia el formulario.</b> El motivo es obligatorio por RN29, así que el campo aparece en lugar del cobro en vez de mostrarse siempre y rechazarse al final.</li>
+     <li><b>Tres opciones grandes en vez de una lista desplegable.</b> Es la decisión más frecuente del turno y se toma con una mano.</li>
+   </ul>
+ </div>
+</div>
+
+<div class="vista" data-v="mov-offline">
+ <div class="marco-mov">
+  <div class="mov-status"><span>10:22</span><span>Sin señal</span><span>71%</span></div>
+  <div class="sinconex"><span>Sin conexión</span><span>3 operaciones guardadas</span></div>
+  <div class="m-top"><div><h3>Pendientes de enviar</h3><div class="sub">Se envían solas al recuperar señal</div></div></div>
+  <div class="m-cuerpo">
+    <div class="entrega">
+      <div class="h"><span class="folio">PED-...001042</span><span class="est e-pend">En espera</span></div>
+      <div class="dir">Cierre con cobro $312.50 · cambio $37.50<br><span style="color:var(--ink3)">Capturado 10:07</span></div>
+    </div>
+    <div class="entrega">
+      <div class="h"><span class="folio">PED-...001044</span><span class="est e-pend">En espera</span></div>
+      <div class="dir">Entrega parcial · 1 línea devuelta<br><span style="color:var(--ink3)">Capturado 10:15</span></div>
+    </div>
+    <div class="entrega" style="border-color:#E8CFA0;background:var(--ambar-l)">
+      <div class="h"><span class="folio">PED-...001031</span><span class="est e-ruta">Necesita revisión</span></div>
+      <div class="dir">El pedido fue cancelado en la oficina mientras estabas sin señal. Tu cierre no se aplicó.<br><span style="color:var(--ink3)">Repórtalo con tu operador.</span></div>
+    </div>
+
+    <div class="aviso a-info" style="font-size:12.5px">
+      <b>Nada se pierde y nada se sobrescribe</b>
+      Lo capturado sin señal se guarda en el teléfono. Si al enviarlo el pedido cambió en la oficina, el caso se aparta para que una persona lo resuelva.
+    </div>
+  </div>
+  <div class="m-tabs"><div>Ruta</div><div>Escanear</div><div class="sel">Pendientes</div><div>Perfil</div></div>
+ </div>
+ <div class="notas">
+   <h4>Decisiones de esta pantalla</h4>
+   <ul>
+     <li><b>El conflicto se muestra, no se resuelve solo.</b> CU05 A4 prohíbe sobrescribir en silencio. La app dice qué pasó y a quién acudir, en lugar de descartar el trabajo del repartidor o pisar el dato de la oficina.</li>
+     <li><b>La franja de sin conexión informa, no alarma.</b> En San Bernabé la señal se cae de forma rutinaria; tratarlo como error entrenaría a ignorar la advertencia. Dice cuántas operaciones esperan.</li>
+     <li><b>Cada pendiente conserva su hora de captura.</b> Es lo que permite reconstruir el orden real de la ruta cuando todo llega junto media hora después.</li>
+   </ul>
+ </div>
+</div>
+
+<!-- ============================ ESCRITORIO ============================ -->
+<div class="vista" data-v="esc-bandeja">
+ <div class="marco-esc">
+  <div class="barra"><b>Consola de operación — MH-01 San Bernabé Centro</b><span style="margin-left:auto;font-size:12px">Ruth S. · Operador</span></div>
+  <div class="esc-menu"><div>Archivo</div><div>Pedidos</div><div>Inventario</div><div>Manifiestos</div><div>Reportes</div><div>Ayuda</div></div>
+  <div class="esc-cuerpo">
+    <div class="esc-izq">
+      <div class="fila"><div><h2 class="tit" style="font-size:17px">Bandeja del turno</h2>
+      <div class="sub">12 pedidos activos · capacidad 12 de 12</div></div></div>
+
+      <div class="aviso a-medio" style="margin:12px 0;padding:9px 12px;font-size:13px">
+        <b>Microhub al tope de su capacidad</b>
+        Los pedidos nuevos de esta zona se irán a otro microhub o quedarán pendientes.
+      </div>
+
+      <table class="esc-tabla">
+        <thead><tr><th>Folio</th><th>Cliente</th><th>Líneas</th><th class="num">Total</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr class="sel"><td class="folio">…001042</td><td>María G.</td><td>4</td><td class="num">$312.50</td><td><span class="est e-asig">Asignado</span></td></tr>
+          <tr><td class="folio">…001041</td><td>José T.</td><td>2</td><td class="num">$148.00</td><td><span class="est e-prep">Preparando</span></td></tr>
+          <tr><td class="folio">…001040</td><td>Rosa C.</td><td>6</td><td class="num">$427.00</td><td><span class="est e-prep">Preparando</span></td></tr>
+          <tr><td class="folio">…001037</td><td>Luis V.</td><td>3</td><td class="num">$96.50</td><td><span class="est e-ruta">En ruta</span></td></tr>
+          <tr><td class="folio">…001036</td><td>Ana H.</td><td>5</td><td class="num">$284.00</td><td><span class="est e-ruta">En ruta</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="teclas"><span><kbd>Enter</kbd> abrir</span><span><kbd>F2</kbd> preparar</span><span><kbd>F4</kbd> cerrar entrega</span><span><kbd>F8</kbd> inventario</span></div>
+    </div>
+    <div class="esc-der">
+      <h3 style="font-size:14px;font-weight:700">Pedido …001042</h3>
+      <div class="sub" style="margin-bottom:12px">Asignado 09:41 · menor distancia</div>
+      <div style="font-size:13px;line-height:1.9">
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--ink2)">Cliente</span><b>María G.</b></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--ink2)">Zona</span><b>Valles de S.B.</b></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--ink2)">Distancia</span><b>0.84 km</b></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--ink2)">Subtotal</span><b>$297.50</b></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--ink2)">Envío</span><b>$15.00</b></div>
+      </div>
+      <div class="aviso a-info" style="font-size:12.5px;margin-top:14px">
+        <b>Por qué este microhub</b>
+        Tres candidatos cubrían el domicilio. Ganó el más cercano; MH-02 quedó a 1.31 km y MH-03 no tenía existencia completa.
+      </div>
+      <button class="btn ancho" style="margin-top:10px">Preparar pedido</button>
+    </div>
+  </div>
+ </div>
+ <div class="notas">
+   <h4>Decisiones de esta pantalla</h4>
+   <ul>
+     <li><b>La consola explica por qué se asignó este microhub.</b> Es la traza que RN15 obliga a guardar, puesta donde el operador la necesita: cuando alguien pregunta por qué le tocó a él ese pedido.</li>
+     <li><b>Densidad alta y atajos de teclado.</b> RNF27 pide pantallas para jornadas de alta rotación. Un operador con veinte pedidos no quiere tarjetas espaciadas ni ir al mouse en cada paso.</li>
+     <li><b>La capacidad al tope se anuncia antes de que estorbe.</b> Enterarse al confirmar un pedido es tarde; saberlo al abrir la bandeja permite avisar o pedir apoyo.</li>
+   </ul>
+ </div>
+</div>
+
+<div class="vista" data-v="esc-preparacion">
+ <div class="marco-esc">
+  <div class="barra"><b>Consola de operación — MH-01 San Bernabé Centro</b><span style="margin-left:auto;font-size:12px">Ruth S. · Operador</span></div>
+  <div class="esc-menu"><div>Archivo</div><div>Pedidos</div><div>Inventario</div><div>Manifiestos</div><div>Reportes</div><div>Ayuda</div></div>
+  <div class="esc-cuerpo">
+    <div class="esc-izq">
+      <div class="fila"><div><h2 class="tit" style="font-size:17px">Surtiendo …001042</h2>
+      <div class="sub">4 líneas · marca cada una al tomarla del anaquel</div></div>
+      <span class="est e-prep">Preparando</span></div>
+
+      <div style="margin-top:14px">
+        <label class="pick listo"><input type="checkbox" checked onchange="pick()"><span class="cant">2</span><span class="info">Frijol negro a granel · 1 kg<div class="ubi">Pasillo A · nivel 2</div></span></label>
+        <label class="pick listo"><input type="checkbox" checked onchange="pick()"><span class="cant">3</span><span class="info">Leche entera · 1 L<div class="ubi">Refrigerador 1</div></span></label>
+        <label class="pick"><input type="checkbox" onchange="pick()"><span class="cant">1</span><span class="info">Detergente en polvo · 1 kg<div class="ubi">Pasillo C · nivel 1</div></span></label>
+        <label class="pick"><input type="checkbox" onchange="pick()"><span class="cant">4</span><span class="info">Tortillas de maíz · 1 kg<div class="ubi">Mostrador</div></span></label>
+      </div>
+
+      <div id="avisoPick" class="aviso a-medio">
+        <b>Faltan 2 líneas por surtir</b>
+        El pedido pasa a ruta cuando estén las cuatro.
+      </div>
+      <button class="btn" id="btnRuta" disabled>Marcar listo para ruta</button>
+      <div class="teclas"><span><kbd>Espacio</kbd> marcar</span><span><kbd>↓</kbd> siguiente</span><span><kbd>F3</kbd> reportar faltante</span></div>
+    </div>
+    <div class="esc-der">
+      <h3 style="font-size:14px;font-weight:700">Si algo falta</h3>
+      <p style="font-size:13px;color:var(--ink2);margin-top:8px;line-height:1.5">Reporta el faltante con <kbd>F3</kbd>. El pedido no avanza a ruta y queda en un estado coherente para que se resuelva.</p>
+      <div class="aviso a-alto" style="font-size:12.5px;margin-top:14px">
+        <b>No cierres un pedido incompleto</b>
+        Marcar las cuatro líneas sin tenerlas físicamente descuadra el inventario y el faltante aparecerá días después sin explicación.
+      </div>
+      <h3 style="font-size:14px;font-weight:700;margin-top:20px">Del pedido</h3>
+      <div style="font-size:13px;line-height:1.9;margin-top:6px">
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--ink2)">Repartidor</span><b>Sin asignar</b></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--ink2)">Cobro</span><b>$312.50</b></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--ink2)">Forma</span><b>Efectivo</b></div>
+      </div>
+    </div>
+  </div>
+ </div>
+ <div class="notas">
+   <h4>Decisiones de esta pantalla</h4>
+   <ul>
+     <li><b>La cantidad es lo más grande de cada línea.</b> El error de surtido más común es tomar una pieza en lugar de tres. El nombre del producto se reconoce de reojo; la cantidad no.</li>
+     <li><b>La ubicación en anaquel acompaña a cada línea.</b> Sin ella el operador recorre la bodega en el orden en que se capturó el carrito, que no tiene nada que ver con cómo está acomodada.</li>
+     <li><b>El aviso dice cuántas faltan.</b> Prueba a marcar las casillas: el botón se habilita solo cuando las cuatro están listas, y el mensaje cambia en vez de desaparecer.</li>
+   </ul>
+ </div>
+</div>
+
+</div>
+
+<script>
+const PANTALLAS = {
+  web:[["web-catalogo","Catálogo público"],["web-carrito","Carrito y confirmación"],["web-indicadores","Indicadores"],["web-bitacora","Bitácora de auditoría"]],
+  mov:[["mov-ruta","Ruta del turno"],["mov-cierre","Cierre de entrega"],["mov-offline","Sin conexión"]],
+  esc:[["esc-bandeja","Bandeja del microhub"],["esc-preparacion","Preparación"]]
+};
+const NOTA = {
+  web:"Flask con Jinja2. Atiende a los ocho perfiles; el menú se construye desde la tabla de permisos, así que cada persona ve solo lo suyo.",
+  mov:"Kotlin, consumo JSON. Cliente y Repartidor. Pensada para pantallas chicas, luz directa y señal intermitente.",
+  esc:"PySide, consumo XML. Operador, Planeador y Auditor. Densidad alta y teclado para jornadas largas."
+};
+
+function verPlataforma(p){
+  document.querySelectorAll('.plataformas button').forEach(b=>b.setAttribute('aria-selected', b.dataset.plat===p));
+  document.getElementById('notaPlat').textContent = NOTA[p];
+  const cont = document.getElementById('pantallas');
+  cont.innerHTML = '';
+  PANTALLAS[p].forEach(([id,txt],i)=>{
+    const b=document.createElement('button');
+    b.textContent=txt; b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', i===0);
+    b.onclick=()=>verPantalla(id);
+    cont.appendChild(b);
+  });
+  verPantalla(PANTALLAS[p][0][0]);
+}
+function verPantalla(id){
+  document.querySelectorAll('.vista').forEach(v=>v.classList.toggle('on', v.dataset.v===id));
+  const etiqueta = Object.values(PANTALLAS).flat().find(x=>x[0]===id)[1];
+  document.querySelectorAll('#pantallas button').forEach(b=>b.setAttribute('aria-selected', b.textContent===etiqueta));
+}
+document.querySelectorAll('.plataformas button').forEach(b=>b.onclick=()=>verPlataforma(b.dataset.plat));
+
+/* --- cobertura: el CP 64103 es ambiguo a propósito --- */
+function verCobertura(){
+  const v=document.getElementById('cp').value.trim().toLowerCase();
+  const d=document.getElementById('resCob');
+  if(v==='64103'){
+    d.innerHTML='<div class="aviso a-medio" style="margin-bottom:0"><b>Dos colonias usan el 64103</b>'+
+      'Elige cuál es la tuya, porque las condiciones cambian: Valles de San Bernabé pide mínimo de $80.00 y envío de $15.00; Paseo de San Bernabé, $90.00 y $18.00.</div>';
+  } else if(['64100','64105','san bernabe','san bernabé'].includes(v)){
+    d.innerHTML='<div class="aviso a-ok" style="margin-bottom:0"><b>Sí llegamos a tu colonia</b>'+
+      'Pedido mínimo $80.00 · Envío $15.00 · Gratis desde $250.00 · Entregas de 8:00 a 20:00</div>';
+  } else {
+    d.innerHTML='<div class="aviso a-alto" style="margin-bottom:0"><b>Todavía no llegamos ahí</b>'+
+      'Guardamos tu consulta para saber a dónde conviene crecer. Puedes dejar tu correo y te avisamos cuando abramos.</div>';
+  }
+}
+
+/* --- carrito: alcanzar el ticket mínimo --- */
+let sub=66.00;
+function agregar(){
+  sub+=42.00;
+  const tot=sub+15;
+  document.getElementById('sub').textContent='$'+sub.toFixed(2);
+  document.getElementById('tot').textContent='$'+tot.toFixed(2);
+  const falta=80-sub, av=document.getElementById('avisoTicket'), btn=document.getElementById('btnConf');
+  const tabla=document.querySelector('[data-v="web-carrito"] tbody');
+  const tr=document.createElement('tr');
+  tr.innerHTML='<td>Huevo blanco · 1 kg</td><td class="num">1</td><td class="num">$42.00</td><td class="num">$42.00</td>';
+  tabla.appendChild(tr);
+  if(falta>0){
+    av.className='aviso a-medio';
+    av.innerHTML='<b>Te faltan $'+falta.toFixed(2)+' para poder pedir</b>El mínimo en Valles de San Bernabé es de $80.00 sobre el subtotal de productos. El costo de envío no cuenta para alcanzarlo.';
+  } else {
+    av.className='aviso a-ok';
+    av.innerHTML='<b>Ya puedes confirmar</b>Tu subtotal alcanza el mínimo de la zona. Al confirmar se revisa que haya existencia de todas las líneas antes de crear el pedido.';
+    btn.disabled=false;
+  }
+}
+
+/* --- cierre de entrega --- */
+let resultado='ok';
+function res(el,tipo){
+  document.querySelectorAll('.opcion').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel'); resultado=tipo;
+  document.getElementById('bloqueCobro').style.display = tipo==='fallida'?'none':'block';
+  document.getElementById('bloqueMotivo').style.display = tipo==='fallida'?'block':'none';
+  document.getElementById('msgCierre').innerHTML='';
+}
+function calc(){
+  const rec=parseFloat(document.getElementById('rec').value||0), tot=312.50;
+  const c=document.getElementById('cam');
+  if(rec<tot){ c.textContent='Falta $'+(tot-rec).toFixed(2); c.style.color='var(--rojo)'; }
+  else { c.textContent='$'+(rec-tot).toFixed(2); c.style.color='var(--verde)'; }
+}
+function cerrar(){
+  const m=document.getElementById('msgCierre');
+  if(resultado==='fallida'){
+    m.innerHTML='<div class="aviso a-ok" style="font-size:12.5px"><b>Entrega registrada como no entregada</b>El motivo quedó guardado y la mercancía regresa al microhub.</div>';
+  } else if(parseFloat(document.getElementById('rec').value||0) < 312.50){
+    m.innerHTML='<div class="aviso a-alto" style="font-size:12.5px"><b>El monto recibido no cubre el total</b>Corrige la cantidad o registra la entrega como parcial.</div>';
+  } else {
+    m.innerHTML='<div class="aviso a-ok" style="font-size:12.5px"><b>Entrega cerrada</b>Cobro y cambio quedaron registrados. Se envía cuando haya señal.</div>';
+  }
+}
+
+/* --- preparación --- */
+function pick(){
+  const cajas=[...document.querySelectorAll('.pick input')];
+  cajas.forEach(c=>c.closest('.pick').classList.toggle('listo', c.checked));
+  const faltan=cajas.filter(c=>!c.checked).length;
+  const av=document.getElementById('avisoPick'), btn=document.getElementById('btnRuta');
+  if(faltan===0){
+    av.className='aviso a-ok';
+    av.innerHTML='<b>Las cuatro líneas están surtidas</b>El pedido puede pasar a ruta.';
+    btn.disabled=false;
+  } else {
+    av.className='aviso a-medio';
+    av.innerHTML='<b>'+(faltan===1?'Falta 1 línea':'Faltan '+faltan+' líneas')+' por surtir</b>El pedido pasa a ruta cuando estén las cuatro.';
+    btn.disabled=true;
+  }
+}
+
+verPlataforma('web');
+</script>
+</body>
+</html>

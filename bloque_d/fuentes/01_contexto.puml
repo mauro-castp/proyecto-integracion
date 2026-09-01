@@ -1,0 +1,30 @@
+@startuml
+!include tema.iuml
+title Diagrama 1 · Contexto del sistema
+
+actor "Visitante" as VIS
+actor "Cliente" as CLI
+actor "Operador\nde microhub" as OPE
+actor "Repartidor" as REP
+actor "Planeador" as PLA
+actor "Administrador" as ADM
+actor "Auditor" as AUD
+
+rectangle "**Plataforma de Microhubs**\n//Comercio de proximidad//\nSector San Bernabé, Monterrey" as SIS #C9DCF0
+
+VIS --> SIS : consulta catálogo\ny cobertura\n//sin autenticarse//
+CLI --> SIS : levanta pedidos\ny da seguimiento
+OPE --> SIS : prepara pedidos\ny opera inventario
+REP --> SIS : ejecuta ruta\ny registra entrega
+PLA --> SIS : ejecuta análisis\ny reasigna pendientes
+ADM --> SIS : administra catálogos,\nusuarios y parámetros
+AUD --> SIS : consulta bitácora\n//solo lectura//
+
+note bottom of SIS
+  El Primer Parcial no integra sistemas externos:
+  no hay pasarela de pago, mensajería ni ERP.
+  El cobro es en efectivo contra entrega (RN27) y
+  esa decisión es lo que mantiene el contexto cerrado.
+end note
+
+@enduml

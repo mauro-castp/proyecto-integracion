@@ -1,0 +1,51 @@
+@startuml
+!include tema.iuml
+title Diagrama 4 · Despliegue
+
+node "**Ambiente local — Primer Parcial**\nDocker Compose · un solo comando (RF42)" as LOCAL {
+  node "contenedor web" as CW
+  node "contenedor microservicios" as CM
+  node "contenedor postgres" as CP
+  node "contenedor mongo" as CG
+  node "contenedor redis" as CR
+  node "volúmenes persistentes" as CV
+}
+
+node "**Google Cloud Platform — Parcial 3**\n//diseñado ahora, desplegado después// (RF45)" as GCP {
+  node "Balanceador de carga\nHTTPS" as LB
+  node "Compute Engine\ninstancias web" as CE1
+  node "Compute Engine\nmicroservicios" as CE2
+  node "Cloud SQL\nPostgreSQL gestionado" as SQL
+  node "MongoDB\ninstancia dedicada" as MDB
+  node "Memorystore\nRedis gestionado" as MEM
+  node "Secret Manager" as SM
+}
+
+CW --> CP
+CW --> CG
+CW --> CR
+CM --> CP
+CM --> CG
+CP --> CV
+CG --> CV
+
+LB --> CE1
+CE1 --> SQL
+CE1 --> MEM
+CE1 --> MDB
+CE1 --> CE2
+CE2 --> SQL
+CE2 --> MDB
+CE1 ..> SM : credenciales
+CE2 ..> SM : credenciales
+
+LOCAL -[#8A5A17,dashed]-> GCP : misma composición,\nmismos nombres de servicio (RNF32)
+
+note bottom of GCP
+  RNF32 pide conservar nombres de servicio, contratos
+  y parámetros entre ambientes. Por eso la topología de
+  GCP replica la de Docker Compose en lugar de rediseñarse:
+  cada diferencia no controlada es un error que solo
+  aparece en producción.
+end note
+@enduml

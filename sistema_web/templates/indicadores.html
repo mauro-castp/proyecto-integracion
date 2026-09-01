@@ -1,0 +1,35 @@
+{% extends "base.html" %}{% block titulo %}Indicadores{% endblock %}
+{% block cuerpo %}
+<h1>Indicadores de operación</h1>
+<p class="sub">{% if ambito %}Solo tu microhub.{% else %}Los tres microhubs.{% endif %} Calculados desde los datos reales, no desde valores fijos.</p>
+
+<div class="kpis">
+  <div class="kpi"><div class="v">{{ resumen.pedidos }}</div><div class="l">Pedidos</div></div>
+  <div class="kpi"><div class="v">{{ resumen.entregados }}</div><div class="l">Entregados</div></div>
+  <div class="kpi"><div class="v">{{ resumen.ticket|dinero }}</div><div class="l">Ticket promedio</div></div>
+  <div class="kpi"><div class="v">{{ resumen.pendientes }}</div><div class="l">Pendientes de asignación</div></div>
+</div>
+
+<h2>Tasa de entrega por microhub</h2>
+<div class="panel">
+{% for t in tasa %}
+  <div style="display:grid;grid-template-columns:110px 1fr 58px;gap:11px;align-items:center;margin-bottom:8px;font-size:13.5px">
+    <span>{{ t.clave }}</span>
+    <div style="background:#E4E4DD;height:19px"><div style="height:100%;background:var(--cobalt);width:{{ t.tasa_entrega_pct }}%"></div></div>
+    <b class="num">{{ t.tasa_entrega_pct }}%</b>
+  </div>
+{% endfor %}
+</div>
+
+<h2>Demanda que no pudimos atender</h2>
+<div class="panel">
+<table>
+  <thead><tr><th>Lugar</th><th>Motivo</th><th class="num">Eventos</th></tr></thead>
+  <tbody>{% for d in demanda %}
+    <tr><td>{{ d.lugar or '—' }}</td><td>{{ d.tipo|replace('_',' ') }}</td><td class="num">{{ d.eventos }}</td></tr>
+  {% endfor %}</tbody>
+</table>
+</div>
+<div class="aviso medio"><b>Esta tabla es la que justifica abrir un microhub</b>
+  Son consultas que hoy se rechazan. El sistema muestra el dato; la decisión de abrir es de una persona.</div>
+{% endblock %}

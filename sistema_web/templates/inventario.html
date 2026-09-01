@@ -1,0 +1,40 @@
+{% extends "base.html" %}{% block titulo %}Inventario{% endblock %}
+{% block cuerpo %}
+<h1>Inventario de mi microhub</h1>
+<p class="sub">Los productos por debajo del mínimo aparecen primero.</p>
+
+<form class="panel" method="post">
+  <h2 style="margin-top:0">Registrar movimiento</h2>
+  <div class="rejilla cols3">
+    <div class="campo"><label for="producto_id">Producto</label>
+      <select id="producto_id" name="producto_id" required>
+        {% for i in items %}<option value="{{ i.id }}">{{ i.nombre }} ({{ i.existencia }})</option>{% endfor %}
+      </select></div>
+    <div class="campo"><label for="tipo">Tipo</label>
+      <select id="tipo" name="tipo" required>
+        <option value="recepcion">Recepción de mercancía</option>
+        <option value="merma">Merma</option>
+        <option value="ajuste">Ajuste por conteo</option>
+      </select></div>
+    <div class="campo"><label for="cantidad">Cantidad</label>
+      <input id="cantidad" name="cantidad" type="number" min="1" value="1" required></div>
+  </div>
+  <div class="campo"><label for="motivo">Motivo</label>
+    <input id="motivo" name="motivo" placeholder="Obligatorio en merma y ajuste">
+    <div class="ayuda">Una merma o un ajuste sin motivo se rechaza.</div></div>
+  <button class="btn">Registrar</button>
+</form>
+
+<div class="panel">
+<table>
+  <thead><tr><th>Clave</th><th>Producto</th><th class="num">Existencia</th><th class="num">Mínimo</th><th></th></tr></thead>
+  <tbody>{% for i in items %}
+    <tr><td><code>{{ i.clave_interna }}</code></td>
+        <td>{{ i.nombre }}<div style="font-size:12.5px;color:var(--ink2)">{{ i.presentacion }}</div></td>
+        <td class="num"><b>{{ i.existencia }}</b></td><td class="num">{{ i.minimo }}</td>
+        <td>{% if i.existencia == 0 %}<span class="est fall">Agotado</span>
+            {% elif i.existencia <= i.minimo %}<span class="est ruta">Bajo mínimo</span>{% endif %}</td></tr>
+  {% endfor %}</tbody>
+</table>
+</div>
+{% endblock %}

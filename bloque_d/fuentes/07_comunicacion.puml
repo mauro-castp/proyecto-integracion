@@ -1,0 +1,42 @@
+@startuml
+!include tema.iuml
+title Diagrama 7 · Comunicación entre aplicaciones
+
+rectangle "**App Android**\nCliente y Repartidor" as AND
+rectangle "**App de escritorio**\nOperador, Planeador, Auditor" as ESC
+rectangle "**Navegador**\nTodos los perfiles" as NAV
+
+rectangle "**Sistema web empresarial**" as WEB #C9DCF0 {
+  component "API JSON\n/api/v1/*" as AJ
+  component "API XML\n/xml/v1/*" as AX
+  component "Vistas HTML\nJinja2" as HT
+  component "**Núcleo de reglas**\ncompartido por las tres" as NUC #F7DCE7
+}
+
+rectangle "**Microservicios**\nHTTP/JSON" as MS
+
+AND --> AJ : JSON + JWT\n//RF29, RNF22//
+ESC --> AX : XML + JWT\n//RF41, RNF24//
+NAV --> HT : HTML + cookie de sesión
+AJ --> NUC
+AX --> NUC
+HT --> NUC
+NUC --> MS : JSON\n//contratos versionados (RNF12)//
+
+note bottom of NUC
+  Las tres superficies llaman al MISMO núcleo.
+  RNF: los componentes posteriores consumen
+  contratos de servicio y no deben duplicar
+  reglas de negocio de forma divergente. Si el
+  ticket mínimo cambia, cambia para las tres a
+  la vez porque solo existe una implementación.
+end note
+
+legend bottom
+  | Cliente | Formato | Autenticación | Requisito |
+  | Android | JSON | JWT en cabecera | RF29, RNF22 |
+  | Escritorio | XML | JWT en cabecera | RF41, RNF24 |
+  | Navegador | HTML | Sesión con token | RF03 |
+  | Microservicios | JSON | JWT servicio a servicio | RNF12, RNF14 |
+endlegend
+@enduml

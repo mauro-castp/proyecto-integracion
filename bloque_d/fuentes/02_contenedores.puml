@@ -1,0 +1,41 @@
+@startuml
+!include tema.iuml
+title Diagrama 2 · Contenedores
+
+actor "Visitante /\nCliente" as CLI
+actor "Operador /\nAdministrador" as OPE
+actor "Repartidor" as REP
+
+rectangle "Navegador web" as NAV
+rectangle "**Sistema web empresarial**\nPython · Flask · Jinja2\n//Reglas de negocio del MVP//" as WEB #C9DCF0
+rectangle "**App Android**\nKotlin · consumo JSON\n//Cliente y Repartidor//" as AND
+rectangle "**App de escritorio**\nPySide · consumo XML\n//Operación intensiva//" as ESC
+rectangle "**Microservicios analíticos**\nPython · Flask\n//Demanda, ubicación, colas//" as MS
+
+database "**PostgreSQL**\nTransaccional" as PG
+database "**MongoDB**\nEventos y logs" as MG
+database "**Redis**\nSesión, bloqueos, caché" as RD
+
+CLI --> NAV
+NAV --> WEB : HTTPS
+OPE --> ESC
+REP --> AND
+CLI --> AND
+
+AND --> WEB : JSON + JWT
+ESC --> WEB : XML + JWT
+WEB --> MS : HTTP/JSON\n//asíncrono//
+
+WEB --> PG : SQL\n//transacciones//
+WEB --> MG : eventos y bitácora técnica
+WEB --> RD : tokens, bloqueos, caché
+MS --> MG : corridas analíticas
+MS --> PG : lectura de datos históricos
+
+note right of WEB
+  RNF13: la caída de un microservicio
+  no derriba al sistema web. El núcleo
+  conserva todas las funciones de su
+  alcance sin depender de ellos.
+end note
+@enduml

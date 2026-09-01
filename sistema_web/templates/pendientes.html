@@ -1,0 +1,25 @@
+{% extends "base.html" %}{% block titulo %}Pendientes{% endblock %}
+{% block cuerpo %}
+<h1>Pedidos pendientes de asignación</h1>
+<p class="sub">Ningún microhub pudo surtirlos automáticamente. Requieren decisión de una persona.</p>
+
+{% if not pedidos %}
+  <div class="panel vacio"><b>No hay pedidos pendientes</b><p>Todos se asignaron solos.</p></div>
+{% else %}
+{% for p in pedidos %}
+<div class="panel">
+  <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:start">
+    <div><b style="font-size:16px">{{ p.folio }}</b>
+      <div style="font-size:13.5px;color:var(--ink2);margin-top:3px">{{ p.colonia }} · {{ p.creado_en|fecha }} · {{ p.total|dinero }}</div></div>
+  </div>
+  <div class="aviso medio" style="margin:12px 0"><b>Motivo</b>{{ p.motivo_no_asignacion }}</div>
+  <form method="post" action="{{ url_for('admin.reasignar', pid=p.id) }}" style="display:flex;gap:10px;align-items:end;flex-wrap:wrap">
+    <div style="flex:1;min-width:240px"><label for="motivo{{ p.id }}">Motivo de la reasignación</label>
+      <input id="motivo{{ p.id }}" name="motivo" required placeholder="Llegó mercancía al MH-02">
+      <div class="ayuda">Obligatorio: queda registrado quién reasignó y por qué.</div></div>
+    <button class="btn">Reintentar asignación</button>
+  </form>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

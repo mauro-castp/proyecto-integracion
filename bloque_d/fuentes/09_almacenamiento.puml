@@ -1,0 +1,64 @@
+@startuml
+!include tema.iuml
+title Diagrama 9 · Almacenamiento de datos
+
+rectangle "**Criterio de reparto**\n¿Qué ocurre si este dato se pierde?" as CRIT #F7DCE7
+
+database "**PostgreSQL** — rompe un saldo o una relación" as PG {
+  rectangle "Identidad,\nroles y permisos" as D1
+  rectangle "Zonas y\nmicrohubs" as D2
+  rectangle "Catálogo e\ninventario" as D3
+  rectangle "Pedidos, detalle\ne historial" as D4
+  rectangle "Entregas\ny cobros" as D5
+  rectangle "Bitácora de auditoría\n//append-only//" as D6
+  rectangle "Configuración\noperativa" as D7
+  D1 -[hidden]right- D2
+  D2 -[hidden]right- D3
+  D3 -[hidden]right- D4
+  D5 -[hidden]right- D6
+  D6 -[hidden]right- D7
+  D1 -[hidden]down- D5
+}
+
+database "**MongoDB** — estorba un análisis, no descuadra nada" as MG {
+  rectangle "eventos_demanda" as M1
+  rectangle "decisiones_asignacion\n//traza del algoritmo//" as M2
+  rectangle "ejecuciones_analiticas\n//reproducibles//" as M3
+  rectangle "logs_tecnicos\n//capped 512 MB//" as M4
+  rectangle "sincronizaciones_moviles" as M5
+  rectangle "metricas_servicio\n//TTL 90 días//" as M6
+  M1 -[hidden]right- M2
+  M2 -[hidden]right- M3
+  M4 -[hidden]right- M5
+  M5 -[hidden]right- M6
+  M1 -[hidden]down- M4
+}
+
+database "**Redis** — solo obliga a reautenticar o recalcular" as RD {
+  rectangle "**db 0** · noeviction\ntokens revocados, bloqueos\nde inventario, intentos fallidos" as R1
+  rectangle "**db 1** · allkeys-lru\ncaché de catálogo, cobertura,\nindicadores y límite de frecuencia" as R2
+  R1 -[hidden]right- R2
+}
+
+CRIT -[hidden]down- PG
+PG -[hidden]down- MG
+MG -[hidden]down- RD
+
+D4 -[#8A5A17]down-> M2 : traza_mongo_id
+D6 .[#8A5A17].> M4 : separadas a propósito (RNF33)
+
+note bottom of RD
+  db 0 y db 1 no pueden compartir política de expulsión. Con allkeys-lru en toda la
+  instancia, un pico de tráfico en el catálogo público podría expulsar un bloqueo de
+  inventario activo y producir sobreventa. Perder caché cuesta una consulta; perder
+  un bloqueo cuesta una unidad vendida dos veces.
+end note
+
+note right of PG
+  El folio se genera con una secuencia de
+  PostgreSQL, no con un contador de Redis:
+  un reinicio devolvería el contador a un
+  valor ya usado y los folios repetidos son
+  un incidente contable, no de rendimiento.
+end note
+@enduml

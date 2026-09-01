@@ -1,0 +1,63 @@
+@startuml
+!include tema.iuml
+title Diagrama 3 · Componentes del sistema web
+
+rectangle "Sistema web empresarial (Flask)" {
+  component "**Blueprints públicos**\ncatálogo, cobertura" as PUB
+  component "**Blueprint de autenticación**\nlogin, logout, recuperación" as AUTH
+  component "**Blueprints privados**\npedidos, inventario,\nusuarios, indicadores" as PRIV
+
+  component "**Middleware de autorización**\nverifica permiso y ámbito\nen CADA ruta" as MW #F7DCE7
+
+  component "Servicio de pedidos" as SPED
+  component "Servicio de asignación" as SASI
+  component "Servicio de inventario" as SINV
+  component "Servicio de catálogo" as SCAT
+  component "Servicio de indicadores" as SIND
+
+  component "**Capa de acceso a datos**\nSQLAlchemy" as DAL
+  component "Cliente Redis" as CRD
+  component "Cliente MongoDB" as CMG
+}
+
+database "PostgreSQL\n//funciones y triggers//" as PG
+database "Redis" as RD
+database "MongoDB" as MG
+
+PUB --> SCAT
+AUTH --> CRD
+PRIV --> MW
+MW --> SPED
+MW --> SINV
+MW --> SIND
+MW --> SCAT
+
+SPED --> SASI
+SASI --> SINV
+SPED --> DAL
+SASI --> DAL
+SINV --> DAL
+SCAT --> DAL
+SIND --> DAL
+
+SASI --> CRD : bloqueo de inventario
+SCAT --> CRD : caché de catálogo
+SASI --> CMG : traza de la decisión
+DAL --> PG
+CRD --> RD
+CMG --> MG
+
+note right of MW
+  RNF23 y HU10 CA2: el middleware es
+  el ÚNICO punto donde se decide el
+  acceso. Ocultar una opción del menú
+  no cierra la ruta; retirar el permiso sí.
+end note
+
+note bottom of DAL
+  Las reglas que deben ser invariantes
+  viven en PostgreSQL, no aquí: asignación
+  atómica, transiciones de estado y
+  auditoría son funciones y triggers.
+end note
+@enduml

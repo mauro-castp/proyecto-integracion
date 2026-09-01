@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block titulo %}Microhubs{% endblock %} · Plataforma de Microhubs</title>
+<style>
+:root{
+  --paper:#F4F5F0; --card:#fff; --ink:#1B241F; --ink2:#5C6660; --ink3:#8B928D;
+  --line:#DEDED4; --line2:#EAEAE2;
+  --cobalt:#1F4E79; --cobalt-l:#E7EFF6; --cobalt-b:#BBD2E5;
+  --verde:#2E6B4F; --verde-l:#E5F1EA; --verde-b:#BEDACB;
+  --ambar:#8A5A17; --ambar-l:#F6EEE0; --ambar-b:#E4CDA6;
+  --rojo:#7B2D4E; --rojo-l:#F5E7ED; --rojo-b:#E2BECD;
+  --violeta:#54417B; --violeta-l:#EEEAF5; --violeta-b:#D2C6E6;
+  --radio:12px; --radio-sm:8px;
+  --sombra:0 1px 2px rgba(20,25,22,.04), 0 6px 16px -8px rgba(20,25,22,.10);
+  --sombra-h:0 2px 4px rgba(20,25,22,.06), 0 12px 24px -10px rgba(20,25,22,.16);
+  --rapido:.16s ease;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);
+     font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+     font-size:15.5px;line-height:1.55;font-variant-numeric:tabular-nums;
+     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:var(--cobalt);text-decoration:none}
+a:not(.btn):hover{text-decoration:underline}
+::selection{background:var(--cobalt-b);color:var(--ink)}
+
+/* ---------- encabezado ---------- */
+.cab{background:linear-gradient(180deg,#20302A,var(--ink));color:#fff;
+     padding:12px 22px;position:sticky;top:0;z-index:20;
+     box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.cab-fila{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:18px}
+.cab .marca{font-weight:700;font-size:16.5px;text-decoration:none;color:#fff;
+            display:flex;align-items:center;gap:9px;letter-spacing:-.01em}
+.cab .marca::before{content:"";width:9px;height:9px;border-radius:3px;
+            background:linear-gradient(135deg,#6FA8D8,#8FE0B8);flex:none}
+.cab .marca span{display:block;font-size:11px;font-weight:400;color:#9FB0A6;letter-spacing:0}
+.nav-toggle{display:none}
+.hamburger{display:none;margin-left:auto;background:none;border:1px solid rgba(255,255,255,.25);
+           color:#fff;width:36px;height:36px;border-radius:var(--radio-sm);cursor:pointer;
+           align-items:center;justify-content:center;font-size:16px;flex:none}
+.cab nav{display:flex;gap:3px;flex-wrap:wrap;margin-left:auto;align-items:center}
+.cab nav a{color:#D6DED9;text-decoration:none;font-size:14px;padding:7px 12px;
+           border-radius:20px;transition:background var(--rapido),color var(--rapido)}
+.cab nav a:hover{background:rgba(255,255,255,.10);color:#fff;text-decoration:none}
+.cab nav a.sel{background:#fff;color:var(--ink);font-weight:600}
+.cab form{display:inline}
+.cab button.salir{font:inherit;font-size:13.5px;background:rgba(255,255,255,.06);
+           border:1px solid rgba(255,255,255,.22);color:#EDEDE8;padding:6px 13px;
+           border-radius:20px;cursor:pointer;transition:background var(--rapido)}
+.cab button.salir:hover{background:rgba(255,255,255,.16)}
+.quien{font-size:12.5px;color:#AEB8B2;border-left:1px solid rgba(255,255,255,.18);
+       padding-left:14px;margin-left:2px;white-space:nowrap}
+
+@media(max-width:860px){
+  .hamburger{display:flex}
+  .cab-fila{flex-wrap:wrap}
+  .cab nav{order:3;margin-left:0;flex-basis:100%;width:100%;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:2px;
+           max-height:0;overflow:hidden;overflow-y:auto;transition:max-height var(--rapido)}
+  .nav-toggle:checked ~ nav{max-height:calc(100vh - 64px);padding-top:12px}
+  .cab nav a{padding:10px 12px;border-radius:var(--radio-sm)}
+  .cab nav a.sel{background:rgba(255,255,255,.14);color:#fff}
+  .quien{border-left:none;border-top:1px solid rgba(255,255,255,.18);padding:10px 12px 0;margin:6px 0 0}
+  .cab form{width:100%}
+  .cab button.salir{width:100%;margin-top:8px;text-align:center}
+}
+
+/* ---------- layout ---------- */
+main{max-width:1180px;margin:0 auto;padding:30px 22px 80px;animation:aparece .2s ease}
+@keyframes aparece{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+h1{font-size:26px;letter-spacing:-.015em;margin-bottom:5px;font-weight:700}
+h2{font-size:17px;margin:30px 0 12px;font-weight:700;letter-spacing:-.005em}
+.sub{color:var(--ink2);font-size:14.5px;margin-bottom:20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radio);
+       padding:22px;margin-bottom:18px;box-shadow:var(--sombra)}
+
+/* ---------- tablas ---------- */
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.03em;
+   color:var(--ink2);font-weight:600;padding:10px 12px;border-bottom:2px solid var(--line)}
+td{padding:12px;border-bottom:1px solid var(--line2)}
+tbody tr{transition:background var(--rapido)}
+tbody tr:hover td{background:var(--paper)}
+tbody tr:last-child td{border-bottom:0}
+.num{text-align:right}
+
+/* ---------- insignias de estado ---------- */
+.est{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;
+     padding:4px 10px 4px 8px;border:1px solid;border-radius:20px;white-space:nowrap}
+.est::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.est.asig{color:var(--cobalt);background:var(--cobalt-l);border-color:var(--cobalt-b)}
+.est.prep{color:var(--violeta);background:var(--violeta-l);border-color:var(--violeta-b)}
+.est.ruta{color:var(--ambar);background:var(--ambar-l);border-color:var(--ambar-b)}
+.est.ent{color:var(--verde);background:var(--verde-l);border-color:var(--verde-b)}
+.est.fall{color:var(--rojo);background:var(--rojo-l);border-color:var(--rojo-b)}
+.est.pend,.est.info{color:var(--ink2);background:var(--line2);border-color:var(--line)}
+
+/* ---------- avisos ---------- */
+.aviso{border:1px solid;border-left-width:4px;border-radius:var(--radio-sm);
+       padding:13px 16px;margin:14px 0;font-size:14px;box-shadow:var(--sombra)}
+.aviso b{display:block;margin-bottom:2px}
+.aviso.alto{border-color:var(--rojo-b);border-left-color:var(--rojo);background:var(--rojo-l);color:#4A1B30}
+.aviso.medio{border-color:var(--ambar-b);border-left-color:var(--ambar);background:var(--ambar-l);color:#523408}
+.aviso.info{border-color:var(--cobalt-b);border-left-color:var(--cobalt);background:var(--cobalt-l);color:#123252}
+.aviso.ok{border-color:var(--verde-b);border-left-color:var(--verde);background:var(--verde-l);color:#1B4331}
+
+/* ---------- botones ---------- */
+.btn{font:inherit;font-weight:600;font-size:14px;padding:10px 18px;border:1.5px solid var(--ink);
+     background:var(--ink);color:#fff;cursor:pointer;border-radius:var(--radio-sm);
+     text-decoration:none;display:inline-block;transition:transform var(--rapido),box-shadow var(--rapido),background var(--rapido),opacity var(--rapido)}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--sombra-h);text-decoration:none}
+.btn:active{transform:translateY(0)}
+.btn.sec{background:transparent;color:var(--ink)}
+.btn.sec:hover{background:var(--paper)}
+.btn.peligro{background:var(--rojo);border-color:var(--rojo);color:#fff}
+.btn:disabled{background:var(--line);border-color:var(--line);color:var(--ink3);
+              cursor:not-allowed;transform:none;box-shadow:none}
+.btn:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,button:focus-visible{
+  outline:3px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+
+/* ---------- formularios ---------- */
+input,select,textarea{font:inherit;padding:10px 12px;border:1.5px solid var(--line);
+     border-radius:var(--radio-sm);background:#fff;width:100%;color:var(--ink);
+     transition:border-color var(--rapido),box-shadow var(--rapido)}
+input:hover,select:hover,textarea:hover{border-color:var(--ink3)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cobalt);
+     box-shadow:0 0 0 3px var(--cobalt-l)}
+label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
+.campo{margin-bottom:16px}
+.ayuda{font-size:12.5px;color:var(--ink2);margin-top:5px;font-weight:400}
+
+/* ---------- rejillas ---------- */
+.rejilla{display:grid;gap:16px}
+.cols2{grid-template-columns:1fr 1fr}
+.cols3{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+@media(max-width:700px){.cols2{grid-template-columns:1fr}}
+
+/* ---------- indicadores clave ---------- */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+.kpi{padding:18px 19px;background:var(--card);border:1px solid var(--line);
+     border-radius:var(--radio);box-shadow:var(--sombra);border-top:3px solid var(--cobalt)}
+.kpi:nth-child(2){border-top-color:var(--verde)}
+.kpi:nth-child(3){border-top-color:var(--ambar)}
+.kpi:nth-child(4){border-top-color:var(--violeta)}
+.kpi .v{font-size:30px;font-weight:700;letter-spacing:-.02em}
+.kpi .l{font-size:12.5px;color:var(--ink2);margin-top:3px}
+
+code{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:var(--line2);
+     padding:2px 6px;border-radius:5px}
+
+/* ---------- estado vacío ---------- */
+.vacio{text-align:center;padding:48px 20px;color:var(--ink2)}
+.vacio::before{content:"";display:block;width:44px;height:44px;margin:0 auto 14px;
+     border-radius:50%;border:2px dashed var(--line);background:var(--paper)}
+.vacio b{display:block;font-size:16px;color:var(--ink);margin-bottom:5px}
+
+@media(max-width:480px){
+  main{padding:20px 14px 60px}
+  h1{font-size:22px}
+  .panel{padding:16px}
+}
+</style>
+</head>
+<body>
+<header class="cab">
+  <div class="cab-fila">
+  <a class="marca" href="{{ url_for('publico.catalogo') }}">Microhubs<span>Sector San Bernabé</span></a>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle">
+  <label for="nav-toggle" class="hamburger" aria-label="Abrir menú">☰</label>
+  {% set ep = request.endpoint %}
+  <nav>
+    <a href="{{ url_for('publico.catalogo') }}" class="{{ 'sel' if ep=='publico.catalogo' }}">Catálogo</a>
+    <a href="{{ url_for('publico.cobertura') }}" class="{{ 'sel' if ep=='publico.cobertura' }}">Cobertura</a>
+    {% if usuario %}
+      {% if 'pedidos.crear' in permisos %}
+        <a href="{{ url_for('cliente.carrito') }}" class="{{ 'sel' if ep in ['cliente.carrito','cliente.agregar','cliente.quitar','cliente.confirmar'] }}">Carrito</a>
+        <a href="{{ url_for('cliente.mis_pedidos') }}" class="{{ 'sel' if ep in ['cliente.mis_pedidos','cliente.pedido','cliente.cancelar'] }}">Mis pedidos</a>
+      {% endif %}
+      {% if 'pedidos.cambiar_estado' in permisos %}<a href="{{ url_for('operacion.bandeja') }}" class="{{ 'sel' if ep in ['operacion.bandeja','operacion.detalle','operacion.cambiar_estado','operacion.cerrar'] }}">Bandeja</a>{% endif %}
+      {% if 'inventario.ver' in permisos %}<a href="{{ url_for('operacion.inventario') }}" class="{{ 'sel' if ep=='operacion.inventario' }}">Inventario</a>{% endif %}
+      {% if 'pedidos.reasignar' in permisos %}<a href="{{ url_for('admin.pendientes') }}" class="{{ 'sel' if ep in ['admin.pendientes','admin.reasignar'] }}">Pendientes</a>{% endif %}
+      {% if 'indicadores.ver' in permisos %}<a href="{{ url_for('admin.indicadores') }}" class="{{ 'sel' if ep=='admin.indicadores' }}">Indicadores</a>{% endif %}
+      {% if 'usuarios.ver' in permisos %}<a href="{{ url_for('admin.usuarios') }}" class="{{ 'sel' if ep=='admin.usuarios' }}">Usuarios</a>{% endif %}
+      {% if 'configuracion.ver' in permisos %}<a href="{{ url_for('admin.parametros') }}" class="{{ 'sel' if ep=='admin.parametros' }}">Parámetros</a>{% endif %}
+      {% if 'bitacora.ver' in permisos %}<a href="{{ url_for('admin.bitacora') }}" class="{{ 'sel' if ep=='admin.bitacora' }}">Bitácora</a>{% endif %}
+      <span class="quien">{{ usuario.nombre }} · {{ usuario.rol }}</span>
+      <form method="post" action="{{ url_for('auth.salir') }}"><button class="salir">Salir</button></form>
+    {% else %}
+      <a href="{{ url_for('auth.registro') }}" class="{{ 'sel' if ep=='auth.registro' }}">Crear cuenta</a>
+      <a href="{{ url_for('auth.entrar') }}" class="{{ 'sel' if ep=='auth.entrar' }}">Iniciar sesión</a>
+    {% endif %}
+  </nav>
+  </div>
+</header>
+<main>
+  {% with mensajes = get_flashed_messages(with_categories=true) %}
+    {% for categoria, texto in mensajes %}
+      <div class="aviso {{ categoria }}">{{ texto }}</div>
+    {% endfor %}
+  {% endwith %}
+  {% block cuerpo %}{% endblock %}
+</main>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}{% block titulo %}Bandeja{% endblock %}
+{% block cuerpo %}
+<h1>Bandeja del turno</h1>
+<p class="sub">Solo los pedidos de tu microhub.</p>
+
+{% if ocupacion %}
+  {% if ocupacion.capacidad_libre <= 0 %}
+    <div class="aviso medio"><b>Microhub al tope de su capacidad</b>
+      {{ ocupacion.pedidos_en_turno }} de {{ ocupacion.capacidad_turno }} pedidos. Los nuevos se irán a otro microhub o quedarán pendientes.</div>
+  {% else %}
+    <div class="aviso info"><b>Capacidad del turno</b>
+      {{ ocupacion.pedidos_en_turno }} de {{ ocupacion.capacidad_turno }} pedidos · quedan {{ ocupacion.capacidad_libre }} lugares.</div>
+  {% endif %}
+{% endif %}
+
+{% if not pedidos %}
+  <div class="panel vacio"><b>No hay pedidos activos</b><p>Cuando llegue uno nuevo aparecerá aquí.</p></div>
+{% else %}
+<div class="panel">
+<table>
+  <thead><tr><th>Folio</th><th>Cliente</th><th class="num">Líneas</th><th class="num">Total</th><th>Estado</th><th></th></tr></thead>
+  <tbody>{% for p in pedidos %}
+    <tr><td><b>{{ p.folio }}</b></td><td>{{ p.cliente }}</td><td class="num">{{ p.lineas }}</td>
+        <td class="num">{{ p.total|dinero }}</td>
+        <td><span class="est {{ p.estado|clase_estado }}">{{ p.estado|estado }}</span></td>
+        <td class="num"><a href="{{ url_for('operacion.detalle', pid=p.id) }}">Abrir</a></td></tr>
+  {% endfor %}</tbody>
+</table>
+</div>
+{% endif %}
+{% endblock %}

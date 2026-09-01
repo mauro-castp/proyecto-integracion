@@ -1,0 +1,27 @@
+{% extends "base.html" %}{% block titulo %}Parámetros{% endblock %}
+{% block cuerpo %}
+<h1>Parámetros operativos</h1>
+<p class="sub">Cambiar un valor aquí surte efecto de inmediato. No hace falta tocar el código ni volver a desplegar.</p>
+
+<div class="panel">
+<table>
+  <thead><tr><th>Parámetro</th><th>Valor</th><th>Para qué sirve</th><th>Último cambio</th></tr></thead>
+  <tbody>{% for p in params %}
+    <tr><td><code>{{ p.clave }}</code></td>
+      <td style="width:190px">
+        {% if 'configuracion.editar' in permisos %}
+        <form method="post" style="display:flex;gap:6px">
+          <input type="hidden" name="id" value="{{ p.id }}">
+          <input name="valor" value="{{ p.valor }}" style="width:88px">
+          <button class="btn sec" style="padding:6px 10px;font-size:13px">Guardar</button>
+        </form>
+        {% else %}<b>{{ p.valor }}</b>{% endif %}
+        <div class="ayuda">{{ p.unidad or '' }}</div></td>
+      <td style="font-size:13px;color:var(--ink2)">{{ p.descripcion }}</td>
+      <td style="font-size:12.5px">{{ p.actualizado_en|fecha }}</td></tr>
+  {% endfor %}</tbody>
+</table>
+</div>
+<div class="aviso info"><b>Prueba a bajar el ticket mínimo</b>
+  Cambia <code>ticket_minimo</code> y vuelve a un carrito que no alcanzaba. La validación usa el valor nuevo sin reiniciar nada.</div>
+{% endblock %}

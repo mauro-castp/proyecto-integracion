@@ -1,0 +1,32 @@
+{% extends "base.html" %}{% block titulo %}Bitácora{% endblock %}
+{% block cuerpo %}
+<h1>Bitácora de auditoría</h1>
+<p class="sub">{{ '{:,}'.format(total) }} registros. Los escribe el sistema y nadie puede modificarlos.</p>
+
+<form class="panel" method="get" style="display:flex;gap:10px;align-items:end;flex-wrap:wrap">
+  <div style="min-width:200px"><label for="modulo">Módulo</label>
+    <select id="modulo" name="modulo"><option value="">Todos</option>
+      {% for m in modulos %}<option value="{{ m.modulo }}" {% if modulo==m.modulo %}selected{% endif %}>{{ m.modulo }}</option>{% endfor %}
+    </select></div>
+  <button class="btn">Filtrar</button>
+</form>
+
+<div class="panel">
+<table>
+  <thead><tr><th>Fecha</th><th>Quién</th><th>Módulo</th><th>Acción</th><th>Entidad</th><th>Detalle</th></tr></thead>
+  <tbody>{% for f in filas %}
+    <tr {% if not f.exitoso %}style="background:var(--rojo-l)"{% endif %}>
+      <td style="font-size:12.5px;white-space:nowrap">{{ f.fecha|fecha }}</td>
+      <td style="font-size:13px">{{ f.quien or 'sistema' }}</td>
+      <td style="font-size:13px">{{ f.modulo }}</td>
+      <td style="font-size:13px">{{ f.accion|replace('_',' ') }}</td>
+      <td style="font-size:12.5px">{{ f.entidad or '' }}{% if f.entidad_id %} {{ f.entidad_id }}{% endif %}</td>
+      <td style="font-size:12.5px;color:var(--ink2)">
+        {% if f.detalle %}{{ f.detalle }}{% elif f.valores_nuevos %}{{ f.valores_nuevos|string|truncate(90) }}{% endif %}</td></tr>
+  {% endfor %}</tbody>
+</table>
+</div>
+
+<div class="aviso alto"><b>Esta tabla no tiene botón de editar ni de borrar</b>
+  No es una omisión. La base rechaza cualquier modificación sobre la bitácora, incluso ejecutada por un administrador o directamente contra el motor.</div>
+{% endblock %}

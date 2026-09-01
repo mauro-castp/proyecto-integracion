@@ -1,0 +1,73 @@
+# docker-compose.yml — Levantamiento local completo (RF42)
+# Codex Innovations · Equipo 04
+#
+#   docker compose up --build
+#
+# Un solo comando levanta web y persistencia, sin instalar dependencias a
+# mano (RNF05). Los scripts del modelo de datos se ejecutan solos en el
+# primer arranque, en orden alfabético.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: microhubs_p1
+      POSTGRES_USER: microhubs
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-microhubs_dev}
+    volumes:
+      - datos_pg:/var/lib/postgresql/data
+      # El modelo del Bloque C se carga en el primer arranque.
+      - ../bloque_c/sql:/docker-entrypoint-initdb.d:ro
+    networks: [datos]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U microhubs -d microhubs_p1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    # Sin "ports": la base NO se publica al host. Solo es alcanzable desde
+    # la red interna. Un puerto 5432 abierto al host es la forma más común
+    # de filtrar una base en desarrollo.
+
+  redis:
+    image: redis:7-alpine
+    # Dos políticas incompatibles no pueden compartir instancia, pero sí
+    # dos bases lógicas: db 0 no expulsa nada (bloqueos de inventario),
+    # db 1 sí (caché). La política global es la conservadora.
+    command: redis-server --save "" --appendonly no --maxmemory 256mb --maxmemory-policy noeviction
+    networks: [datos]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  mongo:
+    image: mongo:7
+    volumes:
+      - datos_mongo:/data/db
+      - ../bloque_c/mongo:/docker-entrypoint-initdb.d:ro
+    networks: [datos]
+
+  web:
+    build: .
+    environment:
+      SECRET_KEY: ${SECRET_KEY:-cambiar-en-produccion}
+      PG_DSN: host=postgres port=5432 dbname=microhubs_p1 user=microhubs password=${POSTGRES_PASSWORD:-microhubs_dev}
+      REDIS_URL: redis://redis:6379
+      MONGO_URL: mongodb://mongo:27017/microhubs_eventos
+    ports:
+      - "5000:5000"          # única puerta al exterior
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    networks: [datos, publica]
+    restart: unless-stopped
+
+networks:
+  publica:
+  datos:
+    internal: true           # sin salida a Internet (diagrama 5 de arquitectura)
+
+volumes:
+  datos_pg:
+  datos_mongo:

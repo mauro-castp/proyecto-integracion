@@ -1,0 +1,43 @@
+@startuml
+!include tema.iuml
+title Diagrama 5 · Red y comunicación entre componentes (RF44)
+
+rectangle "**Zona pública**" as ZP #F7DCE7 {
+  rectangle "Internet\nnavegador, Android" as INT
+}
+
+rectangle "**Zona de aplicación**\nred Docker: microhubs_app" as ZA {
+  rectangle "web:5000\nHTTP" as W
+  rectangle "microservicios:5001\nHTTP" as M
+}
+
+rectangle "**Zona de datos**\nred Docker: microhubs_data\n//sin salida a Internet//" as ZD #FAEBD3 {
+  rectangle "postgres:5432" as P
+  rectangle "mongo:27017" as G
+  rectangle "redis:6379" as R
+}
+
+INT --> W : 443 → 5000\nHTTPS
+W --> M : 5001\nHTTP interno
+W --> P : 5432
+W --> G : 27017
+W --> R : 6379
+M --> P : 5432\n//solo lectura//
+M --> G : 27017
+
+note right of ZD
+  Los motores de datos NO publican puertos
+  al host ni tienen salida a Internet. Solo
+  son alcanzables desde la red de aplicación.
+  Un contenedor de base expuesto al host es
+  la forma más común de filtrar una base en
+  desarrollo.
+end note
+
+legend bottom
+  | Regla | Aplicación |
+  | Ningún puerto de datos publicado al host | postgres, mongo, redis |
+  | Credenciales por variable de entorno (RF43) | todos los contenedores |
+  | Secretos fuera del repositorio (RNF30) | archivo .env no versionado |
+endlegend
+@enduml

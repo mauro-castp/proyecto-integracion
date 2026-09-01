@@ -1,0 +1,47 @@
+{% extends "base.html" %}{% block titulo %}Carrito{% endblock %}
+{% block cuerpo %}
+<h1>Revisa tu pedido</h1>
+{% if dom %}<p class="sub">{{ dom.colonia }} · CP {{ dom.codigo_postal }} · {{ dom.calle }} {{ dom.numero_ext }}</p>{% endif %}
+
+{% if not lineas %}
+  <div class="panel vacio"><b>Tu carrito está vacío</b>
+    <p>Agrega productos desde el catálogo.</p>
+    <p style="margin-top:16px"><a class="btn" href="{{ url_for('publico.catalogo') }}">Ver catálogo</a></p></div>
+{% else %}
+<div class="panel">
+<table>
+  <thead><tr><th>Producto</th><th class="num">Cantidad</th><th class="num">Precio</th><th class="num">Importe</th><th></th></tr></thead>
+  <tbody>
+  {% for l in lineas %}
+    <tr><td>{{ l.nombre }}<div style="font-size:12.5px;color:var(--ink2)">{{ l.presentacion }}</div></td>
+        <td class="num">{{ l.cantidad }}</td><td class="num">{{ l.precio|dinero }}</td>
+        <td class="num"><b>{{ l.importe|dinero }}</b></td>
+        <td class="num"><form method="post" action="{{ url_for('cliente.quitar') }}">
+          <input type="hidden" name="producto_id" value="{{ l.id }}">
+          <button class="btn sec" style="padding:5px 10px;font-size:13px">Quitar</button></form></td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% set envio = dom.envio if dom else 0 %}
+<div style="max-width:330px;margin-left:auto;margin-top:16px;font-size:14px">
+  <div style="display:flex;justify-content:space-between;padding:5px 0"><span>Subtotal de productos</span><b>{{ subtotal|dinero }}</b></div>
+  <div style="display:flex;justify-content:space-between;padding:5px 0;color:var(--ink2)"><span>Costo de envío</span><span>{{ envio|dinero }}</span></div>
+  <div style="display:flex;justify-content:space-between;padding:9px 0;border-top:2px solid var(--ink);margin-top:4px;font-size:17px"><b>Total</b><b>{{ (subtotal + (envio|float))|dinero }}</b></div>
+</div>
+</div>
+
+{% if dom and subtotal < (dom.ticket|float) %}
+  <div class="aviso medio"><b>Te faltan {{ ((dom.ticket|float) - subtotal)|dinero }} para poder pedir</b>
+    El mínimo en {{ dom.colonia }} es de {{ dom.ticket|dinero }} sobre el subtotal de productos. El costo de envío no cuenta para alcanzarlo.</div>
+  <a class="btn sec" href="{{ url_for('publico.catalogo') }}">Agregar más productos</a>
+{% else %}
+  <form method="post" action="{{ url_for('cliente.confirmar') }}">
+    <button class="btn">Confirmar pedido</button>
+    <a class="btn sec" href="{{ url_for('publico.catalogo') }}">Seguir comprando</a>
+  </form>
+  <div class="aviso info"><b>Qué se revisa al confirmar</b>
+    Cobertura del domicilio, ticket mínimo, límite de {{ limite }} unidades por producto y existencia completa de todas las líneas. Si algo falla, el pedido no se crea.</div>
+{% endif %}
+{% endif %}
+{% endblock %}

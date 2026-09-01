@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block titulo %}Iniciar sesión{% endblock %}
+{% block cuerpo %}
+<div style="max-width:420px;margin:0 auto">
+  <h1>Iniciar sesión</h1>
+  <p class="sub">Entra con la cuenta que te dieron o con la que creaste.</p>
+  <form class="panel" method="post">
+    <div class="campo"><label for="correo">Correo</label><input id="correo" name="correo" type="email" required autofocus></div>
+    <div class="campo"><label for="clave">Contraseña</label><input id="clave" name="clave" type="password" required></div>
+    <button class="btn" style="width:100%">Entrar</button>
+    <p style="margin-top:14px;font-size:13.5px;color:var(--ink2)">¿No tienes cuenta? <a href="{{ url_for('auth.registro') }}">Crea una</a>.</p>
+  </form>
+  <div class="aviso info"><b>Cuentas de demostración</b>
+    <code>admin@codex.mx</code>, <code>operador.mh01@codex.mx</code>, <code>planeador@codex.mx</code>, <code>auditor@codex.mx</code><br>
+    Contraseña: <code>Codex#2026</code></div>
+</div>
+{% endblock %}

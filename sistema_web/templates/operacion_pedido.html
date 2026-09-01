@@ -1,0 +1,82 @@
+{% extends "base.html" %}{% block titulo %}{{ p.folio }}{% endblock %}
+{% block cuerpo %}
+<h1>{{ p.folio }}</h1>
+<p class="sub">{{ p.cliente }} · {{ p.calle }} {{ p.numero_ext }}, {{ p.colonia }} ·
+   <span class="est {{ p.estado|clase_estado }}">{{ p.estado|estado }}</span></p>
+
+<div class="rejilla cols2">
+  <div class="panel">
+    <h2 style="margin-top:0">Surtir</h2>
+    <table><tbody>{% for l in lineas %}
+      <tr><td style="width:52px"><span style="font-size:21px;font-weight:700">{{ l.cantidad }}</span></td>
+          <td>{{ l.nombre }}<div style="font-size:12.5px;color:var(--ink2)">{{ l.presentacion }}</div></td>
+          <td class="num">{{ l.importe|dinero }}</td></tr>
+    {% endfor %}</tbody></table>
+    <div style="margin-top:14px;display:flex;justify-content:space-between;font-size:17px;border-top:2px solid var(--ink);padding-top:9px">
+      <b>Cobrar</b><b>{{ p.total|dinero }}</b></div>
+
+    <div style="margin-top:16px;display:flex;gap:9px;flex-wrap:wrap">
+      {% if p.estado == 'asignado' %}
+        <form method="post" action="{{ url_for('operacion.cambiar_estado', pid=p.id) }}">
+          <input type="hidden" name="estado" value="en_preparacion">
+          <button class="btn">Iniciar preparación</button></form>
+      {% elif p.estado == 'en_preparacion' %}
+        <form method="post" action="{{ url_for('operacion.cambiar_estado', pid=p.id) }}">
+          <input type="hidden" name="estado" value="en_ruta">
+          <button class="btn">Marcar listo para ruta</button></form>
+      {% endif %}
+    </div>
+  </div>
+
+  <div>
+    {% if decision %}
+    <div class="panel">
+      <h2 style="margin-top:0">Por qué este microhub</h2>
+      <p style="font-size:14px">Criterio aplicado: <b>{{ decision.criterio|replace('_',' ') }}</b><br>
+         Candidatos evaluados: <b>{{ decision.candidatos_evaluados }}</b>
+         {% if decision.manual %}<br>Reasignación manual: {{ decision.motivo }}{% endif %}</p>
+      <div class="ayuda">La decisión queda guardada para poder auditar el algoritmo después.</div>
+    </div>
+    {% endif %}
+
+    {% if p.estado == 'en_ruta' %}
+    <form class="panel" method="post" action="{{ url_for('operacion.cerrar', pid=p.id) }}">
+      <h2 style="margin-top:0">Cerrar entrega</h2>
+      <div class="campo"><label for="resultado">¿Cómo terminó?</label>
+        <select id="resultado" name="resultado" onchange="ajustar(this.value)">
+          <option value="entregado">Entregado completo</option>
+          <option value="parcial">Entregado parcial</option>
+          <option value="fallida">No se entregó</option>
+        </select></div>
+      <div id="bloqueCobro">
+        <div class="campo"><label for="recibido">¿Con cuánto pagó?</label>
+          <input id="recibido" name="recibido" type="number" step="0.01" value="{{ '%.2f'|format(p.total) }}">
+          <div class="ayuda">Escribe el billete que recibiste. El cambio se calcula solo.</div></div>
+        <div class="campo" id="bloqueParcial" style="display:none"><label for="cobrado">Monto realmente cobrado</label>
+          <input id="cobrado" name="cobrado" type="number" step="0.01" value="0"></div>
+      </div>
+      <div class="campo" id="bloqueMotivo" style="display:none"><label for="incidencia">¿Por qué no se entregó?</label>
+        <input id="incidencia" name="incidencia" placeholder="Cliente ausente, domicilio no localizado…">
+        <div class="ayuda">El motivo es obligatorio para poder cerrar.</div></div>
+      <button class="btn">Cerrar entrega</button>
+    </form>
+    <script>
+    function ajustar(v){
+      document.getElementById('bloqueCobro').style.display = v==='fallida'?'none':'block';
+      document.getElementById('bloqueParcial').style.display = v==='parcial'?'block':'none';
+      document.getElementById('bloqueMotivo').style.display = v==='entregado'?'none':'block';
+    }
+    </script>
+    {% endif %}
+
+    <div class="panel">
+      <h2 style="margin-top:0">Historial</h2>
+      <table><tbody>{% for h in historial %}
+        <tr><td style="font-size:13px">{{ h.fecha|fecha }}</td>
+            <td><span class="est {{ h.estado_nuevo|clase_estado }}">{{ h.estado_nuevo|estado }}</span></td>
+            <td style="font-size:12.5px;color:var(--ink2)">{{ h.nombre or h.proceso or '' }}</td></tr>
+      {% endfor %}</tbody></table>
+    </div>
+  </div>
+</div>
+{% endblock %}

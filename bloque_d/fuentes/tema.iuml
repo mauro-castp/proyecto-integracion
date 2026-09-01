@@ -1,0 +1,74 @@
+' tema.iuml — estilo compartido de los nueve diagramas de arquitectura
+' Codex Innovations · Equipo 04
+' Los colores replican los del modelo de datos para que las dos series de
+' diagramas se lean como un mismo cuerpo de documentación.
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam roundCorner 8
+skinparam ArrowColor #5B6B7F
+skinparam ArrowFontSize 11
+skinparam ArrowFontColor #3D4A5C
+
+skinparam rectangle {
+  BorderColor #1F4E79
+  BackgroundColor #DCE7F5
+  FontColor #14293F
+  BorderThickness 1
+}
+skinparam database {
+  BorderColor #8A5A17
+  BackgroundColor #FAEBD3
+  FontColor #4A3208
+}
+skinparam queue {
+  BorderColor #54417B
+  BackgroundColor #EFEAF7
+  FontColor #2E2244
+}
+skinparam actor {
+  BorderColor #7B2D4E
+  BackgroundColor #F7DCE7
+  FontColor #4A182E
+}
+skinparam node {
+  BorderColor #2E6B4F
+  BackgroundColor #DCF0E5
+  FontColor #1B4030
+}
+skinparam component {
+  BorderColor #1F4E79
+  BackgroundColor #DCE7F5
+  FontColor #14293F
+}
+skinparam participant {
+  BorderColor #1F4E79
+  BackgroundColor #DCE7F5
+  FontColor #14293F
+}
+skinparam sequence {
+  LifeLineBorderColor #AAB4C4
+  LifeLineBackgroundColor #F2F6FB
+  GroupBackgroundColor #EFEAF7
+  GroupBorderColor #54417B
+  DividerBackgroundColor #F2F6FB
+  DividerBorderColor #AAB4C4
+}
+skinparam note {
+  BorderColor #8A5A17
+  BackgroundColor #FDF7EE
+  FontColor #4A3208
+  FontSize 11
+}
+skinparam legend {
+  BorderColor #AAB4C4
+  BackgroundColor #F7F9FC
+  FontSize 11
+}
+skinparam title {
+  FontSize 17
+  FontColor #1F4E79
+  FontStyle bold
+}

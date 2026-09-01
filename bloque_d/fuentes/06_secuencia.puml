@@ -1,0 +1,74 @@
+@startuml
+!include tema.iuml
+title Diagrama 6 · Secuencia del proceso de pedido
+
+actor Cliente as C
+participant "Web\n(Flask)" as W
+participant "Servicio de\nasignación" as A
+database Redis as R
+database PostgreSQL as P
+database MongoDB as M
+actor Operador as O
+
+C -> W : confirmar pedido
+activate W
+
+group Validaciones previas (RN05, RN07, RN09, RN10)
+  W -> P : fn_cubre(domicilio)
+  W -> P : fn_ticket_minimo(zona)
+  alt fuera de cobertura o bajo el mínimo
+    W -> P : registrar demanda no atendida (RN06)
+    W --> C : rechazo con el motivo
+    note right of W
+      El pedido NUNCA llega a existir.
+      Un carrito no es un pedido.
+    end note
+  end
+end
+
+W -> P : INSERT pedido (estado: creado)
+P -> P : trigger escribe historial (RN32)
+W -> A : asignar(pedido)
+activate A
+
+A -> R : SET lock:inv NX PX 5000
+note right of R : RN17: dos peticiones\nsimultáneas ni compiten
+A -> P : fn_microhubs_elegibles()
+P --> A : candidatos con distancia,\nstock y capacidad
+
+alt existe microhub elegible (RN12, RN13)
+  A -> P : BEGIN
+  A -> P : SELECT ... FOR UPDATE inventario
+  A -> P : descontar y registrar movimiento
+  A -> P : UPDATE pedido -> asignado
+  A -> P : COMMIT
+  A -> M : traza completa de la decisión (RN15)
+else ningún candidato (RN14)
+  A -> P : UPDATE pedido -> pendiente_asignacion\n+ motivo obligatorio
+  note right of A
+    No se descuenta inventario.
+    El Planeador revisa después.
+  end note
+end
+
+A -> R : liberar bloqueo\n//script Lua con token//
+A --> W : resultado
+deactivate A
+W --> C : folio y seguimiento
+deactivate W
+
+== Preparación y cierre ==
+
+O -> W : abrir bandeja
+W -> P : fn_pedidos_visibles(operador)
+note right of P : RN22: el filtro se aplica\nen la consulta, no en la pantalla
+P --> W : solo pedidos de SU microhub
+O -> W : preparar -> en ruta
+W -> P : UPDATE estado
+P -> P : trigger valida contra\ntransicion_permitida (RN20)
+O -> W : cerrar entrega con cobro y cambio
+W -> P : registrar entrega (RN27)
+alt entrega parcial o fallida
+  W -> P : fn_devolver_inventario() (RN18, RN28)
+end
+@enduml

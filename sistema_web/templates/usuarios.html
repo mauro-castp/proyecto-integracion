@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% block titulo %}Usuarios{% endblock %}
+{% block cuerpo %}
+<h1>Usuarios</h1>
+<p class="sub">Cada persona opera con identidad, rol y ámbito definidos.</p>
+<div class="panel">
+<table>
+  <thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Microhub</th><th>Estatus</th><th>Último acceso</th></tr></thead>
+  <tbody>{% for u in usuarios %}
+    <tr><td>{{ u.nombre }} {{ u.apellidos }}</td><td style="font-size:13px">{{ u.correo }}</td>
+        <td>{{ u.rol }}</td><td>{{ u.microhub or '—' }}</td>
+        <td><span class="est {{ 'ent' if u.estatus=='activo' else 'fall' }}">{{ u.estatus }}</span></td>
+        <td style="font-size:12.5px">{{ u.ultimo_acceso|fecha or 'nunca' }}</td></tr>
+  {% endfor %}</tbody>
+</table>
+</div>
+<div class="aviso info"><b>Las bajas son lógicas</b>
+  Ningún usuario se elimina físicamente: si se borrara, se perdería la trazabilidad de todo lo que hizo.</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block titulo %}No encontrado{% endblock %}
+{% block cuerpo %}
+<div class="panel vacio">
+  <b>Esa página no existe</b>
+  <p>Puede que el enlace esté mal escrito o que el registro se haya dado de baja.</p>
+  <p style="margin-top:18px"><a class="btn sec" href="{{ url_for('publico.catalogo') }}">Volver al inicio</a></p>
+</div>
+{% endblock %}
