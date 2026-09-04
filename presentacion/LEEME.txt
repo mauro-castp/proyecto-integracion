@@ -1,0 +1,36 @@
+Qué hay en esta carpeta
+=======================
+
+Microhubs_Presentacion.pptx
+  La presentación lista para abrir en PowerPoint. 13 diapositivas.
+
+brief_contenido.txt
+  El mismo contenido en texto plano, listo para pegar en Claude Create o
+  cualquier otra herramienta si prefieres que otra IA la arme a su manera.
+
+diagramas_respaldo/
+  Los 9 diagramas de arquitectura del proyecto (contexto, contenedores,
+  componentes, despliegue, red, secuencia, comunicación, autenticación,
+  almacenamiento), por si quieres usarlos como respaldo visual durante la
+  demostración o meterlos como diapositivas extra.
+
+capturas_reales/
+  Las 5 capturas de pantalla reales del sistema corriendo (catálogo, cobertura
+  con CP ambiguo, indicadores, bitácora, bandeja del turno). 4 de ellas ya
+  están insertadas en la diapositiva "Así se ve hoy" del .pptx.
+
+generar_presentacion.js + icons.js
+  El script que generó el .pptx (Node.js + pptxgenjs). Si quieres cambiar
+  textos, colores o agregar una diapositiva, edita generar_presentacion.js
+  y vuelve a correr:
+      npm install pptxgenjs react-icons react react-dom sharp
+      node generar_presentacion.js
+  Esto sobrescribe Microhubs_Presentacion.pptx en la carpeta donde corras
+  el script — muévelo aquí después si lo regeneras.
+
+generar_capturas.js
+  El script que tomó las capturas reales (Node.js + puppeteer-core, controla
+  el Chrome ya instalado en la máquina). Requiere que el sistema esté
+  corriendo en localhost:5000 (docker compose up, desde sistema_web/).
+      npm install puppeteer-core
+      node generar_capturas.js

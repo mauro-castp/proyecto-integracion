@@ -1,0 +1,65 @@
+Prompt para Claude Create (u otra herramienta de IA)
+=====================================================
+
+Crea una presentación de 12-13 diapositivas para exponer el proyecto escolar
+"Plataforma de Microhubs y Comercio de Proximidad" (Codex Innovations, Equipo 04,
+Primer Parcial de Ingeniería de Software). Todo en español.
+
+ESTILO: paleta de marca — azul #1F4E79 (dominante), verde #2E6B4F, ámbar #8A5A17,
+vino #7B2D4E, violeta #54417B. Fondo oscuro (navy #12283C) para portada, la
+diapositiva de la "decisión clave", la de "verificado de verdad" y el cierre;
+fondo blanco para el resto. Motivo visual repetido: iconos dentro de círculos de
+color. Nada de barras/franjas de acento decorativas.
+
+CONTENIDO POR DIAPOSITIVA:
+
+1. Portada: "Microhubs — Comercio de proximidad para el sector San Bernabé".
+   Codex Innovations · Equipo 04 · Primer Parcial.
+
+2. El problema: bajo ticket promedio, alta sensibilidad al costo, densidad
+   variable, infraestructura limitada, conectividad irregular, márgenes reducidos.
+
+3. La zona: 4 colonias de San Bernabé, Monterrey (San Bernabé CP64100, Valles de
+   San Bernabé CP64103 $80 mínimo, Paseo de San Bernabé CP64103 $90 mínimo, San
+   Bernabé X F-113 CP64105). Destacar: Valles y Paseo comparten CP pero tienen
+   condiciones distintas, por eso el sistema pregunta la colonia en vez de adivinar.
+
+4. Objetivos: analizar demanda, proponer ubicaciones, estimar cobertura, simular
+   operación, calcular capacidad, planear surtido, gestionar pedidos, optimizar
+   entregas, calcular punto de equilibrio.
+
+5. Arquitectura: 4 componentes — Sistema web (construido y probado en este
+   parcial), Microservicios/App Android/App Escritorio (diseñados, se construyen
+   en el Segundo Parcial). Capa de datos compartida: PostgreSQL, MongoDB, Redis.
+
+6. Decisión clave: las reglas de negocio viven en PostgreSQL (restricciones,
+   funciones, triggers), no en Python — por eso no hay ORM. Sobreventa imposible
+   por CHECK, bitácora inmutable por diseño, transiciones de estado como tabla
+   de reglas.
+
+7. Modelo de datos en números: 24 tablas, 41 restricciones CHECK, 37 llaves
+   foráneas, 66 índices, 19 funciones, 22 triggers, 8 enums, 3 vistas.
+
+8. Tres bases de datos con propósito: PostgreSQL (transaccional), MongoDB
+   (documentos flexibles/eventos), Redis (caché/sesiones, con dos bases lógicas:
+   una nunca expulsa datos por ser bloqueos de inventario, la otra sí por ser
+   caché).
+
+9. Verificado de verdad: 26/26 reglas de negocio pasan contra PostgreSQL real,
+   4 contenedores Docker sanos, datos reales (51 productos, 148 pedidos, 3,113
+   registros de bitácora, 48 usuarios), recorridos probados en vivo.
+
+10. Producto mínimo funcional: sitio público, JWT + roles, bitácora automática,
+    proceso de pedido completo (carrito→asignación→preparación→entrega), panel
+    de indicadores, control de acceso por ruta.
+
+11. Seguridad por diseño: contraseñas con bcrypt, JWT de corta duración con
+    revocación en Redis, control por rol y ruta, bitácora inmutable.
+
+12. Ruta del semestre (línea de tiempo): Primer Parcial (hoy) → Segundo Parcial
+    (microservicios y apps) → Tercer Parcial (integración, nube, seguridad) →
+    Entrega Final (estabilización y documentación).
+
+13. Cierre: "Gracias" + nombres del equipo (Ruth Elizabeth Soriano, Vanessa
+    Morante López, Mauro Castillo Peña, María José Cedillo Mata, Jorge Antonio
+    Arreola Cantú).
