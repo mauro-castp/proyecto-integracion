@@ -95,6 +95,15 @@ Valles y Paseo comparten el 64103. Por eso la zona se identifica por la pareja (
 
 Volumen cargado: 4 zonas, 4 microhubs, 51 productos, 48 usuarios, 40 clientes, 153 renglones de inventario, 36 permisos, 18 transiciones y 149 eventos de demanda no atendida.
 
+## Imágenes del catálogo
+
+Las fotografías están en `static/productos/` y se relacionan con el catálogo
+mediante la clave interna del producto, por ejemplo `AB-001.jpg` o
+`HI-004.webp`. Para agregar o sustituir una imagen basta con usar la misma clave
+y una extensión compatible (`jpg`, `jpeg`, `png` o `webp`) y reconstruir el
+contenedor. Si un producto no tiene fotografía se muestra automáticamente
+`sin-imagen.svg`.
+
 Contraseña de todas las cuentas demo: `Codex#2026` (hash bcrypt real, coste 10).
 
 Cuentas principales:

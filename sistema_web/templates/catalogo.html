@@ -20,25 +20,33 @@
 
 <div class="rejilla cols3">
 {% for p in productos %}
-  <div class="panel" style="margin:0;padding:14px">
-    <div style="font-weight:600;line-height:1.3">{{ p.nombre }}</div>
-    <div style="font-size:12.5px;color:var(--ink2)">{{ p.presentacion }} · {{ p.categoria }}</div>
-    <div style="font-size:20px;font-weight:700;margin-top:9px">{{ p.precio|dinero }}</div>
-    {% if p.disponible %}
-      <div style="font-size:12.5px;color:var(--verde);font-weight:600;margin-top:4px">Disponible</div>
-      {% if usuario and 'pedidos.crear' in permisos %}
-        <form method="post" action="{{ url_for('cliente.agregar') }}" style="margin-top:9px;display:flex;gap:6px">
-          <input type="hidden" name="producto_id" value="{{ p.id }}">
-          <input type="number" name="cantidad" value="1" min="1" style="width:66px" aria-label="Cantidad">
-          <button class="btn sec" style="flex:1;padding:8px">Agregar</button>
-        </form>
-      {% else %}
-        <a class="btn sec" style="margin-top:9px;width:100%;text-align:center;padding:8px" href="{{ url_for('auth.entrar') }}">Entrar para pedir</a>
-      {% endif %}
-    {% else %}
-      <div style="font-size:12.5px;color:var(--ink3);margin-top:4px">Sin existencia hoy</div>
-      <button class="btn sec" style="margin-top:9px;width:100%;padding:8px" disabled>Sin existencia</button>
-    {% endif %}
+  <div class="panel producto-card">
+    <div class="producto-imagen">
+      <img src="{{ url_for('static', filename=p.clave_interna|imagen_producto) }}"
+           alt="{{ p.nombre }}" loading="lazy" decoding="async">
+    </div>
+    <div class="producto-info">
+      <div class="producto-nombre">{{ p.nombre }}</div>
+      <div class="producto-detalle">{{ p.presentacion }} · {{ p.categoria }}</div>
+      <div class="producto-precio">{{ p.precio|dinero }}</div>
+      <div class="producto-acciones">
+        {% if p.disponible %}
+          <div style="font-size:12.5px;color:var(--verde);font-weight:600;margin-top:4px">Disponible</div>
+          {% if usuario and 'pedidos.crear' in permisos %}
+            <form method="post" action="{{ url_for('cliente.agregar') }}" style="margin-top:9px;display:flex;gap:6px">
+              <input type="hidden" name="producto_id" value="{{ p.id }}">
+              <input type="number" name="cantidad" value="1" min="1" style="width:66px" aria-label="Cantidad de {{ p.nombre }}">
+              <button class="btn sec" style="flex:1;padding:8px">Agregar</button>
+            </form>
+          {% else %}
+            <a class="btn sec" style="margin-top:9px;width:100%;text-align:center;padding:8px" href="{{ url_for('auth.entrar') }}">Entrar para pedir</a>
+          {% endif %}
+        {% else %}
+          <div style="font-size:12.5px;color:var(--ink3);margin-top:4px">Sin existencia hoy</div>
+          <button class="btn sec" style="margin-top:9px;width:100%;padding:8px" disabled>Sin existencia</button>
+        {% endif %}
+      </div>
+    </div>
   </div>
 {% endfor %}
 </div>

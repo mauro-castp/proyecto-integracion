@@ -5,6 +5,8 @@ Plataforma de Microhubs · Codex Innovations · Equipo 04
     flask --app app run --debug        (desarrollo)
     gunicorn -b 0.0.0.0:5000 app:app   (contenedor)
 """
+from pathlib import Path
+
 from flask import Flask, g, request, render_template
 
 from nucleo import Config, leer_token, permisos_de
@@ -18,6 +20,17 @@ app.register_blueprint(auth)
 app.register_blueprint(cliente)
 app.register_blueprint(operacion)
 app.register_blueprint(admin)
+
+
+# Las imágenes se nombran con la clave interna del producto (AB-001,
+# BE-003, etc.). El índice se construye una sola vez al arrancar para no
+# consultar el sistema de archivos por cada tarjeta del catálogo.
+directorio_imagenes = Path(app.static_folder) / "productos"
+imagenes_producto = {
+    archivo.stem: f"productos/{archivo.name}"
+    for archivo in directorio_imagenes.iterdir()
+    if archivo.is_file() and archivo.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp"}
+}
 
 
 @app.before_request
@@ -70,6 +83,12 @@ def no_encontrado(_):
 @app.template_filter("dinero")
 def dinero(v):
     return f"${float(v or 0):,.2f}"
+
+
+@app.template_filter("imagen_producto")
+def imagen_producto(clave):
+    """Devuelve la foto del producto o un marcador si todavía no existe."""
+    return imagenes_producto.get(str(clave), "productos/sin-imagen.svg")
 
 
 @app.template_filter("fecha")
