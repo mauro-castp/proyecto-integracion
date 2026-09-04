@@ -148,7 +148,7 @@ mediante la clave interna del producto, por ejemplo `AB-001.jpg` o
 `HI-004.webp`. Para agregar o sustituir una imagen basta con usar la misma clave
 y una extensión compatible (`jpg`, `jpeg`, `png` o `webp`) y reconstruir el
 contenedor. Si un producto no tiene fotografía se muestra automáticamente
-`sin-imagen.svg`. Faltan fotos para `LA-003` (Queso fresco), `LA-006` (Yogur natural) y `LI-008` (Bolsas para basura).
+`sin-imagen.svg`. Falta la foto de `LI-008` (Bolsas para basura) — no se encontró una fotografía de producto (empaquetado) libre de uso; los bancos de imágenes solo tienen fotos de bolsas ya usadas en la calle, que no sirven para el catálogo.
 
 ---
 
