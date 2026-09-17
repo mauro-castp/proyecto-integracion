@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block titulo %}{{ 'Editar' if producto else 'Nuevo' }} producto{% endblock %}
+{% block cuerpo %}
+<h1>{{ 'Editar producto' if producto else 'Agregar producto' }}</h1>
+<p class="sub">Los campos con * son obligatorios.</p>
+<form method="post" class="panel" style="max-width:760px">
+  <div class="rejilla cols2">
+    <div class="campo"><label>Clave interna *</label><input name="clave_interna" maxlength="30" required value="{{ producto.clave_interna if producto else '' }}" placeholder="PROD-001"></div>
+    <div class="campo"><label>Nombre *</label><input name="nombre" maxlength="160" required value="{{ producto.nombre if producto else '' }}"></div>
+    <div class="campo"><label>Categoría *</label><select name="categoria_id" required>{% for c in categorias %}<option value="{{ c.id }}" {{ 'selected' if producto and producto.categoria_id==c.id }}>{{ c.nombre }}</option>{% endfor %}</select></div>
+    <div class="campo"><label>Unidad *</label><input name="unidad" maxlength="20" required value="{{ producto.unidad if producto else '' }}" placeholder="pieza, kg, litro"></div>
+    <div class="campo"><label>Presentación</label><input name="presentacion" maxlength="60" value="{{ producto.presentacion if producto else '' }}" placeholder="Bolsa 1 kg"></div>
+    <div class="campo"><label>Precio *</label><input name="precio" type="number" min="0.01" step="0.01" required value="{{ producto.precio if producto else '' }}"></div>
+  </div>
+  <div class="campo"><label>URL de imagen</label><input name="imagen_url" type="url" maxlength="300" value="{{ producto.imagen_url if producto else '' }}" placeholder="https://..."></div>
+  <div style="display:flex;gap:10px"><button class="btn" type="submit">{{ 'Guardar cambios' if producto else 'Crear producto' }}</button><a class="btn sec" href="{{ url_for('productos.lista') }}">Cancelar</a></div>
+</form>
+{% endblock %}

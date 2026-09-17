@@ -138,20 +138,6 @@ label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
 .cols3{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
 @media(max-width:700px){.cols2{grid-template-columns:1fr}}
 
-/* ---------- catálogo de productos ---------- */
-.producto-card{margin:0;padding:0;overflow:hidden;display:flex;flex-direction:column;
-               transition:transform var(--rapido),box-shadow var(--rapido)}
-.producto-card:hover{transform:translateY(-2px);box-shadow:var(--sombra-h)}
-.producto-imagen{height:190px;padding:14px;background:#fff;border-bottom:1px solid var(--line2);
-                 display:flex;align-items:center;justify-content:center;overflow:hidden}
-.producto-imagen img{display:block;width:100%;height:100%;object-fit:contain}
-.producto-info{padding:14px;display:flex;flex:1;flex-direction:column}
-.producto-nombre{font-weight:600;line-height:1.3}
-.producto-detalle{font-size:12.5px;color:var(--ink2);margin-top:2px}
-.producto-precio{font-size:20px;font-weight:700;margin-top:9px}
-.producto-acciones{margin-top:auto}
-@media(max-width:480px){.producto-imagen{height:210px}}
-
 /* ---------- indicadores clave ---------- */
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
 .kpi{padding:18px 19px;background:var(--card);border:1px solid var(--line);
@@ -197,7 +183,11 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:var(-
       {% if 'inventario.ver' in permisos %}<a href="{{ url_for('operacion.inventario') }}" class="{{ 'sel' if ep=='operacion.inventario' }}">Inventario</a>{% endif %}
       {% if 'pedidos.reasignar' in permisos %}<a href="{{ url_for('admin.pendientes') }}" class="{{ 'sel' if ep in ['admin.pendientes','admin.reasignar'] }}">Pendientes</a>{% endif %}
       {% if 'indicadores.ver' in permisos %}<a href="{{ url_for('admin.indicadores') }}" class="{{ 'sel' if ep=='admin.indicadores' }}">Indicadores</a>{% endif %}
-      {% if 'usuarios.ver' in permisos %}<a href="{{ url_for('admin.usuarios') }}" class="{{ 'sel' if ep=='admin.usuarios' }}">Usuarios</a>{% endif %}
+      {% if 'productos.ver' in permisos %}<a href="{{ url_for('productos.lista') }}" class="{{ 'sel' if ep and ep.startswith('productos.') }}">Productos</a>{% endif %}
+      {% if 'productos.ver' in permisos %}<a href="{{ url_for('catalogos.categorias') }}" class="{{ 'sel' if ep and 'categoria' in ep }}">Categorías</a>{% endif %}
+      {% if 'microhubs.ver' in permisos %}<a href="{{ url_for('catalogos.microhubs') }}" class="{{ 'sel' if ep and 'microhub' in ep }}">Microhubs</a>{% endif %}
+      {% if 'zonas.ver' in permisos %}<a href="{{ url_for('catalogos.zonas') }}" class="{{ 'sel' if ep and 'zona' in ep }}">Zonas</a>{% endif %}
+      {% if 'usuarios.ver' in permisos %}<a href="{{ url_for('catalogos.usuarios') }}" class="{{ 'sel' if ep and 'usuario' in ep }}">Usuarios</a>{% endif %}
       {% if 'configuracion.ver' in permisos %}<a href="{{ url_for('admin.parametros') }}" class="{{ 'sel' if ep=='admin.parametros' }}">Parámetros</a>{% endif %}
       {% if 'bitacora.ver' in permisos %}<a href="{{ url_for('admin.bitacora') }}" class="{{ 'sel' if ep=='admin.bitacora' }}">Bitácora</a>{% endif %}
       <span class="quien">{{ usuario.nombre }} · {{ usuario.rol }}</span>

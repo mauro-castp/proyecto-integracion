@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block titulo %}{{ titulo }}{% endblock %}{% block cuerpo %}
+<div style="display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap"><div><h1>{{ titulo }}</h1><p class="sub">{{ descripcion }}</p></div>{% if permiso_crear in permisos %}<a class="btn" href="{{ url_for(nuevo) }}">+ Agregar</a>{% endif %}</div>
+<div class="panel">{% if filas %}<div style="overflow-x:auto"><table><thead><tr>{% for clave,etiqueta in columnas %}<th>{{ etiqueta }}</th>{% endfor %}<th>Acciones</th></tr></thead><tbody>
+{% for fila in filas %}<tr>{% for clave,etiqueta in columnas %}<td>{% if clave=='estatus' %}<span class="est {{ 'ent' if fila[clave]=='activo' else 'fall' }}">{{ fila[clave] }}</span>{% else %}{{ fila[clave] if fila[clave] is not none else '—' }}{% endif %}</td>{% endfor %}<td style="white-space:nowrap">
+{% if permiso_editar in permisos %}<a class="btn sec" style="padding:6px 10px" href="{{ url_for(editar,pid=fila.id) }}">Editar</a>{% endif %}
+{% if fila.estatus=='activo' and permiso_baja in permisos %}<form method="post" action="{{ url_for('catalogos.'+modulo+'_baja',pid=fila.id) }}" style="display:inline" onsubmit="return confirm('¿Dar de baja este registro?')"><button class="btn peligro" style="padding:6px 10px">Eliminar</button></form>{% elif fila.estatus!='activo' and permiso_editar in permisos %}<form method="post" action="{{ url_for('catalogos.'+modulo+'_activar',pid=fila.id) }}" style="display:inline"><button class="btn" style="padding:6px 10px">Reactivar</button></form>{% endif %}
+</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="vacio"><b>No hay registros</b>Agrega el primero para comenzar.</div>{% endif %}</div>
+<div class="aviso info"><b>Bajas lógicas</b>Los registros no se borran físicamente; se conserva su historial y pueden reactivarse.</div>
+{% endblock %}

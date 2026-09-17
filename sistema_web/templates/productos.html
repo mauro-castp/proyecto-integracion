@@ -1,0 +1,32 @@
+{% extends "base.html" %}{% block titulo %}Productos{% endblock %}
+{% block cuerpo %}
+<div style="display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap">
+  <div><h1>Administración de productos</h1><p class="sub">Crear, consultar, editar y dar de baja productos.</p></div>
+  {% if 'productos.crear' in permisos %}<a class="btn" href="{{ url_for('productos.nuevo') }}">+ Agregar producto</a>{% endif %}
+</div>
+<div class="panel">
+  <form method="get" class="rejilla cols3" style="align-items:end;margin-bottom:18px">
+    <div class="campo" style="margin:0"><label>Buscar</label><input name="q" value="{{ q }}" placeholder="Nombre o clave"></div>
+    <div class="campo" style="margin:0"><label>Estatus</label><select name="estatus">
+      <option value="todos" {{ 'selected' if estatus=='todos' }}>Todos</option>
+      <option value="activo" {{ 'selected' if estatus=='activo' }}>Activos</option>
+      <option value="inactivo" {{ 'selected' if estatus=='inactivo' }}>Inactivos</option>
+    </select></div>
+    <button class="btn sec" type="submit">Consultar</button>
+  </form>
+  {% if productos %}<div style="overflow-x:auto"><table>
+    <thead><tr><th>Clave</th><th>Producto</th><th>Categoría</th><th>Presentación</th><th class="num">Precio</th><th>Estatus</th><th>Acciones</th></tr></thead>
+    <tbody>{% for p in productos %}<tr>
+      <td><code>{{ p.clave_interna }}</code></td><td><b>{{ p.nombre }}</b><br><span class="ayuda">{{ p.unidad }}</span></td>
+      <td>{{ p.categoria }}</td><td>{{ p.presentacion or '—' }}</td><td class="num">{{ p.precio|dinero }}</td>
+      <td><span class="est {{ 'ent' if p.estatus=='activo' else 'fall' }}">{{ p.estatus }}</span></td>
+      <td style="white-space:nowrap">
+        {% if 'productos.editar' in permisos %}<a class="btn sec" style="padding:6px 10px" href="{{ url_for('productos.editar',pid=p.id) }}">Editar</a>{% endif %}
+        {% if p.estatus=='activo' and 'productos.baja' in permisos %}<form method="post" action="{{ url_for('productos.eliminar',pid=p.id) }}" style="display:inline" onsubmit="return confirm('¿Dar de baja este producto?')"><button class="btn peligro" style="padding:6px 10px">Eliminar</button></form>{% endif %}
+        {% if p.estatus=='inactivo' and 'productos.editar' in permisos %}<form method="post" action="{{ url_for('productos.activar',pid=p.id) }}" style="display:inline"><button class="btn" style="padding:6px 10px">Reactivar</button></form>{% endif %}
+      </td>
+    </tr>{% endfor %}</tbody>
+  </table></div>{% else %}<div class="vacio"><b>No se encontraron productos</b>Prueba con otro filtro o agrega el primero.</div>{% endif %}
+</div>
+<div class="aviso info"><b>La eliminación es lógica</b>El producto cambia a inactivo para no perder el historial de pedidos e inventario.</div>
+{% endblock %}
