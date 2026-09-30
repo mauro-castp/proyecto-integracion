@@ -1,0 +1,51 @@
+{% extends "base.html" %}{% from "_plan_macros.html" import decision_pill, nivel_pill %}{% block titulo %}Tablero de planeación{% endblock %}
+{% block cuerpo %}
+{% include "_plan_nav.html" %}
+<h1>Tablero del planeador</h1>
+<p class="sub">Demanda → ubicación → cobertura → capacidad → costos → equilibrio → viabilidad. Base: últimos {{ hist.ventana }} días.</p>
+<div class="kpis">
+  <div class="kpi"><div class="v">{{ hist.pedidos_dia }}</div><div class="l">Pedidos por día</div></div>
+  <div class="kpi"><div class="v">{{ hist.ticket|dinero }}</div><div class="l">Ticket promedio</div></div>
+  <div class="kpi"><div class="v">{{ hist.no_atendidos }}</div><div class="l">Demanda no atendida</div></div>
+  <div class="kpi"><div class="v">{{ ev|length }}</div><div class="l">Ubicaciones candidatas</div></div>
+</div>
+
+<h2>Demanda por zona</h2>
+<div class="panel"><table>
+<thead><tr><th>Zona</th><th class="num">Pedidos/día</th><th class="num">Ticket</th><th class="num">No atendidos</th><th>Pico</th></tr></thead>
+<tbody>{% for z in hist.zonas %}<tr><td>{{ z.nombre }}</td><td class="num">{{ z.pedidos_dia }}</td><td class="num">{{ z.ticket|dinero }}</td><td class="num">{{ z.no_atendidos }}</td><td>{{ z.pico }}</td></tr>{% endfor %}</tbody></table></div>
+
+<h2>Demanda por hora <span class="sub">(pico: {{ hist.pico }})</span></h2>
+{% set mx = hist.horas|max or 1 %}
+<div class="panel" style="display:flex;align-items:flex-end;gap:3px;height:120px">
+{% for n in hist.horas %}{% if loop.index0 >= 6 and loop.index0 <= 23 %}<div title="{{ loop.index0 }}:00 · {{ n }} pedidos" style="flex:1;background:var(--cobalt);height:{{ (100 * n / mx)|round|int + 2 }}%;border-radius:2px 2px 0 0"></div>{% endif %}{% endfor %}
+</div>
+<div class="ayuda" style="margin-top:-10px;margin-bottom:14px">Horas 06:00 a 23:00.</div>
+
+<h2>Ubicaciones candidatas y viabilidad</h2>
+<div class="panel" style="overflow-x:auto"><table>
+<thead><tr><th>#</th><th>Candidato</th><th class="num">Score</th><th class="num">Cobertura</th><th class="num">Demanda cubierta</th><th class="num">Costo fijo/mes</th><th>Decisión humana</th></tr></thead>
+<tbody>{% for c in ev %}<tr><td>{{ c.ranking }}</td><td><a href="{{ url_for('planeacion.candidato', cid=c.id) }}"><b>{{ c.clave }}</b> {{ c.nombre }}</a></td><td class="num"><b>{{ c.score }}</b></td>
+<td class="num">{{ '{:,}'.format(c.cob.poblacion) }} hab.</td><td class="num">{{ '%.1f'|format(c.cob.demanda_cubierta) }}/día</td><td class="num">{{ c.costo_fijo|dinero }}</td><td><span class="pill gris">{{ c.decision }}</span></td></tr>{% endfor %}</tbody></table></div>
+
+{% if mejor %}
+<h2>Mejor candidato: {{ mejor.clave }} {{ mejor.nombre }}</h2>
+<div class="panel">
+  <div style="margin-bottom:12px">{{ decision_pill(sim.ficha.decision) }} {{ nivel_pill(sim.nivel, sim.utilizacion|round|int) }}</div>
+  <div class="kpis">
+    <div class="kpi"><div class="v">{{ sim.capacidad.capacidad_dia|round|int }}</div><div class="l">Capacidad (pedidos/día)</div></div>
+    <div class="kpi"><div class="v">{{ sim.utilizacion|round|int }}%</div><div class="l">Utilización</div></div>
+    <div class="kpi"><div class="v">{{ sim.costo_por_pedido|dinero if sim.costo_por_pedido is not none else '—' }}</div><div class="l">Costo por pedido</div></div>
+    <div class="kpi"><div class="v">{{ sim.equilibrio.diario if sim.equilibrio.diario is not none else '—' }}</div><div class="l">Punto de equilibrio (pedidos/día)</div></div>
+    <div class="kpi"><div class="v">{{ '{:,}'.format(mejor.cob.hogares) }}</div><div class="l">Hogares potencialmente atendidos</div></div>
+    <div class="kpi"><div class="v">{{ '%.0f'|format(mejor.cob.demanda_fuera) }}</div><div class="l">Demanda fuera de cobertura (ped./día)</div></div>
+    <div class="kpi"><div class="v">{{ mejor.cob.costo_ultima_milla|dinero }}</div><div class="l">Costo de última milla</div></div>
+  </div>
+  <ul class="pasos" style="margin-top:12px">{% for e in sim.ficha.explicacion %}<li>{{ e }}</li>{% endfor %}</ul>
+  <p class="ayuda" style="margin-top:8px">Con los supuestos iniciales del candidato (3 operadores, 3 repartidores y la demanda histórica cubierta). Ajústalos en la <a href="{{ url_for('planeacion.simulacion', candidato_id=mejor.id) }}">simulación</a>.</p>
+</div>
+{% endif %}
+
+<h2>Demanda no atendida</h2>
+<div class="panel"><table><tbody>{% for d in hist.no_atendida_tipo %}<tr><td>{{ d.tipo|replace('_',' ') }}</td><td class="num">{{ d.n }}</td></tr>{% else %}<tr><td>Sin eventos.</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "base.html" %}{% from "_plan_macros.html" import decision_pill, nivel_pill %}{% block titulo %}Simulación{% endblock %}
+{% block cuerpo %}
+{% include "_plan_nav.html" %}
+{% macro num(n, etq, paso='any', ayuda=None) %}
+<div class="campo"><label for="{{ n }}">{{ etq }}</label><input id="{{ n }}" name="{{ n }}" type="number" step="{{ paso }}" min="0" value="{{ ((sup[n] * 100)|round(2) if n == 'margen_bruto' else sup[n]) if sup[n] is not none else '' }}">{% if ayuda %}<div class="ayuda">{{ ayuda }}</div>{% endif %}</div>
+{% endmacro %}
+<h1>3 · Simulación de operación</h1>
+<p class="sub">{% if esc %}Escenario guardado <b>{{ esc.nombre }}</b>. {% endif %}Cambia cualquier supuesto y ejecuta: capacidad, utilización, costos y punto de equilibrio se recalculan.</p>
+
+<form method="get" action="{{ url_for('planeacion.simulacion') }}" class="panel">
+  <div class="formgrid">
+    <div class="campo"><label for="candidato_id">Ubicación candidata</label>
+      <select id="candidato_id" name="candidato_id">{% for c in ev %}<option value="{{ c.id }}" {{ 'selected' if sup.candidato_id == c.id }}>{{ c.clave }} · {{ c.nombre }}</option>{% endfor %}</select>
+      <div class="ayuda">Al cambiar de candidato usa «Cargar valores» para traer sus costos.</div></div>
+    {{ num('demanda_diaria','Demanda diaria (pedidos)', ayuda='Prellenado con el histórico cubierto') }}
+    {{ num('operadores','Operadores','1') }}{{ num('repartidores','Repartidores','1') }}
+    {{ num('ticket','Ticket promedio ($)','0.01') }}{{ num('costo_entrega','Costo de entrega ($)','0.01') }}
+    {{ num('margen_bruto','Margen bruto (%)','0.1') }}{{ num('distancia_km','Distancia promedio (km)','0.1') }}
+    {{ num('renta','Renta mensual ($)','0.01') }}{{ num('nomina','Nómina mensual ($)','0.01') }}
+    {{ num('servicios','Servicios mensuales ($)','0.01') }}{{ num('otros','Otros costos ($)','0.01') }}
+    {{ num('capacidad_fisica','Tope físico (pedidos/día)','1') }}{{ num('poblacion','Población cubierta','1') }}
+    {{ num('horas','Horas de operación', ayuda='Vacío = ' ~ p.horas_turno ~ ' (parámetro)') }}
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">
+    <button class="btn">Ejecutar simulación</button>
+    <button class="btn sec" name="sensibilidad" value="1">Ejecutar con sensibilidad</button>
+    <a class="btn sec" href="{{ url_for('planeacion.simulacion', candidato_id=sup.candidato_id) }}">Cargar valores del candidato</a>
+  </div>
+</form>
+
+<h2>Resultados</h2>
+<div class="panel">
+  <div style="margin-bottom:14px">{{ decision_pill(res.ficha.decision) }} {{ nivel_pill(res.nivel, res.utilizacion|round|int) }}</div>
+  <div class="kpis">
+    <div class="kpi"><div class="v">{{ '%.0f'|format(res.atendidos) }}</div><div class="l">Pedidos atendidos / día</div></div>
+    <div class="kpi"><div class="v">{{ '%.0f'|format(res.rechazados) }}</div><div class="l">Pedidos rechazados / día</div></div>
+    <div class="kpi"><div class="v">{{ res.costo_por_pedido|dinero if res.costo_por_pedido is not none else '—' }}</div><div class="l">Costo por pedido</div></div>
+    <div class="kpi"><div class="v">{{ res.tiempo_estimado_min }} min</div><div class="l">Tiempo estimado (preparar + entregar)</div></div>
+  </div>
+  <table style="margin-top:16px"><tbody>
+    <tr><td>Ingreso diario</td><td class="num">{{ res.ingreso_dia|dinero }}</td></tr>
+    <tr><td>Margen bruto diario</td><td class="num">{{ res.margen_bruto_dia|dinero }}</td></tr>
+    <tr><td>Costo fijo diario</td><td class="num">{{ res.costo_fijo_dia|dinero }}</td></tr>
+    <tr><td><b>Utilidad diaria estimada</b></td><td class="num"><b>{{ res.margen_dia|dinero }}</b></td></tr>
+    <tr><td>Capacidad requerida (a ≤ {{ p.umbral_utilizacion_riesgo|round|int }}% de utilización)</td><td class="num">{{ res.operadores_requeridos }} operadores · {{ res.repartidores_requeridos }} repartidores</td></tr>
+  </tbody></table>
+</div>
+
+<h2>4 · Capacidad</h2>
+<div class="panel"><table>
+<thead><tr><th>Etapa</th><th class="num">Pedidos/hora</th></tr></thead>
+<tbody>{% for k, v in res.capacidad.por_etapa_hora.items() %}<tr><td>{{ k|capitalize }}</td><td class="num">{{ v }}</td></tr>{% endfor %}</tbody></table>
+<p class="ayuda" style="margin-top:10px">{{ res.capacidad.formula }}. Cada operador hace picking, packing y despacho ({{ res.capacidad.minutos_por_pedido_operacion }} min por pedido); la capacidad de cada etapa se muestra como si todos se dedicaran a ella. Cuello de botella: <b>{{ res.capacidad.cuello_botella }}</b>. Capacidad diaria: <b>{{ res.capacidad.capacidad_dia }}</b> pedidos en {{ res.capacidad.horas }} h.</p>
+<p class="ayuda">Utilización = demanda ÷ capacidad = {{ '%.0f'|format(res.ficha.demanda) }} ÷ {{ res.capacidad.capacidad_dia }} = {{ res.utilizacion }}%.
+Umbrales: menos de {{ p.umbral_utilizacion_estable|round|int }}% estable (holgura para picos); {{ p.umbral_utilizacion_estable|round|int }}–{{ p.umbral_utilizacion_riesgo|round|int }}% atención; más de {{ p.umbral_utilizacion_riesgo|round|int }}% riesgo de saturación (la espera crece de forma no lineal).</p></div>
+
+<h2>7 · Punto de equilibrio</h2>
+<div class="panel">
+  <p><b>Costos fijos mensuales:</b> renta {{ sup.renta|dinero }} + nómina {{ sup.nomina|dinero }} + servicios {{ sup.servicios|dinero }} + otros {{ sup.otros|dinero }} = <b>{{ res.costos_fijos_mes|dinero }}</b></p>
+  <ul class="pasos" style="margin-top:8px">{% for paso in res.equilibrio.pasos %}<li>{{ paso }}</li>{% endfor %}</ul>
+</div>
+
+<h2>Ficha de viabilidad</h2>
+<div class="panel">
+  <table><tbody>
+    <tr><td>Demanda estimada</td><td class="num">{{ '%.0f'|format(res.ficha.demanda) }} pedidos/día</td></tr>
+    <tr><td>Capacidad</td><td class="num">{{ '%.0f'|format(res.ficha.capacidad) }} pedidos/día</td></tr>
+    <tr><td>Cobertura</td><td class="num">{{ '{:,}'.format(res.ficha.poblacion) }} habitantes</td></tr>
+    <tr><td>Punto de equilibrio</td><td class="num">{{ res.ficha.equilibrio_diario if res.ficha.equilibrio_diario is not none else 'no alcanzable' }} pedidos/día</td></tr>
+    <tr><td>Demanda − equilibrio</td><td class="num">{{ '%+.0f'|format(res.ficha.demanda_menos_equilibrio) if res.ficha.demanda_menos_equilibrio is not none else '—' }} pedidos/día</td></tr>
+  </tbody></table>
+  <ul class="pasos" style="margin-top:10px">{% for e in res.ficha.explicacion %}<li>{{ e }}</li>{% endfor %}{% for a in res.ficha.acciones %}<li><b>Se recomienda:</b> {{ a }}</li>{% endfor %}</ul>
+  <div class="ayuda" style="margin-top:8px">El sistema recomienda; la decisión de apertura es de la persona planeadora (se registra en la ficha del candidato).</div>
+</div>
+
+{% if sens %}
+<h2>Análisis de sensibilidad</h2>
+<div class="panel" style="overflow-x:auto"><table>
+<thead><tr><th>Variable</th><th class="num">Cambio</th><th class="num">Valor</th><th class="num">Equilibrio/día</th><th class="num">Utilización</th><th class="num">Costo/pedido</th><th class="num">Utilidad/día</th><th>Decisión</th></tr></thead>
+<tbody>{% for f in sens.filas %}<tr><td>{{ f.variable }}</td><td class="num">{{ '%+.0f'|format(f.cambio * 100) }}%</td><td class="num">{{ f.valor }}</td>
+<td class="num">{{ f.equilibrio_diario if f.equilibrio_diario is not none else '—' }}</td><td class="num">{{ f.utilizacion }}%</td>
+<td class="num">{{ f.costo_por_pedido|dinero if f.costo_por_pedido is not none else '—' }}</td><td class="num">{{ f.utilidad_dia|dinero }}</td><td>{{ decision_pill(f.decision) }}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endif %}
+
+{% if 'planeacion.editar' in permisos %}
+<h2>8 · Guardar escenario</h2>
+<form method="post" action="{{ url_for('planeacion.escenario_guardar') }}" class="panel">
+  {% for k in campos if sup[k] is not none %}<input type="hidden" name="{{ k }}" value="{{ sup[k] }}">{% endfor %}
+  <input type="hidden" name="candidato_id" value="{{ sup.candidato_id }}">
+  {% if esc %}<input type="hidden" name="escenario_id" value="{{ esc.id }}">{% endif %}
+  <div class="formgrid"><div class="campo" style="grid-column:span 2"><label>Nombre del escenario</label><input name="nombre" value="{{ esc.nombre if esc else '' }}" placeholder="Escenario A · ticket $135" required></div>
+  <div class="campo" style="align-self:end"><button class="btn">{{ 'Actualizar escenario' if esc else 'Guardar escenario' }}</button></div></div>
+  <div class="ayuda">Se guardan los supuestos mostrados arriba (los últimos ejecutados). Para guardar cambios, ejecuta antes la simulación.</div>
+</form>
+{% endif %}
+{% endblock %}

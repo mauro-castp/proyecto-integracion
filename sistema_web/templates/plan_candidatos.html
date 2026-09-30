@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% block titulo %}Ubicaciones{% endblock %}
+{% block cuerpo %}
+{% include "_plan_nav.html" %}
+<h1>2 · Ubicaciones candidatas</h1>
+<p class="sub">Comparación con un score transparente. Un score alto es una señal, no una decisión.</p>
+<div class="aviso info"><b>score = demanda × {{ p.peso_score_demanda }} − renta(miles) × {{ p.peso_score_renta }} − distancia × {{ p.peso_score_distancia }} + accesibilidad × {{ p.peso_score_accesibilidad }}</b>
+Los cuatro pesos se editan en {% if hay('admin.parametros') %}<a href="{{ url_for('admin.parametros') }}">Parámetros</a>{% else %}Parámetros{% endif %}; cada uno lleva su justificación.</div>
+{% if 'planeacion.editar' in permisos %}<p style="margin-bottom:14px"><a class="btn" href="{{ url_for('planeacion.candidato_form') }}">Registrar candidato</a></p>{% endif %}
+<div class="panel" style="overflow-x:auto"><table>
+<thead><tr><th>#</th><th>Candidato</th><th>Zona</th><th class="num">Renta</th><th class="num">Costo fijo</th><th class="num">Acces.</th><th class="num">Demanda cubierta</th><th class="num">Dist. prom.</th><th class="num">Score</th><th>Decisión</th></tr></thead>
+<tbody>{% for c in ev %}<tr>
+<td>{{ c.ranking }}</td><td><a href="{{ url_for('planeacion.candidato', cid=c.id) }}"><b>{{ c.clave }}</b> {{ c.nombre }}</a>{% if c.estatus != 'activo' %} <span class="pill gris">inactivo</span>{% endif %}</td>
+<td>{{ c.zona }}</td><td class="num">{{ c.renta_estimada|dinero }}</td><td class="num">{{ c.costo_fijo|dinero }}</td><td class="num">{{ c.accesibilidad_vial }}</td>
+<td class="num">{{ '%.1f'|format(c.cob.demanda_cubierta) }}/día</td><td class="num">{{ c.cob.distancia_promedio }} km</td>
+<td class="num"><b>{{ c.score }}</b></td><td><span class="pill gris">{{ c.decision }}</span></td></tr>
+{% else %}<tr><td colspan="10">Sin candidatos registrados.</td></tr>{% endfor %}</tbody>
+</table></div>
+<h2>Desglose del score</h2>
+<div class="panel" style="overflow-x:auto"><table>
+<thead><tr><th>Candidato</th><th class="num">+ Demanda</th><th class="num">− Renta</th><th class="num">− Distancia</th><th class="num">+ Accesibilidad</th><th class="num">= Score</th></tr></thead>
+<tbody>{% for c in ev %}<tr><td>{{ c.clave }}</td><td class="num">{{ c.terminos.demanda }}</td><td class="num">{{ c.terminos.renta }}</td><td class="num">{{ c.terminos.distancia }}</td><td class="num">{{ c.terminos.accesibilidad }}</td><td class="num"><b>{{ c.score }}</b></td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

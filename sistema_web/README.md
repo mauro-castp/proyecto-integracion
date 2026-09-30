@@ -133,20 +133,40 @@ Cuentas principales:
 3. **Umbral de envío gratuito.** El parámetro de $250 aparece en la tabla 4.6 del entregable de reglas pero no tiene una RN que lo defina. O se agrega la regla o se quita el parámetro.
 4. **Coordenadas reales** de las cuatro colonias y de los microhubs.
 5. **RF38 (manifiestos)** sigue sin historia de usuario ni caso de uso, como ya señalaba la propia matriz de trazabilidad.
-# Módulo de planeación y viabilidad
 
-La opción **Planeación** implementa el recorrido solicitado: demanda histórica,
-ubicaciones candidatas, cobertura, capacidad, simulación, surtido ABC, ruta por
-vecino más cercano, punto de equilibrio, sensibilidad y decisión de apertura.
-Los cálculos están en `planeacion.py` y las tablas nuevas en
-`../bloque_c/sql/06_planeacion.sql`.
+## Módulo de Planeación y viabilidad
 
-Al ejecutar `docker compose up --build -d`, el contenedor web aplica esa
-migración idempotente antes de iniciar. Esto funciona tanto con una base nueva
-como con el volumen PostgreSQL que el equipo ya tenga creado.
+Responde si conviene abrir un microhub: demanda, ubicaciones y cobertura, simulación, capacidad, surtido, entregas, punto de equilibrio y escenarios. La decisión de apertura la toma una persona.
 
-Pruebas sin Docker:
+| Archivo | Función |
+|---|---|
+| `planeacion_calc.py` | Fórmulas puras: score, cobertura, capacidad, simulación, equilibrio, sensibilidad, ABC, rutas |
+| `planeacion.py` | Pantallas y consultas (`/planeacion/*`, `/panel/*`) |
+| `templates/plan_*.html`, `panel_*.html` | Interfaz |
+| `../bloque_c/sql/06_planeacion.sql` | Tablas, parámetros con justificación, permisos y auditoría (idempotente) |
+| `migrar_planeacion.py` | Aplica el SQL a volúmenes existentes al iniciar (ver `docker-compose.yml`) |
+| `planeacion_demo.py` | Datos de demostración del modo local (ejemplo de la retroalimentación: 82, 54 y 39 pedidos/día) |
+| `test_planeacion.py` | 16 pruebas unitarias de los cálculos (no requieren Flask) |
+| `test_planeacion_local.py` | 6 pruebas de las pantallas en modo local |
+| `prueba_e2e_planeacion.py` | 23 comprobaciones contra la aplicación levantada con Docker |
+
+**Con Docker** (datos reales; cuenta demo `planeador@codex.mx`, contraseña `Codex#2026`, u `operador.mh02@codex.mx` para marcar pedidos listos y despachar):
 
 ```bash
+docker compose up --build -d
 python -m unittest -v test_planeacion.py
+BASE=http://127.0.0.1:5000 python prueba_e2e_planeacion.py
 ```
+
+**Sin Docker** (modo local con datos de demostración en memoria; candidatos y escenarios no persisten):
+
+```bash
+pip install -r requirements.txt
+python app_local.py            # abrir http://127.0.0.1:5000/planeacion/tablero
+python -m unittest -v test_planeacion_local.py
+```
+
+Flujo de reparto: el operador prepara el pedido y lo marca **listo para despacho**; en **Entregas** el sistema los agrupa por zona, asigna repartidor, ordena las paradas y, al confirmar, guarda la ruta y pasa los pedidos a *En ruta*. El detalle del pedido muestra repartidor, parada, distancia, tiempo y costo.
+
+Los pesos del score, productividades, umbrales (70 % / 85 %), ABC y costos se editan en **Parámetros**. El reporte completo está en `../reporte_tecnico/Reporte_Tecnico_Equipo04.docx`.
+

@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% block titulo %}Candidato{% endblock %}
+{% block cuerpo %}
+{% include "_plan_nav.html" %}
+{% macro campo(n, etq, tipo='text', paso=None) %}
+<div class="campo"><label for="{{ n }}">{{ etq }}</label><input id="{{ n }}" name="{{ n }}" type="{{ tipo }}" {% if paso %}step="{{ paso }}"{% endif %} value="{{ c[n] if c and c[n] is not none else '' }}" required></div>
+{% endmacro %}
+<h1>{{ 'Editar' if cid else 'Registrar' }} ubicación candidata</h1>
+<form method="post" class="panel">
+<div class="formgrid">
+{{ campo('clave','Clave') }}{{ campo('nombre','Nombre') }}
+{{ campo('latitud','Latitud','number','0.000001') }}{{ campo('longitud','Longitud','number','0.000001') }}
+{{ campo('renta_estimada','Renta mensual','number','0.01') }}{{ campo('nomina_estimada','Nómina mensual','number','0.01') }}
+{{ campo('servicios_estimados','Servicios mensuales','number','0.01') }}{{ campo('otros_costos','Otros costos','number','0.01') }}
+{{ campo('superficie_m2','Superficie (m²)','number','0.01') }}{{ campo('capacidad_fisica','Capacidad física (pedidos/día)','number','1') }}
+{{ campo('accesibilidad_vial','Accesibilidad vial (1-10)','number','1') }}{{ campo('poblacion_cubierta','Población cubierta','number','1') }}
+{{ campo('radio_km','Radio de cobertura (km)','number','0.1') }}
+<div class="campo"><label for="zona_id">Zona</label><select id="zona_id" name="zona_id">{% for z in zonas %}<option value="{{ z.id }}" {{ 'selected' if c and c.zona_id|string == z.id|string }}>{{ z.nombre }}</option>{% endfor %}</select></div>
+</div>
+<div class="ayuda" style="margin-bottom:14px">El costo fijo mensual se calcula solo: renta + nómina + servicios + otros.</div>
+<button class="btn">Guardar</button> <a class="btn sec" href="{{ url_for('planeacion.candidatos_lista') }}">Cancelar</a>
+</form>
+{% endblock %}

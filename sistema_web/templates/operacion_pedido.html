@@ -20,10 +20,15 @@
         <form method="post" action="{{ url_for('operacion.cambiar_estado', pid=p.id) }}">
           <input type="hidden" name="estado" value="en_preparacion">
           <button class="btn">Iniciar preparación</button></form>
+      {% elif p.estado == 'en_preparacion' and not p.listo_en %}
+        <form method="post" action="{{ url_for('planeacion.marcar_listo', pid=p.id) }}">
+          <button class="btn">Marcar listo para despacho</button></form>
       {% elif p.estado == 'en_preparacion' %}
+        <span class="est ruta">Listo para despacho</span>
+        <a class="btn" href="{{ url_for('planeacion.entregas') }}">Agrupar y asignar repartidor</a>
         <form method="post" action="{{ url_for('operacion.cambiar_estado', pid=p.id) }}">
           <input type="hidden" name="estado" value="en_ruta">
-          <button class="btn">Marcar listo para ruta</button></form>
+          <button class="btn sec" title="Despacha este pedido solo, sin planear ruta">Despachar sin ruta</button></form>
       {% endif %}
     </div>
   </div>
@@ -36,6 +41,22 @@
          Candidatos evaluados: <b>{{ decision.candidatos_evaluados }}</b>
          {% if decision.manual %}<br>Reasignación manual: {{ decision.motivo }}{% endif %}</p>
       <div class="ayuda">La decisión queda guardada para poder auditar el algoritmo después.</div>
+    </div>
+    {% endif %}
+
+    {% if reparto %}
+    <div class="panel">
+      <h2 style="margin-top:0">Reparto</h2>
+      <table><tbody>
+        <tr><td>Repartidor</td><td class="num">{{ reparto.repartidor or 'Sin asignar' }}</td></tr>
+        {% if reparto.orden_parada %}
+        <tr><td>Parada en la ruta</td><td class="num">{{ reparto.orden_parada }} de {{ reparto.paradas }} ({{ reparto.metodo }})</td></tr>
+        <tr><td>Distancia del tramo</td><td class="num">{{ reparto.distancia_km }} km</td></tr>
+        <tr><td>Tiempo estimado acumulado</td><td class="num">{{ reparto.minutos_estimados }} min</td></tr>
+        <tr><td>Costo de entrega estimado</td><td class="num">{{ reparto.costo_entrega_estimado|dinero }}</td></tr>
+        {% endif %}
+        {% if reparto.resultado %}<tr><td>Resultado</td><td class="num">{{ reparto.resultado }}{% if reparto.incidencia %} · {{ reparto.incidencia }}{% endif %}</td></tr>{% endif %}
+      </tbody></table>
     </div>
     {% endif %}
 

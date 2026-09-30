@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% block titulo %}Surtido{% endblock %}
+{% block cuerpo %}
+{% include "_plan_nav.html" %}
+<h1>5 · Planeación de surtido</h1>
+<p class="sub">Capa analítica sobre el inventario operativo: demanda, rotación, margen, stock, quiebres y espacio por SKU. Ventana: {{ dias }} días.</p>
+<form method="get" class="panel" style="display:flex;gap:12px;align-items:end;flex-wrap:wrap">
+  <div class="campo" style="margin:0"><label>Microhub</label><select name="microhub_id"><option value="">Todos</option>{% for h in hubs %}<option value="{{ h.id }}" {{ 'selected' if hub == h.id }}>{{ h.clave }} · {{ h.nombre }}</option>{% endfor %}</select></div>
+  <button class="btn">Analizar</button>
+</form>
+<div class="kpis">
+  <div class="kpi"><div class="v">{{ resumen['Aumentar'] }}</div><div class="l">Aumentar stock</div></div>
+  <div class="kpi"><div class="v">{{ resumen['Mantener'] }}</div><div class="l">Mantener</div></div>
+  <div class="kpi"><div class="v">{{ resumen['Reducir'] }}</div><div class="l">Reducir</div></div>
+  <div class="kpi"><div class="v">{{ resumen['Eliminar'] }}</div><div class="l">Eliminar del surtido</div></div>
+</div>
+<div class="aviso info"><b>Reglas (configurables en Parámetros)</b>
+ABC por movimiento acumulado: A hasta {{ p.abc_a_pct|round|int }}%, B hasta {{ p.abc_b_pct|round|int }}%, C el resto. Cobertura objetivo: A {{ p.cobertura_dias_a|round|int }} d, B {{ p.cobertura_dias_b|round|int }} d, C {{ p.cobertura_dias_c|round|int }} d; exceso arriba de {{ p.cobertura_dias_exceso|round|int }} d.
+Aumentar = quiebres, existencia en el mínimo o cobertura menor a la mitad del objetivo. Reducir = exceso de stock. Eliminar = sin movimiento, o clase C con margen no positivo. Espacio total ocupado: {{ espacio }} unidades de anaquel.</div>
+<div class="panel" style="overflow-x:auto"><table>
+<thead><tr><th>Clase</th><th>SKU</th><th>Categoría</th><th class="num">Demanda/día</th><th class="num">Rotación</th><th class="num">Margen unit.</th><th class="num">Stock</th><th class="num">Cobertura (d)</th><th class="num">Quiebres</th><th class="num">Espacio</th><th>Recomendación</th><th class="num">Sugerido</th></tr></thead>
+<tbody>{% for f in filas %}<tr>
+<td><span class="pill {{ {'A':'verde','B':'ambar','C':'gris'}[f.clase] }}">{{ f.clase }}</span></td>
+<td>{{ f.nombre }}<div class="ayuda">{{ f.motivo }}</div></td><td>{{ f.categoria }}</td>
+<td class="num">{{ f.demanda_dia }}</td><td class="num">{{ f.rotacion if f.rotacion is not none else '—' }}</td>
+<td class="num">{{ f.margen_unit|dinero }}</td><td class="num">{{ f.existencia }}</td>
+<td class="num">{{ f.cobertura_dias if f.cobertura_dias is not none else '—' }}</td><td class="num">{{ f.quiebres }}</td><td class="num">{{ f.espacio }}</td>
+<td><span class="pill {{ {'Aumentar':'rojo','Mantener':'verde','Reducir':'ambar','Eliminar':'gris'}[f.recomendacion] }}">{{ f.recomendacion }}</span></td>
+<td class="num">{{ f.sugerido if f.sugerido else '' }}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

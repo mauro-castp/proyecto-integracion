@@ -1,0 +1,27 @@
+{% extends "base.html" %}{% block titulo %}Panel del administrador{% endblock %}
+{% block cuerpo %}
+<h1>Panel del administrador</h1>
+<p class="sub">Usuarios, microhubs, configuración, seguridad, auditoría y salud del sistema.</p>
+<div class="kpis">
+  <div class="kpi"><div class="v">{{ c.usuarios }}</div><div class="l">Usuarios activos ({{ c.bloqueados }} bloqueados)</div></div>
+  <div class="kpi"><div class="v">{{ c.microhubs }}</div><div class="l">Microhubs activos</div></div>
+  <div class="kpi"><div class="v">{{ c.parametros }}</div><div class="l">Parámetros de configuración</div></div>
+  <div class="kpi"><div class="v">{{ c.seguridad_7d }}</div><div class="l">Eventos de seguridad (7 días)</div></div>
+</div>
+<h2>Salud</h2>
+<div class="panel"><table><tbody>
+<tr><td>Aplicación web</td><td><span class="pill verde">activa</span></td></tr>
+<tr><td>PostgreSQL</td><td><span class="pill verde">conectada</span></td></tr>
+<tr><td>Redis</td><td>{% if redis_ok %}<span class="pill verde">conectado</span>{% else %}<span class="pill rojo">sin respuesta</span>{% endif %}</td></tr>
+</tbody></table><p class="ayuda" style="margin-top:8px">Detalle técnico en <code>/salud</code>.</p></div>
+<h2>Accesos rápidos</h2>
+<p style="margin-bottom:10px">
+{% if 'usuarios.ver' in permisos and hay('catalogos.usuarios') %}<a class="btn sec" href="{{ url_for('catalogos.usuarios') }}">Usuarios</a>{% endif %}
+{% if 'microhubs.ver' in permisos and hay('catalogos.microhubs') %}<a class="btn sec" href="{{ url_for('catalogos.microhubs') }}">Microhubs</a>{% endif %}
+{% if 'configuracion.ver' in permisos and hay('admin.parametros') %}<a class="btn sec" href="{{ url_for('admin.parametros') }}">Parámetros</a>{% endif %}
+{% if 'bitacora.ver' in permisos and hay('admin.bitacora') %}<a class="btn sec" href="{{ url_for('admin.bitacora') }}">Bitácora</a>{% endif %}
+{% if 'planeacion.ver' in permisos %}<a class="btn sec" href="{{ url_for('planeacion.tablero') }}">Planeación</a>{% endif %}</p>
+<h2>Auditoría <span class="sub">({{ c.auditoria_24h }} eventos en 24 h)</span></h2>
+<div class="panel"><table><thead><tr><th>Fecha</th><th>Módulo</th><th>Acción</th><th>Entidad</th><th>Usuario</th></tr></thead>
+<tbody>{% for a in recientes %}<tr><td>{{ a.fecha.strftime('%d/%m %H:%M') }}</td><td>{{ a.modulo }}</td><td>{{ a.accion }}</td><td>{{ a.entidad or '—' }}</td><td>{{ a.correo or 'sistema' }}</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}{% block titulo %}Entregas{% endblock %}
+{% block cuerpo %}
+{% include "_plan_nav.html" %}
+<h1>6 · Optimización de entregas</h1>
+<p class="sub">Pedidos listos → agrupar por zona → asignar repartidor → calcular ruta → orden de paradas, distancia y tiempo. Microhub: <b>{{ mh.clave }} · {{ mh.nombre }}</b>.</p>
+{% if not usuario_hub and not local %}
+<form method="get" class="panel" style="display:flex;gap:12px;align-items:end"><div class="campo" style="margin:0"><label>Microhub</label>
+<select name="microhub_id">{% for h in hubs %}<option value="{{ h.id }}" {{ 'selected' if h.id == mh.id }}>{{ h.clave }} · {{ h.nombre }}</option>{% endfor %}</select></div><button class="btn">Ver</button></form>
+{% endif %}
+
+<h2>1 · Pedidos listos ({{ pedidos|length }}) agrupados por zona</h2>
+{% if local %}<div class="aviso info"><b>Modo local</b>Pedidos y repartidores de demostración: la ruta se calcula, pero no se guarda.</div>{% endif %}
+{% if en_prep %}<div class="aviso info"><b>{{ en_prep }} pedido(s) siguen en preparación</b>Aparecerán aquí cuando el operador los marque «listo para despacho» desde su detalle.</div>{% endif %}
+{% if not pedidos %}<div class="panel vacio"><b>No hay pedidos listos</b>Los pedidos aparecen aquí cuando el operador los marca «listo para despacho».</div>
+{% else %}
+<form method="post" action="{{ url_for('planeacion.entregas_confirmar') }}">
+<input type="hidden" name="microhub_id" value="{{ mh.id }}">
+<div class="panel"><table><thead><tr><th></th><th>Zona</th><th>Pedido</th><th class="num">Total</th></tr></thead>
+<tbody>{% for zona, lista in zonas.items() %}{% for x in lista %}<tr><td><input type="checkbox" name="pedido" value="{{ x.id }}" checked style="width:auto"></td><td>{{ zona if loop.first else '' }}</td><td>{{ x.folio }}</td><td class="num">{{ x.total|dinero }}</td></tr>{% endfor %}{% endfor %}</tbody></table>
+<p class="ayuda" style="margin-top:8px">Repartidores disponibles: {{ reps|length }} · máximo {{ p.max_paradas_repartidor|round|int }} paradas por repartidor.</p></div>
+
+<h2>2 · Rutas propuestas</h2>
+{% for r in res.rutas %}
+<div class="panel">
+  <p><b>{{ r.repartidor }}</b> · zonas: {{ r.zonas|join(', ') }} · {{ r.paradas|length }} paradas · método: {{ r.plan.metodo }}</p>
+  <div class="kpis" style="margin:10px 0">
+    <div class="kpi"><div class="v">{{ r.plan.distancia_km }} km</div><div class="l">Distancia</div></div>
+    <div class="kpi"><div class="v">{{ r.plan.minutos|round|int }} min</div><div class="l">Tiempo estimado</div></div>
+    <div class="kpi"><div class="v">{{ r.plan.costo|dinero }}</div><div class="l">Costo de reparto</div></div>
+  </div>
+  <table><thead><tr><th>#</th><th>Pedido</th><th>Zona</th><th class="num">Tramo</th><th class="num">Minutos acumulados</th></tr></thead>
+  <tbody>{% for t in r.plan.tramos %}{% set s = r.paradas[loop.index0] %}<tr><td>{{ t.orden }}</td><td>{{ s.folio }}</td><td>{{ s.zona }}</td><td class="num">{{ t.tramo_km }} km</td><td class="num">{{ t.minutos_acum }}</td></tr>{% endfor %}</tbody></table>
+</div>
+{% else %}<div class="aviso medio"><b>Sin repartidores</b>No hay repartidores activos para asignar.</div>{% endfor %}
+{% if res.sin_asignar %}<div class="aviso alto"><b>{{ res.sin_asignar|length }} pedidos sin asignar</b>Superan el tope de paradas de los repartidores disponibles.</div>{% endif %}
+<p class="ayuda">Total: {{ total_km }} km · {{ total_costo|dinero }}. Distancia en línea recta (Haversine) a {{ p.velocidad_reparto_kmh|round|int }} km/h más {{ p.tiempo_servicio_min|round|int }} min por parada. Hasta 8 paradas se resuelve el recorrido óptimo (TSP exacto); con más, vecino más cercano con mejora 2-opt.</p>
+{% if res.rutas and ('pedidos.cambiar_estado' in permisos or local) %}<button class="btn">Confirmar y despachar</button>
+<div class="ayuda">Crea la ruta, asigna el repartidor a cada entrega y pasa los pedidos a «En ruta».</div>{% endif %}
+</form>
+{% endif %}
+{% endblock %}

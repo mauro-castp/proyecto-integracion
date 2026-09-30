@@ -183,6 +183,9 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:var(-
       {% if 'inventario.ver' in permisos %}<a href="{{ url_for('operacion.inventario') }}" class="{{ 'sel' if ep=='operacion.inventario' }}">Inventario</a>{% endif %}
       {% if 'pedidos.reasignar' in permisos %}<a href="{{ url_for('admin.pendientes') }}" class="{{ 'sel' if ep in ['admin.pendientes','admin.reasignar'] }}">Pendientes</a>{% endif %}
       {% if 'indicadores.ver' in permisos %}<a href="{{ url_for('admin.indicadores') }}" class="{{ 'sel' if ep=='admin.indicadores' }}">Indicadores</a>{% endif %}
+      {% if 'planeacion.ver' in permisos or 'pedidos.cambiar_estado' in permisos or 'usuarios.ver' in permisos %}<a href="{{ url_for('planeacion.panel') }}" class="{{ 'sel' if ep and ep.startswith('planeacion.panel') }}">Panel</a>{% endif %}
+      {% if 'planeacion.ver' in permisos %}<a href="{{ url_for('planeacion.tablero') }}" class="{{ 'sel' if ep and ep.startswith('planeacion.') and not ep.startswith('planeacion.panel') and ep != 'planeacion.entregas' }}">Planeación</a>{% endif %}
+      {% if 'entregas.asignar' in permisos %}<a href="{{ url_for('planeacion.entregas') }}" class="{{ 'sel' if ep in ['planeacion.entregas','planeacion.entregas_confirmar'] }}">Entregas</a>{% endif %}
       {% if 'productos.ver' in permisos %}<a href="{{ url_for('productos.lista') }}" class="{{ 'sel' if ep and ep.startswith('productos.') }}">Productos</a>{% endif %}
       {% if 'productos.ver' in permisos %}<a href="{{ url_for('catalogos.categorias') }}" class="{{ 'sel' if ep and 'categoria' in ep }}">Categorías</a>{% endif %}
       {% if 'microhubs.ver' in permisos %}<a href="{{ url_for('catalogos.microhubs') }}" class="{{ 'sel' if ep and 'microhub' in ep }}">Microhubs</a>{% endif %}

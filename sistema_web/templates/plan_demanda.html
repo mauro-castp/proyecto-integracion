@@ -1,0 +1,38 @@
+{% extends "base.html" %}{% block titulo %}Demanda{% endblock %}
+{% block cuerpo %}
+{% include "_plan_nav.html" %}
+<h1>1 · Análisis de demanda</h1>
+<p class="sub">Pedidos históricos de los últimos {{ hist.ventana }} días ({{ hist.dias }} con operación), más las consultas que no pudimos atender.</p>
+<div class="kpis">
+  <div class="kpi"><div class="v">{{ hist.pedidos_dia }}</div><div class="l">Pedidos por día</div></div>
+  <div class="kpi"><div class="v">{{ hist.ticket|dinero }}</div><div class="l">Ticket promedio (sin envío)</div></div>
+  <div class="kpi"><div class="v">{{ hist.productos_pedido }}</div><div class="l">Productos por pedido</div></div>
+  <div class="kpi"><div class="v">{{ hist.no_atendidos }}</div><div class="l">Demanda no atendida</div></div>
+</div>
+
+<h2>Demanda por zona</h2>
+<div class="panel"><table>
+<thead><tr><th>Zona</th><th class="num">Pedidos/día</th><th class="num">Ticket</th><th class="num">Productos/pedido</th><th class="num">No atendidos</th><th>Pico</th></tr></thead>
+<tbody>{% for z in hist.zonas %}<tr><td>{{ z.nombre }}</td><td class="num">{{ z.pedidos_dia }}</td><td class="num">{{ z.ticket|dinero }}</td><td class="num">{{ z.productos_pedido }}</td><td class="num">{{ z.no_atendidos }}</td><td>{{ z.pico }}</td></tr>{% endfor %}</tbody>
+</table></div>
+
+<h2>Demanda por hora <span class="sub">(pico general: {{ hist.pico }})</span></h2>
+{% set mx = hist.horas|max or 1 %}
+<div class="panel">{% for n in hist.horas %}{% if loop.index0 >= 6 and loop.index0 <= 23 %}
+  <div style="display:grid;grid-template-columns:52px 1fr 46px;gap:10px;align-items:center;font-size:13px;margin-bottom:4px">
+    <span>{{ '%02d'|format(loop.index0) }}:00</span><div><div class="barra" style="width:{{ 100 * n / mx }}%"></div></div><b class="num">{{ n }}</b></div>
+{% endif %}{% endfor %}</div>
+
+<h2>Demanda por categoría</h2>
+<div class="panel"><table>
+<thead><tr><th>Categoría</th><th class="num">Unidades</th><th class="num">Pedidos</th><th class="num">Ventas</th></tr></thead>
+<tbody>{% for c in hist.categorias %}<tr><td>{{ c.nombre }}</td><td class="num">{{ c.unidades }}</td><td class="num">{{ c.pedidos }}</td><td class="num">{{ c.ventas|dinero }}</td></tr>{% endfor %}</tbody>
+</table></div>
+
+<h2>Demanda no atendida por motivo</h2>
+<div class="panel"><table>
+<thead><tr><th>Motivo</th><th class="num">Eventos</th></tr></thead>
+<tbody>{% for d in hist.no_atendida_tipo %}<tr><td>{{ d.tipo|replace('_',' ') }}</td><td class="num">{{ d.n }}</td></tr>{% else %}<tr><td colspan="2">Sin eventos.</td></tr>{% endfor %}</tbody>
+</table></div>
+<div class="aviso info"><b>Cómo se calcula</b>Pedidos/día = pedidos no cancelados ÷ días con operación. El pico es la ventana de dos horas con más pedidos (hora de Monterrey). La demanda cubierta de una ubicación suma pedidos/día y no atendidos/día de las zonas dentro de su radio.</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}{% from "_plan_macros.html" import decision_pill %}{% block titulo %}Escenarios{% endblock %}
+{% block cuerpo %}
+{% include "_plan_nav.html" %}
+<h1>8 · Comparar escenarios</h1>
+<p class="sub">Guarda variantes de la simulación, ábrelas para editar sus supuestos, compáralas y expórtalas a CSV (Excel).</p>
+<form method="get" action="{{ url_for('planeacion.escenarios_comparar') }}">
+<div class="panel" style="overflow-x:auto"><table>
+<thead><tr><th></th><th>Escenario</th><th>Candidato</th><th class="num">Demanda</th><th class="num">Utilización</th><th class="num">Equilibrio/día</th><th class="num">Costo/pedido</th><th>Decisión</th><th></th></tr></thead>
+<tbody>{% for e in escenarios %}<tr>
+<td><input type="checkbox" name="ids" value="{{ e.id }}" style="width:auto"></td>
+<td><b>{{ e.nombre }}</b><div class="ayuda">{{ e.autor }} · {{ e.actualizado_en.strftime('%d/%m/%Y %H:%M') }}</div></td><td>{{ e.candidato or '—' }}</td>
+<td class="num">{{ e.supuestos.demanda_diaria|round|int }}</td><td class="num">{{ e.resultados.utilizacion }}%</td>
+<td class="num">{{ e.resultados.equilibrio.diario if e.resultados.equilibrio.diario is not none else '—' }}</td>
+<td class="num">{{ e.resultados.costo_por_pedido|dinero if e.resultados.costo_por_pedido is not none else '—' }}</td>
+<td>{{ decision_pill(e.resultados.ficha.decision) }}</td>
+<td><a href="{{ url_for('planeacion.simulacion', escenario_id=e.id) }}">Abrir / editar</a></td></tr>
+{% else %}<tr><td colspan="9"><div class="vacio"><b>Aún no hay escenarios</b>Ejecuta una simulación y guárdala.</div></td></tr>{% endfor %}</tbody>
+</table></div>
+<button class="btn">Comparar seleccionados</button>
+<a class="btn sec" href="{{ url_for('planeacion.escenarios_csv') }}">Exportar todos a CSV</a>
+<a class="btn sec" href="{{ url_for('planeacion.simulacion') }}">Nuevo escenario</a>
+</form>
+
+{% if comparar %}
+<h2>Comparación</h2>
+<div class="panel" style="overflow-x:auto"><table>
+<thead><tr><th>Indicador</th>{% for e in comparar|reverse %}<th class="num">{{ e.nombre }}</th>{% endfor %}</tr></thead>
+<tbody>
+{% set filas = [
+ ('Candidato', 'cand'), ('Demanda diaria', 'dem'), ('Operadores / repartidores', 'op'), ('Ticket', 'tk'), ('Renta', 'rn'),
+ ('Atendidos / día', 'at'), ('Rechazados / día', 're'), ('Utilización', 'ut'), ('Equilibrio (pedidos/día)', 'eq'),
+ ('Costo por pedido', 'cp'), ('Utilidad diaria', 'uti'), ('Decisión', 'dec')] %}
+{% for etq, k in filas %}<tr><td>{{ etq }}</td>{% for e in comparar|reverse %}{% set s = e.supuestos %}{% set r = e.resultados %}
+<td class="num">{% if k=='cand' %}{{ e.candidato or '—' }}{% elif k=='dem' %}{{ s.demanda_diaria|round|int }}{% elif k=='op' %}{{ s.operadores|round|int }} / {{ s.repartidores|round|int }}
+{% elif k=='tk' %}{{ s.ticket|dinero }}{% elif k=='rn' %}{{ s.renta|dinero }}{% elif k=='at' %}{{ r.atendidos }}{% elif k=='re' %}{{ r.rechazados }}
+{% elif k=='ut' %}{{ r.utilizacion }}%{% elif k=='eq' %}{{ r.equilibrio.diario if r.equilibrio.diario is not none else '—' }}
+{% elif k=='cp' %}{{ r.costo_por_pedido|dinero if r.costo_por_pedido is not none else '—' }}{% elif k=='uti' %}{{ r.margen_dia|dinero }}
+{% else %}{{ decision_pill(r.ficha.decision) }}{% endif %}</td>{% endfor %}</tr>{% endfor %}
+</tbody></table></div>
+{% endif %}
+{% endblock %}
