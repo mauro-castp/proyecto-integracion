@@ -50,6 +50,7 @@ services:
 
   web:
     build: .
+    command: sh -c "python migrar_planeacion.py && gunicorn -b 0.0.0.0:5000 -w 3 --timeout 60 app:app"
     environment:
       SECRET_KEY: ${SECRET_KEY:-cambiar-en-produccion}
       PG_DSN: host=postgres port=5432 dbname=microhubs_p1 user=microhubs password=${POSTGRES_PASSWORD:-microhubs_dev}
@@ -57,6 +58,8 @@ services:
       MONGO_URL: mongodb://mongo:27017/microhubs_eventos
     ports:
       - "5000:5000"          # única puerta al exterior
+    volumes:
+      - ../bloque_c/sql:/migrations:ro
     depends_on:
       postgres: {condition: service_healthy}
       redis: {condition: service_healthy}

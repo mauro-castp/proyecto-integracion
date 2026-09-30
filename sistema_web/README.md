@@ -133,3 +133,20 @@ Cuentas principales:
 3. **Umbral de envío gratuito.** El parámetro de $250 aparece en la tabla 4.6 del entregable de reglas pero no tiene una RN que lo defina. O se agrega la regla o se quita el parámetro.
 4. **Coordenadas reales** de las cuatro colonias y de los microhubs.
 5. **RF38 (manifiestos)** sigue sin historia de usuario ni caso de uso, como ya señalaba la propia matriz de trazabilidad.
+# Módulo de planeación y viabilidad
+
+La opción **Planeación** implementa el recorrido solicitado: demanda histórica,
+ubicaciones candidatas, cobertura, capacidad, simulación, surtido ABC, ruta por
+vecino más cercano, punto de equilibrio, sensibilidad y decisión de apertura.
+Los cálculos están en `planeacion.py` y las tablas nuevas en
+`../bloque_c/sql/06_planeacion.sql`.
+
+Al ejecutar `docker compose up --build -d`, el contenedor web aplica esa
+migración idempotente antes de iniciar. Esto funciona tanto con una base nueva
+como con el volumen PostgreSQL que el equipo ya tenga creado.
+
+Pruebas sin Docker:
+
+```bash
+python -m unittest -v test_planeacion.py
+```
