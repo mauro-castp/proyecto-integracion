@@ -50,16 +50,20 @@ services:
 
   web:
     build: .
-    command: sh -c "python migrar_planeacion.py && gunicorn -b 0.0.0.0:5000 -w 3 --timeout 60 app:app"
     environment:
       SECRET_KEY: ${SECRET_KEY:-cambiar-en-produccion}
       PG_DSN: host=postgres port=5432 dbname=microhubs_p1 user=microhubs password=${POSTGRES_PASSWORD:-microhubs_dev}
       REDIS_URL: redis://redis:6379
       MONGO_URL: mongodb://mongo:27017/microhubs_eventos
-    ports:
-      - "5000:5000"          # única puerta al exterior
+    # Planeación: PostgreSQL solo corre initdb con el volumen vacío. Este
+    # script agrega tablas y parámetros a volúmenes existentes (idempotente).
     volumes:
-      - ../bloque_c/sql:/migrations:ro
+      - ../bloque_c/sql/06_planeacion.sql:/app/06_planeacion.sql:ro
+    command: >
+      sh -c "python migrar_planeacion.py &&
+             exec gunicorn -b 0.0.0.0:5000 -w 3 --timeout 60 app:app"
+    ports:
+      - "${WEB_PORT:-5000}:5000"          # única puerta al exterior
     depends_on:
       postgres: {condition: service_healthy}
       redis: {condition: service_healthy}

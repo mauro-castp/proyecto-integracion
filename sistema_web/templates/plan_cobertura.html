@@ -1,0 +1,56 @@
+{% extends "base.html" %}{% block titulo %}Cobertura{% endblock %}
+{% block cuerpo %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% include "_plan_nav.html" %}
+<h1>Cobertura y mapa</h1>
+<p class="sub">Microhub + radio + población + demanda + tiempo estimado. Sin GIS empresarial: distancia en línea recta (Haversine) sobre el centroide de cada zona.</p>
+
+<div class="panel" style="padding:0;overflow:hidden"><div id="mapa" style="height:460px;background:var(--line2)"></div>
+<div class="ayuda" style="padding:10px 16px">
+  <span style="color:#1F4E79">●</span> Microhub activo (círculo = radio) ·
+  <span style="color:#8A5A17">●</span> Candidato ·
+  <span style="color:#7B2D4E">●</span> Zona: tamaño = pedidos/día ·
+  <span style="color:#C0392B">●</span> Halo rojo = demanda no atendida.
+</div></div>
+
+<h2>Microhubs existentes</h2>
+<div class="panel" style="overflow-x:auto"><table>
+<thead><tr><th>Microhub</th><th class="num">Radio</th><th class="num">Demanda cubierta</th><th class="num">Fuera de cobertura</th><th class="num">Dist. prom.</th><th class="num">Tiempo</th><th class="num">Última milla</th></tr></thead>
+<tbody>{% for h in hubs_ev %}<tr><td><b>{{ h.clave }}</b> {{ h.nombre }}</td><td class="num">{{ h.radio_km }} km</td>
+<td class="num">{{ '%.1f'|format(h.cob.demanda_cubierta) }}/día</td><td class="num">{{ '%.1f'|format(h.cob.demanda_fuera) }}/día</td>
+<td class="num">{{ h.cob.distancia_promedio }} km</td><td class="num">{{ h.cob.tiempo_estimado_min }} min</td><td class="num">{{ h.cob.costo_ultima_milla|dinero }}</td></tr>{% endfor %}</tbody>
+</table></div>
+
+<h2>Candidatos</h2>
+<div class="panel" style="overflow-x:auto"><table>
+<thead><tr><th>Candidato</th><th class="num">Habitantes</th><th class="num">Hogares</th><th class="num">Demanda cubierta</th><th class="num">Fuera</th><th class="num">Tiempo</th><th class="num">Última milla</th><th>Solapamiento con microhubs</th></tr></thead>
+<tbody>{% for c in ev %}<tr><td><a href="{{ url_for('planeacion.candidato', cid=c.id) }}"><b>{{ c.clave }}</b> {{ c.nombre }}</a></td>
+<td class="num">{{ '{:,}'.format(c.cob.poblacion) }}</td><td class="num">{{ '{:,}'.format(c.cob.hogares) }}</td>
+<td class="num">{{ '%.1f'|format(c.cob.demanda_cubierta) }}/día</td><td class="num">{{ '%.1f'|format(c.cob.demanda_fuera) }}/día</td>
+<td class="num">{{ c.cob.tiempo_estimado_min }} min</td><td class="num">{{ c.cob.costo_ultima_milla|dinero }}</td>
+<td>{% for s in c.cob.solapamiento if s.pct > 0 %}{{ s.clave }} {{ s.pct }}%{% if not loop.last %}, {% endif %}{% else %}—{% endfor %}</td></tr>{% endfor %}</tbody>
+</table></div>
+<div class="aviso info"><b>Cómo leerlo</b>Demanda fuera de cobertura = pedidos/día de zonas cuyo centroide queda más allá del radio. Solapamiento = parte de la demanda del candidato que ya cubre un microhub existente (canibalización). Hogares = población ÷ personas por hogar. Última milla = pago base por entrega + (ida y vuelta × km × costo/km ÷ paradas por viaje).</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const D = {{ mapa|safe }};
+const m = L.map('mapa');
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: '© OpenStreetMap'}).addTo(m);
+const pts = [];
+D.zonas.forEach(z => { pts.push([z.lat, z.lng]);
+  L.circleMarker([z.lat, z.lng], {radius: 6 + Math.min(z.pedidos_dia * 6, 22), color: '#7B2D4E', fillOpacity: .35})
+   .bindTooltip(z.nombre + ': ' + z.pedidos_dia + ' pedidos/día, ' + z.no_atendidos + ' no atendidos', {permanent: false}).addTo(m); });
+D.zonas.forEach(z => { if (z.no_atendidos > 0)
+  L.circle([z.lat, z.lng], {radius: 60 + Math.min(z.no_atendidos * 6, 260), color: '#C0392B', weight: 2, fillColor: '#C0392B', fillOpacity: .25})
+   .bindTooltip('Demanda no atendida en ' + z.nombre + ': ' + z.no_atendidos).addTo(m); });
+D.hubs.forEach(h => { pts.push([h.lat, h.lng]);
+  L.circle([h.lat, h.lng], {radius: h.radio * 1000, color: '#1F4E79', weight: 1, fillOpacity: .06}).addTo(m);
+  L.marker([h.lat, h.lng]).bindTooltip(h.clave + ' · ' + h.nombre).addTo(m); });
+D.cands.forEach(c => { pts.push([c.lat, c.lng]);
+  L.circle([c.lat, c.lng], {radius: c.radio * 1000, color: '#8A5A17', weight: 1, dashArray: '4', fillOpacity: .05}).addTo(m);
+  L.circleMarker([c.lat, c.lng], {radius: 7, color: '#8A5A17', fillOpacity: .9})
+   .bindTooltip(c.clave + ' · score ' + c.score + ' · ' + c.decision).addTo(m); });
+if (pts.length) m.fitBounds(pts, {padding: [30, 30]}); else m.setView([25.75, -100.37], 14);
+</script>
+{% endblock %}

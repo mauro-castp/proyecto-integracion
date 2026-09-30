@@ -442,6 +442,13 @@ def detalle(pid):
                          "WHERE pd.pedido_id=%s ORDER BY pr.nombre", (pid,)),
         decision=consultar("SELECT * FROM decision_asignacion WHERE pedido_id=%s "
                            "ORDER BY fecha DESC LIMIT 1", (pid,), una=True),
+        reparto=consultar("SELECT e.orden_parada, e.distancia_km, e.minutos_estimados, "
+                          "       e.costo_entrega_estimado, e.resultado::text AS resultado, e.incidencia, "
+                          "       u.nombre || ' ' || u.apellidos AS repartidor, "
+                          "       r.metodo, r.paradas, r.distancia_km AS ruta_km, r.minutos AS ruta_min "
+                          "  FROM entrega e LEFT JOIN usuario u ON u.id = e.repartidor_id "
+                          "  LEFT JOIN plan_ruta r ON r.id = e.plan_ruta_id "
+                          " WHERE e.pedido_id = %s", (pid,), una=True),
         historial=consultar("SELECT h.*, u.nombre FROM historial_estatus h "
                             "LEFT JOIN usuario u ON u.id=h.usuario_id "
                             "WHERE h.pedido_id=%s ORDER BY h.fecha", (pid,)))

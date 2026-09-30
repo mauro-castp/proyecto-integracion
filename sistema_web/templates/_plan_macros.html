@@ -1,0 +1,2 @@
+{% macro decision_pill(d) %}{% if d.startswith('VIABLE CON') %}<span class="pill ambar">{{ d }}</span>{% elif d == 'VIABLE' %}<span class="pill verde">{{ d }}</span>{% else %}<span class="pill rojo">{{ d }}</span>{% endif %}{% endmacro %}
+{% macro nivel_pill(n, v) %}<span class="pill {{ {'estable':'verde','atencion':'ambar','riesgo':'rojo'}[n] }}">{{ v }}% · {{ {'estable':'Estable','atencion':'Atención','riesgo':'Riesgo'}[n] }}</span>{% endmacro %}

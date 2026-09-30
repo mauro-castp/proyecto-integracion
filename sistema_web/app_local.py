@@ -37,7 +37,8 @@ def contexto_local():
                 "microhubs.ver", "microhubs.crear", "microhubs.editar", "microhubs.baja",
                 "zonas.ver", "zonas.crear", "zonas.editar", "zonas.baja",
                 "usuarios.ver", "usuarios.crear", "usuarios.editar", "usuarios.baja",
-                "simulacion.ver", "simulacion.ejecutar"}
+                "simulacion.ver", "simulacion.ejecutar",
+                "planeacion.ver", "planeacion.editar", "entregas.asignar"}
     return {"usuario": {"nombre": "Modo local", "rol": "administrador"}, "permisos": permisos}
 
 @app.template_filter("dinero")

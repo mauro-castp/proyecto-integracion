@@ -1,0 +1,45 @@
+{% extends "base.html" %}{% from "_plan_macros.html" import decision_pill, nivel_pill %}{% block titulo %}{{ c.clave }}{% endblock %}
+{% block cuerpo %}
+{% include "_plan_nav.html" %}
+<h1>Ficha de viabilidad · {{ c.clave }} {{ c.nombre }}</h1>
+<p class="sub">Zona {{ c.zona }} · ranking {{ c.ranking }} de {{ total }} · score {{ c.score }}</p>
+<div class="panel">
+  <div style="margin-bottom:12px">{{ decision_pill(sim.ficha.decision) }}</div>
+  <table><tbody>
+    <tr><td>Demanda estimada</td><td class="num"><b>{{ '%.0f'|format(sim.ficha.demanda) }} pedidos/día</b></td></tr>
+    <tr><td>Capacidad</td><td class="num"><b>{{ '%.0f'|format(sim.ficha.capacidad) }} pedidos/día</b></td></tr>
+    <tr><td>Cobertura</td><td class="num"><b>{{ '{:,}'.format(c.cob.poblacion) }} habitantes · {{ '{:,}'.format(c.cob.hogares) }} hogares</b></td></tr>
+    <tr><td>Ticket promedio</td><td class="num"><b>{{ sim.ficha.ticket|dinero }}</b></td></tr>
+    <tr><td>Costo por pedido</td><td class="num"><b>{{ sim.ficha.costo_por_pedido|dinero if sim.ficha.costo_por_pedido is not none else '—' }}</b></td></tr>
+    <tr><td>Punto de equilibrio</td><td class="num"><b>{{ sim.ficha.equilibrio_diario if sim.ficha.equilibrio_diario is not none else 'no alcanzable' }} pedidos/día</b></td></tr>
+    <tr><td>Demanda − equilibrio</td><td class="num"><b>{{ '%+.0f'|format(sim.ficha.demanda_menos_equilibrio) if sim.ficha.demanda_menos_equilibrio is not none else '—' }} pedidos/día</b></td></tr>
+    <tr><td>Utilización</td><td class="num">{{ nivel_pill(sim.nivel, sim.utilizacion|round|int) }}</td></tr>
+  </tbody></table>
+  <h2>Explicación</h2>
+  <ul class="pasos">{% for e in sim.ficha.explicacion %}<li>{{ e }}</li>{% endfor %}{% for a in sim.ficha.acciones %}<li><b>Se recomienda:</b> {{ a }}</li>{% endfor %}</ul>
+  <p class="ayuda" style="margin-top:10px">Supuestos iniciales calculados con el histórico de la zona (demanda {{ '%.1f'|format(sup.demanda_diaria) }}/día). Ajústalos en la simulación.</p>
+  <p style="margin-top:14px"><a class="btn" href="{{ url_for('planeacion.simulacion', **sup) }}">Abrir en simulación</a>
+  {% if 'planeacion.editar' in permisos %}<a class="btn sec" href="{{ url_for('planeacion.candidato_form', cid=c.id) }}">Editar</a>{% endif %}</p>
+</div>
+<h2>Cobertura</h2>
+<div class="panel"><table><tbody>
+<tr><td>Radio</td><td class="num">{{ c.radio_km }} km</td></tr>
+<tr><td>Demanda cubierta</td><td class="num">{{ '%.1f'|format(c.cob.demanda_cubierta) }} pedidos/día</td></tr>
+<tr><td>Demanda fuera de cobertura</td><td class="num">{{ '%.1f'|format(c.cob.demanda_fuera) }} pedidos/día</td></tr>
+<tr><td>Distancia promedio ponderada</td><td class="num">{{ c.cob.distancia_promedio }} km</td></tr>
+<tr><td>Tiempo estimado de entrega</td><td class="num">{{ c.cob.tiempo_estimado_min }} min</td></tr>
+<tr><td>Costo promedio de última milla</td><td class="num">{{ c.cob.costo_ultima_milla|dinero }}</td></tr>
+{% for s in c.cob.solapamiento %}<tr><td>Solapamiento con {{ s.clave }}</td><td class="num">{{ s.pct }}% de su demanda ({{ s.zonas }} zonas)</td></tr>{% endfor %}
+</tbody></table></div>
+<h2>Decisión de apertura</h2>
+<div class="panel">
+<p style="margin-bottom:10px">Estado: <span class="pill gris">{{ c.decision }}</span>{% if c.decision_motivo %} — {{ c.decision_motivo }}{% endif %}</p>
+{% if 'planeacion.editar' in permisos %}
+<form method="post" action="{{ url_for('planeacion.candidato_decision', cid=c.id) }}" class="formgrid">
+  <div class="campo"><label>Decisión</label><select name="decision"><option value="aceptado">Aceptar</option><option value="condicionado">Aceptar con condiciones</option><option value="rechazado">Rechazar</option></select></div>
+  <div class="campo" style="grid-column:span 2"><label>Motivo (obligatorio)</label><input name="motivo" required></div>
+  <div class="campo" style="align-self:end"><button class="btn">Registrar decisión</button></div>
+</form>{% endif %}
+<div class="ayuda">El sistema recomienda; la decisión final es de la persona planeadora y queda en la bitácora.</div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}{% block titulo %}Panel del operador{% endblock %}
+{% block cuerpo %}
+<h1>Panel del operador</h1>
+<p class="sub">{{ mh.clave }} · {{ mh.nombre }}. Sin indicadores financieros: solo lo necesario para el turno.</p>
+<div class="kpis">
+  <div class="kpi"><div class="v">{{ c.pendientes }}</div><div class="l">Pedidos pendientes (por preparar)</div></div>
+  <div class="kpi"><div class="v">{{ c.preparando }}</div><div class="l">Preparando</div></div>
+  <div class="kpi"><div class="v">{{ c.listos }}</div><div class="l">Listos para despacho</div></div>
+  <div class="kpi"><div class="v">{{ c.en_ruta }}</div><div class="l">En ruta</div></div>
+  <div class="kpi"><div class="v">{{ criticos|length }}</div><div class="l">Inventario crítico</div></div>
+  <div class="kpi"><div class="v">{{ quiebres }}</div><div class="l">Quiebres (existencia 0)</div></div>
+</div>
+{% if ocup %}
+{% set pct = (100 * ocup.pedidos_en_turno / ocup.capacidad_turno)|round|int if ocup.capacidad_turno else 0 %}
+<h2>Capacidad utilizada del turno</h2>
+<div class="panel">
+  <div style="display:grid;grid-template-columns:1fr 70px;gap:12px;align-items:center">
+    <div style="background:#E4E4DD;height:20px;border-radius:4px"><div style="height:100%;border-radius:4px;width:{{ [pct,100]|min }}%;background:{{ 'var(--rojo)' if pct > p.umbral_utilizacion_riesgo else ('var(--ambar)' if pct >= p.umbral_utilizacion_estable else 'var(--verde)') }}"></div></div>
+    <b class="num">{{ pct }}%</b></div>
+  <p class="ayuda" style="margin-top:6px">{{ ocup.pedidos_en_turno }} de {{ ocup.capacidad_turno }} pedidos del turno · estable &lt; {{ p.umbral_utilizacion_estable|round|int }}%, riesgo &gt; {{ p.umbral_utilizacion_riesgo|round|int }}%.</p>
+</div>{% endif %}
+<p style="margin:14px 0">{% if hay('operacion.bandeja') %}<a class="btn" href="{{ url_for('operacion.bandeja') }}">Ir a la bandeja</a> {% endif %}
+{% if 'entregas.asignar' in permisos %}<a class="btn sec" href="{{ url_for('planeacion.entregas') }}">Planear entregas</a> {% endif %}
+{% if hay('operacion.inventario') %}<a class="btn sec" href="{{ url_for('operacion.inventario') }}">Inventario</a>{% endif %}</p>
+<h2>Inventario crítico</h2>
+<div class="panel"><table><thead><tr><th>Producto</th><th class="num">Existencia</th><th class="num">Mínimo</th><th></th></tr></thead>
+<tbody>{% for i in criticos %}<tr><td>{{ i.nombre }}</td><td class="num">{{ i.existencia }}</td><td class="num">{{ i.minimo }}</td><td>{% if i.existencia == 0 %}<span class="pill rojo">Quiebre</span>{% else %}<span class="pill ambar">Bajo mínimo</span>{% endif %}</td></tr>
+{% else %}<tr><td colspan="4">Sin productos bajo el mínimo.</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}
