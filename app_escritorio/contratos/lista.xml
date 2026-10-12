@@ -1,0 +1,1 @@
+<lista xmlns="urn:microhubs:v1"><datos><pedido><id>101</id><nombre>Pedido 101</nombre><estado>entregado</estado></pedido></datos><paginacion><pagina>1</pagina><por_pagina>20</por_pagina><total>1</total><paginas>1</paginas></paginacion></lista>

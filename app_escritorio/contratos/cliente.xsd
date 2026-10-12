@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:m="urn:microhubs:v1" targetNamespace="urn:microhubs:v1" elementFormDefault="qualified">
+  <xs:element name="sesion"><xs:complexType><xs:sequence>
+    <xs:element name="token_acceso" type="xs:string"/><xs:element name="token_renovacion" type="xs:string"/><xs:element name="expira_en" type="xs:positiveInteger"/>
+    <xs:element name="usuario"><xs:complexType><xs:sequence><xs:element name="id" type="xs:positiveInteger"/><xs:element name="nombre" type="xs:string"/><xs:element name="rol" type="xs:string"/><xs:element name="microhub_id" type="xs:positiveInteger" nillable="true"/></xs:sequence></xs:complexType></xs:element>
+  </xs:sequence></xs:complexType></xs:element>
+  <xs:complexType name="registro"><xs:sequence><xs:element name="id" type="xs:positiveInteger"/><xs:element name="nombre" type="xs:string"/><xs:element name="estado" type="xs:string" minOccurs="0"/></xs:sequence></xs:complexType>
+  <xs:element name="lista"><xs:complexType><xs:sequence>
+    <xs:element name="datos"><xs:complexType><xs:choice minOccurs="0" maxOccurs="unbounded"><xs:element name="pedido" type="m:registro"/><xs:element name="producto" type="m:registro"/><xs:element name="candidato" type="m:registro"/></xs:choice></xs:complexType></xs:element>
+    <xs:element name="paginacion"><xs:complexType><xs:sequence><xs:element name="pagina" type="xs:positiveInteger"/><xs:element name="por_pagina" type="xs:positiveInteger"/><xs:element name="total" type="xs:nonNegativeInteger"/><xs:element name="paginas" type="xs:nonNegativeInteger"/></xs:sequence></xs:complexType></xs:element>
+  </xs:sequence></xs:complexType></xs:element>
+  <xs:element name="simulacion"><xs:complexType><xs:sequence><xs:element name="candidato_id" type="xs:positiveInteger"/><xs:element name="viable" type="xs:boolean"/><xs:element name="costo" type="xs:decimal"/></xs:sequence></xs:complexType></xs:element>
+  <xs:element name="resultado"><xs:complexType><xs:sequence><xs:element name="mensaje" type="xs:string"/></xs:sequence></xs:complexType></xs:element>
+  <xs:element name="error"><xs:complexType><xs:sequence><xs:element name="codigo" type="xs:string"/><xs:element name="mensaje" type="xs:string"/><xs:element name="detalles"><xs:complexType><xs:sequence><xs:element name="detalle" minOccurs="0" maxOccurs="unbounded"><xs:complexType><xs:sequence><xs:element name="campo" type="xs:string"/><xs:element name="mensaje" type="xs:string"/></xs:sequence></xs:complexType></xs:element></xs:sequence></xs:complexType></xs:element><xs:element name="traza_id" type="xs:string"/></xs:sequence></xs:complexType></xs:element>
+</xs:schema>
