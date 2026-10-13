@@ -54,7 +54,7 @@ static class Pruebas
         {
             demo.SetSession(await demo.Call("auth", "auth/login", HttpMethod.Post, Api.Example("Login.ok.xml")));
             Check(demo.Role == "planeador", "Login de ejemplo oficial");
-            Check((await demo.Call("catalogos", "productos")).Descendants(Api.Ns + "producto").Any(), "Ejemplo de catálogo");
+            Check((await demo.Call("productos", "productos")).Descendants(Api.Ns + "producto").Any(), "Ejemplo de catálogo");
             Check((await demo.Call("pedidos", "pedidos?estado=entregado")).Root!.Name == Api.Ns + "pedidos", "Ejemplo de pedidos");
             Check((await demo.Call("planeacion", "candidatos/1/simular", HttpMethod.Post, Api.Example("Simular.ok.xml"))).Root!.Name == Api.Ns + "resultados", "Ejemplo de simulación");
             await RejectAsync(() => demo.Call("planeacion", "candidatos", HttpMethod.Post, Api.Body("candidato_nuevo", ("nombre", "incompleto"))), "Una petición que incumple el XSD ni se envía");
@@ -68,7 +68,9 @@ static class Pruebas
         Check(handler.Last!.Query.Contains("pagina=2") && !handler.Last.AbsolutePath.Contains('?'), "Conserva la consulta y la ruta /api/v1");
         Check(handler.Last.Port == 5104 && handler.Accept == "application/xml", "Pide XML y usa el puerto del servicio correcto");
         Check(handler.Authorization == "Bearer " + real.Access, "Envía el token en Authorization: Bearer");
-        await real.Call("catalogos", "productos"); Check(handler.Last!.Port == 5103, "catalogos → 5103");
+        await real.Call("productos", "productos"); Check(handler.Last!.Port == 5103, "productos → 5103");
+        await real.Call("zonas", "zonas"); Check(handler.Last!.Port == 5108, "zonas → 5108");
+        await real.Call("microhubs", "microhubs"); Check(handler.Last!.Port == 5109, "microhubs → 5109");
         await real.Call("planeacion", "candidatos"); Check(handler.Last!.Port == 5106, "planeacion → 5106");
 
         handler.UnauthorizedOnce = true;
@@ -133,17 +135,17 @@ static class Pruebas
         try { using var mala = new Api { Host = host }; await mala.Call("auth", "auth/login", HttpMethod.Post, Api.Body("login", ("correo", "planeador@codex.mx"), ("clave", "incorrecta"))); throw new Exception("entró"); }
         catch (ApiError e) { Check(e.Status == 401 && e.Message.Contains("Intento"), "Clave incorrecta: 401 con mensaje de intentos"); }
 
-        Check((await plan.Call("catalogos", "productos?pagina=1&por_pagina=5&q=arroz")).Descendants(Api.Ns + "producto").Any(), "Catálogo: productos filtrados (XML válido)");
-        var prod = (await plan.Call("catalogos", "productos?pagina=1&por_pagina=1")).Descendants(Api.Ns + "producto").First().Element(Api.Ns + "id")!.Value;
-        Check((await plan.Call("catalogos", $"productos/{prod}")).Root!.Name == Api.Ns + "producto", "Catálogo: detalle de producto");
-        Check((await plan.Call("catalogos", "zonas")).Root!.Name == Api.Ns + "zonas" && (await plan.Call("catalogos", "microhubs")).Root!.Name == Api.Ns + "microhubs", "Catálogo: zonas y microhubs");
+        Check((await plan.Call("productos", "productos?pagina=1&por_pagina=5&q=arroz")).Descendants(Api.Ns + "producto").Any(), "Catálogo: productos filtrados (XML válido)");
+        var prod = (await plan.Call("productos", "productos?pagina=1&por_pagina=1")).Descendants(Api.Ns + "producto").First().Element(Api.Ns + "id")!.Value;
+        Check((await plan.Call("productos", $"productos/{prod}")).Root!.Name == Api.Ns + "producto", "Catálogo: detalle de producto");
+        Check((await plan.Call("zonas", "zonas")).Root!.Name == Api.Ns + "zonas" && (await plan.Call("microhubs", "microhubs")).Root!.Name == Api.Ns + "microhubs", "Catálogo: zonas y microhubs");
         var pedidos = await plan.Call("pedidos", "pedidos?pagina=1&por_pagina=5&estado=entregado");
         var pid = pedidos.Descendants(Api.Ns + "pedido").First().Element(Api.Ns + "id")!.Value;
         Check((await plan.Call("pedidos", $"pedidos/{pid}")).Descendants(Api.Ns + "linea").Any(), "Pedidos: detalle con líneas");
         Check((await plan.Call("pedidos", $"pedidos/{pid}/historial")).Root!.Name == Api.Ns + "historial", "Pedidos: historial");
         await RejectAsync(() => plan.Call("pedidos", "pedidos?estado=inventado"), "Pedidos: un filtro inválido da error 400");
 
-        foreach (var (srv, recurso) in new[] { ("catalogos", "productos"), ("catalogos", "zonas"), ("catalogos", "microhubs"), ("pedidos", "pedidos"), ("planeacion", "candidatos"), ("planeacion", "escenarios") })
+        foreach (var (srv, recurso) in new[] { ("productos", "productos"), ("zonas", "zonas"), ("microhubs", "microhubs"), ("pedidos", "pedidos"), ("planeacion", "candidatos"), ("planeacion", "escenarios") })
         {
             var tabla = MainWindow.ToTable(await plan.Call(srv, $"{recurso}?pagina=1&por_pagina=20&q="));
             var vacioValido = recurso == "escenarios" && tabla.Rows.Count == 0;       // en una base nueva aún no hay escenarios guardados
@@ -219,7 +221,7 @@ static class Pruebas
             if (Next is { } n) { Next = null; var r = Xml(n.code, n.body); if (RetryAfter > 0) r.Headers.RetryAfter = new System.Net.Http.Headers.RetryConditionHeaderValue(TimeSpan.FromSeconds(RetryAfter)); return r; }
             if (WrongContent) return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{}", Encoding.UTF8, "application/json") };
             var ruta = Last.AbsolutePath;
-            return Xml(HttpStatusCode.OK, Ex(ruta.EndsWith("/productos") ? "ProductoLista.ok.xml" : ruta.EndsWith("/candidatos") ? "CandidatoLista.ok.xml" : "PedidoLista.ok.xml"));
+            return Xml(HttpStatusCode.OK, Ex(ruta.EndsWith("/productos") ? "ProductoLista.ok.xml" : ruta.EndsWith("/zonas") ? "ZonaLista.ok.xml" : ruta.EndsWith("/microhubs") ? "MicrohubLista.ok.xml" : ruta.EndsWith("/candidatos") ? "CandidatoLista.ok.xml" : "PedidoLista.ok.xml"));
         }
         static HttpResponseMessage Xml(HttpStatusCode code, string body) => new(code) { Content = new StringContent(body, Encoding.UTF8, "application/xml") };
     }

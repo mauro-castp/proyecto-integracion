@@ -147,10 +147,6 @@ class DeviceTest {
             assertTrue("debe exigir el QR antes de registrar", s.textos().contains("Escanea el QR del pedido 101"))
             captura("06_error_qr")
             s.volver(); s.espera("PED-DEMO-000101", exacto = false)
-            s.volver(); s.espera("Notificaciones", exacto = false)
-
-            s.pulsa("Notificaciones", exacto = false)
-            s.espera("Nueva entrega asignada", exacto = false); captura("07_notificaciones")
             s.volver(); s.espera("Mi perfil", exacto = false)
 
             s.pulsa("Mi perfil", exacto = false)
@@ -179,7 +175,6 @@ class DeviceTest {
             s.pulsa("Mi perfil", exacto = false); s.espera("Guardar cambios"); captura("11_perfil_real"); s.volver()
             s.pulsa("Mis entregas", exacto = false)
             captura("12_entregas_real"); s.volver()
-            s.pulsa("Notificaciones", exacto = false); captura("13_notificaciones_real"); s.volver()
             s.pulsa("Cerrar sesión")
             s.espera("Entrar")
         }

@@ -1,7 +1,7 @@
 # Microhubs · cliente de escritorio (parte B)
 
 Aplicación C# / Windows Forms para **planeador, administrador y auditor**. Habla **solo XML** (espacio de nombres
-`urn:microhubs:v1`) con los microservicios del contrato v1: auth (5101), catálogos (5103), pedidos (5104) y planeación (5106).
+`urn:microhubs:v1`) con los microservicios del contrato v1: auth (5101), productos (5103), pedidos (5104), planeación (5106), zonas (5108) y microhubs (5109).
 
 - Los **XSD oficiales** (carpeta `contratos/`, uno por servicio más `comun.xsd`) se cargan juntos: **toda petición se valida antes de
   enviarse y toda respuesta antes de usarse**. Se rechazan DTD y entidades externas, respuestas que no sean `application/xml`,

@@ -26,9 +26,9 @@ sealed class MainWindow : Form
             catch {api.Clear();throw;}
             password.Clear();SetMenu();status.Text=api.Role;
         });
-        Add("Productos",()=>LoadList("catalogos","productos"),true);
-        Add("Zonas",()=>LoadList("catalogos","zonas"),true);
-        Add("Microhubs",()=>LoadList("catalogos","microhubs"),true);
+        Add("Productos",()=>LoadList("productos","productos"),true);
+        Add("Zonas",()=>LoadList("zonas","zonas"),true);
+        Add("Microhubs",()=>LoadList("microhubs","microhubs"),true);
         Add("Pedidos",()=>LoadList("pedidos","pedidos"),true);
         Add("Candidatos",()=>LoadList("planeacion","candidatos"),true);
         Add("Escenarios",()=>LoadList("planeacion","escenarios"),true);

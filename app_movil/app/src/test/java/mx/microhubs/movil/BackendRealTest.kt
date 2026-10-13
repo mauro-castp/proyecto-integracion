@@ -24,7 +24,6 @@ class BackendRealTest {
         assumeTrue("Define MICROHUBS_BACKEND_HOST y MICROHUBS_CLAVE para probar contra el backend real", !backend.isNullOrBlank() && !clave.isNullOrBlank())
         val memoria = Memoria()
         val api = Api(memoria, httpHost = backend!!).apply { this.host = "http://$backend" }
-        val avisos = Notificaciones(api)
 
         // sesión
         api.login(correo, clave!!)
@@ -55,16 +54,6 @@ class BackendRealTest {
         assertEquals("cierre ya aplicado con otro UUID", 409, try { entregas.cerrar(detalle, datos, jpeg); 0 } catch (e: ApiError) { e.status })
         assertFalse(entregas.hayCierrePendiente(detalle.id))
         assertFalse(entregas.mias(1).items.any { it.id == detalle.id })        // ya no aparece en «Mis entregas»
-
-        // notificaciones (misma tabla que el portal web)
-        val bandeja = avisos.lista(1)
-        assertTrue(bandeja.total >= 1)
-        val sinLeer = bandeja.items.firstOrNull { !it.leida }
-        if (sinLeer != null) {
-            val antes = avisos.noLeidas()
-            assertTrue(avisos.leer(sinLeer.id).leida)
-            assertEquals(antes - 1, avisos.noLeidas())
-        }
 
         // cerrar sesión: el servidor revoca el acceso y la renovación
         val viejo = JSONObject(api.session.toString())

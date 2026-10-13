@@ -1,12 +1,12 @@
 # Microhubs · Android (parte B)
 
 Cliente Kotlin nativo, **exclusivamente JSON**, para la persona repartidora. Habla con los microservicios del contrato v1:
-auth (5101), usuarios (5102), pedidos (5104), entregas (5105), documentos (5107) y notificaciones (5108).
+auth (5101), usuarios (5102), pedidos (5104), entregas (5105), documentos (5107) y seguimiento (5110, el rastro GPS).
 
 Incluye: inicio y cierre de sesión (tokens cifrados con Android Keystore y renovación automática), **perfil editable** (nombre,
 apellidos y teléfono), **mis entregas** con paginación, detalle de la entrega, escaneo del QR del pedido, **foto de evidencia a
 resolución útil** (JPEG ≤ 1600 px, nunca más de 5 MB), GPS con la ruta recorrida, **cierre de entrega idempotente** (entregado,
-parcial por líneas o fallida) y bandeja de notificaciones.
+parcial por líneas o fallida).
 
 ## Interfaz
 
@@ -14,7 +14,7 @@ Diseño propio sobre el tema Material del sistema (sin dependencias nuevas), con
 
 - **Barra superior** con título, botón de volver e **indicador de conexión en vivo** (En línea · Sin conexión · Ejemplos locales).
   Una barra de progreso fina avisa que hay una petición en curso y un aviso de color muestra errores, éxitos e información.
-- **Inicio** con tarjetas de acción (entregas, notificaciones con contador de no leídas, perfil) y «Cerrar sesión» siempre a la mano.
+- **Inicio** con tarjetas de acción (entregas y perfil) y «Cerrar sesión» siempre a la mano.
 - **Mis entregas** como tarjetas: número de parada, folio, dirección, estado con color, total, distancia y tiempo.
 - **Entrega** en secciones: cliente y total a cobrar; evidencia (QR, foto y GPS con ✓ / pendiente y su botón); resultado con selector
   *Entregado · Parcial · Fallida*, campos rotulados y, en parcial, pasos − / + por línea con su motivo. El botón «Registrar
@@ -26,9 +26,9 @@ Diseño propio sobre el tema Material del sistema (sin dependencias nuevas), con
 |---|---|---|---|
 | ![Acceso](docs/capturas/01_acceso.png) | ![Inicio](docs/capturas/02_inicio.png) | ![Mis entregas](docs/capturas/03_mis_entregas.png) | ![Entrega](docs/capturas/04_entrega.png) |
 
-| Entrega parcial | Perfil | Notificaciones |
-|---|---|---|
-| ![Entrega parcial](docs/capturas/05_entrega_parcial.png) | ![Perfil](docs/capturas/06_perfil.png) | ![Notificaciones](docs/capturas/07_notificaciones.png) |
+| Entrega parcial | Perfil |
+|---|---|
+| ![Entrega parcial](docs/capturas/05_entrega_parcial.png) | ![Perfil](docs/capturas/06_perfil.png) |
 
 ## Compilar y ejecutar
 
@@ -43,7 +43,7 @@ El APK queda en `app/build/outputs/apk/debug/app-debug.apk`.
 ### Conexión con el backend
 
 - **Debug:** HTTP solo hacia un host fijado al compilar, por defecto `10.0.2.2` (el equipo, visto desde el emulador). Para un
-  teléfono físico: `./build.ps1 -DebugHttpHost 192.168.1.20` (la IP de la PC en la red local) y permitir los puertos 5101–5108 en el
+  teléfono físico: `./build.ps1 -DebugHttpHost 192.168.1.20` (la IP de la PC en la red local) y permitir los puertos 5101–5110 en el
   firewall de Windows. Cualquier otro host exige HTTPS.
 - **Release:** solo HTTPS; no existe la configuración de HTTP. No se desactiva la validación de certificados.
 - En la pantalla de acceso se escribe el servidor (`http://10.0.2.2` por defecto en debug) o se marca «Usar ejemplos locales»
@@ -76,8 +76,8 @@ cerrar sesión se revocan acceso y renovación en el servidor y se borran las cr
 
 | Qué | Cómo | Resultado verificado |
 |---|---|---|
-| Unitarias (JVM): protocolo, contrato, entregas, idempotencia, perfil (incluye PATCH→PUT) | `./build.ps1` o `gradle testDebugUnitTest` | 47 aprobadas |
-| Contra los **servicios reales** (login, entregas, foto en MongoDB, GPS, cierre, duplicado, notificaciones, revocación) | `MICROHUBS_BACKEND_HOST=127.0.0.1 MICROHUBS_CLAVE=… gradle testDebugUnitTest --tests "*BackendRealTest*"` (necesita 2 entregas en ruta: `preparar_entregas.py`; la de perfil edita el teléfono y lo restaura) | 3 aprobadas |
+| Unitarias (JVM): protocolo, contrato, entregas, idempotencia, perfil (incluye PATCH→PUT) | `./build.ps1` o `gradle testDebugUnitTest` | 46 aprobadas |
+| Contra los **servicios reales** (login, entregas, foto en MongoDB, GPS en el servicio de seguimiento, cierre, duplicado, revocación) | `MICROHUBS_BACKEND_HOST=127.0.0.1 MICROHUBS_CLAVE=… gradle testDebugUnitTest --tests "*BackendRealTest*"` (necesita 2 entregas en ruta: `preparar_entregas.py`; la de perfil edita el teléfono y lo restaura) | 3 aprobadas |
 | En emulador Android 14 (Keystore, borradores, redimensión de foto, recorrido de todas las pantallas con ejemplos —incluida la edición del perfil— y contra el backend real; guarda las capturas) | `gradle connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.clave=…` | 7 aprobadas |
 | Lint | `./build.ps1` | 0 errores, 17 advertencias (versiones de dependencias, `commit()` de preferencias, recursos sin usar, `ExifInterface`; `InsecureBaseConfiguration` es el HTTP permitido solo en debug) |
 

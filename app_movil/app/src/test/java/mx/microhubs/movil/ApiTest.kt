@@ -44,7 +44,7 @@ class ApiTest {
         assertEquals("GET /api/v1/entregas/mias?pagina=2&por_pagina=20", p.toString())
         assertEquals("application/json", p.cabecera("Accept")); assertEquals("application/json", p.cabecera("Content-Type"))
         assertTrue(p.cabecera("Authorization")!!.startsWith("Bearer eyJ"))
-        val puertos = mapOf("auth" to 5101, "usuarios" to 5102, "pedidos" to 5104, "entregas" to 5105, "documentos" to 5107, "notificaciones" to 5108)
+        val puertos = mapOf("auth" to 5101, "usuarios" to 5102, "pedidos" to 5104, "entregas" to 5105, "documentos" to 5107, "seguimiento" to 5110)
         puertos.forEach { (servicio, puerto) ->
             var visto = -1
             val otro = Servidor { Salida(200) }
@@ -158,8 +158,6 @@ class ApiTest {
         val mias = api.call("entregas", "entregas/mias")
         Contrato.parada(mias.getJSONArray("datos").getJSONObject(0))
         Contrato.detalle(api.call("entregas", "entregas/61"))
-        Contrato.aviso(api.call("notificaciones", "notificaciones").getJSONArray("datos").getJSONObject(0))
-        assertEquals(1, api.call("notificaciones", "notificaciones/conteo").getInt("no_leidas"))
     }
 
     @Test(expected = IllegalArgumentException::class) fun elModoDemoRechazaRutasDesconocidas() {
