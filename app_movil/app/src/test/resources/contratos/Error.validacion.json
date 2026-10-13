@@ -1,0 +1,13 @@
+{
+  "error": {
+    "codigo": "VALIDACION",
+    "mensaje": "Revisa los datos enviados.",
+    "detalles": [
+      {
+        "campo": "cantidad",
+        "mensaje": "Debe ser mayor a 0."
+      }
+    ],
+    "traza_id": "9f2c1e7a-6b1d-4c1b-9d4e-2a7f0f6e1a10"
+  }
+}

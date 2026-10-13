@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<usuario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:microhubs:v1" version="1">
+  <id>7</id>
+  <nombre>Ramiro</nombre>
+  <apellidos>Alanís Lozano</apellidos>
+  <correo>repartidor1@codex.mx</correo>
+  <telefono>8114641034</telefono>
+  <rol>repartidor</rol>
+  <microhub xsi:nil="true" />
+  <ultimo_acceso>2026-10-12T08:02:11-06:00</ultimo_acceso>
+</usuario>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<error xmlns="urn:microhubs:v1" version="1">
+  <codigo>TOKEN_INVALIDO</codigo>
+  <mensaje>La sesión venció o fue cerrada. Inicia sesión de nuevo.</mensaje>
+  <traza_id>0b7d3a52-77f5-4a0e-8b3c-1c9e5d2f4a11</traza_id>
+</error>

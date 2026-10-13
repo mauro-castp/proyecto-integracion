@@ -1,0 +1,15 @@
+{
+  "puntos": [
+    {
+      "latitud": 25.7488,
+      "longitud": -100.3608,
+      "precision_m": 9.0,
+      "capturado_en": "2026-10-12T18:28:00-06:00"
+    },
+    {
+      "latitud": 25.749,
+      "longitud": -100.361,
+      "capturado_en": "2026-10-12T18:29:00-06:00"
+    }
+  ]
+}

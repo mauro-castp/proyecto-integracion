@@ -1,1 +1,0 @@
-<error xmlns="urn:microhubs:v1"><codigo>VALIDACION</codigo><mensaje>Nombre requerido</mensaje><detalles><detalle><campo>nombre</campo><mensaje>Debe contener tres caracteres</mensaje></detalle></detalles><traza_id>demo-001</traza_id></error>

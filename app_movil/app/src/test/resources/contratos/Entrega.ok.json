@@ -1,0 +1,12 @@
+{
+  "id": 61,
+  "pedido_id": 20,
+  "folio": "PED-20260930-000020",
+  "estado_pedido": "en_ruta",
+  "orden_parada": 3,
+  "direccion": "Av. Rodrigo Gómez 1420, San Bernabé",
+  "zona": "San Bernabé Centro",
+  "distancia_km": 0.21,
+  "minutos_estimados": 14.2,
+  "total": 158.0
+}

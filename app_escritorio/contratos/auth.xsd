@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: auth · generado por contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+
+  <xs:annotation><xs:documentation>Login: Credenciales.</xs:documentation></xs:annotation>
+  <xs:complexType name="TLogin">
+    <xs:sequence>
+      <xs:element name="correo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[^@\s]+@[^@\s]+\.[^@\s]+"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="clave">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="200"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="dispositivo" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="120"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSesionUsuario">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="apellidos" type="xs:string"/>
+      <xs:element name="correo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[^@\s]+@[^@\s]+\.[^@\s]+"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="rol">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="administrador"/>
+            <xs:enumeration value="operador"/>
+            <xs:enumeration value="planeador"/>
+            <xs:enumeration value="cliente"/>
+            <xs:enumeration value="repartidor"/>
+            <xs:enumeration value="auditor"/>
+            <xs:enumeration value="analista"/>
+            <xs:enumeration value="supervisor"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="microhub_id" type="xs:long" nillable="true"/>
+      <xs:element name="permisos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="permiso" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>Sesion: Sesión iniciada.</xs:documentation></xs:annotation>
+  <xs:complexType name="TSesion">
+    <xs:sequence>
+      <xs:element name="token_acceso" type="xs:string"/>
+      <xs:element name="token_renovacion" type="xs:string"/>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Bearer"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="expira_en">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="usuario" type="tns:TSesionUsuario"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRenovar">
+    <xs:sequence>
+      <xs:element name="token_renovacion" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>Tokens: Tokens nuevos tras renovar.</xs:documentation></xs:annotation>
+  <xs:complexType name="TTokens">
+    <xs:sequence>
+      <xs:element name="token_acceso" type="xs:string"/>
+      <xs:element name="token_renovacion" type="xs:string"/>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Bearer"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="expira_en">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>Salir: Cuerpo opcional: si se envía el token de renovación, también se revoca.</xs:documentation></xs:annotation>
+  <xs:complexType name="TSalir">
+    <xs:sequence>
+      <xs:element name="token_renovacion" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TValidacionUsuario">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="rol">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="administrador"/>
+            <xs:enumeration value="operador"/>
+            <xs:enumeration value="planeador"/>
+            <xs:enumeration value="cliente"/>
+            <xs:enumeration value="repartidor"/>
+            <xs:enumeration value="auditor"/>
+            <xs:enumeration value="analista"/>
+            <xs:enumeration value="supervisor"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="microhub_id" type="xs:long" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>Validacion: Resultado de validar el token del encabezado contra la firma y contra Redis.</xs:documentation></xs:annotation>
+  <xs:complexType name="TValidacion">
+    <xs:sequence>
+      <xs:element name="valido" type="xs:boolean"/>
+      <xs:element name="expira_en">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="usuario" type="tns:TValidacionUsuario"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="login">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TLogin">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sesion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSesion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="renovar">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TRenovar">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tokens">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TTokens">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="salir">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSalir">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="validacion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TValidacion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

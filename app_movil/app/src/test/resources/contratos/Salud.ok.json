@@ -1,0 +1,10 @@
+{
+  "servicio": "pedidos",
+  "version": "1.0.0",
+  "estado": "ok",
+  "dependencias": {
+    "postgres": "ok",
+    "redis": "ok",
+    "mongo": "no_aplica"
+  }
+}

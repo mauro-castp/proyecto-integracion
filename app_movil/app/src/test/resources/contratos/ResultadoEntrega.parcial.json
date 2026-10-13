@@ -1,0 +1,29 @@
+{
+  "resultado": "parcial",
+  "monto_cobrado": 80.0,
+  "cambio_entregado": 20.0,
+  "incidencia": "El cliente rechazó el agua.",
+  "lineas": [
+    {
+      "pedido_detalle_id": 51,
+      "cantidad_entregada": 2,
+      "cantidad_devuelta": 0
+    },
+    {
+      "pedido_detalle_id": 52,
+      "cantidad_entregada": 0,
+      "cantidad_devuelta": 4,
+      "motivo": "El cliente la rechazó."
+    }
+  ],
+  "ubicacion": {
+    "latitud": 25.7491,
+    "longitud": -100.3611,
+    "precision_m": 8.5
+  },
+  "evidencia_ids": [
+    "665f1c2e8a3b4d0012a7c9e1"
+  ],
+  "capturado_en": "2026-10-12T18:30:00-06:00",
+  "id_cliente_local": "b7d6a0f2-3c1e-4f5a-9d8b-0e1f2a3b4c5d"
+}

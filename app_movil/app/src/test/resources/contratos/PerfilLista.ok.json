@@ -1,0 +1,20 @@
+{
+  "datos": [
+    {
+      "id": 7,
+      "nombre": "Ramiro",
+      "apellidos": "Alanís Lozano",
+      "correo": "repartidor1@codex.mx",
+      "telefono": "8114641034",
+      "rol": "repartidor",
+      "microhub": null,
+      "ultimo_acceso": "2026-10-12T08:02:11-06:00"
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

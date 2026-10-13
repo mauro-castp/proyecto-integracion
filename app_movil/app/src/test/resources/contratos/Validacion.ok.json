@@ -1,0 +1,9 @@
+{
+  "valido": true,
+  "expira_en": 612,
+  "usuario": {
+    "id": 7,
+    "rol": "repartidor",
+    "microhub_id": null
+  }
+}

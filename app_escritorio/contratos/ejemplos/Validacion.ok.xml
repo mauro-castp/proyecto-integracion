@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validacion xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:microhubs:v1" version="1">
+  <valido>true</valido>
+  <expira_en>612</expira_en>
+  <usuario>
+    <id>7</id>
+    <rol>repartidor</rol>
+    <microhub_id xsi:nil="true" />
+  </usuario>
+</validacion>

@@ -1,0 +1,43 @@
+{
+  "id": 20,
+  "folio": "PED-20260930-000020",
+  "estado": "en_ruta",
+  "cliente": {
+    "nombre": "Laura Pérez",
+    "telefono": "8180001122"
+  },
+  "domicilio": {
+    "calle": "Av. Rodrigo Gómez",
+    "numero_ext": "1420",
+    "colonia": "San Bernabé",
+    "latitud": 25.749,
+    "longitud": -100.361
+  },
+  "zona": {
+    "id": 1,
+    "nombre": "San Bernabé Centro"
+  },
+  "microhub_id": 2,
+  "subtotal": 143.0,
+  "costo_envio": 15.0,
+  "total": 158.0,
+  "creado_en": "2026-09-30T10:15:00-06:00",
+  "lineas": [
+    {
+      "id": 51,
+      "producto_id": 12,
+      "nombre": "Arroz",
+      "cantidad": 2,
+      "precio_unitario": 32.5,
+      "importe": 65.0
+    },
+    {
+      "id": 52,
+      "producto_id": 20,
+      "nombre": "Agua purificada",
+      "cantidad": 4,
+      "precio_unitario": 19.5,
+      "importe": 78.0
+    }
+  ]
+}

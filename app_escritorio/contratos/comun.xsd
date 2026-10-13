@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: comun · generado por contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+
+  <xs:annotation><xs:documentation>Paginacion: Datos de paginación. Petición: ?pagina=1&amp;por_pagina=20 (máximo 100).</xs:documentation></xs:annotation>
+  <xs:complexType name="TPaginacion">
+    <xs:sequence>
+      <xs:element name="pagina">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="por_pagina">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="100"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="total">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="paginas">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TErrorDetalle">
+    <xs:sequence>
+      <xs:element name="campo" type="xs:string"/>
+      <xs:element name="mensaje" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>Error: Error estandarizado. En JSON va dentro de la clave `error`.</xs:documentation></xs:annotation>
+  <xs:complexType name="TError">
+    <xs:sequence>
+      <xs:element name="codigo" type="xs:string"/>
+      <xs:element name="mensaje" type="xs:string"/>
+      <xs:element name="detalles" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="detalle" type="tns:TErrorDetalle" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="traza_id" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSaludDependencias">
+    <xs:sequence>
+      <xs:element name="postgres">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="ok"/>
+            <xs:enumeration value="error"/>
+            <xs:enumeration value="no_aplica"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="redis">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="ok"/>
+            <xs:enumeration value="error"/>
+            <xs:enumeration value="no_aplica"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="mongo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="ok"/>
+            <xs:enumeration value="error"/>
+            <xs:enumeration value="no_aplica"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>Salud: Estado del servicio. Público, sin autenticación.</xs:documentation></xs:annotation>
+  <xs:complexType name="TSalud">
+    <xs:sequence>
+      <xs:element name="servicio" type="xs:string"/>
+      <xs:element name="version" type="xs:string"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="ok"/>
+            <xs:enumeration value="degradado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="dependencias" type="tns:TSaludDependencias"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TClienteRef">
+    <xs:sequence>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="telefono" type="xs:string" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDomicilioRef">
+    <xs:sequence>
+      <xs:element name="calle" type="xs:string"/>
+      <xs:element name="numero_ext" type="xs:string"/>
+      <xs:element name="colonia" type="xs:string"/>
+      <xs:element name="latitud" type="xs:double"/>
+      <xs:element name="longitud" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="error">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TError">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="salud">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSalud">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

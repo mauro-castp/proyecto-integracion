@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recorrido xmlns="urn:microhubs:v1" version="1">
+  <entrega_id>61</entrega_id>
+  <puntos>42</puntos>
+  <distancia_km>1.84</distancia_km>
+  <inicio>2026-10-12T18:00:00-06:00</inicio>
+  <fin>2026-10-12T18:29:00-06:00</fin>
+  <precision_promedio_m>9.2</precision_promedio_m>
+  <ultimo_punto>
+    <latitud>25.749</latitud>
+    <longitud>-100.361</longitud>
+    <precision_m>8.0</precision_m>
+  </ultimo_punto>
+</recorrido>

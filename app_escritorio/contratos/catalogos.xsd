@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: catalogos · generado por contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+
+  <xs:complexType name="TCategoria">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TProducto">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="clave_interna" type="xs:string"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="categoria" type="tns:TCategoria"/>
+      <xs:element name="unidad" type="xs:string"/>
+      <xs:element name="presentacion" type="xs:string" nillable="true"/>
+      <xs:element name="precio">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="imagen_url" type="xs:string" nillable="true"/>
+      <xs:element name="estatus">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="activo"/>
+            <xs:enumeration value="inactivo"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>ProductoLista: Página de productos.</xs:documentation></xs:annotation>
+  <xs:complexType name="TProductoLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="producto" type="tns:TProducto" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TZona">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="clave" type="xs:string"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="colonia" type="xs:string"/>
+      <xs:element name="codigo_postal">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{5}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="latitud" type="xs:double"/>
+      <xs:element name="longitud" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>ZonaLista: Página de zonas.</xs:documentation></xs:annotation>
+  <xs:complexType name="TZonaLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="zona" type="tns:TZona" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMicrohub">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="clave" type="xs:string"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="latitud" type="xs:double"/>
+      <xs:element name="longitud" type="xs:double"/>
+      <xs:element name="radio_km" type="xs:double" nillable="true"/>
+      <xs:element name="estatus">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="activo"/>
+            <xs:enumeration value="inactivo"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>MicrohubLista: Página de microhubs.</xs:documentation></xs:annotation>
+  <xs:complexType name="TMicrohubLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="microhub" type="tns:TMicrohub" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="producto">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TProducto">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="productos">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TProductoLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="zona">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TZona">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="zonas">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TZonaLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="microhub">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TMicrohub">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="microhubs">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TMicrohubLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

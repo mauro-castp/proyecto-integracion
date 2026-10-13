@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulaciones_resumen xmlns="urn:microhubs:v1" version="1">
+  <total>9</total>
+  <por_decision>
+    <grupo>
+      <decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision>
+      <cantidad>6</cantidad>
+      <utilizacion_promedio>74.5</utilizacion_promedio>
+    </grupo>
+    <grupo>
+      <decision>VIABLE</decision>
+      <cantidad>3</cantidad>
+      <utilizacion_promedio>61.2</utilizacion_promedio>
+    </grupo>
+  </por_decision>
+</simulaciones_resumen>

@@ -1,0 +1,15 @@
+{
+  "total": 9,
+  "por_decision": [
+    {
+      "decision": "NO VIABLE CON LOS SUPUESTOS ACTUALES",
+      "cantidad": 6,
+      "utilizacion_promedio": 74.5
+    },
+    {
+      "decision": "VIABLE",
+      "cantidad": 3,
+      "utilizacion_promedio": 61.2
+    }
+  ]
+}

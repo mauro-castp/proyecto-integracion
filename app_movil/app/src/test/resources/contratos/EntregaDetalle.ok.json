@@ -1,0 +1,33 @@
+{
+  "id": 61,
+  "pedido_id": 20,
+  "folio": "PED-20260930-000020",
+  "estado_pedido": "en_ruta",
+  "cliente": {
+    "nombre": "Laura Pérez",
+    "telefono": "8180001122"
+  },
+  "domicilio": {
+    "calle": "Av. Rodrigo Gómez",
+    "numero_ext": "1420",
+    "colonia": "San Bernabé",
+    "latitud": 25.749,
+    "longitud": -100.361
+  },
+  "orden_parada": 3,
+  "distancia_km": 0.21,
+  "minutos_estimados": 14.2,
+  "total": 158.0,
+  "lineas": [
+    {
+      "pedido_detalle_id": 51,
+      "nombre": "Arroz",
+      "cantidad": 2
+    },
+    {
+      "pedido_detalle_id": 52,
+      "nombre": "Agua purificada",
+      "cantidad": 4
+    }
+  ]
+}

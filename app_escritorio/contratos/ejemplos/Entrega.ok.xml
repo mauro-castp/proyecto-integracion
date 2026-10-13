@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entrega xmlns="urn:microhubs:v1" version="1">
+  <id>61</id>
+  <pedido_id>20</pedido_id>
+  <folio>PED-20260930-000020</folio>
+  <estado_pedido>en_ruta</estado_pedido>
+  <orden_parada>3</orden_parada>
+  <direccion>Av. Rodrigo Gómez 1420, San Bernabé</direccion>
+  <zona>San Bernabé Centro</zona>
+  <distancia_km>0.21</distancia_km>
+  <minutos_estimados>14.2</minutos_estimados>
+  <total>158.00</total>
+</entrega>

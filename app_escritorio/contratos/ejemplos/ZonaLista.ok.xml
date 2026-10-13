@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zonas xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <zona>
+      <id>1</id>
+      <clave>ZN-SB01</clave>
+      <nombre>San Bernabé Centro</nombre>
+      <colonia>San Bernabé</colonia>
+      <codigo_postal>64100</codigo_postal>
+      <latitud>25.7455</latitud>
+      <longitud>-100.3585</longitud>
+    </zona>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</zonas>

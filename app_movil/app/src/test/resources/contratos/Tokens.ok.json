@@ -1,0 +1,6 @@
+{
+  "token_acceso": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3In0.firma2",
+  "token_renovacion": "rt_1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d",
+  "tipo": "Bearer",
+  "expira_en": 900
+}

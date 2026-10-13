@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notificaciones xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <notificacion>
+      <id>310</id>
+      <tipo>entrega</tipo>
+      <titulo>Nueva entrega asignada</titulo>
+      <mensaje>Se te asignó el pedido PED-20260930-000020 (parada 3).</mensaje>
+      <leida>false</leida>
+      <referencia>
+        <tipo>entrega</tipo>
+        <id>61</id>
+      </referencia>
+      <creada_en>2026-10-12T17:55:00-06:00</creada_en>
+    </notificacion>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</notificaciones>

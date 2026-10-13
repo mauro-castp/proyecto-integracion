@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decision xmlns="urn:microhubs:v1" version="1">
+  <decision>condicionado</decision>
+  <motivo>Renegociar la renta antes de firmar.</motivo>
+</decision>

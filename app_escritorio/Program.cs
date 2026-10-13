@@ -1,193 +1,127 @@
 using System.Data;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Schema;
-
 namespace Microhubs;
-
-static class Program
-{
-    [STAThread] static void Main() { ApplicationConfiguration.Initialize(); Application.Run(new MainWindow()); }
-}
-
-sealed class Api : IDisposable
-{
-    internal static readonly XNamespace Ns = "urn:microhubs:v1";
-    readonly HttpClient http;
-    readonly XmlSchemaSet schemas = new();
-    public string Access = "", Refresh = "", Role = "";
-    public bool Demo;
-    readonly List<(int id, string name)> candidates = new() { (1, "San Bernabé") };
-    public string Host = "https://localhost";
-    public Api(HttpMessageHandler? handler = null)
-    {
-        http = handler == null ? new HttpClient() : new HttpClient(handler);
-        http.Timeout = TimeSpan.FromSeconds(20);
-        schemas.Add(Ns.NamespaceName, Path.Combine(AppContext.BaseDirectory, "contratos", "cliente.xsd"));
-    }
-    public static XElement Body(string name, params (string key, string value)[] fields) => new(Ns + name, fields.Select(f => new XElement(Ns + f.key, f.value)));
-    public async Task<XDocument> Call(string service, string path, HttpMethod? method = null, XElement? body = null, bool retry = true)
-    {
-        if (Demo) return Validate(DemoResponse(path, body));
-        var ports = new Dictionary<string, int> { ["auth"] = 5101, ["catalogos"] = 5103, ["pedidos"] = 5104, ["planeacion"] = 5106 };
-        var parts = path.Split('?', 2);
-        var uri = new UriBuilder(Host) { Port = ports[service], Path = "/api/v1/" + parts[0], Query = parts.Length == 2 ? parts[1] : "" };
-        using var request = new HttpRequestMessage(method ?? HttpMethod.Get, uri.Uri);
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
-        if (Access != "") request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Access);
-        if (body != null) request.Content = new StringContent(body.ToString(), Encoding.UTF8, "application/xml");
-        using var response = await http.SendAsync(request);
-        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized && retry && Refresh != "" && !path.StartsWith("auth/"))
-        {
-            try { SetSession(await Call("auth", "auth/renovar", HttpMethod.Post, Body("renovar", ("token_renovacion", Refresh)), false)); }
-            catch { Clear(); throw; }
-            return await Call(service, path, method, body, false);
-        }
-        if (response.StatusCode == System.Net.HttpStatusCode.NoContent && response.IsSuccessStatusCode) return new XDocument();
-        if (response.Content.Headers.ContentType?.MediaType != "application/xml") throw new Exception("El servicio no devolvió application/xml.");
-        var document = Validate(await response.Content.ReadAsStringAsync());
-        if (!response.IsSuccessStatusCode) throw new Exception(document.Descendants(Ns + "mensaje").FirstOrDefault()?.Value ?? $"HTTP {(int)response.StatusCode}");
-        return document;
-    }
-    public XDocument Validate(string xml)
-    {
-        using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { DtdProcessing = DtdProcessing.Prohibit, XmlResolver = null, MaxCharactersInDocument = 2_000_000 });
-        var doc = XDocument.Load(reader);
-        doc.Validate(schemas, (_, e) => throw new XmlSchemaValidationException(e.Message));
-        return doc;
-    }
-    public void SetSession(XDocument doc)
-    {
-        Clear();
-        var access = doc.Root!.Element(Ns + "token_acceso")!.Value;
-        var refresh = doc.Root.Element(Ns + "token_renovacion")!.Value;
-        var role = doc.Descendants(Ns + "rol").Single().Value;
-        if (string.IsNullOrWhiteSpace(access) || string.IsNullOrWhiteSpace(refresh) || string.IsNullOrWhiteSpace(role)) throw new Exception("Sesión incompleta.");
-        // La firma y revocación se verifican en el servidor. No se distribuye JWT_SECRET.
-        if (!Demo)
-        {
-            var segments = access.Split('.');
-            if (segments.Length != 3) throw new Exception("JWT inválido.");
-            var payload = segments[1].Replace('-', '+').Replace('_', '/');
-            payload = payload.PadRight((payload.Length + 3) / 4 * 4, '=');
-            using var claims = System.Text.Json.JsonDocument.Parse(Convert.FromBase64String(payload));
-            if (claims.RootElement.GetProperty("exp").GetInt64() <= DateTimeOffset.UtcNow.ToUnixTimeSeconds()) throw new Exception("JWT vencido.");
-        }
-        Access = access; Refresh = refresh; Role = role;
-    }
-    public void Clear() { Access = Refresh = Role = ""; }
-    string DemoResponse(string path, XElement? body)
-    {
-        if (path is "auth/login" or "auth/renovar") return "<sesion xmlns='urn:microhubs:v1'><token_acceso>demo</token_acceso><token_renovacion>demo</token_renovacion><expira_en>900</expira_en><usuario><id>1</id><nombre>Planeación demo</nombre><rol>planeador</rol><microhub_id>1</microhub_id></usuario></sesion>";
-        if (path == "auth/salir") return "<resultado xmlns='urn:microhubs:v1'><mensaje>Sesión cerrada</mensaje></resultado>";
-        if (path.Contains("simular")) return new XElement(Ns + "simulacion", new XElement(Ns + "candidato_id", int.Parse(path.Split('/')[1])), new XElement(Ns + "viable", true), new XElement(Ns + "costo", 1250)).ToString();
-        if (path.StartsWith("candidatos") && body?.Name.LocalName == "candidato")
-        {
-            var name = body.Element(Ns + "nombre")!.Value;
-            if (path.Contains('/'))
-            {
-                var id = int.Parse(path.Split('/')[1]);
-                var index = candidates.FindIndex(c => c.id == id);
-                if (index < 0) throw new Exception("Candidato no encontrado.");
-                candidates[index] = (id, name);
-            }
-            else candidates.Add((candidates.Count == 0 ? 1 : candidates.Max(c => c.id) + 1, name));
-            return new XElement(Ns + "resultado", new XElement(Ns + "mensaje", "Candidato guardado en memoria")).ToString();
-        }
-        if (path == "candidatos") return new XElement(Ns + "lista",
-            new XElement(Ns + "datos", candidates.Select(c => Body("candidato", ("id", c.id.ToString()), ("nombre", c.name)))),
-            Body("paginacion", ("pagina", "1"), ("por_pagina", "20"), ("total", candidates.Count.ToString()), ("paginas", "1"))).ToString();
-        var kind = path.StartsWith("pedidos") ? "pedido" : path.Contains("candidatos") ? "candidato" : "producto";
-        return $"<lista xmlns='urn:microhubs:v1'><datos><{kind}><id>1</id><nombre>Ejemplo local</nombre><estado>entregado</estado></{kind}></datos><paginacion><pagina>1</pagina><por_pagina>20</por_pagina><total>1</total><paginas>1</paginas></paginacion></lista>";
-    }
-    public void Dispose() => http.Dispose();
-}
-
+static class Program { [STAThread] static void Main(){ApplicationConfiguration.Initialize();Application.Run(new MainWindow());} }
 sealed class MainWindow : Form
 {
-    readonly Api api = new();
-    readonly FlowLayoutPanel bar = new() { Dock = DockStyle.Top, AutoSize = true, WrapContents = true };
-    readonly DataGridView grid = new() { Dock = DockStyle.Fill, ReadOnly = true, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill, AllowUserToAddRows = false };
-    readonly TextBox mail = new() { PlaceholderText = "Correo", Width = 180 }, password = new() { PlaceholderText = "Clave", UseSystemPasswordChar = true }, host = new() { Text = "https://localhost", Width = 180 }, search = new() { PlaceholderText = "Buscar", Width = 160 };
-    readonly CheckBox demo = new() { Text = "Ejemplos locales", Checked = true, AutoSize = true };
-    readonly ComboBox state = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 120 };
-    readonly Label status = new() { Dock = DockStyle.Bottom, Height = 35, Text = "Sin sesión · ejemplos locales" };
-    readonly List<Button> privateButtons = new();
-    XDocument? latest;
-    DataTable? table;
+    readonly Api api=new();
+    readonly FlowLayoutPanel bar=new(){Dock=DockStyle.Top,AutoSize=true,WrapContents=true};
+    readonly DataGridView grid=new(){Dock=DockStyle.Fill,ReadOnly=true,AutoSizeColumnsMode=DataGridViewAutoSizeColumnsMode.DisplayedCells,AllowUserToAddRows=false};
+    readonly TextBox mail=new(){PlaceholderText="Correo",Width=180},password=new(){PlaceholderText="Clave",UseSystemPasswordChar=true},host=new(){Text="http://localhost",Width=170},search=new(){PlaceholderText="Buscar",Width=130};
+    readonly CheckBox demo=new(){Text="Ejemplos oficiales",Checked=false,AutoSize=true};
+    readonly ComboBox state=new(){DropDownStyle=ComboBoxStyle.DropDownList,Width=130};
+    readonly DateTimePicker desde=new(){Format=DateTimePickerFormat.Short,ShowCheckBox=true,Checked=false},hasta=new(){Format=DateTimePickerFormat.Short,ShowCheckBox=true,Checked=false};
+    readonly Label status=new(){Dock=DockStyle.Bottom,Height=50,Text="Sin sesión"};
+    readonly List<(Button button,bool write)> secured=new();
+    XDocument? latest; string service="",resource=""; int page=1,pages=1;
     public MainWindow()
     {
-        Text = "Microhubs · Planeación"; Width = 1100; Height = 700;
-        Controls.Add(grid); Controls.Add(bar); Controls.Add(status);
-        bar.Controls.AddRange(new Control[] { host, demo, mail, password });
-        Add("Entrar", async () => {
-            if (!mail.Text.Contains('@') || password.Text.Length == 0) throw new Exception("Ingresa correo y clave.");
-            if (!Uri.TryCreate(host.Text, UriKind.Absolute, out var uri) || uri.Scheme != "https") throw new Exception("Configura un host HTTPS.");
-            api.Clear(); latest = null; table = null; grid.DataSource = null; api.Demo = demo.Checked; api.Host = host.Text;
-            try { api.SetSession(await api.Call("auth", "auth/login", HttpMethod.Post, Api.Body("login", ("correo", mail.Text.Trim()), ("clave", password.Text)))); }
-            catch { api.Clear(); throw; }
-            password.Clear(); SetMenu(); status.Text = $"{api.Role} · {(api.Demo ? "Ejemplos locales" : "Conectado")}";
+        Text="Microhubs · Planeación XML v1";Width=1250;Height=760;
+        Controls.Add(grid);Controls.Add(bar);Controls.Add(status);
+        bar.Controls.AddRange(new Control[]{host,demo,mail,password});
+        Add("Entrar",async()=>{
+            api.Clear(); api.Demo=demo.Checked;api.Host=host.Text.Trim();
+            try { api.SetSession(await api.Call("auth","auth/login",HttpMethod.Post,Api.Body("login",("correo",mail.Text.Trim()),("clave",password.Text)))); }
+            catch {api.Clear();throw;}
+            password.Clear();SetMenu();status.Text=api.Role;
         });
-        Add("Productos", () => LoadList("catalogos", "productos"), true);
-        Add("Pedidos cerrados", () => LoadList("pedidos", "pedidos?estado=entregado"), true);
-        Add("Candidatos", () => LoadList("planeacion", "candidatos"), true);
-        Add("Guardar candidato", async () => {
-            using var dialog = new Form { Text = "Candidato", Width = 350, Height = 210 };
-            var id = new TextBox { PlaceholderText = "ID (vacío para crear)", Dock = DockStyle.Top };
-            var name = new TextBox { PlaceholderText = "Nombre", Dock = DockStyle.Top };
-            var save = new Button { Text = "Guardar", Dock = DockStyle.Bottom, DialogResult = DialogResult.OK };
-            dialog.Controls.AddRange(new Control[] { id, name, save });
-            if (dialog.ShowDialog(this) != DialogResult.OK) return;
-            if (name.Text.Trim().Length < 3 || (id.Text != "" && (!int.TryParse(id.Text, out var n) || n <= 0))) throw new Exception("Nombre e ID inválidos.");
-            latest = await api.Call("planeacion", "candidatos" + (id.Text == "" ? "" : "/" + id.Text), id.Text == "" ? HttpMethod.Post : HttpMethod.Put, Api.Body("candidato", ("nombre", name.Text.Trim())));
-            await LoadList("planeacion", "candidatos");
-        }, true);
-        Add("Simular selección", async () => {
-            if (grid.CurrentRow == null) throw new Exception("Selecciona un candidato.");
-            if (currentResource != "candidatos") throw new Exception("Consulta y selecciona un candidato primero.");
-            var id = Convert.ToString(grid.CurrentRow.Cells["id"].Value);
-            latest = await api.Call("planeacion", $"candidatos/{Uri.EscapeDataString(id!)}/simular", HttpMethod.Post, Api.Body("simular"));
-            MessageBox.Show(latest.ToString(), "Viabilidad");
-        }, true);
-        Add("Exportar XML", () => {
-            if (latest == null) throw new Exception("Consulta primero los datos.");
-            using var save = new SaveFileDialog { Filter = "XML|*.xml", FileName = "microhubs.xml" };
-            if (save.ShowDialog() == DialogResult.OK) latest.Save(save.FileName);
-            return Task.CompletedTask;
-        }, true);
-        Add("Salir", async () => { try { await api.Call("auth", "auth/salir", HttpMethod.Post, Api.Body("salir", ("token_renovacion", api.Refresh))); } finally { api.Clear(); latest = null; table = null; grid.DataSource = null; SetMenu(); status.Text = "Sin sesión"; } }, true);
-        state.Items.AddRange(new object[] { "Todos", "entregado", "parcial", "fallido" }); state.SelectedIndex = 0;
-        bar.Controls.AddRange(new Control[] { search, state });
-        search.TextChanged += (_, _) => Filter(); state.SelectedIndexChanged += (_, _) => Filter(); SetMenu();
-        FormClosed += (_, _) => api.Dispose();
+        Add("Productos",()=>LoadList("catalogos","productos"),true);
+        Add("Zonas",()=>LoadList("catalogos","zonas"),true);
+        Add("Microhubs",()=>LoadList("catalogos","microhubs"),true);
+        Add("Pedidos",()=>LoadList("pedidos","pedidos"),true);
+        Add("Candidatos",()=>LoadList("planeacion","candidatos"),true);
+        Add("Escenarios",()=>LoadList("planeacion","escenarios"),true);
+        Add("Detalle",async()=>{
+            if(resource is "zonas" or "microhubs"){ShowRow();return;}
+            Show(await api.Call(service,$"{resource}/{SelectedId()}"));
+        },true);
+        Add("Historial",async()=>{if(resource!="pedidos")throw new Exception("Selecciona un pedido.");Show(await api.Call("pedidos",$"pedidos/{SelectedId()}/historial"));},true);
+        Add("Crear candidato",()=>EditCandidate(false),true,true);
+        Add("Editar candidato",()=>EditCandidate(true),true,true);
+        Add("Simular selección",async()=>{RequireCandidates();ShowResults(await api.Call("planeacion",$"candidatos/{SelectedId()}/simular",HttpMethod.Post,Api.Body("simular")));},true,true);
+        Add("Decidir",async()=>{
+            RequireCandidates();var id=SelectedId();
+            var body=Edit("Decisión humana",Api.Body("decision",("decision","condicionado"),("motivo","")));
+            if(body!=null){Show(await api.Call("planeacion",$"candidatos/{id}/decision",HttpMethod.Post,body));await Reload();}
+        },true,true);
+        Add("Simulación libre",async()=>{var b=Edit("Supuestos",Template("Simulacion.ok.xml"));if(b!=null)ShowResults(await api.Call("planeacion","simulaciones",HttpMethod.Post,b));},true,true);
+        Add("Guardar escenario",async()=>{var b=Edit("Escenario",Template("EscenarioNuevo.ok.xml"));if(b!=null){Show(await api.Call("planeacion","escenarios",HttpMethod.Post,b));await LoadList("planeacion","escenarios");}},true,true);
+        Add("Resumen",async()=>Show(await api.Call("planeacion","simulaciones/resumen")),true);
+        Add("Anterior",async()=>{if(page>1){page--;await Reload();}},true);
+        Add("Siguiente",async()=>{if(page<pages){page++;await Reload();}},true);
+        Add("Buscar / filtrar",async()=>{page=1;await Reload();},true);
+        Add("Exportar XML",()=>{if(latest==null)throw new Exception("Consulta primero.");using var d=new SaveFileDialog{Filter="XML|*.xml",FileName="microhubs.xml"};if(d.ShowDialog()==DialogResult.OK)latest.Save(d.FileName);return Task.CompletedTask;},true);
+        Add("Salir",async()=>{try{await api.Call("auth","auth/salir",HttpMethod.Post,Api.Body("salir",("token_renovacion",api.Refresh)));}finally{api.Clear();grid.DataSource=null;latest=null;SetMenu();}},true);
+        FilterOptions();
+        bar.Controls.AddRange(new Control[]{search,state,new Label{Text="Desde",AutoSize=true},desde,new Label{Text="Hasta",AutoSize=true},hasta});
+        SetMenu();FormClosed+=(_,_)=>api.Dispose();
     }
-    void SetMenu() { foreach (var b in privateButtons) b.Enabled = api.Access != "" && (b.Text is "Salir" or "Exportar XML" || api.Role is "planeador" or "administrador" or "auditor"); privateButtons.Where(b => b.Text is "Guardar candidato" or "Simular selección").ToList().ForEach(b => b.Enabled = api.Access != "" && api.Role is "planeador" or "administrador"); }
-    void Add(string text, Func<Task> action, bool secured = false)
+    static XElement Template(string name)=>Api.Example(name);
+    static readonly string[] OrderStates={"creado","pendiente_asignacion","asignado","en_preparacion","en_ruta","entregado","entrega_parcial","entrega_fallida","cancelado"};
+    static readonly string[] Decisions={"pendiente","aceptado","rechazado","condicionado"};
+    void FilterOptions()
     {
-        var button = new Button { Text = text, AutoSize = true };
-        button.Click += async (_, _) => { button.Enabled = false; try { await action(); } catch (Exception e) { status.Text = e.Message; MessageBox.Show(e.Message, "Microhubs"); } finally { button.Enabled = true; SetMenu(); } };
-        bar.Controls.Add(button); if (secured) privateButtons.Add(button);
+        state.Items.Clear();state.Items.Add("Todos");
+        if(resource=="pedidos")state.Items.AddRange(OrderStates);else if(resource=="candidatos")state.Items.AddRange(Decisions);
+        state.Enabled=state.Items.Count>1;state.SelectedIndex=0;
     }
-    string currentResource = "";
-    async Task LoadList(string service, string path)
+    string SelectedId()=>grid.CurrentRow?.Cells["id"].Value?.ToString()??throw new Exception("Selecciona un registro.");
+    void RequireCandidates(){if(resource!="candidatos")throw new Exception("Selecciona un candidato.");}
+    async Task EditCandidate(bool edit)
     {
-        // Query parameters must remain a query, not part of UriBuilder.Path.
-        latest = await api.Call(service, path);
-        currentResource = path.Split('?')[0];
-        var rows = latest.Descendants(Api.Ns + "datos").Elements().ToList();
-        table = new DataTable();
-        foreach (var col in rows.SelectMany(r => r.Elements()).Select(e => e.Name.LocalName).Distinct()) table.Columns.Add(col);
-        foreach (var row in rows) { var item = table.NewRow(); foreach (var cell in row.Elements()) item[cell.Name.LocalName] = cell.Value; table.Rows.Add(item); }
-        grid.DataSource = table; Filter(); status.Text = $"{rows.Count} registros · {api.Role}";
+        XElement body;string path="candidatos";
+        if(edit){RequireCandidates();path+="/"+SelectedId();var source=(await api.Call("planeacion",path)).Root!;body=Template("CandidatoNuevo.ok.xml");foreach(var field in body.Elements())field.Value=source.Element(field.Name)!.Value;}
+        else {body=Template("CandidatoNuevo.ok.xml");body.Element(Api.Ns+"clave")!.Value="R-"+DateTimeOffset.UtcNow.ToUnixTimeSeconds();}
+        var result=Edit("Candidato · 14 campos",body);
+        if(result!=null){await api.Call("planeacion",path,edit?HttpMethod.Put:HttpMethod.Post,result);await LoadList("planeacion","candidatos");}
     }
-    void Filter()
+    XElement? Edit(string title,XElement source)
     {
-        if (table == null) return;
-        var rows = table.Clone();
-        foreach (DataRow row in table.Rows) if (row.ItemArray.Any(v => (v?.ToString() ?? "").Contains(search.Text, StringComparison.OrdinalIgnoreCase)) && (state.Text == "Todos" || (table.Columns.Contains("estado") && row["estado"].ToString() == state.Text))) rows.ImportRow(row);
-        grid.DataSource = rows;
+        using var dialog=new Form{Text=title,Width=650,Height=680,StartPosition=FormStartPosition.CenterParent};
+        var panel=new TableLayoutPanel{Dock=DockStyle.Fill,AutoScroll=true,ColumnCount=2};
+        var controls=new Dictionary<string,TextBox>();var copy=new XElement(source);
+        var errors=new ErrorProvider{ContainerControl=dialog};
+        foreach(var leaf in copy.Descendants().Where(e=>!e.HasElements))
+        {
+            var key=string.Join(".",leaf.Ancestors().Reverse().Skip(1).Select(e=>e.Name.LocalName).Append(leaf.Name.LocalName));
+            var text=new TextBox{Text=leaf.Value,Width=340};controls[key]=text;panel.Controls.Add(new Label{Text=key,AutoSize=true});panel.Controls.Add(text);
+        }
+        var save=new Button{Text="Validar y guardar",Dock=DockStyle.Bottom,Height=40};
+        dialog.Controls.Add(panel);dialog.Controls.Add(save);
+        save.Click+=(_,_)=>{
+            errors.Clear();foreach(var leaf in copy.Descendants().Where(e=>!e.HasElements)){var key=string.Join(".",leaf.Ancestors().Reverse().Skip(1).Select(e=>e.Name.LocalName).Append(leaf.Name.LocalName));leaf.Value=controls[key].Text.Trim();}
+            try{api.Validate(copy.ToString());dialog.DialogResult=DialogResult.OK;}
+            catch(Exception e){foreach(var c in controls.Values)errors.SetError(c,e.Message);MessageBox.Show(dialog,e.Message,"Revisa los campos");}
+        };
+        return dialog.ShowDialog(this)==DialogResult.OK?copy:null;
     }
+    void Add(string label,Func<Task> action,bool secure=false,bool write=false)
+    {
+        var b=new Button{Text=label,AutoSize=true};bar.Controls.Add(b);if(secure)secured.Add((b,write));
+        b.Click+=async(_,_)=>{b.Enabled=false;try{await action();}catch(ApiError e){status.Text=$"{e.Message} · Traza {e.Trace}";MessageBox.Show(e.Message+"\n"+string.Join("\n",e.Fields.Select(f=>$"{f.Key}: {f.Value}"))+"\nTraza: "+e.Trace,"Servicio");}catch(Exception e){status.Text=e.Message;MessageBox.Show(e.Message,"Microhubs");}finally{b.Enabled=true;SetMenu();}};
+    }
+    void SetMenu(){foreach(var (b,write) in secured)b.Enabled=api.Access!="" && (!write || api.Role is "planeador" or "administrador");}
+    async Task LoadList(string s,string r){service=s;resource=r;page=1;FilterOptions();await Reload();}
+    async Task Reload()
+    {
+        if(resource=="")return;
+        var query=$"{resource}?pagina={page}&por_pagina=20&q={Uri.EscapeDataString(search.Text)}";
+        if(state.Text!="Todos" && resource is "pedidos" or "candidatos")query+=$"&{(resource=="candidatos"?"decision":"estado")}={Uri.EscapeDataString(state.Text)}";
+        if(resource=="pedidos"){if(desde.Checked)query+="&desde="+desde.Value.ToString("yyyy-MM-dd");if(hasta.Checked)query+="&hasta="+hasta.Value.ToString("yyyy-MM-dd");}
+        latest=await api.Call(service,query);pages=int.Parse(latest.Root!.Element(Api.Ns+"paginacion")!.Element(Api.Ns+"paginas")!.Value);
+        grid.DataSource=ToTable(latest);status.Text=$"{resource} · página {page}/{pages} · {api.Role}";
+    }
+    /// <summary>Convierte una lista del contrato (datos + paginacion) en la tabla que ve la persona.</summary>
+    internal static DataTable ToTable(XDocument list)
+    {
+        var rows=list.Root!.Element(Api.Ns+"datos")!.Elements().Select(Flatten).ToList();var table=new DataTable();
+        foreach(var col in rows.SelectMany(r=>r.Keys).Distinct())table.Columns.Add(col);
+        foreach(var row in rows){var item=table.NewRow();foreach(var cell in row)item[cell.Key]=cell.Value;table.Rows.Add(item);}
+        return table;
+    }
+    internal static Dictionary<string,string> Flatten(XElement row)=>row.Descendants().Where(e=>!e.HasElements).GroupBy(e=>string.Join("/",e.Ancestors().TakeWhile(a=>a!=row).Reverse().Select(a=>a.Name.LocalName).Append(e.Name.LocalName))).ToDictionary(g=>g.Key,g=>string.Join("; ",g.Select(e=>e.Value)));
+    void ShowRow(){var row=grid.CurrentRow??throw new Exception("Selecciona un registro.");MessageBox.Show(string.Join("\n",row.Cells.Cast<DataGridViewCell>().Select(c=>$"{grid.Columns[c.ColumnIndex].HeaderText}: {c.Value}")),"Detalle");}
+    void Show(XDocument doc){latest=doc;MessageBox.Show(string.Join("\n",Flatten(doc.Root!).Select(k=>$"{k.Key}: {k.Value}")),"Detalle");}
+    void ShowResults(XDocument doc){latest=doc;var r=doc.Root!;var eq=r.Element(Api.Ns+"equilibrio")!;MessageBox.Show($"{r.Element(Api.Ns+"decision")!.Value}\nUtilización: {r.Element(Api.Ns+"utilizacion")!.Value}% · {r.Element(Api.Ns+"nivel")!.Value}\nEquilibrio mensual: {eq.Element(Api.Ns+"mensual")!.Value}\nDiario: {eq.Element(Api.Ns+"diario")!.Value}\nMargen/pedido: {eq.Element(Api.Ns+"margen_pedido")!.Value}\n"+string.Join("\n",r.Element(Api.Ns+"explicacion")!.Elements().Select(e=>e.Value)),"Viabilidad y explicación");}
 }

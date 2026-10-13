@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<productos xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <producto>
+      <id>12</id>
+      <clave_interna>AB-001</clave_interna>
+      <nombre>Arroz</nombre>
+      <categoria>
+        <id>1</id>
+        <nombre>Abarrote básico</nombre>
+      </categoria>
+      <unidad>pieza</unidad>
+      <presentacion>Bolsa 1 kg</presentacion>
+      <precio>32.50</precio>
+      <imagen_url>/static/productos/AB-001.jpg</imagen_url>
+      <estatus>activo</estatus>
+    </producto>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</productos>

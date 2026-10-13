@@ -1,46 +1,63 @@
 # Microhubs · cliente de escritorio (parte B)
 
-Aplicación C# / Windows Forms para planeador, administrador y auditor. Solo intercambia XML con namespace `urn:microhubs:v1`; valida las respuestas no vacías con XSD y rechaza DTD. Los auditores pueden consultar/exportar, pero no modificar ni simular.
+Aplicación C# / Windows Forms para **planeador, administrador y auditor**. Habla **solo XML** (espacio de nombres
+`urn:microhubs:v1`) con los microservicios del contrato v1: auth (5101), catálogos (5103), pedidos (5104) y planeación (5106).
+
+- Los **XSD oficiales** (carpeta `contratos/`, uno por servicio más `comun.xsd`) se cargan juntos: **toda petición se valida antes de
+  enviarse y toda respuesta antes de usarse**. Se rechazan DTD y entidades externas, respuestas que no sean `application/xml`,
+  raíces desconocidas y HTTP hacia hosts que no sean locales.
+- Pantallas: acceso, catálogo (productos, zonas, microhubs), pedidos (filtros por estado y fechas, detalle, historial), candidatos
+  (crear, editar con los 14 campos, simular con explicación, **decisión humana con motivo**), simulación libre, escenarios y
+  resumen de simulaciones (agregación de MongoDB). Exporta a XML la última consulta.
+- Permisos: `planeador` y `administrador` escriben; `auditor` solo consulta (el servidor responde 403 y la app muestra el motivo).
+- Sesión: tokens solo en memoria; ante un 401 se renueva **una vez** (peticiones simultáneas comparten la renovación) y se repite;
+  `Retry-After` de un 429 se respeta; salir revoca la sesión en el servidor y borra las credenciales aunque falle la red.
 
 ## Ejecutar
 
-Requiere Windows y **SDK .NET 8** (el runtime no basta):
+Requiere Windows y el **SDK de .NET 8** (el runtime no basta). Con el backend arriba
+(`docker compose -f docker-compose.integrado.yml up --build -d`):
 
 ```powershell
 cd app_escritorio
 dotnet run
 ```
 
-El modo «Ejemplos locales» está marcado inicialmente. Usa cualquier correo válido y clave no vacía. Los candidatos creados/modificados se guardan solo en memoria. Consulta candidatos, selecciona uno y simula; consulta pedidos cerrados, aplica búsqueda y filtro, y exporta XML. El login de ejemplo no autentica contra ningún servidor.
+Host por omisión `http://localhost` (HTTP solo se permite hacia el equipo local; cualquier otro host exige HTTPS). Cuentas de
+demostración: `sistema_web/README.md` (planeador: `planeador@codex.mx`, auditor: `auditor@codex.mx`).
+«Ejemplos oficiales» usa las respuestas de `contratos/ejemplos/` sin red (entra como planeador).
 
-Para servicios reales desmarca el modo local y configura un host HTTPS con certificado confiable. Los puertos son 5101 (auth), 5103 (catálogos), 5104 (pedidos), 5106 (planeación). No se omiten errores TLS. Los tokens viven solo en memoria y se eliminan al salir, incluso si el servidor no responde. La expiración/formato del JWT se comprueba localmente; **la firma, sesión y revocación deben validarlas los servicios**, sin distribuir el secreto HS256 al cliente. La renovación automática se intenta una vez ante 401.
+Publicación autónoma para Windows x64 (incluye el runtime; copiar **toda** la carpeta):
 
-## Contrato provisional: pendiente de acordar con parte A
-
-`contratos/cliente.xsd` y los ejemplos son propuestas del cliente, no contratos v1 congelados. Reemplazarlos por los XSD oficiales al publicarse. El esquema exige la estructura y tipos; campos adicionales actualmente se rechazan, deliberadamente.
-
-- POST `auth/login`: `<login><correo/><clave/></login>` → `sesion.xml`.
-- POST `auth/renovar`: `<renovar><token_renovacion/></renovar>` → misma sesión completa.
-- POST `auth/salir`: `<salir><token_renovacion/></salir>` → 204 o `<resultado><mensaje/></resultado>`.
-- GET `productos`, GET `pedidos?estado=entregado`, GET `candidatos` → `lista.xml` (producto/pedido/candidato).
-- POST `candidatos`, PUT `candidatos/{id}`: `<candidato><nombre/></candidato>` → resultado.
-- POST `candidatos/{id}/simular`: `<simular/>` → `simulacion.xml`.
-
-Todos los cuerpos anteriores llevan el namespace. `Accept` y `Content-Type` son `application/xml`. La consulta muestra la primera página que devuelve el servicio; la exportación contiene esa respuesta, no toda la base de datos. El filtro se aplica a esa página.
+```powershell
+dotnet publish Microhubs.csproj -c Release -r win-x64 --self-contained true -o bin/Publicacion
+```
 
 ## Verificación
 
 ```powershell
-python -m pip install lxml
-python -m unittest discover -s pruebas -v
-dotnet build
+dotnet build Microhubs.csproj
+dotnet run --project pruebas/Microhubs.Pruebas.csproj          # 33 comprobaciones sin red
+python -m pip install lxml; python -m unittest discover -s pruebas -v    # 10 pruebas de los XSD con un validador independiente
+$env:MICROHUBS_BACKEND='http://localhost'; $env:MICROHUBS_CLAVE='<clave de las cuentas de demostración>'
+dotnet run --project pruebas/Microhubs.Pruebas.csproj          # +29 contra los servicios reales (62 en total)
 ```
 
-Pruebas de esquema: ejemplos válidos, sesión incompleta, namespace incorrecto, ID negativo y booleano inválido. Se verificaron la compilación, la inicialización de Windows Forms y 17 comprobaciones de flujo/protocolo. Se instaló un SDK local en `.tools/dotnet/` y se generó una publicación autónoma en `bin/Publicacion/Microhubs.exe`. La comunicación real queda pendiente de los servicios/contratos compartidos. Ver `PRUEBAS_APPS.md`.
+Qué comprueba cada bloque:
+1. **Contrato:** los 46 ejemplos XML oficiales validan; se rechazan sesión incompleta, otro espacio de nombres, accesibilidad fuera de
+   1–10, motivo corto, correo sin formato, decisión inventada, DTD/entidades y raíces desconocidas.
+2. **Protocolo (transporte simulado):** `Accept: application/xml`, puerto por servicio, token `Bearer`, 401 → renovación única (también
+   con dos peticiones en paralelo), errores XML con campos y traza, 429 con `Retry-After`, HTTP solo local, JSON rechazado.
+3. **Backend real:** inicio de sesión, catálogo, pedidos (detalle, historial, filtros), candidatos (crear, duplicado 409, editar,
+   simular con los costos fijos del candidato, decisión con motivo, filtros), simulación libre, escenarios, resumen en MongoDB,
+   permisos de auditor (403), renovación con token inválido y revocación al cerrar sesión. Además verifica que la tabla de cada
+   pantalla se arma con las respuestas reales.
 
-## Ensayo manual
+Resultados y límites en [PRUEBAS_APPS.md](PRUEBAS_APPS.md).
 
-1. Entrar en ejemplos; listar candidatos, crear uno y modificarlo por ID; volver a listar.
-2. Simular un candidato seleccionado; verificar búsqueda, filtro y exportación XML.
-3. Salir: tabla y sesión deben quedar vacías.
-4. Con backend: probar contraseña incorrecta, 401 con renovación, 403, respuesta XML inválida, desconexión y revocación.
+## Ensayo manual sugerido
+1. Entrar como planeador → *Candidatos* → *Crear candidato* (clave nueva) → *Editar* → *Simular selección* (decisión y explicación).
+2. *Decidir* con un motivo de al menos 3 caracteres → la tabla refleja la decisión; *Guardar escenario* → *Escenarios* → *Detalle*.
+3. *Resumen* (total de simulaciones y promedios por decisión).
+4. Entrar como auditor: puede consultar y exportar, no crear (mensaje del servidor).
+5. *Salir*: tabla y credenciales quedan vacías; el token anterior ya no funciona.

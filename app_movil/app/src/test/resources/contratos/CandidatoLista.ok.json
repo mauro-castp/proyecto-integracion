@@ -1,0 +1,30 @@
+{
+  "datos": [
+    {
+      "id": 6,
+      "clave": "CAND-06",
+      "nombre": "Alianza Norte",
+      "latitud": 25.7601,
+      "longitud": -100.3555,
+      "renta_estimada": 16000.0,
+      "nomina_estimada": 40000.0,
+      "servicios_estimados": 6500.0,
+      "otros_costos": 4500.0,
+      "costo_fijo": 67000.0,
+      "superficie_m2": 110.0,
+      "capacidad_fisica": 130,
+      "accesibilidad_vial": 7,
+      "zona_id": 3,
+      "poblacion_cubierta": 5200,
+      "radio_km": 1.5,
+      "decision": "pendiente",
+      "decision_motivo": null
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}
