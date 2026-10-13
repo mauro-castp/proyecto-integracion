@@ -25,12 +25,14 @@ rectangle "Sistema web · Flask :5000" as WEB {
 rectangle "Microservicios · /api/v1" as MS {
   component "**auth** :5101" as S1
   component "**usuarios** :5102" as S2
-  component "**catalogos** :5103" as S3
+  component "**productos** :5103" as S3
   component "**pedidos** :5104" as S4
   component "**entregas** :5105" as S5
   component "**planeacion** :5106" as S6
   component "**documentos** :5107" as S7
-  component "**notificaciones** :5108" as S8
+  component "**zonas** :5108" as S8
+  component "**microhubs** :5109" as S9
+  component "**seguimiento** :5110" as S10
   component "**comun/** · JWT + Redis · permisos · errores\nlímites · registro · JSON/XML + XSD · OpenAPI" as COM #F7DCE7
 }
 
@@ -47,9 +49,11 @@ S2 -[hidden]right- S3
 S4 -[hidden]right- S5
 S5 -[hidden]right- S6
 S7 -[hidden]right- S8
+S8 -[hidden]right- S9
 S1 -[hidden]down- S4
 S4 -[hidden]down- S7
-S7 -[hidden]down- COM
+S7 -[hidden]down- S10
+S10 -[hidden]down- COM
 PG -[hidden]right- MG
 MG -[hidden]right- RD
 WEB -[hidden]down- MS
@@ -67,8 +71,8 @@ WEB --> PG
 WEB --> RD
 
 legend bottom
-  Datos por servicio: auth PG+Redis · usuarios PG · catalogos PG+caché · pedidos PG ·
-  entregas PG+Mongo · planeacion PG+Mongo · documentos Mongo · notificaciones PG.
+  Datos por servicio: auth PG+Redis · usuarios PG · productos, zonas y microhubs PG+caché ·
+  pedidos PG · entregas PG+Mongo · seguimiento Mongo · planeacion PG+Mongo · documentos Mongo.
   Los servicios no se llaman entre sí: se coordinan por los datos y la sesión compartidos;
   los avisos los generan triggers de PostgreSQL. Si MongoDB no responde, los cierres de
   entrega se aplican igual en PostgreSQL.

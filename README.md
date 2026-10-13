@@ -14,7 +14,7 @@ Sistema para una red de microalmacenes de barrio ("microhubs") que surten pedido
 | [`bloque_c/`](bloque_c/) | Modelo de datos: esquema y lógica de PostgreSQL, colecciones de MongoDB, claves de Redis, scripts de semilla y pruebas, diagramas conceptual/lógicos, documento del entregable. Ver [`bloque_c/README.md`](bloque_c/README.md) |
 | [`bloque_d/`](bloque_d/) | Arquitectura: los 9 diagramas (contexto, contenedores, componentes, despliegue, red, secuencia, comunicación, autenticación, almacenamiento), fuentes PlantUML, prototipos de interfaz. Ver [`bloque_d/README.md`](bloque_d/README.md) |
 | [`sistema_web/`](sistema_web/) | Aplicación Flask del Primer Parcial: sitio público, portal privado, autenticación JWT, catálogos, proceso de pedido, indicadores, bitácora. Ver [`sistema_web/README.md`](sistema_web/README.md) para instrucciones de arranque |
-| [`servicios/`](servicios/) | Los ocho microservicios del contrato v1 (puertos 5101–5108): JSON y XML, JWT con Redis, MongoDB, Swagger y pruebas. Ver [`servicios/README.md`](servicios/README.md) |
+| [`servicios/`](servicios/) | Los diez microservicios del contrato v1, uno por responsabilidad de negocio (puertos 5101–5110): JSON y XML, JWT con Redis, MongoDB, Swagger y pruebas. Ver [`servicios/README.md`](servicios/README.md) |
 | [`app_movil/`](app_movil/) | App Android del repartidor (Kotlin, solo JSON) |
 | [`app_escritorio/`](app_escritorio/) | App de escritorio de planeación (C#, solo XML) y los XSD oficiales del contrato |
 | [`presentacion/`](presentacion/) | Diapositivas de la demostración técnica, con capturas reales del sistema corriendo |
@@ -25,7 +25,7 @@ Sistema para una red de microalmacenes de barrio ("microhubs") que surten pedido
 docker compose -f docker-compose.integrado.yml up --build -d
 ```
 
-Web en `http://localhost:5000`; servicios en los puertos 5101–5108 con Swagger en `/api/v1/docs`. Para probar las apps contra
+Web en `http://localhost:5000`; servicios en los puertos 5101–5110 con Swagger en `/api/v1/docs`. Para probar las apps contra
 el backend: [`INSTRUCCIONES_PARTE_B.md`](INSTRUCCIONES_PARTE_B.md).
 
 ## Arrancar solo el sistema web

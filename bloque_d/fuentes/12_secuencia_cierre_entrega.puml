@@ -15,6 +15,7 @@ actor "Repartidor" as R
 participant "auth\n:5101" as A
 participant "entregas\n:5105" as E
 participant "documentos\n:5107" as D
+participant "seguimiento\n:5110" as SG
 database "Redis" as RD
 database "PostgreSQL" as PG
 database "MongoDB" as MG
@@ -42,9 +43,10 @@ R -> D : POST /documentos\nBase64 ≤ 5 MB
 D -> RD : valida sesión
 D -> MG : insert documentos\n(firma real, SHA-256)
 D --> R : 201 {id}
-R -> E : POST /entregas/{id}/ubicaciones\npuntos ≤ 500
-E -> MG : insert_many\nubicaciones_entrega
-E --> R : 201 {recibidos}
+R -> SG : POST /seguimiento/{id}/ubicaciones\npuntos ≤ 500
+SG -> RD : valida sesión
+SG -> MG : insert_many\nubicaciones_entrega
+SG --> R : 201 {recibidos}
 
 newpage Diagrama 12 (continuación) · Cierre idempotente y visibilidad en el web
 
@@ -72,6 +74,6 @@ end
 
 note over R, MG
   5 · Visibilidad en el web: con el mismo JWT, el portal consulta pedidos,
-  entregas (recorrido) y documentos y arma «Entrega, recorrido y evidencias».
+  entregas, seguimiento (recorrido) y documentos y arma «Entrega, recorrido y evidencias».
 end note
 @enduml

@@ -21,12 +21,14 @@ frame "Red **publica** · puertos publicados al equipo" as PUB {
   node "**web** :5000\nFlask + Gunicorn (3)" as W #C9DCF0
   node "**auth**\n:5101" as S1
   node "**usuarios**\n:5102" as S2
-  node "**catalogos**\n:5103" as S3
+  node "**productos**\n:5103" as S3
   node "**pedidos**\n:5104" as S4
   node "**entregas**\n:5105" as S5
   node "**planeacion**\n:5106" as S6
   node "**documentos**\n:5107" as S7
-  node "**notificaciones**\n:5108" as S8
+  node "**zonas**\n:5108" as S8
+  node "**microhubs**\n:5109" as S9
+  node "**seguimiento**\n:5110" as S10
 }
 
 frame "Red **datos** · interna: sin puertos al equipo ni Internet" as DAT {
@@ -42,19 +44,21 @@ S3 -[hidden]right- S4
 S4 -[hidden]right- S5
 S6 -[hidden]right- S7
 S7 -[hidden]right- S8
+S9 -[hidden]right- S10
 W -[hidden]down- S3
 S3 -[hidden]down- S6
+S6 -[hidden]down- S9
 PG -[hidden]right- MG
 RD -[hidden]right- MIG
 PG -[hidden]down- RD
 
-USR --> PUB : HTTP :5000 y :5101 a :5108\nJSON o XML + Bearer
-PUB --> DAT : SQL · MongoDB · Redis\n(los 9 contenedores también\nestán en la red datos)
+USR --> PUB : HTTP :5000 y :5101 a :5110\nJSON o XML + Bearer
+PUB --> DAT : SQL · MongoDB · Redis\n(los 11 contenedores también\nestán en la red datos)
 MIG --> PG : migraciones idempotentes
 
 legend bottom
   Cada servicio tiene su Dockerfile (servicios/<servicio>/Dockerfile): python:3.12-slim,
-  usuario sin privilegios y HEALTHCHECK /health. Los 9 contenedores de aplicación esperan
+  usuario sin privilegios y HEALTHCHECK /health. Los 11 contenedores de aplicación esperan
   a que migraciones termine y a que redis y mongo estén sanos. Volúmenes: datos_pg y
   datos_mongo (persisten con "down"; "down -v" borra los datos).
 endlegend
