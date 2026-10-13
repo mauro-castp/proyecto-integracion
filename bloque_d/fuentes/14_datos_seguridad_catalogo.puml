@@ -1,0 +1,104 @@
+@startuml
+!include tema.iuml
+skinparam dpi 150
+hide circle
+skinparam nodesep 12
+skinparam ranksep 22
+skinparam entity {
+  BorderColor #1F4E79
+  BackgroundColor #FFFFFF
+  FontColor #14293F
+}
+skinparam package {
+  BorderColor #8FA3B8
+  FontColor #3D4A5C
+}
+title Diagrama 14 · Modelo de datos de PostgreSQL (1 de 3): seguridad, catálogo y abasto
+
+package "Seguridad" {
+  entity "rol" as rol {
+    * id : integer <<PK>>
+    --
+    clave · nombre
+    requiere_microhub
+  }
+  entity "permiso" as permiso {
+    * id : integer <<PK>>
+    --
+    clave · modulo · accion
+  }
+  entity "rol_permiso" as rolperm {
+    * rol_id <<PK,FK>>
+    * permiso_id <<PK,FK>>
+  }
+  entity "usuario" as usuario {
+    * id : integer <<PK>>
+    --
+    rol_id <<FK>>
+    microhub_id <<FK>>
+    nombre · apellidos · correo
+    telefono · hash_contrasena
+    intentos_fallidos · ultimo_acceso
+  }
+  entity "auditoria" as audit {
+    * id : bigint <<PK>>
+    --
+    usuario_id <<FK>>
+    modulo · accion · entidad
+    valores_anteriores · valores_nuevos
+    exitoso · ip_origen
+  }
+}
+
+package "Catálogo y abasto" {
+  entity "microhub" as mh {
+    * id : integer <<PK>>
+    --
+    clave · nombre · radio_km
+    capacidad_turno · estatus
+  }
+  entity "zona" as zona {
+    * id : integer <<PK>>
+    --
+    clave · colonia · municipio
+    ticket_minimo · costo_envio
+  }
+  entity "categoria" as cat {
+    * id : integer <<PK>>
+    --
+    nombre · orden
+  }
+  entity "producto" as prod {
+    * id : integer <<PK>>
+    --
+    categoria_id <<FK>>
+    clave_interna · nombre · precio
+  }
+  entity "inventario" as inv {
+    * microhub_id <<PK,FK>>
+    * producto_id <<PK,FK>>
+    --
+    existencia · minimo
+  }
+  entity "movimiento_inventario" as mov {
+    * id : bigint <<PK>>
+    --
+    microhub_id · producto_id <<FK>>
+    usuario_id <<FK>>
+    tipo · cantidad · referencia_id
+  }
+}
+
+rol -[hidden]right- permiso
+rolperm -[hidden]down- usuario
+rol ||--o{ usuario
+rol ||--o{ rolperm
+permiso ||--o{ rolperm
+mh ||--o{ usuario
+usuario ||--o{ audit
+cat ||--o{ prod
+mh ||--o{ inv
+prod ||--o{ inv
+inv ||--o{ mov
+usuario ||--o{ mov
+@enduml

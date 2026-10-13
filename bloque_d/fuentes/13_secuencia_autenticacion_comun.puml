@@ -1,0 +1,70 @@
+@startuml
+!include tema.iuml
+skinparam dpi 150
+skinparam sequence {
+  ParticipantBorderColor #1F4E79
+  ParticipantBackgroundColor #DCE7F5
+  LifeLineBorderColor #8FA3B8
+  GroupBorderColor #8FA3B8
+}
+skinparam sequenceMessageAlign left
+title Diagrama 13 · Comunicación: autenticación común con JWT y Redis\n(el web y los 8 servicios)
+autonumber
+
+actor "Cliente\nweb · app · Swagger" as C
+participant "auth\n:5101" as A
+participant "Cualquier servicio\n(p. ej. usuarios)" as S
+database "Redis" as RD
+database "PostgreSQL" as PG
+
+== Inicio de sesión ==
+C -> A : POST /auth/login
+A -> RD : ¿auth:bloqueo:{correo}?
+A -> PG : usuario + hash bcrypt
+alt clave incorrecta
+  A -> RD : INCR auth:intentos (15 min)
+  A --> C : 401 «Intento n de 5»\nal quinto: 423
+else correcta
+  A -> RD : SADD auth:sesion:{id} jti\nSETEX auth:refresh:{hash} 7 días
+  A --> C : 200 JWT HS256 15 min\n+ rt_ de un solo uso
+end
+
+newpage Diagrama 13 (continuación) · Petición protegida
+
+== Petición protegida (igual en cada servicio) ==
+C -> S : GET /usuarios/yo\nBearer {JWT}
+S -> S : firma (misma SECRET_KEY)\ny expiración
+S -> RD : EXISTS auth:jti:revocado:{jti}
+S -> RD : SISMEMBER auth:sesion:{id}
+S -> RD : INCR rate:{servicio}:{ip}:{min}\n(240 por minuto)
+S -> RD : SMEMBERS cache:permisos:{rol}\n(TTL 5 min)
+opt no está en caché
+  S -> PG : rol_permiso del perfil
+  S -> RD : SADD cache:permisos:{rol}
+end
+alt todo en regla
+  S --> C : 200 (JSON o XML)
+else vencido, alterado,\nrevocado o sin sesión
+  S --> C : 401 + WWW-Authenticate
+else sin permiso
+  S --> C : 403 (queda en bitácora)
+else límite superado
+  S --> C : 429 + Retry-After
+end
+
+newpage Diagrama 13 (continuación) · Renovación y cierre de sesión
+
+== Renovación con rotación ==
+C -> A : POST /auth/renovar {rt_}
+A -> RD : consume auth:refresh:{hash}\n(sirve una sola vez)
+A -> RD : revoca el jti anterior
+A --> C : 200 JWT y rt_ nuevos
+
+== Cierre de sesión ==
+C -> A : POST /auth/salir
+A -> RD : SETEX auth:jti:revocado:{jti}\nSREM auth:sesion · DEL refresh
+A --> C : 204
+C -> S : GET con el mismo token
+S -> RD : EXISTS auth:jti:revocado → 1
+S --> C : 401 en TODOS los\nservicios y en el web
+@enduml

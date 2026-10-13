@@ -1,0 +1,84 @@
+@startuml
+!include tema.iuml
+skinparam dpi 150
+hide circle
+skinparam nodesep 10
+skinparam ranksep 20
+skinparam entity {
+  BorderColor #1F4E79
+  BackgroundColor #FFFFFF
+  FontColor #14293F
+}
+title Diagrama 15 · Modelo de datos de PostgreSQL (2 de 3): pedidos y entregas\nen color: tabla ampliada en el Segundo Parcial (script 08)
+
+entity "usuario (14)" as usuario #E8EDF3
+entity "zona (14)" as zona #E8EDF3
+entity "microhub (14)" as mh #E8EDF3
+entity "producto (14)" as prod #E8EDF3
+
+entity "cliente" as cli {
+  * id : integer <<PK>>
+  --
+  usuario_id <<FK>>
+}
+entity "domicilio" as dom {
+  * id : integer <<PK>>
+  --
+  cliente_id · zona_id <<FK>>
+  calle · colonia
+  latitud · longitud
+}
+entity "pedido" as ped {
+  * id : bigint <<PK>>
+  --
+  cliente_id · domicilio_id <<FK>>
+  zona_id · microhub_id <<FK>>
+  folio · estado · total
+}
+entity "pedido_detalle" as det {
+  * id : bigint <<PK>>
+  --
+  pedido_id · producto_id <<FK>>
+  cantidad · precio_unitario
+}
+entity "historial_estatus" as hist {
+  * id : bigint <<PK>>
+  --
+  pedido_id · usuario_id <<FK>>
+  estado_anterior · estado_nuevo
+  motivo
+}
+entity "entrega" as ent #FAEBD3 {
+  * id : bigint <<PK>>
+  --
+  pedido_id · repartidor_id <<FK>>
+  resultado · monto_cobrado
+  **id_cliente_local (único)**
+  **evidencia_ids**
+  **cierre_latitud · cierre_longitud**
+  **capturado_en**
+}
+entity "entrega_linea" as lin {
+  * id : bigint <<PK>>
+  --
+  entrega_id · pedido_detalle_id <<FK>>
+  cantidad_entregada
+  cantidad_devuelta · motivo
+}
+
+usuario ||--o| cli
+zona ||--o{ dom
+cli ||--o{ dom
+cli ||--o{ ped
+dom ||--o{ ped
+zona ||--o{ ped
+mh ||--o{ ped
+ped ||--o{ det
+prod ||--o{ det
+ped ||--o{ hist
+usuario ||--o{ hist
+ped ||--o{ ent
+usuario ||--o{ ent : repartidor
+ent ||--o{ lin
+det ||--o{ lin
+@enduml

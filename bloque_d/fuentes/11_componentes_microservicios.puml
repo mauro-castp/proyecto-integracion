@@ -1,0 +1,76 @@
+@startuml
+!include tema.iuml
+skinparam dpi 150
+skinparam nodesep 10
+skinparam ranksep 22
+skinparam component {
+  BorderColor #1F4E79
+  BackgroundColor #DCE7F5
+  FontColor #14293F
+}
+title Diagrama 11 · Componentes y comunicación del Segundo Parcial
+
+rectangle "Clientes" as CL {
+  rectangle "Navegador" as NAV
+  rectangle "App Android\n//JSON//" as AND
+  rectangle "App escritorio\n//XML//" as ESC
+  rectangle "Swagger UI" as SW
+}
+
+rectangle "Sistema web · Flask :5000" as WEB {
+  component "**Módulos del web**\nreportes Highcharts\narchivos · perfiles" as MOD
+  component "**integracion.py**\nJWT de la sesión" as INT
+}
+
+rectangle "Microservicios · /api/v1" as MS {
+  component "**auth** :5101" as S1
+  component "**usuarios** :5102" as S2
+  component "**catalogos** :5103" as S3
+  component "**pedidos** :5104" as S4
+  component "**entregas** :5105" as S5
+  component "**planeacion** :5106" as S6
+  component "**documentos** :5107" as S7
+  component "**notificaciones** :5108" as S8
+  component "**comun/** · JWT + Redis · permisos · errores\nlímites · registro · JSON/XML + XSD · OpenAPI" as COM #F7DCE7
+}
+
+database "**PostgreSQL**\nreglas y triggers" as PG
+database "**MongoDB**\nevidencias · GPS · logs" as MG
+database "**Redis**\nsesión · caché · límites" as RD
+
+NAV -[hidden]right- AND
+AND -[hidden]right- ESC
+ESC -[hidden]right- SW
+MOD -[hidden]right- INT
+S1 -[hidden]right- S2
+S2 -[hidden]right- S3
+S4 -[hidden]right- S5
+S5 -[hidden]right- S6
+S7 -[hidden]right- S8
+S1 -[hidden]down- S4
+S4 -[hidden]down- S7
+S7 -[hidden]down- COM
+PG -[hidden]right- MG
+MG -[hidden]right- RD
+WEB -[hidden]down- MS
+
+NAV --> MOD : HTML
+MOD --> INT
+INT --> MS : HTTP + Bearer
+AND --> MS : JSON + Bearer
+ESC --> MS : XML + Bearer
+SW --> MS : JSON o XML
+MS --> PG : SQL con\nactor declarado
+MS --> MG
+MS --> RD : sesión\ny límites
+WEB --> PG
+WEB --> RD
+
+legend bottom
+  Datos por servicio: auth PG+Redis · usuarios PG · catalogos PG+caché · pedidos PG ·
+  entregas PG+Mongo · planeacion PG+Mongo · documentos Mongo · notificaciones PG.
+  Los servicios no se llaman entre sí: se coordinan por los datos y la sesión compartidos;
+  los avisos los generan triggers de PostgreSQL. Si MongoDB no responde, los cierres de
+  entrega se aplican igual en PostgreSQL.
+endlegend
+@enduml
