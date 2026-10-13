@@ -1,0 +1,7 @@
+{% if g.paginacion is defined %}
+<nav aria-label="Páginas" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:18px 0">
+  <span>{{ g.paginacion.total }} registros · Página {{ g.paginacion.pagina }} de {{ g.paginacion.paginas }}</span>
+  {% if g.paginacion.pagina > 1 %}<a class="btn sec" href="{{ enlace_pagina(g.paginacion.pagina-1) }}">Anterior</a>{% endif %}
+  {% if g.paginacion.pagina < g.paginacion.paginas %}<a class="btn sec" href="{{ enlace_pagina(g.paginacion.pagina+1) }}">Siguiente</a>{% endif %}
+</nav>
+{% endif %}

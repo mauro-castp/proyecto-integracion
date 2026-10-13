@@ -1,5 +1,6 @@
 {% extends "base.html" %}{% block titulo %}Bandeja{% endblock %}
 {% block cuerpo %}
+{% include '_buscar_lista.html' %}
 <h1>Bandeja del turno</h1>
 <p class="sub">Solo los pedidos de tu microhub.</p>
 
@@ -28,4 +29,5 @@
 </table>
 </div>
 {% endif %}
+{% include '_paginacion.html' %}
 {% endblock %}

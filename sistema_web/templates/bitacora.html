@@ -1,5 +1,6 @@
 {% extends "base.html" %}{% block titulo %}Bitácora{% endblock %}
 {% block cuerpo %}
+{% include '_buscar_lista.html' %}
 <h1>Bitácora de auditoría</h1>
 <p class="sub">{{ '{:,}'.format(total) }} registros. Los escribe el sistema y nadie puede modificarlos.</p>
 
@@ -29,4 +30,5 @@
 
 <div class="aviso alto"><b>Esta tabla no tiene botón de editar ni de borrar</b>
   No es una omisión. La base rechaza cualquier modificación sobre la bitácora, incluso ejecutada por un administrador o directamente contra el motor.</div>
+{% include '_paginacion.html' %}
 {% endblock %}

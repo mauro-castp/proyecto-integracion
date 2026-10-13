@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block titulo %}Archivos{% endblock %}{% block cuerpo %}
+<h1>Mis archivos</h1><p class="sub">Adjuntos privados PDF, PNG o JPEG, hasta 5 MB por archivo.</p>
+{% if 'archivos.crear' in web_permisos %}<form method="post" enctype="multipart/form-data" class="panel"><input type="hidden" name="csrf" value="{{ web_csrf() }}"><label for="archivo">Archivo</label><input id="archivo" name="archivo" type="file" accept=".pdf,.png,.jpg,.jpeg" required><button class="btn">Guardar archivo</button></form>{% endif %}
+<div class="panel" style="overflow:auto"><table><thead><tr><th>Nombre</th><th>Tipo</th><th>Bytes</th><th>Fecha</th><th>Acción</th></tr></thead><tbody>{% for f in filas %}<tr><td>{{ f.nombre }}</td><td>{{ f.tipo }}</td><td>{{ f.tamano }}</td><td>{{ f.creado_en }}</td><td><a class="btn sec" href="{{ url_for('web.descargar',aid=f.id) }}">Descargar</a></td></tr>{% else %}<tr><td colspan="5">No has adjuntado archivos.</td></tr>{% endfor %}</tbody></table>{% include '_paginacion.html' %}</div>
+{% endblock %}

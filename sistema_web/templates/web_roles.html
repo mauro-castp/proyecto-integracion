@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block titulo %}Perfiles y permisos{% endblock %}{% block cuerpo %}
+<h1>Perfiles y permisos</h1><p class="sub">Administra el acceso al módulo web ampliado. Los permisos anteriores de operación se conservan.</p>
+{% for r in perfiles %}<section class="panel"><h2 style="margin-top:0">{{ r.nombre }} · {{ r.clave }}</h2><p>{{ 'Limitado a su microhub' if r.requiere_microhub else 'Sin ámbito obligatorio de microhub' }}</p>
+{% if 'roles.editar' in web_permisos and r.clave!='administrador' %}<form method="post"><input type="hidden" name="csrf" value="{{ web_csrf() }}"><input type="hidden" name="rol_id" value="{{ r.id }}"><div class="rejilla cols3">{% for p in delegables %}<label><input type="checkbox" style="width:auto" name="permisos" value="{{ p }}" {{ 'checked' if p in r.permisos_web }}> {{ p }}</label>{% endfor %}</div><button class="btn">Guardar permisos</button></form>{% else %}<p>{{ r.permisos_web|sort|join(', ') or 'Sin permisos en este módulo' }}</p>{% endif %}</section>{% endfor %}
+{% endblock %}

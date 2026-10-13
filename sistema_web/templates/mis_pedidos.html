@@ -1,5 +1,6 @@
 {% extends "base.html" %}{% block titulo %}Mis pedidos{% endblock %}
 {% block cuerpo %}
+{% include '_buscar_lista.html' %}
 <h1>Mis pedidos</h1>
 <p class="sub">Solo aparecen los tuyos.</p>
 {% if not pedidos %}
@@ -18,4 +19,5 @@
 </table>
 </div>
 {% endif %}
+{% include '_paginacion.html' %}
 {% endblock %}

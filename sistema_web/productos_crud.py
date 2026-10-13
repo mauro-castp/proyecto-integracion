@@ -1,6 +1,7 @@
 """CRUD de productos compatible con PostgreSQL (Docker) y SQLite (modo local)."""
 import os
 import sqlite3
+from paginacion import paginar
 from pathlib import Path
 
 from flask import (Blueprint, abort, flash, g, redirect, render_template,
@@ -89,7 +90,10 @@ def lista():
         if estatus in ("activo", "inactivo"):
             sql += " AND p.estatus=?"; args.append(estatus)
         with _sqlite() as con:
-            filas = con.execute(sql + " ORDER BY p.nombre", args).fetchall()
+            def consulta_local(query, params=(), una=False):
+                cur = con.execute(query, params)
+                return cur.fetchone() if una else cur.fetchall()
+            filas = paginar(sql + " ORDER BY p.nombre,p.id", args, consulta_local, marcador='?', filtrar=False)
     else:
         from nucleo import consultar
         sql = ("SELECT p.id,p.clave_interna,p.nombre,c.nombre AS categoria,p.unidad,p.presentacion,"
@@ -100,7 +104,7 @@ def lista():
             args += [f"%{q.lower()}%", f"%{q.lower()}%"]
         if estatus in ("activo", "inactivo"):
             sql += " AND p.estatus=%s"; args.append(estatus)
-        filas = consultar(sql + " ORDER BY p.nombre", tuple(args))
+        filas = paginar(sql + " ORDER BY p.nombre,p.id", tuple(args), consultar, filtrar=False)
     return render_template("productos.html", productos=filas, q=q, estatus=estatus)
 
 
