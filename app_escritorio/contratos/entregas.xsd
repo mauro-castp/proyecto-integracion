@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: entregas · generado por contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+
+  <xs:complexType name="TEntrega">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="pedido_id" type="xs:long"/>
+      <xs:element name="folio" type="xs:string"/>
+      <xs:element name="estado_pedido">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="creado"/>
+            <xs:enumeration value="pendiente_asignacion"/>
+            <xs:enumeration value="asignado"/>
+            <xs:enumeration value="en_preparacion"/>
+            <xs:enumeration value="en_ruta"/>
+            <xs:enumeration value="entregado"/>
+            <xs:enumeration value="entrega_parcial"/>
+            <xs:enumeration value="entrega_fallida"/>
+            <xs:enumeration value="cancelado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="orden_parada" type="xs:long" nillable="true"/>
+      <xs:element name="direccion" type="xs:string"/>
+      <xs:element name="zona" type="xs:string"/>
+      <xs:element name="distancia_km" type="xs:double" nillable="true"/>
+      <xs:element name="minutos_estimados" type="xs:double" nillable="true"/>
+      <xs:element name="total">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>EntregaLista: Página de entregas.</xs:documentation></xs:annotation>
+  <xs:complexType name="TEntregaLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="entrega" type="tns:TEntrega" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEntregaLinea">
+    <xs:sequence>
+      <xs:element name="pedido_detalle_id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="cantidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEntregaDetalle">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="pedido_id" type="xs:long"/>
+      <xs:element name="folio" type="xs:string"/>
+      <xs:element name="estado_pedido">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="creado"/>
+            <xs:enumeration value="pendiente_asignacion"/>
+            <xs:enumeration value="asignado"/>
+            <xs:enumeration value="en_preparacion"/>
+            <xs:enumeration value="en_ruta"/>
+            <xs:enumeration value="entregado"/>
+            <xs:enumeration value="entrega_parcial"/>
+            <xs:enumeration value="entrega_fallida"/>
+            <xs:enumeration value="cancelado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cliente" type="tns:TClienteRef"/>
+      <xs:element name="domicilio" type="tns:TDomicilioRef"/>
+      <xs:element name="orden_parada" type="xs:long" nillable="true"/>
+      <xs:element name="distancia_km" type="xs:double" nillable="true"/>
+      <xs:element name="minutos_estimados" type="xs:double" nillable="true"/>
+      <xs:element name="total">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="lineas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="linea" type="tns:TEntregaLinea" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TUbicacion">
+    <xs:sequence>
+      <xs:element name="latitud">
+        <xs:simpleType>
+          <xs:restriction base="xs:double">
+            <xs:minInclusive value="-90"/>
+            <xs:maxInclusive value="90"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="longitud">
+        <xs:simpleType>
+          <xs:restriction base="xs:double">
+            <xs:minInclusive value="-180"/>
+            <xs:maxInclusive value="180"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="precision_m" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:double">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TResultadoLinea">
+    <xs:sequence>
+      <xs:element name="pedido_detalle_id" type="xs:long"/>
+      <xs:element name="cantidad_entregada">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cantidad_devuelta">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="motivo" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="300"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>ResultadoEntrega: Solo JSON (app móvil). Registra y cierra la entrega.</xs:documentation></xs:annotation>
+  <xs:complexType name="TResultadoEntrega">
+    <xs:sequence>
+      <xs:element name="resultado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="entregado"/>
+            <xs:enumeration value="parcial"/>
+            <xs:enumeration value="fallida"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="monto_cobrado">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cambio_entregado">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="incidencia" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="400"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="lineas" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="linea" type="tns:TResultadoLinea" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ubicacion" type="tns:TUbicacion"/>
+      <xs:element name="evidencia_ids" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="evidencia_id" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="capturado_en" type="xs:dateTime"/>
+      <xs:element name="id_cliente_local">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="64"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TResultadoEntregaRespuesta">
+    <xs:sequence>
+      <xs:element name="entrega_id" type="xs:long"/>
+      <xs:element name="pedido_id" type="xs:long"/>
+      <xs:element name="estado_pedido">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="creado"/>
+            <xs:enumeration value="pendiente_asignacion"/>
+            <xs:enumeration value="asignado"/>
+            <xs:enumeration value="en_preparacion"/>
+            <xs:enumeration value="en_ruta"/>
+            <xs:enumeration value="entregado"/>
+            <xs:enumeration value="entrega_parcial"/>
+            <xs:enumeration value="entrega_fallida"/>
+            <xs:enumeration value="cancelado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cerrado_en" type="xs:dateTime"/>
+      <xs:element name="duplicado" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TUbicacionPunto">
+    <xs:sequence>
+      <xs:element name="latitud">
+        <xs:simpleType>
+          <xs:restriction base="xs:double">
+            <xs:minInclusive value="-90"/>
+            <xs:maxInclusive value="90"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="longitud">
+        <xs:simpleType>
+          <xs:restriction base="xs:double">
+            <xs:minInclusive value="-180"/>
+            <xs:maxInclusive value="180"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="precision_m" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:double">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="capturado_en" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>UbicacionesLote: Solo JSON. Hasta 500 puntos por lote; se guardan en MongoDB.</xs:documentation></xs:annotation>
+  <xs:complexType name="TUbicacionesLote">
+    <xs:sequence>
+      <xs:element name="puntos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="punto" type="tns:TUbicacionPunto" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TUbicacionesRecibidas">
+    <xs:sequence>
+      <xs:element name="recibidos">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>Recorrido: Resumen del recorrido calculado con una agregación sobre los puntos GPS guardados en MongoDB.</xs:documentation></xs:annotation>
+  <xs:complexType name="TRecorrido">
+    <xs:sequence>
+      <xs:element name="entrega_id" type="xs:long"/>
+      <xs:element name="puntos">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="distancia_km">
+        <xs:simpleType>
+          <xs:restriction base="xs:double">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="inicio" type="xs:dateTime" nillable="true"/>
+      <xs:element name="fin" type="xs:dateTime" nillable="true"/>
+      <xs:element name="precision_promedio_m" type="xs:double" nillable="true"/>
+      <xs:element name="ultimo_punto" type="tns:TUbicacion" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="entrega">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TEntrega">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="entregas">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TEntregaLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="entrega_detalle">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TEntregaDetalle">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="resultado_entrega">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TResultadoEntregaRespuesta">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ubicaciones_recibidas">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TUbicacionesRecibidas">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="recorrido">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TRecorrido">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pedido_detalle xmlns="urn:microhubs:v1" version="1">
+  <id>20</id>
+  <folio>PED-20260930-000020</folio>
+  <estado>en_ruta</estado>
+  <cliente>
+    <nombre>Laura Pérez</nombre>
+    <telefono>8180001122</telefono>
+  </cliente>
+  <domicilio>
+    <calle>Av. Rodrigo Gómez</calle>
+    <numero_ext>1420</numero_ext>
+    <colonia>San Bernabé</colonia>
+    <latitud>25.749</latitud>
+    <longitud>-100.361</longitud>
+  </domicilio>
+  <zona>
+    <id>1</id>
+    <nombre>San Bernabé Centro</nombre>
+  </zona>
+  <microhub_id>2</microhub_id>
+  <subtotal>143.00</subtotal>
+  <costo_envio>15.00</costo_envio>
+  <total>158.00</total>
+  <creado_en>2026-09-30T10:15:00-06:00</creado_en>
+  <lineas>
+    <linea>
+      <id>51</id>
+      <producto_id>12</producto_id>
+      <nombre>Arroz</nombre>
+      <cantidad>2</cantidad>
+      <precio_unitario>32.50</precio_unitario>
+      <importe>65.00</importe>
+    </linea>
+    <linea>
+      <id>52</id>
+      <producto_id>20</producto_id>
+      <nombre>Agua purificada</nombre>
+      <cantidad>4</cantidad>
+      <precio_unitario>19.50</precio_unitario>
+      <importe>78.00</importe>
+    </linea>
+  </lineas>
+</pedido_detalle>

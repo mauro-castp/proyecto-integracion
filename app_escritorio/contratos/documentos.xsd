@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: documentos · generado por contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+
+  <xs:complexType name="TReferencia">
+    <xs:sequence>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="entrega"/>
+            <xs:enumeration value="pedido"/>
+            <xs:enumeration value="usuario"/>
+            <xs:enumeration value="candidato"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="id" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>DocumentoNuevo: Solo JSON. El archivo viaja en Base64 para mantener JSON puro.</xs:documentation></xs:annotation>
+  <xs:complexType name="TDocumentoNuevo">
+    <xs:sequence>
+      <xs:element name="nombre">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="160"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="tipo_mime">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="image/jpeg"/>
+            <xs:enumeration value="image/png"/>
+            <xs:enumeration value="application/pdf"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="contenido_base64" type="xs:string"/>
+      <xs:element name="referencia" type="tns:TReferencia"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDocumento">
+    <xs:sequence>
+      <xs:element name="id">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9a-f]{24}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="tipo_mime" type="xs:string"/>
+      <xs:element name="tamano_bytes">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="sha256" type="xs:string"/>
+      <xs:element name="referencia" type="tns:TReferencia"/>
+      <xs:element name="subido_por" type="xs:long"/>
+      <xs:element name="creado_en" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>DocumentoLista: Página de documentos.</xs:documentation></xs:annotation>
+  <xs:complexType name="TDocumentoLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="documento" type="tns:TDocumento" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDocumentoContenido">
+    <xs:sequence>
+      <xs:element name="id">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9a-f]{24}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="tipo_mime" type="xs:string"/>
+      <xs:element name="tamano_bytes">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="sha256" type="xs:string"/>
+      <xs:element name="referencia" type="tns:TReferencia"/>
+      <xs:element name="subido_por" type="xs:long"/>
+      <xs:element name="creado_en" type="xs:dateTime"/>
+      <xs:element name="contenido_base64" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDocumentosPorTipo">
+    <xs:sequence>
+      <xs:element name="referencia_tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="entrega"/>
+            <xs:enumeration value="pedido"/>
+            <xs:enumeration value="usuario"/>
+            <xs:enumeration value="candidato"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cantidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="tamano_bytes">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>DocumentosResumen: Agregación ($group) sobre la colección de documentos de MongoDB.</xs:documentation></xs:annotation>
+  <xs:complexType name="TDocumentosResumen">
+    <xs:sequence>
+      <xs:element name="total">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="tamano_total_bytes">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="por_tipo">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="grupo" type="tns:TDocumentosPorTipo" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="documento">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TDocumento">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="documentos">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TDocumentoLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="documento_contenido">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TDocumentoContenido">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="documentos_resumen">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TDocumentosResumen">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

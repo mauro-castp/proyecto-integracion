@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resultado_entrega xmlns="urn:microhubs:v1" version="1">
+  <entrega_id>61</entrega_id>
+  <pedido_id>20</pedido_id>
+  <estado_pedido>entrega_parcial</estado_pedido>
+  <cerrado_en>2026-10-12T18:30:04-06:00</cerrado_en>
+  <duplicado>false</duplicado>
+</resultado_entrega>

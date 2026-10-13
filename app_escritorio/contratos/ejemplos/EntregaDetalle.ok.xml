@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entrega_detalle xmlns="urn:microhubs:v1" version="1">
+  <id>61</id>
+  <pedido_id>20</pedido_id>
+  <folio>PED-20260930-000020</folio>
+  <estado_pedido>en_ruta</estado_pedido>
+  <cliente>
+    <nombre>Laura Pérez</nombre>
+    <telefono>8180001122</telefono>
+  </cliente>
+  <domicilio>
+    <calle>Av. Rodrigo Gómez</calle>
+    <numero_ext>1420</numero_ext>
+    <colonia>San Bernabé</colonia>
+    <latitud>25.749</latitud>
+    <longitud>-100.361</longitud>
+  </domicilio>
+  <orden_parada>3</orden_parada>
+  <distancia_km>0.21</distancia_km>
+  <minutos_estimados>14.2</minutos_estimados>
+  <total>158.00</total>
+  <lineas>
+    <linea>
+      <pedido_detalle_id>51</pedido_detalle_id>
+      <nombre>Arroz</nombre>
+      <cantidad>2</cantidad>
+    </linea>
+    <linea>
+      <pedido_detalle_id>52</pedido_detalle_id>
+      <nombre>Agua purificada</nombre>
+      <cantidad>4</cantidad>
+    </linea>
+  </lineas>
+</entrega_detalle>

@@ -1,1 +1,0 @@
-<sesion xmlns="urn:microhubs:v1"><token_acceso>demo</token_acceso><token_renovacion>demo</token_renovacion><expira_en>900</expira_en><usuario><id>1</id><nombre>Planeación demo</nombre><rol>planeador</rol><microhub_id>1</microhub_id></usuario></sesion>

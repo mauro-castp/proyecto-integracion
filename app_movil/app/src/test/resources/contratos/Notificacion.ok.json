@@ -1,0 +1,12 @@
+{
+  "id": 310,
+  "tipo": "entrega",
+  "titulo": "Nueva entrega asignada",
+  "mensaje": "Se te asignó el pedido PED-20260930-000020 (parada 3).",
+  "leida": false,
+  "referencia": {
+    "tipo": "entrega",
+    "id": "61"
+  },
+  "creada_en": "2026-10-12T17:55:00-06:00"
+}

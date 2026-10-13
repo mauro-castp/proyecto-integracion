@@ -1,0 +1,26 @@
+{
+  "pedido_id": 20,
+  "eventos": [
+    {
+      "estado_anterior": null,
+      "estado_nuevo": "creado",
+      "usuario": null,
+      "motivo": null,
+      "fecha": "2026-09-30T10:15:00-06:00"
+    },
+    {
+      "estado_anterior": "creado",
+      "estado_nuevo": "asignado",
+      "usuario": null,
+      "motivo": null,
+      "fecha": "2026-09-30T10:15:02-06:00"
+    },
+    {
+      "estado_anterior": "asignado",
+      "estado_nuevo": "en_preparacion",
+      "usuario": "operador.mh02@codex.mx",
+      "motivo": null,
+      "fecha": "2026-09-30T10:40:00-06:00"
+    }
+  ]
+}

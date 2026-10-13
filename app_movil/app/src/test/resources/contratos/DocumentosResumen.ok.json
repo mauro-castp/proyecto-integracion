@@ -1,0 +1,16 @@
+{
+  "total": 14,
+  "tamano_total_bytes": 2512340,
+  "por_tipo": [
+    {
+      "referencia_tipo": "entrega",
+      "cantidad": 12,
+      "tamano_bytes": 2200100
+    },
+    {
+      "referencia_tipo": "pedido",
+      "cantidad": 2,
+      "tamano_bytes": 312240
+    }
+  ]
+}

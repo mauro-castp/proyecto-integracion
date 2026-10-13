@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documento xmlns="urn:microhubs:v1" version="1">
+  <id>665f1c2e8a3b4d0012a7c9e1</id>
+  <nombre>evidencia-entrega-61.jpg</nombre>
+  <tipo_mime>image/jpeg</tipo_mime>
+  <tamano_bytes>184233</tamano_bytes>
+  <sha256>9b74c9897bac770ffc029102a200c5de3f1c5c4a8f1e3f9d7a1c2b3d4e5f6a7b</sha256>
+  <referencia>
+    <tipo>entrega</tipo>
+    <id>61</id>
+  </referencia>
+  <subido_por>7</subido_por>
+  <creado_en>2026-10-12T18:29:30-06:00</creado_en>
+</documento>

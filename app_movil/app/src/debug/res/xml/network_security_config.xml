@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Solo en compilaciones debug. El sistema deja pasar HTTP, pero Api.kt solo lo usa hacia el host fijado al compilar
+     (-PdebugHttpHost=<IP>, por defecto 10.0.2.2); cualquier otro host exige HTTPS. En release no existe este archivo. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true"/>
+</network-security-config>

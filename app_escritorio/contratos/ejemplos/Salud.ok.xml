@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<salud xmlns="urn:microhubs:v1" version="1">
+  <servicio>pedidos</servicio>
+  <version>1.0.0</version>
+  <estado>ok</estado>
+  <dependencias>
+    <postgres>ok</postgres>
+    <redis>ok</redis>
+    <mongo>no_aplica</mongo>
+  </dependencias>
+</salud>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tokens xmlns="urn:microhubs:v1" version="1">
+  <token_acceso>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3In0.firma2</token_acceso>
+  <token_renovacion>rt_1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d</token_renovacion>
+  <tipo>Bearer</tipo>
+  <expira_en>900</expira_en>
+</tokens>

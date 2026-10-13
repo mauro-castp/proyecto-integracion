@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pedidos xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <pedido>
+      <id>20</id>
+      <folio>PED-20260930-000020</folio>
+      <estado>en_ruta</estado>
+      <zona>
+        <id>1</id>
+        <nombre>San Bernabé Centro</nombre>
+      </zona>
+      <microhub_id>2</microhub_id>
+      <total>158.00</total>
+      <creado_en>2026-09-30T10:15:00-06:00</creado_en>
+    </pedido>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</pedidos>

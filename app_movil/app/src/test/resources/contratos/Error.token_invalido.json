@@ -1,0 +1,7 @@
+{
+  "error": {
+    "codigo": "TOKEN_INVALIDO",
+    "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.",
+    "traza_id": "0b7d3a52-77f5-4a0e-8b3c-1c9e5d2f4a11"
+  }
+}

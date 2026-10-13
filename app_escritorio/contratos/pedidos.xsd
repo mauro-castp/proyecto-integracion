@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: pedidos · generado por contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+
+  <xs:complexType name="TZonaRef">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPedido">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="folio" type="xs:string"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="creado"/>
+            <xs:enumeration value="pendiente_asignacion"/>
+            <xs:enumeration value="asignado"/>
+            <xs:enumeration value="en_preparacion"/>
+            <xs:enumeration value="en_ruta"/>
+            <xs:enumeration value="entregado"/>
+            <xs:enumeration value="entrega_parcial"/>
+            <xs:enumeration value="entrega_fallida"/>
+            <xs:enumeration value="cancelado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="zona" type="tns:TZonaRef"/>
+      <xs:element name="microhub_id" type="xs:long" nillable="true"/>
+      <xs:element name="total">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="creado_en" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>PedidoLista: Página de pedidos.</xs:documentation></xs:annotation>
+  <xs:complexType name="TPedidoLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="pedido" type="tns:TPedido" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPedidoLinea">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="cantidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="precio_unitario">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="importe">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPedidoDetalle">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="folio" type="xs:string"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="creado"/>
+            <xs:enumeration value="pendiente_asignacion"/>
+            <xs:enumeration value="asignado"/>
+            <xs:enumeration value="en_preparacion"/>
+            <xs:enumeration value="en_ruta"/>
+            <xs:enumeration value="entregado"/>
+            <xs:enumeration value="entrega_parcial"/>
+            <xs:enumeration value="entrega_fallida"/>
+            <xs:enumeration value="cancelado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cliente" type="tns:TClienteRef"/>
+      <xs:element name="domicilio" type="tns:TDomicilioRef"/>
+      <xs:element name="zona" type="tns:TZonaRef"/>
+      <xs:element name="microhub_id" type="xs:long" nillable="true"/>
+      <xs:element name="subtotal">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costo_envio">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="total">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="creado_en" type="xs:dateTime"/>
+      <xs:element name="lineas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="linea" type="tns:TPedidoLinea" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="THistorialEvento">
+    <xs:sequence>
+      <xs:element name="estado_anterior" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="creado"/>
+            <xs:enumeration value="pendiente_asignacion"/>
+            <xs:enumeration value="asignado"/>
+            <xs:enumeration value="en_preparacion"/>
+            <xs:enumeration value="en_ruta"/>
+            <xs:enumeration value="entregado"/>
+            <xs:enumeration value="entrega_parcial"/>
+            <xs:enumeration value="entrega_fallida"/>
+            <xs:enumeration value="cancelado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="estado_nuevo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="creado"/>
+            <xs:enumeration value="pendiente_asignacion"/>
+            <xs:enumeration value="asignado"/>
+            <xs:enumeration value="en_preparacion"/>
+            <xs:enumeration value="en_ruta"/>
+            <xs:enumeration value="entregado"/>
+            <xs:enumeration value="entrega_parcial"/>
+            <xs:enumeration value="entrega_fallida"/>
+            <xs:enumeration value="cancelado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="usuario" type="xs:string" nillable="true"/>
+      <xs:element name="motivo" type="xs:string" nillable="true"/>
+      <xs:element name="fecha" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="THistorial">
+    <xs:sequence>
+      <xs:element name="pedido_id" type="xs:long"/>
+      <xs:element name="eventos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="evento" type="tns:THistorialEvento" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>CambioEstado: Solo JSON. El motor valida la transición según el rol (RN20 a RN24).</xs:documentation></xs:annotation>
+  <xs:complexType name="TCambioEstado">
+    <xs:sequence>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="creado"/>
+            <xs:enumeration value="pendiente_asignacion"/>
+            <xs:enumeration value="asignado"/>
+            <xs:enumeration value="en_preparacion"/>
+            <xs:enumeration value="en_ruta"/>
+            <xs:enumeration value="entregado"/>
+            <xs:enumeration value="entrega_parcial"/>
+            <xs:enumeration value="entrega_fallida"/>
+            <xs:enumeration value="cancelado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="motivo" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="300"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="pedido">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPedido">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="pedidos">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPedidoLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="pedido_detalle">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPedidoDetalle">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="historial">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:THistorial">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

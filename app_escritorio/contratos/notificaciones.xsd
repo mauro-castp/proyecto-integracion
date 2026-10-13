@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: notificaciones · generado por contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+
+  <xs:complexType name="TNotificacionReferencia">
+    <xs:sequence>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="pedido"/>
+            <xs:enumeration value="entrega"/>
+            <xs:enumeration value="candidato"/>
+            <xs:enumeration value="sistema"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="id" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TNotificacion">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="pedido"/>
+            <xs:enumeration value="entrega"/>
+            <xs:enumeration value="sistema"/>
+            <xs:enumeration value="planeacion"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="titulo" type="xs:string"/>
+      <xs:element name="mensaje" type="xs:string"/>
+      <xs:element name="leida" type="xs:boolean"/>
+      <xs:element name="referencia" type="tns:TNotificacionReferencia" nillable="true"/>
+      <xs:element name="creada_en" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>NotificacionLista: Página de notificaciones.</xs:documentation></xs:annotation>
+  <xs:complexType name="TNotificacionLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="notificacion" type="tns:TNotificacion" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TConteo">
+    <xs:sequence>
+      <xs:element name="no_leidas">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>NotificacionNueva: Uso interno entre servicios (rol `servicio`). Solo JSON.</xs:documentation></xs:annotation>
+  <xs:complexType name="TNotificacionNueva">
+    <xs:sequence>
+      <xs:element name="usuario_id" type="xs:long"/>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="pedido"/>
+            <xs:enumeration value="entrega"/>
+            <xs:enumeration value="sistema"/>
+            <xs:enumeration value="planeacion"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="titulo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="120"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="mensaje">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="400"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="referencia" type="tns:TNotificacionReferencia" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="notificacion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TNotificacion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="notificaciones">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TNotificacionLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="conteo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TConteo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -44,3 +44,15 @@ class SessionStore(context: Context) : Sessions {
     } catch (_: Exception) { clear(); null }
     override fun clear() { prefs.edit().clear().commit() }
 }
+
+/** Cierres de entrega sin confirmar (UUID de la operación y evidencia ya subida) para reintentarlos sin duplicar. No contiene credenciales. */
+class PrefsBorradores(context: Context) : Borradores {
+    private val prefs = context.getSharedPreferences("cierres_pendientes", Context.MODE_PRIVATE)
+    override fun cargar(entregaId: Int): Borrador? = prefs.getString(entregaId.toString(), null)?.let {
+        try { JSONObject(it).let { o -> Borrador(o.getString("uuid"), o.optString("evidencia").ifEmpty { null }) } } catch (_: Exception) { null }
+    }
+    override fun guardar(entregaId: Int, borrador: Borrador) {
+        prefs.edit().putString(entregaId.toString(), JSONObject().put("uuid", borrador.idClienteLocal).put("evidencia", borrador.evidenciaId ?: "").toString()).commit()
+    }
+    override fun borrar(entregaId: Int) { prefs.edit().remove(entregaId.toString()).commit() }
+}

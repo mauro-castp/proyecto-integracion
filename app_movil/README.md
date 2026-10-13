@@ -1,48 +1,70 @@
 # Microhubs · Android (parte B)
 
-Cliente Kotlin nativo, exclusivamente JSON. Integra auth (5101), usuarios (5102), entregas (5105), documentos (5107) y pedidos (5104). Incluye login, restauración segura, renovación ante 401, perfil, menú por rol, paginación de entregas, consulta de pedido, QR, foto de cámara, GPS y registro del resultado por PUT. Tokens reales cifrados AES-GCM mediante Android Keystore; no se guardan contraseñas ni sesiones demo y el backup está deshabilitado.
+Cliente Kotlin nativo, **exclusivamente JSON**, para la persona repartidora. Habla con los microservicios del contrato v1:
+auth (5101), usuarios (5102), pedidos (5104), entregas (5105), documentos (5107) y notificaciones (5108).
+
+Incluye: inicio y cierre de sesión (tokens cifrados con Android Keystore y renovación automática), perfil, **mis entregas** con
+paginación, detalle de la entrega, escaneo del QR del pedido, **foto de evidencia a resolución útil** (JPEG ≤ 1600 px, nunca más
+de 5 MB), GPS con la ruta recorrida, **cierre de entrega idempotente** (entregado, parcial por líneas o fallida) y bandeja de
+notificaciones.
 
 ## Compilar y ejecutar
 
-Requiere JDK 17 o 21, Android SDK 35, acceso a Google Maven/Maven Central y Gradle 8.11.1. Abre esta carpeta en Android Studio o ejecuta:
+Requiere JDK 17 o 21, Android SDK 35 y acceso a Google Maven/Maven Central la primera vez.
 
 ```powershell
-./build.ps1
+./build.ps1          # compila, corre las pruebas unitarias y el lint; descarga Gradle 8.11.1 en .tools/ (ignorado por Git)
 ```
 
-El script descarga Gradle y verifica su SHA-256 oficial; conserva herramientas/caché en `.tools/` ignorado por Git. Si tu JDK/SDK está en otro lugar, configura `JAVA_HOME` y `ANDROID_HOME`. El APK se genera en `app/build/outputs/apk/debug/app-debug.apk`; el script también ejecuta lint. La compilación ya se verificó y el APK está disponible en esa ruta. `build.ps1` ejecuta compilación, pruebas unitarias y lint. Ver los resultados y límites en [PRUEBAS_APPS.md](../app_escritorio/PRUEBAS_APPS.md).
+El APK queda en `app/build/outputs/apk/debug/app-debug.apk`.
 
-## Demostración
+### Conexión con el backend
 
-1. Deja «Usar ejemplos locales» marcado; entra con correo válido y clave no vacía.
-2. Consulta perfil y «Mis entregas». Selecciona pedido 101.
-3. Concede permiso de cámara y vuelve a pulsar escanear. Escanea un QR cuyo contenido sea exactamente `101` (sin URL).
-4. Captura foto. Concede ubicación precisa, activa GPS y vuelve a pulsar obtener GPS; espera señal.
-5. Selecciona entregado/parcial/fallido. Para parcial/fallido se requieren observaciones. Registra y vuelve a consultar: cambia el estado en memoria.
-6. Cierra sesión. Los ejemplos se reinician al reiniciar el proceso; no simulan bases de datos.
+- **Debug:** HTTP solo hacia un host fijado al compilar, por defecto `10.0.2.2` (el equipo, visto desde el emulador). Para un
+  teléfono físico: `./build.ps1 -DebugHttpHost 192.168.1.20` (la IP de la PC en la red local) y permitir los puertos 5101–5108 en el
+  firewall de Windows. Cualquier otro host exige HTTPS.
+- **Release:** solo HTTPS; no existe la configuración de HTTP. No se desactiva la validación de certificados.
+- En la pantalla de acceso se escribe el servidor (`http://10.0.2.2` por defecto en debug) o se marca «Usar ejemplos locales»
+  (respuestas con la misma forma que el contrato, sin red, para ensayar la interfaz).
 
-La foto actual es la miniatura JPEG devuelta por la aplicación de cámara, adecuada para ensayar, pendiente de captura a resolución completa para producción. GPS y cámara son reales incluso en modo local. La ubicación debe tener menos de dos minutos. La app muestra disponibilidad de red y errores; no implementa cola offline. No ingresar credenciales reales en modo demo.
+Backend para probar: `docker compose -f docker-compose.integrado.yml up --build -d` (ver `INSTRUCCIONES_PARTE_B.md`).
+Cuentas de demostración y clave: `sistema_web/README.md` (repartidor: `repartidor1@codex.mx`).
 
-## Contrato provisional: pendiente de parte A
+## Flujo de la demostración
 
-Las estructuras de autenticación siguen la sección 3 del plan. Las siguientes rutas/payloads se proponen porque aún no existe `contratos/`; hay que acordarlas antes de integrar:
+1. En el portal web (o con `servicios/pruebas/preparar_entregas.py`) se asigna una entrega al repartidor → llega la notificación.
+2. App: acceso → **Mis entregas** → abrir la parada (cliente, dirección, total y líneas).
+3. Escanear el QR (el contenido debe ser el ID numérico del pedido), tomar la foto y obtener el GPS.
+4. Elegir el resultado: *entregado* (el monto debe ser el total), *parcial* (unidades devueltas y motivo por línea) o *fallida*
+   (incidencia obligatoria) → **Registrar resultado**.
+5. En el portal web el pedido aparece cerrado y el cliente recibe su aviso.
 
-- POST `auth/login` `{correo,clave}` y POST `auth/renovar` `{token_renovacion}` devuelven sesión completa con usuario.
-- POST `auth/salir` `{token_renovacion}` devuelve 204 o JSON.
-- GET `usuarios/yo` devuelve usuario; GET `entregas?pagina=1&por_pagina=20` devuelve `ejemplos/entregas.json`. El servidor debe limitar las entregas al repartidor autenticado.
-- GET `pedidos/{pedido_id}` devuelve pedido.
-- POST `documentos` `{nombre,tipo,contenido_base64}` devuelve `{id}`. Evidencia JPEG en base64; no multipart.
-- PUT `entregas/{id}` recibe `ejemplos/resultado.json` y devuelve la entrega actualizada.
+### Idempotencia (reintentos sin duplicar)
+Cada cierre lleva un `id_cliente_local` (UUID) que se genera una vez y **se conserva hasta el éxito** (también si la app se
+cierra), junto con la evidencia ya subida. Si falla la red o el servidor, «Registrar resultado» se repite con el mismo UUID: el
+servidor responde 201 (aplicada) o 200 con `duplicado: true` (ya estaba aplicada); ambas son éxito. Un 409 indica que otra
+operación ya cerró la entrega. Un 422 (regla de negocio) permite corregir y reintentar con el mismo UUID.
 
-`Accept` y `Content-Type`: `application/json`. Configura un host HTTPS sin puerto/ruta; se usan los puertos del plan. Android bloquea HTTP y requiere certificado confiable. En emulador, localhost es el propio emulador: usa el nombre/IP del servidor y un certificado válido para él. No se desactiva TLS.
+### Sesión
+El token de acceso dura 15 min. Ante un 401 se renueva **una sola vez** (las peticiones simultáneas comparten la renovación; el
+token de renovación rota) y se repite la petición. Si la renovación falla se borran las credenciales y se vuelve al acceso. Al
+cerrar sesión se revocan acceso y renovación en el servidor y se borran las credenciales locales aunque falle la red.
 
-El backend debe validar JWT, rol, pertenencia del pedido, transiciones de estado y revocación Redis, y persistir en PostgreSQL/MongoDB. Esos componentes están fuera de esta entrega cliente. Si falla el PUT tras subir la foto puede quedar un documento huérfano: falta acordar idempotencia y limpieza con A.
+## Pruebas
 
-## Pruebas adicionales pendientes de dispositivo físico e integración
+| Qué | Cómo | Resultado verificado |
+|---|---|---|
+| Unitarias (JVM): protocolo, contrato, entregas, idempotencia | `./build.ps1` o `gradle testDebugUnitTest` | 39 aprobadas |
+| Contra los **servicios reales** (login, entregas, foto en MongoDB, GPS, cierre, duplicado, notificaciones, revocación) | `MICROHUBS_BACKEND_HOST=127.0.0.1 MICROHUBS_CLAVE=… gradle testDebugUnitTest --tests "*BackendRealTest*"` (necesita 2 entregas en ruta: `preparar_entregas.py`) | 2 aprobadas |
+| En emulador Android 14 (Keystore, borradores, redimensión de foto, recorrido de pantallas con ejemplos y contra el backend real) | `gradle connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.clave=…` | 7 aprobadas |
+| Lint | `./build.ps1` | 0 errores, 14 advertencias (versiones, recursos sin usar, icono, `ExifInterface`; la de `InsecureBaseConfiguration` es el HTTP de debug) |
 
-- Login real, renovación expirada y revocación; cierre con red caída debe borrar credenciales locales.
-- Permisos denegados, GPS apagado, QR distinto al pedido, cancelación de cámara, ausencia de cámara.
-- Resultado parcial sin observaciones bloqueado; evidencia y GPS obligatorios; consulta tras actualizar.
-- Rotación/recreación: el formulario y evidencia se reinician; las credenciales reales pueden restaurarse. No se conservan borradores.
-- Verificar rol repartidor/administrador y que otros perfiles no tengan el menú entregas.
-- Confirmar servicios reales, persistencia e historial web antes de declarar completa la demostración integrada.
+Detalles, fechas y límites en [PRUEBAS_APPS.md](../app_escritorio/PRUEBAS_APPS.md).
+
+## Límites conocidos
+- La **captura real de cámara, el escaneo de un QR físico y la precisión del GPS** no se han ensayado en un teléfono: en emulador
+  solo se probó el recorrido de pantallas y el procesamiento de la imagen.
+- No hay cola offline: sin red no se puede cerrar la entrega (sí se reintenta sin duplicar cuando vuelve).
+- El formulario no se conserva si Android destruye el proceso; sí se conservan el UUID y la evidencia ya subida.
+- El emulador con GPU por software (`swiftshader_indirect`) a veces se cae durante las pruebas instrumentadas; es un problema del
+  emulador, no de la app: se repite la corrida.

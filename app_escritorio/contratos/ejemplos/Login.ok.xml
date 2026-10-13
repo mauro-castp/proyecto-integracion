@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<login xmlns="urn:microhubs:v1" version="1">
+  <correo>repartidor1@codex.mx</correo>
+  <clave>********</clave>
+  <dispositivo>Pixel 7</dispositivo>
+</login>

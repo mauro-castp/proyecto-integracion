@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sesion xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:microhubs:v1" version="1">
+  <token_acceso>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwicm9sIjoicmVwYXJ0aWRvciJ9.firma</token_acceso>
+  <token_renovacion>rt_8f3b2c71a0d94e5f9b6a1c2d3e4f5a6b</token_renovacion>
+  <tipo>Bearer</tipo>
+  <expira_en>900</expira_en>
+  <usuario>
+    <id>7</id>
+    <nombre>Ramiro</nombre>
+    <apellidos>Alanís Lozano</apellidos>
+    <correo>repartidor1@codex.mx</correo>
+    <rol>repartidor</rol>
+    <microhub_id xsi:nil="true" />
+    <permisos>
+      <permiso>entregas.ver</permiso>
+      <permiso>entregas.cerrar</permiso>
+      <permiso>pedidos.ver</permiso>
+    </permisos>
+  </usuario>
+</sesion>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<candidatos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <candidato>
+      <id>6</id>
+      <clave>CAND-06</clave>
+      <nombre>Alianza Norte</nombre>
+      <latitud>25.7601</latitud>
+      <longitud>-100.3555</longitud>
+      <renta_estimada>16000.00</renta_estimada>
+      <nomina_estimada>40000.00</nomina_estimada>
+      <servicios_estimados>6500.00</servicios_estimados>
+      <otros_costos>4500.00</otros_costos>
+      <costo_fijo>67000.00</costo_fijo>
+      <superficie_m2>110.0</superficie_m2>
+      <capacidad_fisica>130</capacidad_fisica>
+      <accesibilidad_vial>7</accesibilidad_vial>
+      <zona_id>3</zona_id>
+      <poblacion_cubierta>5200</poblacion_cubierta>
+      <radio_km>1.5</radio_km>
+      <decision>pendiente</decision>
+      <decision_motivo xsi:nil="true" />
+    </candidato>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</candidatos>

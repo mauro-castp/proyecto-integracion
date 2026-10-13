@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<escenarios xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <escenario>
+      <id>1</id>
+      <nombre>Escenario A - ticket $135</nombre>
+      <candidato_id>1</candidato_id>
+      <supuestos>
+        <demanda_diaria>120</demanda_diaria>
+        <operadores>3</operadores>
+        <repartidores>4</repartidores>
+        <ticket>135.00</ticket>
+        <costo_entrega>22.00</costo_entrega>
+        <margen_bruto>0.28</margen_bruto>
+        <renta>18000.00</renta>
+        <nomina>42000.00</nomina>
+        <servicios>7000.00</servicios>
+        <otros>5000.00</otros>
+        <distancia_km>2.4</distancia_km>
+        <capacidad_fisica>150</capacidad_fisica>
+      </supuestos>
+      <resultados>
+        <atendidos>120</atendidos>
+        <rechazados>0</rechazados>
+        <utilizacion>80.0</utilizacion>
+        <nivel>atencion</nivel>
+        <tiempo_estimado_min>19.4</tiempo_estimado_min>
+        <operadores_requeridos>3</operadores_requeridos>
+        <repartidores_requeridos>2</repartidores_requeridos>
+        <ingreso_dia>16200.00</ingreso_dia>
+        <margen_dia>-504.00</margen_dia>
+        <costo_por_pedido>42.00</costo_por_pedido>
+        <equilibrio>
+          <margen_pedido>15.80</margen_pedido>
+          <mensual>4557.0</mensual>
+          <diario>151.9</diario>
+        </equilibrio>
+        <decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision>
+        <explicacion>
+          <motivo>la demanda atendida (120/día) no alcanza el equilibrio (152/día)</motivo>
+          <motivo>reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda</motivo>
+        </explicacion>
+      </resultados>
+      <creado_en>2026-10-12T17:20:00-06:00</creado_en>
+    </escenario>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</escenarios>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documentos_resumen xmlns="urn:microhubs:v1" version="1">
+  <total>14</total>
+  <tamano_total_bytes>2512340</tamano_total_bytes>
+  <por_tipo>
+    <grupo>
+      <referencia_tipo>entrega</referencia_tipo>
+      <cantidad>12</cantidad>
+      <tamano_bytes>2200100</tamano_bytes>
+    </grupo>
+    <grupo>
+      <referencia_tipo>pedido</referencia_tipo>
+      <cantidad>2</cantidad>
+      <tamano_bytes>312240</tamano_bytes>
+    </grupo>
+  </por_tipo>
+</documentos_resumen>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<historial xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:microhubs:v1" version="1">
+  <pedido_id>20</pedido_id>
+  <eventos>
+    <evento>
+      <estado_anterior xsi:nil="true" />
+      <estado_nuevo>creado</estado_nuevo>
+      <usuario xsi:nil="true" />
+      <motivo xsi:nil="true" />
+      <fecha>2026-09-30T10:15:00-06:00</fecha>
+    </evento>
+    <evento>
+      <estado_anterior>creado</estado_anterior>
+      <estado_nuevo>asignado</estado_nuevo>
+      <usuario xsi:nil="true" />
+      <motivo xsi:nil="true" />
+      <fecha>2026-09-30T10:15:02-06:00</fecha>
+    </evento>
+    <evento>
+      <estado_anterior>asignado</estado_anterior>
+      <estado_nuevo>en_preparacion</estado_nuevo>
+      <usuario>operador.mh02@codex.mx</usuario>
+      <motivo xsi:nil="true" />
+      <fecha>2026-09-30T10:40:00-06:00</fecha>
+    </evento>
+  </eventos>
+</historial>

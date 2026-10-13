@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microhubs xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <microhub>
+      <id>1</id>
+      <clave>MH-01</clave>
+      <nombre>Microhub San Bernabé Centro</nombre>
+      <latitud>25.748</latitud>
+      <longitud>-100.364</longitud>
+      <radio_km>1.5</radio_km>
+      <estatus>activo</estatus>
+    </microhub>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</microhubs>

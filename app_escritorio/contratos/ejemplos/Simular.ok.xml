@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simular xmlns="urn:microhubs:v1" version="1">
+  <supuestos>
+    <demanda_diaria>120</demanda_diaria>
+    <operadores>3</operadores>
+    <repartidores>4</repartidores>
+    <ticket>135.00</ticket>
+    <costo_entrega>22.00</costo_entrega>
+    <margen_bruto>0.28</margen_bruto>
+    <renta>18000.00</renta>
+    <nomina>42000.00</nomina>
+    <servicios>7000.00</servicios>
+    <otros>5000.00</otros>
+    <distancia_km>2.4</distancia_km>
+    <capacidad_fisica>150</capacidad_fisica>
+  </supuestos>
+</simular>

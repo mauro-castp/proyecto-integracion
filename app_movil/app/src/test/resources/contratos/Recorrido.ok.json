@@ -1,0 +1,13 @@
+{
+  "entrega_id": 61,
+  "puntos": 42,
+  "distancia_km": 1.84,
+  "inicio": "2026-10-12T18:00:00-06:00",
+  "fin": "2026-10-12T18:29:00-06:00",
+  "precision_promedio_m": 9.2,
+  "ultimo_punto": {
+    "latitud": 25.749,
+    "longitud": -100.361,
+    "precision_m": 8.0
+  }
+}

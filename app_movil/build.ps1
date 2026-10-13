@@ -1,3 +1,4 @@
+param([string]$DebugHttpHost = '')   # IP de la PC para un teléfono físico (por defecto 10.0.2.2, el emulador)
 $ErrorActionPreference = 'Stop'
 $javaPath = 'C:\Program Files\Eclipse Adoptium\jdk-21.0.9.10-hotspot'
 if (-not $env:JAVA_HOME -and (Test-Path -LiteralPath $javaPath)) { $env:JAVA_HOME = $javaPath }
@@ -12,5 +13,6 @@ if (-not (Test-Path -LiteralPath $gradlePath)) {
     if ((Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne $expected) { throw 'Checksum Gradle incorrecto' }
     Expand-Archive -LiteralPath $archive -DestinationPath $toolsPath -Force
 }
-& $gradlePath --project-dir $PSScriptRoot --gradle-user-home (Join-Path $toolsPath 'cache') assembleDebug testDebugUnitTest lintDebug
+$extra = @(); if ($DebugHttpHost) { $extra += "-PdebugHttpHost=$DebugHttpHost" }
+& $gradlePath --project-dir $PSScriptRoot --gradle-user-home (Join-Path $toolsPath 'cache') assembleDebug testDebugUnitTest lintDebug @extra
 exit $LASTEXITCODE

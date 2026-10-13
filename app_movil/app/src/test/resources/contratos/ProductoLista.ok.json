@@ -1,0 +1,24 @@
+{
+  "datos": [
+    {
+      "id": 12,
+      "clave_interna": "AB-001",
+      "nombre": "Arroz",
+      "categoria": {
+        "id": 1,
+        "nombre": "Abarrote básico"
+      },
+      "unidad": "pieza",
+      "presentacion": "Bolsa 1 kg",
+      "precio": 32.5,
+      "imagen_url": "/static/productos/AB-001.jpg",
+      "estatus": "activo"
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<error xmlns="urn:microhubs:v1" version="1">
+  <codigo>VALIDACION</codigo>
+  <mensaje>Revisa los datos enviados.</mensaje>
+  <detalles>
+    <detalle>
+      <campo>cantidad</campo>
+      <mensaje>Debe ser mayor a 0.</mensaje>
+    </detalle>
+  </detalles>
+  <traza_id>9f2c1e7a-6b1d-4c1b-9d4e-2a7f0f6e1a10</traza_id>
+</error>

@@ -1,0 +1,19 @@
+{
+  "token_acceso": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwicm9sIjoicmVwYXJ0aWRvciJ9.firma",
+  "token_renovacion": "rt_8f3b2c71a0d94e5f9b6a1c2d3e4f5a6b",
+  "tipo": "Bearer",
+  "expira_en": 900,
+  "usuario": {
+    "id": 7,
+    "nombre": "Ramiro",
+    "apellidos": "Alanís Lozano",
+    "correo": "repartidor1@codex.mx",
+    "rol": "repartidor",
+    "microhub_id": null,
+    "permisos": [
+      "entregas.ver",
+      "entregas.cerrar",
+      "pedidos.ver"
+    ]
+  }
+}

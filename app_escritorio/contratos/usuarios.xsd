@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: usuarios · generado por contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+
+  <xs:complexType name="TPerfilMicrohub">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="clave" type="xs:string"/>
+      <xs:element name="nombre" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPerfil">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="apellidos" type="xs:string"/>
+      <xs:element name="correo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[^@\s]+@[^@\s]+\.[^@\s]+"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="telefono" type="xs:string" nillable="true"/>
+      <xs:element name="rol">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="administrador"/>
+            <xs:enumeration value="operador"/>
+            <xs:enumeration value="planeador"/>
+            <xs:enumeration value="cliente"/>
+            <xs:enumeration value="repartidor"/>
+            <xs:enumeration value="auditor"/>
+            <xs:enumeration value="analista"/>
+            <xs:enumeration value="supervisor"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="microhub" type="tns:TPerfilMicrohub" nillable="true"/>
+      <xs:element name="ultimo_acceso" type="xs:dateTime" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>PerfilActualizar: Campos a cambiar. Solo JSON (la app móvil).</xs:documentation></xs:annotation>
+  <xs:complexType name="TPerfilActualizar">
+    <xs:sequence>
+      <xs:element name="nombre" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="80"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="apellidos" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="120"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="telefono" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{10}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>PerfilLista: Página de usuarios.</xs:documentation></xs:annotation>
+  <xs:complexType name="TPerfilLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="usuario" type="tns:TPerfil" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="usuario">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPerfil">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="usuarios">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPerfilLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

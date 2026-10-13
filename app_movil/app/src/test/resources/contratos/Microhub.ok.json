@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "clave": "MH-01",
+  "nombre": "Microhub San Bernabé Centro",
+  "latitud": 25.748,
+  "longitud": -100.364,
+  "radio_km": 1.5,
+  "estatus": "activo"
+}
