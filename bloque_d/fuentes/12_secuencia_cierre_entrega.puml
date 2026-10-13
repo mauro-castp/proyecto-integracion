@@ -1,0 +1,77 @@
+@startuml
+!include tema.iuml
+skinparam dpi 150
+skinparam sequence {
+  ParticipantBorderColor #1F4E79
+  ParticipantBackgroundColor #DCE7F5
+  LifeLineBorderColor #8FA3B8
+  GroupBorderColor #8FA3B8
+}
+skinparam sequenceMessageAlign left
+title Diagrama 12 · Secuencia: cierre de una entrega con evidencia\n(proceso distribuido de la demostración)
+autonumber
+
+actor "Repartidor" as R
+participant "auth\n:5101" as A
+participant "entregas\n:5105" as E
+participant "documentos\n:5107" as D
+database "Redis" as RD
+database "PostgreSQL" as PG
+database "MongoDB" as MG
+
+== 0 · Asignación ==
+note over E, PG
+  El operador despacha el pedido y se crea la entrega:
+  el trigger trg_notificar_asignacion avisa al repartidor.
+end note
+
+== 1 · Sesión ==
+R -> A : POST /auth/login
+A -> PG : usuario + bcrypt
+A -> RD : SADD auth:sesion:{id}\nSETEX auth:refresh:{hash}
+A --> R : 200 JWT 15 min + rt_
+
+== 2 · Consulta ==
+R -> E : GET /entregas/mias\nBearer
+E -> RD : ¿jti activo\ny no revocado?
+E -> PG : entregas del\nrepartidor (ámbito)
+E --> R : 200 paginado
+
+== 3 · Evidencia y recorrido ==
+R -> D : POST /documentos\nBase64 ≤ 5 MB
+D -> RD : valida sesión
+D -> MG : insert documentos\n(firma real, SHA-256)
+D --> R : 201 {id}
+R -> E : POST /entregas/{id}/ubicaciones\npuntos ≤ 500
+E -> MG : insert_many\nubicaciones_entrega
+E --> R : 201 {recibidos}
+
+newpage Diagrama 12 (continuación) · Cierre idempotente y visibilidad en el web
+
+== 4 · Cierre idempotente ==
+R -> E : POST /entregas/{id}/resultado\nresultado, evidencia_ids,\nid_cliente_local
+E -> RD : sesión y permiso\nentregas.cerrar
+E -> MG : ¿cada evidencia existe\ny es de esta entrega?
+E -> PG : BEGIN · SELECT ...\nFOR UPDATE
+alt primer intento
+  E -> PG : UPDATE entrega (UUID único)\nUPDATE pedido → entregado,\nparcial o fallida
+  note right of PG
+    Triggers: fn_valida_transicion (RN20),
+    historial, auditoría, inventario
+    y aviso al cliente.
+  end note
+  E -> MG : upsert sincronizaciones_moviles\n(aplicada, intentos 1)
+  E --> R : 201 duplicado: false
+else mismo UUID (reintento)
+  E -> MG : upsert (intentos + 1)
+  E --> R : 200 duplicado: true
+else otro UUID, entrega cerrada
+  E -> MG : upsert (conflicto)
+  E --> R : 409 CONFLICTO
+end
+
+note over R, MG
+  5 · Visibilidad en el web: con el mismo JWT, el portal consulta pedidos,
+  entregas (recorrido) y documentos y arma «Entrega, recorrido y evidencias».
+end note
+@enduml

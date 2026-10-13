@@ -1,0 +1,51 @@
+@startuml
+!include tema.iuml
+skinparam dpi 150
+hide circle
+skinparam nodesep 12
+skinparam ranksep 22
+skinparam entity {
+  BorderColor #1F4E79
+  BackgroundColor #FFFFFF
+  FontColor #14293F
+}
+title Diagrama 16 · Modelo de datos de PostgreSQL (3 de 3): planeación y avisos\nen color: tablas creadas o ampliadas en el Segundo Parcial (scripts 06, 07 y 08)
+
+entity "usuario (14)" as usuario #E8EDF3
+entity "zona (14)" as zona #E8EDF3
+
+entity "ubicacion_candidata" as cand #FAEBD3 {
+  * id : integer <<PK>>
+  --
+  zona_id · decision_por <<FK>>
+  clave · nombre · costo_fijo
+  decision · decision_motivo
+}
+entity "escenario_planeacion" as esc #FAEBD3 {
+  * id : bigint <<PK>>
+  --
+  ubicacion_candidata_id <<FK>>
+  creado_por <<FK>>
+  supuestos · resultados (jsonb)
+}
+entity "configuracion" as conf #FAEBD3 {
+  * id : integer <<PK>>
+  --
+  clave · valor · ambito
+  actualizado_por <<FK>>
+}
+entity "web_notificacion" as noti #FAEBD3 {
+  * id : bigint <<PK>>
+  --
+  destinatario_id · emisor_id <<FK>>
+  titulo · mensaje · leido_en
+  **tipo · referencia_tipo**
+  **referencia_id**
+}
+
+zona ||--o{ cand
+cand ||--o{ esc
+usuario ||--o{ esc
+usuario ||--o{ conf
+usuario ||--o{ noti
+@enduml

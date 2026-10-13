@@ -1,36 +1,38 @@
 @startuml
 !include tema.iuml
-title Diagrama 2 · Contenedores
+title Diagrama 2 · Contenedores (actualizado en el Segundo Parcial)
 
 actor "Visitante /\nCliente" as CLI
-actor "Operador /\nAdministrador" as OPE
+actor "Operador / Planeador /\nAdministrador" as OPE
 actor "Repartidor" as REP
 
 rectangle "Navegador web" as NAV
-rectangle "**Sistema web empresarial**\nPython · Flask · Jinja2\n//Reglas de negocio del MVP//" as WEB #C9DCF0
-rectangle "**App Android**\nKotlin · consumo JSON\n//Cliente y Repartidor//" as AND
-rectangle "**App de escritorio**\nPySide · consumo XML\n//Operación intensiva//" as ESC
-rectangle "**Microservicios analíticos**\nPython · Flask\n//Demanda, ubicación, colas//" as MS
+rectangle "**Sistema web empresarial**\nPython · Flask · Jinja2\n//Funciona por sí solo//" as WEB #C9DCF0
+rectangle "**App Android**\nKotlin · consumo JSON\n//Repartidor//" as AND
+rectangle "**App de escritorio**\nC# · Windows Forms · consumo XML\n//Planeación//" as ESC
+rectangle "**8 microservicios**\nPython · Flask · /api/v1\n//auth · usuarios · catálogos · pedidos\nentregas · planeación · documentos · notificaciones//" as MS
 
-database "**PostgreSQL**\nTransaccional" as PG
-database "**MongoDB**\nEventos y logs" as MG
-database "**Redis**\nSesión, bloqueos, caché" as RD
+database "**PostgreSQL**\nTransaccional, reglas y auditoría" as PG
+database "**MongoDB**\nEvidencias, GPS, simulaciones, logs" as MG
+database "**Redis**\nSesión, revocación, caché, límites" as RD
 
 CLI --> NAV
-NAV --> WEB : HTTPS
+OPE --> NAV
+NAV --> WEB : HTTP
 OPE --> ESC
 REP --> AND
 CLI --> AND
 
-AND --> WEB : JSON + JWT
-ESC --> WEB : XML + JWT
-WEB --> MS : HTTP/JSON\n//asíncrono//
+AND --> MS : JSON + JWT
+ESC --> MS : XML (XSD) + JWT
+WEB --> MS : HTTP + el JWT de la sesión\n//integracion.py//
 
 WEB --> PG : SQL\n//transacciones//
-WEB --> MG : eventos y bitácora técnica
-WEB --> RD : tokens, bloqueos, caché
-MS --> MG : corridas analíticas
-MS --> PG : lectura de datos históricos
+WEB --> MG : bitácora técnica
+WEB --> RD : sesión, carrito
+MS --> PG : SQL, actor declarado
+MS --> MG : evidencias, GPS, simulaciones, logs
+MS --> RD : verificación de sesión, caché, límites
 
 note right of WEB
   RNF13: la caída de un microservicio

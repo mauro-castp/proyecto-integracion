@@ -1,0 +1,61 @@
+@startuml
+!include tema.iuml
+skinparam dpi 150
+skinparam nodesep 14
+skinparam ranksep 22
+skinparam frame {
+  BorderColor #5B6B7F
+  BackgroundColor #F7F9FC
+  FontColor #14293F
+}
+skinparam node {
+  BorderColor #1F4E79
+  BackgroundColor #DCE7F5
+  FontColor #14293F
+}
+title Diagrama 10 · Despliegue del Segundo Parcial\ndocker compose -f docker-compose.integrado.yml up --build -d
+
+actor "Persona usuaria\nNavegador · Swagger · Postman" as USR
+
+frame "Red **publica** · puertos publicados al equipo" as PUB {
+  node "**web** :5000\nFlask + Gunicorn (3)" as W #C9DCF0
+  node "**auth**\n:5101" as S1
+  node "**usuarios**\n:5102" as S2
+  node "**catalogos**\n:5103" as S3
+  node "**pedidos**\n:5104" as S4
+  node "**entregas**\n:5105" as S5
+  node "**planeacion**\n:5106" as S6
+  node "**documentos**\n:5107" as S7
+  node "**notificaciones**\n:5108" as S8
+}
+
+frame "Red **datos** · interna: sin puertos al equipo ni Internet" as DAT {
+  database "**postgres**\npostgres:16-alpine\nvolumen datos_pg" as PG
+  database "**mongo**\nmongo:7\nvolumen datos_mongo" as MG
+  database "**redis**\nredis:7-alpine\n256 MB · noeviction" as RD
+  node "**migraciones**\nun solo uso → Exited (0)\naplica 06, 07 y 08" as MIG #FAEBD3
+}
+
+W -[hidden]right- S1
+S1 -[hidden]right- S2
+S3 -[hidden]right- S4
+S4 -[hidden]right- S5
+S6 -[hidden]right- S7
+S7 -[hidden]right- S8
+W -[hidden]down- S3
+S3 -[hidden]down- S6
+PG -[hidden]right- MG
+RD -[hidden]right- MIG
+PG -[hidden]down- RD
+
+USR --> PUB : HTTP :5000 y :5101 a :5108\nJSON o XML + Bearer
+PUB --> DAT : SQL · MongoDB · Redis\n(los 9 contenedores también\nestán en la red datos)
+MIG --> PG : migraciones idempotentes
+
+legend bottom
+  Cada servicio tiene su Dockerfile (servicios/<servicio>/Dockerfile): python:3.12-slim,
+  usuario sin privilegios y HEALTHCHECK /health. Los 9 contenedores de aplicación esperan
+  a que migraciones termine y a que redis y mongo estén sanos. Volúmenes: datos_pg y
+  datos_mongo (persisten con "down"; "down -v" borra los datos).
+endlegend
+@enduml

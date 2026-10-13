@@ -1,0 +1,57 @@
+@startuml
+!include tema.iuml
+skinparam dpi 150
+skinparam nodesep 10
+skinparam ranksep 26
+skinparam rectangle {
+  BorderColor #1F4E79
+  BackgroundColor #DCE7F5
+  FontColor #14293F
+}
+title Diagrama 17 · Datos distribuidos: qué guarda cada almacén y cómo se relacionan
+
+rectangle "**PostgreSQL** · transacciones y reglas" as PG #FAEBD3 {
+  rectangle "usuario · rol\npermiso" as P1
+  rectangle "**entrega**\nid_cliente_local\nevidencia_ids" as P3
+  rectangle "candidatos\nescenarios" as P4
+  rectangle "avisos\nauditoría" as P5
+}
+
+rectangle "**MongoDB** · semiestructurado y de alta frecuencia" as MG #EFEAF7 {
+  rectangle "**documentos**\nbinario ≤ 5 MB\nreferencia {tipo, id}" as M1
+  rectangle "**ubicaciones_entrega**\nGPS 2dsphere\nTTL 180 días" as M2
+  rectangle "**sincronizaciones_moviles**\noperacion_uuid único\nestado · intentos" as M3
+  rectangle "**ejecuciones_analiticas**\nresultado de cada\nsimulación" as M4
+  rectangle "**logs_tecnicos**\n**metricas_servicio**\nuna por petición" as M5
+}
+
+rectangle "**Redis** · sesión común y caché" as RD #E6F2E6 {
+  rectangle "auth:sesion:{usuario}\nauth:jti:revocado:{jti}\nauth:refresh:{hash}" as R1
+  rectangle "cache:permisos:{rol}\ncache:catalogo:…\nrate:{servicio}:{ip}" as R2
+}
+
+P1 -[hidden]right- P3
+P3 -[hidden]right- P4
+P4 -[hidden]right- P5
+M1 -[hidden]right- M2
+M2 -[hidden]right- M3
+M4 -[hidden]right- M5
+M1 -[hidden]down- M4
+R1 -[hidden]right- R2
+PG -[hidden]down- MG
+MG -[hidden]down- RD
+
+P3 .. M1 : evidencia_ids = _id
+P3 .. M2 : entrega_id
+P3 .. M3 : id_cliente_local
+P4 .. M4 : escenario
+P5 .. M5 : usuario_id · traza
+P1 .. R1 : usuario.id
+P1 .. R2 : rol_permiso
+
+legend bottom
+  MongoDB guarda lo que llega en lotes, en binario o con forma variable y no necesita integridad
+  transaccional con el pedido. Ningún dato contable vive en Redis: si se pierde, solo hay que
+  volver a iniciar sesión.
+endlegend
+@enduml
