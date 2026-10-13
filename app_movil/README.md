@@ -10,7 +10,7 @@ Requiere JDK 17 o 21, Android SDK 35, acceso a Google Maven/Maven Central y Grad
 ./build.ps1
 ```
 
-El script descarga Gradle y verifica su SHA-256 oficial; conserva herramientas/caché en `.tools/` ignorado por Git. Si tu JDK/SDK está en otro lugar, configura `JAVA_HOME` y `ANDROID_HOME`. El APK se genera en `app/build/outputs/apk/debug/app-debug.apk`; el script también ejecuta lint. El entorno de implementación tiene Android SDK, pero no pudo descargar Gradle por resolución DNS; **no hay APK compilado ni prueba de dispositivo todavía**.
+El script descarga Gradle y verifica su SHA-256 oficial; conserva herramientas/caché en `.tools/` ignorado por Git. Si tu JDK/SDK está en otro lugar, configura `JAVA_HOME` y `ANDROID_HOME`. El APK se genera en `app/build/outputs/apk/debug/app-debug.apk`; el script también ejecuta lint. La compilación ya se verificó y el APK está disponible en esa ruta. `build.ps1` ejecuta compilación, pruebas unitarias y lint. Ver los resultados y límites en [PRUEBAS_APPS.md](../app_escritorio/PRUEBAS_APPS.md).
 
 ## Demostración
 
@@ -38,7 +38,7 @@ Las estructuras de autenticación siguen la sección 3 del plan. Las siguientes 
 
 El backend debe validar JWT, rol, pertenencia del pedido, transiciones de estado y revocación Redis, y persistir en PostgreSQL/MongoDB. Esos componentes están fuera de esta entrega cliente. Si falla el PUT tras subir la foto puede quedar un documento huérfano: falta acordar idempotencia y limpieza con A.
 
-## Pruebas pendientes de dispositivo e integración
+## Pruebas adicionales pendientes de dispositivo físico e integración
 
 - Login real, renovación expirada y revocación; cierre con red caída debe borrar credenciales locales.
 - Permisos denegados, GPS apagado, QR distinto al pedido, cancelación de cámara, ausencia de cámara.

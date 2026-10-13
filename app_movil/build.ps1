@@ -12,5 +12,5 @@ if (-not (Test-Path -LiteralPath $gradlePath)) {
     if ((Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne $expected) { throw 'Checksum Gradle incorrecto' }
     Expand-Archive -LiteralPath $archive -DestinationPath $toolsPath -Force
 }
-& $gradlePath --project-dir $PSScriptRoot --gradle-user-home (Join-Path $toolsPath 'cache') assembleDebug lintDebug
+& $gradlePath --project-dir $PSScriptRoot --gradle-user-home (Join-Path $toolsPath 'cache') assembleDebug testDebugUnitTest lintDebug
 exit $LASTEXITCODE

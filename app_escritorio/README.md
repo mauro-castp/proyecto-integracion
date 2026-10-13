@@ -36,7 +36,7 @@ python -m unittest discover -s pruebas -v
 dotnet build
 ```
 
-Pruebas de esquema: ejemplos válidos, sesión incompleta, namespace incorrecto, ID negativo y booleano inválido. Falta probar ejecución de Windows Forms y comunicación real, pues aún no existen servicios/contratos compartidos. En el entorno de implementación no está instalado el SDK .NET.
+Pruebas de esquema: ejemplos válidos, sesión incompleta, namespace incorrecto, ID negativo y booleano inválido. Se verificaron la compilación, la inicialización de Windows Forms y 17 comprobaciones de flujo/protocolo. Se instaló un SDK local en `.tools/dotnet/` y se generó una publicación autónoma en `bin/Publicacion/Microhubs.exe`. La comunicación real queda pendiente de los servicios/contratos compartidos. Ver `PRUEBAS_APPS.md`.
 
 ## Ensayo manual
 

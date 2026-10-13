@@ -6,7 +6,7 @@ import java.net.HttpURLConnection
 import java.net.URI
 import java.net.URL
 
-class Api(private val store: SessionStore) {
+class Api(private val store: Sessions, private val open: (URL) -> HttpURLConnection = { it.openConnection() as HttpURLConnection }) {
     var session: JSONObject? = null
     var demo = true
     var host = "https://localhost"
@@ -27,7 +27,7 @@ class Api(private val store: SessionStore) {
         val base = URI(host)
         require(base.scheme == "https" && base.host != null && base.userInfo == null) { "Configura un host HTTPS válido" }
         val url = URI("https", null, base.host, ports.getValue(service), "/api/v1/" + path.substringBefore('?'), path.substringAfter('?', "").ifEmpty { null }, null).toURL()
-        val connection = url.openConnection() as HttpURLConnection
+        val connection = open(url)
         try {
             connection.requestMethod = method; connection.connectTimeout = 15000; connection.readTimeout = 20000
             connection.setRequestProperty("Accept", "application/json")
