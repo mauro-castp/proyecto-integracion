@@ -1,0 +1,47 @@
+{% extends 'base.html' %}{% block titulo %}Pedido vía microservicios{% endblock %}{% block cuerpo %}
+{% set p = det.datos if det.ok else None %}
+<h1>{{ p.folio if p else 'Pedido ' ~ pid }}</h1>
+<p class="sub">Vista construida por el web con los servicios de pedidos (5104), entregas (5105) y documentos (5107).</p>
+{% if not det.ok %}<div class="aviso alto">{{ det.mensaje or 'El servicio de pedidos no respondió.' }}</div>{% endif %}
+{% if p %}
+<div class="kpis">
+  <div class="kpi"><div class="v">{{ p.estado }}</div><div class="l">Estado</div></div>
+  <div class="kpi"><div class="v">${{ '%.2f'|format(p.total) }}</div><div class="l">Total</div></div>
+  <div class="kpi"><div class="v">{{ p.zona.nombre }}</div><div class="l">Zona · microhub {{ p.microhub_id or '—' }}</div></div>
+  <div class="kpi"><div class="v">{{ p.cliente.nombre }}</div><div class="l">Cliente</div></div>
+</div>
+<div class="panel" style="overflow:auto"><h2>Líneas</h2><table><thead><tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Importe</th></tr></thead><tbody>
+{% for l in p.lineas %}<tr><td>{{ l.nombre }}</td><td>{{ l.cantidad }}</td><td>${{ '%.2f'|format(l.precio_unitario) }}</td><td>${{ '%.2f'|format(l.importe) }}</td></tr>{% endfor %}
+</tbody></table></div>
+{% endif %}
+{% if hist.ok %}<div class="panel" style="overflow:auto"><h2>Historial de estados</h2><table><thead><tr><th>Fecha</th><th>Anterior</th><th>Nuevo</th><th>Usuario</th><th>Motivo</th></tr></thead><tbody>
+{% for e in hist.datos.eventos %}<tr><td>{{ e.fecha }}</td><td>{{ e.estado_anterior or 'Creación' }}</td><td>{{ e.estado_nuevo }}</td><td>{{ e.usuario or 'Sistema' }}</td><td>{{ e.motivo or '—' }}</td></tr>{% endfor %}
+</tbody></table></div>{% endif %}
+
+<div class="panel" style="overflow:auto"><h2>Entrega y recorrido GPS</h2>
+{% if entrega %}
+<p>Entrega <b>{{ entrega.id }}</b> · parada {{ entrega.orden_parada or '—' }} · {{ entrega.direccion }} · pedido en <b>{{ entrega.estado_pedido }}</b></p>
+{% if recorrido and recorrido.ok %}{% set r = recorrido.datos %}
+<table><tbody><tr><td>Puntos GPS (MongoDB)</td><td>{{ r.puntos }}</td></tr><tr><td>Distancia recorrida</td><td>{{ r.distancia_km }} km</td></tr>
+<tr><td>Inicio · fin</td><td>{{ r.inicio or '—' }} · {{ r.fin or '—' }}</td></tr><tr><td>Precisión promedio</td><td>{{ r.precision_promedio_m or '—' }} m</td></tr>
+<tr><td>Último punto</td><td>{% if r.ultimo_punto %}{{ r.ultimo_punto.latitud }}, {{ r.ultimo_punto.longitud }}{% else %}—{% endif %}</td></tr></tbody></table>
+{% elif recorrido %}<div class="aviso medio">Recorrido: {{ recorrido.mensaje }}</div>{% endif %}
+{% else %}<p class="ayuda">El pedido todavía no tiene entrega asignada, o tu perfil no puede consultar entregas.</p>{% endif %}
+</div>
+
+<div class="panel" style="overflow:auto"><h2>Evidencias y documentos (MongoDB)</h2>
+<table><thead><tr><th>Archivo</th><th>Referencia</th><th>Bytes</th><th>SHA-256</th><th>Fecha</th><th></th></tr></thead><tbody>
+{% for lista in [docs_entrega, docs_pedido] %}{% if lista and lista.ok %}{% for d in lista.datos.datos %}
+<tr><td>{{ d.nombre }}</td><td>{{ d.referencia.tipo }} {{ d.referencia.id }}</td><td>{{ d.tamano_bytes }}</td><td><code>{{ d.sha256[:12] }}…</code></td><td>{{ d.creado_en }}</td>
+<td><a class="btn sec" href="{{ url_for('servicios.documento', did=d.id, ver=1) }}" target="_blank" rel="noopener">Ver</a></td></tr>
+{% endfor %}{% endif %}{% endfor %}
+</tbody></table>
+{% if 'archivos.crear' in web_permisos %}
+<form method="post" enctype="multipart/form-data" style="margin-top:12px"><input type="hidden" name="csrf" value="{{ web_csrf() }}">
+<label for="archivo">Adjuntar documento al pedido (PDF, PNG o JPEG, hasta 5 MB) · se envía al servicio de documentos</label>
+<input id="archivo" name="archivo" type="file" accept=".pdf,.png,.jpg,.jpeg" required><button class="btn">Enviar al servicio</button></form>
+{% endif %}
+</div>
+{% include '_traza_llamadas.html' %}
+<a class="btn sec" href="{{ url_for('web.detalle_pedido', pid=pid) }}">Volver al pedido</a>
+{% endblock %}

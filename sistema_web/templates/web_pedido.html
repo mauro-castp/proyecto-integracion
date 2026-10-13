@@ -2,5 +2,6 @@
 <h1>{{ pedido.folio }}</h1><p class="sub">{{ pedido.estado }} · {{ pedido.total|dinero }} · {{ pedido.zona }}</p>
 {% if modo_local %}<div class="aviso medio">Pedido de ejemplo; no tiene historial real.</div>{% endif %}
 <div class="panel" style="overflow:auto"><h2>Historial de estados</h2><table><thead><tr><th>Fecha</th><th>Anterior</th><th>Nuevo</th><th>Responsable</th><th>Motivo</th></tr></thead><tbody>{% for h in historial %}<tr><td>{{ h.fecha }}</td><td>{{ h.estado_anterior or 'Creación' }}</td><td>{{ h.estado_nuevo }}</td><td>{{ h.nombre or 'Sistema' }}</td><td>{{ h.motivo or '—' }}</td></tr>{% else %}<tr><td colspan="5">Sin movimientos registrados.</td></tr>{% endfor %}</tbody></table></div>
+{% if not modo_local %}<a class="btn" href="{{ url_for('servicios.pedido', pid=pedido.id) }}">Entrega, recorrido y evidencias (microservicios)</a>{% endif %}
 <a class="btn sec" href="{{ url_for('web.reportes', **request.args.to_dict()) }}">Volver al reporte</a>
 {% endblock %}

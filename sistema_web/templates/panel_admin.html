@@ -20,7 +20,8 @@
 {% if 'microhubs.ver' in permisos and hay('catalogos.microhubs') %}<a class="btn sec" href="{{ url_for('catalogos.microhubs') }}">Microhubs</a>{% endif %}
 {% if 'configuracion.ver' in permisos and hay('admin.parametros') %}<a class="btn sec" href="{{ url_for('admin.parametros') }}">Parámetros</a>{% endif %}
 {% if 'bitacora.ver' in permisos and hay('admin.bitacora') %}<a class="btn sec" href="{{ url_for('admin.bitacora') }}">Bitácora</a>{% endif %}
-{% if 'planeacion.ver' in permisos %}<a class="btn sec" href="{{ url_for('planeacion.tablero') }}">Planeación</a>{% endif %}</p>
+{% if 'planeacion.ver' in permisos %}<a class="btn sec" href="{{ url_for('planeacion.tablero') }}">Planeación</a>{% endif %}
+{% if hay('servicios.tablero') %}<a class="btn sec" href="{{ url_for('servicios.tablero') }}">Microservicios</a>{% endif %}</p>
 <h2>Auditoría <span class="sub">({{ c.auditoria_24h }} eventos en 24 h)</span></h2>
 <div class="panel"><table><thead><tr><th>Fecha</th><th>Módulo</th><th>Acción</th><th>Entidad</th><th>Usuario</th></tr></thead>
 <tbody>{% for a in recientes %}<tr><td>{{ a.fecha.strftime('%d/%m %H:%M') }}</td><td>{{ a.modulo }}</td><td>{{ a.accion }}</td><td>{{ a.entidad or '—' }}</td><td>{{ a.correo or 'sistema' }}</td></tr>{% endfor %}</tbody></table></div>

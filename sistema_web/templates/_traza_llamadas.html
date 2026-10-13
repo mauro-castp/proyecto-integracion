@@ -1,0 +1,8 @@
+{# Lista de llamadas a microservicios hechas para construir la página: evidencia del flujo web → servicio. #}
+<div class="panel" style="overflow:auto"><h2>Llamadas del web a los microservicios</h2>
+<p class="ayuda">Cada petición lleva el JWT de tu sesión; el servicio la valida contra Redis. La traza aparece en <code>logs_tecnicos.correlacion_id</code> de MongoDB.</p>
+<table><thead><tr><th>Servicio</th><th>Petición</th><th>HTTP</th><th>ms</th><th>Traza</th></tr></thead><tbody>
+{% for ll in llamadas %}<tr><td>{{ ll.servicio }} · {{ puertos[ll.servicio] }}</td><td><code>{{ ll.metodo }} /api/v1/{{ ll.ruta }}</code></td>
+<td>{% if ll.ok %}<span class="pill verde">{{ ll.status }}</span>{% else %}<span class="pill rojo">{{ ll.status or 'sin conexión' }}</span>{% endif %}</td>
+<td>{{ ll.ms }}</td><td><code>{{ ll.traza[:8] }}</code></td></tr>{% endfor %}
+</tbody></table></div>

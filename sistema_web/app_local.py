@@ -6,12 +6,14 @@ from flask import Blueprint, Flask, g, redirect, url_for
 from productos_crud import inicializar_local, productos_bp
 from catalogos_crud import catalogos_bp, inicializar_local as inicializar_catalogos
 from planeacion import planeacion_bp
+from integracion import servicios_bp
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "solo-desarrollo-local"
 app.register_blueprint(productos_bp)
 app.register_blueprint(catalogos_bp)
 app.register_blueprint(planeacion_bp)
+app.register_blueprint(servicios_bp)
 
 publico = Blueprint("publico", __name__)
 auth = Blueprint("auth", __name__)

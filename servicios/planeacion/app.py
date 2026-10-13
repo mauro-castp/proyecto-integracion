@@ -11,6 +11,7 @@ Servicio de planeación · puerto 5106 · contrato v1
   GET  /api/v1/simulaciones/resumen           agregación en MongoDB de las simulaciones ejecutadas
   GET  /api/v1/escenarios[/{id}]              escenarios guardados
   POST /api/v1/escenarios                     guardar escenario (planeacion.editar)
+  DELETE /api/v1/candidatos/{id}              baja lógica del candidato · DELETE /api/v1/escenarios/{id}
 
 No duplica fórmulas: usa planeacion_calc.py (funciones puras y probadas) y
 las consultas de planeacion.py del sistema web. Por eso el portal, este
@@ -206,6 +207,16 @@ def decidir(cid):
     return responder(candidato(f), raiz="candidato")
 
 
+@app.delete(f"{P}/candidatos/<int:cid>")
+@requiere("planeacion.editar")
+def candidato_baja(cid):
+    """Baja lógica: el candidato deja de aparecer, pero su historia (escenarios, decisión, bitácora) se conserva."""
+    _candidato(cid)
+    with conexion() as con, con.cursor() as cur:
+        cur.execute("UPDATE ubicacion_candidata SET estatus = 'inactivo' WHERE id = %s", (cid,))
+    return responder(None, 204)
+
+
 # --------------------------------------------------------------------
 # Simulación
 # --------------------------------------------------------------------
@@ -327,6 +338,16 @@ def escenario_crear():
     return responder(escenario(f), 201, raiz="escenario")
 
 
+@app.delete(f"{P}/escenarios/<int:eid>")
+@requiere("planeacion.editar")
+def escenario_borrar(eid):
+    with conexion() as con, con.cursor() as cur:
+        cur.execute("DELETE FROM escenario_planeacion WHERE id = %s", (eid,))
+        if cur.rowcount == 0:
+            raise no_encontrado("No existe el escenario.")
+    return responder(None, 204)
+
+
 # --------------------------------------------------------------------
 PAG = [("pagina", "query", "integer", "Página"), ("por_pagina", "query", "integer", "1 a 100"),
        ("q", "query", "string", "Texto a buscar")]
@@ -366,3 +387,8 @@ documentar(app, "GET", f"{P}/escenarios/{{id}}", "Un escenario", permisos=["plan
 documentar(app, "POST", f"{P}/escenarios", "Guardar escenario", permisos=["planeacion.editar"], cuerpo="EscenarioNuevo.ok",
            descripcion="Ejecuta la simulación y guarda supuestos y resultados en PostgreSQL; el portal web lo puede abrir.",
            respuestas={201: ("Escenario guardado", "Escenario.ok")}, errores=[400, 403, 404, 422])
+documentar(app, "DELETE", f"{P}/candidatos/{{id}}", "Dar de baja un candidato", permisos=["planeacion.editar"],
+           parametros=ID, descripcion="Baja lógica (estatus inactivo): se conservan escenarios, decisión y bitácora.",
+           respuestas={204: ("Dado de baja, sin cuerpo", None)}, errores=[403, 404])
+documentar(app, "DELETE", f"{P}/escenarios/{{id}}", "Eliminar un escenario", permisos=["planeacion.editar"],
+           parametros=ID, respuestas={204: ("Eliminado, sin cuerpo", None)}, errores=[403, 404])

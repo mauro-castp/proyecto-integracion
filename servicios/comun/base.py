@@ -236,7 +236,7 @@ def crear_app(servicio, titulo, descripcion, puerto, dependencias=("postgres", "
         g.inicio = time.perf_counter()
         traza = request.headers.get("X-Traza-Id", "")
         g.traza_id = traza if 8 <= len(traza) <= 64 and traza.replace("-", "").isalnum() else str(uuid.uuid4())
-        if not request.path.endswith(("/salud", "/docs", "/openapi.json")):
+        if not request.path.endswith(("/salud", "/health", "/docs", "/openapi.json")):
             _limitar()
 
     @app.after_request
@@ -283,7 +283,9 @@ def crear_app(servicio, titulo, descripcion, puerto, dependencias=("postgres", "
         return respuesta_error(500, "ERROR_INTERNO", "Ocurrió un error inesperado.")
 
     @app.get("/salud")
+    @app.get("/health")
     @app.get(f"{config.PREFIJO}/salud")
+    @app.get(f"{config.PREFIJO}/health")
     def salud():
         dep = {"postgres": "no_aplica", "redis": "no_aplica", "mongo": "no_aplica"}
         if "postgres" in dependencias:
@@ -365,7 +367,7 @@ def _registrar(status):
              "excepcion": {"detalle": g.excepcion} if g.get("excepcion") else None}
     if config.LOG_STDOUT:
         print(json.dumps({**linea, "registrado_en": linea["registrado_en"].isoformat()}, ensure_ascii=False), flush=True)
-    if regla.endswith(("/salud", "/docs", "/openapi.json")):
+    if regla.endswith(("/salud", "/health", "/docs", "/openapi.json")):
         return
     mongo_insertar("logs_tecnicos", linea)
     mongo_insertar("metricas_servicio", {"momento": linea["registrado_en"], "duracion_ms": dur,
