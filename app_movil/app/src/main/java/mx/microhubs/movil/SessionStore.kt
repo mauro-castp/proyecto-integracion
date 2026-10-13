@@ -11,7 +11,13 @@ import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
-class SessionStore(context: Context) {
+interface Sessions {
+    fun save(session: JSONObject)
+    fun load(): JSONObject?
+    fun clear()
+}
+
+class SessionStore(context: Context) : Sessions {
     private val prefs = context.getSharedPreferences("session", Context.MODE_PRIVATE)
     private val alias = "microhubs.session.v1"
     private fun key(): SecretKey {
@@ -23,18 +29,18 @@ class SessionStore(context: Context) {
         }
         return store.getKey(alias, null) as SecretKey
     }
-    fun save(session: JSONObject) {
+    override fun save(session: JSONObject) {
         val cipher = Cipher.getInstance("AES/GCM/NoPadding").apply { init(Cipher.ENCRYPT_MODE, key()) }
         val encrypted = cipher.doFinal(session.toString().toByteArray(Charsets.UTF_8))
         check(prefs.edit().putString("iv", Base64.encodeToString(cipher.iv, Base64.NO_WRAP))
             .putString("data", Base64.encodeToString(encrypted, Base64.NO_WRAP)).commit())
     }
-    fun load(): JSONObject? = try {
+    override fun load(): JSONObject? = try {
         val data = prefs.getString("data", null)
         if (data == null) null else {
             val cipher = Cipher.getInstance("AES/GCM/NoPadding").apply { init(Cipher.DECRYPT_MODE, key(), GCMParameterSpec(128, Base64.decode(prefs.getString("iv", ""), Base64.NO_WRAP))) }
             JSONObject(String(cipher.doFinal(Base64.decode(data, Base64.NO_WRAP)), Charsets.UTF_8))
         }
     } catch (_: Exception) { clear(); null }
-    fun clear() { prefs.edit().clear().commit() }
+    override fun clear() { prefs.edit().clear().commit() }
 }

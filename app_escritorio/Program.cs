@@ -16,13 +16,18 @@ static class Program
 sealed class Api : IDisposable
 {
     internal static readonly XNamespace Ns = "urn:microhubs:v1";
-    readonly HttpClient http = new() { Timeout = TimeSpan.FromSeconds(20) };
+    readonly HttpClient http;
     readonly XmlSchemaSet schemas = new();
     public string Access = "", Refresh = "", Role = "";
     public bool Demo;
     readonly List<(int id, string name)> candidates = new() { (1, "San Bernabé") };
     public string Host = "https://localhost";
-    public Api() { schemas.Add(Ns.NamespaceName, Path.Combine(AppContext.BaseDirectory, "contratos", "cliente.xsd")); }
+    public Api(HttpMessageHandler? handler = null)
+    {
+        http = handler == null ? new HttpClient() : new HttpClient(handler);
+        http.Timeout = TimeSpan.FromSeconds(20);
+        schemas.Add(Ns.NamespaceName, Path.Combine(AppContext.BaseDirectory, "contratos", "cliente.xsd"));
+    }
     public static XElement Body(string name, params (string key, string value)[] fields) => new(Ns + name, fields.Select(f => new XElement(Ns + f.key, f.value)));
     public async Task<XDocument> Call(string service, string path, HttpMethod? method = null, XElement? body = null, bool retry = true)
     {
@@ -56,19 +61,22 @@ sealed class Api : IDisposable
     }
     public void SetSession(XDocument doc)
     {
-        Access = doc.Root!.Element(Ns + "token_acceso")!.Value;
-        Refresh = doc.Root.Element(Ns + "token_renovacion")!.Value;
-        Role = doc.Descendants(Ns + "rol").Single().Value;
+        Clear();
+        var access = doc.Root!.Element(Ns + "token_acceso")!.Value;
+        var refresh = doc.Root.Element(Ns + "token_renovacion")!.Value;
+        var role = doc.Descendants(Ns + "rol").Single().Value;
+        if (string.IsNullOrWhiteSpace(access) || string.IsNullOrWhiteSpace(refresh) || string.IsNullOrWhiteSpace(role)) throw new Exception("Sesión incompleta.");
         // La firma y revocación se verifican en el servidor. No se distribuye JWT_SECRET.
         if (!Demo)
         {
-            var segments = Access.Split('.');
+            var segments = access.Split('.');
             if (segments.Length != 3) throw new Exception("JWT inválido.");
             var payload = segments[1].Replace('-', '+').Replace('_', '/');
             payload = payload.PadRight((payload.Length + 3) / 4 * 4, '=');
             using var claims = System.Text.Json.JsonDocument.Parse(Convert.FromBase64String(payload));
             if (claims.RootElement.GetProperty("exp").GetInt64() <= DateTimeOffset.UtcNow.ToUnixTimeSeconds()) throw new Exception("JWT vencido.");
         }
+        Access = access; Refresh = refresh; Role = role;
     }
     public void Clear() { Access = Refresh = Role = ""; }
     string DemoResponse(string path, XElement? body)

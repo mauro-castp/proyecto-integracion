@@ -49,7 +49,7 @@ class MainActivity : Activity() {
     private fun field(hint: String, secret: Boolean = false): EditText = EditText(this).apply {
         this.hint = hint
         if (secret) inputType = 129
-        layout.addView(this)
+        this@MainActivity.layout.addView(this)
     }
     private fun button(label: String, action: () -> Unit) { layout.addView(Button(this).apply { text = label; setOnClickListener { if (!busy) action() } }) }
     private fun error(message: String) { status.text = message; Toast.makeText(this, message, Toast.LENGTH_LONG).show() }
