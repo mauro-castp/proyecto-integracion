@@ -38,6 +38,8 @@ class Salida(val codigo: Int, val tipo: String = "application/json; charset=utf-
 
 /** Servidor simulado: registra cada petición y contesta con lo que diga `manejador`. */
 class Servidor(var manejador: (Peticion) -> Salida = { Salida(200) }) {
+    /** El HttpURLConnection de la JVM rechaza PATCH; el de Android lo acepta. Se simulan los dos. */
+    var permitePatch = false
     val peticiones = mutableListOf<Peticion>()
     fun abrir(url: URL): HttpURLConnection = Conexion(url, this)
     fun rutas() = peticiones.map { it.toString() }
@@ -51,6 +53,10 @@ class Servidor(var manejador: (Peticion) -> Salida = { Salida(200) }) {
             val p = Peticion(requestMethod, url.path + (url.query?.let { "?$it" } ?: ""), enviado.toString("UTF-8"), cabeceras)
             servidor.peticiones.add(p)
             servidor.manejador(p).also { it.fallo?.let { e -> throw e } }
+        }
+        override fun setRequestMethod(metodo: String) {
+            if (metodo == "PATCH" && !servidor.permitePatch) throw java.net.ProtocolException("Invalid HTTP method: PATCH")
+            method = metodo
         }
         override fun connect() {}
         override fun disconnect() {}

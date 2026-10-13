@@ -33,7 +33,7 @@ class EntregasTest {
         val e = entregas(s)
         val pagina = e.mias(1)
         assertEquals("GET /api/v1/entregas/mias?pagina=1&por_pagina=20", s.ultima().toString())
-        assertEquals(Parada(61, 20, "PED-20260930-000020", "en_ruta", 3, "Av. Rodrigo Gómez 1420, San Bernabé", "San Bernabé Centro", 158.0), pagina.items[0])
+        assertEquals(Parada(61, 20, "PED-20260930-000020", "en_ruta", 3, "Av. Rodrigo Gómez 1420, San Bernabé", "San Bernabé Centro", 158.0, 0.21, 14.2), pagina.items[0])
         assertEquals(1, pagina.paginas)
         val d = e.detalle(61)
         assertEquals(2, d.lineas.size); assertEquals("Laura Pérez", d.cliente); assertEquals(158.0, d.total, 0.0)

@@ -13,20 +13,23 @@ ignoradas por Git.
 - **Pruebas Python (`pruebas/test_contratos.py`, lxml):** 10 aprobadas con un validador independiente de los XSD.
 
 ## Android (Kotlin · solo JSON)
-- **APK debug:** `app/build/outputs/apk/debug/app-debug.apk`. Lint: 0 errores y 14 advertencias (versiones de dependencias, recursos
-  sin usar, icono, `ExifInterface`, `DataExtractionRules`, `ApplySharedPref`; `InsecureBaseConfiguration` es el HTTP permitido solo
+- **APK debug:** `app/build/outputs/apk/debug/app-debug.apk`. Lint: 0 errores y 17 advertencias (versiones de dependencias, recursos
+  sin usar, `ExifInterface`, `DataExtractionRules`, `ApplySharedPref`; `InsecureBaseConfiguration` es el HTTP permitido solo
   en debug). No se afirma que el análisis esté libre de advertencias.
-- **Unitarias (JVM): 39 aprobadas** — protocolo (cabeceras, puertos, errores, renovación única y concurrente, 429, reglas de HTTP/HTTPS,
+- **Unitarias (JVM): 47 aprobadas** — protocolo (cabeceras, puertos, errores, renovación única y concurrente, 429, reglas de HTTP/HTTPS,
   JSON obligatorio), contrato (los 53 ejemplos oficiales, estructura de la sesión y de los errores, cuerpo de cierre idéntico en claves
   al ejemplo oficial) y entregas (reglas RN28/RN29 antes de enviar, orden documento → GPS → cierre, **reintento con el mismo UUID sin
-  duplicar ni volver a subir la foto**, 200 duplicado = éxito, 422 conserva el UUID, 409 lo descarta, GPS en lotes de 500).
-- **Contra el backend real (JVM): 2 aprobadas** — acceso, perfil, clave incorrecta, mis entregas, detalle, evidencia (Base64 → MongoDB),
+  duplicar ni volver a subir la foto**, 200 duplicado = éxito, 422 conserva el UUID, 409 lo descarta, GPS en lotes de 500) y perfil
+  (validación previa, solo se envía lo que cambió, la sesión local queda al día y `PATCH` cae a `PUT` donde la JVM no lo conoce).
+- **Contra el backend real (JVM): 3 aprobadas** (sobre los microservicios de `main`) — acceso, perfil, clave incorrecta, mis entregas, detalle, evidencia (Base64 → MongoDB),
   GPS, cierre «entregado», segundo cierre con otro UUID → 409, **reintento con el mismo UUID → 200 `duplicado`**, notificaciones
-  (listar, contador, marcar leída) y cierre de sesión con revocación (el token anterior da 401).
+  (listar, contador, marcar leída) y cierre de sesión con revocación (el token anterior da 401); además edita el teléfono contra el servicio, comprueba el rechazo de
+  un teléfono inválido y lo restaura.
 - **Instrumentadas en emulador (Android 14, Medium_Phone): 7 aprobadas** — cifrado y restauración con Android Keystore, descarte de
   datos corruptos, persistencia del cierre pendiente (UUID + evidencia), redimensión de la foto a ≤ 1600 px y firma JPEG, arranque,
-  recorrido de pantallas con ejemplos locales (acceso → entregas → entrega → validación de QR → notificaciones → salida) y recorrido
-  de pantallas **contra el backend real vía 10.0.2.2** (acceso, perfil, entregas, notificaciones, salida).
+  recorrido de pantallas con ejemplos locales (acceso → inicio → entregas → entrega → modo parcial → validación de QR →
+  notificaciones → **edición del perfil** con su validación → salida) y recorrido de pantallas **contra el backend real vía 10.0.2.2**
+  (acceso, perfil, entregas, notificaciones, salida). Las pruebas guardan una captura de cada pantalla (`app_movil/docs/capturas/`).
 
 ## Hallazgo corregido durante la integración
 - La regla `contratos/` de exclusión privada del repositorio también ignoraba `app_escritorio/contratos/` (los XSD que la app necesita

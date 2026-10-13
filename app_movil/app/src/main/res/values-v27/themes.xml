@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Desde Android 8.1 los iconos de la barra de navegación se oscurecen sobre el fondo claro. -->
+    <!-- Tema propio sobre Material del sistema (sin AppCompat): barra de estado verde azulado y fondo gris claro. -->
+    <style name="TemaMicrohubs" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">#0F766E</item>
+        <item name="android:colorPrimaryDark">#115E59</item>
+        <item name="android:colorAccent">#0F766E</item>
+        <item name="android:windowBackground">#F3F5F7</item>
+        <item name="android:statusBarColor">#0F766E</item>
+        <item name="android:navigationBarColor">#F3F5F7</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+</resources>

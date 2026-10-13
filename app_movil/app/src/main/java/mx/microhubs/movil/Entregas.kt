@@ -11,7 +11,10 @@ import kotlin.math.roundToLong
 
 // Modelos de lo que la app lee del contrato v1 (entregas, notificaciones). Sin dependencias de Android: se prueban en la JVM.
 data class Pagina<T>(val items: List<T>, val pagina: Int, val paginas: Int, val total: Int)
-data class Parada(val id: Int, val pedidoId: Int, val folio: String, val estado: String, val orden: Int, val direccion: String, val zona: String, val total: Double)
+data class Parada(
+    val id: Int, val pedidoId: Int, val folio: String, val estado: String, val orden: Int, val direccion: String, val zona: String,
+    val total: Double, val distanciaKm: Double = 0.0, val minutos: Double = 0.0
+)
 data class Linea(val pedidoDetalleId: Int, val nombre: String, val cantidad: Int)
 data class Detalle(
     val id: Int, val pedidoId: Int, val folio: String, val estado: String, val cliente: String, val telefono: String,
@@ -52,7 +55,7 @@ private fun dinero(v: Double) = (v * 100).roundToLong() / 100.0
 object Contrato {
     fun parada(o: JSONObject) = Parada(
         o.getInt("id"), o.getInt("pedido_id"), o.getString("folio"), o.getString("estado_pedido"), o.getInt("orden_parada"),
-        o.getString("direccion"), o.getString("zona"), o.getDouble("total")
+        o.getString("direccion"), o.getString("zona"), o.getDouble("total"), o.optDouble("distancia_km", 0.0), o.optDouble("minutos_estimados", 0.0)
     )
 
     fun detalle(o: JSONObject): Detalle {
@@ -188,4 +191,39 @@ class Notificaciones(private val api: Api) {
     fun noLeidas() = api.call("notificaciones", "notificaciones/conteo").getInt("no_leidas")
 
     fun leer(id: Int) = Contrato.aviso(api.call("notificaciones", "notificaciones/$id/leer", "POST"))
+}
+
+data class Perfil(
+    val id: Int, val nombre: String, val apellidos: String, val correo: String, val telefono: String,
+    val rol: String, val microhub: String?, val ultimoAcceso: String
+) {
+    val iniciales get() = (nombre.take(1) + apellidos.take(1)).uppercase()
+}
+
+/** Perfil de la persona que inició sesión: lectura y edición de nombre, apellidos y teléfono (PATCH usuarios/yo). */
+class Usuarios(private val api: Api) {
+    fun yo(): Perfil = leer(api.call("usuarios", "usuarios/yo"))
+
+    /** Solo se envía lo que cambió; las mismas reglas del servicio (nombre y apellidos obligatorios, teléfono de 10 dígitos). */
+    fun actualizar(actual: Perfil, nombre: String, apellidos: String, telefono: String): Perfil {
+        val n = nombre.trim(); val a = apellidos.trim(); val t = telefono.trim()
+        require(n.isNotEmpty() && n.length <= 80) { "El nombre es obligatorio (máximo 80 caracteres)." }
+        require(a.isNotEmpty() && a.length <= 120) { "Los apellidos son obligatorios (máximo 120 caracteres)." }
+        require(Regex("[0-9]{10}").matches(t)) { "El teléfono debe tener 10 dígitos." }
+        val cambios = JSONObject()
+        if (n != actual.nombre) cambios.put("nombre", n)
+        if (a != actual.apellidos) cambios.put("apellidos", a)
+        if (t != actual.telefono) cambios.put("telefono", t)
+        require(cambios.length() > 0) { "No hay cambios que guardar." }
+        val r = api.call("usuarios", "usuarios/yo", "PATCH", cambios)
+        api.actualizarUsuarioLocal(r)
+        return leer(r)
+    }
+
+    companion object {
+        fun leer(o: JSONObject) = Perfil(
+            o.getInt("id"), o.getString("nombre"), o.getString("apellidos"), o.getString("correo"), o.optString("telefono"),
+            o.getString("rol"), o.optJSONObject("microhub")?.optString("nombre"), o.optString("ultimo_acceso")
+        )
+    }
 }

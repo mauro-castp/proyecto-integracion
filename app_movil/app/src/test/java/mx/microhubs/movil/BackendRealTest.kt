@@ -74,6 +74,22 @@ class BackendRealTest {
         try { intruso.call("usuarios", "usuarios/yo"); fail("la sesión cerrada sigue valiendo") } catch (e: ApiError) { assertEquals(401, e.status) }
     }
 
+    /** Edita el teléfono contra el servicio real y lo deja como estaba. */
+    @Test fun elPerfilSeActualizaYSeRestaura() {
+        assumeTrue("Define MICROHUBS_BACKEND_HOST y MICROHUBS_CLAVE para probar contra el backend real", !backend.isNullOrBlank() && !clave.isNullOrBlank())
+        val api = Api(Memoria(), httpHost = backend!!).apply { this.host = "http://$backend" }
+        api.login(correo, clave!!)
+        val usuarios = Usuarios(api)
+        val original = usuarios.yo()
+        val otro = if (original.telefono == "8112345678") "8119876543" else "8112345678"
+        val cambiado = usuarios.actualizar(original, original.nombre, original.apellidos, otro)
+        assertEquals(otro, cambiado.telefono); assertEquals(otro, usuarios.yo().telefono)
+        try { usuarios.actualizar(cambiado, cambiado.nombre, cambiado.apellidos, "123"); fail() } catch (e: IllegalArgumentException) { assertTrue(e.message!!.contains("10 dígitos")) }
+        usuarios.actualizar(cambiado, original.nombre, original.apellidos, original.telefono)
+        assertEquals(original.telefono, usuarios.yo().telefono)
+        api.logout()
+    }
+
     /** Idempotencia real: mismo UUID y misma evidencia, aunque el primer intento «se perdió» para el cliente. */
     @Test fun elReintentoConElMismoIdentificadorEsDuplicado() {
         assumeTrue("Define MICROHUBS_BACKEND_HOST y MICROHUBS_CLAVE para probar contra el backend real", !backend.isNullOrBlank() && !clave.isNullOrBlank())

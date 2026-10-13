@@ -10,13 +10,20 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.net.ConnectivityManager
+import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.InputType
+import android.view.Gravity
 import android.view.View
-import android.widget.*
+import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import com.google.zxing.integration.android.IntentIntegrator
 import java.io.File
 import java.util.concurrent.Executors
@@ -25,11 +32,14 @@ class MainActivity : Activity() {
     private lateinit var api: Api
     private lateinit var entregas: Entregas
     private lateinit var avisos: Notificaciones
-    private lateinit var layout: LinearLayout
-    private lateinit var status: TextView
+    private lateinit var usuarios: Usuarios
+    private lateinit var ui: Estilo
+    private lateinit var p: Pantalla
+    private var atras: (() -> Unit)? = null
     private val executor = Executors.newSingleThreadExecutor()
     private var busy = false
     private var alive = true
+    private var callbackRed: ConnectivityManager.NetworkCallback? = null
 
     // Entrega abierta y su evidencia. Nada de esto se conserva si la Activity se recrea (solo el UUID del cierre pendiente).
     private var detalle: Detalle? = null
@@ -46,146 +56,232 @@ class MainActivity : Activity() {
     private var formMonto = ""
     private var formCambio = "0"
     private var formNota = ""
-    private val formDevueltas = mutableMapOf<Int, String>()
+    private var scrollY = 0
+    private val formDevueltas = mutableMapOf<Int, Int>()
     private val formMotivos = mutableMapOf<Int, String>()
-    private var fResultado: Spinner? = null
     private var fMonto: EditText? = null
     private var fCambio: EditText? = null
     private var fNota: EditText? = null
-    private val fLineas = mutableMapOf<Int, Pair<EditText, EditText>>()
+    private val fMotivos = mutableMapOf<Int, EditText>()
 
     override fun onCreate(state: Bundle?) {
         super.onCreate(state)
         api = Api(SessionStore(this))
         entregas = Entregas(api, PrefsBorradores(this))
         avisos = Notificaciones(api)
+        usuarios = Usuarios(api)
+        ui = Estilo(this)
         loginScreen()
     }
 
-    // ------------------------------------------------------------------------------------------ utilidades de pantalla
-    private fun screen(title: String) {
-        layout = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(24, 48, 24, 24) }
-        setContentView(ScrollView(this).apply { addView(layout) })
-        layout.addView(TextView(this).apply { text = title; textSize = 24f })
-        status = TextView(this).apply { text = connectionLabel() }
-        layout.addView(status)
+    // ------------------------------------------------------------------------------------------ pantalla y conexión
+    private fun nueva(titulo: String, subtitulo: String? = null, volver: (() -> Unit)? = null): Pantalla {
+        atras = volver
+        p = Pantalla(ui, this, titulo, subtitulo, volver)
+        p.conexion(redActual())
+        p.mostrar()
+        return p
     }
 
-    private fun connectionLabel(): String {
-        if (api.demo) return "EJEMPLOS LOCALES · sin conexión al backend"
+    private fun redActual(): Red {
+        if (api.demo) return Red.EJEMPLOS
         val cm = getSystemService(ConnectivityManager::class.java)
-        return if (cm.getNetworkCapabilities(cm.activeNetwork)?.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) == true) "Red disponible" else "Sin conexión"
+        return if (cm.getNetworkCapabilities(cm.activeNetwork)?.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) == true) Red.EN_LINEA else Red.SIN_RED
     }
 
-    override fun onResume() { super.onResume(); if (::status.isInitialized) status.text = connectionLabel() }
-
-    private fun text(content: String) = TextView(this).apply { text = content; setPadding(0, 16, 0, 8) }.also { layout.addView(it) }
-
-    private fun field(hint: String, secret: Boolean = false, number: Boolean = false, value: String = ""): EditText = EditText(this).apply {
-        this.hint = hint
-        setText(value)
-        if (secret) inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        if (number) inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
-        this@MainActivity.layout.addView(this)
+    /** El indicador de conexión de la barra se actualiza en vivo, no solo al abrir una pantalla. */
+    override fun onStart() {
+        super.onStart()
+        val cm = getSystemService(ConnectivityManager::class.java)
+        val cb = object : ConnectivityManager.NetworkCallback() {
+            private fun refrescar() = runOnUiThread { if (alive && ::p.isInitialized) p.conexion(redActual()) }
+            override fun onAvailable(network: Network) = refrescar()
+            override fun onLost(network: Network) = refrescar()
+            override fun onCapabilitiesChanged(network: Network, caps: NetworkCapabilities) = refrescar()
+        }
+        try { cm.registerDefaultNetworkCallback(cb); callbackRed = cb } catch (_: Exception) {}
+        if (::p.isInitialized) p.conexion(redActual())
     }
 
-    private fun button(label: String, action: () -> Unit) {
-        layout.addView(Button(this).apply { text = label; setOnClickListener { if (!busy) action() } })
+    override fun onStop() {
+        callbackRed?.let { try { getSystemService(ConnectivityManager::class.java).unregisterNetworkCallback(it) } catch (_: Exception) {} }
+        callbackRed = null
+        super.onStop()
     }
 
-    private fun describe(e: Exception): String {
-        if (e !is ApiError) return e.message ?: "Error de conexión"
-        val campos = e.fields.entries.joinToString("\n") { "• ${it.key}: ${it.value}" }
-        return listOf(e.message ?: "", campos, if (e.trace.isNotEmpty()) "Traza: ${e.trace}" else "").filter { it.isNotEmpty() }.joinToString("\n")
+    @Deprecated("Se usa el retroceso clásico: cada pantalla define a dónde vuelve")
+    override fun onBackPressed() { val destino = atras; if (destino != null) destino() else @Suppress("DEPRECATION") super.onBackPressed() }
+
+    private fun describe(ex: Exception): String {
+        if (ex !is ApiError) return ex.message ?: "Error de conexión"
+        val campos = ex.fields.entries.joinToString("\n") { "• ${it.key}: ${it.value}" }
+        return listOf(ex.message ?: "", campos, if (ex.trace.isNotEmpty()) "Traza: ${ex.trace}" else "").filter { it.isNotEmpty() }.joinToString("\n")
     }
 
-    private fun error(message: String) { status.text = message; Toast.makeText(this, message, Toast.LENGTH_LONG).show() }
+    private fun error(message: String) { p.aviso(message, Mensaje.ERROR); Toast.makeText(this, message.lineSequence().first(), Toast.LENGTH_LONG).show() }
 
     private fun <T> work(task: () -> T, done: (T) -> Unit) {
         if (busy) return
-        busy = true; status.text = "Procesando…"
+        busy = true; p.ocupado(true); p.aviso(null)
         executor.execute {
             try {
                 val result = task()
-                runOnUiThread { if (alive) { busy = false; status.text = connectionLabel(); done(result) } }
-            } catch (e: Exception) {
-                runOnUiThread { if (alive) { busy = false; if (api.session == null) loginScreen(); error(describe(e)) } }
+                runOnUiThread { if (alive) { busy = false; p.ocupado(false); done(result) } }
+            } catch (ex: Exception) {
+                runOnUiThread { if (alive) { busy = false; if (api.session == null) loginScreen(); p.ocupado(false); error(describe(ex)) } }
             }
         }
     }
+
+    private fun accion(action: () -> Unit): () -> Unit = { if (!busy) action() }
 
     // ------------------------------------------------------------------------------------------ acceso
     private fun loginScreen() {
-        screen("Microhubs · Acceso")
-        val host = field("Servidor (en debug http://10.0.2.2; en producción https://…)", value = api.host)
-        val demo = CheckBox(this).apply { text = "Usar ejemplos locales"; isChecked = api.demo }
-        layout.addView(demo)
-        val email = field("Correo")
-        val password = field("Clave", secret = true)
-        button("Entrar") {
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email.text.toString()).matches() || password.text.isEmpty()) { error("Ingresa correo válido y clave"); return@button }
+        nueva("Microhubs", "Entregas de proximidad")
+        p.agregar(ui.espacio(8))
+        val email = ui.campo("Correo").apply { inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS }
+        val password = ui.campo("Clave", secreto = true)
+        val host = ui.campo("Servidor (en debug http://10.0.2.2; en producción https://…)", api.host)
+        val demo = CheckBox(this).apply { text = "Usar ejemplos locales (sin red)"; isChecked = api.demo; setTextColor(ui.tintaSec) }
+        val ajustes = ui.tarjeta().apply { visibility = View.GONE }
+        ajustes.addView(ui.etiqueta("Servidor")); ajustes.addView(host); ajustes.addView(demo)
+
+        val acceso = ui.tarjeta()
+        acceso.addView(ui.texto("Iniciar sesión", 20f, ui.tinta, true))
+        acceso.addView(ui.texto("Entra con tu cuenta de repartidor.", 14f, ui.tintaSec))
+        acceso.addView(ui.etiqueta("Correo")); acceso.addView(email)
+        acceso.addView(ui.etiqueta("Clave")); acceso.addView(password)
+        acceso.addView(ui.espacio(8))
+        acceso.addView(ui.boton("Entrar", Tipo.PRIMARIO) {
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email.text.toString()).matches() || password.text.isEmpty()) { error("Ingresa correo válido y clave"); return@boton }
             val mail = email.text.toString().trim()
             val pass = password.text.toString()
             api.demo = demo.isChecked; api.host = host.text.toString().trim()
-            work({ api.login(mail, pass) }) { password.text.clear(); home() }
-        }
-        button("Restaurar sesión segura") {
+            if (!busy) work({ api.login(mail, pass) }) { password.text.clear(); home() }
+        })
+        acceso.addView(ui.boton("Restaurar sesión segura", Tipo.TEXTO) {
             api.demo = demo.isChecked; api.host = host.text.toString().trim()
-            if (api.demo) { error("La sesión demo no se guarda"); return@button }
-            work({ api.restore(); require(api.session != null) { "No hay sesión guardada" }; api.call("usuarios", "usuarios/yo") }) { home() }
-        }
+            if (api.demo) { error("La sesión demo no se guarda"); return@boton }
+            if (!busy) work({ api.restore(); require(api.session != null) { "No hay sesión guardada" }; api.call("usuarios", "usuarios/yo") }) { home() }
+        })
+        p.agregar(acceso)
+        p.agregar(ui.boton("Configuración del servidor", Tipo.TEXTO) { ajustes.visibility = if (ajustes.visibility == View.GONE) View.VISIBLE else View.GONE })
+        p.agregar(ajustes)
     }
 
     private fun role() = api.session!!.getJSONObject("usuario").getString("rol")
+    private fun rolLegible(r: String) = r.replaceFirstChar { it.uppercase() }
+
+    // ------------------------------------------------------------------------------------------ menú
+    private fun opcion(icono: String, titulo: String, descripcion: String, insignia: TextView? = null, clic: () -> Unit): LinearLayout {
+        val texto = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+            addView(ui.texto(titulo, 17f, ui.tinta, true)); addView(ui.texto(descripcion, 13f, ui.tintaSec))
+        }
+        val tarjeta = ui.tarjeta(accion(clic))
+        tarjeta.addView(ui.fila(ui.circulo(icono, ui.primario, 44), texto, *listOfNotNull(insignia, ui.texto("›", 26f, ui.tintaSec).apply {
+            layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { marginStart = ui.dp(8) } }).toTypedArray()))
+        return tarjeta
+    }
 
     private fun home() {
-        screen("Microhubs · ${role()}")
-        button("Mi perfil") {
-            work({ api.call("usuarios", "usuarios/yo") }) { p ->
-                AlertDialog.Builder(this).setTitle("Perfil")
-                    .setMessage("${p.getString("nombre")} ${p.getString("apellidos")}\n${p.getString("correo")}\nTeléfono: ${p.optString("telefono", "—")}\nRol: ${p.getString("rol")}")
-                    .setPositiveButton("Cerrar", null).show()
-            }
+        val u = api.session!!.getJSONObject("usuario")
+        nueva("Hola, ${u.getString("nombre")}", rolLegible(u.getString("rol")))
+        p.agregar(ui.titulo("¿Qué quieres hacer?"))
+        if (role() in listOf("repartidor", "administrador")) p.agregar(opcion("📦", "Mis entregas", "Paradas asignadas a tu turno") { deliveries(1) })
+        val badge = ui.chip("", ui.alerta).apply { visibility = View.GONE }
+        p.agregar(opcion("🔔", "Notificaciones", "Avisos de entregas nuevas y cambios", badge) { notifications(1) })
+        p.agregar(opcion("👤", "Mi perfil", "Tus datos y teléfono de contacto") { profile() })
+        executor.execute { try { val n = avisos.noLeidas(); runOnUiThread { if (alive && n > 0) { badge.text = "$n sin leer"; badge.visibility = View.VISIBLE } } } catch (_: Exception) {} }
+        p.conPie(ui.boton("Cerrar sesión", Tipo.PELIGRO) {
+            if (!busy) work({ api.logout() }) { resetEvidence(); detalle = null; loginScreen() }
+        })
+    }
+
+    // ------------------------------------------------------------------------------------------ perfil
+    private fun profile() { work({ usuarios.yo() }) { profileForm(it) } }
+
+    private fun profileForm(perfil: Perfil) {
+        nueva("Mi perfil", perfil.correo) { home() }
+        val cabecera = ui.tarjeta()
+        val datos = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+            addView(ui.texto("${perfil.nombre} ${perfil.apellidos}", 18f, ui.tinta, true))
+            addView(ui.texto(perfil.correo, 13f, ui.tintaSec))
+            addView(ui.chip(rolLegible(perfil.rol) + (perfil.microhub?.let { " · $it" } ?: ""), ui.primario).apply {
+                (layoutParams as LinearLayout.LayoutParams).topMargin = ui.dp(6) })
         }
-        if (role() in listOf("repartidor", "administrador")) button("Mis entregas") { deliveries(1) }
-        val notif = Button(this).apply { text = "Notificaciones"; setOnClickListener { if (!busy) notifications(1) } }
-        layout.addView(notif)
-        executor.execute { try { val n = avisos.noLeidas(); runOnUiThread { if (alive && n > 0) notif.text = "Notificaciones ($n sin leer)" } } catch (_: Exception) {} }
-        button("Cerrar sesión") {
-            work({ api.logout() }) { resetEvidence(); detalle = null; loginScreen() }
-        }
+        cabecera.addView(ui.fila(ui.circulo(perfil.iniciales, ui.primario, 56), datos))
+        p.agregar(cabecera)
+        val form = ui.tarjeta()
+        val nombre = ui.campo("Nombre", perfil.nombre)
+        val apellidos = ui.campo("Apellidos", perfil.apellidos)
+        val telefono = ui.campo("Teléfono (10 dígitos)", perfil.telefono, entero = true)
+        form.addView(ui.texto("Datos de contacto", 16f, ui.tinta, true))
+        form.addView(ui.etiqueta("Nombre")); form.addView(nombre)
+        form.addView(ui.etiqueta("Apellidos")); form.addView(apellidos)
+        form.addView(ui.etiqueta("Teléfono")); form.addView(telefono)
+        p.agregar(form)
+        p.conPie(ui.boton("Guardar cambios", Tipo.PRIMARIO) {
+            if (busy) return@boton
+            val n = nombre.text.toString(); val a = apellidos.text.toString(); val t = telefono.text.toString()
+            work({ usuarios.actualizar(perfil, n, a, t) }) { nuevo -> profileForm(nuevo); p.aviso("Perfil actualizado", Mensaje.EXITO) }
+        })
     }
 
     // ------------------------------------------------------------------------------------------ notificaciones
     private fun notifications(page: Int) {
         work({ avisos.lista(page) }) { r ->
-            screen("Notificaciones · página $page")
-            if (r.items.isEmpty()) text("No tienes notificaciones.")
+            nueva("Notificaciones", "${r.total} en total · página $page de ${maxOf(1, r.paginas)}") { home() }
+            if (r.items.isEmpty()) p.agregar(ui.tarjeta().apply {
+                addView(ui.texto("No tienes notificaciones", 16f, ui.tinta, true)); addView(ui.texto("Aquí aparecerán los avisos de entregas nuevas.", 14f, ui.tintaSec)) })
             r.items.forEach { a ->
-                button((if (a.leida) "" else "● ") + a.titulo) {
+                val tarjeta = ui.tarjeta(accion {
                     work({ if (!a.leida) avisos.leer(a.id); a }) {
-                        AlertDialog.Builder(this).setTitle(a.titulo).setMessage("${a.mensaje}\n\n${a.creadaEn}")
-                            .setPositiveButton("Cerrar") { _, _ -> notifications(page) }.show()
+                        AlertDialog.Builder(this).setTitle(a.titulo).setMessage("${a.mensaje}\n\n${a.creadaEn}").setPositiveButton("Cerrar") { _, _ -> notifications(page) }.show()
                     }
-                }
+                })
+                val punto = ui.texto(if (a.leida) "" else "●", 14f, ui.primario).apply { layoutParams = LinearLayout.LayoutParams(ui.dp(18), ViewGroup.LayoutParams.WRAP_CONTENT) }
+                tarjeta.addView(ui.fila(punto, ui.flexible(ui.texto(a.titulo, 16f, ui.tinta, !a.leida))))
+                tarjeta.addView(ui.texto(a.mensaje, 14f, ui.tintaSec).apply { maxLines = 3; (layoutParams as LinearLayout.LayoutParams).marginStart = ui.dp(18) })
+                tarjeta.addView(ui.texto(a.creadaEn.replace('T', ' ').take(16), 12f, ui.tintaSec).apply { (layoutParams as LinearLayout.LayoutParams).apply { marginStart = ui.dp(18); topMargin = ui.dp(4) } })
+                p.agregar(tarjeta)
             }
-            if (page > 1) button("Anterior") { notifications(page - 1) }
-            if (page < r.paginas) button("Siguiente") { notifications(page + 1) }
-            button("Menú") { home() }
+            paginacion(r.pagina, r.paginas) { notifications(it) }
         }
+    }
+
+    private fun paginacion(pagina: Int, paginas: Int, ir: (Int) -> Unit) {
+        if (paginas <= 1) return
+        val fila = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT) }
+        if (pagina > 1) fila.addView(ui.boton("‹ Anterior") { ir(pagina - 1) }.apply { layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply { marginEnd = ui.dp(6) } })
+        if (pagina < paginas) fila.addView(ui.boton("Siguiente ›") { ir(pagina + 1) }.apply { layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply { marginStart = ui.dp(6) } })
+        p.agregar(fila)
     }
 
     // ------------------------------------------------------------------------------------------ entregas
     private fun deliveries(page: Int) {
         work({ entregas.mias(page) }) { r ->
-            screen("Mis entregas · página $page")
-            if (r.items.isEmpty()) text("No tienes entregas pendientes.")
-            r.items.forEach { p ->
-                button("Parada ${p.orden} · ${p.folio}\n${p.direccion}\n${p.estado} · $${"%.2f".format(p.total)}") { openDelivery(p.id) }
+            nueva("Mis entregas", "${r.total} parada(s) · página $page de ${maxOf(1, r.paginas)}") { home() }
+            if (r.items.isEmpty()) p.agregar(ui.tarjeta().apply {
+                addView(ui.texto("Sin entregas pendientes", 16f, ui.tinta, true))
+                addView(ui.texto("Cuando el operador te asigne una, aparecerá aquí y recibirás una notificación.", 14f, ui.tintaSec)) })
+            r.items.forEach { parada ->
+                val (rotulo, color) = ui.estado(parada.estado)
+                val texto = LinearLayout(this).apply {
+                    orientation = LinearLayout.VERTICAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+                    addView(ui.texto(parada.folio, 16f, ui.tinta, true)); addView(ui.texto(parada.direccion, 14f, ui.tintaSec))
+                    if (!parada.direccion.contains(parada.zona)) addView(ui.texto(parada.zona, 13f, ui.tintaSec))
+                }
+                val tarjeta = ui.tarjeta(accion { openDelivery(parada.id) })
+                tarjeta.addView(ui.fila(ui.circulo("${parada.orden}", ui.primario, 38), texto, ui.chip(rotulo, color)))
+                tarjeta.addView(ui.espacio(10))
+                tarjeta.addView(ui.fila(ui.flexible(ui.texto("$%.2f".format(parada.total), 20f, ui.tinta, true)),
+                    ui.texto("%.1f km · %.0f min".format(parada.distanciaKm, parada.minutos), 13f, ui.tintaSec).apply {
+                        layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT) }))
+                p.agregar(tarjeta)
             }
-            if (page > 1) button("Anterior") { deliveries(page - 1) }
-            if (page < r.paginas) button("Siguiente") { deliveries(page + 1) }
-            button("Menú") { home() }
+            paginacion(r.pagina, r.paginas) { deliveries(it) }
         }
     }
 
@@ -193,7 +289,7 @@ class MainActivity : Activity() {
         work({ entregas.detalle(id) }) { d ->
             resetEvidence()
             detalle = d
-            formResultado = "entregado"; formMonto = "%.2f".format(d.total); formCambio = "0"; formNota = ""
+            formResultado = "entregado"; formMonto = "%.2f".format(d.total); formCambio = "0"; formNota = ""; scrollY = 0
             formDevueltas.clear(); formMotivos.clear()
             deliveryForm()
         }
@@ -203,71 +299,107 @@ class MainActivity : Activity() {
 
     /** Guarda lo escrito en el formulario antes de que una acción (QR, foto, GPS) reconstruya la pantalla. */
     private fun saveForm() {
-        fResultado?.selectedItem?.toString()?.let { formResultado = it }
         fMonto?.let { formMonto = it.text.toString() }
         fCambio?.let { formCambio = it.text.toString() }
         fNota?.let { formNota = it.text.toString() }
-        fLineas.forEach { (id, v) -> formDevueltas[id] = v.first.text.toString(); formMotivos[id] = v.second.text.toString() }
+        fMotivos.forEach { (id, campo) -> formMotivos[id] = campo.text.toString() }
+        if (::p.isInitialized) scrollY = p.scroll.scrollY
+    }
+
+    private fun filaEvidencia(titulo: String, estado: String, color: Int, boton: String, accion: () -> Unit): LinearLayout {
+        val texto = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+            addView(ui.texto(titulo, 15f, ui.tinta, true)); addView(ui.texto(estado, 13f, color))
+        }
+        return ui.fila(texto, ui.botonCompacto(boton, Tipo.SECUNDARIO) { if (!busy) accion() }).apply {
+            setPadding(0, ui.dp(6), 0, ui.dp(6))
+        }
     }
 
     private fun deliveryForm() {
         val d = detalle ?: return home()
-        screen("Entrega · ${d.folio}")
-        text("Cliente: ${d.cliente}${if (d.telefono.isNotBlank()) " · ${d.telefono}" else ""}\nDirección: ${d.direccion}\nTotal a cobrar: $${"%.2f".format(d.total)}")
-        if (entregas.hayCierrePendiente(d.id)) text("Hay un cierre sin confirmar de esta entrega: se reintentará con el mismo identificador, sin duplicarse.")
-        text("QR: ${scannedOrder?.let { if (it == d.pedidoId) "correcto" else "no corresponde (pedido $it)" } ?: "pendiente"}\n" +
-            "Foto: ${if (photo == null) (if (entregas.tieneEvidencia(d.id)) "ya subida" else "pendiente") else "capturada (${photo!!.size / 1024} KB)"}\n" +
-            "GPS: ${position?.let { "%.5f, %.5f (±%.0f m) · %d puntos".format(it.latitude, it.longitude, it.accuracy, route.size) } ?: "pendiente"}")
-        button("Consultar pedido") {
-            work({ api.call("pedidos", "pedidos/${d.pedidoId}") }) { p ->
-                AlertDialog.Builder(this).setTitle("Pedido ${p.optString("folio", d.folio)}").setMessage("Estado: ${p.optString("estado")}\nTotal: ${p.optString("total")}")
+        nueva("Entrega", "${d.folio} · ${d.cliente}") { resetEvidence(); detalle = null; deliveries(1) }
+        val (rotulo, colorEstado) = ui.estado(d.estado)
+
+        // Cliente, dirección y total
+        val cliente = ui.tarjeta()
+        val datos = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+            addView(ui.texto(d.cliente, 18f, ui.tinta, true)); addView(ui.texto(d.direccion, 14f, ui.tintaSec))
+            if (d.telefono.isNotBlank()) addView(ui.texto("Tel. ${d.telefono}", 14f, ui.tintaSec))
+        }
+        cliente.addView(ui.fila(datos, ui.chip(rotulo, colorEstado)))
+        cliente.addView(ui.espacio(10))
+        cliente.addView(ui.fila(ui.flexible(ui.texto("Total a cobrar", 14f, ui.tintaSec)), ui.texto("$%.2f".format(d.total), 24f, ui.tinta, true).apply {
+            layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT) }))
+        p.agregar(cliente)
+        if (entregas.hayCierrePendiente(d.id)) p.aviso("Hay un cierre sin confirmar de esta entrega: se reintentará con el mismo identificador, sin duplicarse.", Mensaje.INFO)
+
+        // Evidencia
+        p.agregar(ui.titulo("Evidencia"))
+        val evidencia = ui.tarjeta()
+        val qr = scannedOrder
+        evidencia.addView(filaEvidencia("QR del pedido",
+            when { qr == null -> "Pendiente"; qr == d.pedidoId -> "✓ Correcto · pedido $qr"; else -> "✗ No corresponde · pedido $qr" },
+            when { qr == null -> ui.tintaSec; qr == d.pedidoId -> ui.ok; else -> ui.peligro }, "Escanear") { scanQr() })
+        evidencia.addView(filaEvidencia("Foto de evidencia",
+            if (photo != null) "✓ Capturada · ${photo!!.size / 1024} KB" else if (entregas.tieneEvidencia(d.id)) "✓ Ya subida" else "Pendiente",
+            if (photo != null || entregas.tieneEvidencia(d.id)) ui.ok else ui.tintaSec, "Tomar foto") { capturePhoto() })
+        val gps = position
+        evidencia.addView(filaEvidencia("Ubicación GPS",
+            gps?.let { "✓ %.5f, %.5f · ±%.0f m · %d punto(s)".format(it.latitude, it.longitude, it.accuracy, route.size) } ?: "Pendiente",
+            if (gps != null) ui.ok else ui.tintaSec, "Obtener GPS") { saveForm(); gps() })
+        evidencia.addView(ui.boton("Consultar pedido", Tipo.TEXTO) {
+            if (!busy) work({ api.call("pedidos", "pedidos/${d.pedidoId}") }) { r ->
+                AlertDialog.Builder(this).setTitle("Pedido ${r.optString("folio", d.folio)}").setMessage("Estado: ${ui.estado(r.optString("estado")).first}\nTotal: $${r.optString("total")}")
                     .setPositiveButton("Cerrar", null).show()
             }
-        }
-        button("Escanear QR del pedido") {
-            saveForm()
-            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) { requestPermissions(arrayOf(Manifest.permission.CAMERA), 10); status.text = "Concede el permiso y vuelve a pulsar."; return@button }
-            @Suppress("DEPRECATION")
-            IntentIntegrator(this).setDesiredBarcodeFormats(IntentIntegrator.QR_CODE).setPrompt("Escanea el ID numérico del pedido").setBeepEnabled(false).initiateScan()
-        }
-        button("Foto de evidencia") { capturePhoto() }
-        button("Obtener GPS") { saveForm(); gps() }
+        })
+        p.agregar(evidencia)
 
-        fResultado = Spinner(this).apply {
-            val options = listOf("entregado", "parcial", "fallida")
-            adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, options)
-            setSelection(options.indexOf(formResultado).coerceAtLeast(0))
-        }.also { layout.addView(it) }
-        text("Monto cobrado")
-        fMonto = field("Monto cobrado", number = true, value = formMonto)
-        text("Cambio entregado")
-        fCambio = field("Cambio entregado", number = true, value = formCambio)
-        text("Observaciones / incidencia (obligatoria si es fallida)")
-        fNota = field("Observaciones", value = formNota)
-        val parcial = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }.also { layout.addView(it) }
-        fLineas.clear()
-        parcial.addView(TextView(this).apply { text = "Líneas del pedido: indica cuántas unidades regresan y por qué" })
+        // Resultado
+        p.agregar(ui.titulo("Resultado"))
+        val resultado = ui.tarjeta()
+        val lineasTarjeta = ui.tarjeta().apply { visibility = if (formResultado == "parcial") View.VISIBLE else View.GONE }
+        fMonto = ui.campo("Monto cobrado", formMonto, numerico = true)
+        fCambio = ui.campo("Cambio entregado", formCambio, numerico = true)
+        fNota = ui.campo("Observaciones", formNota)
+        fun ajustar() { fMonto!!.isEnabled = formResultado != "fallida"; fMonto!!.alpha = if (formResultado == "fallida") 0.5f else 1f }
+        resultado.addView(ui.segmentos(listOf("entregado" to "Entregado", "parcial" to "Parcial", "fallida" to "Fallida"), formResultado) { nuevo ->
+            saveForm(); formResultado = nuevo
+            when (nuevo) { "fallida" -> { formMonto = "0"; fMonto!!.setText("0") }; "entregado" -> { formMonto = "%.2f".format(d.total); fMonto!!.setText(formMonto) } }
+            lineasTarjeta.visibility = if (nuevo == "parcial") View.VISIBLE else View.GONE
+            ajustar()
+        })
+        resultado.addView(ui.etiqueta("Monto cobrado")); resultado.addView(fMonto!!)
+        resultado.addView(ui.etiqueta("Cambio entregado")); resultado.addView(fCambio!!)
+        resultado.addView(ui.etiqueta("Observaciones / incidencia (obligatoria si es fallida)")); resultado.addView(fNota!!)
+        ajustar()
+        p.agregar(resultado)
+
+        // Líneas (solo entrega parcial)
+        lineasTarjeta.addView(ui.texto("Líneas del pedido", 16f, ui.tinta, true))
+        lineasTarjeta.addView(ui.texto("Indica cuántas unidades regresan y por qué.", 13f, ui.tintaSec))
+        fMotivos.clear()
         d.lineas.forEach { l ->
-            parcial.addView(TextView(this).apply { text = "${l.nombre} · pedidas ${l.cantidad}"; setPadding(0, 12, 0, 0) })
-            val devueltas = EditText(this).apply { hint = "Unidades devueltas"; inputType = InputType.TYPE_CLASS_NUMBER; setText(formDevueltas[l.pedidoDetalleId] ?: "0") }
-            val motivo = EditText(this).apply { hint = "Motivo de la devolución"; setText(formMotivos[l.pedidoDetalleId] ?: "") }
-            parcial.addView(devueltas); parcial.addView(motivo)
-            fLineas[l.pedidoDetalleId] = devueltas to motivo
+            val cuenta = ui.texto("${formDevueltas[l.pedidoDetalleId] ?: 0}", 18f, ui.tinta, true).apply { gravity = Gravity.CENTER; layoutParams = LinearLayout.LayoutParams(ui.dp(36), ViewGroup.LayoutParams.WRAP_CONTENT) }
+            val motivo = ui.campo("Motivo de la devolución", formMotivos[l.pedidoDetalleId] ?: "")
+            fMotivos[l.pedidoDetalleId] = motivo
+            fun refrescar() { val n = formDevueltas[l.pedidoDetalleId] ?: 0; cuenta.text = "$n"; motivo.visibility = if (n > 0) View.VISIBLE else View.GONE }
+            val menos = ui.botonCompacto("−") { formDevueltas[l.pedidoDetalleId] = maxOf(0, (formDevueltas[l.pedidoDetalleId] ?: 0) - 1); refrescar() }
+            val mas = ui.botonCompacto("+") { formDevueltas[l.pedidoDetalleId] = minOf(l.cantidad, (formDevueltas[l.pedidoDetalleId] ?: 0) + 1); refrescar() }
+            val nombre = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+                addView(ui.texto(l.nombre, 15f, ui.tinta, true)); addView(ui.texto("Pedidas: ${l.cantidad} · devueltas:", 13f, ui.tintaSec))
+            }
+            listOf(menos, mas).forEach { it.layoutParams = LinearLayout.LayoutParams(ui.dp(48), ui.dp(48)) }
+            lineasTarjeta.addView(ui.espacio(8)); lineasTarjeta.addView(ui.fila(nombre, menos, cuenta, mas)); lineasTarjeta.addView(motivo)
+            refrescar()
         }
-        fun refresh() {
-            val r = fResultado!!.selectedItem.toString()
-            parcial.visibility = if (r == "parcial") View.VISIBLE else View.GONE
-            fMonto!!.isEnabled = r != "fallida"
-            if (r == "fallida") fMonto!!.setText("0")
-            else if (r == "entregado" && number(fMonto!!.text.toString()) == 0.0) fMonto!!.setText("%.2f".format(d.total))
-        }
-        fResultado!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p: AdapterView<*>?, v: View?, pos: Int, id: Long) = refresh()
-            override fun onNothingSelected(p: AdapterView<*>?) {}
-        }
-        refresh()
-        button("Registrar resultado") { register(d) }
-        button("Volver a mis entregas") { resetEvidence(); detalle = null; deliveries(1) }
+        p.agregar(lineasTarjeta)
+        p.conPie(ui.boton("Registrar resultado", Tipo.PRIMARIO) { if (!busy) register(d) })
+        val y = scrollY
+        p.scroll.post { p.scroll.scrollTo(0, y) }
     }
 
     private fun register(d: Detalle) {
@@ -278,23 +410,31 @@ class MainActivity : Activity() {
         if (photo == null && !entregas.tieneEvidencia(d.id)) { error("Toma la foto de evidencia"); return }
         val monto = number(formMonto); val cambio = number(formCambio)
         if (monto == null || cambio == null) { error("Escribe montos válidos (número con punto decimal)"); return }
-        val lineas = d.lineas.map { l -> LineaCierre(l, formDevueltas[l.pedidoDetalleId]?.trim()?.toIntOrNull() ?: 0, formMotivos[l.pedidoDetalleId] ?: "") }
+        val lineas = d.lineas.map { l -> LineaCierre(l, formDevueltas[l.pedidoDetalleId] ?: 0, formMotivos[l.pedidoDetalleId] ?: "") }
         val datos = DatosCierre(formResultado, monto, cambio, formNota, lineas, Fix(gps.latitude, gps.longitude, gps.accuracy.toDouble(), gps.time))
-        try { entregas.validar(d, datos) } catch (e: IllegalArgumentException) { error(e.message ?: "Revisa los datos"); return }
+        try { entregas.validar(d, datos) } catch (ex: IllegalArgumentException) { error(ex.message ?: "Revisa los datos"); return }
         val evidence = photo
         val points = route.toList()
         work({ entregas.cerrar(d, datos, evidence, points) }) { r ->
             resetEvidence(); detalle = null
-            Toast.makeText(this, "Entrega ${if (r.duplicado) "ya registrada" else "registrada"}: ${r.estadoPedido}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Entrega ${if (r.duplicado) "ya registrada" else "registrada"}: ${ui.estado(r.estadoPedido).first}", Toast.LENGTH_LONG).show()
             deliveries(1)
+            p.aviso("Entrega ${if (r.duplicado) "ya estaba registrada" else "registrada"} · ${ui.estado(r.estadoPedido).first}", Mensaje.EXITO)
         }
     }
 
     // ------------------------------------------------------------------------------------------ cámara, QR y GPS
+    private fun scanQr() {
+        saveForm()
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) { requestPermissions(arrayOf(Manifest.permission.CAMERA), 10); p.aviso("Concede el permiso de cámara y vuelve a pulsar.", Mensaje.INFO); return }
+        @Suppress("DEPRECATION")
+        IntentIntegrator(this).setDesiredBarcodeFormats(IntentIntegrator.QR_CODE).setPrompt("Escanea el ID numérico del pedido").setBeepEnabled(false).initiateScan()
+    }
+
     private fun capturePhoto() {
         saveForm()
         val d = detalle ?: return
-        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) { requestPermissions(arrayOf(Manifest.permission.CAMERA), 10); status.text = "Concede el permiso y vuelve a pulsar."; return }
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) { requestPermissions(arrayOf(Manifest.permission.CAMERA), 10); p.aviso("Concede el permiso de cámara y vuelve a pulsar.", Mensaje.INFO); return }
         val file = File(File(cacheDir, "fotos").apply { mkdirs() }, "evidencia-${d.id}.jpg").also { it.delete(); it.createNewFile() }
         photoFile = file
         val uri = Uri.parse("content://$packageName.fotos/${file.name}")
@@ -315,7 +455,7 @@ class MainActivity : Activity() {
         if (requestCode == 20) {
             val file = photoFile
             if (resultCode == RESULT_OK && file != null && file.length() > 0) {
-                try { photo = Fotos.preparar(file) } catch (e: Exception) { error(e.message ?: "No se pudo leer la foto") }
+                try { photo = Fotos.preparar(file) } catch (ex: Exception) { file.delete(); deliveryForm(); error(ex.message ?: "No se pudo leer la foto"); return }
             }
             file?.delete()
             deliveryForm()
@@ -325,7 +465,7 @@ class MainActivity : Activity() {
     private fun gps() {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 11)
-            status.text = "Concede el permiso y vuelve a pulsar."
+            p.aviso("Concede el permiso de ubicación y vuelve a pulsar.", Mensaje.INFO)
             return
         }
         manager = getSystemService(LocationManager::class.java)
@@ -342,13 +482,13 @@ class MainActivity : Activity() {
             @Deprecated("API anterior") override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
         }
         manager!!.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0f, listener!!)
-        status.text = "Esperando señal GPS…"
+        p.aviso("Esperando señal GPS…", Mensaje.INFO)
     }
 
     private fun resetEvidence() {
         photo = null; photoFile?.delete(); photoFile = null; position = null; scannedOrder = null; route.clear()
         listener?.let { manager?.removeUpdates(it) }; listener = null
-        fResultado = null; fMonto = null; fCambio = null; fNota = null; fLineas.clear()
+        fMonto = null; fCambio = null; fNota = null; fMotivos.clear()
     }
 
     override fun onDestroy() { alive = false; resetEvidence(); executor.shutdownNow(); super.onDestroy() }
