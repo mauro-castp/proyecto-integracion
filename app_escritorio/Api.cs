@@ -73,7 +73,7 @@ sealed class Api : IDisposable
             return example;
         }
         if(DateTimeOffset.UtcNow<retryAt) throw new Exception($"Espera {Math.Ceiling((retryAt-DateTimeOffset.UtcNow).TotalSeconds)} segundos antes de reintentar.");
-        var ports=new Dictionary<string,int>{{"auth",5101},{"catalogos",5103},{"pedidos",5104},{"planeacion",5106}};
+        var ports=new Dictionary<string,int>{{"auth",5101},{"productos",5103},{"pedidos",5104},{"planeacion",5106},{"zonas",5108},{"microhubs",5109}};
         var host=new Uri(Host);
         if(host.Scheme!="https" && !(host.Scheme=="http" && host.IsLoopback)) throw new Exception("Usa HTTPS; HTTP solo se permite en localhost.");
         if(host.UserInfo!="") throw new Exception("Host inválido.");

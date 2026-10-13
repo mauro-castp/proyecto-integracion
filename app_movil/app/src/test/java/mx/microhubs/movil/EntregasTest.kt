@@ -61,7 +61,7 @@ class EntregasTest {
         val s = servidor(); val b = BorradoresEnMemoria()
         val r = entregas(s, b).cerrar(detalle, entregado(), fotoJpeg, listOf(fix(60_000), fix(30_000)))
         assertEquals(Resultado("entrega_parcial", false), r)
-        assertEquals(listOf("POST /api/v1/documentos", "POST /api/v1/entregas/61/ubicaciones", "POST /api/v1/entregas/61/resultado"), s.rutas())
+        assertEquals(listOf("POST /api/v1/documentos", "POST /api/v1/seguimiento/61/ubicaciones", "POST /api/v1/entregas/61/resultado"), s.rutas())
         val doc = s.peticiones[0].json
         assertEquals("image/jpeg", doc.getString("tipo_mime")); assertEquals("entrega", doc.getJSONObject("referencia").getString("tipo")); assertEquals("61", doc.getJSONObject("referencia").getString("id"))
         assertArrayEquals(fotoJpeg, java.util.Base64.getDecoder().decode(doc.getString("contenido_base64")))

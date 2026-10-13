@@ -8,7 +8,7 @@ skinparam sequence {
   GroupBorderColor #8FA3B8
 }
 skinparam sequenceMessageAlign left
-title Diagrama 13 · Comunicación: autenticación común con JWT y Redis\n(el web y los 8 servicios)
+title Diagrama 13 · Comunicación: autenticación común con JWT y Redis\n(el web y los 10 servicios)
 autonumber
 
 actor "Cliente\nweb · app · Swagger" as C

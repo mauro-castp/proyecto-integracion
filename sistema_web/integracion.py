@@ -18,7 +18,7 @@ Si un servicio no responde, la página lo dice y el resto del web sigue
 funcionando: el sistema web es independiente de los microservicios.
 
 Pantallas:
-  /web/servicios                    estado de los 8 servicios, resúmenes de MongoDB y una respuesta XML
+  /web/servicios                    estado de los 10 servicios, resúmenes de MongoDB y una respuesta XML
   /web/servicios/pedido/<id>        pedido, historial, entrega, recorrido GPS y evidencias desde los servicios;
                                     adjuntar un documento al pedido (se guarda en MongoDB vía documentos)
   /web/servicios/documento/<id>     ver o descargar un documento guardado en MongoDB
@@ -38,8 +38,8 @@ from flask import (Blueprint, Response, abort, flash, g, redirect, render_templa
 
 servicios_bp = Blueprint("servicios", __name__, url_prefix="/web/servicios")
 
-PUERTOS = {"auth": 5101, "usuarios": 5102, "catalogos": 5103, "pedidos": 5104, "entregas": 5105,
-           "planeacion": 5106, "documentos": 5107, "notificaciones": 5108}
+PUERTOS = {"auth": 5101, "usuarios": 5102, "productos": 5103, "pedidos": 5104, "entregas": 5105,
+           "planeacion": 5106, "documentos": 5107, "zonas": 5108, "microhubs": 5109, "seguimiento": 5110}
 # Dentro de docker-compose.integrado.yml cada servicio se alcanza por su nombre en la red interna.
 PLANTILLA = os.environ.get("MICROSERVICIOS_URL", "http://{servicio}:{puerto}")
 TIEMPO_ESPERA = float(os.environ.get("MICROSERVICIOS_TIEMPO", "4"))
@@ -132,7 +132,7 @@ def tablero():
                       "dependencias": (ll.datos or {}).get("dependencias", {})})
     resumen_docs = llamar("documentos", "GET", "documentos/resumen")
     resumen_sim = llamar("planeacion", "GET", "simulaciones/resumen")
-    ejemplo_xml = llamar("catalogos", "GET", "zonas?pagina=1&por_pagina=2", xml=True)
+    ejemplo_xml = llamar("zonas", "GET", "zonas?pagina=1&por_pagina=2", xml=True)
     host = request.host.split(":")[0]
     return render_template("web_servicios.html", salud=salud, resumen_docs=resumen_docs, resumen_sim=resumen_sim,
                            ejemplo_xml=ejemplo_xml, host=host)
@@ -174,7 +174,7 @@ def pedido(pid):
     entrega = (ent.datos or {}).get("datos", [None])[0] if ent.ok and (ent.datos or {}).get("datos") else None
     recorrido = docs_entrega = None
     if entrega:
-        recorrido = llamar("entregas", "GET", f"entregas/{entrega['id']}/recorrido")
+        recorrido = llamar("seguimiento", "GET", f"seguimiento/{entrega['id']}/recorrido")
         docs_entrega = llamar("documentos", "GET", f"documentos?referencia_tipo=entrega&referencia_id={entrega['id']}")
         llamadas += [recorrido, docs_entrega]
     docs_pedido = llamar("documentos", "GET", f"documentos?referencia_tipo=pedido&referencia_id={pid}")

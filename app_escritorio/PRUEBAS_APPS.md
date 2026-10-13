@@ -22,14 +22,13 @@ ignoradas por Git.
   duplicar ni volver a subir la foto**, 200 duplicado = éxito, 422 conserva el UUID, 409 lo descarta, GPS en lotes de 500) y perfil
   (validación previa, solo se envía lo que cambió, la sesión local queda al día y `PATCH` cae a `PUT` donde la JVM no lo conoce).
 - **Contra el backend real (JVM): 3 aprobadas** (sobre los microservicios de `main`) — acceso, perfil, clave incorrecta, mis entregas, detalle, evidencia (Base64 → MongoDB),
-  GPS, cierre «entregado», segundo cierre con otro UUID → 409, **reintento con el mismo UUID → 200 `duplicado`**, notificaciones
-  (listar, contador, marcar leída) y cierre de sesión con revocación (el token anterior da 401); además edita el teléfono contra el servicio, comprueba el rechazo de
+  GPS, cierre «entregado», segundo cierre con otro UUID → 409, **reintento con el mismo UUID → 200 `duplicado`** y cierre de sesión con revocación (el token anterior da 401); además edita el teléfono contra el servicio, comprueba el rechazo de
   un teléfono inválido y lo restaura.
 - **Instrumentadas en emulador (Android 14, Medium_Phone): 7 aprobadas** — cifrado y restauración con Android Keystore, descarte de
   datos corruptos, persistencia del cierre pendiente (UUID + evidencia), redimensión de la foto a ≤ 1600 px y firma JPEG, arranque,
   recorrido de pantallas con ejemplos locales (acceso → inicio → entregas → entrega → modo parcial → validación de QR →
-  notificaciones → **edición del perfil** con su validación → salida) y recorrido de pantallas **contra el backend real vía 10.0.2.2**
-  (acceso, perfil, entregas, notificaciones, salida). Las pruebas guardan una captura de cada pantalla (`app_movil/docs/capturas/`).
+  **edición del perfil** con su validación → salida) y recorrido de pantallas **contra el backend real vía 10.0.2.2**
+  (acceso, perfil, entregas, salida). Las pruebas guardan una captura de cada pantalla (`app_movil/docs/capturas/`).
 
 ## Hallazgo corregido durante la integración
 - La regla `contratos/` de exclusión privada del repositorio también ignoraba `app_escritorio/contratos/` (los XSD que la app necesita

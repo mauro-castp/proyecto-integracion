@@ -1,8 +1,8 @@
 # Evidencias de petición y respuesta (anexo E1)
 
-Ejecución completa de `servicios/pruebas/evidencias.py` contra los ocho microservicios desplegados con
+Ejecución completa de `servicios/pruebas/evidencias.py` contra los diez microservicios desplegados con
 `docker-compose.integrado.yml`, sobre una base creada desde cero: **93 de 93 casos pasan** (13 de octubre de 2026,
-14:12 en la hora UTC del contenedor).
+21:27 en la hora UTC del contenedor).
 
 | Archivo | Contenido |
 |---|---|

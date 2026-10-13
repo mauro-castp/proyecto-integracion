@@ -2,7 +2,7 @@
 
 **Codex Innovations · Equipo 04 · Segundo Parcial**
 
-Pasos para la demostración integrada: la app Android y la de escritorio contra los ocho servicios reales de `servicios/`.
+Pasos para la demostración integrada: la app Android y la de escritorio contra los diez servicios reales de `servicios/`.
 
 ## 1. Levantar el backend
 
@@ -15,7 +15,7 @@ docker compose -f docker-compose.integrado.yml ps
 
 Esperar a que los servicios aparezcan `healthy` y `migraciones` como `exited (0)`. Comprobar en el navegador:
 
-- `http://localhost:5101/api/v1/salud` … `http://localhost:5108/api/v1/salud` → `"estado": "ok"`
+- `http://localhost:5101/api/v1/salud` … `http://localhost:5110/api/v1/salud` → `"estado": "ok"`
 - `http://localhost:5105/api/v1/docs` → Swagger del servicio de entregas (igual para los demás puertos)
 - `http://localhost:5000` → portal web
 
@@ -45,7 +45,7 @@ dotnet run --project pruebas/Microhubs.Pruebas.csproj      # 33 sin red + 29 con
 ## 4. App Android (JSON)
 
 Emulador: el servidor es `http://10.0.2.2` (ya viene en la pantalla de acceso en debug). Teléfono físico: compilar con la IP de
-la PC (`./build.ps1 -DebugHttpHost 192.168.1.20`) y abrir los puertos 5101–5108 en el Firewall de Windows.
+la PC (`./build.ps1 -DebugHttpHost 192.168.1.20`) y abrir los puertos 5101–5110 en el Firewall de Windows.
 
 ```powershell
 cd app_movil

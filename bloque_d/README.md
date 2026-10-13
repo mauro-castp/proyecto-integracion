@@ -14,7 +14,7 @@ Los 9 diagramas de arquitectura pedidos en el Primer Parcial: contexto, contened
 | Diagrama | Contenido |
 |---|---|
 | `10_despliegue_microservicios` | Contenedores, redes `publica` y `datos`, puertos, volúmenes y dependencias del compose integrado |
-| `11_componentes_microservicios` | Clientes, web, 8 servicios con su biblioteca `comun/`, almacenes y protocolos |
+| `11_componentes_microservicios` | Clientes, web, 10 servicios con su biblioteca `comun/`, almacenes y protocolos |
 | `12_secuencia_cierre_entrega` | Proceso distribuido de la demostración: sesión, consulta, evidencia, GPS y cierre idempotente |
 | `13_secuencia_autenticacion_comun` | JWT con Redis: inicio de sesión, petición protegida, renovación y revocación en web y servicios |
 | `14` a `16_datos_*` | Modelo de datos de PostgreSQL en tres partes (seguridad y catálogo; pedidos y entregas; planeación y avisos); en color lo creado o ampliado en los scripts 06 a 08 |

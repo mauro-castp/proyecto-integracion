@@ -31,7 +31,6 @@ import java.util.concurrent.Executors
 class MainActivity : Activity() {
     private lateinit var api: Api
     private lateinit var entregas: Entregas
-    private lateinit var avisos: Notificaciones
     private lateinit var usuarios: Usuarios
     private lateinit var ui: Estilo
     private lateinit var p: Pantalla
@@ -68,7 +67,6 @@ class MainActivity : Activity() {
         super.onCreate(state)
         api = Api(SessionStore(this))
         entregas = Entregas(api, PrefsBorradores(this))
-        avisos = Notificaciones(api)
         usuarios = Usuarios(api)
         ui = Estilo(this)
         loginScreen()
@@ -189,10 +187,7 @@ class MainActivity : Activity() {
         nueva("Hola, ${u.getString("nombre")}", rolLegible(u.getString("rol")))
         p.agregar(ui.titulo("¿Qué quieres hacer?"))
         if (role() in listOf("repartidor", "administrador")) p.agregar(opcion("📦", "Mis entregas", "Paradas asignadas a tu turno") { deliveries(1) })
-        val badge = ui.chip("", ui.alerta).apply { visibility = View.GONE }
-        p.agregar(opcion("🔔", "Notificaciones", "Avisos de entregas nuevas y cambios", badge) { notifications(1) })
         p.agregar(opcion("👤", "Mi perfil", "Tus datos y teléfono de contacto") { profile() })
-        executor.execute { try { val n = avisos.noLeidas(); runOnUiThread { if (alive && n > 0) { badge.text = "$n sin leer"; badge.visibility = View.VISIBLE } } } catch (_: Exception) {} }
         p.conPie(ui.boton("Cerrar sesión", Tipo.PELIGRO) {
             if (!busy) work({ api.logout() }) { resetEvidence(); detalle = null; loginScreen() }
         })
@@ -227,28 +222,6 @@ class MainActivity : Activity() {
             val n = nombre.text.toString(); val a = apellidos.text.toString(); val t = telefono.text.toString()
             work({ usuarios.actualizar(perfil, n, a, t) }) { nuevo -> profileForm(nuevo); p.aviso("Perfil actualizado", Mensaje.EXITO) }
         })
-    }
-
-    // ------------------------------------------------------------------------------------------ notificaciones
-    private fun notifications(page: Int) {
-        work({ avisos.lista(page) }) { r ->
-            nueva("Notificaciones", "${r.total} en total · página $page de ${maxOf(1, r.paginas)}") { home() }
-            if (r.items.isEmpty()) p.agregar(ui.tarjeta().apply {
-                addView(ui.texto("No tienes notificaciones", 16f, ui.tinta, true)); addView(ui.texto("Aquí aparecerán los avisos de entregas nuevas.", 14f, ui.tintaSec)) })
-            r.items.forEach { a ->
-                val tarjeta = ui.tarjeta(accion {
-                    work({ if (!a.leida) avisos.leer(a.id); a }) {
-                        AlertDialog.Builder(this).setTitle(a.titulo).setMessage("${a.mensaje}\n\n${a.creadaEn}").setPositiveButton("Cerrar") { _, _ -> notifications(page) }.show()
-                    }
-                })
-                val punto = ui.texto(if (a.leida) "" else "●", 14f, ui.primario).apply { layoutParams = LinearLayout.LayoutParams(ui.dp(18), ViewGroup.LayoutParams.WRAP_CONTENT) }
-                tarjeta.addView(ui.fila(punto, ui.flexible(ui.texto(a.titulo, 16f, ui.tinta, !a.leida))))
-                tarjeta.addView(ui.texto(a.mensaje, 14f, ui.tintaSec).apply { maxLines = 3; (layoutParams as LinearLayout.LayoutParams).marginStart = ui.dp(18) })
-                tarjeta.addView(ui.texto(a.creadaEn.replace('T', ' ').take(16), 12f, ui.tintaSec).apply { (layoutParams as LinearLayout.LayoutParams).apply { marginStart = ui.dp(18); topMargin = ui.dp(4) } })
-                p.agregar(tarjeta)
-            }
-            paginacion(r.pagina, r.paginas) { notifications(it) }
-        }
     }
 
     private fun paginacion(pagina: Int, paginas: Int, ir: (Int) -> Unit) {

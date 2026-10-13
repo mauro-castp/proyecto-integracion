@@ -1,5 +1,5 @@
 """
-config.py — Configuración compartida por los ocho microservicios.
+config.py — Configuración compartida por los diez microservicios.
 
 Los valores llegan por variables de entorno (docker-compose.integrado.yml).
 SECRET_KEY y las claves de Redis son las mismas que usa el sistema web

@@ -1,14 +1,14 @@
 """
 test_web_integracion.py — El sistema web como cliente de los microservicios.
 
-Levanta los ocho servicios en sus puertos reales (5101 a 5108, hilos de un
+Levanta los diez servicios en sus puertos reales (5101 a 5110, hilos de un
 mismo proceso para compartir MongoDB en memoria) y recorre las pantallas del
 web que los consumen con una sesión real de administrador:
 
   1. Un repartidor cierra una entrega por los servicios (foto, GPS, cierre).
-  2. El web muestra el estado de los 8 servicios, agregaciones de MongoDB y
-     una respuesta XML obtenida de catálogos.
-  3. El web arma el detalle del pedido con pedidos, entregas y documentos:
+  2. El web muestra el estado de los 10 servicios, agregaciones de MongoDB y
+     una respuesta XML obtenida del servicio de zonas.
+  3. El web arma el detalle del pedido con pedidos, entregas, seguimiento y documentos:
      historial, recorrido GPS y la evidencia de la entrega.
   4. Desde el web se adjunta un documento al pedido; viaja al servicio de
      documentos y se guarda en MongoDB.
@@ -50,8 +50,8 @@ if not config.MONGO_URL:
     import mongomock
     datos.usar_mongo(mongomock.MongoClient(tz_aware=True)[config.MONGO_DB])
 
-PUERTOS = {"auth": 5101, "usuarios": 5102, "catalogos": 5103, "pedidos": 5104, "entregas": 5105,
-           "planeacion": 5106, "documentos": 5107, "notificaciones": 5108}
+PUERTOS = {"auth": 5101, "usuarios": 5102, "productos": 5103, "pedidos": 5104, "entregas": 5105,
+           "planeacion": 5106, "documentos": 5107, "zonas": 5108, "microhubs": 5109, "seguimiento": 5110}
 JPEG = bytes([0xFF, 0xD8, 0xFF, 0xE0, 0, 16, 74, 70, 73, 70, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0]) + bytes(range(256))
 _servidores = []
 APPS = {}
@@ -101,7 +101,7 @@ class WebConMicroservicios(unittest.TestCase):
             "nombre": f"evidencia-entrega-{cls.eid}.jpg", "tipo_mime": "image/jpeg",
             "contenido_base64": base64.b64encode(JPEG).decode(), "referencia": {"tipo": "entrega", "id": str(cls.eid)}}).get_json()
         cls.doc_id = doc["id"]
-        ap["entregas"].post(f"/api/v1/entregas/{cls.eid}/ubicaciones", headers=h, json={"puntos": [
+        ap["seguimiento"].post(f"/api/v1/seguimiento/{cls.eid}/ubicaciones", headers=h, json={"puntos": [
             {"latitud": 25.7480, "longitud": -100.3600, "capturado_en": "2026-10-12T18:20:00-06:00"},
             {"latitud": 25.7491, "longitud": -100.3611, "capturado_en": "2026-10-12T18:25:00-06:00"}]})
         r = ap["entregas"].post(f"/api/v1/entregas/{cls.eid}/resultado", headers=h, json={
@@ -121,18 +121,19 @@ class WebConMicroservicios(unittest.TestCase):
         r = self.cliente().get("/web/servicios")
         self.assertEqual(r.status_code, 200)
         html = r.get_data(as_text=True)
-        self.assertEqual(html.count('<span class="pill verde">ok</span>'), 8, "los 8 servicios responden por HTTP")
+        self.assertEqual(html.count('<span class="pill verde">ok</span>'), 10, "los 10 servicios responden por HTTP")
         self.assertIn("urn:microhubs:v1", html, "el web recibe y muestra una respuesta XML del servicio")
         self.assertIn("Documentos por tipo", html)
 
-    def test_2_pedido_armado_con_tres_servicios(self):
+    def test_2_pedido_armado_con_cuatro_servicios(self):
         r = self.cliente().get(f"/web/servicios/pedido/{self.pid}")
         self.assertEqual(r.status_code, 200)
         html = r.get_data(as_text=True)
         self.assertIn("entregado", html)
         self.assertIn("Puntos GPS (MongoDB)", html)
         self.assertIn(f"evidencia-entrega-{self.eid}.jpg", html, "la evidencia viene del servicio de documentos")
-        self.assertIn("/api/v1/entregas/", html)
+        self.assertIn("/api/v1/entregas?pedido_id=", html)
+        self.assertIn("/api/v1/seguimiento/", html, "el recorrido GPS viene del servicio de seguimiento")
         self.assertNotIn('pill rojo', html, "todas las llamadas del web a los servicios responden 2xx")
 
     def test_3_adjuntar_desde_el_web_va_a_mongodb(self):

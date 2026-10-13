@@ -9,7 +9,7 @@ import java.util.UUID
 import kotlin.math.abs
 import kotlin.math.roundToLong
 
-// Modelos de lo que la app lee del contrato v1 (entregas, notificaciones). Sin dependencias de Android: se prueban en la JVM.
+// Modelos de lo que la app lee del contrato v1 (entregas y perfil). Sin dependencias de Android: se prueban en la JVM.
 data class Pagina<T>(val items: List<T>, val pagina: Int, val paginas: Int, val total: Int)
 data class Parada(
     val id: Int, val pedidoId: Int, val folio: String, val estado: String, val orden: Int, val direccion: String, val zona: String,
@@ -20,7 +20,6 @@ data class Detalle(
     val id: Int, val pedidoId: Int, val folio: String, val estado: String, val cliente: String, val telefono: String,
     val direccion: String, val total: Double, val lineas: List<Linea>
 )
-data class Aviso(val id: Int, val titulo: String, val mensaje: String, val leida: Boolean, val creadaEn: String)
 
 /** Posición GPS capturada en el teléfono. `tiempoMs` es la hora del fix (época), no la del envío. */
 data class Fix(val latitud: Double, val longitud: Double, val precisionM: Double?, val tiempoMs: Long)
@@ -68,8 +67,6 @@ object Contrato {
             (0 until ls.length()).map { ls.getJSONObject(it).let { l -> Linea(l.getInt("pedido_detalle_id"), l.getString("nombre"), l.getInt("cantidad")) } }
         )
     }
-
-    fun aviso(o: JSONObject) = Aviso(o.getInt("id"), o.getString("titulo"), o.getString("mensaje"), o.getBoolean("leida"), o.getString("creada_en"))
 
     /** Fecha ISO 8601 con zona y segundos (`2026-10-12T18:30:00-06:00`), como pide el contrato. */
     fun fecha(ms: Long): String =
@@ -165,7 +162,7 @@ class Entregas(
     private fun enviarRecorrido(entregaId: Int, puntos: List<Fix>) {
         puntos.chunked(500).forEach { lote ->
             try {
-                api.call("entregas", "entregas/$entregaId/ubicaciones", "POST", JSONObject().put("puntos", JSONArray(lote.map {
+                api.call("seguimiento", "seguimiento/$entregaId/ubicaciones", "POST", JSONObject().put("puntos", JSONArray(lote.map {
                     JSONObject().put("latitud", it.latitud).put("longitud", it.longitud).put("capturado_en", Contrato.fecha(it.tiempoMs))
                         .apply { it.precisionM?.let { p -> put("precision_m", p) } }
                 })))
@@ -177,20 +174,6 @@ class Entregas(
 
     // Base64 sin saltos de línea. java.util.Base64 existe desde API 26 (minSdk) y también en las pruebas de la JVM.
     private fun android64(bytes: ByteArray): String = java.util.Base64.getEncoder().encodeToString(bytes)
-}
-
-/** Bandeja de notificaciones del usuario (misma tabla que el portal web). */
-class Notificaciones(private val api: Api) {
-    fun lista(pagina: Int): Pagina<Aviso> {
-        val r = api.call("notificaciones", "notificaciones?pagina=$pagina&por_pagina=20")
-        val datos = r.getJSONArray("datos")
-        val (p, paginas, total) = leerPagina(r)
-        return Pagina((0 until datos.length()).map { Contrato.aviso(datos.getJSONObject(it)) }, p, paginas, total)
-    }
-
-    fun noLeidas() = api.call("notificaciones", "notificaciones/conteo").getInt("no_leidas")
-
-    fun leer(id: Int) = Contrato.aviso(api.call("notificaciones", "notificaciones/$id/leer", "POST"))
 }
 
 data class Perfil(

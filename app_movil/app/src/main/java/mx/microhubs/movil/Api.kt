@@ -33,7 +33,7 @@ class Api(
     private val renewal = Any()
     private var retryAt = 0L
     private val ports = mapOf(
-        "auth" to 5101, "usuarios" to 5102, "pedidos" to 5104, "entregas" to 5105, "documentos" to 5107, "notificaciones" to 5108
+        "auth" to 5101, "usuarios" to 5102, "pedidos" to 5104, "entregas" to 5105, "documentos" to 5107, "seguimiento" to 5110
     )
 
     fun login(email: String, password: String) {
@@ -151,9 +151,6 @@ class Api(
         path == "usuarios/yo" && method == "PATCH" -> JSONObject(example("usuarios/yo", "GET", null).toString()).also { p -> body!!.keys().forEach { k -> p.put(k, body.get(k)) } }
         path == "usuarios/yo" -> JSONObject("""{"id":7,"nombre":"Ramiro","apellidos":"Alanís Lozano","correo":"repartidor1@codex.mx","telefono":"8114641034","rol":"repartidor","microhub":null,"ultimo_acceso":"2026-10-12T08:02:11-06:00"}""")
         path == "auth/salir" -> JSONObject()
-        path.startsWith("notificaciones/conteo") -> JSONObject().put("no_leidas", 1)
-        path.matches(Regex("notificaciones/[0-9]+/leer")) -> JSONObject("""{"id":1,"tipo":"entrega","titulo":"Nueva entrega asignada","mensaje":"Tienes una entrega nueva.","leida":true,"referencia":{"tipo":"entrega","id":"61"},"creada_en":"2026-10-12T08:05:00-06:00"}""")
-        path.startsWith("notificaciones") -> JSONObject("""{"datos":[{"id":1,"tipo":"entrega","titulo":"Nueva entrega asignada","mensaje":"Tienes una entrega nueva.","leida":false,"referencia":{"tipo":"entrega","id":"61"},"creada_en":"2026-10-12T08:05:00-06:00"}],"paginacion":{"pagina":1,"por_pagina":20,"total":1,"paginas":1}}""")
         path.startsWith("entregas/mias") -> JSONObject("""{"datos":[{"id":61,"pedido_id":101,"folio":"PED-DEMO-000101","estado_pedido":"en_ruta","orden_parada":1,"direccion":"Av. Rodrigo Gómez 1420, San Bernabé","zona":"San Bernabé Centro","distancia_km":0.21,"minutos_estimados":14.2,"total":158.0}],"paginacion":{"pagina":1,"por_pagina":20,"total":1,"paginas":1}}""")
         path.matches(Regex("entregas/[0-9]+")) -> JSONObject("""{"id":61,"pedido_id":101,"folio":"PED-DEMO-000101","estado_pedido":"en_ruta","cliente":{"nombre":"Laura Pérez","telefono":"8180001122"},"domicilio":{"calle":"Av. Rodrigo Gómez","numero_ext":"1420","colonia":"San Bernabé","latitud":25.749,"longitud":-100.361},"orden_parada":1,"distancia_km":0.21,"minutos_estimados":14.2,"total":158.0,"lineas":$demoLines}""")
         path.endsWith("/resultado") -> JSONObject().put("entrega_id", 61).put("pedido_id", 101).put("cerrado_en", "2026-10-12T18:30:04-06:00").put("duplicado", false)

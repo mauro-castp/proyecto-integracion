@@ -5,8 +5,10 @@ Servicio de entregas · puerto 5105 · contrato v1
   GET  /api/v1/entregas                     entregas en el ámbito del perfil (estado_pedido, abiertas, repartidor_id)
   GET  /api/v1/entregas/{id}                detalle con cliente, domicilio y líneas (RN26)
   POST /api/v1/entregas/{id}/resultado      registra y cierra la entrega (solo JSON, idempotente)
-  POST /api/v1/entregas/{id}/ubicaciones    lote de hasta 500 puntos GPS → MongoDB
-  GET  /api/v1/entregas/{id}/recorrido      resumen del recorrido (agregación en MongoDB)
+
+Responsabilidad única: la ejecución de la entrega (consulta de paradas y cierre con sus reglas).
+El rastro GPS es del servicio de seguimiento; los archivos de evidencia, del servicio de
+documentos; el estado del pedido lo cambia el trigger del motor en la misma transacción.
 
 Cierre idempotente: cada cierre trae `id_cliente_local` (UUID que la app
 conserva hasta el éxito). Si la entrega ya se cerró con ese mismo UUID la
@@ -21,7 +23,6 @@ trigger del motor según el rol; la devolución de inventario la hace
 fn_devolver_inventario, la misma función que usa el web.
 """
 import datetime as dt
-import math
 from decimal import Decimal
 
 from bson import Int64, ObjectId
@@ -36,7 +37,7 @@ from comun.datos import ahora, conexion, consultar, mongo, mongo_disponible
 from comun.formatos import dinero, fecha, numero
 from comun.validar import Campo, unir_errores, validar
 
-app = crear_app("entregas", "Microhubs · Entregas", "Entregas del repartidor, cierre con evidencia y recorrido GPS.",
+app = crear_app("entregas", "Microhubs · Entregas", "Entregas del repartidor y cierre idempotente con evidencia.",
                 5105, dependencias=("postgres", "redis", "mongo"))
 P = config.PREFIJO
 ESTADOS = ["creado", "pendiente_asignacion", "asignado", "en_preparacion", "en_ruta", "entregado",
@@ -298,69 +299,6 @@ def resultado(eid):
 
 
 # --------------------------------------------------------------------
-# Recorrido GPS (MongoDB)
-# --------------------------------------------------------------------
-def _ubicaciones():
-    db = mongo()
-    if db is None:
-        raise ErrorApi(503, "SERVICIO_NO_DISPONIBLE", "El almacén de recorridos (MongoDB) no está disponible.")
-    return db.ubicaciones_entrega
-
-
-@app.post(f"{P}/entregas/<int:eid>/ubicaciones")
-@requiere("entregas.cerrar", "entregas.ver")
-def ubicaciones(eid):
-    f = _entrega(eid, para_cierre=True)
-    if g.usuario["rol"] == "repartidor" and f["repartidor_id"] != g.usuario["id"]:
-        raise no_encontrado()
-    d = validar(leer_cuerpo(), [Campo("puntos", "lista")])
-    if not 1 <= len(d["puntos"]) <= 500:
-        raise invalido("puntos", "Envía entre 1 y 500 puntos por lote.")
-    campos = CAMPOS_UBICACION + [Campo("capturado_en", "fecha")]
-    puntos = unir_errores(*[(lambda p=p, i=i: validar(p if isinstance(p, dict) else {}, campos, prefijo=f"puntos[{i}]."))
-                            for i, p in enumerate(d["puntos"])])
-    recibido = ahora()
-    docs = [{"entrega_id": Int64(eid), "usuario_id": int(g.usuario["id"]),
-             "posicion": {"type": "Point", "coordinates": [p["longitud"], p["latitud"]]},
-             "precision_m": p.get("precision_m"), "capturado_en": p["capturado_en"].astimezone(dt.timezone.utc),
-             "recibido_en": recibido} for p in puntos]
-    _ubicaciones().insert_many(docs, ordered=False)
-    return responder({"recibidos": len(docs)}, 201, raiz="ubicaciones_recibidas")
-
-
-def _haversine(a, b):
-    (lng1, lat1), (lng2, lat2) = a, b
-    p1, p2 = math.radians(lat1), math.radians(lat2)
-    dp, dl = p2 - p1, math.radians(lng2 - lng1)
-    h = math.sin(dp / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
-    return 2 * 6371.0088 * math.asin(math.sqrt(h))
-
-
-@app.get(f"{P}/entregas/<int:eid>/recorrido")
-@requiere("entregas.ver")
-def recorrido(eid):
-    _entrega(eid, para_cierre=True)
-    r = list(_ubicaciones().aggregate([
-        {"$match": {"entrega_id": Int64(eid)}}, {"$sort": {"capturado_en": 1}},
-        {"$group": {"_id": "$entrega_id", "puntos": {"$sum": 1}, "inicio": {"$first": "$capturado_en"},
-                    "fin": {"$last": "$capturado_en"}, "precision": {"$avg": "$precision_m"},
-                    "ruta": {"$push": "$posicion.coordinates"}, "ultima_precision": {"$last": "$precision_m"}}}]))
-    if not r:
-        return responder({"entrega_id": eid, "puntos": 0, "distancia_km": 0.0, "inicio": None, "fin": None,
-                          "precision_promedio_m": None, "ultimo_punto": None}, raiz="recorrido")
-    r = r[0]
-    ruta = r["ruta"]
-    ultimo = {"latitud": ruta[-1][1], "longitud": ruta[-1][0]}
-    if r.get("ultima_precision") is not None:
-        ultimo["precision_m"] = float(r["ultima_precision"])
-    return responder({"entrega_id": eid, "puntos": int(r["puntos"]),
-                      "distancia_km": round(sum(_haversine(ruta[i], ruta[i + 1]) for i in range(len(ruta) - 1)), 2),
-                      "inicio": fecha(r["inicio"]), "fin": fecha(r["fin"]),
-                      "precision_promedio_m": round(r["precision"], 1) if r.get("precision") is not None else None,
-                      "ultimo_punto": ultimo}, raiz="recorrido")
-
-
-# --------------------------------------------------------------------
 PAG = [("pagina", "query", "integer", "Página"), ("por_pagina", "query", "integer", "1 a 100")]
 ID = [("id", "path", "integer", "Id de la entrega")]
 documentar(app, "GET", f"{P}/entregas/mias", "Mis entregas", permisos=["entregas.ver"], parametros=PAG,
@@ -383,10 +321,3 @@ documentar(app, "POST", f"{P}/entregas/{{id}}/resultado", "Registrar y cerrar la
            respuestas={201: ("Cierre aplicado", "ResultadoEntregaRespuesta.ok"),
                        200: ("Reintento del mismo cierre (duplicado=true)", "ResultadoEntregaRespuesta.ok")},
            errores=[400, 403, 404, 409, 422])
-documentar(app, "POST", f"{P}/entregas/{{id}}/ubicaciones", "Enviar puntos GPS", permisos=["entregas.cerrar", "entregas.ver"],
-           parametros=ID, cuerpo="UbicacionesLote.ok", solo_json=True,
-           descripcion="Hasta 500 puntos por lote; se guardan en MongoDB (ubicaciones_entrega, índice 2dsphere).",
-           respuestas={201: ("Puntos guardados", "UbicacionesRecibidas.ok")}, errores=[400, 403, 404, 422])
-documentar(app, "GET", f"{P}/entregas/{{id}}/recorrido", "Resumen del recorrido", permisos=["entregas.ver"],
-           parametros=ID, descripcion="Agregación en MongoDB ($match, $sort, $group) sobre los puntos guardados.",
-           respuestas={200: ("Recorrido", "Recorrido.ok")}, errores=[403, 404])

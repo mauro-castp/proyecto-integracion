@@ -9,18 +9,18 @@
     "url": "http://auth:5101/api/v1/auth/login",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "00ed5311-52c7-4b8c-b159-c0160301ecac",
+      "X-Traza-Id": "c2f17193-fb19-4052-a445-d4a5413a0268",
       "Content-Type": "application/json"
     },
     "cuerpo": "{\n  \"correo\": \"repartidor1@codex.mx\",\n  \"clave\": \"********\",\n  \"dispositivo\": \"Pixel 7\"\n}",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "00ed5311-52c7-4b8c-b159-c0160301ecac"
+      "X-Traza-Id": "c2f17193-fb19-4052-a445-d4a5413a0268"
     },
-    "respuesta": "{\n  \"token_acceso\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwicm9sIjo…(291 caracteres)\",\n  \"token_renovacion\": \"rt_f3558c330c96be0d10b2e9c5c5592fda\",\n  \"tipo\": \"Bearer\",\n  \"expira_en\": 900,\n  \"usuario\": {\n    \"id\": 7,\n    \"nombre\": \"Ramiro\",\n    \"apellidos\": \"Alanís Lozano\",\n    \"correo\": \"repartidor1@codex.mx\",\n    \"rol\": \"repartidor\",\n    \"microhub_id\": null,\n    \"permisos\": [\n      \"archivos.crear\",\n      \"archivos.ver\",\n      \"entregas.cerrar\",\n      \"entregas.ver\",\n      \"notificaciones.ver\",\n      \"pedidos.ver\"\n    ]\n  }\n}",
-    "ms": 417,
-    "traza": "00ed5311-52c7-4b8c-b159-c0160301ecac",
+    "respuesta": "{\n  \"token_acceso\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwicm9sIjo…(291 caracteres)\",\n  \"token_renovacion\": \"rt_0fb67ef39a4d86fae2784cbf43591f9a\",\n  \"tipo\": \"Bearer\",\n  \"expira_en\": 900,\n  \"usuario\": {\n    \"id\": 7,\n    \"nombre\": \"Ramiro\",\n    \"apellidos\": \"Alanís Lozano\",\n    \"correo\": \"repartidor1@codex.mx\",\n    \"rol\": \"repartidor\",\n    \"microhub_id\": null,\n    \"permisos\": [\n      \"archivos.crear\",\n      \"archivos.ver\",\n      \"entregas.cerrar\",\n      \"entregas.ver\",\n      \"notificaciones.ver\",\n      \"pedidos.ver\"\n    ]\n  }\n}",
+    "ms": 1021,
+    "traza": "c2f17193-fb19-4052-a445-d4a5413a0268",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -29,21 +29,21 @@
     "evidencia": [
       {
         "motor": "Redis",
-        "consulta": "SMEMBERS auth:sesion:7; TTL auth:sesion:7; TTL auth:refresh:4d48abd90481262657b62a850cb9a2b71ca9f98bcc850f8f40d75d33f0a89b1b",
+        "consulta": "SMEMBERS auth:sesion:7; TTL auth:sesion:7; TTL auth:refresh:cfb0fed4091e4be1070ea8b6b69244550c1a88c621306131995693a0ce0f4741",
         "resultado": [
           {
             "comando": "SMEMBERS auth:sesion:7",
             "valor": [
-              "c5c90ba624184b6eb098ccacab3f9ca7"
+              "1de3ba91c6784f47aa1f1291fa846ff1"
             ]
           },
           {
             "comando": "TTL auth:sesion:7",
-            "valor": 900
+            "valor": 899
           },
           {
-            "comando": "TTL auth:refresh:4d48abd90481262657b62a850cb9a2b71ca9f98bcc850f8f40d75d33f0a89b1b",
-            "valor": 604800
+            "comando": "TTL auth:refresh:cfb0fed4091e4be1070ea8b6b69244550c1a88c621306131995693a0ce0f4741",
+            "valor": 604799
           }
         ]
       },
@@ -52,7 +52,7 @@
         "consulta": "SELECT fecha, modulo, accion, detalle FROM auditoria WHERE correo_intento IS NULL AND usuario_id = 7 AND modulo = 'auth' ORDER BY id DESC LIMIT 1",
         "resultado": [
           {
-            "fecha": "2026-10-13 14:11:59.823065+00:00",
+            "fecha": "2026-10-13 21:27:30.361277+00:00",
             "modulo": "auth",
             "accion": "login_exitoso",
             "detalle": "Inicio de sesión por API (Pixel 7)."
@@ -71,18 +71,18 @@
     "url": "http://auth:5101/api/v1/auth/login",
     "encabezados": {
       "Accept": "application/xml",
-      "X-Traza-Id": "4371b0ff-0b8c-4437-8272-609d71302ff0",
+      "X-Traza-Id": "78daf990-8950-4c9d-ad1c-ba0ee691d807",
       "Content-Type": "application/xml"
     },
     "cuerpo": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><login xmlns=\"urn:microhubs:v1\"><correo>planeador@codex.mx</correo><clave>********</clave></login>",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/xml; charset=utf-8",
-      "X-Traza-Id": "4371b0ff-0b8c-4437-8272-609d71302ff0"
+      "X-Traza-Id": "78daf990-8950-4c9d-ad1c-ba0ee691d807"
     },
-    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<sesion xmlns=\"urn:microhubs:v1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1\"><token_acceso>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwicm9sIjo…(291 caracteres)</token_acceso><token_renovacion>rt_47b149e07a8361828c13c193ace14aac</token_renovacion><tipo>Bearer</tipo><expira_en>900</expira_en><usuario><id>5</id><nombre>Vanessa</nombre><apellidos>Morante López</apellidos><correo>planeador@codex.mx</correo><rol>planeador</rol><microhub_id xsi:nil=\"true\" /><permisos><permiso>archivos.crear</permiso><permiso>archivos.ver</permiso><permiso>catalogo_publico.ver</permiso><permiso>configuracion.ver</permiso><permiso>indicadores.ver</permiso><permiso>inventario.ver</permiso><permiso>microhubs.ver</permiso><permiso>notificaciones.ver</permiso><permiso>pedidos.reasignar</permiso><permiso>pedidos.ver</permiso><permiso>planeacion.editar</permiso><permiso>planeacion.ver</permiso><permiso>productos.ver</permiso><permiso>reportes.exportar</permiso><permiso>reportes.ver</permiso><permiso>simulacion.ejecutar</permiso><permiso>simulacion.ver</permiso><permiso>zonas.ver</permiso></permisos></usuario></sesion>",
-    "ms": 290,
-    "traza": "4371b0ff-0b8c-4437-8272-609d71302ff0",
+    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<sesion xmlns=\"urn:microhubs:v1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1\"><token_acceso>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwicm9sIjo…(291 caracteres)</token_acceso><token_renovacion>rt_a643ff383e66a3d1d13785b6d8367f8e</token_renovacion><tipo>Bearer</tipo><expira_en>900</expira_en><usuario><id>5</id><nombre>Vanessa</nombre><apellidos>Morante López</apellidos><correo>planeador@codex.mx</correo><rol>planeador</rol><microhub_id xsi:nil=\"true\" /><permisos><permiso>archivos.crear</permiso><permiso>archivos.ver</permiso><permiso>catalogo_publico.ver</permiso><permiso>configuracion.ver</permiso><permiso>indicadores.ver</permiso><permiso>inventario.ver</permiso><permiso>microhubs.ver</permiso><permiso>notificaciones.ver</permiso><permiso>pedidos.reasignar</permiso><permiso>pedidos.ver</permiso><permiso>planeacion.editar</permiso><permiso>planeacion.ver</permiso><permiso>productos.ver</permiso><permiso>reportes.exportar</permiso><permiso>reportes.ver</permiso><permiso>simulacion.ejecutar</permiso><permiso>simulacion.ver</permiso><permiso>zonas.ver</permiso></permisos></usuario></sesion>",
+    "ms": 504,
+    "traza": "78daf990-8950-4c9d-ad1c-ba0ee691d807",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -100,7 +100,7 @@
     "url": "http://auth:5101/api/v1/auth/login",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "e881a156-51d9-48f7-80d3-380c99ad054e",
+      "X-Traza-Id": "42afbaec-d1ca-4fc2-af45-11ea09b6f38f",
       "Content-Type": "application/json"
     },
     "cuerpo": "{\n  \"correo\": \"auditor@codex.mx\",\n  \"clave\": \"********\"\n}",
@@ -108,11 +108,11 @@
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
       "WWW-Authenticate": "Bearer realm=\"microhubs\"",
-      "X-Traza-Id": "e881a156-51d9-48f7-80d3-380c99ad054e"
+      "X-Traza-Id": "42afbaec-d1ca-4fc2-af45-11ea09b6f38f"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"CREDENCIALES_INVALIDAS\",\n    \"mensaje\": \"Correo o clave incorrectos. Intento 1 de 5.\",\n    \"traza_id\": \"e881a156-51d9-48f7-80d3-380c99ad054e\"\n  }\n}",
-    "ms": 161,
-    "traza": "e881a156-51d9-48f7-80d3-380c99ad054e",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"CREDENCIALES_INVALIDAS\",\n    \"mensaje\": \"Correo o clave incorrectos. Intento 1 de 5.\",\n    \"traza_id\": \"42afbaec-d1ca-4fc2-af45-11ea09b6f38f\"\n  }\n}",
+    "ms": 269,
+    "traza": "42afbaec-d1ca-4fc2-af45-11ea09b6f38f",
     "esperado": 401,
     "obtenido": 401,
     "estado": "PASA",
@@ -145,18 +145,18 @@
     "url": "http://auth:5101/api/v1/auth/login",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "d3bf58cb-21ad-459c-b73e-09ca46ada6b3",
+      "X-Traza-Id": "297a0f6d-f4db-47d0-92f6-fd0c44866775",
       "Content-Type": "application/json"
     },
     "cuerpo": "{\n  \"correo\": \"sin-arroba\",\n  \"clave\": \"********\"\n}",
     "status": 422,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "d3bf58cb-21ad-459c-b73e-09ca46ada6b3"
+      "X-Traza-Id": "297a0f6d-f4db-47d0-92f6-fd0c44866775"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION\",\n    \"mensaje\": \"Revisa los datos enviados.\",\n    \"detalles\": [\n      {\n        \"campo\": \"correo\",\n        \"mensaje\": \"Ingresa un correo válido.\"\n      },\n      {\n        \"campo\": \"clave\",\n        \"mensaje\": \"Debe tener al menos 1 caracteres.\"\n      }\n    ],\n    \"traza_id\": \"d3bf58cb-21ad-459c-b73e-09ca46ada6b3\"\n  }\n}",
-    "ms": 3,
-    "traza": "d3bf58cb-21ad-459c-b73e-09ca46ada6b3",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION\",\n    \"mensaje\": \"Revisa los datos enviados.\",\n    \"detalles\": [\n      {\n        \"campo\": \"correo\",\n        \"mensaje\": \"Ingresa un correo válido.\"\n      },\n      {\n        \"campo\": \"clave\",\n        \"mensaje\": \"Debe tener al menos 1 caracteres.\"\n      }\n    ],\n    \"traza_id\": \"297a0f6d-f4db-47d0-92f6-fd0c44866775\"\n  }\n}",
+    "ms": 346,
+    "traza": "297a0f6d-f4db-47d0-92f6-fd0c44866775",
     "esperado": 422,
     "obtenido": 422,
     "estado": "PASA",
@@ -174,18 +174,18 @@
     "url": "http://auth:5101/api/v1/auth/login",
     "encabezados": {
       "Accept": "application/xml",
-      "X-Traza-Id": "a50c4a3c-66e4-45cd-9fb5-37d32a53ba04",
+      "X-Traza-Id": "885fcd14-4128-4598-9ba5-61094bc357a3",
       "Content-Type": "application/xml"
     },
     "cuerpo": "<?xml version=\"1.0\"?><!DOCTYPE x [<!ENTITY e SYSTEM \"file:///etc/passwd\">]><login xmlns=\"urn:microhubs:v1\"><correo>&e;</correo><clave>********</clave></login>",
     "status": 400,
     "encabezados_respuesta": {
       "Content-Type": "application/xml; charset=utf-8",
-      "X-Traza-Id": "a50c4a3c-66e4-45cd-9fb5-37d32a53ba04"
+      "X-Traza-Id": "885fcd14-4128-4598-9ba5-61094bc357a3"
     },
-    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<error xmlns=\"urn:microhubs:v1\" version=\"1\"><codigo>XML_INVALIDO</codigo><mensaje>El cuerpo XML no está bien formado o contiene DTD/entidades.</mensaje><traza_id>a50c4a3c-66e4-45cd-9fb5-37d32a53ba04</traza_id></error>",
-    "ms": 4,
-    "traza": "a50c4a3c-66e4-45cd-9fb5-37d32a53ba04",
+    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<error xmlns=\"urn:microhubs:v1\" version=\"1\"><codigo>XML_INVALIDO</codigo><mensaje>El cuerpo XML no está bien formado o contiene DTD/entidades.</mensaje><traza_id>885fcd14-4128-4598-9ba5-61094bc357a3</traza_id></error>",
+    "ms": 16,
+    "traza": "885fcd14-4128-4598-9ba5-61094bc357a3",
     "esperado": 400,
     "obtenido": 400,
     "estado": "PASA",
@@ -203,18 +203,18 @@
     "url": "http://auth:5101/api/v1/auth/validar",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "96fd3586-a4fa-447e-ac43-2dcd3ed6b98c",
+      "X-Traza-Id": "0e1f7f0e-fea3-4b4d-8ed0-b9e00907e79b",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "96fd3586-a4fa-447e-ac43-2dcd3ed6b98c"
+      "X-Traza-Id": "0e1f7f0e-fea3-4b4d-8ed0-b9e00907e79b"
     },
-    "respuesta": "{\n  \"valido\": true,\n  \"expira_en\": 899,\n  \"usuario\": {\n    \"id\": 7,\n    \"rol\": \"repartidor\",\n    \"microhub_id\": null\n  }\n}",
-    "ms": 4,
-    "traza": "96fd3586-a4fa-447e-ac43-2dcd3ed6b98c",
+    "respuesta": "{\n  \"valido\": true,\n  \"expira_en\": 898,\n  \"usuario\": {\n    \"id\": 7,\n    \"rol\": \"repartidor\",\n    \"microhub_id\": null\n  }\n}",
+    "ms": 16,
+    "traza": "0e1f7f0e-fea3-4b4d-8ed0-b9e00907e79b",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -232,7 +232,7 @@
     "url": "http://auth:5101/api/v1/auth/validar",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "95c5d297-2eea-40d0-8f02-f651ff7cb532",
+      "X-Traza-Id": "940ce2ab-e9f2-448c-8454-c6177e808bf3",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
@@ -240,11 +240,11 @@
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
       "WWW-Authenticate": "Bearer realm=\"microhubs\"",
-      "X-Traza-Id": "95c5d297-2eea-40d0-8f02-f651ff7cb532"
+      "X-Traza-Id": "940ce2ab-e9f2-448c-8454-c6177e808bf3"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"TOKEN_INVALIDO\",\n    \"mensaje\": \"La sesión venció o fue cerrada. Inicia sesión de nuevo.\",\n    \"traza_id\": \"95c5d297-2eea-40d0-8f02-f651ff7cb532\"\n  }\n}",
-    "ms": 3,
-    "traza": "95c5d297-2eea-40d0-8f02-f651ff7cb532",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"TOKEN_INVALIDO\",\n    \"mensaje\": \"La sesión venció o fue cerrada. Inicia sesión de nuevo.\",\n    \"traza_id\": \"940ce2ab-e9f2-448c-8454-c6177e808bf3\"\n  }\n}",
+    "ms": 7,
+    "traza": "940ce2ab-e9f2-448c-8454-c6177e808bf3",
     "esperado": 401,
     "obtenido": 401,
     "estado": "PASA",
@@ -262,18 +262,18 @@
     "url": "http://auth:5101/api/v1/auth/renovar",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "997caac8-b7aa-4deb-8983-3c3d45659f7c",
+      "X-Traza-Id": "51db92d1-4f23-4686-a1c7-75d5465afab3",
       "Content-Type": "application/json"
     },
-    "cuerpo": "{\n  \"token_renovacion\": \"rt_41edd150a3235a49dee6f71541a43863\"\n}",
+    "cuerpo": "{\n  \"token_renovacion\": \"rt_81e9fc89584e5e5c2fb6916130defb33\"\n}",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "997caac8-b7aa-4deb-8983-3c3d45659f7c"
+      "X-Traza-Id": "51db92d1-4f23-4686-a1c7-75d5465afab3"
     },
-    "respuesta": "{\n  \"token_acceso\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwicm9sIjo…(291 caracteres)\",\n  \"token_renovacion\": \"rt_36ed13be77aa358d4d76c7f38c7770f2\",\n  \"tipo\": \"Bearer\",\n  \"expira_en\": 900\n}",
-    "ms": 53,
-    "traza": "997caac8-b7aa-4deb-8983-3c3d45659f7c",
+    "respuesta": "{\n  \"token_acceso\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwicm9sIjo…(291 caracteres)\",\n  \"token_renovacion\": \"rt_e00fe92edfb146ffa978c86255fe8e32\",\n  \"tipo\": \"Bearer\",\n  \"expira_en\": 900\n}",
+    "ms": 88,
+    "traza": "51db92d1-4f23-4686-a1c7-75d5465afab3",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -282,10 +282,10 @@
     "evidencia": [
       {
         "motor": "Redis",
-        "consulta": "EXISTS auth:refresh:2fc25c071527034cf85ce5ec3301350b5615371bf1dc43d431cbaddc0288321a",
+        "consulta": "EXISTS auth:refresh:536c73d5ada15601b4f80a4f900d7f63cc18a99e98de23b2296f4ff49f0afefa",
         "resultado": [
           {
-            "comando": "EXISTS auth:refresh:2fc25c071527034cf85ce5ec3301350b5615371bf1dc43d431cbaddc0288321a",
+            "comando": "EXISTS auth:refresh:536c73d5ada15601b4f80a4f900d7f63cc18a99e98de23b2296f4ff49f0afefa",
             "valor": 0
           }
         ]
@@ -302,19 +302,19 @@
     "url": "http://auth:5101/api/v1/auth/renovar",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "89a16a4e-632d-46b8-a182-8e2610728e74",
+      "X-Traza-Id": "ea621b2f-de19-44b9-9524-088ad152a194",
       "Content-Type": "application/json"
     },
-    "cuerpo": "{\n  \"token_renovacion\": \"rt_41edd150a3235a49dee6f71541a43863\"\n}",
+    "cuerpo": "{\n  \"token_renovacion\": \"rt_81e9fc89584e5e5c2fb6916130defb33\"\n}",
     "status": 401,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
       "WWW-Authenticate": "Bearer realm=\"microhubs\"",
-      "X-Traza-Id": "89a16a4e-632d-46b8-a182-8e2610728e74"
+      "X-Traza-Id": "ea621b2f-de19-44b9-9524-088ad152a194"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"TOKEN_INVALIDO\",\n    \"mensaje\": \"La sesión venció o fue cerrada. Inicia sesión de nuevo.\",\n    \"traza_id\": \"89a16a4e-632d-46b8-a182-8e2610728e74\"\n  }\n}",
-    "ms": 4,
-    "traza": "89a16a4e-632d-46b8-a182-8e2610728e74",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"TOKEN_INVALIDO\",\n    \"mensaje\": \"La sesión venció o fue cerrada. Inicia sesión de nuevo.\",\n    \"traza_id\": \"ea621b2f-de19-44b9-9524-088ad152a194\"\n  }\n}",
+    "ms": 7,
+    "traza": "ea621b2f-de19-44b9-9524-088ad152a194",
     "esperado": 401,
     "obtenido": 401,
     "estado": "PASA",
@@ -332,19 +332,19 @@
     "url": "http://auth:5101/api/v1/auth/salir",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "7b572420-4ea8-4f50-a6e1-c0b7cf19db7e",
+      "X-Traza-Id": "ee01153b-9a3f-4afd-9252-5093738692a6",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
-    "cuerpo": "{\n  \"token_renovacion\": \"rt_36ed13be77aa358d4d76c7f38c7770f2\"\n}",
+    "cuerpo": "{\n  \"token_renovacion\": \"rt_e00fe92edfb146ffa978c86255fe8e32\"\n}",
     "status": 204,
     "encabezados_respuesta": {
       "Content-Type": "text/html; charset=utf-8",
-      "X-Traza-Id": "7b572420-4ea8-4f50-a6e1-c0b7cf19db7e"
+      "X-Traza-Id": "ee01153b-9a3f-4afd-9252-5093738692a6"
     },
     "respuesta": "(sin cuerpo)",
-    "ms": 21,
-    "traza": "7b572420-4ea8-4f50-a6e1-c0b7cf19db7e",
+    "ms": 38,
+    "traza": "ee01153b-9a3f-4afd-9252-5093738692a6",
     "esperado": 204,
     "obtenido": 204,
     "estado": "PASA",
@@ -353,14 +353,14 @@
     "evidencia": [
       {
         "motor": "Redis",
-        "consulta": "TTL auth:jti:revocado:c768c882c2bf475cb0868d47a8dff499; SISMEMBER auth:sesion:7 c768c882c2bf475cb0868d47a8dff499",
+        "consulta": "TTL auth:jti:revocado:e13868ddd5d34146bc8abdc810cd00ab; SISMEMBER auth:sesion:7 e13868ddd5d34146bc8abdc810cd00ab",
         "resultado": [
           {
-            "comando": "TTL auth:jti:revocado:c768c882c2bf475cb0868d47a8dff499",
+            "comando": "TTL auth:jti:revocado:e13868ddd5d34146bc8abdc810cd00ab",
             "valor": 899
           },
           {
-            "comando": "SISMEMBER auth:sesion:7 c768c882c2bf475cb0868d47a8dff499",
+            "comando": "SISMEMBER auth:sesion:7 e13868ddd5d34146bc8abdc810cd00ab",
             "valor": 0
           }
         ]
@@ -377,7 +377,7 @@
     "url": "http://usuarios:5102/api/v1/usuarios/yo",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "287e5e6b-ef87-4d06-965a-bc44da500c1f",
+      "X-Traza-Id": "f41fb72d-1b86-4c00-af7c-ae0c9fb6fa14",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
@@ -385,11 +385,11 @@
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
       "WWW-Authenticate": "Bearer realm=\"microhubs\"",
-      "X-Traza-Id": "287e5e6b-ef87-4d06-965a-bc44da500c1f"
+      "X-Traza-Id": "f41fb72d-1b86-4c00-af7c-ae0c9fb6fa14"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"TOKEN_INVALIDO\",\n    \"mensaje\": \"La sesión venció o fue cerrada. Inicia sesión de nuevo.\",\n    \"traza_id\": \"287e5e6b-ef87-4d06-965a-bc44da500c1f\"\n  }\n}",
-    "ms": 131,
-    "traza": "287e5e6b-ef87-4d06-965a-bc44da500c1f",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"TOKEN_INVALIDO\",\n    \"mensaje\": \"La sesión venció o fue cerrada. Inicia sesión de nuevo.\",\n    \"traza_id\": \"f41fb72d-1b86-4c00-af7c-ae0c9fb6fa14\"\n  }\n}",
+    "ms": 565,
+    "traza": "f41fb72d-1b86-4c00-af7c-ae0c9fb6fa14",
     "esperado": 401,
     "obtenido": 401,
     "estado": "PASA",
@@ -407,18 +407,18 @@
     "url": "http://usuarios:5102/api/v1/usuarios/yo",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "8c00dff4-987d-4c0b-b209-aa385ee7998f",
+      "X-Traza-Id": "435198a2-9d33-439e-ab2f-59c3f03c8bd8",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "8c00dff4-987d-4c0b-b209-aa385ee7998f"
+      "X-Traza-Id": "435198a2-9d33-439e-ab2f-59c3f03c8bd8"
     },
-    "respuesta": "{\n  \"id\": 7,\n  \"nombre\": \"Ramiro\",\n  \"apellidos\": \"Alanís Lozano\",\n  \"correo\": \"repartidor1@codex.mx\",\n  \"telefono\": \"8114641034\",\n  \"rol\": \"repartidor\",\n  \"microhub\": null,\n  \"ultimo_acceso\": \"2026-10-13T08:12:00-06:00\"\n}",
-    "ms": 27,
-    "traza": "8c00dff4-987d-4c0b-b209-aa385ee7998f",
+    "respuesta": "{\n  \"id\": 7,\n  \"nombre\": \"Ramiro\",\n  \"apellidos\": \"Alanís Lozano\",\n  \"correo\": \"repartidor1@codex.mx\",\n  \"telefono\": \"8114641034\",\n  \"rol\": \"repartidor\",\n  \"microhub\": null,\n  \"ultimo_acceso\": \"2026-10-13T15:27:32-06:00\"\n}",
+    "ms": 48,
+    "traza": "435198a2-9d33-439e-ab2f-59c3f03c8bd8",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -436,18 +436,18 @@
     "url": "http://usuarios:5102/api/v1/usuarios/yo",
     "encabezados": {
       "Accept": "application/xml",
-      "X-Traza-Id": "88f3ff63-11ae-4834-a698-6a6678f01fcf",
+      "X-Traza-Id": "66ee53c9-f3bb-4de9-8e7e-61914e67aa4c",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/xml; charset=utf-8",
-      "X-Traza-Id": "88f3ff63-11ae-4834-a698-6a6678f01fcf"
+      "X-Traza-Id": "66ee53c9-f3bb-4de9-8e7e-61914e67aa4c"
     },
-    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<usuario xmlns=\"urn:microhubs:v1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1\"><id>5</id><nombre>Vanessa</nombre><apellidos>Morante López</apellidos><correo>planeador@codex.mx</correo><telefono>8178109897</telefono><rol>planeador</rol><microhub xsi:nil=\"true\" /><ultimo_acceso>2026-10-13T08:12:01-06:00</ultimo_acceso></usuario>",
-    "ms": 26,
-    "traza": "88f3ff63-11ae-4834-a698-6a6678f01fcf",
+    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<usuario xmlns=\"urn:microhubs:v1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1\"><id>5</id><nombre>Vanessa</nombre><apellidos>Morante López</apellidos><correo>planeador@codex.mx</correo><telefono>8178109897</telefono><rol>planeador</rol><microhub xsi:nil=\"true\" /><ultimo_acceso>2026-10-13T15:27:33-06:00</ultimo_acceso></usuario>",
+    "ms": 36,
+    "traza": "66ee53c9-f3bb-4de9-8e7e-61914e67aa4c",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -465,7 +465,7 @@
     "url": "http://usuarios:5102/api/v1/usuarios/yo",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "62fb103d-e448-4a02-bc2a-d55a35154760",
+      "X-Traza-Id": "61eff429-5965-4981-b95f-ff536d48c95a",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
@@ -473,11 +473,11 @@
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "62fb103d-e448-4a02-bc2a-d55a35154760"
+      "X-Traza-Id": "61eff429-5965-4981-b95f-ff536d48c95a"
     },
-    "respuesta": "{\n  \"id\": 7,\n  \"nombre\": \"Ramiro\",\n  \"apellidos\": \"Alanís Lozano\",\n  \"correo\": \"repartidor1@codex.mx\",\n  \"telefono\": \"8112345678\",\n  \"rol\": \"repartidor\",\n  \"microhub\": null,\n  \"ultimo_acceso\": \"2026-10-13T08:12:00-06:00\"\n}",
-    "ms": 79,
-    "traza": "62fb103d-e448-4a02-bc2a-d55a35154760",
+    "respuesta": "{\n  \"id\": 7,\n  \"nombre\": \"Ramiro\",\n  \"apellidos\": \"Alanís Lozano\",\n  \"correo\": \"repartidor1@codex.mx\",\n  \"telefono\": \"8112345678\",\n  \"rol\": \"repartidor\",\n  \"microhub\": null,\n  \"ultimo_acceso\": \"2026-10-13T15:27:32-06:00\"\n}",
+    "ms": 65,
+    "traza": "61eff429-5965-4981-b95f-ff536d48c95a",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -491,7 +491,7 @@
           {
             "id": 7,
             "telefono": "8112345678",
-            "actualizado_en": "2026-10-13 14:12:01.779540+00:00"
+            "actualizado_en": "2026-10-13 21:27:34.349981+00:00"
           }
         ]
       },
@@ -500,7 +500,7 @@
         "consulta": "SELECT fecha, accion, entidad, detalle FROM auditoria WHERE entidad = 'usuario' AND entidad_id = '7' ORDER BY id DESC LIMIT 1",
         "resultado": [
           {
-            "fecha": "2026-10-13 14:12:01.779540+00:00",
+            "fecha": "2026-10-13 21:27:34.349981+00:00",
             "accion": "modificacion",
             "entidad": "usuario",
             "detalle": null
@@ -519,7 +519,7 @@
     "url": "http://usuarios:5102/api/v1/usuarios/yo",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "54ed1f66-134b-4fbc-a94f-43f5f387cd9d",
+      "X-Traza-Id": "3c86ec34-e1f7-433b-a60b-b37bfc2acaa1",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
@@ -527,11 +527,11 @@
     "status": 422,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "54ed1f66-134b-4fbc-a94f-43f5f387cd9d"
+      "X-Traza-Id": "3c86ec34-e1f7-433b-a60b-b37bfc2acaa1"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION\",\n    \"mensaje\": \"Revisa los datos enviados.\",\n    \"detalles\": [\n      {\n        \"campo\": \"telefono\",\n        \"mensaje\": \"Debe tener 10 dígitos.\"\n      }\n    ],\n    \"traza_id\": \"54ed1f66-134b-4fbc-a94f-43f5f387cd9d\"\n  }\n}",
-    "ms": 96,
-    "traza": "54ed1f66-134b-4fbc-a94f-43f5f387cd9d",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION\",\n    \"mensaje\": \"Revisa los datos enviados.\",\n    \"detalles\": [\n      {\n        \"campo\": \"telefono\",\n        \"mensaje\": \"Debe tener 10 dígitos.\"\n      }\n    ],\n    \"traza_id\": \"3c86ec34-e1f7-433b-a60b-b37bfc2acaa1\"\n  }\n}",
+    "ms": 366,
+    "traza": "3c86ec34-e1f7-433b-a60b-b37bfc2acaa1",
     "esperado": 422,
     "obtenido": 422,
     "estado": "PASA",
@@ -549,18 +549,18 @@
     "url": "http://usuarios:5102/api/v1/usuarios?q=codex&rol=operador&pagina=1&por_pagina=5",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "2050fe80-5b9a-4df9-a436-70d22455413a",
+      "X-Traza-Id": "317b003c-bb53-470f-81f1-b0246f746b22",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "2050fe80-5b9a-4df9-a436-70d22455413a"
+      "X-Traza-Id": "317b003c-bb53-470f-81f1-b0246f746b22"
     },
     "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 2,\n      \"nombre\": \"Ruth Elizabeth\",\n      \"apellidos\": \"Soriano\",\n      \"correo\": \"operador.mh01@codex.mx\",\n      \"telefono\": \"8144383556\",\n      \"rol\": \"operador\",\n      \"microhub\": {\n        \"id\": 1,\n        \"clave\": \"********\",\n        \"nombre\": \"Microhub San Bernabé Centro\"\n      },\n      \"ultimo_acceso\": null\n    },\n    {\n      \"id\": 3,\n      \"nombre\": \"María José\",\n      \"apellidos\": \"Cedillo Mata\",\n      \"correo\": \"operador.mh02@codex.mx\",\n      \"telefono\": \"8120362394\",\n      \"rol\": \"operador\",\n      \"microhub\": {\n        \"id\": 2,\n        \"clave\": \"********\",\n        \"nombre\": \"Microhub Valles\"\n      },\n      \"ultimo_acceso\": null\n    },\n    {\n      \"id\": 4,\n      \"nombre\": \"Jorge Antonio\",\n      \"apellidos\": \"Arreola Cantu\",\n      \"correo\": \"operador.mh03@codex.mx\",\n      \"telefono\": \"8153988349\",\n      \"rol\": \"operador\",\n      \"microhub\": {\n        \"id\": 3,\n        \"clave\": \"********\",\n        \"nombre\": \"Microhub Poniente F-113\"\n      },\n      \"ultimo_acceso\": null\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 5,\n    \"total\": 3,\n    \"paginas\": 1\n  }\n}",
-    "ms": 58,
-    "traza": "2050fe80-5b9a-4df9-a436-70d22455413a",
+    "ms": 96,
+    "traza": "317b003c-bb53-470f-81f1-b0246f746b22",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -578,18 +578,18 @@
     "url": "http://usuarios:5102/api/v1/usuarios",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "70ef2d61-7d28-467c-8288-1d60252fe434",
+      "X-Traza-Id": "f4aee7bc-281d-4be7-8680-a3044f41eefa",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 403,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "70ef2d61-7d28-467c-8288-1d60252fe434"
+      "X-Traza-Id": "f4aee7bc-281d-4be7-8680-a3044f41eefa"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"PROHIBIDO\",\n    \"mensaje\": \"Tu perfil no tiene permiso para esta operación.\",\n    \"traza_id\": \"70ef2d61-7d28-467c-8288-1d60252fe434\"\n  }\n}",
-    "ms": 27,
-    "traza": "70ef2d61-7d28-467c-8288-1d60252fe434",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"PROHIBIDO\",\n    \"mensaje\": \"Tu perfil no tiene permiso para esta operación.\",\n    \"traza_id\": \"f4aee7bc-281d-4be7-8680-a3044f41eefa\"\n  }\n}",
+    "ms": 38,
+    "traza": "f4aee7bc-281d-4be7-8680-a3044f41eefa",
     "esperado": 403,
     "obtenido": 403,
     "estado": "PASA",
@@ -601,7 +601,7 @@
         "consulta": "SELECT fecha, modulo, accion, detalle, exitoso FROM auditoria WHERE accion = 'acceso_denegado' ORDER BY id DESC LIMIT 1",
         "resultado": [
           {
-            "fecha": "2026-10-13 14:12:02.055673+00:00",
+            "fecha": "2026-10-13 21:27:34.947836+00:00",
             "modulo": "usuarios",
             "accion": "acceso_denegado",
             "detalle": "GET /api/v1/usuarios sin usuarios.ver",
@@ -621,18 +621,18 @@
     "url": "http://usuarios:5102/api/v1/usuarios/999999",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "3c3850a0-8e21-4288-a04d-a5fcab17a1eb",
+      "X-Traza-Id": "388c34d6-1754-4961-a9a5-3e3f040ebaa8",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)"
     },
     "cuerpo": "",
     "status": 404,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "3c3850a0-8e21-4288-a04d-a5fcab17a1eb"
+      "X-Traza-Id": "388c34d6-1754-4961-a9a5-3e3f040ebaa8"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe el recurso solicitado.\",\n    \"traza_id\": \"3c3850a0-8e21-4288-a04d-a5fcab17a1eb\"\n  }\n}",
-    "ms": 29,
-    "traza": "3c3850a0-8e21-4288-a04d-a5fcab17a1eb",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe el recurso solicitado.\",\n    \"traza_id\": \"388c34d6-1754-4961-a9a5-3e3f040ebaa8\"\n  }\n}",
+    "ms": 36,
+    "traza": "388c34d6-1754-4961-a9a5-3e3f040ebaa8",
     "esperado": 404,
     "obtenido": 404,
     "estado": "PASA",
@@ -641,16 +641,16 @@
     "evidencia": []
   },
   {
-    "id": "CAT-01",
-    "servicio": "catalogos",
+    "id": "PRO-01",
+    "servicio": "productos",
     "puerto": 5103,
     "titulo": "Productos con búsqueda (caché vacía)",
     "objetivo": "Consultar productos; la respuesta se guarda en Redis.",
     "metodo": "GET",
-    "url": "http://catalogos:5103/api/v1/productos?q=arroz&pagina=1&por_pagina=5",
+    "url": "http://productos:5103/api/v1/productos?q=arroz&pagina=1&por_pagina=5",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "fd21af2f-aff6-47cf-ba42-c3d05cbacc3f",
+      "X-Traza-Id": "a6accf2f-2ad8-4a75-ab14-bd2496b0a535",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
@@ -658,11 +658,11 @@
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
       "X-Cache": "MISS",
-      "X-Traza-Id": "fd21af2f-aff6-47cf-ba42-c3d05cbacc3f"
+      "X-Traza-Id": "a6accf2f-2ad8-4a75-ab14-bd2496b0a535"
     },
     "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 2,\n      \"clave_interna\": \"AB-002\",\n      \"nombre\": \"Arroz superextra\",\n      \"categoria\": {\n        \"id\": 1,\n        \"nombre\": \"Abarrote básico\"\n      },\n      \"unidad\": \"kg\",\n      \"presentacion\": \"1 kg\",\n      \"precio\": 29.9,\n      \"imagen_url\": null,\n      \"estatus\": \"activo\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 5,\n    \"total\": 1,\n    \"paginas\": 1\n  }\n}",
-    "ms": 228,
-    "traza": "fd21af2f-aff6-47cf-ba42-c3d05cbacc3f",
+    "ms": 647,
+    "traza": "a6accf2f-2ad8-4a75-ab14-bd2496b0a535",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -675,23 +675,23 @@
         "resultado": [
           {
             "comando": "db1 TTL cache:catalogo:productos:04d4a6a9d27021cf",
-            "valor": 300
+            "valor": 299
           }
         ]
       }
     ]
   },
   {
-    "id": "CAT-02",
-    "servicio": "catalogos",
+    "id": "PRO-02",
+    "servicio": "productos",
     "puerto": 5103,
     "titulo": "Misma consulta (desde Redis)",
     "objetivo": "La segunda consulta no toca PostgreSQL.",
     "metodo": "GET",
-    "url": "http://catalogos:5103/api/v1/productos?q=arroz&pagina=1&por_pagina=5",
+    "url": "http://productos:5103/api/v1/productos?q=arroz&pagina=1&por_pagina=5",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "9b5ada92-0da7-424e-97a2-f52c41684341",
+      "X-Traza-Id": "391dea8f-514e-4be4-892c-a8ec0e0d6856",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
@@ -699,11 +699,11 @@
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
       "X-Cache": "HIT",
-      "X-Traza-Id": "9b5ada92-0da7-424e-97a2-f52c41684341"
+      "X-Traza-Id": "391dea8f-514e-4be4-892c-a8ec0e0d6856"
     },
     "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 2,\n      \"clave_interna\": \"AB-002\",\n      \"nombre\": \"Arroz superextra\",\n      \"categoria\": {\n        \"id\": 1,\n        \"nombre\": \"Abarrote básico\"\n      },\n      \"unidad\": \"kg\",\n      \"presentacion\": \"1 kg\",\n      \"precio\": 29.9,\n      \"imagen_url\": null,\n      \"estatus\": \"activo\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 5,\n    \"total\": 1,\n    \"paginas\": 1\n  }\n}",
     "ms": 6,
-    "traza": "9b5ada92-0da7-424e-97a2-f52c41684341",
+    "traza": "391dea8f-514e-4be4-892c-a8ec0e0d6856",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -712,16 +712,16 @@
     "evidencia": []
   },
   {
-    "id": "CAT-03",
-    "servicio": "catalogos",
+    "id": "PRO-03",
+    "servicio": "productos",
     "puerto": 5103,
     "titulo": "Productos (XML)",
     "objetivo": "Lista en XML válida contra catalogos.xsd.",
     "metodo": "GET",
-    "url": "http://catalogos:5103/api/v1/productos?pagina=1&por_pagina=2",
+    "url": "http://productos:5103/api/v1/productos?pagina=1&por_pagina=2",
     "encabezados": {
       "Accept": "application/xml",
-      "X-Traza-Id": "971269c8-ca1d-4b4b-8890-d6eca1af2165",
+      "X-Traza-Id": "4f68c4f4-e195-4daa-b058-4fe520b56766",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
@@ -729,11 +729,11 @@
     "encabezados_respuesta": {
       "Content-Type": "application/xml; charset=utf-8",
       "X-Cache": "MISS",
-      "X-Traza-Id": "971269c8-ca1d-4b4b-8890-d6eca1af2165"
+      "X-Traza-Id": "4f68c4f4-e195-4daa-b058-4fe520b56766"
     },
     "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<productos xmlns=\"urn:microhubs:v1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1\"><datos><producto><id>3</id><clave_interna>AB-003</clave_interna><nombre>Aceite vegetal</nombre><categoria><id>1</id><nombre>Abarrote básico</nombre></categoria><unidad>botella</unidad><presentacion>900 ml</presentacion><precio>42.00</precio><imagen_url xsi:nil=\"true\" /><estatus>activo</estatus></producto><producto><id>2</id><clave_interna>AB-002</clave_interna><nombre>Arroz superextra</nombre><categoria><id>1</id><nombre>Abarrote básico</nombre></categoria><unidad>kg</unidad><presentacion>1 kg</presentacion><precio>29.90</precio><imagen_url xsi:nil=\"true\" /><estatus>activo</estatus></producto></datos><paginacion><pagina>1</pagina><por_pagina>2</por_pagina><total>51</total><paginas>26</paginas></paginacion></productos>",
-    "ms": 71,
-    "traza": "971269c8-ca1d-4b4b-8890-d6eca1af2165",
+    "ms": 84,
+    "traza": "4f68c4f4-e195-4daa-b058-4fe520b56766",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -742,16 +742,16 @@
     "evidencia": []
   },
   {
-    "id": "CAT-04",
-    "servicio": "catalogos",
+    "id": "PRO-04",
+    "servicio": "productos",
     "puerto": 5103,
     "titulo": "Un producto",
     "objetivo": "Detalle por id.",
     "metodo": "GET",
-    "url": "http://catalogos:5103/api/v1/productos/3",
+    "url": "http://productos:5103/api/v1/productos/3",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "918f7f5e-54a2-4430-9b5f-87b4869b2ddd",
+      "X-Traza-Id": "71a4e67f-bdf4-476b-bb45-4440bdefaae7",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
@@ -759,11 +759,11 @@
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
       "X-Cache": "MISS",
-      "X-Traza-Id": "918f7f5e-54a2-4430-9b5f-87b4869b2ddd"
+      "X-Traza-Id": "71a4e67f-bdf4-476b-bb45-4440bdefaae7"
     },
     "respuesta": "{\n  \"id\": 3,\n  \"clave_interna\": \"AB-003\",\n  \"nombre\": \"Aceite vegetal\",\n  \"categoria\": {\n    \"id\": 1,\n    \"nombre\": \"Abarrote básico\"\n  },\n  \"unidad\": \"botella\",\n  \"presentacion\": \"900 ml\",\n  \"precio\": 42.0,\n  \"imagen_url\": null,\n  \"estatus\": \"activo\"\n}",
-    "ms": 47,
-    "traza": "918f7f5e-54a2-4430-9b5f-87b4869b2ddd",
+    "ms": 64,
+    "traza": "71a4e67f-bdf4-476b-bb45-4440bdefaae7",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -772,27 +772,27 @@
     "evidencia": []
   },
   {
-    "id": "CAT-05",
-    "servicio": "catalogos",
+    "id": "PRO-05",
+    "servicio": "productos",
     "puerto": 5103,
     "titulo": "Producto inexistente",
     "objetivo": "Registro que no existe.",
     "metodo": "GET",
-    "url": "http://catalogos:5103/api/v1/productos/999999",
+    "url": "http://productos:5103/api/v1/productos/999999",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "e61cd803-9dd5-422b-ba05-c9037150bd8e",
+      "X-Traza-Id": "2d6a2b9e-2728-4f9c-b71d-23dcdc7e1094",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 404,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "e61cd803-9dd5-422b-ba05-c9037150bd8e"
+      "X-Traza-Id": "2d6a2b9e-2728-4f9c-b71d-23dcdc7e1094"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe el recurso solicitado.\",\n    \"traza_id\": \"e61cd803-9dd5-422b-ba05-c9037150bd8e\"\n  }\n}",
-    "ms": 50,
-    "traza": "e61cd803-9dd5-422b-ba05-c9037150bd8e",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe el recurso solicitado.\",\n    \"traza_id\": \"2d6a2b9e-2728-4f9c-b71d-23dcdc7e1094\"\n  }\n}",
+    "ms": 60,
+    "traza": "2d6a2b9e-2728-4f9c-b71d-23dcdc7e1094",
     "esperado": 404,
     "obtenido": 404,
     "estado": "PASA",
@@ -801,87 +801,27 @@
     "evidencia": []
   },
   {
-    "id": "CAT-06",
-    "servicio": "catalogos",
-    "puerto": 5103,
-    "titulo": "Zonas (XML)",
-    "objetivo": "Colonias atendidas con centroide.",
-    "metodo": "GET",
-    "url": "http://catalogos:5103/api/v1/zonas",
-    "encabezados": {
-      "Accept": "application/xml",
-      "X-Traza-Id": "de02e3cc-e369-4765-9729-b2d5859cba84",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
-    },
-    "cuerpo": "",
-    "status": 200,
-    "encabezados_respuesta": {
-      "Content-Type": "application/xml; charset=utf-8",
-      "X-Cache": "MISS",
-      "X-Traza-Id": "de02e3cc-e369-4765-9729-b2d5859cba84"
-    },
-    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<zonas xmlns=\"urn:microhubs:v1\" version=\"1\"><datos><zona><id>1</id><clave>ZN-SB01</clave><nombre>San Bernabé Centro</nombre><colonia>San Bernabé</colonia><codigo_postal>64100</codigo_postal><latitud>25.7455</latitud><longitud>-100.3585</longitud></zona><zona><id>2</id><clave>ZN-SB02</clave><nombre>Valles de San Bernabé</nombre><colonia>Valles de San Bernabé</colonia><codigo_postal>64103</codigo_postal><latitud>25.753</latitud><longitud>-100.369</longitud></zona><zona><id>3</id><clave>ZN-SB03</clave><nombre>Paseo de San Bernabé</nombre><colonia>Paseo de San Bernabé</colonia><codigo_postal>64103</codigo_postal><latitud>25.758</latitud><longitud>-100.3745</longitud></zona><zona><id>4</id><clave>ZN-SB04</clave><nombre>San Bernabé X (F-113)</nombre><colonia>San Bernabé X (F-113)</colonia><codigo_postal>64105</codigo_postal><latitud>25.7495</latitud><longitud>-100.38</longitud></zona></datos><paginacion><pagina>1</pagina><por_pagina>20</por_pagina><total>4</total><paginas>1</paginas></paginacion></zonas>",
-    "ms": 74,
-    "traza": "de02e3cc-e369-4765-9729-b2d5859cba84",
-    "esperado": 200,
-    "obtenido": 200,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "CAT-07",
-    "servicio": "catalogos",
-    "puerto": 5103,
-    "titulo": "Microhubs",
-    "objetivo": "Microhubs con coordenadas y radio.",
-    "metodo": "GET",
-    "url": "http://catalogos:5103/api/v1/microhubs?estatus=activo",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "a6e6cdb5-a7d6-4714-b98c-27753c3a00fb",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
-    },
-    "cuerpo": "",
-    "status": 200,
-    "encabezados_respuesta": {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-Cache": "MISS",
-      "X-Traza-Id": "a6e6cdb5-a7d6-4714-b98c-27753c3a00fb"
-    },
-    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 1,\n      \"clave\": \"********\",\n      \"nombre\": \"Microhub San Bernabé Centro\",\n      \"latitud\": 25.748,\n      \"longitud\": -100.364,\n      \"radio_km\": 1.5,\n      \"estatus\": \"activo\"\n    },\n    {\n      \"id\": 2,\n      \"clave\": \"********\",\n      \"nombre\": \"Microhub Valles\",\n      \"latitud\": 25.7555,\n      \"longitud\": -100.372,\n      \"radio_km\": 1.5,\n      \"estatus\": \"activo\"\n    },\n    {\n      \"id\": 3,\n      \"clave\": \"********\",\n      \"nombre\": \"Microhub Poniente F-113\",\n      \"latitud\": 25.75,\n      \"longitud\": -100.381,\n      \"radio_km\": 1.2,\n      \"estatus\": \"activo\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 20,\n    \"total\": 3,\n    \"paginas\": 1\n  }\n}",
-    "ms": 79,
-    "traza": "a6e6cdb5-a7d6-4714-b98c-27753c3a00fb",
-    "esperado": 200,
-    "obtenido": 200,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "CAT-08",
-    "servicio": "catalogos",
+    "id": "PRO-06",
+    "servicio": "productos",
     "puerto": 5103,
     "titulo": "Paginación fuera de rango",
     "objetivo": "por_pagina máximo 100.",
     "metodo": "GET",
-    "url": "http://catalogos:5103/api/v1/productos?por_pagina=500",
+    "url": "http://productos:5103/api/v1/productos?por_pagina=500",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "ea604574-3c9f-407a-88cb-9baf220006ba",
+      "X-Traza-Id": "c043f5a6-fad4-4c1b-92e7-52479513fdb1",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 400,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "ea604574-3c9f-407a-88cb-9baf220006ba"
+      "X-Traza-Id": "c043f5a6-fad4-4c1b-92e7-52479513fdb1"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"FILTRO_INVALIDO\",\n    \"mensaje\": \"por_pagina debe estar entre 1 y 100.\",\n    \"detalles\": [\n      {\n        \"campo\": \"por_pagina\",\n        \"mensaje\": \"por_pagina debe estar entre 1 y 100.\"\n      }\n    ],\n    \"traza_id\": \"ea604574-3c9f-407a-88cb-9baf220006ba\"\n  }\n}",
-    "ms": 6,
-    "traza": "ea604574-3c9f-407a-88cb-9baf220006ba",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"FILTRO_INVALIDO\",\n    \"mensaje\": \"por_pagina debe estar entre 1 y 100.\",\n    \"detalles\": [\n      {\n        \"campo\": \"por_pagina\",\n        \"mensaje\": \"por_pagina debe estar entre 1 y 100.\"\n      }\n    ],\n    \"traza_id\": \"c043f5a6-fad4-4c1b-92e7-52479513fdb1\"\n  }\n}",
+    "ms": 7,
+    "traza": "c043f5a6-fad4-4c1b-92e7-52479513fdb1",
     "esperado": 400,
     "obtenido": 400,
     "estado": "PASA",
@@ -890,27 +830,232 @@
     "evidencia": []
   },
   {
-    "id": "CAT-09",
-    "servicio": "catalogos",
+    "id": "PRO-07",
+    "servicio": "productos",
     "puerto": 5103,
     "titulo": "Sin token",
     "objetivo": "Todo endpoint protegido exige Authorization: Bearer.",
     "metodo": "GET",
-    "url": "http://catalogos:5103/api/v1/productos",
+    "url": "http://productos:5103/api/v1/productos",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "3c095b18-2c8b-4c12-b21f-f9d63456718a"
+      "X-Traza-Id": "db4ac512-cfd6-41b7-a964-8ad421542c8c"
     },
     "cuerpo": "",
     "status": 401,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
       "WWW-Authenticate": "Bearer realm=\"microhubs\"",
-      "X-Traza-Id": "3c095b18-2c8b-4c12-b21f-f9d63456718a"
+      "X-Traza-Id": "db4ac512-cfd6-41b7-a964-8ad421542c8c"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"TOKEN_INVALIDO\",\n    \"mensaje\": \"Falta el encabezado Authorization: Bearer <token>.\",\n    \"traza_id\": \"3c095b18-2c8b-4c12-b21f-f9d63456718a\"\n  }\n}",
-    "ms": 5,
-    "traza": "3c095b18-2c8b-4c12-b21f-f9d63456718a",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"TOKEN_INVALIDO\",\n    \"mensaje\": \"Falta el encabezado Authorization: Bearer <token>.\",\n    \"traza_id\": \"db4ac512-cfd6-41b7-a964-8ad421542c8c\"\n  }\n}",
+    "ms": 7,
+    "traza": "db4ac512-cfd6-41b7-a964-8ad421542c8c",
+    "esperado": 401,
+    "obtenido": 401,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "ZON-01",
+    "servicio": "zonas",
+    "puerto": 5108,
+    "titulo": "Zonas (XML)",
+    "objetivo": "Colonias atendidas con centroide, válidas contra catalogos.xsd.",
+    "metodo": "GET",
+    "url": "http://zonas:5108/api/v1/zonas",
+    "encabezados": {
+      "Accept": "application/xml",
+      "X-Traza-Id": "18fc7d0e-cda3-4668-a5bc-5db4f5dc71ac",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/xml; charset=utf-8",
+      "X-Cache": "MISS",
+      "X-Traza-Id": "18fc7d0e-cda3-4668-a5bc-5db4f5dc71ac"
+    },
+    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<zonas xmlns=\"urn:microhubs:v1\" version=\"1\"><datos><zona><id>1</id><clave>ZN-SB01</clave><nombre>San Bernabé Centro</nombre><colonia>San Bernabé</colonia><codigo_postal>64100</codigo_postal><latitud>25.7455</latitud><longitud>-100.3585</longitud></zona><zona><id>2</id><clave>ZN-SB02</clave><nombre>Valles de San Bernabé</nombre><colonia>Valles de San Bernabé</colonia><codigo_postal>64103</codigo_postal><latitud>25.753</latitud><longitud>-100.369</longitud></zona><zona><id>3</id><clave>ZN-SB03</clave><nombre>Paseo de San Bernabé</nombre><colonia>Paseo de San Bernabé</colonia><codigo_postal>64103</codigo_postal><latitud>25.758</latitud><longitud>-100.3745</longitud></zona><zona><id>4</id><clave>ZN-SB04</clave><nombre>San Bernabé X (F-113)</nombre><colonia>San Bernabé X (F-113)</colonia><codigo_postal>64105</codigo_postal><latitud>25.7495</latitud><longitud>-100.38</longitud></zona></datos><paginacion><pagina>1</pagina><por_pagina>20</por_pagina><total>4</total><paginas>1</paginas></paginacion></zonas>",
+    "ms": 514,
+    "traza": "18fc7d0e-cda3-4668-a5bc-5db4f5dc71ac",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "ZON-02",
+    "servicio": "zonas",
+    "puerto": 5108,
+    "titulo": "Una zona",
+    "objetivo": "Detalle por id.",
+    "metodo": "GET",
+    "url": "http://zonas:5108/api/v1/zonas/1",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "abecd8ad-6d53-40ea-bdd8-6b08af34c9e4",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "abecd8ad-6d53-40ea-bdd8-6b08af34c9e4"
+    },
+    "respuesta": "{\n  \"id\": 1,\n  \"clave\": \"********\",\n  \"nombre\": \"San Bernabé Centro\",\n  \"colonia\": \"San Bernabé\",\n  \"codigo_postal\": \"64100\",\n  \"latitud\": 25.7455,\n  \"longitud\": -100.3585\n}",
+    "ms": 36,
+    "traza": "abecd8ad-6d53-40ea-bdd8-6b08af34c9e4",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "ZON-03",
+    "servicio": "zonas",
+    "puerto": 5108,
+    "titulo": "Zona inexistente",
+    "objetivo": "Registro que no existe.",
+    "metodo": "GET",
+    "url": "http://zonas:5108/api/v1/zonas/999999",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "ff7da3ef-de28-46fd-af87-dbb90ec47ede",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 404,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "ff7da3ef-de28-46fd-af87-dbb90ec47ede"
+    },
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe el recurso solicitado.\",\n    \"traza_id\": \"ff7da3ef-de28-46fd-af87-dbb90ec47ede\"\n  }\n}",
+    "ms": 31,
+    "traza": "ff7da3ef-de28-46fd-af87-dbb90ec47ede",
+    "esperado": 404,
+    "obtenido": 404,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "ZON-04",
+    "servicio": "zonas",
+    "puerto": 5108,
+    "titulo": "Sin token",
+    "objetivo": "Todo endpoint protegido exige Authorization: Bearer.",
+    "metodo": "GET",
+    "url": "http://zonas:5108/api/v1/zonas",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "2c454140-d641-4398-8140-b9902d475b06"
+    },
+    "cuerpo": "",
+    "status": 401,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "WWW-Authenticate": "Bearer realm=\"microhubs\"",
+      "X-Traza-Id": "2c454140-d641-4398-8140-b9902d475b06"
+    },
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"TOKEN_INVALIDO\",\n    \"mensaje\": \"Falta el encabezado Authorization: Bearer <token>.\",\n    \"traza_id\": \"2c454140-d641-4398-8140-b9902d475b06\"\n  }\n}",
+    "ms": 6,
+    "traza": "2c454140-d641-4398-8140-b9902d475b06",
+    "esperado": 401,
+    "obtenido": 401,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "MIC-01",
+    "servicio": "microhubs",
+    "puerto": 5109,
+    "titulo": "Microhubs activos",
+    "objetivo": "Microhubs con coordenadas y radio.",
+    "metodo": "GET",
+    "url": "http://microhubs:5109/api/v1/microhubs?estatus=activo",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "e9ab3e07-63ac-492b-9a53-124a9babf778",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Cache": "MISS",
+      "X-Traza-Id": "e9ab3e07-63ac-492b-9a53-124a9babf778"
+    },
+    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 1,\n      \"clave\": \"********\",\n      \"nombre\": \"Microhub San Bernabé Centro\",\n      \"latitud\": 25.748,\n      \"longitud\": -100.364,\n      \"radio_km\": 1.5,\n      \"estatus\": \"activo\"\n    },\n    {\n      \"id\": 2,\n      \"clave\": \"********\",\n      \"nombre\": \"Microhub Valles\",\n      \"latitud\": 25.7555,\n      \"longitud\": -100.372,\n      \"radio_km\": 1.5,\n      \"estatus\": \"activo\"\n    },\n    {\n      \"id\": 3,\n      \"clave\": \"********\",\n      \"nombre\": \"Microhub Poniente F-113\",\n      \"latitud\": 25.75,\n      \"longitud\": -100.381,\n      \"radio_km\": 1.2,\n      \"estatus\": \"activo\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 20,\n    \"total\": 3,\n    \"paginas\": 1\n  }\n}",
+    "ms": 839,
+    "traza": "e9ab3e07-63ac-492b-9a53-124a9babf778",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "MIC-02",
+    "servicio": "microhubs",
+    "puerto": 5109,
+    "titulo": "Microhub inexistente",
+    "objetivo": "Registro que no existe.",
+    "metodo": "GET",
+    "url": "http://microhubs:5109/api/v1/microhubs/999999",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "7e2c0155-0260-484b-aa39-16338c54bcb8",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 404,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "7e2c0155-0260-484b-aa39-16338c54bcb8"
+    },
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe el recurso solicitado.\",\n    \"traza_id\": \"7e2c0155-0260-484b-aa39-16338c54bcb8\"\n  }\n}",
+    "ms": 34,
+    "traza": "7e2c0155-0260-484b-aa39-16338c54bcb8",
+    "esperado": 404,
+    "obtenido": 404,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "MIC-03",
+    "servicio": "microhubs",
+    "puerto": 5109,
+    "titulo": "Sin token",
+    "objetivo": "Todo endpoint protegido exige Authorization: Bearer.",
+    "metodo": "GET",
+    "url": "http://microhubs:5109/api/v1/microhubs",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "6348355f-ccff-43b4-a23d-81730ecc3dfd"
+    },
+    "cuerpo": "",
+    "status": 401,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "WWW-Authenticate": "Bearer realm=\"microhubs\"",
+      "X-Traza-Id": "6348355f-ccff-43b4-a23d-81730ecc3dfd"
+    },
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"TOKEN_INVALIDO\",\n    \"mensaje\": \"Falta el encabezado Authorization: Bearer <token>.\",\n    \"traza_id\": \"6348355f-ccff-43b4-a23d-81730ecc3dfd\"\n  }\n}",
+    "ms": 7,
+    "traza": "6348355f-ccff-43b4-a23d-81730ecc3dfd",
     "esperado": 401,
     "obtenido": 401,
     "estado": "PASA",
@@ -928,18 +1073,18 @@
     "url": "http://pedidos:5104/api/v1/pedidos?estado=entregado&pagina=1&por_pagina=5",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "b93167b9-213e-4fce-a4f6-937394ee054e",
+      "X-Traza-Id": "defea63e-8c77-4ed8-99ef-21f2be1f8259",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "b93167b9-213e-4fce-a4f6-937394ee054e"
+      "X-Traza-Id": "defea63e-8c77-4ed8-99ef-21f2be1f8259"
     },
-    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 105,\n      \"folio\": \"PED-20261013-000105\",\n      \"estado\": \"entregado\",\n      \"zona\": {\n        \"id\": 2,\n        \"nombre\": \"Valles de San Bernabé\"\n      },\n      \"microhub_id\": 2,\n      \"total\": 148.0,\n      \"creado_en\": \"2026-10-12T13:20:40-06:00\"\n    },\n    {\n      \"id\": 18,\n      \"folio\": \"PED-20261013-000018\",\n      \"estado\": \"entregado\",\n      \"zona\": {\n        \"id\": 1,\n        \"nombre\": \"San Bernabé Centro\"\n      },\n      \"microhub_id\": 1,\n      \"total\": 180.5,\n      \"creado_en\": \"2026-10-12T12:12:25-06:00\"\n    },\n    {\n      \"id\": 91,\n      \"folio\": \"PED-20261013-000091\",\n      \"estado\": \"entregado\",\n      \"zona\": {\n        \"id\": 2,\n        \"nombre\": \"Valles de San Bernabé\"\n      },\n      \"microhub_id\": 2,\n      \"total\": 128.5,\n      \"creado_en\": \"2026-10-12T08:44:46-06:00\"\n    },\n    {\n      \"id\": 63,\n      \"folio\": \"PED-20261013-000063\",\n      \"estado\": \"entregado\",\n      \"zona\": {\n        \"id\": 3,\n        \"nombre\": \"Paseo de San Bernabé\"\n      },\n      \"microhub_id\": 2,\n      \"total\": 148.5,\n      \"creado_en\": \"2026-10-12T08:18:54-06:00\"\n    },\n    {\n      \"id\": 3,\n      \"folio\": \"PED-20261013-000003\",\n      \"estado\": \"entregado\",\n      \"zona\": {\n        \"id\": 3,\n        \"nombre\": \"Paseo de San Bernabé\"\n      },\n      \"microhub_id\": 2,\n      \"total\": 142.9,\n      \"creado_en\": \"2026-10-10T19:31:46-06:00\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 5,\n    \"total\": 113,\n    \"paginas\": 23\n  }\n}",
-    "ms": 242,
-    "traza": "b93167b9-213e-4fce-a4f6-937394ee054e",
+    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 105,\n      \"folio\": \"PED-20261013-000105\",\n      \"estado\": \"entregado\",\n      \"zona\": {\n        \"id\": 2,\n        \"nombre\": \"Valles de San Bernabé\"\n      },\n      \"microhub_id\": 2,\n      \"total\": 148.0,\n      \"creado_en\": \"2026-10-12T20:34:56-06:00\"\n    },\n    {\n      \"id\": 18,\n      \"folio\": \"PED-20261013-000018\",\n      \"estado\": \"entregado\",\n      \"zona\": {\n        \"id\": 1,\n        \"nombre\": \"San Bernabé Centro\"\n      },\n      \"microhub_id\": 1,\n      \"total\": 180.5,\n      \"creado_en\": \"2026-10-12T19:26:41-06:00\"\n    },\n    {\n      \"id\": 91,\n      \"folio\": \"PED-20261013-000091\",\n      \"estado\": \"entregado\",\n      \"zona\": {\n        \"id\": 2,\n        \"nombre\": \"Valles de San Bernabé\"\n      },\n      \"microhub_id\": 2,\n      \"total\": 128.5,\n      \"creado_en\": \"2026-10-12T15:59:02-06:00\"\n    },\n    {\n      \"id\": 63,\n      \"folio\": \"PED-20261013-000063\",\n      \"estado\": \"entregado\",\n      \"zona\": {\n        \"id\": 3,\n        \"nombre\": \"Paseo de San Bernabé\"\n      },\n      \"microhub_id\": 2,\n      \"total\": 148.5,\n      \"creado_en\": \"2026-10-12T15:33:11-06:00\"\n    },\n    {\n      \"id\": 3,\n      \"folio\": \"PED-20261013-000003\",\n      \"estado\": \"entregado\",\n      \"zona\": {\n        \"id\": 3,\n        \"nombre\": \"Paseo de San Bernabé\"\n      },\n      \"microhub_id\": 2,\n      \"total\": 142.9,\n      \"creado_en\": \"2026-10-11T02:46:03-06:00\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 5,\n    \"total\": 113,\n    \"paginas\": 23\n  }\n}",
+    "ms": 742,
+    "traza": "defea63e-8c77-4ed8-99ef-21f2be1f8259",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -957,18 +1102,18 @@
     "url": "http://pedidos:5104/api/v1/pedidos?estado=entregado&por_pagina=2",
     "encabezados": {
       "Accept": "application/xml",
-      "X-Traza-Id": "699aecb5-ae4a-4790-90ab-b3eca0830a9e",
+      "X-Traza-Id": "f1198f5c-7d1f-4e18-b56c-36bc4addfedf",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/xml; charset=utf-8",
-      "X-Traza-Id": "699aecb5-ae4a-4790-90ab-b3eca0830a9e"
+      "X-Traza-Id": "f1198f5c-7d1f-4e18-b56c-36bc4addfedf"
     },
-    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<pedidos xmlns=\"urn:microhubs:v1\" version=\"1\"><datos><pedido><id>105</id><folio>PED-20261013-000105</folio><estado>entregado</estado><zona><id>2</id><nombre>Valles de San Bernabé</nombre></zona><microhub_id>2</microhub_id><total>148.00</total><creado_en>2026-10-12T13:20:40-06:00</creado_en></pedido><pedido><id>18</id><folio>PED-20261013-000018</folio><estado>entregado</estado><zona><id>1</id><nombre>San Bernabé Centro</nombre></zona><microhub_id>1</microhub_id><total>180.50</total><creado_en>2026-10-12T12:12:25-06:00</creado_en></pedido></datos><paginacion><pagina>1</pagina><por_pagina>2</por_pagina><total>113</total><paginas>57</paginas></paginacion></pedidos>",
-    "ms": 69,
-    "traza": "699aecb5-ae4a-4790-90ab-b3eca0830a9e",
+    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<pedidos xmlns=\"urn:microhubs:v1\" version=\"1\"><datos><pedido><id>105</id><folio>PED-20261013-000105</folio><estado>entregado</estado><zona><id>2</id><nombre>Valles de San Bernabé</nombre></zona><microhub_id>2</microhub_id><total>148.00</total><creado_en>2026-10-12T20:34:56-06:00</creado_en></pedido><pedido><id>18</id><folio>PED-20261013-000018</folio><estado>entregado</estado><zona><id>1</id><nombre>San Bernabé Centro</nombre></zona><microhub_id>1</microhub_id><total>180.50</total><creado_en>2026-10-12T19:26:41-06:00</creado_en></pedido></datos><paginacion><pagina>1</pagina><por_pagina>2</por_pagina><total>113</total><paginas>57</paginas></paginacion></pedidos>",
+    "ms": 90,
+    "traza": "f1198f5c-7d1f-4e18-b56c-36bc4addfedf",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -986,18 +1131,18 @@
     "url": "http://pedidos:5104/api/v1/pedidos/105",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "c8847297-a45e-493c-8d3d-8ea4dc9756f7",
+      "X-Traza-Id": "7f192095-ad12-4b7d-9220-6e04e7ef2c19",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "c8847297-a45e-493c-8d3d-8ea4dc9756f7"
+      "X-Traza-Id": "7f192095-ad12-4b7d-9220-6e04e7ef2c19"
     },
-    "respuesta": "{\n  \"id\": 105,\n  \"folio\": \"PED-20261013-000105\",\n  \"estado\": \"entregado\",\n  \"cliente\": {\n    \"nombre\": \"Juan Sepúlveda Martínez\",\n    \"telefono\": \"8136595095\"\n  },\n  \"domicilio\": {\n    \"calle\": \"Fidel Velázquez\",\n    \"numero_ext\": \"2470\",\n    \"colonia\": \"Valles de San Bernabé\",\n    \"latitud\": 25.758336,\n    \"longitud\": -100.370653\n  },\n  \"zona\": {\n    \"id\": 2,\n    \"nombre\": \"Valles de San Bernabé\"\n  },\n  \"microhub_id\": 2,\n  \"subtotal\": 133.0,\n  \"costo_envio\": 15.0,\n  \"total\": 148.0,\n  \"creado_en\": \"2026-10-12T13:20:40-06:00\",\n  \"lineas\": [\n    {\n      \"id\": 481,\n      \"producto_id\": 33,\n      \"nombre\": \"Crema ácida\",\n      \"cantidad\": 1,\n      \"precio_unitario\": 36.0,\n      \"importe\": 36.0\n    },\n    {\n      \"id\": 482,\n      \"producto_id\": 5,\n      \"nombre\": \"Sal de mesa\",\n      \"cantidad\": 1,\n      \"precio_unitario\": 14.0,\n      \"importe\": 14.0\n    },\n    {\n      \"id\": 483,\n      \"producto_id\": 45,\n      \"nombre\": \"Fibra para trastes\",\n      \"cantidad\": 1,\n      \"precio_unitario\": 18.0,\n      \"importe\": 18.0\n    },\n    {\n      \"id\": 484,\n      \"producto_id\": 39,\n      \"nombre\": \"Cloro\",\n      \"cantidad\": 1,\n      \"precio_unitario\": 19.5,\n      \"importe\": 19.5\n    },\n    {\n      \"id\": 485,\n      \"producto_id\": 7,\n      \"nombre\": \"Harina de trigo\",\n      \"cantidad\": 1,\n      \"precio_unitario\": 24.5,\n      \"importe\": 24.5\n    },\n    {\n      \"id\": 486,\n      \"producto_id\": 9,\n      \"nombre\": \"Atún en agua\",\n      \"cantidad\": 1,\n      \"precio_unitario\": 21.0,\n      \"importe\": 21.0\n    }\n  ]\n}",
-    "ms": 88,
-    "traza": "c8847297-a45e-493c-8d3d-8ea4dc9756f7",
+    "respuesta": "{\n  \"id\": 105,\n  \"folio\": \"PED-20261013-000105\",\n  \"estado\": \"entregado\",\n  \"cliente\": {\n    \"nombre\": \"Juan Sepúlveda Martínez\",\n    \"telefono\": \"8136595095\"\n  },\n  \"domicilio\": {\n    \"calle\": \"Fidel Velázquez\",\n    \"numero_ext\": \"2470\",\n    \"colonia\": \"Valles de San Bernabé\",\n    \"latitud\": 25.758336,\n    \"longitud\": -100.370653\n  },\n  \"zona\": {\n    \"id\": 2,\n    \"nombre\": \"Valles de San Bernabé\"\n  },\n  \"microhub_id\": 2,\n  \"subtotal\": 133.0,\n  \"costo_envio\": 15.0,\n  \"total\": 148.0,\n  \"creado_en\": \"2026-10-12T20:34:56-06:00\",\n  \"lineas\": [\n    {\n      \"id\": 481,\n      \"producto_id\": 33,\n      \"nombre\": \"Crema ácida\",\n      \"cantidad\": 1,\n      \"precio_unitario\": 36.0,\n      \"importe\": 36.0\n    },\n    {\n      \"id\": 482,\n      \"producto_id\": 5,\n      \"nombre\": \"Sal de mesa\",\n      \"cantidad\": 1,\n      \"precio_unitario\": 14.0,\n      \"importe\": 14.0\n    },\n    {\n      \"id\": 483,\n      \"producto_id\": 45,\n      \"nombre\": \"Fibra para trastes\",\n      \"cantidad\": 1,\n      \"precio_unitario\": 18.0,\n      \"importe\": 18.0\n    },\n    {\n      \"id\": 484,\n      \"producto_id\": 39,\n      \"nombre\": \"Cloro\",\n      \"cantidad\": 1,\n      \"precio_unitario\": 19.5,\n      \"importe\": 19.5\n    },\n    {\n      \"id\": 485,\n      \"producto_id\": 7,\n      \"nombre\": \"Harina de trigo\",\n      \"cantidad\": 1,\n      \"precio_unitario\": 24.5,\n      \"importe\": 24.5\n    },\n    {\n      \"id\": 486,\n      \"producto_id\": 9,\n      \"nombre\": \"Atún en agua\",\n      \"cantidad\": 1,\n      \"precio_unitario\": 21.0,\n      \"importe\": 21.0\n    }\n  ]\n}",
+    "ms": 94,
+    "traza": "7f192095-ad12-4b7d-9220-6e04e7ef2c19",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -1015,18 +1160,18 @@
     "url": "http://pedidos:5104/api/v1/pedidos/105/historial",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "b85c72c7-7951-4386-83fb-84ef05f1bd97",
+      "X-Traza-Id": "f678da68-4ec6-42fa-a402-a7f3d5c00e77",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "b85c72c7-7951-4386-83fb-84ef05f1bd97"
+      "X-Traza-Id": "f678da68-4ec6-42fa-a402-a7f3d5c00e77"
     },
-    "respuesta": "{\n  \"pedido_id\": 105,\n  \"eventos\": [\n    {\n      \"estado_anterior\": null,\n      \"estado_nuevo\": \"creado\",\n      \"usuario\": null,\n      \"motivo\": null,\n      \"fecha\": \"2026-10-12T13:20:40-06:00\"\n    },\n    {\n      \"estado_anterior\": \"creado\",\n      \"estado_nuevo\": \"asignado\",\n      \"usuario\": null,\n      \"motivo\": null,\n      \"fecha\": \"2026-10-12T13:20:40-06:00\"\n    },\n    {\n      \"estado_anterior\": \"asignado\",\n      \"estado_nuevo\": \"en_preparacion\",\n      \"usuario\": null,\n      \"motivo\": null,\n      \"fecha\": \"2026-10-12T13:20:40-06:00\"\n    },\n    {\n      \"estado_anterior\": \"en_preparacion\",\n      \"estado_nuevo\": \"en_ruta\",\n      \"usuario\": null,\n      \"motivo\": null,\n      \"fecha\": \"2026-10-12T13:20:40-06:00\"\n    },\n    {\n      \"estado_anterior\": \"en_ruta\",\n      \"estado_nuevo\": \"entregado\",\n      \"usuario\": null,\n      \"motivo\": null,\n      \"fecha\": \"2026-10-12T13:20:40-06:00\"\n    }\n  ]\n}",
-    "ms": 92,
-    "traza": "b85c72c7-7951-4386-83fb-84ef05f1bd97",
+    "respuesta": "{\n  \"pedido_id\": 105,\n  \"eventos\": [\n    {\n      \"estado_anterior\": null,\n      \"estado_nuevo\": \"creado\",\n      \"usuario\": null,\n      \"motivo\": null,\n      \"fecha\": \"2026-10-12T20:34:56-06:00\"\n    },\n    {\n      \"estado_anterior\": \"creado\",\n      \"estado_nuevo\": \"asignado\",\n      \"usuario\": null,\n      \"motivo\": null,\n      \"fecha\": \"2026-10-12T20:34:56-06:00\"\n    },\n    {\n      \"estado_anterior\": \"asignado\",\n      \"estado_nuevo\": \"en_preparacion\",\n      \"usuario\": null,\n      \"motivo\": null,\n      \"fecha\": \"2026-10-12T20:34:56-06:00\"\n    },\n    {\n      \"estado_anterior\": \"en_preparacion\",\n      \"estado_nuevo\": \"en_ruta\",\n      \"usuario\": null,\n      \"motivo\": null,\n      \"fecha\": \"2026-10-12T20:34:56-06:00\"\n    },\n    {\n      \"estado_anterior\": \"en_ruta\",\n      \"estado_nuevo\": \"entregado\",\n      \"usuario\": null,\n      \"motivo\": null,\n      \"fecha\": \"2026-10-12T20:34:56-06:00\"\n    }\n  ]\n}",
+    "ms": 309,
+    "traza": "f678da68-4ec6-42fa-a402-a7f3d5c00e77",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -1038,31 +1183,31 @@
         "consulta": "SELECT fecha, estado_anterior, estado_nuevo, usuario_id FROM historial_estatus WHERE pedido_id = %s ORDER BY fecha, id",
         "resultado": [
           {
-            "fecha": "2026-10-12 19:20:40.369734+00:00",
+            "fecha": "2026-10-13 02:34:56.678271+00:00",
             "estado_anterior": null,
             "estado_nuevo": "creado",
             "usuario_id": null
           },
           {
-            "fecha": "2026-10-12 19:20:40.369734+00:00",
+            "fecha": "2026-10-13 02:34:56.678271+00:00",
             "estado_anterior": "creado",
             "estado_nuevo": "asignado",
             "usuario_id": null
           },
           {
-            "fecha": "2026-10-12 19:20:40.369734+00:00",
+            "fecha": "2026-10-13 02:34:56.678271+00:00",
             "estado_anterior": "asignado",
             "estado_nuevo": "en_preparacion",
             "usuario_id": null
           },
           {
-            "fecha": "2026-10-12 19:20:40.369734+00:00",
+            "fecha": "2026-10-13 02:34:56.678271+00:00",
             "estado_anterior": "en_preparacion",
             "estado_nuevo": "en_ruta",
             "usuario_id": null
           },
           {
-            "fecha": "2026-10-12 19:20:40.369734+00:00",
+            "fecha": "2026-10-13 02:34:56.678271+00:00",
             "estado_anterior": "en_ruta",
             "estado_nuevo": "entregado",
             "usuario_id": null
@@ -1081,18 +1226,18 @@
     "url": "http://pedidos:5104/api/v1/pedidos?estado=inventado",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "50bef59e-3e07-4078-bc58-dde99054ec51",
+      "X-Traza-Id": "74ed6cde-7d74-4268-a421-ec5805811bbf",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 400,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "50bef59e-3e07-4078-bc58-dde99054ec51"
+      "X-Traza-Id": "74ed6cde-7d74-4268-a421-ec5805811bbf"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"FILTRO_INVALIDO\",\n    \"mensaje\": \"Valor no permitido para estado: inventado.\",\n    \"detalles\": [\n      {\n        \"campo\": \"estado\",\n        \"mensaje\": \"Valor no permitido para estado: inventado.\"\n      }\n    ],\n    \"traza_id\": \"50bef59e-3e07-4078-bc58-dde99054ec51\"\n  }\n}",
-    "ms": 87,
-    "traza": "50bef59e-3e07-4078-bc58-dde99054ec51",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"FILTRO_INVALIDO\",\n    \"mensaje\": \"Valor no permitido para estado: inventado.\",\n    \"detalles\": [\n      {\n        \"campo\": \"estado\",\n        \"mensaje\": \"Valor no permitido para estado: inventado.\"\n      }\n    ],\n    \"traza_id\": \"74ed6cde-7d74-4268-a421-ec5805811bbf\"\n  }\n}",
+    "ms": 11,
+    "traza": "74ed6cde-7d74-4268-a421-ec5805811bbf",
     "esperado": 400,
     "obtenido": 400,
     "estado": "PASA",
@@ -1110,18 +1255,18 @@
     "url": "http://pedidos:5104/api/v1/pedidos/1",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "e9bcee3a-6bf3-4a83-a437-55750039499f",
+      "X-Traza-Id": "02f8990f-f088-4b67-8c84-5e3041063b90",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)"
     },
     "cuerpo": "",
     "status": 404,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "e9bcee3a-6bf3-4a83-a437-55750039499f"
+      "X-Traza-Id": "02f8990f-f088-4b67-8c84-5e3041063b90"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe el pedido o no está en tu ámbito.\",\n    \"traza_id\": \"e9bcee3a-6bf3-4a83-a437-55750039499f\"\n  }\n}",
-    "ms": 51,
-    "traza": "e9bcee3a-6bf3-4a83-a437-55750039499f",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe el pedido o no está en tu ámbito.\",\n    \"traza_id\": \"02f8990f-f088-4b67-8c84-5e3041063b90\"\n  }\n}",
+    "ms": 35,
+    "traza": "02f8990f-f088-4b67-8c84-5e3041063b90",
     "esperado": 404,
     "obtenido": 404,
     "estado": "PASA",
@@ -1139,7 +1284,7 @@
     "url": "http://pedidos:5104/api/v1/pedidos/105/estado",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "12ed2826-fb49-45e6-8ae8-9ed4d9fb5976",
+      "X-Traza-Id": "505fe53a-6f77-46f0-93ef-b468bc19577b",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)",
       "Content-Type": "application/json"
     },
@@ -1147,11 +1292,11 @@
     "status": 409,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "12ed2826-fb49-45e6-8ae8-9ed4d9fb5976"
+      "X-Traza-Id": "505fe53a-6f77-46f0-93ef-b468bc19577b"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"CONFLICTO\",\n    \"mensaje\": \"El cierre de una entrega se registra con POST /api/v1/entregas/{id}/resultado.\",\n    \"traza_id\": \"12ed2826-fb49-45e6-8ae8-9ed4d9fb5976\"\n  }\n}",
-    "ms": 8,
-    "traza": "12ed2826-fb49-45e6-8ae8-9ed4d9fb5976",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"CONFLICTO\",\n    \"mensaje\": \"El cierre de una entrega se registra con POST /api/v1/entregas/{id}/resultado.\",\n    \"traza_id\": \"505fe53a-6f77-46f0-93ef-b468bc19577b\"\n  }\n}",
+    "ms": 11,
+    "traza": "505fe53a-6f77-46f0-93ef-b468bc19577b",
     "esperado": 409,
     "obtenido": 409,
     "estado": "PASA",
@@ -1169,7 +1314,7 @@
     "url": "http://pedidos:5104/api/v1/pedidos/2/estado",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "1f222a5f-7824-4473-8922-e4289a6e10e4",
+      "X-Traza-Id": "a20da0f6-41eb-40f2-880e-c03433a26ec1",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0Iiwi…(300 caracteres)",
       "Content-Type": "application/json"
     },
@@ -1177,11 +1322,11 @@
     "status": 422,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "1f222a5f-7824-4473-8922-e4289a6e10e4"
+      "X-Traza-Id": "a20da0f6-41eb-40f2-880e-c03433a26ec1"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"REGLA_NEGOCIO\",\n    \"mensaje\": \"RN20: transición ilegal entregado -> en_preparacion para el rol operador. El pedido PED-20261013-000002 conserva su estado.\",\n    \"traza_id\": \"1f222a5f-7824-4473-8922-e4289a6e10e4\"\n  }\n}",
-    "ms": 68,
-    "traza": "1f222a5f-7824-4473-8922-e4289a6e10e4",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"REGLA_NEGOCIO\",\n    \"mensaje\": \"RN20: transición ilegal entregado -> en_preparacion para el rol operador. El pedido PED-20261013-000002 conserva su estado.\",\n    \"traza_id\": \"a20da0f6-41eb-40f2-880e-c03433a26ec1\"\n  }\n}",
+    "ms": 76,
+    "traza": "a20da0f6-41eb-40f2-880e-c03433a26ec1",
     "esperado": 422,
     "obtenido": 422,
     "estado": "PASA",
@@ -1211,7 +1356,7 @@
     "url": "http://documentos:5107/api/v1/documentos",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "d027d198-92b5-4edc-a3fb-d7cf4f2458e2",
+      "X-Traza-Id": "3cf34327-5b01-4b85-b641-9491b7596d5f",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
@@ -1219,11 +1364,11 @@
     "status": 201,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "d027d198-92b5-4edc-a3fb-d7cf4f2458e2"
+      "X-Traza-Id": "3cf34327-5b01-4b85-b641-9491b7596d5f"
     },
-    "respuesta": "{\n  \"id\": \"6ace3c3457a2d24c02b0d703\",\n  \"nombre\": \"evidencia-entrega-129.jpg\",\n  \"tipo_mime\": \"image/jpeg\",\n  \"tamano_bytes\": 276,\n  \"sha256\": \"7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc\",\n  \"referencia\": {\n    \"tipo\": \"entrega\",\n    \"id\": \"129\"\n  },\n  \"subido_por\": 7,\n  \"creado_en\": \"2026-10-13T08:12:04-06:00\"\n}",
-    "ms": 38,
-    "traza": "d027d198-92b5-4edc-a3fb-d7cf4f2458e2",
+    "respuesta": "{\n  \"id\": \"6acea24bbf5616d8602a1205\",\n  \"nombre\": \"evidencia-entrega-129.jpg\",\n  \"tipo_mime\": \"image/jpeg\",\n  \"tamano_bytes\": 276,\n  \"sha256\": \"7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc\",\n  \"referencia\": {\n    \"tipo\": \"entrega\",\n    \"id\": \"129\"\n  },\n  \"subido_por\": 7,\n  \"creado_en\": \"2026-10-13T15:27:39-06:00\"\n}",
+    "ms": 125,
+    "traza": "3cf34327-5b01-4b85-b641-9491b7596d5f",
     "esperado": 201,
     "obtenido": 201,
     "estado": "PASA",
@@ -1232,9 +1377,9 @@
     "evidencia": [
       {
         "motor": "MongoDB",
-        "consulta": "db.documentos.findOne({_id: ObjectId('6ace3c3457a2d24c02b0d703')}, {contenido: 0})",
+        "consulta": "db.documentos.findOne({_id: ObjectId('6acea24bbf5616d8602a1205')}, {contenido: 0})",
         "resultado": {
-          "_id": "6ace3c3457a2d24c02b0d703",
+          "_id": "6acea24bbf5616d8602a1205",
           "nombre": "evidencia-entrega-129.jpg",
           "tipo_mime": "image/jpeg",
           "tamano_bytes": 276,
@@ -1244,7 +1389,7 @@
             "id": "129"
           },
           "subido_por": 7,
-          "creado_en": "2026-10-13 14:12:04.120000+00:00"
+          "creado_en": "2026-10-13 21:27:39.603000+00:00"
         }
       }
     ]
@@ -1259,7 +1404,7 @@
     "url": "http://documentos:5107/api/v1/documentos",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "5eee03e5-8a01-436e-812c-a292bc91e0c2",
+      "X-Traza-Id": "7a0ef7fd-feaa-4dd0-8048-08e3c8c00a9c",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
@@ -1267,11 +1412,11 @@
     "status": 201,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "5eee03e5-8a01-436e-812c-a292bc91e0c2"
+      "X-Traza-Id": "7a0ef7fd-feaa-4dd0-8048-08e3c8c00a9c"
     },
-    "respuesta": "{\n  \"id\": \"6ace3c3457a2d24c02b0d706\",\n  \"nombre\": \"evidencia-entrega-130.jpg\",\n  \"tipo_mime\": \"image/jpeg\",\n  \"tamano_bytes\": 276,\n  \"sha256\": \"7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc\",\n  \"referencia\": {\n    \"tipo\": \"entrega\",\n    \"id\": \"130\"\n  },\n  \"subido_por\": 7,\n  \"creado_en\": \"2026-10-13T08:12:04-06:00\"\n}",
-    "ms": 54,
-    "traza": "5eee03e5-8a01-436e-812c-a292bc91e0c2",
+    "respuesta": "{\n  \"id\": \"6acea24bbf5616d8602a1208\",\n  \"nombre\": \"evidencia-entrega-130.jpg\",\n  \"tipo_mime\": \"image/jpeg\",\n  \"tamano_bytes\": 276,\n  \"sha256\": \"7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc\",\n  \"referencia\": {\n    \"tipo\": \"entrega\",\n    \"id\": \"130\"\n  },\n  \"subido_por\": 7,\n  \"creado_en\": \"2026-10-13T15:27:39-06:00\"\n}",
+    "ms": 31,
+    "traza": "7a0ef7fd-feaa-4dd0-8048-08e3c8c00a9c",
     "esperado": 201,
     "obtenido": 201,
     "estado": "PASA",
@@ -1289,7 +1434,7 @@
     "url": "http://documentos:5107/api/v1/documentos",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "44ec8ab3-8db3-46ba-b9bc-154ed1a834ee",
+      "X-Traza-Id": "ab18d466-face-44db-bd40-830284d9f751",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
@@ -1297,11 +1442,11 @@
     "status": 422,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "44ec8ab3-8db3-46ba-b9bc-154ed1a834ee"
+      "X-Traza-Id": "ab18d466-face-44db-bd40-830284d9f751"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION\",\n    \"mensaje\": \"Revisa los datos enviados.\",\n    \"detalles\": [\n      {\n        \"campo\": \"tipo_mime\",\n        \"mensaje\": \"El contenido no corresponde al tipo declarado.\"\n      }\n    ],\n    \"traza_id\": \"44ec8ab3-8db3-46ba-b9bc-154ed1a834ee\"\n  }\n}",
-    "ms": 8,
-    "traza": "44ec8ab3-8db3-46ba-b9bc-154ed1a834ee",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION\",\n    \"mensaje\": \"Revisa los datos enviados.\",\n    \"detalles\": [\n      {\n        \"campo\": \"tipo_mime\",\n        \"mensaje\": \"El contenido no corresponde al tipo declarado.\"\n      }\n    ],\n    \"traza_id\": \"ab18d466-face-44db-bd40-830284d9f751\"\n  }\n}",
+    "ms": 14,
+    "traza": "ab18d466-face-44db-bd40-830284d9f751",
     "esperado": 422,
     "obtenido": 422,
     "estado": "PASA",
@@ -1319,7 +1464,7 @@
     "url": "http://documentos:5107/api/v1/documentos",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "ba73d365-8fc4-40d6-af2c-003ab0f4d533",
+      "X-Traza-Id": "9d4466ba-20e4-44c2-b2bc-3448a41fec5b",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(296 caracteres)",
       "Content-Type": "application/json"
     },
@@ -1327,11 +1472,11 @@
     "status": 403,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "ba73d365-8fc4-40d6-af2c-003ab0f4d533"
+      "X-Traza-Id": "9d4466ba-20e4-44c2-b2bc-3448a41fec5b"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"PROHIBIDO\",\n    \"mensaje\": \"Solo puedes adjuntar evidencia a tus entregas.\",\n    \"traza_id\": \"ba73d365-8fc4-40d6-af2c-003ab0f4d533\"\n  }\n}",
-    "ms": 30,
-    "traza": "ba73d365-8fc4-40d6-af2c-003ab0f4d533",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"PROHIBIDO\",\n    \"mensaje\": \"Solo puedes adjuntar evidencia a tus entregas.\",\n    \"traza_id\": \"9d4466ba-20e4-44c2-b2bc-3448a41fec5b\"\n  }\n}",
+    "ms": 56,
+    "traza": "9d4466ba-20e4-44c2-b2bc-3448a41fec5b",
     "esperado": 403,
     "obtenido": 403,
     "estado": "PASA",
@@ -1349,7 +1494,7 @@
     "url": "http://documentos:5107/api/v1/documentos",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "1696a0ba-fa52-4b4e-a3c1-8a091f662b96",
+      "X-Traza-Id": "103784db-ee04-491b-9feb-0162f42a3b25",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
@@ -1357,11 +1502,11 @@
     "status": 201,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "1696a0ba-fa52-4b4e-a3c1-8a091f662b96"
+      "X-Traza-Id": "103784db-ee04-491b-9feb-0162f42a3b25"
     },
-    "respuesta": "{\n  \"id\": \"6ace3c3457a2d24c02b0d70d\",\n  \"nombre\": \"borrador.jpg\",\n  \"tipo_mime\": \"image/jpeg\",\n  \"tamano_bytes\": 276,\n  \"sha256\": \"7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc\",\n  \"referencia\": {\n    \"tipo\": \"usuario\",\n    \"id\": \"7\"\n  },\n  \"subido_por\": 7,\n  \"creado_en\": \"2026-10-13T08:12:04-06:00\"\n}",
-    "ms": 6,
-    "traza": "1696a0ba-fa52-4b4e-a3c1-8a091f662b96",
+    "respuesta": "{\n  \"id\": \"6acea24c114e5b7d09dc7612\",\n  \"nombre\": \"borrador.jpg\",\n  \"tipo_mime\": \"image/jpeg\",\n  \"tamano_bytes\": 276,\n  \"sha256\": \"7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc\",\n  \"referencia\": {\n    \"tipo\": \"usuario\",\n    \"id\": \"7\"\n  },\n  \"subido_por\": 7,\n  \"creado_en\": \"2026-10-13T15:27:40-06:00\"\n}",
+    "ms": 9,
+    "traza": "103784db-ee04-491b-9feb-0162f42a3b25",
     "esperado": 201,
     "obtenido": 201,
     "estado": "PASA",
@@ -1379,18 +1524,18 @@
     "url": "http://documentos:5107/api/v1/documentos?referencia_tipo=entrega&referencia_id=129",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "6a64105c-1369-4700-8b66-7ec62653687c",
+      "X-Traza-Id": "dc283371-be74-4755-a353-2a22a2d0f5d4",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "6a64105c-1369-4700-8b66-7ec62653687c"
+      "X-Traza-Id": "dc283371-be74-4755-a353-2a22a2d0f5d4"
     },
-    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": \"6ace3c3457a2d24c02b0d703\",\n      \"nombre\": \"evidencia-entrega-129.jpg\",\n      \"tipo_mime\": \"image/jpeg\",\n      \"tamano_bytes\": 276,\n      \"sha256\": \"7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc\",\n      \"referencia\": {\n        \"tipo\": \"entrega\",\n        \"id\": \"129\"\n      },\n      \"subido_por\": 7,\n      \"creado_en\": \"2026-10-13T08:12:04-06:00\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 20,\n    \"total\": 1,\n    \"paginas\": 1\n  }\n}",
-    "ms": 23,
-    "traza": "6a64105c-1369-4700-8b66-7ec62653687c",
+    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": \"6acea24bbf5616d8602a1205\",\n      \"nombre\": \"evidencia-entrega-129.jpg\",\n      \"tipo_mime\": \"image/jpeg\",\n      \"tamano_bytes\": 276,\n      \"sha256\": \"7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc\",\n      \"referencia\": {\n        \"tipo\": \"entrega\",\n        \"id\": \"129\"\n      },\n      \"subido_por\": 7,\n      \"creado_en\": \"2026-10-13T15:27:39-06:00\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 20,\n    \"total\": 1,\n    \"paginas\": 1\n  }\n}",
+    "ms": 54,
+    "traza": "dc283371-be74-4755-a353-2a22a2d0f5d4",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -1405,21 +1550,21 @@
     "titulo": "Metadatos (XML)",
     "objetivo": "Documento en XML, sin contenido.",
     "metodo": "GET",
-    "url": "http://documentos:5107/api/v1/documentos/6ace3c3457a2d24c02b0d703",
+    "url": "http://documentos:5107/api/v1/documentos/6acea24bbf5616d8602a1205",
     "encabezados": {
       "Accept": "application/xml",
-      "X-Traza-Id": "34a698a5-71f1-4daf-ba5d-d24bef14cb65",
+      "X-Traza-Id": "a253f644-4cd7-4db7-b500-49935be8a4eb",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/xml; charset=utf-8",
-      "X-Traza-Id": "34a698a5-71f1-4daf-ba5d-d24bef14cb65"
+      "X-Traza-Id": "a253f644-4cd7-4db7-b500-49935be8a4eb"
     },
-    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<documento xmlns=\"urn:microhubs:v1\" version=\"1\"><id>6ace3c3457a2d24c02b0d703</id><nombre>evidencia-entrega-129.jpg</nombre><tipo_mime>image/jpeg</tipo_mime><tamano_bytes>276</tamano_bytes><sha256>7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc</sha256><referencia><tipo>entrega</tipo><id>129</id></referencia><subido_por>7</subido_por><creado_en>2026-10-13T08:12:04-06:00</creado_en></documento>",
-    "ms": 7,
-    "traza": "34a698a5-71f1-4daf-ba5d-d24bef14cb65",
+    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<documento xmlns=\"urn:microhubs:v1\" version=\"1\"><id>6acea24bbf5616d8602a1205</id><nombre>evidencia-entrega-129.jpg</nombre><tipo_mime>image/jpeg</tipo_mime><tamano_bytes>276</tamano_bytes><sha256>7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc</sha256><referencia><tipo>entrega</tipo><id>129</id></referencia><subido_por>7</subido_por><creado_en>2026-10-13T15:27:39-06:00</creado_en></documento>",
+    "ms": 14,
+    "traza": "a253f644-4cd7-4db7-b500-49935be8a4eb",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -1434,21 +1579,21 @@
     "titulo": "Contenido en Base64",
     "objetivo": "Recuperar el archivo.",
     "metodo": "GET",
-    "url": "http://documentos:5107/api/v1/documentos/6ace3c3457a2d24c02b0d703/contenido",
+    "url": "http://documentos:5107/api/v1/documentos/6acea24bbf5616d8602a1205/contenido",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "f19a00be-3abf-4295-9f52-2ab6de11fe0c",
+      "X-Traza-Id": "c97599f2-da2c-48a5-a038-5f854404987e",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "f19a00be-3abf-4295-9f52-2ab6de11fe0c"
+      "X-Traza-Id": "c97599f2-da2c-48a5-a038-5f854404987e"
     },
-    "respuesta": "{\n  \"id\": \"6ace3c3457a2d24c02b0d703\",\n  \"nombre\": \"evidencia-entrega-129.jpg\",\n  \"tipo_mime\": \"image/jpeg\",\n  \"tamano_bytes\": 276,\n  \"sha256\": \"7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc\",\n  \"referencia\": {\n    \"tipo\": \"entrega\",\n    \"id\": \"129\"\n  },\n  \"subido_por\": 7,\n  \"creado_en\": \"2026-10-13T08:12:04-06:00\",\n  \"contenido_base64\": \"/9j/4AAQSkZJRgABAQAAAQABAAAAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcY…(368 caracteres)\"\n}",
-    "ms": 7,
-    "traza": "f19a00be-3abf-4295-9f52-2ab6de11fe0c",
+    "respuesta": "{\n  \"id\": \"6acea24bbf5616d8602a1205\",\n  \"nombre\": \"evidencia-entrega-129.jpg\",\n  \"tipo_mime\": \"image/jpeg\",\n  \"tamano_bytes\": 276,\n  \"sha256\": \"7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc\",\n  \"referencia\": {\n    \"tipo\": \"entrega\",\n    \"id\": \"129\"\n  },\n  \"subido_por\": 7,\n  \"creado_en\": \"2026-10-13T15:27:39-06:00\",\n  \"contenido_base64\": \"/9j/4AAQSkZJRgABAQAAAQABAAAAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcY…(368 caracteres)\"\n}",
+    "ms": 8,
+    "traza": "c97599f2-da2c-48a5-a038-5f854404987e",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -1463,21 +1608,21 @@
     "titulo": "Eliminar documento (DELETE)",
     "objetivo": "Borrar un documento propio.",
     "metodo": "DELETE",
-    "url": "http://documentos:5107/api/v1/documentos/6ace3c3457a2d24c02b0d70d",
+    "url": "http://documentos:5107/api/v1/documentos/6acea24c114e5b7d09dc7612",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "1c5f6445-8dba-491a-8048-5d7ae3835842",
+      "X-Traza-Id": "f6546bac-8a4e-49df-9443-5acd5784ddd6",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 204,
     "encabezados_respuesta": {
       "Content-Type": "text/html; charset=utf-8",
-      "X-Traza-Id": "1c5f6445-8dba-491a-8048-5d7ae3835842"
+      "X-Traza-Id": "f6546bac-8a4e-49df-9443-5acd5784ddd6"
     },
     "respuesta": "(sin cuerpo)",
-    "ms": 31,
-    "traza": "1c5f6445-8dba-491a-8048-5d7ae3835842",
+    "ms": 40,
+    "traza": "f6546bac-8a4e-49df-9443-5acd5784ddd6",
     "esperado": 204,
     "obtenido": 204,
     "estado": "PASA",
@@ -1486,7 +1631,7 @@
     "evidencia": [
       {
         "motor": "MongoDB",
-        "consulta": "db.documentos.countDocuments({_id: ObjectId('6ace3c3457a2d24c02b0d70d')})",
+        "consulta": "db.documentos.countDocuments({_id: ObjectId('6acea24c114e5b7d09dc7612')})",
         "resultado": 0
       }
     ]
@@ -1501,18 +1646,18 @@
     "url": "http://documentos:5107/api/v1/documentos/ffffffffffffffffffffffff",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "939bc153-1886-42c6-b05c-9d37d88dadb6",
+      "X-Traza-Id": "2bdb3d9a-3a45-46a7-927f-cc075a580e1b",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 404,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "939bc153-1886-42c6-b05c-9d37d88dadb6"
+      "X-Traza-Id": "2bdb3d9a-3a45-46a7-927f-cc075a580e1b"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe el recurso solicitado.\",\n    \"traza_id\": \"939bc153-1886-42c6-b05c-9d37d88dadb6\"\n  }\n}",
-    "ms": 6,
-    "traza": "939bc153-1886-42c6-b05c-9d37d88dadb6",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe el recurso solicitado.\",\n    \"traza_id\": \"2bdb3d9a-3a45-46a7-927f-cc075a580e1b\"\n  }\n}",
+    "ms": 8,
+    "traza": "2bdb3d9a-3a45-46a7-927f-cc075a580e1b",
     "esperado": 404,
     "obtenido": 404,
     "estado": "PASA",
@@ -1521,115 +1666,28 @@
     "evidencia": []
   },
   {
-    "id": "ENT-01",
-    "servicio": "entregas",
-    "puerto": 5105,
-    "titulo": "Mis entregas",
-    "objetivo": "Paradas abiertas del repartidor en el turno de hoy (RN25).",
-    "metodo": "GET",
-    "url": "http://entregas:5105/api/v1/entregas/mias?pagina=1&por_pagina=20",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "79391155-f76b-42aa-876c-7a60fef6b97e",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
-    },
-    "cuerpo": "",
-    "status": 200,
-    "encabezados_respuesta": {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "79391155-f76b-42aa-876c-7a60fef6b97e"
-    },
-    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 129,\n      \"pedido_id\": 153,\n      \"folio\": \"PED-20261013-000153\",\n      \"estado_pedido\": \"en_ruta\",\n      \"orden_parada\": 1,\n      \"direccion\": \"Paseo del Valle 1762, Paseo de San Bernabé\",\n      \"zona\": \"Paseo de San Bernabé\",\n      \"distancia_km\": 1.35,\n      \"minutos_estimados\": 10.0,\n      \"total\": 162.0\n    },\n    {\n      \"id\": 130,\n      \"pedido_id\": 154,\n      \"folio\": \"PED-20261013-000154\",\n      \"estado_pedido\": \"en_ruta\",\n      \"orden_parada\": 2,\n      \"direccion\": \"Cerro Prieto 4059, Valles de San Bernabé\",\n      \"zona\": \"Valles de San Bernabé\",\n      \"distancia_km\": 1.14,\n      \"minutos_estimados\": 16.0,\n      \"total\": 141.0\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 20,\n    \"total\": 2,\n    \"paginas\": 1\n  }\n}",
-    "ms": 63,
-    "traza": "79391155-f76b-42aa-876c-7a60fef6b97e",
-    "esperado": 200,
-    "obtenido": 200,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "ENT-02",
-    "servicio": "entregas",
-    "puerto": 5105,
-    "titulo": "Detalle de la entrega",
-    "objetivo": "Cliente, domicilio y líneas.",
-    "metodo": "GET",
-    "url": "http://entregas:5105/api/v1/entregas/129",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "119881ff-c0da-4b81-8a42-5e7f6e136d8c",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
-    },
-    "cuerpo": "",
-    "status": 200,
-    "encabezados_respuesta": {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "119881ff-c0da-4b81-8a42-5e7f6e136d8c"
-    },
-    "respuesta": "{\n  \"id\": 129,\n  \"pedido_id\": 153,\n  \"folio\": \"PED-20261013-000153\",\n  \"estado_pedido\": \"en_ruta\",\n  \"cliente\": {\n    \"nombre\": \"Juan Chapa Sepúlveda\",\n    \"telefono\": \"8177163004\"\n  },\n  \"domicilio\": {\n    \"calle\": \"Paseo del Valle\",\n    \"numero_ext\": \"1762\",\n    \"colonia\": \"Paseo de San Bernabé\",\n    \"latitud\": 25.758514,\n    \"longitud\": -100.373251\n  },\n  \"orden_parada\": 1,\n  \"distancia_km\": 1.35,\n  \"minutos_estimados\": 10.0,\n  \"total\": 162.0,\n  \"lineas\": [\n    {\n      \"pedido_detalle_id\": 683,\n      \"nombre\": \"Toallas femeninas\",\n      \"cantidad\": 2\n    },\n    {\n      \"pedido_detalle_id\": 684,\n      \"nombre\": \"Crema ácida\",\n      \"cantidad\": 2\n    }\n  ]\n}",
-    "ms": 89,
-    "traza": "119881ff-c0da-4b81-8a42-5e7f6e136d8c",
-    "esperado": 200,
-    "obtenido": 200,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "ENT-03",
-    "servicio": "entregas",
-    "puerto": 5105,
-    "titulo": "Entrega de otro repartidor",
-    "objetivo": "El repartidor 2 no ve la entrega del repartidor 1.",
-    "metodo": "GET",
-    "url": "http://entregas:5105/api/v1/entregas/129",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "3e5f77fa-050f-4c40-86ef-912f65c0e77b",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(296 caracteres)"
-    },
-    "cuerpo": "",
-    "status": 404,
-    "encabezados_respuesta": {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "3e5f77fa-050f-4c40-86ef-912f65c0e77b"
-    },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe la entrega o no está asignada a ti.\",\n    \"traza_id\": \"3e5f77fa-050f-4c40-86ef-912f65c0e77b\"\n  }\n}",
-    "ms": 42,
-    "traza": "3e5f77fa-050f-4c40-86ef-912f65c0e77b",
-    "esperado": 404,
-    "obtenido": 404,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "ENT-04",
-    "servicio": "entregas",
-    "puerto": 5105,
+    "id": "SEG-01",
+    "servicio": "seguimiento",
+    "puerto": 5110,
     "titulo": "Enviar puntos GPS",
     "objetivo": "Guardar el recorrido del repartidor en MongoDB.",
     "metodo": "POST",
-    "url": "http://entregas:5105/api/v1/entregas/129/ubicaciones",
+    "url": "http://seguimiento:5110/api/v1/seguimiento/129/ubicaciones",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "a4b51f9c-acfa-407d-835b-43c04eff40cf",
+      "X-Traza-Id": "51494dd9-a321-4954-9ffe-b87b081ddb8d",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
-    "cuerpo": "{\n  \"puntos\": [\n    {\n      \"latitud\": 25.748,\n      \"longitud\": -100.36,\n      \"precision_m\": 9.0,\n      \"capturado_en\": \"2026-10-13T14:06:05+00:00\"\n    },\n    {\n      \"latitud\": 25.7486,\n      \"longitud\": -100.3606,\n      \"precision_m\": 8.0,\n      \"capturado_en\": \"2026-10-13T14:08:05+00:00\"\n    },\n    {\n      \"latitud\": 25.7491,\n      \"longitud\": -100.3611,\n      \"precision_m\": 8.5,\n      \"capturado_en\": \"2026-10-13T14:10:05+00:00\"\n    }\n  ]\n}",
+    "cuerpo": "{\n  \"puntos\": [\n    {\n      \"latitud\": 25.748,\n      \"longitud\": -100.36,\n      \"precision_m\": 9.0,\n      \"capturado_en\": \"2026-10-13T21:21:40+00:00\"\n    },\n    {\n      \"latitud\": 25.7486,\n      \"longitud\": -100.3606,\n      \"precision_m\": 8.0,\n      \"capturado_en\": \"2026-10-13T21:23:40+00:00\"\n    },\n    {\n      \"latitud\": 25.7491,\n      \"longitud\": -100.3611,\n      \"precision_m\": 8.5,\n      \"capturado_en\": \"2026-10-13T21:25:40+00:00\"\n    }\n  ]\n}",
     "status": 201,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "a4b51f9c-acfa-407d-835b-43c04eff40cf"
+      "X-Traza-Id": "51494dd9-a321-4954-9ffe-b87b081ddb8d"
     },
     "respuesta": "{\n  \"recibidos\": 3\n}",
-    "ms": 52,
-    "traza": "a4b51f9c-acfa-407d-835b-43c04eff40cf",
+    "ms": 83,
+    "traza": "51494dd9-a321-4954-9ffe-b87b081ddb8d",
     "esperado": 201,
     "obtenido": 201,
     "estado": "PASA",
@@ -1651,8 +1709,8 @@
               ]
             },
             "precision_m": 9.0,
-            "capturado_en": "2026-10-13 14:06:05+00:00",
-            "recibido_en": "2026-10-13 14:12:05.210000+00:00"
+            "capturado_en": "2026-10-13 21:21:40+00:00",
+            "recibido_en": "2026-10-13 21:27:40.837000+00:00"
           },
           {
             "entrega_id": 129,
@@ -1665,8 +1723,8 @@
               ]
             },
             "precision_m": 8.0,
-            "capturado_en": "2026-10-13 14:08:05+00:00",
-            "recibido_en": "2026-10-13 14:12:05.210000+00:00"
+            "capturado_en": "2026-10-13 21:23:40+00:00",
+            "recibido_en": "2026-10-13 21:27:40.837000+00:00"
           },
           {
             "entrega_id": 129,
@@ -1679,8 +1737,8 @@
               ]
             },
             "precision_m": 8.5,
-            "capturado_en": "2026-10-13 14:10:05+00:00",
-            "recibido_en": "2026-10-13 14:12:05.210000+00:00"
+            "capturado_en": "2026-10-13 21:25:40+00:00",
+            "recibido_en": "2026-10-13 21:27:40.837000+00:00"
           }
         ]
       },
@@ -1697,27 +1755,27 @@
     ]
   },
   {
-    "id": "ENT-05",
-    "servicio": "entregas",
-    "puerto": 5105,
+    "id": "SEG-02",
+    "servicio": "seguimiento",
+    "puerto": 5110,
     "titulo": "Resumen del recorrido",
     "objetivo": "Agregación en MongoDB sobre los puntos GPS.",
     "metodo": "GET",
-    "url": "http://entregas:5105/api/v1/entregas/129/recorrido",
+    "url": "http://seguimiento:5110/api/v1/seguimiento/129/recorrido",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "9c602309-9f58-44f8-819e-46242d6abfaa",
+      "X-Traza-Id": "fc69019a-25d0-45cf-8569-1fb57df3e5b6",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "9c602309-9f58-44f8-819e-46242d6abfaa"
+      "X-Traza-Id": "fc69019a-25d0-45cf-8569-1fb57df3e5b6"
     },
-    "respuesta": "{\n  \"entrega_id\": 129,\n  \"puntos\": 3,\n  \"distancia_km\": 0.16,\n  \"inicio\": \"2026-10-13T08:06:05-06:00\",\n  \"fin\": \"2026-10-13T08:10:05-06:00\",\n  \"precision_promedio_m\": 8.5,\n  \"ultimo_punto\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611,\n    \"precision_m\": 8.5\n  }\n}",
-    "ms": 41,
-    "traza": "9c602309-9f58-44f8-819e-46242d6abfaa",
+    "respuesta": "{\n  \"entrega_id\": 129,\n  \"puntos\": 3,\n  \"distancia_km\": 0.16,\n  \"inicio\": \"2026-10-13T15:21:40-06:00\",\n  \"fin\": \"2026-10-13T15:25:40-06:00\",\n  \"precision_promedio_m\": 8.5,\n  \"ultimo_punto\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611,\n    \"precision_m\": 8.5\n  }\n}",
+    "ms": 47,
+    "traza": "fc69019a-25d0-45cf-8569-1fb57df3e5b6",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -1726,7 +1784,152 @@
     "evidencia": []
   },
   {
-    "id": "ENT-06",
+    "id": "SEG-03",
+    "servicio": "seguimiento",
+    "puerto": 5110,
+    "titulo": "Recorrido de otro repartidor",
+    "objetivo": "El repartidor 2 no ve el rastro de la entrega del repartidor 1.",
+    "metodo": "GET",
+    "url": "http://seguimiento:5110/api/v1/seguimiento/129/recorrido",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "10e577c3-d309-4e0e-b29e-797732d98bea",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(296 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 404,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "10e577c3-d309-4e0e-b29e-797732d98bea"
+    },
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe la entrega o no está asignada a ti.\",\n    \"traza_id\": \"10e577c3-d309-4e0e-b29e-797732d98bea\"\n  }\n}",
+    "ms": 29,
+    "traza": "10e577c3-d309-4e0e-b29e-797732d98bea",
+    "esperado": 404,
+    "obtenido": 404,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "SEG-04",
+    "servicio": "seguimiento",
+    "puerto": 5110,
+    "titulo": "Recorrido sin token",
+    "objetivo": "Todo endpoint protegido exige Authorization: Bearer.",
+    "metodo": "GET",
+    "url": "http://seguimiento:5110/api/v1/seguimiento/129/recorrido",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "61ce3820-12b6-49d5-a881-0f39e630e243"
+    },
+    "cuerpo": "",
+    "status": 401,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "WWW-Authenticate": "Bearer realm=\"microhubs\"",
+      "X-Traza-Id": "61ce3820-12b6-49d5-a881-0f39e630e243"
+    },
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"TOKEN_INVALIDO\",\n    \"mensaje\": \"Falta el encabezado Authorization: Bearer <token>.\",\n    \"traza_id\": \"61ce3820-12b6-49d5-a881-0f39e630e243\"\n  }\n}",
+    "ms": 5,
+    "traza": "61ce3820-12b6-49d5-a881-0f39e630e243",
+    "esperado": 401,
+    "obtenido": 401,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "ENT-01",
+    "servicio": "entregas",
+    "puerto": 5105,
+    "titulo": "Mis entregas",
+    "objetivo": "Paradas abiertas del repartidor en el turno de hoy (RN25).",
+    "metodo": "GET",
+    "url": "http://entregas:5105/api/v1/entregas/mias?pagina=1&por_pagina=20",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "e82c0688-87db-448b-a0ba-18187091c397",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "e82c0688-87db-448b-a0ba-18187091c397"
+    },
+    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 129,\n      \"pedido_id\": 153,\n      \"folio\": \"PED-20261013-000153\",\n      \"estado_pedido\": \"en_ruta\",\n      \"orden_parada\": 1,\n      \"direccion\": \"Camino a San Bernabé 3818, San Bernabé X (F-113)\",\n      \"zona\": \"San Bernabé X (F-113)\",\n      \"distancia_km\": 0.62,\n      \"minutos_estimados\": 10.0,\n      \"total\": 146.8\n    },\n    {\n      \"id\": 130,\n      \"pedido_id\": 154,\n      \"folio\": \"PED-20261013-000154\",\n      \"estado_pedido\": \"en_ruta\",\n      \"orden_parada\": 2,\n      \"direccion\": \"Río Salinas 4110, Paseo de San Bernabé\",\n      \"zona\": \"Paseo de San Bernabé\",\n      \"distancia_km\": 1.48,\n      \"minutos_estimados\": 16.0,\n      \"total\": 238.0\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 20,\n    \"total\": 2,\n    \"paginas\": 1\n  }\n}",
+    "ms": 174,
+    "traza": "e82c0688-87db-448b-a0ba-18187091c397",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "ENT-02",
+    "servicio": "entregas",
+    "puerto": 5105,
+    "titulo": "Detalle de la entrega",
+    "objetivo": "Cliente, domicilio y líneas.",
+    "metodo": "GET",
+    "url": "http://entregas:5105/api/v1/entregas/129",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "0e6c2b9a-bfe8-4ed0-bf3e-133182bc2c06",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "0e6c2b9a-bfe8-4ed0-bf3e-133182bc2c06"
+    },
+    "respuesta": "{\n  \"id\": 129,\n  \"pedido_id\": 153,\n  \"folio\": \"PED-20261013-000153\",\n  \"estado_pedido\": \"en_ruta\",\n  \"cliente\": {\n    \"nombre\": \"Leticia González Chapa\",\n    \"telefono\": \"8186734386\"\n  },\n  \"domicilio\": {\n    \"calle\": \"Camino a San Bernabé\",\n    \"numero_ext\": \"3818\",\n    \"colonia\": \"San Bernabé X (F-113)\",\n    \"latitud\": 25.744103,\n    \"longitud\": -100.377598\n  },\n  \"orden_parada\": 1,\n  \"distancia_km\": 0.62,\n  \"minutos_estimados\": 10.0,\n  \"total\": 146.8,\n  \"lineas\": [\n    {\n      \"pedido_detalle_id\": 683,\n      \"nombre\": \"Toallas femeninas\",\n      \"cantidad\": 2\n    },\n    {\n      \"pedido_detalle_id\": 684,\n      \"nombre\": \"Arroz superextra\",\n      \"cantidad\": 2\n    }\n  ]\n}",
+    "ms": 188,
+    "traza": "0e6c2b9a-bfe8-4ed0-bf3e-133182bc2c06",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "ENT-03",
+    "servicio": "entregas",
+    "puerto": 5105,
+    "titulo": "Entrega de otro repartidor",
+    "objetivo": "El repartidor 2 no ve la entrega del repartidor 1.",
+    "metodo": "GET",
+    "url": "http://entregas:5105/api/v1/entregas/129",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "11cad444-9c66-4020-986d-7b83dc54ede3",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(296 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 404,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "11cad444-9c66-4020-986d-7b83dc54ede3"
+    },
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe la entrega o no está asignada a ti.\",\n    \"traza_id\": \"11cad444-9c66-4020-986d-7b83dc54ede3\"\n  }\n}",
+    "ms": 41,
+    "traza": "11cad444-9c66-4020-986d-7b83dc54ede3",
+    "esperado": 404,
+    "obtenido": 404,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "ENT-04",
     "servicio": "entregas",
     "puerto": 5105,
     "titulo": "Monto incorrecto (regla de negocio)",
@@ -1735,19 +1938,19 @@
     "url": "http://entregas:5105/api/v1/entregas/129/resultado",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "dfb4f3c5-2c15-4e39-b0a3-d553287aae81",
+      "X-Traza-Id": "4381bc6d-65c5-4b75-bf49-fef3555f12d2",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
-    "cuerpo": "{\n  \"resultado\": \"entregado\",\n  \"monto_cobrado\": 1.0,\n  \"cambio_entregado\": 0.0,\n  \"ubicacion\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611,\n    \"precision_m\": 8.5\n  },\n  \"evidencia_ids\": [\n    \"6ace3c3457a2d24c02b0d703\"\n  ],\n  \"capturado_en\": \"2026-10-13T14:12:05+00:00\",\n  \"id_cliente_local\": \"d8ce0660-cf47-488b-95c4-3660367d51f6\"\n}",
+    "cuerpo": "{\n  \"resultado\": \"entregado\",\n  \"monto_cobrado\": 1.0,\n  \"cambio_entregado\": 0.0,\n  \"ubicacion\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611,\n    \"precision_m\": 8.5\n  },\n  \"evidencia_ids\": [\n    \"6acea24bbf5616d8602a1205\"\n  ],\n  \"capturado_en\": \"2026-10-13T21:27:40+00:00\",\n  \"id_cliente_local\": \"1bec9a94-bc99-4e2f-9ee8-b54260ec32b5\"\n}",
     "status": 422,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "dfb4f3c5-2c15-4e39-b0a3-d553287aae81"
+      "X-Traza-Id": "4381bc6d-65c5-4b75-bf49-fef3555f12d2"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION\",\n    \"mensaje\": \"Revisa los datos enviados.\",\n    \"detalles\": [\n      {\n        \"campo\": \"monto_cobrado\",\n        \"mensaje\": \"Una entrega completa cobra el total del pedido (162.00).\"\n      }\n    ],\n    \"traza_id\": \"dfb4f3c5-2c15-4e39-b0a3-d553287aae81\"\n  }\n}",
-    "ms": 75,
-    "traza": "dfb4f3c5-2c15-4e39-b0a3-d553287aae81",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION\",\n    \"mensaje\": \"Revisa los datos enviados.\",\n    \"detalles\": [\n      {\n        \"campo\": \"monto_cobrado\",\n        \"mensaje\": \"Una entrega completa cobra el total del pedido (146.80).\"\n      }\n    ],\n    \"traza_id\": \"4381bc6d-65c5-4b75-bf49-fef3555f12d2\"\n  }\n}",
+    "ms": 96,
+    "traza": "4381bc6d-65c5-4b75-bf49-fef3555f12d2",
     "esperado": 422,
     "obtenido": 422,
     "estado": "PASA",
@@ -1756,7 +1959,7 @@
     "evidencia": []
   },
   {
-    "id": "ENT-07",
+    "id": "ENT-05",
     "servicio": "entregas",
     "puerto": 5105,
     "titulo": "Cerrar entrega como entregado",
@@ -1765,19 +1968,19 @@
     "url": "http://entregas:5105/api/v1/entregas/129/resultado",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "3c4a1961-e0a2-4014-9848-c15f002a2ddf",
+      "X-Traza-Id": "ca8d9f63-7888-4513-87b6-4d3da30c1098",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
-    "cuerpo": "{\n  \"resultado\": \"entregado\",\n  \"monto_cobrado\": 162.0,\n  \"cambio_entregado\": 0.0,\n  \"ubicacion\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611,\n    \"precision_m\": 8.5\n  },\n  \"evidencia_ids\": [\n    \"6ace3c3457a2d24c02b0d703\"\n  ],\n  \"capturado_en\": \"2026-10-13T14:12:05+00:00\",\n  \"id_cliente_local\": \"d8ce0660-cf47-488b-95c4-3660367d51f6\"\n}",
+    "cuerpo": "{\n  \"resultado\": \"entregado\",\n  \"monto_cobrado\": 146.8,\n  \"cambio_entregado\": 0.0,\n  \"ubicacion\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611,\n    \"precision_m\": 8.5\n  },\n  \"evidencia_ids\": [\n    \"6acea24bbf5616d8602a1205\"\n  ],\n  \"capturado_en\": \"2026-10-13T21:27:40+00:00\",\n  \"id_cliente_local\": \"1bec9a94-bc99-4e2f-9ee8-b54260ec32b5\"\n}",
     "status": 201,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "3c4a1961-e0a2-4014-9848-c15f002a2ddf"
+      "X-Traza-Id": "ca8d9f63-7888-4513-87b6-4d3da30c1098"
     },
-    "respuesta": "{\n  \"entrega_id\": 129,\n  \"pedido_id\": 153,\n  \"estado_pedido\": \"entregado\",\n  \"cerrado_en\": \"2026-10-13T08:12:05-06:00\",\n  \"duplicado\": false\n}",
-    "ms": 128,
-    "traza": "3c4a1961-e0a2-4014-9848-c15f002a2ddf",
+    "respuesta": "{\n  \"entrega_id\": 129,\n  \"pedido_id\": 153,\n  \"estado_pedido\": \"entregado\",\n  \"cerrado_en\": \"2026-10-13T15:27:41-06:00\",\n  \"duplicado\": false\n}",
+    "ms": 151,
+    "traza": "ca8d9f63-7888-4513-87b6-4d3da30c1098",
     "esperado": 201,
     "obtenido": 201,
     "estado": "PASA",
@@ -1790,12 +1993,12 @@
         "resultado": [
           {
             "id": 129,
-            "cierre_en": "2026-10-13 14:12:05.399707+00:00",
+            "cierre_en": "2026-10-13 21:27:41.588898+00:00",
             "resultado": "entregado",
-            "monto_cobrado": "162.00",
-            "id_cliente_local": "d8ce0660-cf47-488b-95c4-3660367d51f6",
+            "monto_cobrado": "146.80",
+            "id_cliente_local": "1bec9a94-bc99-4e2f-9ee8-b54260ec32b5",
             "evidencia_ids": [
-              "6ace3c3457a2d24c02b0d703"
+              "6acea24bbf5616d8602a1205"
             ],
             "cierre_latitud": "25.749100",
             "cierre_longitud": "-100.361100"
@@ -1810,7 +2013,7 @@
             "estado_anterior": "en_ruta",
             "estado_nuevo": "entregado",
             "usuario_id": 7,
-            "fecha": "2026-10-13 14:12:05.399707+00:00"
+            "fecha": "2026-10-13 21:27:41.588898+00:00"
           }
         ]
       },
@@ -1821,16 +2024,16 @@
       },
       {
         "motor": "MongoDB",
-        "consulta": "db.sincronizaciones_moviles.findOne({operacion_uuid: 'd8ce0660-cf47-488b-95c4-3660367d51f6'})",
+        "consulta": "db.sincronizaciones_moviles.findOne({operacion_uuid: '1bec9a94-bc99-4e2f-9ee8-b54260ec32b5'})",
         "resultado": {
-          "operacion_uuid": "d8ce0660-cf47-488b-95c4-3660367d51f6",
-          "capturado_en": "2026-10-13 14:12:05+00:00",
+          "operacion_uuid": "1bec9a94-bc99-4e2f-9ee8-b54260ec32b5",
+          "capturado_en": "2026-10-13 21:27:40+00:00",
           "carga": {
             "entrega_id": 129,
             "resultado": "entregado",
-            "monto_cobrado": 162.0,
+            "monto_cobrado": 146.8,
             "evidencia_ids": [
-              "6ace3c3457a2d24c02b0d703"
+              "6acea24bbf5616d8602a1205"
             ],
             "ubicacion": {
               "latitud": 25.7491,
@@ -1843,7 +2046,7 @@
           "estado": "aplicada",
           "intentos": 1,
           "pedido_id": 153,
-          "sincronizado_en": "2026-10-13 14:12:05.456000+00:00",
+          "sincronizado_en": "2026-10-13 21:27:41.658000+00:00",
           "tipo_operacion": "cierre_entrega",
           "usuario_id": 7
         }
@@ -1851,7 +2054,7 @@
     ]
   },
   {
-    "id": "ENT-08",
+    "id": "ENT-06",
     "servicio": "entregas",
     "puerto": 5105,
     "titulo": "Reintento con el mismo UUID",
@@ -1860,19 +2063,19 @@
     "url": "http://entregas:5105/api/v1/entregas/129/resultado",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "9951dccc-e4c2-4678-bc64-587719a19d07",
+      "X-Traza-Id": "fcc57583-d122-4a28-b36e-009c109c7f57",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
-    "cuerpo": "{\n  \"resultado\": \"entregado\",\n  \"monto_cobrado\": 162.0,\n  \"cambio_entregado\": 0.0,\n  \"ubicacion\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611,\n    \"precision_m\": 8.5\n  },\n  \"evidencia_ids\": [\n    \"6ace3c3457a2d24c02b0d703\"\n  ],\n  \"capturado_en\": \"2026-10-13T14:12:05+00:00\",\n  \"id_cliente_local\": \"d8ce0660-cf47-488b-95c4-3660367d51f6\"\n}",
+    "cuerpo": "{\n  \"resultado\": \"entregado\",\n  \"monto_cobrado\": 146.8,\n  \"cambio_entregado\": 0.0,\n  \"ubicacion\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611,\n    \"precision_m\": 8.5\n  },\n  \"evidencia_ids\": [\n    \"6acea24bbf5616d8602a1205\"\n  ],\n  \"capturado_en\": \"2026-10-13T21:27:40+00:00\",\n  \"id_cliente_local\": \"1bec9a94-bc99-4e2f-9ee8-b54260ec32b5\"\n}",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "9951dccc-e4c2-4678-bc64-587719a19d07"
+      "X-Traza-Id": "fcc57583-d122-4a28-b36e-009c109c7f57"
     },
-    "respuesta": "{\n  \"entrega_id\": 129,\n  \"pedido_id\": 153,\n  \"estado_pedido\": \"entregado\",\n  \"cerrado_en\": \"2026-10-13T08:12:05-06:00\",\n  \"duplicado\": true\n}",
-    "ms": 78,
-    "traza": "9951dccc-e4c2-4678-bc64-587719a19d07",
+    "respuesta": "{\n  \"entrega_id\": 129,\n  \"pedido_id\": 153,\n  \"estado_pedido\": \"entregado\",\n  \"cerrado_en\": \"2026-10-13T15:27:41-06:00\",\n  \"duplicado\": true\n}",
+    "ms": 77,
+    "traza": "fcc57583-d122-4a28-b36e-009c109c7f57",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -1881,17 +2084,17 @@
     "evidencia": [
       {
         "motor": "MongoDB",
-        "consulta": "db.sincronizaciones_moviles.findOne({operacion_uuid: 'd8ce0660-cf47-488b-95c4-3660367d51f6'}, {estado: 1, intentos: 1})",
+        "consulta": "db.sincronizaciones_moviles.findOne({operacion_uuid: '1bec9a94-bc99-4e2f-9ee8-b54260ec32b5'}, {estado: 1, intentos: 1})",
         "resultado": {
           "estado": "aplicada",
           "intentos": 2,
-          "sincronizado_en": "2026-10-13 14:12:05.602000+00:00"
+          "sincronizado_en": "2026-10-13 21:27:41.825000+00:00"
         }
       }
     ]
   },
   {
-    "id": "ENT-09",
+    "id": "ENT-07",
     "servicio": "entregas",
     "puerto": 5105,
     "titulo": "Otro cierre sobre la misma entrega",
@@ -1900,21 +2103,80 @@
     "url": "http://entregas:5105/api/v1/entregas/129/resultado",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "1e3b66f9-8bb7-4668-a170-e48740bf9cd9",
+      "X-Traza-Id": "cb5440ad-2f93-43fa-981d-293845a850cd",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
-    "cuerpo": "{\n  \"resultado\": \"entregado\",\n  \"monto_cobrado\": 162.0,\n  \"cambio_entregado\": 0.0,\n  \"ubicacion\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611,\n    \"precision_m\": 8.5\n  },\n  \"evidencia_ids\": [\n    \"6ace3c3457a2d24c02b0d703\"\n  ],\n  \"capturado_en\": \"2026-10-13T14:12:05+00:00\",\n  \"id_cliente_local\": \"5c6a3b47-6643-4c55-af51-36ec9610ed1c\"\n}",
+    "cuerpo": "{\n  \"resultado\": \"entregado\",\n  \"monto_cobrado\": 146.8,\n  \"cambio_entregado\": 0.0,\n  \"ubicacion\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611,\n    \"precision_m\": 8.5\n  },\n  \"evidencia_ids\": [\n    \"6acea24bbf5616d8602a1205\"\n  ],\n  \"capturado_en\": \"2026-10-13T21:27:40+00:00\",\n  \"id_cliente_local\": \"8ca27640-39cb-41dd-9b77-7ed9ec1090a0\"\n}",
     "status": 409,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "1e3b66f9-8bb7-4668-a170-e48740bf9cd9"
+      "X-Traza-Id": "cb5440ad-2f93-43fa-981d-293845a850cd"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"CONFLICTO\",\n    \"mensaje\": \"La entrega ya se cerró con otra operación.\",\n    \"traza_id\": \"1e3b66f9-8bb7-4668-a170-e48740bf9cd9\"\n  }\n}",
-    "ms": 67,
-    "traza": "1e3b66f9-8bb7-4668-a170-e48740bf9cd9",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"CONFLICTO\",\n    \"mensaje\": \"La entrega ya se cerró con otra operación.\",\n    \"traza_id\": \"cb5440ad-2f93-43fa-981d-293845a850cd\"\n  }\n}",
+    "ms": 72,
+    "traza": "cb5440ad-2f93-43fa-981d-293845a850cd",
     "esperado": 409,
     "obtenido": 409,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "ENT-08",
+    "servicio": "entregas",
+    "puerto": 5105,
+    "titulo": "Detalle tras el cierre",
+    "objetivo": "El repartidor deja de ver el domicilio (RN26).",
+    "metodo": "GET",
+    "url": "http://entregas:5105/api/v1/entregas/129",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "f15d92be-6987-4c2c-b4af-a2fa80e10cf4",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 404,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "f15d92be-6987-4c2c-b4af-a2fa80e10cf4"
+    },
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"La entrega ya se cerró; su información ya no está disponible.\",\n    \"traza_id\": \"f15d92be-6987-4c2c-b4af-a2fa80e10cf4\"\n  }\n}",
+    "ms": 35,
+    "traza": "f15d92be-6987-4c2c-b4af-a2fa80e10cf4",
+    "esperado": 404,
+    "obtenido": 404,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "ENT-09",
+    "servicio": "entregas",
+    "puerto": 5105,
+    "titulo": "Parcial sin motivo",
+    "objetivo": "Cada línea devuelta necesita motivo (RN28).",
+    "metodo": "POST",
+    "url": "http://entregas:5105/api/v1/entregas/130/resultado",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "6d6eb9d2-da69-4415-b69c-cfe294084bcb",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"resultado\": \"parcial\",\n  \"monto_cobrado\": 10.0,\n  \"cambio_entregado\": 0.0,\n  \"incidencia\": \"El cliente rechazó una línea.\",\n  \"lineas\": [\n    {\n      \"pedido_detalle_id\": 685,\n      \"cantidad_entregada\": 2,\n      \"cantidad_devuelta\": 0\n    },\n    {\n      \"pedido_detalle_id\": 686,\n      \"cantidad_entregada\": 0,\n      \"cantidad_devuelta\": 2\n    }\n  ],\n  \"ubicacion\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611\n  },\n  \"evidencia_ids\": [\n    \"6acea24bbf5616d8602a1208\"\n  ],\n  \"capturado_en\": \"2026-10-13T21:27:40+00:00\",\n  \"id_cliente_local\": \"b2c05104-d016-4a63-a423-cf3f0546a85a\"\n}",
+    "status": 422,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "6d6eb9d2-da69-4415-b69c-cfe294084bcb"
+    },
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION\",\n    \"mensaje\": \"Revisa los datos enviados.\",\n    \"detalles\": [\n      {\n        \"campo\": \"lineas[1].motivo\",\n        \"mensaje\": \"Explica por qué regresan unidades.\"\n      }\n    ],\n    \"traza_id\": \"6d6eb9d2-da69-4415-b69c-cfe294084bcb\"\n  }\n}",
+    "ms": 69,
+    "traza": "6d6eb9d2-da69-4415-b69c-cfe294084bcb",
+    "esperado": 422,
+    "obtenido": 422,
     "estado": "PASA",
     "nota": "",
     "explicacion": "",
@@ -1924,84 +2186,25 @@
     "id": "ENT-10",
     "servicio": "entregas",
     "puerto": 5105,
-    "titulo": "Detalle tras el cierre",
-    "objetivo": "El repartidor deja de ver el domicilio (RN26).",
-    "metodo": "GET",
-    "url": "http://entregas:5105/api/v1/entregas/129",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "85a85d66-14ab-4f09-8420-c6321d99a789",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
-    },
-    "cuerpo": "",
-    "status": 404,
-    "encabezados_respuesta": {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "85a85d66-14ab-4f09-8420-c6321d99a789"
-    },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"La entrega ya se cerró; su información ya no está disponible.\",\n    \"traza_id\": \"85a85d66-14ab-4f09-8420-c6321d99a789\"\n  }\n}",
-    "ms": 37,
-    "traza": "85a85d66-14ab-4f09-8420-c6321d99a789",
-    "esperado": 404,
-    "obtenido": 404,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "ENT-11",
-    "servicio": "entregas",
-    "puerto": 5105,
-    "titulo": "Parcial sin motivo",
-    "objetivo": "Cada línea devuelta necesita motivo (RN28).",
-    "metodo": "POST",
-    "url": "http://entregas:5105/api/v1/entregas/130/resultado",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "b45a2abc-0348-4481-8432-062ce48b9745",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
-      "Content-Type": "application/json"
-    },
-    "cuerpo": "{\n  \"resultado\": \"parcial\",\n  \"monto_cobrado\": 10.0,\n  \"cambio_entregado\": 0.0,\n  \"incidencia\": \"El cliente rechazó una línea.\",\n  \"lineas\": [\n    {\n      \"pedido_detalle_id\": 685,\n      \"cantidad_entregada\": 1,\n      \"cantidad_devuelta\": 0\n    },\n    {\n      \"pedido_detalle_id\": 686,\n      \"cantidad_entregada\": 0,\n      \"cantidad_devuelta\": 1\n    }\n  ],\n  \"ubicacion\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611\n  },\n  \"evidencia_ids\": [\n    \"6ace3c3457a2d24c02b0d706\"\n  ],\n  \"capturado_en\": \"2026-10-13T14:12:05+00:00\",\n  \"id_cliente_local\": \"6108e6c8-4fae-4b8d-903a-be4fa13d629f\"\n}",
-    "status": 422,
-    "encabezados_respuesta": {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "b45a2abc-0348-4481-8432-062ce48b9745"
-    },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION\",\n    \"mensaje\": \"Revisa los datos enviados.\",\n    \"detalles\": [\n      {\n        \"campo\": \"lineas[1].motivo\",\n        \"mensaje\": \"Explica por qué regresan unidades.\"\n      }\n    ],\n    \"traza_id\": \"b45a2abc-0348-4481-8432-062ce48b9745\"\n  }\n}",
-    "ms": 70,
-    "traza": "b45a2abc-0348-4481-8432-062ce48b9745",
-    "esperado": 422,
-    "obtenido": 422,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "ENT-12",
-    "servicio": "entregas",
-    "puerto": 5105,
     "titulo": "Cerrar como entrega parcial",
     "objetivo": "Devolver al inventario lo que no se entregó.",
     "metodo": "POST",
     "url": "http://entregas:5105/api/v1/entregas/130/resultado",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "991fe92b-b770-40bc-8c7e-b694c9bca2f7",
+      "X-Traza-Id": "4d38d71f-1bd1-4ae7-8c7d-af53554a6d13",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
-    "cuerpo": "{\n  \"resultado\": \"parcial\",\n  \"monto_cobrado\": 10.0,\n  \"cambio_entregado\": 0.0,\n  \"incidencia\": \"El cliente rechazó una línea.\",\n  \"lineas\": [\n    {\n      \"pedido_detalle_id\": 685,\n      \"cantidad_entregada\": 1,\n      \"cantidad_devuelta\": 0\n    },\n    {\n      \"pedido_detalle_id\": 686,\n      \"cantidad_entregada\": 0,\n      \"cantidad_devuelta\": 1,\n      \"motivo\": \"El cliente la rechazó.\"\n    }\n  ],\n  \"ubicacion\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611\n  },\n  \"evidencia_ids\": [\n    \"6ace3c3457a2d24c02b0d706\"\n  ],\n  \"capturado_en\": \"2026-10-13T14:12:05+00:00\",\n  \"id_cliente_local\": \"6108e6c8-4fae-4b8d-903a-be4fa13d629f\"\n}",
+    "cuerpo": "{\n  \"resultado\": \"parcial\",\n  \"monto_cobrado\": 10.0,\n  \"cambio_entregado\": 0.0,\n  \"incidencia\": \"El cliente rechazó una línea.\",\n  \"lineas\": [\n    {\n      \"pedido_detalle_id\": 685,\n      \"cantidad_entregada\": 2,\n      \"cantidad_devuelta\": 0\n    },\n    {\n      \"pedido_detalle_id\": 686,\n      \"cantidad_entregada\": 0,\n      \"cantidad_devuelta\": 2,\n      \"motivo\": \"El cliente la rechazó.\"\n    }\n  ],\n  \"ubicacion\": {\n    \"latitud\": 25.7491,\n    \"longitud\": -100.3611\n  },\n  \"evidencia_ids\": [\n    \"6acea24bbf5616d8602a1208\"\n  ],\n  \"capturado_en\": \"2026-10-13T21:27:40+00:00\",\n  \"id_cliente_local\": \"b2c05104-d016-4a63-a423-cf3f0546a85a\"\n}",
     "status": 201,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "991fe92b-b770-40bc-8c7e-b694c9bca2f7"
+      "X-Traza-Id": "4d38d71f-1bd1-4ae7-8c7d-af53554a6d13"
     },
-    "respuesta": "{\n  \"entrega_id\": 130,\n  \"pedido_id\": 154,\n  \"estado_pedido\": \"entrega_parcial\",\n  \"cerrado_en\": \"2026-10-13T08:12:05-06:00\",\n  \"duplicado\": false\n}",
-    "ms": 135,
-    "traza": "991fe92b-b770-40bc-8c7e-b694c9bca2f7",
+    "respuesta": "{\n  \"entrega_id\": 130,\n  \"pedido_id\": 154,\n  \"estado_pedido\": \"entrega_parcial\",\n  \"cerrado_en\": \"2026-10-13T15:27:42-06:00\",\n  \"duplicado\": false\n}",
+    "ms": 126,
+    "traza": "4d38d71f-1bd1-4ae7-8c7d-af53554a6d13",
     "esperado": 201,
     "obtenido": 201,
     "estado": "PASA",
@@ -2015,7 +2218,7 @@
           {
             "entrega_id": 130,
             "pedido_detalle_id": 685,
-            "cantidad_entregada": 1,
+            "cantidad_entregada": 2,
             "cantidad_devuelta": 0,
             "motivo": null
           },
@@ -2023,7 +2226,7 @@
             "entrega_id": 130,
             "pedido_detalle_id": 686,
             "cantidad_entregada": 0,
-            "cantidad_devuelta": 1,
+            "cantidad_devuelta": 2,
             "motivo": "El cliente la rechazó."
           }
         ]
@@ -2034,9 +2237,9 @@
         "resultado": [
           {
             "tipo": "devolucion_parcial",
-            "producto_id": 47,
-            "cantidad": 1,
-            "existencia_resultante": 62,
+            "producto_id": 51,
+            "cantidad": 2,
+            "existencia_resultante": 75,
             "motivo": "Entrega parcial: regresan las unidades devueltas (RN28)."
           }
         ]
@@ -2044,7 +2247,7 @@
     ]
   },
   {
-    "id": "ENT-13",
+    "id": "ENT-11",
     "servicio": "entregas",
     "puerto": 5105,
     "titulo": "Entregas de un pedido (administrador)",
@@ -2053,18 +2256,18 @@
     "url": "http://entregas:5105/api/v1/entregas?pedido_id=153",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "dfb29b72-537e-437a-8348-b156c229da9e",
+      "X-Traza-Id": "5a639837-10dd-42dd-8d8c-669d3dd4b51f",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "dfb29b72-537e-437a-8348-b156c229da9e"
+      "X-Traza-Id": "5a639837-10dd-42dd-8d8c-669d3dd4b51f"
     },
-    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 129,\n      \"pedido_id\": 153,\n      \"folio\": \"PED-20261013-000153\",\n      \"estado_pedido\": \"entregado\",\n      \"orden_parada\": 1,\n      \"direccion\": \"Paseo del Valle 1762, Paseo de San Bernabé\",\n      \"zona\": \"Paseo de San Bernabé\",\n      \"distancia_km\": 1.35,\n      \"minutos_estimados\": 10.0,\n      \"total\": 162.0\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 20,\n    \"total\": 1,\n    \"paginas\": 1\n  }\n}",
-    "ms": 57,
-    "traza": "dfb29b72-537e-437a-8348-b156c229da9e",
+    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 129,\n      \"pedido_id\": 153,\n      \"folio\": \"PED-20261013-000153\",\n      \"estado_pedido\": \"entregado\",\n      \"orden_parada\": 1,\n      \"direccion\": \"Camino a San Bernabé 3818, San Bernabé X (F-113)\",\n      \"zona\": \"San Bernabé X (F-113)\",\n      \"distancia_km\": 0.62,\n      \"minutos_estimados\": 10.0,\n      \"total\": 146.8\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 20,\n    \"total\": 1,\n    \"paginas\": 1\n  }\n}",
+    "ms": 62,
+    "traza": "5a639837-10dd-42dd-8d8c-669d3dd4b51f",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -2082,18 +2285,18 @@
     "url": "http://planeacion:5106/api/v1/candidatos?pagina=1&por_pagina=3",
     "encabezados": {
       "Accept": "application/xml",
-      "X-Traza-Id": "8b9746b0-413b-4f7c-ad01-f2a628ff1432",
+      "X-Traza-Id": "3e14b159-2971-4fbb-b3ad-f1a491d6b850",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/xml; charset=utf-8",
-      "X-Traza-Id": "8b9746b0-413b-4f7c-ad01-f2a628ff1432"
+      "X-Traza-Id": "3e14b159-2971-4fbb-b3ad-f1a491d6b850"
     },
     "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<candidatos xmlns=\"urn:microhubs:v1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1\"><datos><candidato><id>1</id><clave>CAND-01</clave><nombre>San Bernabé Norte</nombre><latitud>25.752</latitud><longitud>-100.361</longitud><renta_estimada>18000.00</renta_estimada><nomina_estimada>42000.00</nomina_estimada><servicios_estimados>7000.00</servicios_estimados><otros_costos>5000.00</otros_costos><costo_fijo>72000.00</costo_fijo><superficie_m2>130</superficie_m2><capacidad_fisica>150</capacidad_fisica><accesibilidad_vial>9</accesibilidad_vial><zona_id>1</zona_id><poblacion_cubierta>8420</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil=\"true\" /></candidato><candidato><id>2</id><clave>CAND-02</clave><nombre>Valles Poniente</nombre><latitud>25.7555</latitud><longitud>-100.376</longitud><renta_estimada>15500.00</renta_estimada><nomina_estimada>42000.00</nomina_estimada><servicios_estimados>6500.00</servicios_estimados><otros_costos>4500.00</otros_costos><costo_fijo>68500.00</costo_fijo><superficie_m2>105</superficie_m2><capacidad_fisica>120</capacidad_fisica><accesibilidad_vial>7</accesibilidad_vial><zona_id>2</zona_id><poblacion_cubierta>6180</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil=\"true\" /></candidato><candidato><id>3</id><clave>CAND-05</clave><nombre>Alianza Real</nombre><latitud>25.7625</latitud><longitud>-100.353</longitud><renta_estimada>21000.00</renta_estimada><nomina_estimada>46000.00</nomina_estimada><servicios_estimados>8000.00</servicios_estimados><otros_costos>6000.00</otros_costos><costo_fijo>81000.00</costo_fijo><superficie_m2>150</superficie_m2><capacidad_fisica>180</capacidad_fisica><accesibilidad_vial>8</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>3900</poblacion_cubierta><radio_km>1.6</radio_km><decision>pendiente</decision><decision_motivo xsi:nil=\"true\" /></candidato></datos><paginacion><pagina>1</pagina><por_pagina>3</por_pagina><total>5</total><paginas>2</paginas></paginacion></candidatos>",
-    "ms": 68,
-    "traza": "8b9746b0-413b-4f7c-ad01-f2a628ff1432",
+    "ms": 117,
+    "traza": "3e14b159-2971-4fbb-b3ad-f1a491d6b850",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -2111,7 +2314,7 @@
     "url": "http://planeacion:5106/api/v1/candidatos",
     "encabezados": {
       "Accept": "application/xml",
-      "X-Traza-Id": "bbf407e6-384d-4290-b758-adc5a68ec56f",
+      "X-Traza-Id": "d6c50876-8376-4043-a7aa-21ec32863e79",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)",
       "Content-Type": "application/xml"
     },
@@ -2119,11 +2322,11 @@
     "status": 201,
     "encabezados_respuesta": {
       "Content-Type": "application/xml; charset=utf-8",
-      "X-Traza-Id": "bbf407e6-384d-4290-b758-adc5a68ec56f"
+      "X-Traza-Id": "d6c50876-8376-4043-a7aa-21ec32863e79"
     },
-    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<candidato xmlns=\"urn:microhubs:v1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1\"><id>16</id><clave>EV-D44B9B</clave><nombre>Alianza Norte</nombre><latitud>25.7601</latitud><longitud>-100.3555</longitud><renta_estimada>16000.00</renta_estimada><nomina_estimada>40000.00</nomina_estimada><servicios_estimados>6500.00</servicios_estimados><otros_costos>4500.00</otros_costos><costo_fijo>67000.00</costo_fijo><superficie_m2>110</superficie_m2><capacidad_fisica>130</capacidad_fisica><accesibilidad_vial>7</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil=\"true\" /></candidato>",
-    "ms": 79,
-    "traza": "bbf407e6-384d-4290-b758-adc5a68ec56f",
+    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<candidato xmlns=\"urn:microhubs:v1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1\"><id>16</id><clave>EV-FC84B1</clave><nombre>Alianza Norte</nombre><latitud>25.7601</latitud><longitud>-100.3555</longitud><renta_estimada>16000.00</renta_estimada><nomina_estimada>40000.00</nomina_estimada><servicios_estimados>6500.00</servicios_estimados><otros_costos>4500.00</otros_costos><costo_fijo>67000.00</costo_fijo><superficie_m2>110</superficie_m2><capacidad_fisica>130</capacidad_fisica><accesibilidad_vial>7</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil=\"true\" /></candidato>",
+    "ms": 188,
+    "traza": "d6c50876-8376-4043-a7aa-21ec32863e79",
     "esperado": 201,
     "obtenido": 201,
     "estado": "PASA",
@@ -2136,7 +2339,7 @@
         "resultado": [
           {
             "id": 16,
-            "clave": "EV-D44B9B",
+            "clave": "EV-FC84B1",
             "nombre": "Alianza Norte",
             "renta_estimada": "16000.00",
             "costo_fijo": "67000.00",
@@ -2156,7 +2359,7 @@
     "url": "http://planeacion:5106/api/v1/candidatos",
     "encabezados": {
       "Accept": "application/xml",
-      "X-Traza-Id": "c9c1af53-ad8b-401e-bbc1-78ee90a3b3dc",
+      "X-Traza-Id": "85821a03-0ef1-4b7d-af54-d91b7b0d1af1",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)",
       "Content-Type": "application/xml"
     },
@@ -2164,11 +2367,11 @@
     "status": 409,
     "encabezados_respuesta": {
       "Content-Type": "application/xml; charset=utf-8",
-      "X-Traza-Id": "c9c1af53-ad8b-401e-bbc1-78ee90a3b3dc"
+      "X-Traza-Id": "85821a03-0ef1-4b7d-af54-d91b7b0d1af1"
     },
-    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<error xmlns=\"urn:microhubs:v1\" version=\"1\"><codigo>CONFLICTO</codigo><mensaje>Ya existe un registro con esos datos.</mensaje><traza_id>c9c1af53-ad8b-401e-bbc1-78ee90a3b3dc</traza_id></error>",
-    "ms": 66,
-    "traza": "c9c1af53-ad8b-401e-bbc1-78ee90a3b3dc",
+    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<error xmlns=\"urn:microhubs:v1\" version=\"1\"><codigo>CONFLICTO</codigo><mensaje>Ya existe un registro con esos datos.</mensaje><traza_id>85821a03-0ef1-4b7d-af54-d91b7b0d1af1</traza_id></error>",
+    "ms": 68,
+    "traza": "85821a03-0ef1-4b7d-af54-d91b7b0d1af1",
     "esperado": 409,
     "obtenido": 409,
     "estado": "PASA",
@@ -2186,7 +2389,7 @@
     "url": "http://planeacion:5106/api/v1/candidatos/16",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "e2cbcb81-7886-4e11-94a1-df87771cee1f",
+      "X-Traza-Id": "c7845f2b-7d3e-44bf-a8d5-1c10125acfb5",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
@@ -2194,11 +2397,11 @@
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "e2cbcb81-7886-4e11-94a1-df87771cee1f"
+      "X-Traza-Id": "c7845f2b-7d3e-44bf-a8d5-1c10125acfb5"
     },
     "respuesta": "{\n  \"id\": 16,\n  \"clave\": \"********\",\n  \"nombre\": \"Alianza Norte (editado)\",\n  \"latitud\": 25.7601,\n  \"longitud\": -100.3555,\n  \"renta_estimada\": 18000.0,\n  \"nomina_estimada\": 40000.0,\n  \"servicios_estimados\": 6500.0,\n  \"otros_costos\": 4500.0,\n  \"costo_fijo\": 69000.0,\n  \"superficie_m2\": 110.0,\n  \"capacidad_fisica\": 130,\n  \"accesibilidad_vial\": 7,\n  \"zona_id\": 3,\n  \"poblacion_cubierta\": 5200,\n  \"radio_km\": 1.5,\n  \"decision\": \"pendiente\",\n  \"decision_motivo\": null\n}",
-    "ms": 118,
-    "traza": "e2cbcb81-7886-4e11-94a1-df87771cee1f",
+    "ms": 95,
+    "traza": "c7845f2b-7d3e-44bf-a8d5-1c10125acfb5",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -2216,7 +2419,7 @@
     "url": "http://planeacion:5106/api/v1/candidatos/16/simular",
     "encabezados": {
       "Accept": "application/xml",
-      "X-Traza-Id": "f98bb9b5-d4f6-4d17-ba60-0a2ba4cdbfb9",
+      "X-Traza-Id": "7aee91ce-5f63-4ff6-a313-f3e44c8c2922",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)",
       "Content-Type": "application/xml"
     },
@@ -2224,11 +2427,11 @@
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/xml; charset=utf-8",
-      "X-Traza-Id": "f98bb9b5-d4f6-4d17-ba60-0a2ba4cdbfb9"
+      "X-Traza-Id": "7aee91ce-5f63-4ff6-a313-f3e44c8c2922"
     },
-    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<resultados xmlns=\"urn:microhubs:v1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1\"><atendidos>0</atendidos><rechazados>0</rechazados><utilizacion>0</utilizacion><nivel>estable</nivel><tiempo_estimado_min>18.6</tiempo_estimado_min><operadores_requeridos>0</operadores_requeridos><repartidores_requeridos>0</repartidores_requeridos><ingreso_dia>0.00</ingreso_dia><margen_dia>-2300.00</margen_dia><costo_por_pedido xsi:nil=\"true\" /><equilibrio><margen_pedido>23.89</margen_pedido><mensual>2888.8</mensual><diario>96.3</diario></equilibrio><decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision><explicacion><motivo>la demanda atendida (0/día) no alcanza el equilibrio (96/día)</motivo><motivo>reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda</motivo></explicacion></resultados>",
-    "ms": 375,
-    "traza": "f98bb9b5-d4f6-4d17-ba60-0a2ba4cdbfb9",
+    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<resultados xmlns=\"urn:microhubs:v1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1\"><atendidos>0</atendidos><rechazados>0</rechazados><utilizacion>0</utilizacion><nivel>estable</nivel><tiempo_estimado_min>18.6</tiempo_estimado_min><operadores_requeridos>0</operadores_requeridos><repartidores_requeridos>0</repartidores_requeridos><ingreso_dia>0.00</ingreso_dia><margen_dia>-2300.00</margen_dia><costo_por_pedido xsi:nil=\"true\" /><equilibrio><margen_pedido>24.04</margen_pedido><mensual>2869.6</mensual><diario>95.7</diario></equilibrio><decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision><explicacion><motivo>la demanda atendida (0/día) no alcanza el equilibrio (96/día)</motivo><motivo>reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda</motivo></explicacion></resultados>",
+    "ms": 321,
+    "traza": "7aee91ce-5f63-4ff6-a313-f3e44c8c2922",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -2242,14 +2445,14 @@
           "escenario_id": "candidato-16",
           "nombre_escenario": "Candidato 16",
           "tipo_analisis": "punto_equilibrio",
-          "ejecutado_en": "2026-10-13 14:12:06.743000+00:00",
+          "ejecutado_en": "2026-10-13 21:27:43.055000+00:00",
           "usuario_id": 5,
           "version_modelo": "planeacion_calc 2.1",
           "parametros_entrada": {
             "demanda_diaria": 0.0,
             "operadores": 3.0,
             "repartidores": 3.0,
-            "ticket": 149.59,
+            "ticket": 150.16,
             "costo_entrega": 18.0,
             "margen_bruto": 0.28,
             "renta": 18000.0,
@@ -2263,7 +2466,7 @@
             "demanda_diaria = 0.0",
             "operadores = 3",
             "repartidores = 3",
-            "ticket = 149.59",
+            "ticket = 150.16",
             "costo_entrega = 18.00",
             "margen_bruto = 0.28",
             "renta = 18000.00",
@@ -2277,12 +2480,12 @@
             "decision": "NO VIABLE CON LOS SUPUESTOS ACTUALES",
             "utilizacion": 0.0,
             "atendidos": 0.0,
-            "equilibrio_diario": 96.3,
+            "equilibrio_diario": 95.7,
             "costo_por_pedido": null
           },
           "recomendacion": "NO VIABLE CON LOS SUPUESTOS ACTUALES",
           "datos_suficientes": true,
-          "duracion_ms": 0,
+          "duracion_ms": 1,
           "aplicado_por": null
         }
       }
@@ -2298,7 +2501,7 @@
     "url": "http://planeacion:5106/api/v1/candidatos/16/decision",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "bc4baef6-b33c-4d69-abe9-7197a857a214",
+      "X-Traza-Id": "23ffe819-0ced-4ce4-b70e-2d22e2968e29",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
@@ -2306,11 +2509,11 @@
     "status": 422,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "bc4baef6-b33c-4d69-abe9-7197a857a214"
+      "X-Traza-Id": "23ffe819-0ced-4ce4-b70e-2d22e2968e29"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION\",\n    \"mensaje\": \"Revisa los datos enviados.\",\n    \"detalles\": [\n      {\n        \"campo\": \"motivo\",\n        \"mensaje\": \"Debe tener al menos 3 caracteres.\"\n      }\n    ],\n    \"traza_id\": \"bc4baef6-b33c-4d69-abe9-7197a857a214\"\n  }\n}",
-    "ms": 34,
-    "traza": "bc4baef6-b33c-4d69-abe9-7197a857a214",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION\",\n    \"mensaje\": \"Revisa los datos enviados.\",\n    \"detalles\": [\n      {\n        \"campo\": \"motivo\",\n        \"mensaje\": \"Debe tener al menos 3 caracteres.\"\n      }\n    ],\n    \"traza_id\": \"23ffe819-0ced-4ce4-b70e-2d22e2968e29\"\n  }\n}",
+    "ms": 27,
+    "traza": "23ffe819-0ced-4ce4-b70e-2d22e2968e29",
     "esperado": 422,
     "obtenido": 422,
     "estado": "PASA",
@@ -2328,7 +2531,7 @@
     "url": "http://planeacion:5106/api/v1/candidatos/16/decision",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "8c822e78-2d56-410f-947a-dd1ad985260b",
+      "X-Traza-Id": "7454272b-ac47-4c08-80a8-a330a5e91c67",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
@@ -2336,11 +2539,11 @@
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "8c822e78-2d56-410f-947a-dd1ad985260b"
+      "X-Traza-Id": "7454272b-ac47-4c08-80a8-a330a5e91c67"
     },
     "respuesta": "{\n  \"id\": 16,\n  \"clave\": \"********\",\n  \"nombre\": \"Alianza Norte (editado)\",\n  \"latitud\": 25.7601,\n  \"longitud\": -100.3555,\n  \"renta_estimada\": 18000.0,\n  \"nomina_estimada\": 40000.0,\n  \"servicios_estimados\": 6500.0,\n  \"otros_costos\": 4500.0,\n  \"costo_fijo\": 69000.0,\n  \"superficie_m2\": 110.0,\n  \"capacidad_fisica\": 130,\n  \"accesibilidad_vial\": 7,\n  \"zona_id\": 3,\n  \"poblacion_cubierta\": 5200,\n  \"radio_km\": 1.5,\n  \"decision\": \"condicionado\",\n  \"decision_motivo\": \"Renegociar la renta antes de firmar.\"\n}",
-    "ms": 75,
-    "traza": "8c822e78-2d56-410f-947a-dd1ad985260b",
+    "ms": 60,
+    "traza": "7454272b-ac47-4c08-80a8-a330a5e91c67",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -2356,7 +2559,7 @@
             "decision": "condicionado",
             "decision_motivo": "Renegociar la renta antes de firmar.",
             "decision_por": 5,
-            "decision_en": "2026-10-13 14:12:06.834490+00:00"
+            "decision_en": "2026-10-13 21:27:43.134770+00:00"
           }
         ]
       }
@@ -2372,7 +2575,7 @@
     "url": "http://planeacion:5106/api/v1/simulaciones",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "c79178ee-296f-4460-a33c-f9237948c03e",
+      "X-Traza-Id": "52501209-b796-4ef2-ac68-f2ad30a0427d",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
@@ -2380,11 +2583,11 @@
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "c79178ee-296f-4460-a33c-f9237948c03e"
+      "X-Traza-Id": "52501209-b796-4ef2-ac68-f2ad30a0427d"
     },
     "respuesta": "{\n  \"atendidos\": 120.0,\n  \"rechazados\": 0.0,\n  \"utilizacion\": 80.0,\n  \"nivel\": \"atencion\",\n  \"tiempo_estimado_min\": 19.4,\n  \"operadores_requeridos\": 3,\n  \"repartidores_requeridos\": 2,\n  \"ingreso_dia\": 16200.0,\n  \"margen_dia\": -504.0,\n  \"costo_por_pedido\": 42.0,\n  \"equilibrio\": {\n    \"margen_pedido\": 15.8,\n    \"mensual\": 4557.0,\n    \"diario\": 151.9\n  },\n  \"decision\": \"NO VIABLE CON LOS SUPUESTOS ACTUALES\",\n  \"explicacion\": [\n    \"la demanda atendida (120/día) no alcanza el equilibrio (152/día)\",\n    \"el espacio físico del local limita la capacidad\",\n    \"reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda\"\n  ]\n}",
-    "ms": 82,
-    "traza": "c79178ee-296f-4460-a33c-f9237948c03e",
+    "ms": 32,
+    "traza": "52501209-b796-4ef2-ac68-f2ad30a0427d",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -2402,7 +2605,7 @@
     "url": "http://planeacion:5106/api/v1/escenarios",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "2c018343-fde5-471c-a266-107e427f7438",
+      "X-Traza-Id": "ded24b30-a87e-4ea5-b1a9-b1b1fdc0c6ba",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)",
       "Content-Type": "application/json"
     },
@@ -2410,11 +2613,11 @@
     "status": 201,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "2c018343-fde5-471c-a266-107e427f7438"
+      "X-Traza-Id": "ded24b30-a87e-4ea5-b1a9-b1b1fdc0c6ba"
     },
-    "respuesta": "{\n  \"id\": 1,\n  \"nombre\": \"Escenario A - evidencias\",\n  \"candidato_id\": 16,\n  \"supuestos\": {\n    \"demanda_diaria\": 120.0,\n    \"operadores\": 3,\n    \"repartidores\": 4,\n    \"ticket\": 135.0,\n    \"costo_entrega\": 22.0,\n    \"margen_bruto\": 0.28,\n    \"renta\": 18000.0,\n    \"nomina\": 42000.0,\n    \"servicios\": 7000.0,\n    \"otros\": 5000.0,\n    \"distancia_km\": 2.4,\n    \"capacidad_fisica\": 150\n  },\n  \"resultados\": {\n    \"atendidos\": 120.0,\n    \"rechazados\": 0.0,\n    \"utilizacion\": 80.0,\n    \"nivel\": \"atencion\",\n    \"tiempo_estimado_min\": 19.4,\n    \"operadores_requeridos\": 3,\n    \"repartidores_requeridos\": 2,\n    \"ingreso_dia\": 16200.0,\n    \"margen_dia\": -504.0,\n    \"costo_por_pedido\": 42.0,\n    \"equilibrio\": {\n      \"margen_pedido\": 15.8,\n      \"mensual\": 4557.0,\n      \"diario\": 151.9\n    },\n    \"decision\": \"NO VIABLE CON LOS SUPUESTOS ACTUALES\",\n    \"explicacion\": [\n      \"la demanda atendida (120/día) no alcanza el equilibrio (152/día)\",\n      \"el espacio físico del local limita la capacidad\",\n      \"reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda\"\n    ]\n  },\n  \"creado_en\": \"2026-10-13T08:12:07-06:00\"\n}",
-    "ms": 116,
-    "traza": "2c018343-fde5-471c-a266-107e427f7438",
+    "respuesta": "{\n  \"id\": 1,\n  \"nombre\": \"Escenario A - evidencias\",\n  \"candidato_id\": 16,\n  \"supuestos\": {\n    \"demanda_diaria\": 120.0,\n    \"operadores\": 3,\n    \"repartidores\": 4,\n    \"ticket\": 135.0,\n    \"costo_entrega\": 22.0,\n    \"margen_bruto\": 0.28,\n    \"renta\": 18000.0,\n    \"nomina\": 42000.0,\n    \"servicios\": 7000.0,\n    \"otros\": 5000.0,\n    \"distancia_km\": 2.4,\n    \"capacidad_fisica\": 150\n  },\n  \"resultados\": {\n    \"atendidos\": 120.0,\n    \"rechazados\": 0.0,\n    \"utilizacion\": 80.0,\n    \"nivel\": \"atencion\",\n    \"tiempo_estimado_min\": 19.4,\n    \"operadores_requeridos\": 3,\n    \"repartidores_requeridos\": 2,\n    \"ingreso_dia\": 16200.0,\n    \"margen_dia\": -504.0,\n    \"costo_por_pedido\": 42.0,\n    \"equilibrio\": {\n      \"margen_pedido\": 15.8,\n      \"mensual\": 4557.0,\n      \"diario\": 151.9\n    },\n    \"decision\": \"NO VIABLE CON LOS SUPUESTOS ACTUALES\",\n    \"explicacion\": [\n      \"la demanda atendida (120/día) no alcanza el equilibrio (152/día)\",\n      \"el espacio físico del local limita la capacidad\",\n      \"reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda\"\n    ]\n  },\n  \"creado_en\": \"2026-10-13T15:27:43-06:00\"\n}",
+    "ms": 109,
+    "traza": "ded24b30-a87e-4ea5-b1a9-b1b1fdc0c6ba",
     "esperado": 201,
     "obtenido": 201,
     "estado": "PASA",
@@ -2432,18 +2635,18 @@
     "url": "http://planeacion:5106/api/v1/escenarios/1",
     "encabezados": {
       "Accept": "application/xml",
-      "X-Traza-Id": "99d8a85b-f034-44b6-ab62-7f9259e8b45a",
+      "X-Traza-Id": "82e4df7d-3487-4957-9f2f-17b0586a57ea",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/xml; charset=utf-8",
-      "X-Traza-Id": "99d8a85b-f034-44b6-ab62-7f9259e8b45a"
+      "X-Traza-Id": "82e4df7d-3487-4957-9f2f-17b0586a57ea"
     },
-    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<escenario xmlns=\"urn:microhubs:v1\" version=\"1\"><id>1</id><nombre>Escenario A - evidencias</nombre><candidato_id>16</candidato_id><supuestos><demanda_diaria>120</demanda_diaria><operadores>3</operadores><repartidores>4</repartidores><ticket>135.00</ticket><costo_entrega>22.00</costo_entrega><margen_bruto>0.28</margen_bruto><renta>18000.00</renta><nomina>42000.00</nomina><servicios>7000.00</servicios><otros>5000.00</otros><distancia_km>2.4</distancia_km><capacidad_fisica>150</capacidad_fisica></supuestos><resultados><atendidos>120</atendidos><rechazados>0</rechazados><utilizacion>80</utilizacion><nivel>atencion</nivel><tiempo_estimado_min>19.4</tiempo_estimado_min><operadores_requeridos>3</operadores_requeridos><repartidores_requeridos>2</repartidores_requeridos><ingreso_dia>16200.00</ingreso_dia><margen_dia>-504.00</margen_dia><costo_por_pedido>42.00</costo_por_pedido><equilibrio><margen_pedido>15.80</margen_pedido><mensual>4557</mensual><diario>151.9</diario></equilibrio><decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision><explicacion><motivo>la demanda atendida (120/día) no alcanza el equilibrio (152/día)</motivo><motivo>el espacio físico del local limita la capacidad</motivo><motivo>reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda</motivo></explicacion></resultados><creado_en>2026-10-13T08:12:07-06:00</creado_en></escenario>",
-    "ms": 25,
-    "traza": "99d8a85b-f034-44b6-ab62-7f9259e8b45a",
+    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<escenario xmlns=\"urn:microhubs:v1\" version=\"1\"><id>1</id><nombre>Escenario A - evidencias</nombre><candidato_id>16</candidato_id><supuestos><demanda_diaria>120</demanda_diaria><operadores>3</operadores><repartidores>4</repartidores><ticket>135.00</ticket><costo_entrega>22.00</costo_entrega><margen_bruto>0.28</margen_bruto><renta>18000.00</renta><nomina>42000.00</nomina><servicios>7000.00</servicios><otros>5000.00</otros><distancia_km>2.4</distancia_km><capacidad_fisica>150</capacidad_fisica></supuestos><resultados><atendidos>120</atendidos><rechazados>0</rechazados><utilizacion>80</utilizacion><nivel>atencion</nivel><tiempo_estimado_min>19.4</tiempo_estimado_min><operadores_requeridos>3</operadores_requeridos><repartidores_requeridos>2</repartidores_requeridos><ingreso_dia>16200.00</ingreso_dia><margen_dia>-504.00</margen_dia><costo_por_pedido>42.00</costo_por_pedido><equilibrio><margen_pedido>15.80</margen_pedido><mensual>4557</mensual><diario>151.9</diario></equilibrio><decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision><explicacion><motivo>la demanda atendida (120/día) no alcanza el equilibrio (152/día)</motivo><motivo>el espacio físico del local limita la capacidad</motivo><motivo>reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda</motivo></explicacion></resultados><creado_en>2026-10-13T15:27:43-06:00</creado_en></escenario>",
+    "ms": 24,
+    "traza": "82e4df7d-3487-4957-9f2f-17b0586a57ea",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -2461,18 +2664,18 @@
     "url": "http://planeacion:5106/api/v1/simulaciones/resumen",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "a16a19c8-5acc-4175-961c-1f56b5edf02f",
+      "X-Traza-Id": "d2e33a25-9529-49e9-a4a5-00cf52a84f76",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "a16a19c8-5acc-4175-961c-1f56b5edf02f"
+      "X-Traza-Id": "d2e33a25-9529-49e9-a4a5-00cf52a84f76"
     },
     "respuesta": "{\n  \"total\": 3,\n  \"por_decision\": [\n    {\n      \"decision\": \"NO VIABLE CON LOS SUPUESTOS ACTUALES\",\n      \"cantidad\": 3,\n      \"utilizacion_promedio\": 53.3\n    }\n  ]\n}",
-    "ms": 10,
-    "traza": "a16a19c8-5acc-4175-961c-1f56b5edf02f",
+    "ms": 18,
+    "traza": "d2e33a25-9529-49e9-a4a5-00cf52a84f76",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -2502,7 +2705,7 @@
     "url": "http://planeacion:5106/api/v1/candidatos",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "76551a75-b4d6-4f45-9b45-6581b7132674",
+      "X-Traza-Id": "c390afad-1958-4986-a937-e05681b16ddc",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)",
       "Content-Type": "application/json"
     },
@@ -2510,11 +2713,11 @@
     "status": 403,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "76551a75-b4d6-4f45-9b45-6581b7132674"
+      "X-Traza-Id": "c390afad-1958-4986-a937-e05681b16ddc"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"PROHIBIDO\",\n    \"mensaje\": \"Tu perfil no tiene permiso para esta operación.\",\n    \"traza_id\": \"76551a75-b4d6-4f45-9b45-6581b7132674\"\n  }\n}",
-    "ms": 28,
-    "traza": "76551a75-b4d6-4f45-9b45-6581b7132674",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"PROHIBIDO\",\n    \"mensaje\": \"Tu perfil no tiene permiso para esta operación.\",\n    \"traza_id\": \"c390afad-1958-4986-a937-e05681b16ddc\"\n  }\n}",
+    "ms": 33,
+    "traza": "c390afad-1958-4986-a937-e05681b16ddc",
     "esperado": 403,
     "obtenido": 403,
     "estado": "PASA",
@@ -2532,7 +2735,7 @@
     "url": "http://planeacion:5106/api/v1/candidatos/16/simular",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "c70b673c-6133-455b-a751-4db5f35da358",
+      "X-Traza-Id": "2f16f7e6-e648-4f6b-9054-abf6c25a5a1f",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)",
       "Content-Type": "application/json"
     },
@@ -2540,11 +2743,11 @@
     "status": 403,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "c70b673c-6133-455b-a751-4db5f35da358"
+      "X-Traza-Id": "2f16f7e6-e648-4f6b-9054-abf6c25a5a1f"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"PROHIBIDO\",\n    \"mensaje\": \"Tu perfil no tiene permiso para esta operación.\",\n    \"traza_id\": \"c70b673c-6133-455b-a751-4db5f35da358\"\n  }\n}",
-    "ms": 30,
-    "traza": "c70b673c-6133-455b-a751-4db5f35da358",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"PROHIBIDO\",\n    \"mensaje\": \"Tu perfil no tiene permiso para esta operación.\",\n    \"traza_id\": \"2f16f7e6-e648-4f6b-9054-abf6c25a5a1f\"\n  }\n}",
+    "ms": 29,
+    "traza": "2f16f7e6-e648-4f6b-9054-abf6c25a5a1f",
     "esperado": 403,
     "obtenido": 403,
     "estado": "PASA",
@@ -2562,18 +2765,18 @@
     "url": "http://planeacion:5106/api/v1/escenarios/1",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "c822ac8b-1c41-4ccb-83da-7cdae3d35b25",
+      "X-Traza-Id": "9dc4c3be-6e32-4db7-b7ec-2ba82690c793",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 204,
     "encabezados_respuesta": {
       "Content-Type": "text/html; charset=utf-8",
-      "X-Traza-Id": "c822ac8b-1c41-4ccb-83da-7cdae3d35b25"
+      "X-Traza-Id": "9dc4c3be-6e32-4db7-b7ec-2ba82690c793"
     },
     "respuesta": "(sin cuerpo)",
-    "ms": 38,
-    "traza": "c822ac8b-1c41-4ccb-83da-7cdae3d35b25",
+    "ms": 50,
+    "traza": "9dc4c3be-6e32-4db7-b7ec-2ba82690c793",
     "esperado": 204,
     "obtenido": 204,
     "estado": "PASA",
@@ -2591,18 +2794,18 @@
     "url": "http://planeacion:5106/api/v1/candidatos/16",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "eba69fe2-0b0b-400d-89fa-067b0b2bc8ce",
+      "X-Traza-Id": "4a28cf6f-0b4a-4fe3-b687-c817793a7f05",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 204,
     "encabezados_respuesta": {
       "Content-Type": "text/html; charset=utf-8",
-      "X-Traza-Id": "eba69fe2-0b0b-400d-89fa-067b0b2bc8ce"
+      "X-Traza-Id": "4a28cf6f-0b4a-4fe3-b687-c817793a7f05"
     },
     "respuesta": "(sin cuerpo)",
-    "ms": 57,
-    "traza": "eba69fe2-0b0b-400d-89fa-067b0b2bc8ce",
+    "ms": 84,
+    "traza": "4a28cf6f-0b4a-4fe3-b687-c817793a7f05",
     "esperado": 204,
     "obtenido": 204,
     "estado": "PASA",
@@ -2615,7 +2818,7 @@
         "resultado": [
           {
             "id": 16,
-            "clave": "EV-D44B9B",
+            "clave": "EV-FC84B1",
             "estatus": "inactivo",
             "decision": "condicionado"
           }
@@ -2633,296 +2836,20 @@
     "url": "http://planeacion:5106/api/v1/candidatos/999999",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "4f29fb6f-877f-4b4d-8d29-a68297804f77",
+      "X-Traza-Id": "9f09ac1e-e7d4-43d4-9c51-027ad5013f3a",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
     },
     "cuerpo": "",
     "status": 404,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "4f29fb6f-877f-4b4d-8d29-a68297804f77"
+      "X-Traza-Id": "9f09ac1e-e7d4-43d4-9c51-027ad5013f3a"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe el candidato.\",\n    \"traza_id\": \"4f29fb6f-877f-4b4d-8d29-a68297804f77\"\n  }\n}",
-    "ms": 23,
-    "traza": "4f29fb6f-877f-4b4d-8d29-a68297804f77",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe el candidato.\",\n    \"traza_id\": \"9f09ac1e-e7d4-43d4-9c51-027ad5013f3a\"\n  }\n}",
+    "ms": 155,
+    "traza": "9f09ac1e-e7d4-43d4-9c51-027ad5013f3a",
     "esperado": 404,
     "obtenido": 404,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "NOT-01",
-    "servicio": "notificaciones",
-    "puerto": 5108,
-    "titulo": "Mi bandeja",
-    "objetivo": "Avisos del repartidor (misma tabla que el web).",
-    "metodo": "GET",
-    "url": "http://notificaciones:5108/api/v1/notificaciones?pagina=1&por_pagina=5",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "8200564b-f98f-4951-9e0a-84397fa4c3d1",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
-    },
-    "cuerpo": "",
-    "status": 200,
-    "encabezados_respuesta": {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "8200564b-f98f-4951-9e0a-84397fa4c3d1"
-    },
-    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 2,\n      \"tipo\": \"entrega\",\n      \"titulo\": \"Nueva entrega asignada\",\n      \"mensaje\": \"Se te asignó el pedido PED-20261013-000154 (parada 2).\",\n      \"leida\": false,\n      \"referencia\": {\n        \"tipo\": \"entrega\",\n        \"id\": \"130\"\n      },\n      \"creada_en\": \"2026-10-13T08:11:59-06:00\"\n    },\n    {\n      \"id\": 1,\n      \"tipo\": \"entrega\",\n      \"titulo\": \"Nueva entrega asignada\",\n      \"mensaje\": \"Se te asignó el pedido PED-20261013-000153 (parada 1).\",\n      \"leida\": false,\n      \"referencia\": {\n        \"tipo\": \"entrega\",\n        \"id\": \"129\"\n      },\n      \"creada_en\": \"2026-10-13T08:11:59-06:00\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 5,\n    \"total\": 2,\n    \"paginas\": 1\n  }\n}",
-    "ms": 202,
-    "traza": "8200564b-f98f-4951-9e0a-84397fa4c3d1",
-    "esperado": 200,
-    "obtenido": 200,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "Incluye los avisos «Nueva entrega asignada» que genera el trigger al asignar la entrega.",
-    "evidencia": []
-  },
-  {
-    "id": "NOT-02",
-    "servicio": "notificaciones",
-    "puerto": 5108,
-    "titulo": "Conteo sin leer",
-    "objetivo": "Número de avisos pendientes.",
-    "metodo": "GET",
-    "url": "http://notificaciones:5108/api/v1/notificaciones/conteo",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "0ca61f54-6349-4262-93df-d0acfb3b8959",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
-    },
-    "cuerpo": "",
-    "status": 200,
-    "encabezados_respuesta": {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "0ca61f54-6349-4262-93df-d0acfb3b8959"
-    },
-    "respuesta": "{\n  \"no_leidas\": 2\n}",
-    "ms": 25,
-    "traza": "0ca61f54-6349-4262-93df-d0acfb3b8959",
-    "esperado": 200,
-    "obtenido": 200,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "NOT-03",
-    "servicio": "notificaciones",
-    "puerto": 5108,
-    "titulo": "Marcar como leída",
-    "objetivo": "Actualizar el aviso.",
-    "metodo": "POST",
-    "url": "http://notificaciones:5108/api/v1/notificaciones/2/leer",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "f849d966-06fd-4de1-8a33-558e11afb073",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
-    },
-    "cuerpo": "",
-    "status": 200,
-    "encabezados_respuesta": {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "f849d966-06fd-4de1-8a33-558e11afb073"
-    },
-    "respuesta": "{\n  \"id\": 2,\n  \"tipo\": \"entrega\",\n  \"titulo\": \"Nueva entrega asignada\",\n  \"mensaje\": \"Se te asignó el pedido PED-20261013-000154 (parada 2).\",\n  \"leida\": true,\n  \"referencia\": {\n    \"tipo\": \"entrega\",\n    \"id\": \"130\"\n  },\n  \"creada_en\": \"2026-10-13T08:11:59-06:00\"\n}",
-    "ms": 44,
-    "traza": "f849d966-06fd-4de1-8a33-558e11afb073",
-    "esperado": 200,
-    "obtenido": 200,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": [
-      {
-        "motor": "PostgreSQL",
-        "consulta": "SELECT id, titulo, leido_en FROM web_notificacion WHERE id = %s",
-        "resultado": [
-          {
-            "id": 2,
-            "titulo": "Nueva entrega asignada",
-            "leido_en": "2026-10-13 14:12:07.580080+00:00"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "NOT-04",
-    "servicio": "notificaciones",
-    "puerto": 5108,
-    "titulo": "Leer un aviso ajeno",
-    "objetivo": "Cada quien solo toca su bandeja.",
-    "metodo": "POST",
-    "url": "http://notificaciones:5108/api/v1/notificaciones/2/leer",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "7196591b-c48b-4b0a-930f-9fb830bb31fd",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(296 caracteres)"
-    },
-    "cuerpo": "",
-    "status": 404,
-    "encabezados_respuesta": {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "7196591b-c48b-4b0a-930f-9fb830bb31fd"
-    },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"NO_ENCONTRADO\",\n    \"mensaje\": \"No existe ese aviso en tu bandeja.\",\n    \"traza_id\": \"7196591b-c48b-4b0a-930f-9fb830bb31fd\"\n  }\n}",
-    "ms": 27,
-    "traza": "7196591b-c48b-4b0a-930f-9fb830bb31fd",
-    "esperado": 404,
-    "obtenido": 404,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "NOT-05",
-    "servicio": "notificaciones",
-    "puerto": 5108,
-    "titulo": "Enviar aviso (administrador)",
-    "objetivo": "Aviso manual a un usuario.",
-    "metodo": "POST",
-    "url": "http://notificaciones:5108/api/v1/notificaciones",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "21ba92db-d5af-42c3-93da-597eb805803c",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)",
-      "Content-Type": "application/json"
-    },
-    "cuerpo": "{\n  \"usuario_id\": 7,\n  \"tipo\": \"sistema\",\n  \"titulo\": \"Reunión de turno\",\n  \"mensaje\": \"Revisión de rutas a las 9:00.\",\n  \"referencia\": {\n    \"tipo\": \"sistema\",\n    \"id\": \"turno\"\n  }\n}",
-    "status": 201,
-    "encabezados_respuesta": {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "21ba92db-d5af-42c3-93da-597eb805803c"
-    },
-    "respuesta": "{\n  \"id\": 5,\n  \"tipo\": \"sistema\",\n  \"titulo\": \"Reunión de turno\",\n  \"mensaje\": \"Revisión de rutas a las 9:00.\",\n  \"leida\": false,\n  \"referencia\": {\n    \"tipo\": \"sistema\",\n    \"id\": \"turno\"\n  },\n  \"creada_en\": \"2026-10-13T08:12:07-06:00\"\n}",
-    "ms": 150,
-    "traza": "21ba92db-d5af-42c3-93da-597eb805803c",
-    "esperado": 201,
-    "obtenido": 201,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "NOT-06",
-    "servicio": "notificaciones",
-    "puerto": 5108,
-    "titulo": "Enviar aviso sin permiso",
-    "objetivo": "Un repartidor no envía avisos.",
-    "metodo": "POST",
-    "url": "http://notificaciones:5108/api/v1/notificaciones",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "0857ea94-08f2-461f-a627-a17d6be5fef4",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
-      "Content-Type": "application/json"
-    },
-    "cuerpo": "{\n  \"usuario_id\": 1,\n  \"tipo\": \"sistema\",\n  \"titulo\": \"x\",\n  \"mensaje\": \"y\"\n}",
-    "status": 403,
-    "encabezados_respuesta": {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "0857ea94-08f2-461f-a627-a17d6be5fef4"
-    },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"PROHIBIDO\",\n    \"mensaje\": \"Tu perfil no tiene permiso para esta operación.\",\n    \"traza_id\": \"0857ea94-08f2-461f-a627-a17d6be5fef4\"\n  }\n}",
-    "ms": 28,
-    "traza": "0857ea94-08f2-461f-a627-a17d6be5fef4",
-    "esperado": 403,
-    "obtenido": 403,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "NOT-07",
-    "servicio": "notificaciones",
-    "puerto": 5108,
-    "titulo": "Destinatario inexistente",
-    "objetivo": "Validación contra PostgreSQL.",
-    "metodo": "POST",
-    "url": "http://notificaciones:5108/api/v1/notificaciones",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "d7b36bef-58e0-42ff-9109-97ec8295c670",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)",
-      "Content-Type": "application/json"
-    },
-    "cuerpo": "{\n  \"usuario_id\": 999999,\n  \"tipo\": \"sistema\",\n  \"titulo\": \"x\",\n  \"mensaje\": \"y\"\n}",
-    "status": 422,
-    "encabezados_respuesta": {
-      "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "d7b36bef-58e0-42ff-9109-97ec8295c670"
-    },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION\",\n    \"mensaje\": \"Revisa los datos enviados.\",\n    \"detalles\": [\n      {\n        \"campo\": \"usuario_id\",\n        \"mensaje\": \"No existe un usuario activo con ese id.\"\n      }\n    ],\n    \"traza_id\": \"d7b36bef-58e0-42ff-9109-97ec8295c670\"\n  }\n}",
-    "ms": 26,
-    "traza": "d7b36bef-58e0-42ff-9109-97ec8295c670",
-    "esperado": 422,
-    "obtenido": 422,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "NOT-08",
-    "servicio": "notificaciones",
-    "puerto": 5108,
-    "titulo": "Borrar un aviso (DELETE)",
-    "objetivo": "Quitarlo de la bandeja.",
-    "metodo": "DELETE",
-    "url": "http://notificaciones:5108/api/v1/notificaciones/5",
-    "encabezados": {
-      "Accept": "application/json",
-      "X-Traza-Id": "fc75ad14-4474-4e18-b6f5-7a8424ea1b63",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
-    },
-    "cuerpo": "",
-    "status": 204,
-    "encabezados_respuesta": {
-      "Content-Type": "text/html; charset=utf-8",
-      "X-Traza-Id": "fc75ad14-4474-4e18-b6f5-7a8424ea1b63"
-    },
-    "respuesta": "(sin cuerpo)",
-    "ms": 25,
-    "traza": "fc75ad14-4474-4e18-b6f5-7a8424ea1b63",
-    "esperado": 204,
-    "obtenido": 204,
-    "estado": "PASA",
-    "nota": "",
-    "explicacion": "",
-    "evidencia": []
-  },
-  {
-    "id": "NOT-09",
-    "servicio": "notificaciones",
-    "puerto": 5108,
-    "titulo": "Mi bandeja (XML)",
-    "objetivo": "La bandeja en XML.",
-    "metodo": "GET",
-    "url": "http://notificaciones:5108/api/v1/notificaciones?por_pagina=2",
-    "encabezados": {
-      "Accept": "application/xml",
-      "X-Traza-Id": "345aea5f-d409-4256-8849-5dfa0151036d",
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
-    },
-    "cuerpo": "",
-    "status": 200,
-    "encabezados_respuesta": {
-      "Content-Type": "application/xml; charset=utf-8",
-      "X-Traza-Id": "345aea5f-d409-4256-8849-5dfa0151036d"
-    },
-    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<notificaciones xmlns=\"urn:microhubs:v1\" version=\"1\"><datos><notificacion><id>2</id><tipo>entrega</tipo><titulo>Nueva entrega asignada</titulo><mensaje>Se te asignó el pedido PED-20261013-000154 (parada 2).</mensaje><leida>true</leida><referencia><tipo>entrega</tipo><id>130</id></referencia><creada_en>2026-10-13T08:11:59-06:00</creada_en></notificacion><notificacion><id>1</id><tipo>entrega</tipo><titulo>Nueva entrega asignada</titulo><mensaje>Se te asignó el pedido PED-20261013-000153 (parada 1).</mensaje><leida>false</leida><referencia><tipo>entrega</tipo><id>129</id></referencia><creada_en>2026-10-13T08:11:59-06:00</creada_en></notificacion></datos><paginacion><pagina>1</pagina><por_pagina>2</por_pagina><total>2</total><paginas>1</paginas></paginacion></notificaciones>",
-    "ms": 46,
-    "traza": "345aea5f-d409-4256-8849-5dfa0151036d",
-    "esperado": 200,
-    "obtenido": 200,
     "estado": "PASA",
     "nota": "",
     "explicacion": "",
@@ -2938,17 +2865,17 @@
     "url": "http://auth:5101/api/v1/health",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "e00faf43-349a-443e-8434-93bad4570415"
+      "X-Traza-Id": "0711bfb5-ada7-4532-9207-25656cca4c68"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "e00faf43-349a-443e-8434-93bad4570415"
+      "X-Traza-Id": "0711bfb5-ada7-4532-9207-25656cca4c68"
     },
     "respuesta": "{\n  \"servicio\": \"auth\",\n  \"version\": \"1.0.0\",\n  \"estado\": \"ok\",\n  \"dependencias\": {\n    \"postgres\": \"ok\",\n    \"redis\": \"ok\",\n    \"mongo\": \"no_aplica\"\n  }\n}",
-    "ms": 15,
-    "traza": "e00faf43-349a-443e-8434-93bad4570415",
+    "ms": 16,
+    "traza": "0711bfb5-ada7-4532-9207-25656cca4c68",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -2966,17 +2893,17 @@
     "url": "http://usuarios:5102/api/v1/health",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "b7ceabaf-59af-475b-a369-0181a58439d0"
+      "X-Traza-Id": "9a9b45cb-63c7-4cab-ac2b-f7314fa71ce6"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "b7ceabaf-59af-475b-a369-0181a58439d0"
+      "X-Traza-Id": "9a9b45cb-63c7-4cab-ac2b-f7314fa71ce6"
     },
     "respuesta": "{\n  \"servicio\": \"usuarios\",\n  \"version\": \"1.0.0\",\n  \"estado\": \"ok\",\n  \"dependencias\": {\n    \"postgres\": \"ok\",\n    \"redis\": \"ok\",\n    \"mongo\": \"no_aplica\"\n  }\n}",
-    "ms": 17,
-    "traza": "b7ceabaf-59af-475b-a369-0181a58439d0",
+    "ms": 18,
+    "traza": "9a9b45cb-63c7-4cab-ac2b-f7314fa71ce6",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -2985,26 +2912,26 @@
     "evidencia": []
   },
   {
-    "id": "SAL-CAT",
-    "servicio": "catalogos",
+    "id": "SAL-PRO",
+    "servicio": "productos",
     "puerto": 5103,
-    "titulo": "Salud de catalogos",
+    "titulo": "Salud de productos",
     "objetivo": "Estado del servicio y de sus dependencias.",
     "metodo": "GET",
-    "url": "http://catalogos:5103/api/v1/health",
+    "url": "http://productos:5103/api/v1/health",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "be50f0a0-045a-4557-a2ed-faacca43c2fb"
+      "X-Traza-Id": "f43a3f9c-83b7-45b4-8daa-9306a4a73b28"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "be50f0a0-045a-4557-a2ed-faacca43c2fb"
+      "X-Traza-Id": "f43a3f9c-83b7-45b4-8daa-9306a4a73b28"
     },
-    "respuesta": "{\n  \"servicio\": \"catalogos\",\n  \"version\": \"1.0.0\",\n  \"estado\": \"ok\",\n  \"dependencias\": {\n    \"postgres\": \"ok\",\n    \"redis\": \"ok\",\n    \"mongo\": \"no_aplica\"\n  }\n}",
-    "ms": 15,
-    "traza": "be50f0a0-045a-4557-a2ed-faacca43c2fb",
+    "respuesta": "{\n  \"servicio\": \"productos\",\n  \"version\": \"1.0.0\",\n  \"estado\": \"ok\",\n  \"dependencias\": {\n    \"postgres\": \"ok\",\n    \"redis\": \"ok\",\n    \"mongo\": \"no_aplica\"\n  }\n}",
+    "ms": 32,
+    "traza": "f43a3f9c-83b7-45b4-8daa-9306a4a73b28",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -3022,17 +2949,17 @@
     "url": "http://pedidos:5104/api/v1/health",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "c3e2cf96-f789-4a87-9a11-8a5b69ea0a3b"
+      "X-Traza-Id": "2968864a-27ab-4366-b7fc-7921ec58e47e"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "c3e2cf96-f789-4a87-9a11-8a5b69ea0a3b"
+      "X-Traza-Id": "2968864a-27ab-4366-b7fc-7921ec58e47e"
     },
     "respuesta": "{\n  \"servicio\": \"pedidos\",\n  \"version\": \"1.0.0\",\n  \"estado\": \"ok\",\n  \"dependencias\": {\n    \"postgres\": \"ok\",\n    \"redis\": \"ok\",\n    \"mongo\": \"no_aplica\"\n  }\n}",
-    "ms": 16,
-    "traza": "c3e2cf96-f789-4a87-9a11-8a5b69ea0a3b",
+    "ms": 17,
+    "traza": "2968864a-27ab-4366-b7fc-7921ec58e47e",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -3050,17 +2977,17 @@
     "url": "http://entregas:5105/api/v1/health",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "ba082ec5-2e1f-4b52-99b8-7097b619278f"
+      "X-Traza-Id": "2cc5f595-e623-4e21-8d59-45ebebeac82a"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "ba082ec5-2e1f-4b52-99b8-7097b619278f"
+      "X-Traza-Id": "2cc5f595-e623-4e21-8d59-45ebebeac82a"
     },
     "respuesta": "{\n  \"servicio\": \"entregas\",\n  \"version\": \"1.0.0\",\n  \"estado\": \"ok\",\n  \"dependencias\": {\n    \"postgres\": \"ok\",\n    \"redis\": \"ok\",\n    \"mongo\": \"ok\"\n  }\n}",
-    "ms": 21,
-    "traza": "ba082ec5-2e1f-4b52-99b8-7097b619278f",
+    "ms": 17,
+    "traza": "2cc5f595-e623-4e21-8d59-45ebebeac82a",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -3078,17 +3005,17 @@
     "url": "http://planeacion:5106/api/v1/health",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "8e94097f-a936-4634-b393-7ade29280ea6"
+      "X-Traza-Id": "4451c503-704a-4636-b4eb-2baccedd3f8e"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "8e94097f-a936-4634-b393-7ade29280ea6"
+      "X-Traza-Id": "4451c503-704a-4636-b4eb-2baccedd3f8e"
     },
     "respuesta": "{\n  \"servicio\": \"planeacion\",\n  \"version\": \"1.0.0\",\n  \"estado\": \"ok\",\n  \"dependencias\": {\n    \"postgres\": \"ok\",\n    \"redis\": \"ok\",\n    \"mongo\": \"ok\"\n  }\n}",
-    "ms": 21,
-    "traza": "8e94097f-a936-4634-b393-7ade29280ea6",
+    "ms": 18,
+    "traza": "4451c503-704a-4636-b4eb-2baccedd3f8e",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -3106,17 +3033,17 @@
     "url": "http://documentos:5107/api/v1/health",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "c0c0ced3-6d10-4cd1-857f-b95ab4c979b6"
+      "X-Traza-Id": "466feb21-c008-4beb-9e29-23b1b2ac5634"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "c0c0ced3-6d10-4cd1-857f-b95ab4c979b6"
+      "X-Traza-Id": "466feb21-c008-4beb-9e29-23b1b2ac5634"
     },
     "respuesta": "{\n  \"servicio\": \"documentos\",\n  \"version\": \"1.0.0\",\n  \"estado\": \"ok\",\n  \"dependencias\": {\n    \"postgres\": \"ok\",\n    \"redis\": \"ok\",\n    \"mongo\": \"ok\"\n  }\n}",
-    "ms": 16,
-    "traza": "c0c0ced3-6d10-4cd1-857f-b95ab4c979b6",
+    "ms": 18,
+    "traza": "466feb21-c008-4beb-9e29-23b1b2ac5634",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -3125,26 +3052,82 @@
     "evidencia": []
   },
   {
-    "id": "SAL-NOT",
-    "servicio": "notificaciones",
+    "id": "SAL-ZON",
+    "servicio": "zonas",
     "puerto": 5108,
-    "titulo": "Salud de notificaciones",
+    "titulo": "Salud de zonas",
     "objetivo": "Estado del servicio y de sus dependencias.",
     "metodo": "GET",
-    "url": "http://notificaciones:5108/api/v1/health",
+    "url": "http://zonas:5108/api/v1/health",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "32597578-f057-48f1-a7d8-53a8a2032040"
+      "X-Traza-Id": "db540f44-c95c-4849-9dcd-ccbef9c3ef02"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "32597578-f057-48f1-a7d8-53a8a2032040"
+      "X-Traza-Id": "db540f44-c95c-4849-9dcd-ccbef9c3ef02"
     },
-    "respuesta": "{\n  \"servicio\": \"notificaciones\",\n  \"version\": \"1.0.0\",\n  \"estado\": \"ok\",\n  \"dependencias\": {\n    \"postgres\": \"ok\",\n    \"redis\": \"ok\",\n    \"mongo\": \"no_aplica\"\n  }\n}",
-    "ms": 15,
-    "traza": "32597578-f057-48f1-a7d8-53a8a2032040",
+    "respuesta": "{\n  \"servicio\": \"zonas\",\n  \"version\": \"1.0.0\",\n  \"estado\": \"ok\",\n  \"dependencias\": {\n    \"postgres\": \"ok\",\n    \"redis\": \"ok\",\n    \"mongo\": \"no_aplica\"\n  }\n}",
+    "ms": 26,
+    "traza": "db540f44-c95c-4849-9dcd-ccbef9c3ef02",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "SAL-MIC",
+    "servicio": "microhubs",
+    "puerto": 5109,
+    "titulo": "Salud de microhubs",
+    "objetivo": "Estado del servicio y de sus dependencias.",
+    "metodo": "GET",
+    "url": "http://microhubs:5109/api/v1/health",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "24bc704d-6248-4d0f-89e7-1de7eec8aa81"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "24bc704d-6248-4d0f-89e7-1de7eec8aa81"
+    },
+    "respuesta": "{\n  \"servicio\": \"microhubs\",\n  \"version\": \"1.0.0\",\n  \"estado\": \"ok\",\n  \"dependencias\": {\n    \"postgres\": \"ok\",\n    \"redis\": \"ok\",\n    \"mongo\": \"no_aplica\"\n  }\n}",
+    "ms": 19,
+    "traza": "24bc704d-6248-4d0f-89e7-1de7eec8aa81",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "SAL-SEG",
+    "servicio": "seguimiento",
+    "puerto": 5110,
+    "titulo": "Salud de seguimiento",
+    "objetivo": "Estado del servicio y de sus dependencias.",
+    "metodo": "GET",
+    "url": "http://seguimiento:5110/api/v1/health",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "c10147b8-3f8a-4bfb-a925-97543ca76e68"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "c10147b8-3f8a-4bfb-a925-97543ca76e68"
+    },
+    "respuesta": "{\n  \"servicio\": \"seguimiento\",\n  \"version\": \"1.0.0\",\n  \"estado\": \"ok\",\n  \"dependencias\": {\n    \"postgres\": \"ok\",\n    \"redis\": \"ok\",\n    \"mongo\": \"ok\"\n  }\n}",
+    "ms": 17,
+    "traza": "c10147b8-3f8a-4bfb-a925-97543ca76e68",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -3162,18 +3145,18 @@
     "url": "http://auth:5101/api/v1/auth/validar",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "027bc2a8-f6d6-4c8a-8a10-4b1a30efcd4d",
+      "X-Traza-Id": "7860f153-17bc-414b-a9c4-4f52e1452719",
       "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)"
     },
     "cuerpo": "",
     "status": 200,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "X-Traza-Id": "027bc2a8-f6d6-4c8a-8a10-4b1a30efcd4d"
+      "X-Traza-Id": "7860f153-17bc-414b-a9c4-4f52e1452719"
     },
-    "respuesta": "{\n  \"valido\": true,\n  \"expira_en\": 893,\n  \"usuario\": {\n    \"id\": 1,\n    \"rol\": \"administrador\",\n    \"microhub_id\": null\n  }\n}",
-    "ms": 87,
-    "traza": "027bc2a8-f6d6-4c8a-8a10-4b1a30efcd4d",
+    "respuesta": "{\n  \"valido\": true,\n  \"expira_en\": 890,\n  \"usuario\": {\n    \"id\": 1,\n    \"rol\": \"administrador\",\n    \"microhub_id\": null\n  }\n}",
+    "ms": 5,
+    "traza": "7860f153-17bc-414b-a9c4-4f52e1452719",
     "esperado": 200,
     "obtenido": 200,
     "estado": "PASA",
@@ -3182,16 +3165,16 @@
     "evidencia": [
       {
         "motor": "MongoDB",
-        "consulta": "db.logs_tecnicos.findOne({correlacion_id: '027bc2a8-f6d6-4c8a-8a10-4b1a30efcd4d'})",
+        "consulta": "db.logs_tecnicos.findOne({correlacion_id: '7860f153-17bc-414b-a9c4-4f52e1452719'})",
         "resultado": {
           "nivel": "INFO",
           "componente": "auth",
-          "registrado_en": "2026-10-13 14:12:08.082000+00:00",
-          "correlacion_id": "027bc2a8-f6d6-4c8a-8a10-4b1a30efcd4d",
+          "registrado_en": "2026-10-13 21:27:43.953000+00:00",
+          "correlacion_id": "7860f153-17bc-414b-a9c4-4f52e1452719",
           "mensaje": "GET /api/v1/auth/validar -> 200",
           "usuario_id": 1,
           "ruta": "/api/v1/auth/validar",
-          "duracion_ms": 3,
+          "duracion_ms": 1,
           "contexto": {
             "metodo": "GET",
             "status": 200,
@@ -3208,42 +3191,52 @@
           {
             "_id": "auth",
             "peticiones": 18,
-            "ms_promedio": 153.44444444444446
-          },
-          {
-            "_id": "catalogos",
-            "peticiones": 9,
-            "ms_promedio": 41.22222222222222
+            "ms_promedio": 221.44444444444446
           },
           {
             "_id": "documentos",
             "peticiones": 10,
-            "ms_promedio": 16.1
+            "ms_promedio": 29.6
           },
           {
             "_id": "entregas",
-            "peticiones": 14,
-            "ms_promedio": 69.57142857142857
+            "peticiones": 12,
+            "ms_promedio": 90.25
           },
           {
-            "_id": "notificaciones",
-            "peticiones": 9,
-            "ms_promedio": 31.333333333333332
+            "_id": "microhubs",
+            "peticiones": 3,
+            "ms_promedio": 68.0
           },
           {
             "_id": "pedidos",
             "peticiones": 8,
-            "ms_promedio": 52.375
+            "ms_promedio": 69.375
           },
           {
             "_id": "planeacion",
             "peticiones": 16,
-            "ms_promedio": 69.25
+            "ms_promedio": 77.625
+          },
+          {
+            "_id": "productos",
+            "peticiones": 7,
+            "ms_promedio": 48.0
+          },
+          {
+            "_id": "seguimiento",
+            "peticiones": 4,
+            "ms_promedio": 35.25
           },
           {
             "_id": "usuarios",
             "peticiones": 8,
-            "ms_promedio": 27.75
+            "ms_promedio": 47.125
+          },
+          {
+            "_id": "zonas",
+            "peticiones": 4,
+            "ms_promedio": 46.5
           }
         ]
       }
@@ -3251,43 +3244,43 @@
   },
   {
     "id": "RAT-01",
-    "servicio": "catalogos",
-    "puerto": 5103,
+    "servicio": "zonas",
+    "puerto": 5108,
     "titulo": "Límite de consumo excedido",
     "objetivo": "Más de 240 solicitudes por minuto desde la misma IP.",
     "metodo": "GET",
-    "url": "http://catalogos:5103/api/v1/zonas",
+    "url": "http://zonas:5108/api/v1/zonas",
     "encabezados": {
       "Accept": "application/json",
-      "X-Traza-Id": "ee6181ab-8772-49f2-b4b2-486f8c128219"
+      "X-Traza-Id": "08471f50-02aa-496f-bf9d-ab2edfc30c5d"
     },
     "cuerpo": "",
     "status": 429,
     "encabezados_respuesta": {
       "Content-Type": "application/json; charset=utf-8",
-      "Retry-After": "50",
-      "X-Traza-Id": "ee6181ab-8772-49f2-b4b2-486f8c128219"
+      "Retry-After": "13",
+      "X-Traza-Id": "08471f50-02aa-496f-bf9d-ab2edfc30c5d"
     },
-    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"LIMITE_EXCEDIDO\",\n    \"mensaje\": \"Máximo 240 solicitudes por minuto. Espera 50 segundos.\",\n    \"traza_id\": \"ee6181ab-8772-49f2-b4b2-486f8c128219\"\n  }\n}",
+    "respuesta": "{\n  \"error\": {\n    \"codigo\": \"LIMITE_EXCEDIDO\",\n    \"mensaje\": \"Máximo 240 solicitudes por minuto. Espera 13 segundos.\",\n    \"traza_id\": \"08471f50-02aa-496f-bf9d-ab2edfc30c5d\"\n  }\n}",
     "ms": 4,
-    "traza": "ee6181ab-8772-49f2-b4b2-486f8c128219",
+    "traza": "08471f50-02aa-496f-bf9d-ab2edfc30c5d",
     "esperado": 429,
     "obtenido": 429,
     "estado": "PASA",
     "nota": "",
-    "explicacion": "Contador rate:catalogos:{ip}:{minuto} en Redis (db 1) con TTL de 120 s; responde Retry-After.",
+    "explicacion": "Contador rate:zonas:{ip}:{minuto} en Redis (db 1) con TTL de 120 s; responde Retry-After.",
     "evidencia": [
       {
         "motor": "Redis",
-        "consulta": "db1 GET rate:catalogos:a2c150a8debab0b5:29865012; db1 TTL rate:catalogos:a2c150a8debab0b5:29865012",
+        "consulta": "db1 GET rate:zonas:01e0126676ba0221:29865447; db1 TTL rate:zonas:01e0126676ba0221:29865447",
         "resultado": [
           {
-            "comando": "db1 GET rate:catalogos:a2c150a8debab0b5:29865012",
+            "comando": "db1 GET rate:zonas:01e0126676ba0221:29865447",
             "valor": "242"
           },
           {
-            "comando": "db1 TTL rate:catalogos:a2c150a8debab0b5:29865012",
-            "valor": 113
+            "comando": "db1 TTL rate:zonas:01e0126676ba0221:29865447",
+            "valor": 110
           }
         ]
       }

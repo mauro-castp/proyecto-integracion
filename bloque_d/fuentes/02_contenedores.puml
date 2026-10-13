@@ -10,7 +10,7 @@ rectangle "Navegador web" as NAV
 rectangle "**Sistema web empresarial**\nPython · Flask · Jinja2\n//Funciona por sí solo//" as WEB #C9DCF0
 rectangle "**App Android**\nKotlin · consumo JSON\n//Repartidor//" as AND
 rectangle "**App de escritorio**\nC# · Windows Forms · consumo XML\n//Planeación//" as ESC
-rectangle "**8 microservicios**\nPython · Flask · /api/v1\n//auth · usuarios · catálogos · pedidos\nentregas · planeación · documentos · notificaciones//" as MS
+rectangle "**10 microservicios**\nPython · Flask · /api/v1\n//auth · usuarios · productos · zonas · microhubs\npedidos · entregas · seguimiento\nplaneación · documentos//" as MS
 
 database "**PostgreSQL**\nTransaccional, reglas y auditoría" as PG
 database "**MongoDB**\nEvidencias, GPS, simulaciones, logs" as MG

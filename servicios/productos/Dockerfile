@@ -1,12 +1,12 @@
-# Microservicio catalogos · puerto 5103
-# Catálogos: productos, zonas y microhubs con caché en Redis.
+# Microservicio productos · puerto 5103
+# Productos: catálogo comercial con su categoría (PostgreSQL + caché Redis).
 #
 # Contexto de construcción: la RAÍZ del repositorio (docker-compose.integrado.yml lo indica), porque la
 # imagen incluye los XSD y ejemplos oficiales del contrato v1 y la base común servicios/comun.
-#   docker build -f servicios/catalogos/Dockerfile -t microhubs-catalogos .
+#   docker build -f servicios/productos/Dockerfile -t microhubs-productos .
 FROM python:3.12-slim
 
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONPATH=/app SERVICIO=catalogos PUERTO=5103
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONPATH=/app SERVICIO=productos PUERTO=5103
 WORKDIR /app
 
 COPY servicios/requirements.txt .
@@ -18,7 +18,7 @@ COPY app_movil/app/src/test/resources/contratos /app/ejemplos_json
 COPY servicios/comun /app/comun
 COPY servicios/pruebas /app/pruebas
 COPY servicios/migrar.py /app/migrar.py
-COPY servicios/catalogos /app/servicio
+COPY servicios/productos /app/servicio
 
 # Sin privilegios de administrador dentro del contenedor.
 RUN useradd --uid 10001 --no-create-home servicio

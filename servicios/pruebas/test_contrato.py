@@ -1,5 +1,5 @@
 """
-test_contrato.py — Los ocho microservicios contra PostgreSQL y Redis reales.
+test_contrato.py — Los diez microservicios contra PostgreSQL y Redis reales.
 
 Reproduce los recorridos con los que se probaron las apps (BackendReal de
 app_escritorio/pruebas/Pruebas.cs y BackendRealTest.kt de Android) y además
@@ -35,7 +35,7 @@ if not config.MONGO_URL:
     import mongomock
     datos.usar_mongo(mongomock.MongoClient(tz_aware=True)[config.MONGO_DB])
 
-SERVICIOS = ["auth", "usuarios", "catalogos", "pedidos", "entregas", "planeacion", "documentos", "notificaciones"]
+SERVICIOS = ["auth", "usuarios", "productos", "pedidos", "entregas", "planeacion", "documentos", "zonas", "microhubs", "seguimiento"]
 APPS = {s: importlib.import_module(f"{s}.app").app for s in SERVICIOS}
 CLAVE = os.environ.get("MICROHUBS_CLAVE", "Codex#2026")
 EJEMPLOS = config.EJEMPLOS_JSON
@@ -122,15 +122,15 @@ class T1Escritorio(unittest.TestCase):
         self.assertIn("Intento", err["mensaje"])
 
         # catálogo
-        _, (raiz, d) = plan.llamar("catalogos", "GET", "productos?pagina=1&por_pagina=5&q=arroz", estado=200)
+        _, (raiz, d) = plan.llamar("productos", "GET", "productos?pagina=1&por_pagina=5&q=arroz", estado=200)
         self.assertEqual(raiz, "productos")
         self.assertTrue(d["datos"])
         prod = d["datos"]["producto"]["id"] if isinstance(d["datos"]["producto"], dict) else d["datos"]["producto"][0]["id"]
-        r1, _ = plan.llamar("catalogos", "GET", "productos?pagina=1&por_pagina=5&q=arroz", estado=200)
+        r1, _ = plan.llamar("productos", "GET", "productos?pagina=1&por_pagina=5&q=arroz", estado=200)
         self.assertEqual(r1.headers["X-Cache"], "HIT", "la segunda consulta sale de Redis")
-        self.assertEqual(plan.llamar("catalogos", "GET", f"productos/{prod}", estado=200)[1][0], "producto")
-        self.assertEqual(plan.llamar("catalogos", "GET", "zonas", estado=200)[1][0], "zonas")
-        self.assertEqual(plan.llamar("catalogos", "GET", "microhubs", estado=200)[1][0], "microhubs")
+        self.assertEqual(plan.llamar("productos", "GET", f"productos/{prod}", estado=200)[1][0], "producto")
+        self.assertEqual(plan.llamar("zonas", "GET", "zonas", estado=200)[1][0], "zonas")
+        self.assertEqual(plan.llamar("microhubs", "GET", "microhubs", estado=200)[1][0], "microhubs")
 
         # pedidos
         _, (_, d) = plan.llamar("pedidos", "GET", "pedidos?pagina=1&por_pagina=5&estado=entregado", estado=200)
@@ -143,7 +143,7 @@ class T1Escritorio(unittest.TestCase):
         self.assertEqual(plan.llamar("pedidos", "GET", "pedidos?desde=2026-13-40")[0].status_code, 400)
 
         # cada pantalla de lista trae filas con id
-        for srv, recurso in [("catalogos", "productos"), ("catalogos", "zonas"), ("catalogos", "microhubs"),
+        for srv, recurso in [("productos", "productos"), ("zonas", "zonas"), ("microhubs", "microhubs"),
                              ("pedidos", "pedidos"), ("planeacion", "candidatos")]:
             _, (raiz, d) = plan.llamar(srv, "GET", f"{recurso}?pagina=1&por_pagina=20&q=", estado=200)
             self.assertEqual(raiz, recurso)
@@ -261,13 +261,13 @@ class T2Android(unittest.TestCase):
             "nombre": "x.jpg", "tipo_mime": "image/jpeg", "contenido_base64": base64.b64encode(b"%PDF-1.4").decode(),
             "referencia": {"tipo": "entrega", "id": str(p1["id"])}})
         self.assertEqual(r.status_code, 422, "la firma del archivo no es JPEG")
-        _, lote = api.llamar("entregas", "POST", f"entregas/{p1['id']}/ubicaciones", {"puntos": [
+        _, lote = api.llamar("seguimiento", "POST", f"seguimiento/{p1['id']}/ubicaciones", {"puntos": [
             {"latitud": 25.7488, "longitud": -100.3608, "precision_m": 9.0, "capturado_en": "2026-10-12T18:28:00-06:00"},
             {"latitud": 25.7495, "longitud": -100.3610, "capturado_en": "2026-10-12T18:29:00-06:00"},
             {"latitud": 25.7491, "longitud": -100.3611, "precision_m": 8.0, "capturado_en": "2026-10-12T18:30:00-06:00"}]},
             estado=201)
         self.assertEqual(lote, {"recibidos": 3})
-        _, rec = api.llamar("entregas", "GET", f"entregas/{p1['id']}/recorrido", estado=200)
+        _, rec = api.llamar("seguimiento", "GET", f"seguimiento/{p1['id']}/recorrido", estado=200)
         mismas_llaves(self, rec, ejemplo("Recorrido.ok"))
         self.assertEqual(rec["puntos"], 3)
         self.assertGreater(rec["distancia_km"], 0)
@@ -316,15 +316,10 @@ class T2Android(unittest.TestCase):
                               "AND referencia_id = %s", (det2["pedido_id"],), una=True)["n"]
         self.assertEqual(mov, 1)
 
-        # bandeja de notificaciones (misma tabla que el web)
-        _, bandeja = api.llamar("notificaciones", "GET", "notificaciones?pagina=1&por_pagina=20", estado=200)
-        mismas_llaves(self, bandeja, ejemplo("NotificacionLista.ok"))
-        aviso = next(a for a in bandeja["datos"] if not a["leida"])
-        _, antes = api.llamar("notificaciones", "GET", "notificaciones/conteo", estado=200)
-        _, leida = api.llamar("notificaciones", "POST", f"notificaciones/{aviso['id']}/leer", estado=200)
-        self.assertTrue(leida["leida"])
-        _, despues = api.llamar("notificaciones", "GET", "notificaciones/conteo", estado=200)
-        self.assertEqual(despues["no_leidas"], antes["no_leidas"] - 1)
+        # los avisos los crea el trigger del motor (ya no hay servicio de notificaciones): el repartidor tiene avisos sin leer
+        sin_leer = datos.consultar("SELECT count(*) AS n FROM web_notificacion WHERE destinatario_id = %s AND leido_en IS NULL",
+                                   (api.usuario["id"],), una=True)["n"]
+        self.assertGreater(sin_leer, 0)
 
         # cerrar sesión revoca el acceso
         viejo = api.token
@@ -348,11 +343,11 @@ class T3Contrato(unittest.TestCase):
             self.adm_xml.entrar("admin@codex.mx")
 
     def test_listas_y_detalles_json_igual_al_ejemplo_y_xml_valido(self):
-        casos = [("usuarios", "usuarios", "PerfilLista.ok"), ("catalogos", "productos", "ProductoLista.ok"),
-                 ("catalogos", "zonas", "ZonaLista.ok"), ("catalogos", "microhubs", "MicrohubLista.ok"),
+        casos = [("usuarios", "usuarios", "PerfilLista.ok"), ("productos", "productos", "ProductoLista.ok"),
+                 ("zonas", "zonas", "ZonaLista.ok"), ("microhubs", "microhubs", "MicrohubLista.ok"),
                  ("pedidos", "pedidos", "PedidoLista.ok"), ("entregas", "entregas", "EntregaLista.ok"),
                  ("planeacion", "candidatos", "CandidatoLista.ok"), ("planeacion", "escenarios", "EscenarioLista.ok"),
-                 ("notificaciones", "notificaciones", "NotificacionLista.ok"), ("documentos", "documentos", "DocumentoLista.ok")]
+                 ("documentos", "documentos", "DocumentoLista.ok")]
         for srv, ruta, ej in casos:
             with self.subTest(ruta):
                 _, d = self.adm_json.llamar(srv, "GET", f"{ruta}?pagina=1&por_pagina=3", estado=200)
@@ -360,7 +355,7 @@ class T3Contrato(unittest.TestCase):
                 self.adm_xml.llamar(srv, "GET", f"{ruta}?pagina=1&por_pagina=3", estado=200)
         _, cand = self.adm_json.llamar("planeacion", "GET", "candidatos/1", estado=200)
         mismas_llaves(self, cand, ejemplo("Candidato.ok"))
-        _, z = self.adm_json.llamar("catalogos", "GET", "zonas/1", estado=200)
+        _, z = self.adm_json.llamar("zonas", "GET", "zonas/1", estado=200)
         mismas_llaves(self, z, ejemplo("Zona.ok"))
         _, h = self.adm_json.llamar("pedidos", "GET", "pedidos/1/historial", estado=200)
         mismas_llaves(self, h, ejemplo("Historial.ok"))
@@ -397,15 +392,15 @@ class T3Contrato(unittest.TestCase):
         limite = config.LIMITE_POR_MINUTO
         config.LIMITE_POR_MINUTO = 3
         try:
-            codigos = [sin.llamar("catalogos", "GET", "zonas")[0] for _ in range(5)]
+            codigos = [sin.llamar("zonas", "GET", "zonas")[0] for _ in range(5)]
             ultimo = codigos[-1]
             self.assertEqual(ultimo.status_code, 429)
             self.assertTrue(int(ultimo.headers["Retry-After"]) >= 1)
         finally:
             config.LIMITE_POR_MINUTO = limite
-            datos.r_cache.delete(*datos.r_cache.keys("rate:catalogos:*") or ["x"])
+            datos.r_cache.delete(*datos.r_cache.keys("rate:zonas:*") or ["x"])
 
-    def test_salud_y_swagger_de_los_ocho(self):
+    def test_salud_y_swagger_de_los_diez(self):
         for s in SERVICIOS:
             with self.subTest(s):
                 c = APPS[s].test_client()

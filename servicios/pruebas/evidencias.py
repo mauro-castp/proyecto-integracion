@@ -39,8 +39,8 @@ os.environ.setdefault("LOG_STDOUT", "0")
 from comun import datos as bd  # noqa: E402
 from pruebas.preparar_entregas import preparar  # noqa: E402
 
-PUERTOS = {"auth": 5101, "usuarios": 5102, "catalogos": 5103, "pedidos": 5104, "entregas": 5105,
-           "planeacion": 5106, "documentos": 5107, "notificaciones": 5108}
+PUERTOS = {"auth": 5101, "usuarios": 5102, "productos": 5103, "pedidos": 5104, "entregas": 5105,
+           "planeacion": 5106, "documentos": 5107, "zonas": 5108, "microhubs": 5109, "seguimiento": 5110}
 CLAVE = os.environ.get("MICROHUBS_CLAVE", "Codex#2026")
 NS = "urn:microhubs:v1"
 JPEG = bytes([0xFF, 0xD8, 0xFF, 0xE0, 0, 16, 74, 70, 73, 70, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0]) + bytes(range(256))
@@ -286,29 +286,44 @@ def ejecutar(ev):
     ev.caso("USR-07", "usuarios", "Usuario inexistente", "Registro que no existe.", "GET", "usuarios/999999",
             token=t_adm, esperado=404)
 
-    # ---------- 3. CATÁLOGOS ----------
-    print("3. Catálogos (5103)")
-    ev.caso("CAT-01", "catalogos", "Productos con búsqueda (caché vacía)", "Consultar productos; la respuesta se guarda en Redis.",
+    # ---------- 3. PRODUCTOS ----------
+    print("3. Productos (5103)")
+    ev.caso("PRO-01", "productos", "Productos con búsqueda (caché vacía)", "Consultar productos; la respuesta se guarda en Redis.",
             "GET", "productos?q=arroz&pagina=1&por_pagina=5", token=t_plan,
             explicacion="Encabezado X-Cache: MISS. La llave cache:catalogo:productos:* expira según cache_catalogo_segundos.",
             evidencia=lambda r: [rd(*[(1, "TTL", k) for k in bd.r_cache.keys("cache:catalogo:productos:*")[:3]])])
-    ev.caso("CAT-02", "catalogos", "Misma consulta (desde Redis)", "La segunda consulta no toca PostgreSQL.", "GET",
+    ev.caso("PRO-02", "productos", "Misma consulta (desde Redis)", "La segunda consulta no toca PostgreSQL.", "GET",
             "productos?q=arroz&pagina=1&por_pagina=5", token=t_plan, verificar=lambda r: r.encabezados.get("X-Cache") == "HIT")
-    r = ev.caso("CAT-03", "catalogos", "Productos (XML)", "Lista en XML válida contra catalogos.xsd.", "GET",
+    r = ev.caso("PRO-03", "productos", "Productos (XML)", "Lista en XML válida contra catalogos.xsd.", "GET",
                 "productos?pagina=1&por_pagina=2", token=t_plan, formato="xml")
     pid_prod = int(re.search(r"<id>(\d+)</id>", r.texto).group(1)) if r and r.status == 200 else 1
-    ev.caso("CAT-04", "catalogos", "Un producto", "Detalle por id.", "GET", f"productos/{pid_prod}", token=t_plan)
-    ev.caso("CAT-05", "catalogos", "Producto inexistente", "Registro que no existe.", "GET", "productos/999999",
+    ev.caso("PRO-04", "productos", "Un producto", "Detalle por id.", "GET", f"productos/{pid_prod}", token=t_plan)
+    ev.caso("PRO-05", "productos", "Producto inexistente", "Registro que no existe.", "GET", "productos/999999",
             token=t_plan, esperado=404)
-    ev.caso("CAT-06", "catalogos", "Zonas (XML)", "Colonias atendidas con centroide.", "GET", "zonas", token=t_plan, formato="xml")
-    ev.caso("CAT-07", "catalogos", "Microhubs", "Microhubs con coordenadas y radio.", "GET", "microhubs?estatus=activo", token=t_plan)
-    ev.caso("CAT-08", "catalogos", "Paginación fuera de rango", "por_pagina máximo 100.", "GET", "productos?por_pagina=500",
+    ev.caso("PRO-06", "productos", "Paginación fuera de rango", "por_pagina máximo 100.", "GET", "productos?por_pagina=500",
             token=t_plan, esperado=400)
-    ev.caso("CAT-09", "catalogos", "Sin token", "Todo endpoint protegido exige Authorization: Bearer.", "GET", "productos",
+    ev.caso("PRO-07", "productos", "Sin token", "Todo endpoint protegido exige Authorization: Bearer.", "GET", "productos",
             esperado=401)
 
-    # ---------- 4. PEDIDOS ----------
-    print("4. Pedidos (5104)")
+    # ---------- 4. ZONAS ----------
+    print("4. Zonas (5108)")
+    ev.caso("ZON-01", "zonas", "Zonas (XML)", "Colonias atendidas con centroide, válidas contra catalogos.xsd.", "GET", "zonas",
+            token=t_plan, formato="xml")
+    ev.caso("ZON-02", "zonas", "Una zona", "Detalle por id.", "GET", "zonas/1", token=t_plan)
+    ev.caso("ZON-03", "zonas", "Zona inexistente", "Registro que no existe.", "GET", "zonas/999999", token=t_plan, esperado=404)
+    ev.caso("ZON-04", "zonas", "Sin token", "Todo endpoint protegido exige Authorization: Bearer.", "GET", "zonas", esperado=401)
+
+    # ---------- 5. MICROHUBS ----------
+    print("5. Microhubs (5109)")
+    ev.caso("MIC-01", "microhubs", "Microhubs activos", "Microhubs con coordenadas y radio.", "GET", "microhubs?estatus=activo",
+            token=t_plan)
+    ev.caso("MIC-02", "microhubs", "Microhub inexistente", "Registro que no existe.", "GET", "microhubs/999999",
+            token=t_plan, esperado=404)
+    ev.caso("MIC-03", "microhubs", "Sin token", "Todo endpoint protegido exige Authorization: Bearer.", "GET", "microhubs",
+            esperado=401)
+
+    # ---------- 6. PEDIDOS ----------
+    print("6. Pedidos (5104)")
     r = ev.caso("PED-01", "pedidos", "Pedidos entregados (JSON)", "Lista filtrada por estado y fechas.", "GET",
                 "pedidos?estado=entregado&pagina=1&por_pagina=5", token=t_plan)
     pid = r.json["datos"][0]["id"] if r and r.status == 200 and r.json["datos"] else 1
@@ -337,8 +352,8 @@ def ejecutar(ev):
             explicacion="El trigger fn_valida_transicion de PostgreSQL rechaza la transición (RN20); el estado no cambia.",
             evidencia=lambda r: [pg("SELECT id, folio, estado FROM pedido WHERE id = %s", (ent["id"],))])
 
-    # ---------- 5. DOCUMENTOS ----------
-    print("5. Documentos (5107)")
+    # ---------- 7. DOCUMENTOS ----------
+    print("7. Documentos (5107)")
     r = ev.caso("DOC-01", "documentos", "Subir evidencia de entrega", "Guardar la foto en MongoDB ligada a la entrega.",
                 "POST", "documentos", token=t_rep, esperado=201,
                 cuerpo={"nombre": f"evidencia-entrega-{e1}.jpg", "tipo_mime": "image/jpeg", "contenido_base64": B64,
@@ -379,21 +394,13 @@ def ejecutar(ev):
     ev.caso("DOC-10", "documentos", "Id inexistente", "Registro que no existe.", "GET", "documentos/" + "f" * 24,
             token=t_rep, esperado=404)
 
-    # ---------- 6. ENTREGAS ----------
-    print("6. Entregas (5105)")
-    ev.caso("ENT-01", "entregas", "Mis entregas", "Paradas abiertas del repartidor en el turno de hoy (RN25).", "GET",
-            "entregas/mias?pagina=1&por_pagina=20", token=t_rep,
-            verificar=lambda r: {e1, e2} <= {x["id"] for x in r.json["datos"]})
-    r = ev.caso("ENT-02", "entregas", "Detalle de la entrega", "Cliente, domicilio y líneas.", "GET", f"entregas/{e1}", token=t_rep)
-    det1 = r.json
-    det2 = ev.http("entregas", "GET", f"entregas/{e2}", token=t_rep)[0].json
-    ev.caso("ENT-03", "entregas", "Entrega de otro repartidor", "El repartidor 2 no ve la entrega del repartidor 1.", "GET",
-            f"entregas/{e1}", token=t_rep2, esperado=404)
+    # ---------- 8. SEGUIMIENTO ----------
+    print("8. Seguimiento (5110)")
     import datetime as dt
     hora = lambda minutos=0: (dt.datetime.now(dt.timezone.utc) - dt.timedelta(minutes=minutos)).isoformat(timespec="seconds")
     ahora = hora()
-    ev.caso("ENT-04", "entregas", "Enviar puntos GPS", "Guardar el recorrido del repartidor en MongoDB.", "POST",
-            f"entregas/{e1}/ubicaciones", token=t_rep, esperado=201,
+    ev.caso("SEG-01", "seguimiento", "Enviar puntos GPS", "Guardar el recorrido del repartidor en MongoDB.", "POST",
+            f"seguimiento/{e1}/ubicaciones", token=t_rep, esperado=201,
             cuerpo={"puntos": [{"latitud": 25.7480, "longitud": -100.3600, "precision_m": 9.0, "capturado_en": hora(6)},
                                {"latitud": 25.7486, "longitud": -100.3606, "precision_m": 8.0, "capturado_en": hora(4)},
                                {"latitud": 25.7491, "longitud": -100.3611, "precision_m": 8.5, "capturado_en": hora(2)}]},
@@ -402,17 +409,32 @@ def ejecutar(ev):
                                                 for d in db.ubicaciones_entrega.find({"entrega_id": e1}).sort("capturado_en", 1)]),
                                  mg("db.ubicaciones_entrega.getIndexes()",
                                     lambda db: list(db.ubicaciones_entrega.index_information().keys()))])
-    ev.caso("ENT-05", "entregas", "Resumen del recorrido", "Agregación en MongoDB sobre los puntos GPS.", "GET",
-            f"entregas/{e1}/recorrido", token=t_rep, verificar=lambda r: r.json["puntos"] == 3,
+    ev.caso("SEG-02", "seguimiento", "Resumen del recorrido", "Agregación en MongoDB sobre los puntos GPS.", "GET",
+            f"seguimiento/{e1}/recorrido", token=t_rep, verificar=lambda r: r.json["puntos"] == 3,
             explicacion="Pipeline: $match por entrega_id → $sort por capturado_en → $group (conteo, inicio, fin, precisión "
                         "promedio y ruta). La distancia se calcula con Haversine sobre la ruta.")
+    ev.caso("SEG-03", "seguimiento", "Recorrido de otro repartidor", "El repartidor 2 no ve el rastro de la entrega del repartidor 1.",
+            "GET", f"seguimiento/{e1}/recorrido", token=t_rep2, esperado=404)
+    ev.caso("SEG-04", "seguimiento", "Recorrido sin token", "Todo endpoint protegido exige Authorization: Bearer.", "GET",
+            f"seguimiento/{e1}/recorrido", esperado=401)
+
+    # ---------- 9. ENTREGAS ----------
+    print("9. Entregas (5105)")
+    ev.caso("ENT-01", "entregas", "Mis entregas", "Paradas abiertas del repartidor en el turno de hoy (RN25).", "GET",
+            "entregas/mias?pagina=1&por_pagina=20", token=t_rep,
+            verificar=lambda r: {e1, e2} <= {x["id"] for x in r.json["datos"]})
+    r = ev.caso("ENT-02", "entregas", "Detalle de la entrega", "Cliente, domicilio y líneas.", "GET", f"entregas/{e1}", token=t_rep)
+    det1 = r.json
+    det2 = ev.http("entregas", "GET", f"entregas/{e2}", token=t_rep)[0].json
+    ev.caso("ENT-03", "entregas", "Entrega de otro repartidor", "El repartidor 2 no ve la entrega del repartidor 1.", "GET",
+            f"entregas/{e1}", token=t_rep2, esperado=404)
     uid = str(uuid.uuid4())
     cierre = {"resultado": "entregado", "monto_cobrado": det1["total"] if det1 else 0, "cambio_entregado": 0.0,
               "ubicacion": {"latitud": 25.7491, "longitud": -100.3611, "precision_m": 8.5},
               "evidencia_ids": [doc1], "capturado_en": ahora, "id_cliente_local": uid}
-    ev.caso("ENT-06", "entregas", "Monto incorrecto (regla de negocio)", "Una entrega completa cobra el total (RN27).", "POST",
+    ev.caso("ENT-04", "entregas", "Monto incorrecto (regla de negocio)", "Una entrega completa cobra el total (RN27).", "POST",
             f"entregas/{e1}/resultado", cuerpo={**cierre, "monto_cobrado": 1.0}, token=t_rep, esperado=422)
-    ev.caso("ENT-07", "entregas", "Cerrar entrega como entregado", "Registrar el resultado con evidencia y ubicación.", "POST",
+    ev.caso("ENT-05", "entregas", "Cerrar entrega como entregado", "Registrar el resultado con evidencia y ubicación.", "POST",
             f"entregas/{e1}/resultado", cuerpo=cierre, token=t_rep, esperado=201,
             verificar=lambda r: r.json["estado_pedido"] == "entregado" and r.json["duplicado"] is False,
             explicacion="Una sola transacción: cierra la entrega, cambia el pedido (el trigger valida la transición y escribe "
@@ -426,16 +448,16 @@ def ejecutar(ev):
                    "WHERE referencia_tipo = 'pedido' AND referencia_id = %s ORDER BY id DESC LIMIT 1", (str(det1["pedido_id"]),)),
                 mg(f"db.sincronizaciones_moviles.findOne({{operacion_uuid: '{uid}'}})",
                    lambda db: {k: v for k, v in (db.sincronizaciones_moviles.find_one({"operacion_uuid": uid}) or {}).items() if k != "_id"})])
-    ev.caso("ENT-08", "entregas", "Reintento con el mismo UUID", "Idempotencia: el cierre no se aplica dos veces.", "POST",
+    ev.caso("ENT-06", "entregas", "Reintento con el mismo UUID", "Idempotencia: el cierre no se aplica dos veces.", "POST",
             f"entregas/{e1}/resultado", cuerpo=cierre, token=t_rep, esperado=200,
             verificar=lambda r: r.json["duplicado"] is True,
             explicacion="La respuesta es la misma con duplicado=true. MongoDB actualiza el documento de la operación (intentos = 2).",
             evidencia=lambda r: [mg(f"db.sincronizaciones_moviles.findOne({{operacion_uuid: '{uid}'}}, {{estado: 1, intentos: 1}})",
                                     lambda db: {k: v for k, v in (db.sincronizaciones_moviles.find_one({"operacion_uuid": uid}) or {}).items()
                                                 if k in ("estado", "intentos", "sincronizado_en")})])
-    ev.caso("ENT-09", "entregas", "Otro cierre sobre la misma entrega", "Conflicto: ya estaba cerrada con otra operación.", "POST",
+    ev.caso("ENT-07", "entregas", "Otro cierre sobre la misma entrega", "Conflicto: ya estaba cerrada con otra operación.", "POST",
             f"entregas/{e1}/resultado", cuerpo={**cierre, "id_cliente_local": str(uuid.uuid4())}, token=t_rep, esperado=409)
-    ev.caso("ENT-10", "entregas", "Detalle tras el cierre", "El repartidor deja de ver el domicilio (RN26).", "GET",
+    ev.caso("ENT-08", "entregas", "Detalle tras el cierre", "El repartidor deja de ver el domicilio (RN26).", "GET",
             f"entregas/{e1}", token=t_rep, esperado=404)
     if det2 and len(det2.get("lineas", [])) >= 2:
         l0, l1 = det2["lineas"][0], det2["lineas"][1]
@@ -444,21 +466,21 @@ def ejecutar(ev):
                               {"pedido_detalle_id": l1["pedido_detalle_id"], "cantidad_entregada": 0, "cantidad_devuelta": l1["cantidad"]}],
                    "ubicacion": {"latitud": 25.7491, "longitud": -100.3611}, "evidencia_ids": [doc2],
                    "capturado_en": ahora, "id_cliente_local": str(uuid.uuid4())}
-        ev.caso("ENT-11", "entregas", "Parcial sin motivo", "Cada línea devuelta necesita motivo (RN28).", "POST",
+        ev.caso("ENT-09", "entregas", "Parcial sin motivo", "Cada línea devuelta necesita motivo (RN28).", "POST",
                 f"entregas/{e2}/resultado", cuerpo=parcial, token=t_rep, esperado=422)
         parcial["lineas"][1]["motivo"] = "El cliente la rechazó."
-        ev.caso("ENT-12", "entregas", "Cerrar como entrega parcial", "Devolver al inventario lo que no se entregó.", "POST",
+        ev.caso("ENT-10", "entregas", "Cerrar como entrega parcial", "Devolver al inventario lo que no se entregó.", "POST",
                 f"entregas/{e2}/resultado", cuerpo=parcial, token=t_rep, esperado=201,
                 explicacion="fn_devolver_inventario (la misma función que usa el web) regresa las unidades devueltas.",
                 evidencia=lambda r: [pg("SELECT entrega_id, pedido_detalle_id, cantidad_entregada, cantidad_devuelta, motivo "
                                         "FROM entrega_linea WHERE entrega_id = %s", (e2,)),
                                      pg("SELECT tipo, producto_id, cantidad, existencia_resultante, motivo FROM movimiento_inventario "
                                         "WHERE referencia_id = %s AND tipo = 'devolucion_parcial'", (det2["pedido_id"],))])
-    ev.caso("ENT-13", "entregas", "Entregas de un pedido (administrador)", "Consulta por pedido para el portal web.", "GET",
+    ev.caso("ENT-11", "entregas", "Entregas de un pedido (administrador)", "Consulta por pedido para el portal web.", "GET",
             f"entregas?pedido_id={det1['pedido_id']}", token=t_adm, verificar=lambda r: r.json["paginacion"]["total"] == 1)
 
-    # ---------- 7. PLANEACIÓN ----------
-    print("7. Planeación (5106)")
+    # ---------- 10. PLANEACIÓN ----------
+    print("10. Planeación (5106)")
     ev.caso("PLA-01", "planeacion", "Candidatos (XML)", "Lista de ubicaciones candidatas.", "GET",
             "candidatos?pagina=1&por_pagina=3", token=t_plan, formato="xml")
     clave = "EV-" + uuid.uuid4().hex[:6].upper()
@@ -521,35 +543,8 @@ def ejecutar(ev):
     ev.caso("PLA-16", "planeacion", "Candidato inexistente", "Registro que no existe.", "GET", "candidatos/999999",
             token=t_plan, esperado=404)
 
-    # ---------- 8. NOTIFICACIONES ----------
-    print("8. Notificaciones (5108)")
-    r = ev.caso("NOT-01", "notificaciones", "Mi bandeja", "Avisos del repartidor (misma tabla que el web).", "GET",
-                "notificaciones?pagina=1&por_pagina=5", token=t_rep,
-                explicacion="Incluye los avisos «Nueva entrega asignada» que genera el trigger al asignar la entrega.")
-    aviso = next((a for a in (r.json or {}).get("datos", []) if not a["leida"]), None) if r else None
-    ev.caso("NOT-02", "notificaciones", "Conteo sin leer", "Número de avisos pendientes.", "GET", "notificaciones/conteo", token=t_rep)
-    if aviso:
-        ev.caso("NOT-03", "notificaciones", "Marcar como leída", "Actualizar el aviso.", "POST",
-                f"notificaciones/{aviso['id']}/leer", token=t_rep, verificar=lambda r: r.json["leida"] is True,
-                evidencia=lambda r: [pg("SELECT id, titulo, leido_en FROM web_notificacion WHERE id = %s", (aviso["id"],))])
-        ev.caso("NOT-04", "notificaciones", "Leer un aviso ajeno", "Cada quien solo toca su bandeja.", "POST",
-                f"notificaciones/{aviso['id']}/leer", token=t_rep2, esperado=404)
-    r = ev.caso("NOT-05", "notificaciones", "Enviar aviso (administrador)", "Aviso manual a un usuario.", "POST", "notificaciones",
-                cuerpo={"usuario_id": 7, "tipo": "sistema", "titulo": "Reunión de turno",
-                        "mensaje": "Revisión de rutas a las 9:00.", "referencia": {"tipo": "sistema", "id": "turno"}},
-                token=t_adm, esperado=201)
-    nid = r.json["id"] if r and r.status == 201 else 0
-    ev.caso("NOT-06", "notificaciones", "Enviar aviso sin permiso", "Un repartidor no envía avisos.", "POST", "notificaciones",
-            cuerpo={"usuario_id": 1, "tipo": "sistema", "titulo": "x", "mensaje": "y"}, token=t_rep, esperado=403)
-    ev.caso("NOT-07", "notificaciones", "Destinatario inexistente", "Validación contra PostgreSQL.", "POST", "notificaciones",
-            cuerpo={"usuario_id": 999999, "tipo": "sistema", "titulo": "x", "mensaje": "y"}, token=t_adm, esperado=422)
-    ev.caso("NOT-08", "notificaciones", "Borrar un aviso (DELETE)", "Quitarlo de la bandeja.", "DELETE", f"notificaciones/{nid}",
-            token=t_rep, esperado=204)
-    ev.caso("NOT-09", "notificaciones", "Mi bandeja (XML)", "La bandeja en XML.", "GET", "notificaciones?por_pagina=2",
-            token=t_rep, formato="xml")
-
-    # ---------- 9. TRANSVERSALES ----------
-    print("9. Transversales")
+    # ---------- 11. TRANSVERSALES ----------
+    print("11. Transversales")
     for s in PUERTOS:
         ev.caso(f"SAL-{s[:3].upper()}", s, f"Salud de {s}", "Estado del servicio y de sus dependencias.", "GET", "health",
                 verificar=lambda r: r.json["estado"] == "ok")
@@ -566,14 +561,14 @@ def ejecutar(ev):
     # Límite de consumo: se agota al final para no frenar los demás casos.
     ultimo = None
     for _ in range(400):
-        ultimo, _e = ev.http("catalogos", "GET", "zonas")
+        ultimo, _e = ev.http("zonas", "GET", "zonas")
         if ultimo.status == 429:
             break
-    ev.caso("RAT-01", "catalogos", "Límite de consumo excedido", "Más de 240 solicitudes por minuto desde la misma IP.",
+    ev.caso("RAT-01", "zonas", "Límite de consumo excedido", "Más de 240 solicitudes por minuto desde la misma IP.",
             "GET", "zonas", esperado=429, verificar=lambda r: int(r.encabezados.get("Retry-After", 0)) >= 1,
-            explicacion="Contador rate:catalogos:{ip}:{minuto} en Redis (db 1) con TTL de 120 s; responde Retry-After.",
-            evidencia=lambda r: [rd(*[(1, "GET", k) for k in bd.r_cache.keys("rate:catalogos:*")[:1]],
-                                    *[(1, "TTL", k) for k in bd.r_cache.keys("rate:catalogos:*")[:1]])])
+            explicacion="Contador rate:zonas:{ip}:{minuto} en Redis (db 1) con TTL de 120 s; responde Retry-After.",
+            evidencia=lambda r: [rd(*[(1, "GET", k) for k in bd.r_cache.keys("rate:zonas:*")[:1]],
+                                    *[(1, "TTL", k) for k in bd.r_cache.keys("rate:zonas:*")[:1]])])
 
 
 # --------------------------------------------------------------------

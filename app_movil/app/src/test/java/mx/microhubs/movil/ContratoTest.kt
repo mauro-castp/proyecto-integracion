@@ -36,12 +36,6 @@ class ContratoTest {
         assertTrue(d.direccion.startsWith("Av. Rodrigo Gómez 1420"))
     }
 
-    @Test fun lasNotificacionesSeLeenConLosCamposDelContrato() {
-        val a = Contrato.aviso(Ejemplos.json("Notificacion.ok"))
-        assertEquals(310, a.id); assertFalse(a.leida); assertEquals("Nueva entrega asignada", a.titulo)
-        assertEquals(1, Ejemplos.json("Conteo.ok").length())
-    }
-
     @Test fun losErroresDelContratoTienenLaEstructuraQueLaAppInterpreta() {
         listOf("Error.validacion", "Error.no_encontrado", "Error.token_invalido").forEach {
             val e = Ejemplos.json(it).getJSONObject("error")
