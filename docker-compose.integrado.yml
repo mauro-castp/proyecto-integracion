@@ -1,0 +1,159 @@
+# docker-compose.integrado.yml — Plataforma completa del Segundo Parcial
+# Codex Innovations · Equipo 04
+#
+#   docker compose -f docker-compose.integrado.yml up --build -d
+#
+# Levanta PostgreSQL, Redis y MongoDB, el sistema web (http://localhost:5000)
+# y los ocho microservicios del contrato v1, cada uno en su contenedor y su
+# puerto (5101 a 5108), que son los que usan la app Android y la de escritorio.
+#
+#   Swagger de cada servicio:  http://localhost:51XX/api/v1/docs
+#   Salud de cada servicio:    http://localhost:51XX/api/v1/salud
+#   Entregas de demostración:  docker compose -f docker-compose.integrado.yml exec entregas python pruebas/preparar_entregas.py --cantidad 2
+#
+# Sigue existiendo sistema_web/docker-compose.yml para levantar solo el web:
+# el sistema web funciona de manera independiente de los microservicios.
+
+name: microhubs-integrado
+
+x-entorno: &entorno
+  SECRET_KEY: ${SECRET_KEY:-cambiar-en-produccion}         # la MISMA llave en web y servicios: sesión común
+  PG_DSN: host=postgres port=5432 dbname=microhubs_p1 user=microhubs password=${POSTGRES_PASSWORD:-microhubs_dev}
+  REDIS_URL: redis://redis:6379
+  MONGO_URL: mongodb://mongo:27017/microhubs_eventos
+
+x-construir: &construir
+  context: .
+  dockerfile: servicios/Dockerfile
+
+x-servicio: &servicio
+  depends_on:
+    migraciones: {condition: service_completed_successfully}
+    redis: {condition: service_healthy}
+    mongo: {condition: service_healthy}
+  networks: [datos, publica]
+  restart: unless-stopped
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: microhubs_p1
+      POSTGRES_USER: microhubs
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-microhubs_dev}
+    volumes:
+      - datos_pg:/var/lib/postgresql/data
+      - ./bloque_c/sql:/docker-entrypoint-initdb.d:ro       # 01 a 08 en el primer arranque
+    networks: [datos]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U microhubs -d microhubs_p1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --save "" --appendonly no --maxmemory 256mb --maxmemory-policy noeviction
+    networks: [datos]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  mongo:
+    image: mongo:7
+    volumes:
+      - datos_mongo:/data/db
+      - ./bloque_c/mongo:/docker-entrypoint-initdb.d:ro    # 01 y 02 en el primer arranque
+    networks: [datos]
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  # Aplica 06, 07 y 08 a volúmenes que ya existían (idempotente) y termina.
+  migraciones:
+    build: {<<: *construir, args: {SERVICIO: auth}}
+    command: ["python", "migrar.py"]
+    environment: *entorno
+    volumes:
+      - ./bloque_c/sql:/app/sql:ro
+    depends_on:
+      postgres: {condition: service_healthy}
+    networks: [datos]
+    restart: "no"
+
+  web:
+    build: ./sistema_web
+    environment: *entorno
+    volumes:
+      - ./bloque_c/sql/06_planeacion.sql:/app/06_planeacion.sql:ro
+      - ./bloque_c/sql/07_web_ampliado.sql:/app/07_web_ampliado.sql:ro
+    command: >
+      sh -c "python migrar_planeacion.py && python migrar_web.py &&
+             exec gunicorn -b 0.0.0.0:5000 -w 3 --timeout 60 app:app"
+    ports: ["${WEB_PORT:-5000}:5000"]
+    depends_on:
+      migraciones: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    networks: [datos, publica]
+    restart: unless-stopped
+
+  auth:
+    <<: *servicio
+    build: {<<: *construir, args: {SERVICIO: auth}}
+    environment: {<<: *entorno, PUERTO: "5101"}
+    ports: ["5101:5101"]
+
+  usuarios:
+    <<: *servicio
+    build: {<<: *construir, args: {SERVICIO: usuarios}}
+    environment: {<<: *entorno, PUERTO: "5102"}
+    ports: ["5102:5102"]
+
+  catalogos:
+    <<: *servicio
+    build: {<<: *construir, args: {SERVICIO: catalogos}}
+    environment: {<<: *entorno, PUERTO: "5103"}
+    ports: ["5103:5103"]
+
+  pedidos:
+    <<: *servicio
+    build: {<<: *construir, args: {SERVICIO: pedidos}}
+    environment: {<<: *entorno, PUERTO: "5104"}
+    ports: ["5104:5104"]
+
+  entregas:
+    <<: *servicio
+    build: {<<: *construir, args: {SERVICIO: entregas}}
+    environment: {<<: *entorno, PUERTO: "5105"}
+    ports: ["5105:5105"]
+
+  planeacion:
+    <<: *servicio
+    build: {<<: *construir, args: {SERVICIO: planeacion}}
+    environment: {<<: *entorno, PUERTO: "5106"}
+    ports: ["5106:5106"]
+
+  documentos:
+    <<: *servicio
+    build: {<<: *construir, args: {SERVICIO: documentos}}
+    environment: {<<: *entorno, PUERTO: "5107"}
+    ports: ["5107:5107"]
+
+  notificaciones:
+    <<: *servicio
+    build: {<<: *construir, args: {SERVICIO: notificaciones}}
+    environment: {<<: *entorno, PUERTO: "5108"}
+    ports: ["5108:5108"]
+
+networks:
+  publica:
+  datos:
+    internal: true           # PostgreSQL, Redis y MongoDB sin salida a Internet ni puertos al host
+
+volumes:
+  datos_pg:
+  datos_mongo:
