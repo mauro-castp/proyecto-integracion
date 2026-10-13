@@ -26,7 +26,7 @@ from comun.esquemas import errores_xml  # noqa: E402
 from comun.formatos import a_xml, dinero, fecha, leer_xml, sin_nulos  # noqa: E402
 from comun.validar import Campo, validar  # noqa: E402
 
-SERVICIOS = ["auth", "usuarios", "catalogos", "pedidos", "entregas", "planeacion", "documentos", "notificaciones"]
+SERVICIOS = ["auth", "usuarios", "productos", "pedidos", "entregas", "planeacion", "documentos", "zonas", "microhubs", "seguimiento"]
 
 
 def cargar(nombre):
@@ -108,7 +108,7 @@ class Contrato(unittest.TestCase):
         for f in ejemplos:
             self.assertEqual(errores_xml(f.read_bytes()), [], f.name)
 
-    def test_openapi_de_los_ocho_servicios(self):
+    def test_openapi_de_los_diez_servicios(self):
         for s in SERVICIOS:
             with self.subTest(s):
                 app = cargar(s).app
@@ -136,9 +136,9 @@ class Contrato(unittest.TestCase):
         self.assertEqual(errores_xml(a_xml("resultados", r)), [], "la salida cumple planeacion.xsd")
 
     def test_haversine(self):
-        ent = cargar("entregas")
+        seg = cargar("seguimiento")
         # Un grado de latitud ≈ 111.2 km.
-        self.assertAlmostEqual(ent._haversine([-100.0, 25.0], [-100.0, 26.0]), 111.2, delta=0.1)
+        self.assertAlmostEqual(seg._haversine([-100.0, 25.0], [-100.0, 26.0]), 111.2, delta=0.1)
 
 
 if __name__ == "__main__":

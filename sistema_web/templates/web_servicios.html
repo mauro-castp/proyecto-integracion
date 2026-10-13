@@ -1,6 +1,6 @@
 {% extends 'base.html' %}{% block titulo %}Microservicios{% endblock %}{% block cuerpo %}
 <h1>Microservicios</h1>
-<p class="sub">El portal web consulta a los ocho servicios del contrato v1. Todo lo de esta página llegó por HTTP desde ellos.</p>
+<p class="sub">El portal web consulta a los diez servicios del contrato v1. Todo lo de esta página llegó por HTTP desde ellos.</p>
 <div class="panel" style="overflow:auto"><h2>Estado de los servicios</h2><table><thead><tr><th>Servicio</th><th>Puerto</th><th>Estado</th><th>PostgreSQL</th><th>Redis</th><th>MongoDB</th><th>ms</th><th>Swagger</th></tr></thead><tbody>
 {% for s in salud %}<tr><td>{{ s.servicio }}</td><td>{{ s.puerto }}</td>
 <td>{% if s.estado == 'ok' %}<span class="pill verde">ok</span>{% else %}<span class="pill rojo">{{ s.estado }}</span>{% endif %}</td>
@@ -23,7 +23,7 @@
 {% for x in resumen_sim.datos.por_decision %}<tr><td>{{ x.decision }}</td><td>{{ x.cantidad }}</td><td>{{ x.utilizacion_promedio }} %</td></tr>{% else %}<tr><td colspan="3">Sin simulaciones todavía.</td></tr>{% endfor %}
 </tbody></table>{% else %}<div class="aviso medio">{{ resumen_sim.mensaje or 'Sin respuesta' }}</div>{% endif %}</div>
 
-<div class="panel" style="overflow:auto"><h2>Respuesta XML real · <code>GET /api/v1/zonas</code> (catálogos)</h2>
+<div class="panel" style="overflow:auto"><h2>Respuesta XML real · <code>GET /api/v1/zonas</code> (servicio de zonas)</h2>
 <p class="ayuda">Misma ruta que en JSON; el encabezado <code>Accept: application/xml</code> la devuelve con el espacio de nombres <code>urn:microhubs:v1</code>, válida contra <code>catalogos.xsd</code>. HTTP {{ ejemplo_xml.status or 'sin conexión' }} · traza <code>{{ ejemplo_xml.traza[:8] }}</code>.</p>
 <pre style="white-space:pre-wrap;font-size:12px">{{ ejemplo_xml.crudo.decode('utf-8') if ejemplo_xml.crudo else ejemplo_xml.mensaje }}</pre></div>
 {% endblock %}

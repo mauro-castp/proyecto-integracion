@@ -2,7 +2,7 @@
 
 **Codex Innovations · Equipo 04**
 
-Ocho servicios Flask, cada uno en su contenedor y su puerto, que atienden a la app Android (JSON) y a la app de escritorio (XML
+Diez servicios Flask, cada uno con **una sola responsabilidad de negocio**, en su contenedor y su puerto, que atienden a la app Android (JSON) y a la app de escritorio (XML
 validado con los XSD oficiales de `app_escritorio/contratos/`). Comparten PostgreSQL, Redis y MongoDB con el sistema web, que
 sigue funcionando por su cuenta.
 
@@ -10,12 +10,36 @@ sigue funcionando por su cuenta.
 |---|---|---|---|---|
 | auth | 5101 | Sesión común JWT + Redis | `auth/login`, `auth/renovar`, `auth/salir`, `auth/validar` | PostgreSQL, Redis |
 | usuarios | 5102 | Perfil y consulta de usuarios | `usuarios/yo` (GET, PATCH), `usuarios`, `usuarios/{id}` | PostgreSQL |
-| catalogos | 5103 | Productos, zonas, microhubs (solo lectura) | `productos[/{id}]`, `zonas[/{id}]`, `microhubs[/{id}]` | PostgreSQL, caché Redis |
+| productos | 5103 | Catálogo comercial (solo lectura) | `productos[/{id}]` | PostgreSQL, caché Redis |
 | pedidos | 5104 | Consulta y cambio de estado | `pedidos`, `pedidos/{id}`, `pedidos/{id}/historial`, `pedidos/{id}/estado` | PostgreSQL |
-| entregas | 5105 | Reparto: paradas, cierre, GPS | `entregas/mias`, `entregas[/{id}]`, `entregas/{id}/resultado`, `entregas/{id}/ubicaciones`, `entregas/{id}/recorrido` | PostgreSQL, MongoDB |
+| entregas | 5105 | Reparto: paradas y cierre idempotente | `entregas/mias`, `entregas[/{id}]`, `entregas/{id}/resultado` | PostgreSQL, MongoDB |
 | planeacion | 5106 | Viabilidad de microhubs | `candidatos[/{id}]`, `candidatos/{id}/decision`, `candidatos/{id}/simular`, `simulaciones`, `simulaciones/resumen`, `escenarios[/{id}]` | PostgreSQL, MongoDB |
 | documentos | 5107 | Evidencias y archivos | `documentos`, `documentos/{id}`, `documentos/{id}/contenido`, `documentos/resumen` | MongoDB |
-| notificaciones | 5108 | Bandeja de avisos (misma tabla que el web) | `notificaciones`, `notificaciones/conteo`, `notificaciones/{id}/leer` | PostgreSQL |
+| zonas | 5108 | Zonas de cobertura (solo lectura) | `zonas[/{id}]` | PostgreSQL, caché Redis |
+| microhubs | 5109 | Red de microhubs (solo lectura) | `microhubs[/{id}]` | PostgreSQL, caché Redis |
+| seguimiento | 5110 | Rastro GPS de la entrega | `seguimiento/{id}/ubicaciones`, `seguimiento/{id}/recorrido` | MongoDB (PostgreSQL solo para el ámbito del perfil) |
+
+## Una responsabilidad por servicio
+
+Cada servicio responde a un solo objetivo de negocio y no mezcla temas ajenos:
+
+| Servicio | Objetivo de negocio |
+|---|---|
+| auth | Quién eres y si tu sesión sigue vigente |
+| usuarios | Perfil de la cuenta |
+| productos | Qué se vende |
+| zonas | Dónde se atiende (colonias) |
+| microhubs | Desde qué puntos se atiende |
+| pedidos | Ciclo de vida del pedido |
+| entregas | Ejecutar la entrega y cerrarla con sus reglas |
+| seguimiento | Dónde va el repartidor (GPS) |
+| planeacion | Decidir si conviene abrir un microhub |
+| documentos | Archivos y evidencias |
+
+Cambios de este parcial respecto a la primera versión: `catalogos` se separó en `productos`, `zonas` y `microhubs`; el GPS salió de `entregas`
+hacia `seguimiento` (las rutas pasaron de `entregas/{id}/ubicaciones|recorrido` a `seguimiento/{id}/ubicaciones|recorrido`); y se retiró
+`notificaciones` para quedar en 10 servicios (el máximo del parcial). Los avisos siguen existiendo: los crea el trigger del motor en
+`web_notificacion` y el portal web los muestra en su propia bandeja. `notificaciones.xsd` y sus ejemplos se conservan en el contrato v1.
 
 Cada servicio publica `GET /health` (alias de `/salud`, también bajo `/api/v1/`) y su documentación en
 **`http://localhost:51XX/api/v1/docs`** (Swagger UI, ejecutable con «Authorize» + «Try it out») y `/api/v1/openapi.json`.
@@ -33,6 +57,7 @@ Cada servicio tiene **su propio Dockerfile** (`servicios/<servicio>/Dockerfile`)
 | Autorización | `datos.py` | Permisos de la tabla `rol_permiso` (caché `cache:permisos:{rol}`, 5 min), los mismos del web |
 | Errores | `base_errores.py`, `validar.py` | `{codigo, mensaje, detalles[campo, mensaje], traza_id}`; todos los errores de validación juntos |
 | Límites | `base.py` | 240 solicitudes/min por IP y servicio (30 para login) en Redis; 429 con `Retry-After` |
+| Caché de catálogo | `catalogo.py` | Redis (base 1, `cache:catalogo:*`) para productos, zonas y microhubs; cada servicio conserva su propia consulta |
 | Registro | `base.py` | Cada petición: `logs_tecnicos` y `metricas_servicio` en MongoDB, sin tokens ni contraseñas |
 | Auditoría | PostgreSQL | El servicio declara quién actúa (`app.usuario_id`, `app.rol`); los triggers del motor auditan y validan transiciones |
 
@@ -54,8 +79,8 @@ El portal web consume los servicios por HTTP con el **mismo JWT de la sesión de
 
 | Pantalla del web | Servicios que llama | Qué demuestra |
 |---|---|---|
-| **Microservicios** (menú del administrador, `/web/servicios`) | los 8 (`/salud`), documentos y planeación (resúmenes), catálogos (XML) | estado de cada servicio, agregaciones de MongoDB y una respuesta XML real |
-| **Pedido → «Entrega, recorrido y evidencias»** (`/web/servicios/pedido/<id>`) | pedidos, entregas, documentos | detalle, historial, recorrido GPS (MongoDB) y fotos de evidencia; adjuntar un archivo que se guarda en MongoDB |
+| **Microservicios** (menú del administrador, `/web/servicios`) | los 10 (`/salud`), documentos y planeación (resúmenes), zonas (XML) | estado de cada servicio, agregaciones de MongoDB y una respuesta XML real |
+| **Pedido → «Entrega, recorrido y evidencias»** (`/web/servicios/pedido/<id>`) | pedidos, entregas, seguimiento, documentos | detalle, historial, recorrido GPS (MongoDB) y fotos de evidencia; adjuntar un archivo que se guarda en MongoDB |
 
 Cada llamada muestra su código HTTP, tiempo y `X-Traza-Id`, que también queda en `logs_tecnicos` de MongoDB. Si un servicio no
 responde, el web lo indica y sigue funcionando.
@@ -65,7 +90,7 @@ responde, el web lo indica y sigue funcionando.
 Desde la raíz del repositorio:
 
 ```bash
-docker compose -f docker-compose.integrado.yml up --build -d          # levantar (la primera vez construye 10 imágenes)
+docker compose -f docker-compose.integrado.yml up --build -d          # levantar (la primera vez construye 12 imágenes)
 docker compose -f docker-compose.integrado.yml ps -a                  # todo healthy; «migraciones» termina en Exited (0)
 docker compose -f docker-compose.integrado.yml logs -f entregas       # registro de un servicio
 docker compose -f docker-compose.integrado.yml exec entregas python pruebas/preparar_entregas.py --cantidad 2
@@ -73,7 +98,7 @@ docker compose -f docker-compose.integrado.yml down                   # detener 
 docker compose -f docker-compose.integrado.yml down -v                # detener y borrar volúmenes (base desde cero)
 ```
 
-Web: `http://localhost:5000`. Servicios: puertos 5101 a 5108. Cuentas: `sistema_web/README.md` (clave `Codex#2026`).
+Web: `http://localhost:5000`. Servicios: puertos 5101 a 5110. Cuentas: `sistema_web/README.md` (clave `Codex#2026`).
 Con un volumen de PostgreSQL ya existente, el contenedor `migraciones` aplica 06, 07 y 08 sin borrar datos. Si el puerto
 5000 está ocupado (por ejemplo, por `sistema_web/docker-compose.yml`), detener ese compose o usar `WEB_PORT=5050`.
 
@@ -101,7 +126,7 @@ Redes: `datos` (interna: PostgreSQL, Redis y MongoDB sin puertos al equipo) y `p
 pip install -r servicios/requirements.txt mongomock
 cd servicios
 python -m unittest -v pruebas.test_unitarias          # 14 · sin bases de datos: formatos, validación, XSD, OpenAPI, cálculos
-python -m unittest -v pruebas.test_contrato           # 7  · los 8 servicios: recorridos de escritorio y Android, XML vs XSD, JSON vs ejemplos
+python -m unittest -v pruebas.test_contrato           # 7  · los 10 servicios: recorridos de escritorio y Android, XML vs XSD, JSON vs ejemplos
 python -m unittest -v pruebas.test_web_integracion    # 5  · el web llamando a los servicios por HTTP real
 ```
 

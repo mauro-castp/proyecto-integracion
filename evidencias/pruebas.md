@@ -20,15 +20,20 @@
 | USR-05 | usuarios | Búsqueda y paginación. | `GET /api/v1/usuarios?q=codex&rol=operador&pagina=1&por_pagina=5` | 200 | 200 | PASA |
 | USR-06 | usuarios | Un repartidor no tiene usuarios.ver. | `GET /api/v1/usuarios` | 403 | 403 | PASA |
 | USR-07 | usuarios | Registro que no existe. | `GET /api/v1/usuarios/999999` | 404 | 404 | PASA |
-| CAT-01 | catalogos | Consultar productos; la respuesta se guarda en Redis. | `GET /api/v1/productos?q=arroz&pagina=1&por_pagina=5` | 200 | 200 | PASA |
-| CAT-02 | catalogos | La segunda consulta no toca PostgreSQL. | `GET /api/v1/productos?q=arroz&pagina=1&por_pagina=5` | 200 | 200 | PASA |
-| CAT-03 | catalogos | Lista en XML válida contra catalogos.xsd. | `GET /api/v1/productos?pagina=1&por_pagina=2` | 200 | 200 | PASA |
-| CAT-04 | catalogos | Detalle por id. | `GET /api/v1/productos/3` | 200 | 200 | PASA |
-| CAT-05 | catalogos | Registro que no existe. | `GET /api/v1/productos/999999` | 404 | 404 | PASA |
-| CAT-06 | catalogos | Colonias atendidas con centroide. | `GET /api/v1/zonas` | 200 | 200 | PASA |
-| CAT-07 | catalogos | Microhubs con coordenadas y radio. | `GET /api/v1/microhubs?estatus=activo` | 200 | 200 | PASA |
-| CAT-08 | catalogos | por_pagina máximo 100. | `GET /api/v1/productos?por_pagina=500` | 400 | 400 | PASA |
-| CAT-09 | catalogos | Todo endpoint protegido exige Authorization: Bearer. | `GET /api/v1/productos` | 401 | 401 | PASA |
+| PRO-01 | productos | Consultar productos; la respuesta se guarda en Redis. | `GET /api/v1/productos?q=arroz&pagina=1&por_pagina=5` | 200 | 200 | PASA |
+| PRO-02 | productos | La segunda consulta no toca PostgreSQL. | `GET /api/v1/productos?q=arroz&pagina=1&por_pagina=5` | 200 | 200 | PASA |
+| PRO-03 | productos | Lista en XML válida contra catalogos.xsd. | `GET /api/v1/productos?pagina=1&por_pagina=2` | 200 | 200 | PASA |
+| PRO-04 | productos | Detalle por id. | `GET /api/v1/productos/3` | 200 | 200 | PASA |
+| PRO-05 | productos | Registro que no existe. | `GET /api/v1/productos/999999` | 404 | 404 | PASA |
+| PRO-06 | productos | por_pagina máximo 100. | `GET /api/v1/productos?por_pagina=500` | 400 | 400 | PASA |
+| PRO-07 | productos | Todo endpoint protegido exige Authorization: Bearer. | `GET /api/v1/productos` | 401 | 401 | PASA |
+| ZON-01 | zonas | Colonias atendidas con centroide, válidas contra catalogos.xsd. | `GET /api/v1/zonas` | 200 | 200 | PASA |
+| ZON-02 | zonas | Detalle por id. | `GET /api/v1/zonas/1` | 200 | 200 | PASA |
+| ZON-03 | zonas | Registro que no existe. | `GET /api/v1/zonas/999999` | 404 | 404 | PASA |
+| ZON-04 | zonas | Todo endpoint protegido exige Authorization: Bearer. | `GET /api/v1/zonas` | 401 | 401 | PASA |
+| MIC-01 | microhubs | Microhubs con coordenadas y radio. | `GET /api/v1/microhubs?estatus=activo` | 200 | 200 | PASA |
+| MIC-02 | microhubs | Registro que no existe. | `GET /api/v1/microhubs/999999` | 404 | 404 | PASA |
+| MIC-03 | microhubs | Todo endpoint protegido exige Authorization: Bearer. | `GET /api/v1/microhubs` | 401 | 401 | PASA |
 | PED-01 | pedidos | Lista filtrada por estado y fechas. | `GET /api/v1/pedidos?estado=entregado&pagina=1&por_pagina=5` | 200 | 200 | PASA |
 | PED-02 | pedidos | La misma lista en XML. | `GET /api/v1/pedidos?estado=entregado&por_pagina=2` | 200 | 200 | PASA |
 | PED-03 | pedidos | Cliente, domicilio y líneas del pedido. | `GET /api/v1/pedidos/105` | 200 | 200 | PASA |
@@ -43,23 +48,25 @@
 | DOC-04 | documentos | Un repartidor no adjunta a entregas de otro. | `POST /api/v1/documentos` | 403 | 403 | PASA |
 | DOC-05 | documentos | Documento que después se elimina. | `POST /api/v1/documentos` | 201 | 201 | PASA |
 | DOC-06 | documentos | Filtro por referencia. | `GET /api/v1/documentos?referencia_tipo=entrega&referencia_id=129` | 200 | 200 | PASA |
-| DOC-07 | documentos | Documento en XML, sin contenido. | `GET /api/v1/documentos/6ace3c3457a2d24c02b0d703` | 200 | 200 | PASA |
-| DOC-08 | documentos | Recuperar el archivo. | `GET /api/v1/documentos/6ace3c3457a2d24c02b0d703/contenido` | 200 | 200 | PASA |
-| DOC-09 | documentos | Borrar un documento propio. | `DELETE /api/v1/documentos/6ace3c3457a2d24c02b0d70d` | 204 | 204 | PASA |
+| DOC-07 | documentos | Documento en XML, sin contenido. | `GET /api/v1/documentos/6acea24bbf5616d8602a1205` | 200 | 200 | PASA |
+| DOC-08 | documentos | Recuperar el archivo. | `GET /api/v1/documentos/6acea24bbf5616d8602a1205/contenido` | 200 | 200 | PASA |
+| DOC-09 | documentos | Borrar un documento propio. | `DELETE /api/v1/documentos/6acea24c114e5b7d09dc7612` | 204 | 204 | PASA |
 | DOC-10 | documentos | Registro que no existe. | `GET /api/v1/documentos/ffffffffffffffffffffffff` | 404 | 404 | PASA |
+| SEG-01 | seguimiento | Guardar el recorrido del repartidor en MongoDB. | `POST /api/v1/seguimiento/129/ubicaciones` | 201 | 201 | PASA |
+| SEG-02 | seguimiento | Agregación en MongoDB sobre los puntos GPS. | `GET /api/v1/seguimiento/129/recorrido` | 200 | 200 | PASA |
+| SEG-03 | seguimiento | El repartidor 2 no ve el rastro de la entrega del repartidor 1. | `GET /api/v1/seguimiento/129/recorrido` | 404 | 404 | PASA |
+| SEG-04 | seguimiento | Todo endpoint protegido exige Authorization: Bearer. | `GET /api/v1/seguimiento/129/recorrido` | 401 | 401 | PASA |
 | ENT-01 | entregas | Paradas abiertas del repartidor en el turno de hoy (RN25). | `GET /api/v1/entregas/mias?pagina=1&por_pagina=20` | 200 | 200 | PASA |
 | ENT-02 | entregas | Cliente, domicilio y líneas. | `GET /api/v1/entregas/129` | 200 | 200 | PASA |
 | ENT-03 | entregas | El repartidor 2 no ve la entrega del repartidor 1. | `GET /api/v1/entregas/129` | 404 | 404 | PASA |
-| ENT-04 | entregas | Guardar el recorrido del repartidor en MongoDB. | `POST /api/v1/entregas/129/ubicaciones` | 201 | 201 | PASA |
-| ENT-05 | entregas | Agregación en MongoDB sobre los puntos GPS. | `GET /api/v1/entregas/129/recorrido` | 200 | 200 | PASA |
-| ENT-06 | entregas | Una entrega completa cobra el total (RN27). | `POST /api/v1/entregas/129/resultado` | 422 | 422 | PASA |
-| ENT-07 | entregas | Registrar el resultado con evidencia y ubicación. | `POST /api/v1/entregas/129/resultado` | 201 | 201 | PASA |
-| ENT-08 | entregas | Idempotencia: el cierre no se aplica dos veces. | `POST /api/v1/entregas/129/resultado` | 200 | 200 | PASA |
-| ENT-09 | entregas | Conflicto: ya estaba cerrada con otra operación. | `POST /api/v1/entregas/129/resultado` | 409 | 409 | PASA |
-| ENT-10 | entregas | El repartidor deja de ver el domicilio (RN26). | `GET /api/v1/entregas/129` | 404 | 404 | PASA |
-| ENT-11 | entregas | Cada línea devuelta necesita motivo (RN28). | `POST /api/v1/entregas/130/resultado` | 422 | 422 | PASA |
-| ENT-12 | entregas | Devolver al inventario lo que no se entregó. | `POST /api/v1/entregas/130/resultado` | 201 | 201 | PASA |
-| ENT-13 | entregas | Consulta por pedido para el portal web. | `GET /api/v1/entregas?pedido_id=153` | 200 | 200 | PASA |
+| ENT-04 | entregas | Una entrega completa cobra el total (RN27). | `POST /api/v1/entregas/129/resultado` | 422 | 422 | PASA |
+| ENT-05 | entregas | Registrar el resultado con evidencia y ubicación. | `POST /api/v1/entregas/129/resultado` | 201 | 201 | PASA |
+| ENT-06 | entregas | Idempotencia: el cierre no se aplica dos veces. | `POST /api/v1/entregas/129/resultado` | 200 | 200 | PASA |
+| ENT-07 | entregas | Conflicto: ya estaba cerrada con otra operación. | `POST /api/v1/entregas/129/resultado` | 409 | 409 | PASA |
+| ENT-08 | entregas | El repartidor deja de ver el domicilio (RN26). | `GET /api/v1/entregas/129` | 404 | 404 | PASA |
+| ENT-09 | entregas | Cada línea devuelta necesita motivo (RN28). | `POST /api/v1/entregas/130/resultado` | 422 | 422 | PASA |
+| ENT-10 | entregas | Devolver al inventario lo que no se entregó. | `POST /api/v1/entregas/130/resultado` | 201 | 201 | PASA |
+| ENT-11 | entregas | Consulta por pedido para el portal web. | `GET /api/v1/entregas?pedido_id=153` | 200 | 200 | PASA |
 | PLA-01 | planeacion | Lista de ubicaciones candidatas. | `GET /api/v1/candidatos?pagina=1&por_pagina=3` | 200 | 200 | PASA |
 | PLA-02 | planeacion | Alta con costo fijo calculado por PostgreSQL. | `POST /api/v1/candidatos` | 201 | 201 | PASA |
 | PLA-03 | planeacion | No se repite la clave de un candidato. | `POST /api/v1/candidatos` | 409 | 409 | PASA |
@@ -76,24 +83,17 @@
 | PLA-14 | planeacion | Borrar un escenario. | `DELETE /api/v1/escenarios/1` | 204 | 204 | PASA |
 | PLA-15 | planeacion | Baja lógica: se conserva su historia. | `DELETE /api/v1/candidatos/16` | 204 | 204 | PASA |
 | PLA-16 | planeacion | Registro que no existe. | `GET /api/v1/candidatos/999999` | 404 | 404 | PASA |
-| NOT-01 | notificaciones | Avisos del repartidor (misma tabla que el web). | `GET /api/v1/notificaciones?pagina=1&por_pagina=5` | 200 | 200 | PASA |
-| NOT-02 | notificaciones | Número de avisos pendientes. | `GET /api/v1/notificaciones/conteo` | 200 | 200 | PASA |
-| NOT-03 | notificaciones | Actualizar el aviso. | `POST /api/v1/notificaciones/2/leer` | 200 | 200 | PASA |
-| NOT-04 | notificaciones | Cada quien solo toca su bandeja. | `POST /api/v1/notificaciones/2/leer` | 404 | 404 | PASA |
-| NOT-05 | notificaciones | Aviso manual a un usuario. | `POST /api/v1/notificaciones` | 201 | 201 | PASA |
-| NOT-06 | notificaciones | Un repartidor no envía avisos. | `POST /api/v1/notificaciones` | 403 | 403 | PASA |
-| NOT-07 | notificaciones | Validación contra PostgreSQL. | `POST /api/v1/notificaciones` | 422 | 422 | PASA |
-| NOT-08 | notificaciones | Quitarlo de la bandeja. | `DELETE /api/v1/notificaciones/5` | 204 | 204 | PASA |
-| NOT-09 | notificaciones | La bandeja en XML. | `GET /api/v1/notificaciones?por_pagina=2` | 200 | 200 | PASA |
 | SAL-AUT | auth | Estado del servicio y de sus dependencias. | `GET /api/v1/health` | 200 | 200 | PASA |
 | SAL-USU | usuarios | Estado del servicio y de sus dependencias. | `GET /api/v1/health` | 200 | 200 | PASA |
-| SAL-CAT | catalogos | Estado del servicio y de sus dependencias. | `GET /api/v1/health` | 200 | 200 | PASA |
+| SAL-PRO | productos | Estado del servicio y de sus dependencias. | `GET /api/v1/health` | 200 | 200 | PASA |
 | SAL-PED | pedidos | Estado del servicio y de sus dependencias. | `GET /api/v1/health` | 200 | 200 | PASA |
 | SAL-ENT | entregas | Estado del servicio y de sus dependencias. | `GET /api/v1/health` | 200 | 200 | PASA |
 | SAL-PLA | planeacion | Estado del servicio y de sus dependencias. | `GET /api/v1/health` | 200 | 200 | PASA |
 | SAL-DOC | documentos | Estado del servicio y de sus dependencias. | `GET /api/v1/health` | 200 | 200 | PASA |
-| SAL-NOT | notificaciones | Estado del servicio y de sus dependencias. | `GET /api/v1/health` | 200 | 200 | PASA |
+| SAL-ZON | zonas | Estado del servicio y de sus dependencias. | `GET /api/v1/health` | 200 | 200 | PASA |
+| SAL-MIC | microhubs | Estado del servicio y de sus dependencias. | `GET /api/v1/health` | 200 | 200 | PASA |
+| SAL-SEG | seguimiento | Estado del servicio y de sus dependencias. | `GET /api/v1/health` | 200 | 200 | PASA |
 | MON-01 | auth | Cada petición queda en MongoDB con su traza. | `GET /api/v1/auth/validar` | 200 | 200 | PASA |
-| RAT-01 | catalogos | Más de 240 solicitudes por minuto desde la misma IP. | `GET /api/v1/zonas` | 429 | 429 | PASA |
+| RAT-01 | zonas | Más de 240 solicitudes por minuto desde la misma IP. | `GET /api/v1/zonas` | 429 | 429 | PASA |
 
 **Total:** 93 casos · 93 pasan · 0 fallan.

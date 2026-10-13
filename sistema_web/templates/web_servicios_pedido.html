@@ -1,7 +1,7 @@
 {% extends 'base.html' %}{% block titulo %}Pedido vía microservicios{% endblock %}{% block cuerpo %}
 {% set p = det.datos if det.ok else None %}
 <h1>{{ p.folio if p else 'Pedido ' ~ pid }}</h1>
-<p class="sub">Vista construida por el web con los servicios de pedidos (5104), entregas (5105) y documentos (5107).</p>
+<p class="sub">Vista construida por el web con los servicios de pedidos (5104), entregas (5105), seguimiento (5110) y documentos (5107).</p>
 {% if not det.ok %}<div class="aviso alto">{{ det.mensaje or 'El servicio de pedidos no respondió.' }}</div>{% endif %}
 {% if p %}
 <div class="kpis">

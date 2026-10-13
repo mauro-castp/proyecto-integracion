@@ -1,5 +1,5 @@
 # Microservicio entregas · puerto 5105
-# Entregas: paradas del repartidor, cierre idempotente y recorrido GPS (PostgreSQL + MongoDB).
+# Entregas: paradas del repartidor y cierre idempotente con evidencia (PostgreSQL + MongoDB).
 #
 # Contexto de construcción: la RAÍZ del repositorio (docker-compose.integrado.yml lo indica), porque la
 # imagen incluye los XSD y ejemplos oficiales del contrato v1 y la base común servicios/comun.

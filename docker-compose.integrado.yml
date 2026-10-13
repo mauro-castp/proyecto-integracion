@@ -4,10 +4,10 @@
 #   docker compose -f docker-compose.integrado.yml up --build -d
 #
 # Levanta PostgreSQL, Redis y MongoDB, el sistema web (http://localhost:5000)
-# y los ocho microservicios del contrato v1, cada uno en su contenedor y su
-# puerto (5101 a 5108), que son los que usan la app Android y la de escritorio.
+# y los diez microservicios del contrato v1, cada uno en su contenedor y su
+# puerto (5101 a 5110), que son los que usan la app Android y la de escritorio.
 #
-#   Swagger de cada servicio:  http://localhost:51XX/api/v1/docs
+#   Swagger de cada servicio:  http://localhost:51XX/api/v1/docs  (51XX = 5101 a 5110)
 #   Salud de cada servicio:    http://localhost:51XX/api/v1/salud
 #   Entregas de demostración:  docker compose -f docker-compose.integrado.yml exec entregas python pruebas/preparar_entregas.py --cantidad 2
 #
@@ -111,9 +111,9 @@ services:
     environment: *entorno
     ports: ["5102:5102"]
 
-  catalogos:
+  productos:
     <<: *servicio
-    build: {context: ., dockerfile: servicios/catalogos/Dockerfile}
+    build: {context: ., dockerfile: servicios/productos/Dockerfile}
     environment: *entorno
     ports: ["5103:5103"]
 
@@ -141,11 +141,23 @@ services:
     environment: *entorno
     ports: ["5107:5107"]
 
-  notificaciones:
+  zonas:
     <<: *servicio
-    build: {context: ., dockerfile: servicios/notificaciones/Dockerfile}
+    build: {context: ., dockerfile: servicios/zonas/Dockerfile}
     environment: *entorno
     ports: ["5108:5108"]
+
+  microhubs:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/microhubs/Dockerfile}
+    environment: *entorno
+    ports: ["5109:5109"]
+
+  seguimiento:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/seguimiento/Dockerfile}
+    environment: *entorno
+    ports: ["5110:5110"]
 
 networks:
   publica:

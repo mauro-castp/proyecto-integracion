@@ -1,5 +1,5 @@
 """
-base.py — Plantilla que comparten los ocho microservicios.
+base.py — Plantilla que comparten los diez microservicios.
 
 Cada servicio se crea con crear_app() y hereda, sin repetir código:
   · Rutas versionadas bajo /api/v1.

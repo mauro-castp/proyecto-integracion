@@ -1,6 +1,6 @@
 # Evidencias de petición y respuesta · microservicios v1
 
-Generado el 2026-10-13 14:12 contra los servicios en ejecución. 93 de 93 casos pasan.
+Generado el 2026-10-13 21:27 contra los servicios en ejecución. 93 de 93 casos pasan.
 
 ## Servicio auth · puerto 5101
 
@@ -12,7 +12,7 @@ Generado el 2026-10-13 14:12 contra los servicios en ejecución. 93 de 93 casos 
 
 ```http
 Accept: application/json
-X-Traza-Id: 00ed5311-52c7-4b8c-b159-c0160301ecac
+X-Traza-Id: c2f17193-fb19-4052-a445-d4a5413a0268
 Content-Type: application/json
 ```
 
@@ -24,12 +24,12 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 417 ms · traza `00ed5311-52c7-4b8c-b159-c0160301ecac`
+**Respuesta.** HTTP 200 (esperado 200) · 1021 ms · traza `c2f17193-fb19-4052-a445-d4a5413a0268`
 
 ```json
 {
   "token_acceso": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwicm9sIjo…(291 caracteres)",
-  "token_renovacion": "rt_f3558c330c96be0d10b2e9c5c5592fda",
+  "token_renovacion": "rt_0fb67ef39a4d86fae2784cbf43591f9a",
   "tipo": "Bearer",
   "expira_en": 900,
   "usuario": {
@@ -53,23 +53,23 @@ Content-Type: application/json
 
 **Explicación.** bcrypt valida la clave; el jti del acceso se agrega a la sesión activa en Redis y la renovación se guarda como hash con TTL de 7 días. El login queda en la bitácora.
 
-**Evidencia en Redis.** `SMEMBERS auth:sesion:7; TTL auth:sesion:7; TTL auth:refresh:4d48abd90481262657b62a850cb9a2b71ca9f98bcc850f8f40d75d33f0a89b1b`
+**Evidencia en Redis.** `SMEMBERS auth:sesion:7; TTL auth:sesion:7; TTL auth:refresh:cfb0fed4091e4be1070ea8b6b69244550c1a88c621306131995693a0ce0f4741`
 
 ```json
 [
   {
     "comando": "SMEMBERS auth:sesion:7",
     "valor": [
-      "c5c90ba624184b6eb098ccacab3f9ca7"
+      "1de3ba91c6784f47aa1f1291fa846ff1"
     ]
   },
   {
     "comando": "TTL auth:sesion:7",
-    "valor": 900
+    "valor": 899
   },
   {
-    "comando": "TTL auth:refresh:4d48abd90481262657b62a850cb9a2b71ca9f98bcc850f8f40d75d33f0a89b1b",
-    "valor": 604800
+    "comando": "TTL auth:refresh:cfb0fed4091e4be1070ea8b6b69244550c1a88c621306131995693a0ce0f4741",
+    "valor": 604799
   }
 ]
 ```
@@ -79,7 +79,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "fecha": "2026-10-13 14:11:59.823065+00:00",
+    "fecha": "2026-10-13 21:27:30.361277+00:00",
     "modulo": "auth",
     "accion": "login_exitoso",
     "detalle": "Inicio de sesión por API (Pixel 7)."
@@ -95,7 +95,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/xml
-X-Traza-Id: 4371b0ff-0b8c-4437-8272-609d71302ff0
+X-Traza-Id: 78daf990-8950-4c9d-ad1c-ba0ee691d807
 Content-Type: application/xml
 ```
 
@@ -103,11 +103,11 @@ Content-Type: application/xml
 <?xml version="1.0" encoding="UTF-8"?><login xmlns="urn:microhubs:v1"><correo>planeador@codex.mx</correo><clave>********</clave></login>
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 290 ms · traza `4371b0ff-0b8c-4437-8272-609d71302ff0`
+**Respuesta.** HTTP 200 (esperado 200) · 504 ms · traza `78daf990-8950-4c9d-ad1c-ba0ee691d807`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<sesion xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><token_acceso>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwicm9sIjo…(291 caracteres)</token_acceso><token_renovacion>rt_47b149e07a8361828c13c193ace14aac</token_renovacion><tipo>Bearer</tipo><expira_en>900</expira_en><usuario><id>5</id><nombre>Vanessa</nombre><apellidos>Morante López</apellidos><correo>planeador@codex.mx</correo><rol>planeador</rol><microhub_id xsi:nil="true" /><permisos><permiso>archivos.crear</permiso><permiso>archivos.ver</permiso><permiso>catalogo_publico.ver</permiso><permiso>configuracion.ver</permiso><permiso>indicadores.ver</permiso><permiso>inventario.ver</permiso><permiso>microhubs.ver</permiso><permiso>notificaciones.ver</permiso><permiso>pedidos.reasignar</permiso><permiso>pedidos.ver</permiso><permiso>planeacion.editar</permiso><permiso>planeacion.ver</permiso><permiso>productos.ver</permiso><permiso>reportes.exportar</permiso><permiso>reportes.ver</permiso><permiso>simulacion.ejecutar</permiso><permiso>simulacion.ver</permiso><permiso>zonas.ver</permiso></permisos></usuario></sesion>
+<sesion xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><token_acceso>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwicm9sIjo…(291 caracteres)</token_acceso><token_renovacion>rt_a643ff383e66a3d1d13785b6d8367f8e</token_renovacion><tipo>Bearer</tipo><expira_en>900</expira_en><usuario><id>5</id><nombre>Vanessa</nombre><apellidos>Morante López</apellidos><correo>planeador@codex.mx</correo><rol>planeador</rol><microhub_id xsi:nil="true" /><permisos><permiso>archivos.crear</permiso><permiso>archivos.ver</permiso><permiso>catalogo_publico.ver</permiso><permiso>configuracion.ver</permiso><permiso>indicadores.ver</permiso><permiso>inventario.ver</permiso><permiso>microhubs.ver</permiso><permiso>notificaciones.ver</permiso><permiso>pedidos.reasignar</permiso><permiso>pedidos.ver</permiso><permiso>planeacion.editar</permiso><permiso>planeacion.ver</permiso><permiso>productos.ver</permiso><permiso>reportes.exportar</permiso><permiso>reportes.ver</permiso><permiso>simulacion.ejecutar</permiso><permiso>simulacion.ver</permiso><permiso>zonas.ver</permiso></permisos></usuario></sesion>
 ```
 
 **Explicación.** El cuerpo XML se valida contra los XSD antes de procesarse; la respuesta <sesion> también cumple el XSD.
@@ -120,7 +120,7 @@ Content-Type: application/xml
 
 ```http
 Accept: application/json
-X-Traza-Id: e881a156-51d9-48f7-80d3-380c99ad054e
+X-Traza-Id: 42afbaec-d1ca-4fc2-af45-11ea09b6f38f
 Content-Type: application/json
 ```
 
@@ -131,14 +131,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 401 (esperado 401) · 161 ms · traza `e881a156-51d9-48f7-80d3-380c99ad054e`
+**Respuesta.** HTTP 401 (esperado 401) · 269 ms · traza `42afbaec-d1ca-4fc2-af45-11ea09b6f38f`
 
 ```json
 {
   "error": {
     "codigo": "CREDENCIALES_INVALIDAS",
     "mensaje": "Correo o clave incorrectos. Intento 1 de 5.",
-    "traza_id": "e881a156-51d9-48f7-80d3-380c99ad054e"
+    "traza_id": "42afbaec-d1ca-4fc2-af45-11ea09b6f38f"
   }
 }
 ```
@@ -168,7 +168,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: d3bf58cb-21ad-459c-b73e-09ca46ada6b3
+X-Traza-Id: 297a0f6d-f4db-47d0-92f6-fd0c44866775
 Content-Type: application/json
 ```
 
@@ -179,7 +179,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 3 ms · traza `d3bf58cb-21ad-459c-b73e-09ca46ada6b3`
+**Respuesta.** HTTP 422 (esperado 422) · 346 ms · traza `297a0f6d-f4db-47d0-92f6-fd0c44866775`
 
 ```json
 {
@@ -196,7 +196,7 @@ Content-Type: application/json
         "mensaje": "Debe tener al menos 1 caracteres."
       }
     ],
-    "traza_id": "d3bf58cb-21ad-459c-b73e-09ca46ada6b3"
+    "traza_id": "297a0f6d-f4db-47d0-92f6-fd0c44866775"
   }
 }
 ```
@@ -209,7 +209,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/xml
-X-Traza-Id: a50c4a3c-66e4-45cd-9fb5-37d32a53ba04
+X-Traza-Id: 885fcd14-4128-4598-9ba5-61094bc357a3
 Content-Type: application/xml
 ```
 
@@ -217,11 +217,11 @@ Content-Type: application/xml
 <?xml version="1.0"?><!DOCTYPE x [<!ENTITY e SYSTEM "file:///etc/passwd">]><login xmlns="urn:microhubs:v1"><correo>&e;</correo><clave>********</clave></login>
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 4 ms · traza `a50c4a3c-66e4-45cd-9fb5-37d32a53ba04`
+**Respuesta.** HTTP 400 (esperado 400) · 16 ms · traza `885fcd14-4128-4598-9ba5-61094bc357a3`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<error xmlns="urn:microhubs:v1" version="1"><codigo>XML_INVALIDO</codigo><mensaje>El cuerpo XML no está bien formado o contiene DTD/entidades.</mensaje><traza_id>a50c4a3c-66e4-45cd-9fb5-37d32a53ba04</traza_id></error>
+<error xmlns="urn:microhubs:v1" version="1"><codigo>XML_INVALIDO</codigo><mensaje>El cuerpo XML no está bien formado o contiene DTD/entidades.</mensaje><traza_id>885fcd14-4128-4598-9ba5-61094bc357a3</traza_id></error>
 ```
 
 **Explicación.** El lector XML (defusedxml) prohíbe DTD y entidades; el error también llega en XML.
@@ -234,16 +234,16 @@ Content-Type: application/xml
 
 ```http
 Accept: application/json
-X-Traza-Id: 96fd3586-a4fa-447e-ac43-2dcd3ed6b98c
+X-Traza-Id: 0e1f7f0e-fea3-4b4d-8ed0-b9e00907e79b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 4 ms · traza `96fd3586-a4fa-447e-ac43-2dcd3ed6b98c`
+**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `0e1f7f0e-fea3-4b4d-8ed0-b9e00907e79b`
 
 ```json
 {
   "valido": true,
-  "expira_en": 899,
+  "expira_en": 898,
   "usuario": {
     "id": 7,
     "rol": "repartidor",
@@ -260,18 +260,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 95c5d297-2eea-40d0-8f02-f651ff7cb532
+X-Traza-Id: 940ce2ab-e9f2-448c-8454-c6177e808bf3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 401 (esperado 401) · 3 ms · traza `95c5d297-2eea-40d0-8f02-f651ff7cb532`
+**Respuesta.** HTTP 401 (esperado 401) · 7 ms · traza `940ce2ab-e9f2-448c-8454-c6177e808bf3`
 
 ```json
 {
   "error": {
     "codigo": "TOKEN_INVALIDO",
     "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.",
-    "traza_id": "95c5d297-2eea-40d0-8f02-f651ff7cb532"
+    "traza_id": "940ce2ab-e9f2-448c-8454-c6177e808bf3"
   }
 }
 ```
@@ -284,22 +284,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 997caac8-b7aa-4deb-8983-3c3d45659f7c
+X-Traza-Id: 51db92d1-4f23-4686-a1c7-75d5465afab3
 Content-Type: application/json
 ```
 
 ```json
 {
-  "token_renovacion": "rt_41edd150a3235a49dee6f71541a43863"
+  "token_renovacion": "rt_81e9fc89584e5e5c2fb6916130defb33"
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 53 ms · traza `997caac8-b7aa-4deb-8983-3c3d45659f7c`
+**Respuesta.** HTTP 200 (esperado 200) · 88 ms · traza `51db92d1-4f23-4686-a1c7-75d5465afab3`
 
 ```json
 {
   "token_acceso": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwicm9sIjo…(291 caracteres)",
-  "token_renovacion": "rt_36ed13be77aa358d4d76c7f38c7770f2",
+  "token_renovacion": "rt_e00fe92edfb146ffa978c86255fe8e32",
   "tipo": "Bearer",
   "expira_en": 900
 }
@@ -307,12 +307,12 @@ Content-Type: application/json
 
 **Explicación.** El token de renovación usado se borra de Redis y su acceso anterior queda revocado.
 
-**Evidencia en Redis.** `EXISTS auth:refresh:2fc25c071527034cf85ce5ec3301350b5615371bf1dc43d431cbaddc0288321a`
+**Evidencia en Redis.** `EXISTS auth:refresh:536c73d5ada15601b4f80a4f900d7f63cc18a99e98de23b2296f4ff49f0afefa`
 
 ```json
 [
   {
-    "comando": "EXISTS auth:refresh:2fc25c071527034cf85ce5ec3301350b5615371bf1dc43d431cbaddc0288321a",
+    "comando": "EXISTS auth:refresh:536c73d5ada15601b4f80a4f900d7f63cc18a99e98de23b2296f4ff49f0afefa",
     "valor": 0
   }
 ]
@@ -326,24 +326,24 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 89a16a4e-632d-46b8-a182-8e2610728e74
+X-Traza-Id: ea621b2f-de19-44b9-9524-088ad152a194
 Content-Type: application/json
 ```
 
 ```json
 {
-  "token_renovacion": "rt_41edd150a3235a49dee6f71541a43863"
+  "token_renovacion": "rt_81e9fc89584e5e5c2fb6916130defb33"
 }
 ```
 
-**Respuesta.** HTTP 401 (esperado 401) · 4 ms · traza `89a16a4e-632d-46b8-a182-8e2610728e74`
+**Respuesta.** HTTP 401 (esperado 401) · 7 ms · traza `ea621b2f-de19-44b9-9524-088ad152a194`
 
 ```json
 {
   "error": {
     "codigo": "TOKEN_INVALIDO",
     "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.",
-    "traza_id": "89a16a4e-632d-46b8-a182-8e2610728e74"
+    "traza_id": "ea621b2f-de19-44b9-9524-088ad152a194"
   }
 }
 ```
@@ -356,18 +356,18 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 7b572420-4ea8-4f50-a6e1-c0b7cf19db7e
+X-Traza-Id: ee01153b-9a3f-4afd-9252-5093738692a6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "token_renovacion": "rt_36ed13be77aa358d4d76c7f38c7770f2"
+  "token_renovacion": "rt_e00fe92edfb146ffa978c86255fe8e32"
 }
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 21 ms · traza `7b572420-4ea8-4f50-a6e1-c0b7cf19db7e`
+**Respuesta.** HTTP 204 (esperado 204) · 38 ms · traza `ee01153b-9a3f-4afd-9252-5093738692a6`
 
 ```json
 (sin cuerpo)
@@ -375,16 +375,16 @@ Content-Type: application/json
 
 **Explicación.** El jti se agrega a la lista de revocados con TTL igual a su vida restante y sale del conjunto de sesión.
 
-**Evidencia en Redis.** `TTL auth:jti:revocado:c768c882c2bf475cb0868d47a8dff499; SISMEMBER auth:sesion:7 c768c882c2bf475cb0868d47a8dff499`
+**Evidencia en Redis.** `TTL auth:jti:revocado:e13868ddd5d34146bc8abdc810cd00ab; SISMEMBER auth:sesion:7 e13868ddd5d34146bc8abdc810cd00ab`
 
 ```json
 [
   {
-    "comando": "TTL auth:jti:revocado:c768c882c2bf475cb0868d47a8dff499",
+    "comando": "TTL auth:jti:revocado:e13868ddd5d34146bc8abdc810cd00ab",
     "valor": 899
   },
   {
-    "comando": "SISMEMBER auth:sesion:7 c768c882c2bf475cb0868d47a8dff499",
+    "comando": "SISMEMBER auth:sesion:7 e13868ddd5d34146bc8abdc810cd00ab",
     "valor": 0
   }
 ]
@@ -400,18 +400,18 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 287e5e6b-ef87-4d06-965a-bc44da500c1f
+X-Traza-Id: f41fb72d-1b86-4c00-af7c-ae0c9fb6fa14
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 401 (esperado 401) · 131 ms · traza `287e5e6b-ef87-4d06-965a-bc44da500c1f`
+**Respuesta.** HTTP 401 (esperado 401) · 565 ms · traza `f41fb72d-1b86-4c00-af7c-ae0c9fb6fa14`
 
 ```json
 {
   "error": {
     "codigo": "TOKEN_INVALIDO",
     "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.",
-    "traza_id": "287e5e6b-ef87-4d06-965a-bc44da500c1f"
+    "traza_id": "f41fb72d-1b86-4c00-af7c-ae0c9fb6fa14"
   }
 }
 ```
@@ -426,11 +426,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 8c00dff4-987d-4c0b-b209-aa385ee7998f
+X-Traza-Id: 435198a2-9d33-439e-ab2f-59c3f03c8bd8
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 27 ms · traza `8c00dff4-987d-4c0b-b209-aa385ee7998f`
+**Respuesta.** HTTP 200 (esperado 200) · 48 ms · traza `435198a2-9d33-439e-ab2f-59c3f03c8bd8`
 
 ```json
 {
@@ -441,7 +441,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
   "telefono": "8114641034",
   "rol": "repartidor",
   "microhub": null,
-  "ultimo_acceso": "2026-10-13T08:12:00-06:00"
+  "ultimo_acceso": "2026-10-13T15:27:32-06:00"
 }
 ```
 
@@ -453,15 +453,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/xml
-X-Traza-Id: 88f3ff63-11ae-4834-a698-6a6678f01fcf
+X-Traza-Id: 66ee53c9-f3bb-4de9-8e7e-61914e67aa4c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 26 ms · traza `88f3ff63-11ae-4834-a698-6a6678f01fcf`
+**Respuesta.** HTTP 200 (esperado 200) · 36 ms · traza `66ee53c9-f3bb-4de9-8e7e-61914e67aa4c`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<usuario xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id>5</id><nombre>Vanessa</nombre><apellidos>Morante López</apellidos><correo>planeador@codex.mx</correo><telefono>8178109897</telefono><rol>planeador</rol><microhub xsi:nil="true" /><ultimo_acceso>2026-10-13T08:12:01-06:00</ultimo_acceso></usuario>
+<usuario xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id>5</id><nombre>Vanessa</nombre><apellidos>Morante López</apellidos><correo>planeador@codex.mx</correo><telefono>8178109897</telefono><rol>planeador</rol><microhub xsi:nil="true" /><ultimo_acceso>2026-10-13T15:27:33-06:00</ultimo_acceso></usuario>
 ```
 
 ### USR-03 · Actualizar mi teléfono (PATCH) · PASA
@@ -472,7 +472,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 62fb103d-e448-4a02-bc2a-d55a35154760
+X-Traza-Id: 61eff429-5965-4981-b95f-ff536d48c95a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -483,7 +483,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 79 ms · traza `62fb103d-e448-4a02-bc2a-d55a35154760`
+**Respuesta.** HTTP 200 (esperado 200) · 65 ms · traza `61eff429-5965-4981-b95f-ff536d48c95a`
 
 ```json
 {
@@ -494,7 +494,7 @@ Content-Type: application/json
   "telefono": "8112345678",
   "rol": "repartidor",
   "microhub": null,
-  "ultimo_acceso": "2026-10-13T08:12:00-06:00"
+  "ultimo_acceso": "2026-10-13T15:27:32-06:00"
 }
 ```
 
@@ -507,7 +507,7 @@ Content-Type: application/json
   {
     "id": 7,
     "telefono": "8112345678",
-    "actualizado_en": "2026-10-13 14:12:01.779540+00:00"
+    "actualizado_en": "2026-10-13 21:27:34.349981+00:00"
   }
 ]
 ```
@@ -517,7 +517,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "fecha": "2026-10-13 14:12:01.779540+00:00",
+    "fecha": "2026-10-13 21:27:34.349981+00:00",
     "accion": "modificacion",
     "entidad": "usuario",
     "detalle": null
@@ -533,7 +533,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 54ed1f66-134b-4fbc-a94f-43f5f387cd9d
+X-Traza-Id: 3c86ec34-e1f7-433b-a60b-b37bfc2acaa1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -544,7 +544,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 96 ms · traza `54ed1f66-134b-4fbc-a94f-43f5f387cd9d`
+**Respuesta.** HTTP 422 (esperado 422) · 366 ms · traza `3c86ec34-e1f7-433b-a60b-b37bfc2acaa1`
 
 ```json
 {
@@ -557,7 +557,7 @@ Content-Type: application/json
         "mensaje": "Debe tener 10 dígitos."
       }
     ],
-    "traza_id": "54ed1f66-134b-4fbc-a94f-43f5f387cd9d"
+    "traza_id": "3c86ec34-e1f7-433b-a60b-b37bfc2acaa1"
   }
 }
 ```
@@ -570,11 +570,11 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 2050fe80-5b9a-4df9-a436-70d22455413a
+X-Traza-Id: 317b003c-bb53-470f-81f1-b0246f746b22
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 58 ms · traza `2050fe80-5b9a-4df9-a436-70d22455413a`
+**Respuesta.** HTTP 200 (esperado 200) · 96 ms · traza `317b003c-bb53-470f-81f1-b0246f746b22`
 
 ```json
 {
@@ -639,18 +639,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 70ef2d61-7d28-467c-8288-1d60252fe434
+X-Traza-Id: f4aee7bc-281d-4be7-8680-a3044f41eefa
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 27 ms · traza `70ef2d61-7d28-467c-8288-1d60252fe434`
+**Respuesta.** HTTP 403 (esperado 403) · 38 ms · traza `f4aee7bc-281d-4be7-8680-a3044f41eefa`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "70ef2d61-7d28-467c-8288-1d60252fe434"
+    "traza_id": "f4aee7bc-281d-4be7-8680-a3044f41eefa"
   }
 }
 ```
@@ -660,7 +660,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 ```json
 [
   {
-    "fecha": "2026-10-13 14:12:02.055673+00:00",
+    "fecha": "2026-10-13 21:27:34.947836+00:00",
     "modulo": "usuarios",
     "accion": "acceso_denegado",
     "detalle": "GET /api/v1/usuarios sin usuarios.ver",
@@ -677,37 +677,37 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 3c3850a0-8e21-4288-a04d-a5fcab17a1eb
+X-Traza-Id: 388c34d6-1754-4961-a9a5-3e3f040ebaa8
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 29 ms · traza `3c3850a0-8e21-4288-a04d-a5fcab17a1eb`
+**Respuesta.** HTTP 404 (esperado 404) · 36 ms · traza `388c34d6-1754-4961-a9a5-3e3f040ebaa8`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe el recurso solicitado.",
-    "traza_id": "3c3850a0-8e21-4288-a04d-a5fcab17a1eb"
+    "traza_id": "388c34d6-1754-4961-a9a5-3e3f040ebaa8"
   }
 }
 ```
 
-## Servicio catalogos · puerto 5103
+## Servicio productos · puerto 5103
 
-### CAT-01 · Productos con búsqueda (caché vacía) · PASA
+### PRO-01 · Productos con búsqueda (caché vacía) · PASA
 
 **Objetivo.** Consultar productos; la respuesta se guarda en Redis.
 
-**Petición.** `GET http://catalogos:5103/api/v1/productos?q=arroz&pagina=1&por_pagina=5`
+**Petición.** `GET http://productos:5103/api/v1/productos?q=arroz&pagina=1&por_pagina=5`
 
 ```http
 Accept: application/json
-X-Traza-Id: fd21af2f-aff6-47cf-ba42-c3d05cbacc3f
+X-Traza-Id: a6accf2f-2ad8-4a75-ab14-bd2496b0a535
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 228 ms · traza `fd21af2f-aff6-47cf-ba42-c3d05cbacc3f`
+**Respuesta.** HTTP 200 (esperado 200) · 647 ms · traza `a6accf2f-2ad8-4a75-ab14-bd2496b0a535`
 
 ```json
 {
@@ -744,24 +744,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 [
   {
     "comando": "db1 TTL cache:catalogo:productos:04d4a6a9d27021cf",
-    "valor": 300
+    "valor": 299
   }
 ]
 ```
 
-### CAT-02 · Misma consulta (desde Redis) · PASA
+### PRO-02 · Misma consulta (desde Redis) · PASA
 
 **Objetivo.** La segunda consulta no toca PostgreSQL.
 
-**Petición.** `GET http://catalogos:5103/api/v1/productos?q=arroz&pagina=1&por_pagina=5`
+**Petición.** `GET http://productos:5103/api/v1/productos?q=arroz&pagina=1&por_pagina=5`
 
 ```http
 Accept: application/json
-X-Traza-Id: 9b5ada92-0da7-424e-97a2-f52c41684341
+X-Traza-Id: 391dea8f-514e-4be4-892c-a8ec0e0d6856
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 6 ms · traza `9b5ada92-0da7-424e-97a2-f52c41684341`
+**Respuesta.** HTTP 200 (esperado 200) · 6 ms · traza `391dea8f-514e-4be4-892c-a8ec0e0d6856`
 
 ```json
 {
@@ -790,38 +790,38 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 }
 ```
 
-### CAT-03 · Productos (XML) · PASA
+### PRO-03 · Productos (XML) · PASA
 
 **Objetivo.** Lista en XML válida contra catalogos.xsd.
 
-**Petición.** `GET http://catalogos:5103/api/v1/productos?pagina=1&por_pagina=2`
+**Petición.** `GET http://productos:5103/api/v1/productos?pagina=1&por_pagina=2`
 
 ```http
 Accept: application/xml
-X-Traza-Id: 971269c8-ca1d-4b4b-8890-d6eca1af2165
+X-Traza-Id: 4f68c4f4-e195-4daa-b058-4fe520b56766
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 71 ms · traza `971269c8-ca1d-4b4b-8890-d6eca1af2165`
+**Respuesta.** HTTP 200 (esperado 200) · 84 ms · traza `4f68c4f4-e195-4daa-b058-4fe520b56766`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <productos xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><datos><producto><id>3</id><clave_interna>AB-003</clave_interna><nombre>Aceite vegetal</nombre><categoria><id>1</id><nombre>Abarrote básico</nombre></categoria><unidad>botella</unidad><presentacion>900 ml</presentacion><precio>42.00</precio><imagen_url xsi:nil="true" /><estatus>activo</estatus></producto><producto><id>2</id><clave_interna>AB-002</clave_interna><nombre>Arroz superextra</nombre><categoria><id>1</id><nombre>Abarrote básico</nombre></categoria><unidad>kg</unidad><presentacion>1 kg</presentacion><precio>29.90</precio><imagen_url xsi:nil="true" /><estatus>activo</estatus></producto></datos><paginacion><pagina>1</pagina><por_pagina>2</por_pagina><total>51</total><paginas>26</paginas></paginacion></productos>
 ```
 
-### CAT-04 · Un producto · PASA
+### PRO-04 · Un producto · PASA
 
 **Objetivo.** Detalle por id.
 
-**Petición.** `GET http://catalogos:5103/api/v1/productos/3`
+**Petición.** `GET http://productos:5103/api/v1/productos/3`
 
 ```http
 Accept: application/json
-X-Traza-Id: 918f7f5e-54a2-4430-9b5f-87b4869b2ddd
+X-Traza-Id: 71a4e67f-bdf4-476b-bb45-4440bdefaae7
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 47 ms · traza `918f7f5e-54a2-4430-9b5f-87b4869b2ddd`
+**Respuesta.** HTTP 200 (esperado 200) · 64 ms · traza `71a4e67f-bdf4-476b-bb45-4440bdefaae7`
 
 ```json
 {
@@ -840,62 +840,192 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 }
 ```
 
-### CAT-05 · Producto inexistente · PASA
+### PRO-05 · Producto inexistente · PASA
 
 **Objetivo.** Registro que no existe.
 
-**Petición.** `GET http://catalogos:5103/api/v1/productos/999999`
+**Petición.** `GET http://productos:5103/api/v1/productos/999999`
 
 ```http
 Accept: application/json
-X-Traza-Id: e61cd803-9dd5-422b-ba05-c9037150bd8e
+X-Traza-Id: 2d6a2b9e-2728-4f9c-b71d-23dcdc7e1094
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 50 ms · traza `e61cd803-9dd5-422b-ba05-c9037150bd8e`
+**Respuesta.** HTTP 404 (esperado 404) · 60 ms · traza `2d6a2b9e-2728-4f9c-b71d-23dcdc7e1094`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe el recurso solicitado.",
-    "traza_id": "e61cd803-9dd5-422b-ba05-c9037150bd8e"
+    "traza_id": "2d6a2b9e-2728-4f9c-b71d-23dcdc7e1094"
   }
 }
 ```
 
-### CAT-06 · Zonas (XML) · PASA
+### PRO-06 · Paginación fuera de rango · PASA
 
-**Objetivo.** Colonias atendidas con centroide.
+**Objetivo.** por_pagina máximo 100.
 
-**Petición.** `GET http://catalogos:5103/api/v1/zonas`
+**Petición.** `GET http://productos:5103/api/v1/productos?por_pagina=500`
 
 ```http
-Accept: application/xml
-X-Traza-Id: de02e3cc-e369-4765-9729-b2d5859cba84
+Accept: application/json
+X-Traza-Id: c043f5a6-fad4-4c1b-92e7-52479513fdb1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 74 ms · traza `de02e3cc-e369-4765-9729-b2d5859cba84`
+**Respuesta.** HTTP 400 (esperado 400) · 7 ms · traza `c043f5a6-fad4-4c1b-92e7-52479513fdb1`
+
+```json
+{
+  "error": {
+    "codigo": "FILTRO_INVALIDO",
+    "mensaje": "por_pagina debe estar entre 1 y 100.",
+    "detalles": [
+      {
+        "campo": "por_pagina",
+        "mensaje": "por_pagina debe estar entre 1 y 100."
+      }
+    ],
+    "traza_id": "c043f5a6-fad4-4c1b-92e7-52479513fdb1"
+  }
+}
+```
+
+### PRO-07 · Sin token · PASA
+
+**Objetivo.** Todo endpoint protegido exige Authorization: Bearer.
+
+**Petición.** `GET http://productos:5103/api/v1/productos`
+
+```http
+Accept: application/json
+X-Traza-Id: db4ac512-cfd6-41b7-a964-8ad421542c8c
+```
+
+**Respuesta.** HTTP 401 (esperado 401) · 7 ms · traza `db4ac512-cfd6-41b7-a964-8ad421542c8c`
+
+```json
+{
+  "error": {
+    "codigo": "TOKEN_INVALIDO",
+    "mensaje": "Falta el encabezado Authorization: Bearer <token>.",
+    "traza_id": "db4ac512-cfd6-41b7-a964-8ad421542c8c"
+  }
+}
+```
+
+## Servicio zonas · puerto 5108
+
+### ZON-01 · Zonas (XML) · PASA
+
+**Objetivo.** Colonias atendidas con centroide, válidas contra catalogos.xsd.
+
+**Petición.** `GET http://zonas:5108/api/v1/zonas`
+
+```http
+Accept: application/xml
+X-Traza-Id: 18fc7d0e-cda3-4668-a5bc-5db4f5dc71ac
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
+```
+
+**Respuesta.** HTTP 200 (esperado 200) · 514 ms · traza `18fc7d0e-cda3-4668-a5bc-5db4f5dc71ac`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <zonas xmlns="urn:microhubs:v1" version="1"><datos><zona><id>1</id><clave>ZN-SB01</clave><nombre>San Bernabé Centro</nombre><colonia>San Bernabé</colonia><codigo_postal>64100</codigo_postal><latitud>25.7455</latitud><longitud>-100.3585</longitud></zona><zona><id>2</id><clave>ZN-SB02</clave><nombre>Valles de San Bernabé</nombre><colonia>Valles de San Bernabé</colonia><codigo_postal>64103</codigo_postal><latitud>25.753</latitud><longitud>-100.369</longitud></zona><zona><id>3</id><clave>ZN-SB03</clave><nombre>Paseo de San Bernabé</nombre><colonia>Paseo de San Bernabé</colonia><codigo_postal>64103</codigo_postal><latitud>25.758</latitud><longitud>-100.3745</longitud></zona><zona><id>4</id><clave>ZN-SB04</clave><nombre>San Bernabé X (F-113)</nombre><colonia>San Bernabé X (F-113)</colonia><codigo_postal>64105</codigo_postal><latitud>25.7495</latitud><longitud>-100.38</longitud></zona></datos><paginacion><pagina>1</pagina><por_pagina>20</por_pagina><total>4</total><paginas>1</paginas></paginacion></zonas>
 ```
 
-### CAT-07 · Microhubs · PASA
+### ZON-02 · Una zona · PASA
 
-**Objetivo.** Microhubs con coordenadas y radio.
+**Objetivo.** Detalle por id.
 
-**Petición.** `GET http://catalogos:5103/api/v1/microhubs?estatus=activo`
+**Petición.** `GET http://zonas:5108/api/v1/zonas/1`
 
 ```http
 Accept: application/json
-X-Traza-Id: a6e6cdb5-a7d6-4714-b98c-27753c3a00fb
+X-Traza-Id: abecd8ad-6d53-40ea-bdd8-6b08af34c9e4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 79 ms · traza `a6e6cdb5-a7d6-4714-b98c-27753c3a00fb`
+**Respuesta.** HTTP 200 (esperado 200) · 36 ms · traza `abecd8ad-6d53-40ea-bdd8-6b08af34c9e4`
+
+```json
+{
+  "id": 1,
+  "clave": "********",
+  "nombre": "San Bernabé Centro",
+  "colonia": "San Bernabé",
+  "codigo_postal": "64100",
+  "latitud": 25.7455,
+  "longitud": -100.3585
+}
+```
+
+### ZON-03 · Zona inexistente · PASA
+
+**Objetivo.** Registro que no existe.
+
+**Petición.** `GET http://zonas:5108/api/v1/zonas/999999`
+
+```http
+Accept: application/json
+X-Traza-Id: ff7da3ef-de28-46fd-af87-dbb90ec47ede
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
+```
+
+**Respuesta.** HTTP 404 (esperado 404) · 31 ms · traza `ff7da3ef-de28-46fd-af87-dbb90ec47ede`
+
+```json
+{
+  "error": {
+    "codigo": "NO_ENCONTRADO",
+    "mensaje": "No existe el recurso solicitado.",
+    "traza_id": "ff7da3ef-de28-46fd-af87-dbb90ec47ede"
+  }
+}
+```
+
+### ZON-04 · Sin token · PASA
+
+**Objetivo.** Todo endpoint protegido exige Authorization: Bearer.
+
+**Petición.** `GET http://zonas:5108/api/v1/zonas`
+
+```http
+Accept: application/json
+X-Traza-Id: 2c454140-d641-4398-8140-b9902d475b06
+```
+
+**Respuesta.** HTTP 401 (esperado 401) · 6 ms · traza `2c454140-d641-4398-8140-b9902d475b06`
+
+```json
+{
+  "error": {
+    "codigo": "TOKEN_INVALIDO",
+    "mensaje": "Falta el encabezado Authorization: Bearer <token>.",
+    "traza_id": "2c454140-d641-4398-8140-b9902d475b06"
+  }
+}
+```
+
+## Servicio microhubs · puerto 5109
+
+### MIC-01 · Microhubs activos · PASA
+
+**Objetivo.** Microhubs con coordenadas y radio.
+
+**Petición.** `GET http://microhubs:5109/api/v1/microhubs?estatus=activo`
+
+```http
+Accept: application/json
+X-Traza-Id: e9ab3e07-63ac-492b-9a53-124a9babf778
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
+```
+
+**Respuesta.** HTTP 200 (esperado 200) · 839 ms · traza `e9ab3e07-63ac-492b-9a53-124a9babf778`
 
 ```json
 {
@@ -937,55 +1067,49 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 }
 ```
 
-### CAT-08 · Paginación fuera de rango · PASA
+### MIC-02 · Microhub inexistente · PASA
 
-**Objetivo.** por_pagina máximo 100.
+**Objetivo.** Registro que no existe.
 
-**Petición.** `GET http://catalogos:5103/api/v1/productos?por_pagina=500`
+**Petición.** `GET http://microhubs:5109/api/v1/microhubs/999999`
 
 ```http
 Accept: application/json
-X-Traza-Id: ea604574-3c9f-407a-88cb-9baf220006ba
+X-Traza-Id: 7e2c0155-0260-484b-aa39-16338c54bcb8
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 6 ms · traza `ea604574-3c9f-407a-88cb-9baf220006ba`
+**Respuesta.** HTTP 404 (esperado 404) · 34 ms · traza `7e2c0155-0260-484b-aa39-16338c54bcb8`
 
 ```json
 {
   "error": {
-    "codigo": "FILTRO_INVALIDO",
-    "mensaje": "por_pagina debe estar entre 1 y 100.",
-    "detalles": [
-      {
-        "campo": "por_pagina",
-        "mensaje": "por_pagina debe estar entre 1 y 100."
-      }
-    ],
-    "traza_id": "ea604574-3c9f-407a-88cb-9baf220006ba"
+    "codigo": "NO_ENCONTRADO",
+    "mensaje": "No existe el recurso solicitado.",
+    "traza_id": "7e2c0155-0260-484b-aa39-16338c54bcb8"
   }
 }
 ```
 
-### CAT-09 · Sin token · PASA
+### MIC-03 · Sin token · PASA
 
 **Objetivo.** Todo endpoint protegido exige Authorization: Bearer.
 
-**Petición.** `GET http://catalogos:5103/api/v1/productos`
+**Petición.** `GET http://microhubs:5109/api/v1/microhubs`
 
 ```http
 Accept: application/json
-X-Traza-Id: 3c095b18-2c8b-4c12-b21f-f9d63456718a
+X-Traza-Id: 6348355f-ccff-43b4-a23d-81730ecc3dfd
 ```
 
-**Respuesta.** HTTP 401 (esperado 401) · 5 ms · traza `3c095b18-2c8b-4c12-b21f-f9d63456718a`
+**Respuesta.** HTTP 401 (esperado 401) · 7 ms · traza `6348355f-ccff-43b4-a23d-81730ecc3dfd`
 
 ```json
 {
   "error": {
     "codigo": "TOKEN_INVALIDO",
     "mensaje": "Falta el encabezado Authorization: Bearer <token>.",
-    "traza_id": "3c095b18-2c8b-4c12-b21f-f9d63456718a"
+    "traza_id": "6348355f-ccff-43b4-a23d-81730ecc3dfd"
   }
 }
 ```
@@ -1000,11 +1124,11 @@ X-Traza-Id: 3c095b18-2c8b-4c12-b21f-f9d63456718a
 
 ```http
 Accept: application/json
-X-Traza-Id: b93167b9-213e-4fce-a4f6-937394ee054e
+X-Traza-Id: defea63e-8c77-4ed8-99ef-21f2be1f8259
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 242 ms · traza `b93167b9-213e-4fce-a4f6-937394ee054e`
+**Respuesta.** HTTP 200 (esperado 200) · 742 ms · traza `defea63e-8c77-4ed8-99ef-21f2be1f8259`
 
 ```json
 {
@@ -1019,7 +1143,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
       },
       "microhub_id": 2,
       "total": 148.0,
-      "creado_en": "2026-10-12T13:20:40-06:00"
+      "creado_en": "2026-10-12T20:34:56-06:00"
     },
     {
       "id": 18,
@@ -1031,7 +1155,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
       },
       "microhub_id": 1,
       "total": 180.5,
-      "creado_en": "2026-10-12T12:12:25-06:00"
+      "creado_en": "2026-10-12T19:26:41-06:00"
     },
     {
       "id": 91,
@@ -1043,7 +1167,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
       },
       "microhub_id": 2,
       "total": 128.5,
-      "creado_en": "2026-10-12T08:44:46-06:00"
+      "creado_en": "2026-10-12T15:59:02-06:00"
     },
     {
       "id": 63,
@@ -1055,7 +1179,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
       },
       "microhub_id": 2,
       "total": 148.5,
-      "creado_en": "2026-10-12T08:18:54-06:00"
+      "creado_en": "2026-10-12T15:33:11-06:00"
     },
     {
       "id": 3,
@@ -1067,7 +1191,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
       },
       "microhub_id": 2,
       "total": 142.9,
-      "creado_en": "2026-10-10T19:31:46-06:00"
+      "creado_en": "2026-10-11T02:46:03-06:00"
     }
   ],
   "paginacion": {
@@ -1087,15 +1211,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/xml
-X-Traza-Id: 699aecb5-ae4a-4790-90ab-b3eca0830a9e
+X-Traza-Id: f1198f5c-7d1f-4e18-b56c-36bc4addfedf
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 69 ms · traza `699aecb5-ae4a-4790-90ab-b3eca0830a9e`
+**Respuesta.** HTTP 200 (esperado 200) · 90 ms · traza `f1198f5c-7d1f-4e18-b56c-36bc4addfedf`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<pedidos xmlns="urn:microhubs:v1" version="1"><datos><pedido><id>105</id><folio>PED-20261013-000105</folio><estado>entregado</estado><zona><id>2</id><nombre>Valles de San Bernabé</nombre></zona><microhub_id>2</microhub_id><total>148.00</total><creado_en>2026-10-12T13:20:40-06:00</creado_en></pedido><pedido><id>18</id><folio>PED-20261013-000018</folio><estado>entregado</estado><zona><id>1</id><nombre>San Bernabé Centro</nombre></zona><microhub_id>1</microhub_id><total>180.50</total><creado_en>2026-10-12T12:12:25-06:00</creado_en></pedido></datos><paginacion><pagina>1</pagina><por_pagina>2</por_pagina><total>113</total><paginas>57</paginas></paginacion></pedidos>
+<pedidos xmlns="urn:microhubs:v1" version="1"><datos><pedido><id>105</id><folio>PED-20261013-000105</folio><estado>entregado</estado><zona><id>2</id><nombre>Valles de San Bernabé</nombre></zona><microhub_id>2</microhub_id><total>148.00</total><creado_en>2026-10-12T20:34:56-06:00</creado_en></pedido><pedido><id>18</id><folio>PED-20261013-000018</folio><estado>entregado</estado><zona><id>1</id><nombre>San Bernabé Centro</nombre></zona><microhub_id>1</microhub_id><total>180.50</total><creado_en>2026-10-12T19:26:41-06:00</creado_en></pedido></datos><paginacion><pagina>1</pagina><por_pagina>2</por_pagina><total>113</total><paginas>57</paginas></paginacion></pedidos>
 ```
 
 ### PED-03 · Detalle con líneas · PASA
@@ -1106,11 +1230,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: c8847297-a45e-493c-8d3d-8ea4dc9756f7
+X-Traza-Id: 7f192095-ad12-4b7d-9220-6e04e7ef2c19
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 88 ms · traza `c8847297-a45e-493c-8d3d-8ea4dc9756f7`
+**Respuesta.** HTTP 200 (esperado 200) · 94 ms · traza `7f192095-ad12-4b7d-9220-6e04e7ef2c19`
 
 ```json
 {
@@ -1136,7 +1260,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
   "subtotal": 133.0,
   "costo_envio": 15.0,
   "total": 148.0,
-  "creado_en": "2026-10-12T13:20:40-06:00",
+  "creado_en": "2026-10-12T20:34:56-06:00",
   "lineas": [
     {
       "id": 481,
@@ -1198,11 +1322,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: b85c72c7-7951-4386-83fb-84ef05f1bd97
+X-Traza-Id: f678da68-4ec6-42fa-a402-a7f3d5c00e77
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 92 ms · traza `b85c72c7-7951-4386-83fb-84ef05f1bd97`
+**Respuesta.** HTTP 200 (esperado 200) · 309 ms · traza `f678da68-4ec6-42fa-a402-a7f3d5c00e77`
 
 ```json
 {
@@ -1213,35 +1337,35 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
       "estado_nuevo": "creado",
       "usuario": null,
       "motivo": null,
-      "fecha": "2026-10-12T13:20:40-06:00"
+      "fecha": "2026-10-12T20:34:56-06:00"
     },
     {
       "estado_anterior": "creado",
       "estado_nuevo": "asignado",
       "usuario": null,
       "motivo": null,
-      "fecha": "2026-10-12T13:20:40-06:00"
+      "fecha": "2026-10-12T20:34:56-06:00"
     },
     {
       "estado_anterior": "asignado",
       "estado_nuevo": "en_preparacion",
       "usuario": null,
       "motivo": null,
-      "fecha": "2026-10-12T13:20:40-06:00"
+      "fecha": "2026-10-12T20:34:56-06:00"
     },
     {
       "estado_anterior": "en_preparacion",
       "estado_nuevo": "en_ruta",
       "usuario": null,
       "motivo": null,
-      "fecha": "2026-10-12T13:20:40-06:00"
+      "fecha": "2026-10-12T20:34:56-06:00"
     },
     {
       "estado_anterior": "en_ruta",
       "estado_nuevo": "entregado",
       "usuario": null,
       "motivo": null,
-      "fecha": "2026-10-12T13:20:40-06:00"
+      "fecha": "2026-10-12T20:34:56-06:00"
     }
   ]
 }
@@ -1252,31 +1376,31 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 ```json
 [
   {
-    "fecha": "2026-10-12 19:20:40.369734+00:00",
+    "fecha": "2026-10-13 02:34:56.678271+00:00",
     "estado_anterior": null,
     "estado_nuevo": "creado",
     "usuario_id": null
   },
   {
-    "fecha": "2026-10-12 19:20:40.369734+00:00",
+    "fecha": "2026-10-13 02:34:56.678271+00:00",
     "estado_anterior": "creado",
     "estado_nuevo": "asignado",
     "usuario_id": null
   },
   {
-    "fecha": "2026-10-12 19:20:40.369734+00:00",
+    "fecha": "2026-10-13 02:34:56.678271+00:00",
     "estado_anterior": "asignado",
     "estado_nuevo": "en_preparacion",
     "usuario_id": null
   },
   {
-    "fecha": "2026-10-12 19:20:40.369734+00:00",
+    "fecha": "2026-10-13 02:34:56.678271+00:00",
     "estado_anterior": "en_preparacion",
     "estado_nuevo": "en_ruta",
     "usuario_id": null
   },
   {
-    "fecha": "2026-10-12 19:20:40.369734+00:00",
+    "fecha": "2026-10-13 02:34:56.678271+00:00",
     "estado_anterior": "en_ruta",
     "estado_nuevo": "entregado",
     "usuario_id": null
@@ -1292,11 +1416,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 50bef59e-3e07-4078-bc58-dde99054ec51
+X-Traza-Id: 74ed6cde-7d74-4268-a421-ec5805811bbf
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 87 ms · traza `50bef59e-3e07-4078-bc58-dde99054ec51`
+**Respuesta.** HTTP 400 (esperado 400) · 11 ms · traza `74ed6cde-7d74-4268-a421-ec5805811bbf`
 
 ```json
 {
@@ -1309,7 +1433,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
         "mensaje": "Valor no permitido para estado: inventado."
       }
     ],
-    "traza_id": "50bef59e-3e07-4078-bc58-dde99054ec51"
+    "traza_id": "74ed6cde-7d74-4268-a421-ec5805811bbf"
   }
 }
 ```
@@ -1322,18 +1446,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: e9bcee3a-6bf3-4a83-a437-55750039499f
+X-Traza-Id: 02f8990f-f088-4b67-8c84-5e3041063b90
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 51 ms · traza `e9bcee3a-6bf3-4a83-a437-55750039499f`
+**Respuesta.** HTTP 404 (esperado 404) · 35 ms · traza `02f8990f-f088-4b67-8c84-5e3041063b90`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe el pedido o no está en tu ámbito.",
-    "traza_id": "e9bcee3a-6bf3-4a83-a437-55750039499f"
+    "traza_id": "02f8990f-f088-4b67-8c84-5e3041063b90"
   }
 }
 ```
@@ -1348,7 +1472,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 12ed2826-fb49-45e6-8ae8-9ed4d9fb5976
+X-Traza-Id: 505fe53a-6f77-46f0-93ef-b468bc19577b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -1359,14 +1483,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 8 ms · traza `12ed2826-fb49-45e6-8ae8-9ed4d9fb5976`
+**Respuesta.** HTTP 409 (esperado 409) · 11 ms · traza `505fe53a-6f77-46f0-93ef-b468bc19577b`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "El cierre de una entrega se registra con POST /api/v1/entregas/{id}/resultado.",
-    "traza_id": "12ed2826-fb49-45e6-8ae8-9ed4d9fb5976"
+    "traza_id": "505fe53a-6f77-46f0-93ef-b468bc19577b"
   }
 }
 ```
@@ -1379,7 +1503,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 1f222a5f-7824-4473-8922-e4289a6e10e4
+X-Traza-Id: a20da0f6-41eb-40f2-880e-c03433a26ec1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0Iiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -1390,14 +1514,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 68 ms · traza `1f222a5f-7824-4473-8922-e4289a6e10e4`
+**Respuesta.** HTTP 422 (esperado 422) · 76 ms · traza `a20da0f6-41eb-40f2-880e-c03433a26ec1`
 
 ```json
 {
   "error": {
     "codigo": "REGLA_NEGOCIO",
     "mensaje": "RN20: transición ilegal entregado -> en_preparacion para el rol operador. El pedido PED-20261013-000002 conserva su estado.",
-    "traza_id": "1f222a5f-7824-4473-8922-e4289a6e10e4"
+    "traza_id": "a20da0f6-41eb-40f2-880e-c03433a26ec1"
   }
 }
 ```
@@ -1426,7 +1550,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: d027d198-92b5-4edc-a3fb-d7cf4f2458e2
+X-Traza-Id: 3cf34327-5b01-4b85-b641-9491b7596d5f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -1443,11 +1567,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 38 ms · traza `d027d198-92b5-4edc-a3fb-d7cf4f2458e2`
+**Respuesta.** HTTP 201 (esperado 201) · 125 ms · traza `3cf34327-5b01-4b85-b641-9491b7596d5f`
 
 ```json
 {
-  "id": "6ace3c3457a2d24c02b0d703",
+  "id": "6acea24bbf5616d8602a1205",
   "nombre": "evidencia-entrega-129.jpg",
   "tipo_mime": "image/jpeg",
   "tamano_bytes": 276,
@@ -1457,17 +1581,17 @@ Content-Type: application/json
     "id": "129"
   },
   "subido_por": 7,
-  "creado_en": "2026-10-13T08:12:04-06:00"
+  "creado_en": "2026-10-13T15:27:39-06:00"
 }
 ```
 
 **Explicación.** Se valida que el contenido sea JPEG real, se calcula su SHA-256 y que la entrega sea del repartidor.
 
-**Evidencia en MongoDB.** `db.documentos.findOne({_id: ObjectId('6ace3c3457a2d24c02b0d703')}, {contenido: 0})`
+**Evidencia en MongoDB.** `db.documentos.findOne({_id: ObjectId('6acea24bbf5616d8602a1205')}, {contenido: 0})`
 
 ```json
 {
-  "_id": "6ace3c3457a2d24c02b0d703",
+  "_id": "6acea24bbf5616d8602a1205",
   "nombre": "evidencia-entrega-129.jpg",
   "tipo_mime": "image/jpeg",
   "tamano_bytes": 276,
@@ -1477,7 +1601,7 @@ Content-Type: application/json
     "id": "129"
   },
   "subido_por": 7,
-  "creado_en": "2026-10-13 14:12:04.120000+00:00"
+  "creado_en": "2026-10-13 21:27:39.603000+00:00"
 }
 ```
 
@@ -1489,7 +1613,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 5eee03e5-8a01-436e-812c-a292bc91e0c2
+X-Traza-Id: 7a0ef7fd-feaa-4dd0-8048-08e3c8c00a9c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -1506,11 +1630,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 54 ms · traza `5eee03e5-8a01-436e-812c-a292bc91e0c2`
+**Respuesta.** HTTP 201 (esperado 201) · 31 ms · traza `7a0ef7fd-feaa-4dd0-8048-08e3c8c00a9c`
 
 ```json
 {
-  "id": "6ace3c3457a2d24c02b0d706",
+  "id": "6acea24bbf5616d8602a1208",
   "nombre": "evidencia-entrega-130.jpg",
   "tipo_mime": "image/jpeg",
   "tamano_bytes": 276,
@@ -1520,7 +1644,7 @@ Content-Type: application/json
     "id": "130"
   },
   "subido_por": 7,
-  "creado_en": "2026-10-13T08:12:04-06:00"
+  "creado_en": "2026-10-13T15:27:39-06:00"
 }
 ```
 
@@ -1532,7 +1656,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 44ec8ab3-8db3-46ba-b9bc-154ed1a834ee
+X-Traza-Id: ab18d466-face-44db-bd40-830284d9f751
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -1549,7 +1673,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 8 ms · traza `44ec8ab3-8db3-46ba-b9bc-154ed1a834ee`
+**Respuesta.** HTTP 422 (esperado 422) · 14 ms · traza `ab18d466-face-44db-bd40-830284d9f751`
 
 ```json
 {
@@ -1562,7 +1686,7 @@ Content-Type: application/json
         "mensaje": "El contenido no corresponde al tipo declarado."
       }
     ],
-    "traza_id": "44ec8ab3-8db3-46ba-b9bc-154ed1a834ee"
+    "traza_id": "ab18d466-face-44db-bd40-830284d9f751"
   }
 }
 ```
@@ -1575,7 +1699,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: ba73d365-8fc4-40d6-af2c-003ab0f4d533
+X-Traza-Id: 9d4466ba-20e4-44c2-b2bc-3448a41fec5b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(296 caracteres)
 Content-Type: application/json
 ```
@@ -1592,14 +1716,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 30 ms · traza `ba73d365-8fc4-40d6-af2c-003ab0f4d533`
+**Respuesta.** HTTP 403 (esperado 403) · 56 ms · traza `9d4466ba-20e4-44c2-b2bc-3448a41fec5b`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Solo puedes adjuntar evidencia a tus entregas.",
-    "traza_id": "ba73d365-8fc4-40d6-af2c-003ab0f4d533"
+    "traza_id": "9d4466ba-20e4-44c2-b2bc-3448a41fec5b"
   }
 }
 ```
@@ -1612,7 +1736,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 1696a0ba-fa52-4b4e-a3c1-8a091f662b96
+X-Traza-Id: 103784db-ee04-491b-9feb-0162f42a3b25
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -1629,11 +1753,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 6 ms · traza `1696a0ba-fa52-4b4e-a3c1-8a091f662b96`
+**Respuesta.** HTTP 201 (esperado 201) · 9 ms · traza `103784db-ee04-491b-9feb-0162f42a3b25`
 
 ```json
 {
-  "id": "6ace3c3457a2d24c02b0d70d",
+  "id": "6acea24c114e5b7d09dc7612",
   "nombre": "borrador.jpg",
   "tipo_mime": "image/jpeg",
   "tamano_bytes": 276,
@@ -1643,7 +1767,7 @@ Content-Type: application/json
     "id": "7"
   },
   "subido_por": 7,
-  "creado_en": "2026-10-13T08:12:04-06:00"
+  "creado_en": "2026-10-13T15:27:40-06:00"
 }
 ```
 
@@ -1655,17 +1779,17 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 6a64105c-1369-4700-8b66-7ec62653687c
+X-Traza-Id: dc283371-be74-4755-a353-2a22a2d0f5d4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 23 ms · traza `6a64105c-1369-4700-8b66-7ec62653687c`
+**Respuesta.** HTTP 200 (esperado 200) · 54 ms · traza `dc283371-be74-4755-a353-2a22a2d0f5d4`
 
 ```json
 {
   "datos": [
     {
-      "id": "6ace3c3457a2d24c02b0d703",
+      "id": "6acea24bbf5616d8602a1205",
       "nombre": "evidencia-entrega-129.jpg",
       "tipo_mime": "image/jpeg",
       "tamano_bytes": 276,
@@ -1675,7 +1799,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
         "id": "129"
       },
       "subido_por": 7,
-      "creado_en": "2026-10-13T08:12:04-06:00"
+      "creado_en": "2026-10-13T15:27:39-06:00"
     }
   ],
   "paginacion": {
@@ -1691,38 +1815,38 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Objetivo.** Documento en XML, sin contenido.
 
-**Petición.** `GET http://documentos:5107/api/v1/documentos/6ace3c3457a2d24c02b0d703`
+**Petición.** `GET http://documentos:5107/api/v1/documentos/6acea24bbf5616d8602a1205`
 
 ```http
 Accept: application/xml
-X-Traza-Id: 34a698a5-71f1-4daf-ba5d-d24bef14cb65
+X-Traza-Id: a253f644-4cd7-4db7-b500-49935be8a4eb
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 7 ms · traza `34a698a5-71f1-4daf-ba5d-d24bef14cb65`
+**Respuesta.** HTTP 200 (esperado 200) · 14 ms · traza `a253f644-4cd7-4db7-b500-49935be8a4eb`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<documento xmlns="urn:microhubs:v1" version="1"><id>6ace3c3457a2d24c02b0d703</id><nombre>evidencia-entrega-129.jpg</nombre><tipo_mime>image/jpeg</tipo_mime><tamano_bytes>276</tamano_bytes><sha256>7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc</sha256><referencia><tipo>entrega</tipo><id>129</id></referencia><subido_por>7</subido_por><creado_en>2026-10-13T08:12:04-06:00</creado_en></documento>
+<documento xmlns="urn:microhubs:v1" version="1"><id>6acea24bbf5616d8602a1205</id><nombre>evidencia-entrega-129.jpg</nombre><tipo_mime>image/jpeg</tipo_mime><tamano_bytes>276</tamano_bytes><sha256>7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc</sha256><referencia><tipo>entrega</tipo><id>129</id></referencia><subido_por>7</subido_por><creado_en>2026-10-13T15:27:39-06:00</creado_en></documento>
 ```
 
 ### DOC-08 · Contenido en Base64 · PASA
 
 **Objetivo.** Recuperar el archivo.
 
-**Petición.** `GET http://documentos:5107/api/v1/documentos/6ace3c3457a2d24c02b0d703/contenido`
+**Petición.** `GET http://documentos:5107/api/v1/documentos/6acea24bbf5616d8602a1205/contenido`
 
 ```http
 Accept: application/json
-X-Traza-Id: f19a00be-3abf-4295-9f52-2ab6de11fe0c
+X-Traza-Id: c97599f2-da2c-48a5-a038-5f854404987e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 7 ms · traza `f19a00be-3abf-4295-9f52-2ab6de11fe0c`
+**Respuesta.** HTTP 200 (esperado 200) · 8 ms · traza `c97599f2-da2c-48a5-a038-5f854404987e`
 
 ```json
 {
-  "id": "6ace3c3457a2d24c02b0d703",
+  "id": "6acea24bbf5616d8602a1205",
   "nombre": "evidencia-entrega-129.jpg",
   "tipo_mime": "image/jpeg",
   "tamano_bytes": 276,
@@ -1732,7 +1856,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
     "id": "129"
   },
   "subido_por": 7,
-  "creado_en": "2026-10-13T08:12:04-06:00",
+  "creado_en": "2026-10-13T15:27:39-06:00",
   "contenido_base64": "/9j/4AAQSkZJRgABAQAAAQABAAAAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcY…(368 caracteres)"
 }
 ```
@@ -1741,21 +1865,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Objetivo.** Borrar un documento propio.
 
-**Petición.** `DELETE http://documentos:5107/api/v1/documentos/6ace3c3457a2d24c02b0d70d`
+**Petición.** `DELETE http://documentos:5107/api/v1/documentos/6acea24c114e5b7d09dc7612`
 
 ```http
 Accept: application/json
-X-Traza-Id: 1c5f6445-8dba-491a-8048-5d7ae3835842
+X-Traza-Id: f6546bac-8a4e-49df-9443-5acd5784ddd6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 31 ms · traza `1c5f6445-8dba-491a-8048-5d7ae3835842`
+**Respuesta.** HTTP 204 (esperado 204) · 40 ms · traza `f6546bac-8a4e-49df-9443-5acd5784ddd6`
 
 ```json
 (sin cuerpo)
 ```
 
-**Evidencia en MongoDB.** `db.documentos.countDocuments({_id: ObjectId('6ace3c3457a2d24c02b0d70d')})`
+**Evidencia en MongoDB.** `db.documentos.countDocuments({_id: ObjectId('6acea24c114e5b7d09dc7612')})`
 
 ```json
 0
@@ -1769,158 +1893,33 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 939bc153-1886-42c6-b05c-9d37d88dadb6
+X-Traza-Id: 2bdb3d9a-3a45-46a7-927f-cc075a580e1b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 6 ms · traza `939bc153-1886-42c6-b05c-9d37d88dadb6`
+**Respuesta.** HTTP 404 (esperado 404) · 8 ms · traza `2bdb3d9a-3a45-46a7-927f-cc075a580e1b`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe el recurso solicitado.",
-    "traza_id": "939bc153-1886-42c6-b05c-9d37d88dadb6"
+    "traza_id": "2bdb3d9a-3a45-46a7-927f-cc075a580e1b"
   }
 }
 ```
 
-## Servicio entregas · puerto 5105
+## Servicio seguimiento · puerto 5110
 
-### ENT-01 · Mis entregas · PASA
-
-**Objetivo.** Paradas abiertas del repartidor en el turno de hoy (RN25).
-
-**Petición.** `GET http://entregas:5105/api/v1/entregas/mias?pagina=1&por_pagina=20`
-
-```http
-Accept: application/json
-X-Traza-Id: 79391155-f76b-42aa-876c-7a60fef6b97e
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
-```
-
-**Respuesta.** HTTP 200 (esperado 200) · 63 ms · traza `79391155-f76b-42aa-876c-7a60fef6b97e`
-
-```json
-{
-  "datos": [
-    {
-      "id": 129,
-      "pedido_id": 153,
-      "folio": "PED-20261013-000153",
-      "estado_pedido": "en_ruta",
-      "orden_parada": 1,
-      "direccion": "Paseo del Valle 1762, Paseo de San Bernabé",
-      "zona": "Paseo de San Bernabé",
-      "distancia_km": 1.35,
-      "minutos_estimados": 10.0,
-      "total": 162.0
-    },
-    {
-      "id": 130,
-      "pedido_id": 154,
-      "folio": "PED-20261013-000154",
-      "estado_pedido": "en_ruta",
-      "orden_parada": 2,
-      "direccion": "Cerro Prieto 4059, Valles de San Bernabé",
-      "zona": "Valles de San Bernabé",
-      "distancia_km": 1.14,
-      "minutos_estimados": 16.0,
-      "total": 141.0
-    }
-  ],
-  "paginacion": {
-    "pagina": 1,
-    "por_pagina": 20,
-    "total": 2,
-    "paginas": 1
-  }
-}
-```
-
-### ENT-02 · Detalle de la entrega · PASA
-
-**Objetivo.** Cliente, domicilio y líneas.
-
-**Petición.** `GET http://entregas:5105/api/v1/entregas/129`
-
-```http
-Accept: application/json
-X-Traza-Id: 119881ff-c0da-4b81-8a42-5e7f6e136d8c
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
-```
-
-**Respuesta.** HTTP 200 (esperado 200) · 89 ms · traza `119881ff-c0da-4b81-8a42-5e7f6e136d8c`
-
-```json
-{
-  "id": 129,
-  "pedido_id": 153,
-  "folio": "PED-20261013-000153",
-  "estado_pedido": "en_ruta",
-  "cliente": {
-    "nombre": "Juan Chapa Sepúlveda",
-    "telefono": "8177163004"
-  },
-  "domicilio": {
-    "calle": "Paseo del Valle",
-    "numero_ext": "1762",
-    "colonia": "Paseo de San Bernabé",
-    "latitud": 25.758514,
-    "longitud": -100.373251
-  },
-  "orden_parada": 1,
-  "distancia_km": 1.35,
-  "minutos_estimados": 10.0,
-  "total": 162.0,
-  "lineas": [
-    {
-      "pedido_detalle_id": 683,
-      "nombre": "Toallas femeninas",
-      "cantidad": 2
-    },
-    {
-      "pedido_detalle_id": 684,
-      "nombre": "Crema ácida",
-      "cantidad": 2
-    }
-  ]
-}
-```
-
-### ENT-03 · Entrega de otro repartidor · PASA
-
-**Objetivo.** El repartidor 2 no ve la entrega del repartidor 1.
-
-**Petición.** `GET http://entregas:5105/api/v1/entregas/129`
-
-```http
-Accept: application/json
-X-Traza-Id: 3e5f77fa-050f-4c40-86ef-912f65c0e77b
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(296 caracteres)
-```
-
-**Respuesta.** HTTP 404 (esperado 404) · 42 ms · traza `3e5f77fa-050f-4c40-86ef-912f65c0e77b`
-
-```json
-{
-  "error": {
-    "codigo": "NO_ENCONTRADO",
-    "mensaje": "No existe la entrega o no está asignada a ti.",
-    "traza_id": "3e5f77fa-050f-4c40-86ef-912f65c0e77b"
-  }
-}
-```
-
-### ENT-04 · Enviar puntos GPS · PASA
+### SEG-01 · Enviar puntos GPS · PASA
 
 **Objetivo.** Guardar el recorrido del repartidor en MongoDB.
 
-**Petición.** `POST http://entregas:5105/api/v1/entregas/129/ubicaciones`
+**Petición.** `POST http://seguimiento:5110/api/v1/seguimiento/129/ubicaciones`
 
 ```http
 Accept: application/json
-X-Traza-Id: a4b51f9c-acfa-407d-835b-43c04eff40cf
+X-Traza-Id: 51494dd9-a321-4954-9ffe-b87b081ddb8d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -1932,25 +1931,25 @@ Content-Type: application/json
       "latitud": 25.748,
       "longitud": -100.36,
       "precision_m": 9.0,
-      "capturado_en": "2026-10-13T14:06:05+00:00"
+      "capturado_en": "2026-10-13T21:21:40+00:00"
     },
     {
       "latitud": 25.7486,
       "longitud": -100.3606,
       "precision_m": 8.0,
-      "capturado_en": "2026-10-13T14:08:05+00:00"
+      "capturado_en": "2026-10-13T21:23:40+00:00"
     },
     {
       "latitud": 25.7491,
       "longitud": -100.3611,
       "precision_m": 8.5,
-      "capturado_en": "2026-10-13T14:10:05+00:00"
+      "capturado_en": "2026-10-13T21:25:40+00:00"
     }
   ]
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 52 ms · traza `a4b51f9c-acfa-407d-835b-43c04eff40cf`
+**Respuesta.** HTTP 201 (esperado 201) · 83 ms · traza `51494dd9-a321-4954-9ffe-b87b081ddb8d`
 
 ```json
 {
@@ -1973,8 +1972,8 @@ Content-Type: application/json
       ]
     },
     "precision_m": 9.0,
-    "capturado_en": "2026-10-13 14:06:05+00:00",
-    "recibido_en": "2026-10-13 14:12:05.210000+00:00"
+    "capturado_en": "2026-10-13 21:21:40+00:00",
+    "recibido_en": "2026-10-13 21:27:40.837000+00:00"
   },
   {
     "entrega_id": 129,
@@ -1987,8 +1986,8 @@ Content-Type: application/json
       ]
     },
     "precision_m": 8.0,
-    "capturado_en": "2026-10-13 14:08:05+00:00",
-    "recibido_en": "2026-10-13 14:12:05.210000+00:00"
+    "capturado_en": "2026-10-13 21:23:40+00:00",
+    "recibido_en": "2026-10-13 21:27:40.837000+00:00"
   },
   {
     "entrega_id": 129,
@@ -2001,8 +2000,8 @@ Content-Type: application/json
       ]
     },
     "precision_m": 8.5,
-    "capturado_en": "2026-10-13 14:10:05+00:00",
-    "recibido_en": "2026-10-13 14:12:05.210000+00:00"
+    "capturado_en": "2026-10-13 21:25:40+00:00",
+    "recibido_en": "2026-10-13 21:27:40.837000+00:00"
   }
 ]
 ```
@@ -2018,27 +2017,27 @@ Content-Type: application/json
 ]
 ```
 
-### ENT-05 · Resumen del recorrido · PASA
+### SEG-02 · Resumen del recorrido · PASA
 
 **Objetivo.** Agregación en MongoDB sobre los puntos GPS.
 
-**Petición.** `GET http://entregas:5105/api/v1/entregas/129/recorrido`
+**Petición.** `GET http://seguimiento:5110/api/v1/seguimiento/129/recorrido`
 
 ```http
 Accept: application/json
-X-Traza-Id: 9c602309-9f58-44f8-819e-46242d6abfaa
+X-Traza-Id: fc69019a-25d0-45cf-8569-1fb57df3e5b6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 41 ms · traza `9c602309-9f58-44f8-819e-46242d6abfaa`
+**Respuesta.** HTTP 200 (esperado 200) · 47 ms · traza `fc69019a-25d0-45cf-8569-1fb57df3e5b6`
 
 ```json
 {
   "entrega_id": 129,
   "puntos": 3,
   "distancia_km": 0.16,
-  "inicio": "2026-10-13T08:06:05-06:00",
-  "fin": "2026-10-13T08:10:05-06:00",
+  "inicio": "2026-10-13T15:21:40-06:00",
+  "fin": "2026-10-13T15:25:40-06:00",
   "precision_promedio_m": 8.5,
   "ultimo_punto": {
     "latitud": 25.7491,
@@ -2050,7 +2049,181 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Explicación.** Pipeline: $match por entrega_id → $sort por capturado_en → $group (conteo, inicio, fin, precisión promedio y ruta). La distancia se calcula con Haversine sobre la ruta.
 
-### ENT-06 · Monto incorrecto (regla de negocio) · PASA
+### SEG-03 · Recorrido de otro repartidor · PASA
+
+**Objetivo.** El repartidor 2 no ve el rastro de la entrega del repartidor 1.
+
+**Petición.** `GET http://seguimiento:5110/api/v1/seguimiento/129/recorrido`
+
+```http
+Accept: application/json
+X-Traza-Id: 10e577c3-d309-4e0e-b29e-797732d98bea
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(296 caracteres)
+```
+
+**Respuesta.** HTTP 404 (esperado 404) · 29 ms · traza `10e577c3-d309-4e0e-b29e-797732d98bea`
+
+```json
+{
+  "error": {
+    "codigo": "NO_ENCONTRADO",
+    "mensaje": "No existe la entrega o no está asignada a ti.",
+    "traza_id": "10e577c3-d309-4e0e-b29e-797732d98bea"
+  }
+}
+```
+
+### SEG-04 · Recorrido sin token · PASA
+
+**Objetivo.** Todo endpoint protegido exige Authorization: Bearer.
+
+**Petición.** `GET http://seguimiento:5110/api/v1/seguimiento/129/recorrido`
+
+```http
+Accept: application/json
+X-Traza-Id: 61ce3820-12b6-49d5-a881-0f39e630e243
+```
+
+**Respuesta.** HTTP 401 (esperado 401) · 5 ms · traza `61ce3820-12b6-49d5-a881-0f39e630e243`
+
+```json
+{
+  "error": {
+    "codigo": "TOKEN_INVALIDO",
+    "mensaje": "Falta el encabezado Authorization: Bearer <token>.",
+    "traza_id": "61ce3820-12b6-49d5-a881-0f39e630e243"
+  }
+}
+```
+
+## Servicio entregas · puerto 5105
+
+### ENT-01 · Mis entregas · PASA
+
+**Objetivo.** Paradas abiertas del repartidor en el turno de hoy (RN25).
+
+**Petición.** `GET http://entregas:5105/api/v1/entregas/mias?pagina=1&por_pagina=20`
+
+```http
+Accept: application/json
+X-Traza-Id: e82c0688-87db-448b-a0ba-18187091c397
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
+```
+
+**Respuesta.** HTTP 200 (esperado 200) · 174 ms · traza `e82c0688-87db-448b-a0ba-18187091c397`
+
+```json
+{
+  "datos": [
+    {
+      "id": 129,
+      "pedido_id": 153,
+      "folio": "PED-20261013-000153",
+      "estado_pedido": "en_ruta",
+      "orden_parada": 1,
+      "direccion": "Camino a San Bernabé 3818, San Bernabé X (F-113)",
+      "zona": "San Bernabé X (F-113)",
+      "distancia_km": 0.62,
+      "minutos_estimados": 10.0,
+      "total": 146.8
+    },
+    {
+      "id": 130,
+      "pedido_id": 154,
+      "folio": "PED-20261013-000154",
+      "estado_pedido": "en_ruta",
+      "orden_parada": 2,
+      "direccion": "Río Salinas 4110, Paseo de San Bernabé",
+      "zona": "Paseo de San Bernabé",
+      "distancia_km": 1.48,
+      "minutos_estimados": 16.0,
+      "total": 238.0
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 2,
+    "paginas": 1
+  }
+}
+```
+
+### ENT-02 · Detalle de la entrega · PASA
+
+**Objetivo.** Cliente, domicilio y líneas.
+
+**Petición.** `GET http://entregas:5105/api/v1/entregas/129`
+
+```http
+Accept: application/json
+X-Traza-Id: 0e6c2b9a-bfe8-4ed0-bf3e-133182bc2c06
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
+```
+
+**Respuesta.** HTTP 200 (esperado 200) · 188 ms · traza `0e6c2b9a-bfe8-4ed0-bf3e-133182bc2c06`
+
+```json
+{
+  "id": 129,
+  "pedido_id": 153,
+  "folio": "PED-20261013-000153",
+  "estado_pedido": "en_ruta",
+  "cliente": {
+    "nombre": "Leticia González Chapa",
+    "telefono": "8186734386"
+  },
+  "domicilio": {
+    "calle": "Camino a San Bernabé",
+    "numero_ext": "3818",
+    "colonia": "San Bernabé X (F-113)",
+    "latitud": 25.744103,
+    "longitud": -100.377598
+  },
+  "orden_parada": 1,
+  "distancia_km": 0.62,
+  "minutos_estimados": 10.0,
+  "total": 146.8,
+  "lineas": [
+    {
+      "pedido_detalle_id": 683,
+      "nombre": "Toallas femeninas",
+      "cantidad": 2
+    },
+    {
+      "pedido_detalle_id": 684,
+      "nombre": "Arroz superextra",
+      "cantidad": 2
+    }
+  ]
+}
+```
+
+### ENT-03 · Entrega de otro repartidor · PASA
+
+**Objetivo.** El repartidor 2 no ve la entrega del repartidor 1.
+
+**Petición.** `GET http://entregas:5105/api/v1/entregas/129`
+
+```http
+Accept: application/json
+X-Traza-Id: 11cad444-9c66-4020-986d-7b83dc54ede3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(296 caracteres)
+```
+
+**Respuesta.** HTTP 404 (esperado 404) · 41 ms · traza `11cad444-9c66-4020-986d-7b83dc54ede3`
+
+```json
+{
+  "error": {
+    "codigo": "NO_ENCONTRADO",
+    "mensaje": "No existe la entrega o no está asignada a ti.",
+    "traza_id": "11cad444-9c66-4020-986d-7b83dc54ede3"
+  }
+}
+```
+
+### ENT-04 · Monto incorrecto (regla de negocio) · PASA
 
 **Objetivo.** Una entrega completa cobra el total (RN27).
 
@@ -2058,7 +2231,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: dfb4f3c5-2c15-4e39-b0a3-d553287aae81
+X-Traza-Id: 4381bc6d-65c5-4b75-bf49-fef3555f12d2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2074,14 +2247,14 @@ Content-Type: application/json
     "precision_m": 8.5
   },
   "evidencia_ids": [
-    "6ace3c3457a2d24c02b0d703"
+    "6acea24bbf5616d8602a1205"
   ],
-  "capturado_en": "2026-10-13T14:12:05+00:00",
-  "id_cliente_local": "d8ce0660-cf47-488b-95c4-3660367d51f6"
+  "capturado_en": "2026-10-13T21:27:40+00:00",
+  "id_cliente_local": "1bec9a94-bc99-4e2f-9ee8-b54260ec32b5"
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 75 ms · traza `dfb4f3c5-2c15-4e39-b0a3-d553287aae81`
+**Respuesta.** HTTP 422 (esperado 422) · 96 ms · traza `4381bc6d-65c5-4b75-bf49-fef3555f12d2`
 
 ```json
 {
@@ -2091,15 +2264,15 @@ Content-Type: application/json
     "detalles": [
       {
         "campo": "monto_cobrado",
-        "mensaje": "Una entrega completa cobra el total del pedido (162.00)."
+        "mensaje": "Una entrega completa cobra el total del pedido (146.80)."
       }
     ],
-    "traza_id": "dfb4f3c5-2c15-4e39-b0a3-d553287aae81"
+    "traza_id": "4381bc6d-65c5-4b75-bf49-fef3555f12d2"
   }
 }
 ```
 
-### ENT-07 · Cerrar entrega como entregado · PASA
+### ENT-05 · Cerrar entrega como entregado · PASA
 
 **Objetivo.** Registrar el resultado con evidencia y ubicación.
 
@@ -2107,7 +2280,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 3c4a1961-e0a2-4014-9848-c15f002a2ddf
+X-Traza-Id: ca8d9f63-7888-4513-87b6-4d3da30c1098
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2115,7 +2288,7 @@ Content-Type: application/json
 ```json
 {
   "resultado": "entregado",
-  "monto_cobrado": 162.0,
+  "monto_cobrado": 146.8,
   "cambio_entregado": 0.0,
   "ubicacion": {
     "latitud": 25.7491,
@@ -2123,21 +2296,21 @@ Content-Type: application/json
     "precision_m": 8.5
   },
   "evidencia_ids": [
-    "6ace3c3457a2d24c02b0d703"
+    "6acea24bbf5616d8602a1205"
   ],
-  "capturado_en": "2026-10-13T14:12:05+00:00",
-  "id_cliente_local": "d8ce0660-cf47-488b-95c4-3660367d51f6"
+  "capturado_en": "2026-10-13T21:27:40+00:00",
+  "id_cliente_local": "1bec9a94-bc99-4e2f-9ee8-b54260ec32b5"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 128 ms · traza `3c4a1961-e0a2-4014-9848-c15f002a2ddf`
+**Respuesta.** HTTP 201 (esperado 201) · 151 ms · traza `ca8d9f63-7888-4513-87b6-4d3da30c1098`
 
 ```json
 {
   "entrega_id": 129,
   "pedido_id": 153,
   "estado_pedido": "entregado",
-  "cerrado_en": "2026-10-13T08:12:05-06:00",
+  "cerrado_en": "2026-10-13T15:27:41-06:00",
   "duplicado": false
 }
 ```
@@ -2150,12 +2323,12 @@ Content-Type: application/json
 [
   {
     "id": 129,
-    "cierre_en": "2026-10-13 14:12:05.399707+00:00",
+    "cierre_en": "2026-10-13 21:27:41.588898+00:00",
     "resultado": "entregado",
-    "monto_cobrado": "162.00",
-    "id_cliente_local": "d8ce0660-cf47-488b-95c4-3660367d51f6",
+    "monto_cobrado": "146.80",
+    "id_cliente_local": "1bec9a94-bc99-4e2f-9ee8-b54260ec32b5",
     "evidencia_ids": [
-      "6ace3c3457a2d24c02b0d703"
+      "6acea24bbf5616d8602a1205"
     ],
     "cierre_latitud": "25.749100",
     "cierre_longitud": "-100.361100"
@@ -2171,7 +2344,7 @@ Content-Type: application/json
     "estado_anterior": "en_ruta",
     "estado_nuevo": "entregado",
     "usuario_id": 7,
-    "fecha": "2026-10-13 14:12:05.399707+00:00"
+    "fecha": "2026-10-13 21:27:41.588898+00:00"
   }
 ]
 ```
@@ -2182,18 +2355,18 @@ Content-Type: application/json
 []
 ```
 
-**Evidencia en MongoDB.** `db.sincronizaciones_moviles.findOne({operacion_uuid: 'd8ce0660-cf47-488b-95c4-3660367d51f6'})`
+**Evidencia en MongoDB.** `db.sincronizaciones_moviles.findOne({operacion_uuid: '1bec9a94-bc99-4e2f-9ee8-b54260ec32b5'})`
 
 ```json
 {
-  "operacion_uuid": "d8ce0660-cf47-488b-95c4-3660367d51f6",
-  "capturado_en": "2026-10-13 14:12:05+00:00",
+  "operacion_uuid": "1bec9a94-bc99-4e2f-9ee8-b54260ec32b5",
+  "capturado_en": "2026-10-13 21:27:40+00:00",
   "carga": {
     "entrega_id": 129,
     "resultado": "entregado",
-    "monto_cobrado": 162.0,
+    "monto_cobrado": 146.8,
     "evidencia_ids": [
-      "6ace3c3457a2d24c02b0d703"
+      "6acea24bbf5616d8602a1205"
     ],
     "ubicacion": {
       "latitud": 25.7491,
@@ -2206,13 +2379,13 @@ Content-Type: application/json
   "estado": "aplicada",
   "intentos": 1,
   "pedido_id": 153,
-  "sincronizado_en": "2026-10-13 14:12:05.456000+00:00",
+  "sincronizado_en": "2026-10-13 21:27:41.658000+00:00",
   "tipo_operacion": "cierre_entrega",
   "usuario_id": 7
 }
 ```
 
-### ENT-08 · Reintento con el mismo UUID · PASA
+### ENT-06 · Reintento con el mismo UUID · PASA
 
 **Objetivo.** Idempotencia: el cierre no se aplica dos veces.
 
@@ -2220,7 +2393,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 9951dccc-e4c2-4678-bc64-587719a19d07
+X-Traza-Id: fcc57583-d122-4a28-b36e-009c109c7f57
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2228,7 +2401,7 @@ Content-Type: application/json
 ```json
 {
   "resultado": "entregado",
-  "monto_cobrado": 162.0,
+  "monto_cobrado": 146.8,
   "cambio_entregado": 0.0,
   "ubicacion": {
     "latitud": 25.7491,
@@ -2236,38 +2409,38 @@ Content-Type: application/json
     "precision_m": 8.5
   },
   "evidencia_ids": [
-    "6ace3c3457a2d24c02b0d703"
+    "6acea24bbf5616d8602a1205"
   ],
-  "capturado_en": "2026-10-13T14:12:05+00:00",
-  "id_cliente_local": "d8ce0660-cf47-488b-95c4-3660367d51f6"
+  "capturado_en": "2026-10-13T21:27:40+00:00",
+  "id_cliente_local": "1bec9a94-bc99-4e2f-9ee8-b54260ec32b5"
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 78 ms · traza `9951dccc-e4c2-4678-bc64-587719a19d07`
+**Respuesta.** HTTP 200 (esperado 200) · 77 ms · traza `fcc57583-d122-4a28-b36e-009c109c7f57`
 
 ```json
 {
   "entrega_id": 129,
   "pedido_id": 153,
   "estado_pedido": "entregado",
-  "cerrado_en": "2026-10-13T08:12:05-06:00",
+  "cerrado_en": "2026-10-13T15:27:41-06:00",
   "duplicado": true
 }
 ```
 
 **Explicación.** La respuesta es la misma con duplicado=true. MongoDB actualiza el documento de la operación (intentos = 2).
 
-**Evidencia en MongoDB.** `db.sincronizaciones_moviles.findOne({operacion_uuid: 'd8ce0660-cf47-488b-95c4-3660367d51f6'}, {estado: 1, intentos: 1})`
+**Evidencia en MongoDB.** `db.sincronizaciones_moviles.findOne({operacion_uuid: '1bec9a94-bc99-4e2f-9ee8-b54260ec32b5'}, {estado: 1, intentos: 1})`
 
 ```json
 {
   "estado": "aplicada",
   "intentos": 2,
-  "sincronizado_en": "2026-10-13 14:12:05.602000+00:00"
+  "sincronizado_en": "2026-10-13 21:27:41.825000+00:00"
 }
 ```
 
-### ENT-09 · Otro cierre sobre la misma entrega · PASA
+### ENT-07 · Otro cierre sobre la misma entrega · PASA
 
 **Objetivo.** Conflicto: ya estaba cerrada con otra operación.
 
@@ -2275,7 +2448,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 1e3b66f9-8bb7-4668-a170-e48740bf9cd9
+X-Traza-Id: cb5440ad-2f93-43fa-981d-293845a850cd
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2283,7 +2456,7 @@ Content-Type: application/json
 ```json
 {
   "resultado": "entregado",
-  "monto_cobrado": 162.0,
+  "monto_cobrado": 146.8,
   "cambio_entregado": 0.0,
   "ubicacion": {
     "latitud": 25.7491,
@@ -2291,26 +2464,26 @@ Content-Type: application/json
     "precision_m": 8.5
   },
   "evidencia_ids": [
-    "6ace3c3457a2d24c02b0d703"
+    "6acea24bbf5616d8602a1205"
   ],
-  "capturado_en": "2026-10-13T14:12:05+00:00",
-  "id_cliente_local": "5c6a3b47-6643-4c55-af51-36ec9610ed1c"
+  "capturado_en": "2026-10-13T21:27:40+00:00",
+  "id_cliente_local": "8ca27640-39cb-41dd-9b77-7ed9ec1090a0"
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 67 ms · traza `1e3b66f9-8bb7-4668-a170-e48740bf9cd9`
+**Respuesta.** HTTP 409 (esperado 409) · 72 ms · traza `cb5440ad-2f93-43fa-981d-293845a850cd`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "La entrega ya se cerró con otra operación.",
-    "traza_id": "1e3b66f9-8bb7-4668-a170-e48740bf9cd9"
+    "traza_id": "cb5440ad-2f93-43fa-981d-293845a850cd"
   }
 }
 ```
 
-### ENT-10 · Detalle tras el cierre · PASA
+### ENT-08 · Detalle tras el cierre · PASA
 
 **Objetivo.** El repartidor deja de ver el domicilio (RN26).
 
@@ -2318,23 +2491,23 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 85a85d66-14ab-4f09-8420-c6321d99a789
+X-Traza-Id: f15d92be-6987-4c2c-b4af-a2fa80e10cf4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 37 ms · traza `85a85d66-14ab-4f09-8420-c6321d99a789`
+**Respuesta.** HTTP 404 (esperado 404) · 35 ms · traza `f15d92be-6987-4c2c-b4af-a2fa80e10cf4`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "La entrega ya se cerró; su información ya no está disponible.",
-    "traza_id": "85a85d66-14ab-4f09-8420-c6321d99a789"
+    "traza_id": "f15d92be-6987-4c2c-b4af-a2fa80e10cf4"
   }
 }
 ```
 
-### ENT-11 · Parcial sin motivo · PASA
+### ENT-09 · Parcial sin motivo · PASA
 
 **Objetivo.** Cada línea devuelta necesita motivo (RN28).
 
@@ -2342,7 +2515,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: b45a2abc-0348-4481-8432-062ce48b9745
+X-Traza-Id: 6d6eb9d2-da69-4415-b69c-cfe294084bcb
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2356,13 +2529,13 @@ Content-Type: application/json
   "lineas": [
     {
       "pedido_detalle_id": 685,
-      "cantidad_entregada": 1,
+      "cantidad_entregada": 2,
       "cantidad_devuelta": 0
     },
     {
       "pedido_detalle_id": 686,
       "cantidad_entregada": 0,
-      "cantidad_devuelta": 1
+      "cantidad_devuelta": 2
     }
   ],
   "ubicacion": {
@@ -2370,14 +2543,14 @@ Content-Type: application/json
     "longitud": -100.3611
   },
   "evidencia_ids": [
-    "6ace3c3457a2d24c02b0d706"
+    "6acea24bbf5616d8602a1208"
   ],
-  "capturado_en": "2026-10-13T14:12:05+00:00",
-  "id_cliente_local": "6108e6c8-4fae-4b8d-903a-be4fa13d629f"
+  "capturado_en": "2026-10-13T21:27:40+00:00",
+  "id_cliente_local": "b2c05104-d016-4a63-a423-cf3f0546a85a"
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 70 ms · traza `b45a2abc-0348-4481-8432-062ce48b9745`
+**Respuesta.** HTTP 422 (esperado 422) · 69 ms · traza `6d6eb9d2-da69-4415-b69c-cfe294084bcb`
 
 ```json
 {
@@ -2390,12 +2563,12 @@ Content-Type: application/json
         "mensaje": "Explica por qué regresan unidades."
       }
     ],
-    "traza_id": "b45a2abc-0348-4481-8432-062ce48b9745"
+    "traza_id": "6d6eb9d2-da69-4415-b69c-cfe294084bcb"
   }
 }
 ```
 
-### ENT-12 · Cerrar como entrega parcial · PASA
+### ENT-10 · Cerrar como entrega parcial · PASA
 
 **Objetivo.** Devolver al inventario lo que no se entregó.
 
@@ -2403,7 +2576,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 991fe92b-b770-40bc-8c7e-b694c9bca2f7
+X-Traza-Id: 4d38d71f-1bd1-4ae7-8c7d-af53554a6d13
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2417,13 +2590,13 @@ Content-Type: application/json
   "lineas": [
     {
       "pedido_detalle_id": 685,
-      "cantidad_entregada": 1,
+      "cantidad_entregada": 2,
       "cantidad_devuelta": 0
     },
     {
       "pedido_detalle_id": 686,
       "cantidad_entregada": 0,
-      "cantidad_devuelta": 1,
+      "cantidad_devuelta": 2,
       "motivo": "El cliente la rechazó."
     }
   ],
@@ -2432,21 +2605,21 @@ Content-Type: application/json
     "longitud": -100.3611
   },
   "evidencia_ids": [
-    "6ace3c3457a2d24c02b0d706"
+    "6acea24bbf5616d8602a1208"
   ],
-  "capturado_en": "2026-10-13T14:12:05+00:00",
-  "id_cliente_local": "6108e6c8-4fae-4b8d-903a-be4fa13d629f"
+  "capturado_en": "2026-10-13T21:27:40+00:00",
+  "id_cliente_local": "b2c05104-d016-4a63-a423-cf3f0546a85a"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 135 ms · traza `991fe92b-b770-40bc-8c7e-b694c9bca2f7`
+**Respuesta.** HTTP 201 (esperado 201) · 126 ms · traza `4d38d71f-1bd1-4ae7-8c7d-af53554a6d13`
 
 ```json
 {
   "entrega_id": 130,
   "pedido_id": 154,
   "estado_pedido": "entrega_parcial",
-  "cerrado_en": "2026-10-13T08:12:05-06:00",
+  "cerrado_en": "2026-10-13T15:27:42-06:00",
   "duplicado": false
 }
 ```
@@ -2460,7 +2633,7 @@ Content-Type: application/json
   {
     "entrega_id": 130,
     "pedido_detalle_id": 685,
-    "cantidad_entregada": 1,
+    "cantidad_entregada": 2,
     "cantidad_devuelta": 0,
     "motivo": null
   },
@@ -2468,7 +2641,7 @@ Content-Type: application/json
     "entrega_id": 130,
     "pedido_detalle_id": 686,
     "cantidad_entregada": 0,
-    "cantidad_devuelta": 1,
+    "cantidad_devuelta": 2,
     "motivo": "El cliente la rechazó."
   }
 ]
@@ -2480,15 +2653,15 @@ Content-Type: application/json
 [
   {
     "tipo": "devolucion_parcial",
-    "producto_id": 47,
-    "cantidad": 1,
-    "existencia_resultante": 62,
+    "producto_id": 51,
+    "cantidad": 2,
+    "existencia_resultante": 75,
     "motivo": "Entrega parcial: regresan las unidades devueltas (RN28)."
   }
 ]
 ```
 
-### ENT-13 · Entregas de un pedido (administrador) · PASA
+### ENT-11 · Entregas de un pedido (administrador) · PASA
 
 **Objetivo.** Consulta por pedido para el portal web.
 
@@ -2496,11 +2669,11 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: dfb29b72-537e-437a-8348-b156c229da9e
+X-Traza-Id: 5a639837-10dd-42dd-8d8c-669d3dd4b51f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 57 ms · traza `dfb29b72-537e-437a-8348-b156c229da9e`
+**Respuesta.** HTTP 200 (esperado 200) · 62 ms · traza `5a639837-10dd-42dd-8d8c-669d3dd4b51f`
 
 ```json
 {
@@ -2511,11 +2684,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "folio": "PED-20261013-000153",
       "estado_pedido": "entregado",
       "orden_parada": 1,
-      "direccion": "Paseo del Valle 1762, Paseo de San Bernabé",
-      "zona": "Paseo de San Bernabé",
-      "distancia_km": 1.35,
+      "direccion": "Camino a San Bernabé 3818, San Bernabé X (F-113)",
+      "zona": "San Bernabé X (F-113)",
+      "distancia_km": 0.62,
       "minutos_estimados": 10.0,
-      "total": 162.0
+      "total": 146.8
     }
   ],
   "paginacion": {
@@ -2537,11 +2710,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/xml
-X-Traza-Id: 8b9746b0-413b-4f7c-ad01-f2a628ff1432
+X-Traza-Id: 3e14b159-2971-4fbb-b3ad-f1a491d6b850
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 68 ms · traza `8b9746b0-413b-4f7c-ad01-f2a628ff1432`
+**Respuesta.** HTTP 200 (esperado 200) · 117 ms · traza `3e14b159-2971-4fbb-b3ad-f1a491d6b850`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -2556,7 +2729,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/xml
-X-Traza-Id: bbf407e6-384d-4290-b758-adc5a68ec56f
+X-Traza-Id: d6c50876-8376-4043-a7aa-21ec32863e79
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/xml
 ```
@@ -2565,11 +2738,11 @@ Content-Type: application/xml
 <?xml version="1.0" encoding="UTF-8"?><candidato_nuevo xmlns="urn:microhubs:v1"><clave>********</clave><nombre>Alianza Norte</nombre><latitud>25.7601</latitud><longitud>-100.3555</longitud><renta_estimada>16000.00</renta_estimada><nomina_estimada>40000.00</nomina_estimada><servicios_estimados>6500.00</servicios_estimados><otros_costos>4500.00</otros_costos><superficie_m2>110</superficie_m2><capacidad_fisica>130</capacidad_fisica><accesibilidad_vial>7</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km></candidato_nuevo>
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 79 ms · traza `bbf407e6-384d-4290-b758-adc5a68ec56f`
+**Respuesta.** HTTP 201 (esperado 201) · 188 ms · traza `d6c50876-8376-4043-a7aa-21ec32863e79`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<candidato xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id>16</id><clave>EV-D44B9B</clave><nombre>Alianza Norte</nombre><latitud>25.7601</latitud><longitud>-100.3555</longitud><renta_estimada>16000.00</renta_estimada><nomina_estimada>40000.00</nomina_estimada><servicios_estimados>6500.00</servicios_estimados><otros_costos>4500.00</otros_costos><costo_fijo>67000.00</costo_fijo><superficie_m2>110</superficie_m2><capacidad_fisica>130</capacidad_fisica><accesibilidad_vial>7</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil="true" /></candidato>
+<candidato xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id>16</id><clave>EV-FC84B1</clave><nombre>Alianza Norte</nombre><latitud>25.7601</latitud><longitud>-100.3555</longitud><renta_estimada>16000.00</renta_estimada><nomina_estimada>40000.00</nomina_estimada><servicios_estimados>6500.00</servicios_estimados><otros_costos>4500.00</otros_costos><costo_fijo>67000.00</costo_fijo><superficie_m2>110</superficie_m2><capacidad_fisica>130</capacidad_fisica><accesibilidad_vial>7</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil="true" /></candidato>
 ```
 
 **Evidencia en PostgreSQL.** `SELECT id, clave, nombre, renta_estimada, costo_fijo, decision FROM ubicacion_candidata WHERE clave = %s`
@@ -2578,7 +2751,7 @@ Content-Type: application/xml
 [
   {
     "id": 16,
-    "clave": "EV-D44B9B",
+    "clave": "EV-FC84B1",
     "nombre": "Alianza Norte",
     "renta_estimada": "16000.00",
     "costo_fijo": "67000.00",
@@ -2595,7 +2768,7 @@ Content-Type: application/xml
 
 ```http
 Accept: application/xml
-X-Traza-Id: c9c1af53-ad8b-401e-bbc1-78ee90a3b3dc
+X-Traza-Id: 85821a03-0ef1-4b7d-af54-d91b7b0d1af1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/xml
 ```
@@ -2604,11 +2777,11 @@ Content-Type: application/xml
 <?xml version="1.0" encoding="UTF-8"?><candidato_nuevo xmlns="urn:microhubs:v1"><clave>********</clave><nombre>Alianza Norte</nombre><latitud>25.7601</latitud><longitud>-100.3555</longitud><renta_estimada>16000.00</renta_estimada><nomina_estimada>40000.00</nomina_estimada><servicios_estimados>6500.00</servicios_estimados><otros_costos>4500.00</otros_costos><superficie_m2>110</superficie_m2><capacidad_fisica>130</capacidad_fisica><accesibilidad_vial>7</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km></candidato_nuevo>
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 66 ms · traza `c9c1af53-ad8b-401e-bbc1-78ee90a3b3dc`
+**Respuesta.** HTTP 409 (esperado 409) · 68 ms · traza `85821a03-0ef1-4b7d-af54-d91b7b0d1af1`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<error xmlns="urn:microhubs:v1" version="1"><codigo>CONFLICTO</codigo><mensaje>Ya existe un registro con esos datos.</mensaje><traza_id>c9c1af53-ad8b-401e-bbc1-78ee90a3b3dc</traza_id></error>
+<error xmlns="urn:microhubs:v1" version="1"><codigo>CONFLICTO</codigo><mensaje>Ya existe un registro con esos datos.</mensaje><traza_id>85821a03-0ef1-4b7d-af54-d91b7b0d1af1</traza_id></error>
 ```
 
 ### PLA-04 · Modificar candidato (PUT) · PASA
@@ -2619,7 +2792,7 @@ Content-Type: application/xml
 
 ```http
 Accept: application/json
-X-Traza-Id: e2cbcb81-7886-4e11-94a1-df87771cee1f
+X-Traza-Id: c7845f2b-7d3e-44bf-a8d5-1c10125acfb5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2643,7 +2816,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 118 ms · traza `e2cbcb81-7886-4e11-94a1-df87771cee1f`
+**Respuesta.** HTTP 200 (esperado 200) · 95 ms · traza `c7845f2b-7d3e-44bf-a8d5-1c10125acfb5`
 
 ```json
 {
@@ -2676,7 +2849,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/xml
-X-Traza-Id: f98bb9b5-d4f6-4d17-ba60-0a2ba4cdbfb9
+X-Traza-Id: 7aee91ce-5f63-4ff6-a313-f3e44c8c2922
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/xml
 ```
@@ -2685,11 +2858,11 @@ Content-Type: application/xml
 <simular xmlns="urn:microhubs:v1"/>
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 375 ms · traza `f98bb9b5-d4f6-4d17-ba60-0a2ba4cdbfb9`
+**Respuesta.** HTTP 200 (esperado 200) · 321 ms · traza `7aee91ce-5f63-4ff6-a313-f3e44c8c2922`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<resultados xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><atendidos>0</atendidos><rechazados>0</rechazados><utilizacion>0</utilizacion><nivel>estable</nivel><tiempo_estimado_min>18.6</tiempo_estimado_min><operadores_requeridos>0</operadores_requeridos><repartidores_requeridos>0</repartidores_requeridos><ingreso_dia>0.00</ingreso_dia><margen_dia>-2300.00</margen_dia><costo_por_pedido xsi:nil="true" /><equilibrio><margen_pedido>23.89</margen_pedido><mensual>2888.8</mensual><diario>96.3</diario></equilibrio><decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision><explicacion><motivo>la demanda atendida (0/día) no alcanza el equilibrio (96/día)</motivo><motivo>reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda</motivo></explicacion></resultados>
+<resultados xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><atendidos>0</atendidos><rechazados>0</rechazados><utilizacion>0</utilizacion><nivel>estable</nivel><tiempo_estimado_min>18.6</tiempo_estimado_min><operadores_requeridos>0</operadores_requeridos><repartidores_requeridos>0</repartidores_requeridos><ingreso_dia>0.00</ingreso_dia><margen_dia>-2300.00</margen_dia><costo_por_pedido xsi:nil="true" /><equilibrio><margen_pedido>24.04</margen_pedido><mensual>2869.6</mensual><diario>95.7</diario></equilibrio><decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision><explicacion><motivo>la demanda atendida (0/día) no alcanza el equilibrio (96/día)</motivo><motivo>reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda</motivo></explicacion></resultados>
 ```
 
 **Explicación.** Usa planeacion_calc.py (las mismas fórmulas del web) y guarda la ejecución en MongoDB.
@@ -2701,14 +2874,14 @@ Content-Type: application/xml
   "escenario_id": "candidato-16",
   "nombre_escenario": "Candidato 16",
   "tipo_analisis": "punto_equilibrio",
-  "ejecutado_en": "2026-10-13 14:12:06.743000+00:00",
+  "ejecutado_en": "2026-10-13 21:27:43.055000+00:00",
   "usuario_id": 5,
   "version_modelo": "planeacion_calc 2.1",
   "parametros_entrada": {
     "demanda_diaria": 0.0,
     "operadores": 3.0,
     "repartidores": 3.0,
-    "ticket": 149.59,
+    "ticket": 150.16,
     "costo_entrega": 18.0,
     "margen_bruto": 0.28,
     "renta": 18000.0,
@@ -2722,7 +2895,7 @@ Content-Type: application/xml
     "demanda_diaria = 0.0",
     "operadores = 3",
     "repartidores = 3",
-    "ticket = 149.59",
+    "ticket = 150.16",
     "costo_entrega = 18.00",
     "margen_bruto = 0.28",
     "renta = 18000.00",
@@ -2736,12 +2909,12 @@ Content-Type: application/xml
     "decision": "NO VIABLE CON LOS SUPUESTOS ACTUALES",
     "utilizacion": 0.0,
     "atendidos": 0.0,
-    "equilibrio_diario": 96.3,
+    "equilibrio_diario": 95.7,
     "costo_por_pedido": null
   },
   "recomendacion": "NO VIABLE CON LOS SUPUESTOS ACTUALES",
   "datos_suficientes": true,
-  "duracion_ms": 0,
+  "duracion_ms": 1,
   "aplicado_por": null
 }
 ```
@@ -2754,7 +2927,7 @@ Content-Type: application/xml
 
 ```http
 Accept: application/json
-X-Traza-Id: bc4baef6-b33c-4d69-abe9-7197a857a214
+X-Traza-Id: 23ffe819-0ced-4ce4-b70e-2d22e2968e29
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2766,7 +2939,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 34 ms · traza `bc4baef6-b33c-4d69-abe9-7197a857a214`
+**Respuesta.** HTTP 422 (esperado 422) · 27 ms · traza `23ffe819-0ced-4ce4-b70e-2d22e2968e29`
 
 ```json
 {
@@ -2779,7 +2952,7 @@ Content-Type: application/json
         "mensaje": "Debe tener al menos 3 caracteres."
       }
     ],
-    "traza_id": "bc4baef6-b33c-4d69-abe9-7197a857a214"
+    "traza_id": "23ffe819-0ced-4ce4-b70e-2d22e2968e29"
   }
 }
 ```
@@ -2792,7 +2965,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 8c822e78-2d56-410f-947a-dd1ad985260b
+X-Traza-Id: 7454272b-ac47-4c08-80a8-a330a5e91c67
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2804,7 +2977,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 75 ms · traza `8c822e78-2d56-410f-947a-dd1ad985260b`
+**Respuesta.** HTTP 200 (esperado 200) · 60 ms · traza `7454272b-ac47-4c08-80a8-a330a5e91c67`
 
 ```json
 {
@@ -2838,7 +3011,7 @@ Content-Type: application/json
     "decision": "condicionado",
     "decision_motivo": "Renegociar la renta antes de firmar.",
     "decision_por": 5,
-    "decision_en": "2026-10-13 14:12:06.834490+00:00"
+    "decision_en": "2026-10-13 21:27:43.134770+00:00"
   }
 ]
 ```
@@ -2851,7 +3024,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: c79178ee-296f-4460-a33c-f9237948c03e
+X-Traza-Id: 52501209-b796-4ef2-ac68-f2ad30a0427d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2875,7 +3048,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 82 ms · traza `c79178ee-296f-4460-a33c-f9237948c03e`
+**Respuesta.** HTTP 200 (esperado 200) · 32 ms · traza `52501209-b796-4ef2-ac68-f2ad30a0427d`
 
 ```json
 {
@@ -2913,7 +3086,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 2c018343-fde5-471c-a266-107e427f7438
+X-Traza-Id: ded24b30-a87e-4ea5-b1a9-b1b1fdc0c6ba
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2939,7 +3112,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 116 ms · traza `2c018343-fde5-471c-a266-107e427f7438`
+**Respuesta.** HTTP 201 (esperado 201) · 109 ms · traza `ded24b30-a87e-4ea5-b1a9-b1b1fdc0c6ba`
 
 ```json
 {
@@ -2983,7 +3156,7 @@ Content-Type: application/json
       "reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda"
     ]
   },
-  "creado_en": "2026-10-13T08:12:07-06:00"
+  "creado_en": "2026-10-13T15:27:43-06:00"
 }
 ```
 
@@ -2995,15 +3168,15 @@ Content-Type: application/json
 
 ```http
 Accept: application/xml
-X-Traza-Id: 99d8a85b-f034-44b6-ab62-7f9259e8b45a
+X-Traza-Id: 82e4df7d-3487-4957-9f2f-17b0586a57ea
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 25 ms · traza `99d8a85b-f034-44b6-ab62-7f9259e8b45a`
+**Respuesta.** HTTP 200 (esperado 200) · 24 ms · traza `82e4df7d-3487-4957-9f2f-17b0586a57ea`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<escenario xmlns="urn:microhubs:v1" version="1"><id>1</id><nombre>Escenario A - evidencias</nombre><candidato_id>16</candidato_id><supuestos><demanda_diaria>120</demanda_diaria><operadores>3</operadores><repartidores>4</repartidores><ticket>135.00</ticket><costo_entrega>22.00</costo_entrega><margen_bruto>0.28</margen_bruto><renta>18000.00</renta><nomina>42000.00</nomina><servicios>7000.00</servicios><otros>5000.00</otros><distancia_km>2.4</distancia_km><capacidad_fisica>150</capacidad_fisica></supuestos><resultados><atendidos>120</atendidos><rechazados>0</rechazados><utilizacion>80</utilizacion><nivel>atencion</nivel><tiempo_estimado_min>19.4</tiempo_estimado_min><operadores_requeridos>3</operadores_requeridos><repartidores_requeridos>2</repartidores_requeridos><ingreso_dia>16200.00</ingreso_dia><margen_dia>-504.00</margen_dia><costo_por_pedido>42.00</costo_por_pedido><equilibrio><margen_pedido>15.80</margen_pedido><mensual>4557</mensual><diario>151.9</diario></equilibrio><decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision><explicacion><motivo>la demanda atendida (120/día) no alcanza el equilibrio (152/día)</motivo><motivo>el espacio físico del local limita la capacidad</motivo><motivo>reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda</motivo></explicacion></resultados><creado_en>2026-10-13T08:12:07-06:00</creado_en></escenario>
+<escenario xmlns="urn:microhubs:v1" version="1"><id>1</id><nombre>Escenario A - evidencias</nombre><candidato_id>16</candidato_id><supuestos><demanda_diaria>120</demanda_diaria><operadores>3</operadores><repartidores>4</repartidores><ticket>135.00</ticket><costo_entrega>22.00</costo_entrega><margen_bruto>0.28</margen_bruto><renta>18000.00</renta><nomina>42000.00</nomina><servicios>7000.00</servicios><otros>5000.00</otros><distancia_km>2.4</distancia_km><capacidad_fisica>150</capacidad_fisica></supuestos><resultados><atendidos>120</atendidos><rechazados>0</rechazados><utilizacion>80</utilizacion><nivel>atencion</nivel><tiempo_estimado_min>19.4</tiempo_estimado_min><operadores_requeridos>3</operadores_requeridos><repartidores_requeridos>2</repartidores_requeridos><ingreso_dia>16200.00</ingreso_dia><margen_dia>-504.00</margen_dia><costo_por_pedido>42.00</costo_por_pedido><equilibrio><margen_pedido>15.80</margen_pedido><mensual>4557</mensual><diario>151.9</diario></equilibrio><decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision><explicacion><motivo>la demanda atendida (120/día) no alcanza el equilibrio (152/día)</motivo><motivo>el espacio físico del local limita la capacidad</motivo><motivo>reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda</motivo></explicacion></resultados><creado_en>2026-10-13T15:27:43-06:00</creado_en></escenario>
 ```
 
 ### PLA-11 · Resumen de simulaciones · PASA
@@ -3014,11 +3187,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: a16a19c8-5acc-4175-961c-1f56b5edf02f
+X-Traza-Id: d2e33a25-9529-49e9-a4a5-00cf52a84f76
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 10 ms · traza `a16a19c8-5acc-4175-961c-1f56b5edf02f`
+**Respuesta.** HTTP 200 (esperado 200) · 18 ms · traza `d2e33a25-9529-49e9-a4a5-00cf52a84f76`
 
 ```json
 {
@@ -3053,7 +3226,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 76551a75-b4d6-4f45-9b45-6581b7132674
+X-Traza-Id: c390afad-1958-4986-a937-e05681b16ddc
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 Content-Type: application/json
 ```
@@ -3077,14 +3250,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 28 ms · traza `76551a75-b4d6-4f45-9b45-6581b7132674`
+**Respuesta.** HTTP 403 (esperado 403) · 33 ms · traza `c390afad-1958-4986-a937-e05681b16ddc`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "76551a75-b4d6-4f45-9b45-6581b7132674"
+    "traza_id": "c390afad-1958-4986-a937-e05681b16ddc"
   }
 }
 ```
@@ -3097,7 +3270,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: c70b673c-6133-455b-a751-4db5f35da358
+X-Traza-Id: 2f16f7e6-e648-4f6b-9054-abf6c25a5a1f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 Content-Type: application/json
 ```
@@ -3106,14 +3279,14 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 30 ms · traza `c70b673c-6133-455b-a751-4db5f35da358`
+**Respuesta.** HTTP 403 (esperado 403) · 29 ms · traza `2f16f7e6-e648-4f6b-9054-abf6c25a5a1f`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "c70b673c-6133-455b-a751-4db5f35da358"
+    "traza_id": "2f16f7e6-e648-4f6b-9054-abf6c25a5a1f"
   }
 }
 ```
@@ -3126,11 +3299,11 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: c822ac8b-1c41-4ccb-83da-7cdae3d35b25
+X-Traza-Id: 9dc4c3be-6e32-4db7-b7ec-2ba82690c793
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 38 ms · traza `c822ac8b-1c41-4ccb-83da-7cdae3d35b25`
+**Respuesta.** HTTP 204 (esperado 204) · 50 ms · traza `9dc4c3be-6e32-4db7-b7ec-2ba82690c793`
 
 ```json
 (sin cuerpo)
@@ -3144,11 +3317,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: eba69fe2-0b0b-400d-89fa-067b0b2bc8ce
+X-Traza-Id: 4a28cf6f-0b4a-4fe3-b687-c817793a7f05
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 57 ms · traza `eba69fe2-0b0b-400d-89fa-067b0b2bc8ce`
+**Respuesta.** HTTP 204 (esperado 204) · 84 ms · traza `4a28cf6f-0b4a-4fe3-b687-c817793a7f05`
 
 ```json
 (sin cuerpo)
@@ -3160,7 +3333,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 [
   {
     "id": 16,
-    "clave": "EV-D44B9B",
+    "clave": "EV-FC84B1",
     "estatus": "inactivo",
     "decision": "condicionado"
   }
@@ -3175,314 +3348,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 4f29fb6f-877f-4b4d-8d29-a68297804f77
+X-Traza-Id: 9f09ac1e-e7d4-43d4-9c51-027ad5013f3a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 23 ms · traza `4f29fb6f-877f-4b4d-8d29-a68297804f77`
+**Respuesta.** HTTP 404 (esperado 404) · 155 ms · traza `9f09ac1e-e7d4-43d4-9c51-027ad5013f3a`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe el candidato.",
-    "traza_id": "4f29fb6f-877f-4b4d-8d29-a68297804f77"
+    "traza_id": "9f09ac1e-e7d4-43d4-9c51-027ad5013f3a"
   }
 }
-```
-
-## Servicio notificaciones · puerto 5108
-
-### NOT-01 · Mi bandeja · PASA
-
-**Objetivo.** Avisos del repartidor (misma tabla que el web).
-
-**Petición.** `GET http://notificaciones:5108/api/v1/notificaciones?pagina=1&por_pagina=5`
-
-```http
-Accept: application/json
-X-Traza-Id: 8200564b-f98f-4951-9e0a-84397fa4c3d1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
-```
-
-**Respuesta.** HTTP 200 (esperado 200) · 202 ms · traza `8200564b-f98f-4951-9e0a-84397fa4c3d1`
-
-```json
-{
-  "datos": [
-    {
-      "id": 2,
-      "tipo": "entrega",
-      "titulo": "Nueva entrega asignada",
-      "mensaje": "Se te asignó el pedido PED-20261013-000154 (parada 2).",
-      "leida": false,
-      "referencia": {
-        "tipo": "entrega",
-        "id": "130"
-      },
-      "creada_en": "2026-10-13T08:11:59-06:00"
-    },
-    {
-      "id": 1,
-      "tipo": "entrega",
-      "titulo": "Nueva entrega asignada",
-      "mensaje": "Se te asignó el pedido PED-20261013-000153 (parada 1).",
-      "leida": false,
-      "referencia": {
-        "tipo": "entrega",
-        "id": "129"
-      },
-      "creada_en": "2026-10-13T08:11:59-06:00"
-    }
-  ],
-  "paginacion": {
-    "pagina": 1,
-    "por_pagina": 5,
-    "total": 2,
-    "paginas": 1
-  }
-}
-```
-
-**Explicación.** Incluye los avisos «Nueva entrega asignada» que genera el trigger al asignar la entrega.
-
-### NOT-02 · Conteo sin leer · PASA
-
-**Objetivo.** Número de avisos pendientes.
-
-**Petición.** `GET http://notificaciones:5108/api/v1/notificaciones/conteo`
-
-```http
-Accept: application/json
-X-Traza-Id: 0ca61f54-6349-4262-93df-d0acfb3b8959
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
-```
-
-**Respuesta.** HTTP 200 (esperado 200) · 25 ms · traza `0ca61f54-6349-4262-93df-d0acfb3b8959`
-
-```json
-{
-  "no_leidas": 2
-}
-```
-
-### NOT-03 · Marcar como leída · PASA
-
-**Objetivo.** Actualizar el aviso.
-
-**Petición.** `POST http://notificaciones:5108/api/v1/notificaciones/2/leer`
-
-```http
-Accept: application/json
-X-Traza-Id: f849d966-06fd-4de1-8a33-558e11afb073
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
-```
-
-**Respuesta.** HTTP 200 (esperado 200) · 44 ms · traza `f849d966-06fd-4de1-8a33-558e11afb073`
-
-```json
-{
-  "id": 2,
-  "tipo": "entrega",
-  "titulo": "Nueva entrega asignada",
-  "mensaje": "Se te asignó el pedido PED-20261013-000154 (parada 2).",
-  "leida": true,
-  "referencia": {
-    "tipo": "entrega",
-    "id": "130"
-  },
-  "creada_en": "2026-10-13T08:11:59-06:00"
-}
-```
-
-**Evidencia en PostgreSQL.** `SELECT id, titulo, leido_en FROM web_notificacion WHERE id = %s`
-
-```json
-[
-  {
-    "id": 2,
-    "titulo": "Nueva entrega asignada",
-    "leido_en": "2026-10-13 14:12:07.580080+00:00"
-  }
-]
-```
-
-### NOT-04 · Leer un aviso ajeno · PASA
-
-**Objetivo.** Cada quien solo toca su bandeja.
-
-**Petición.** `POST http://notificaciones:5108/api/v1/notificaciones/2/leer`
-
-```http
-Accept: application/json
-X-Traza-Id: 7196591b-c48b-4b0a-930f-9fb830bb31fd
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(296 caracteres)
-```
-
-**Respuesta.** HTTP 404 (esperado 404) · 27 ms · traza `7196591b-c48b-4b0a-930f-9fb830bb31fd`
-
-```json
-{
-  "error": {
-    "codigo": "NO_ENCONTRADO",
-    "mensaje": "No existe ese aviso en tu bandeja.",
-    "traza_id": "7196591b-c48b-4b0a-930f-9fb830bb31fd"
-  }
-}
-```
-
-### NOT-05 · Enviar aviso (administrador) · PASA
-
-**Objetivo.** Aviso manual a un usuario.
-
-**Petición.** `POST http://notificaciones:5108/api/v1/notificaciones`
-
-```http
-Accept: application/json
-X-Traza-Id: 21ba92db-d5af-42c3-93da-597eb805803c
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
-Content-Type: application/json
-```
-
-```json
-{
-  "usuario_id": 7,
-  "tipo": "sistema",
-  "titulo": "Reunión de turno",
-  "mensaje": "Revisión de rutas a las 9:00.",
-  "referencia": {
-    "tipo": "sistema",
-    "id": "turno"
-  }
-}
-```
-
-**Respuesta.** HTTP 201 (esperado 201) · 150 ms · traza `21ba92db-d5af-42c3-93da-597eb805803c`
-
-```json
-{
-  "id": 5,
-  "tipo": "sistema",
-  "titulo": "Reunión de turno",
-  "mensaje": "Revisión de rutas a las 9:00.",
-  "leida": false,
-  "referencia": {
-    "tipo": "sistema",
-    "id": "turno"
-  },
-  "creada_en": "2026-10-13T08:12:07-06:00"
-}
-```
-
-### NOT-06 · Enviar aviso sin permiso · PASA
-
-**Objetivo.** Un repartidor no envía avisos.
-
-**Petición.** `POST http://notificaciones:5108/api/v1/notificaciones`
-
-```http
-Accept: application/json
-X-Traza-Id: 0857ea94-08f2-461f-a627-a17d6be5fef4
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
-Content-Type: application/json
-```
-
-```json
-{
-  "usuario_id": 1,
-  "tipo": "sistema",
-  "titulo": "x",
-  "mensaje": "y"
-}
-```
-
-**Respuesta.** HTTP 403 (esperado 403) · 28 ms · traza `0857ea94-08f2-461f-a627-a17d6be5fef4`
-
-```json
-{
-  "error": {
-    "codigo": "PROHIBIDO",
-    "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "0857ea94-08f2-461f-a627-a17d6be5fef4"
-  }
-}
-```
-
-### NOT-07 · Destinatario inexistente · PASA
-
-**Objetivo.** Validación contra PostgreSQL.
-
-**Petición.** `POST http://notificaciones:5108/api/v1/notificaciones`
-
-```http
-Accept: application/json
-X-Traza-Id: d7b36bef-58e0-42ff-9109-97ec8295c670
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
-Content-Type: application/json
-```
-
-```json
-{
-  "usuario_id": 999999,
-  "tipo": "sistema",
-  "titulo": "x",
-  "mensaje": "y"
-}
-```
-
-**Respuesta.** HTTP 422 (esperado 422) · 26 ms · traza `d7b36bef-58e0-42ff-9109-97ec8295c670`
-
-```json
-{
-  "error": {
-    "codigo": "VALIDACION",
-    "mensaje": "Revisa los datos enviados.",
-    "detalles": [
-      {
-        "campo": "usuario_id",
-        "mensaje": "No existe un usuario activo con ese id."
-      }
-    ],
-    "traza_id": "d7b36bef-58e0-42ff-9109-97ec8295c670"
-  }
-}
-```
-
-### NOT-08 · Borrar un aviso (DELETE) · PASA
-
-**Objetivo.** Quitarlo de la bandeja.
-
-**Petición.** `DELETE http://notificaciones:5108/api/v1/notificaciones/5`
-
-```http
-Accept: application/json
-X-Traza-Id: fc75ad14-4474-4e18-b6f5-7a8424ea1b63
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
-```
-
-**Respuesta.** HTTP 204 (esperado 204) · 25 ms · traza `fc75ad14-4474-4e18-b6f5-7a8424ea1b63`
-
-```json
-(sin cuerpo)
-```
-
-### NOT-09 · Mi bandeja (XML) · PASA
-
-**Objetivo.** La bandeja en XML.
-
-**Petición.** `GET http://notificaciones:5108/api/v1/notificaciones?por_pagina=2`
-
-```http
-Accept: application/xml
-X-Traza-Id: 345aea5f-d409-4256-8849-5dfa0151036d
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
-```
-
-**Respuesta.** HTTP 200 (esperado 200) · 46 ms · traza `345aea5f-d409-4256-8849-5dfa0151036d`
-
-```xml
-<?xml version='1.0' encoding='utf-8'?>
-<notificaciones xmlns="urn:microhubs:v1" version="1"><datos><notificacion><id>2</id><tipo>entrega</tipo><titulo>Nueva entrega asignada</titulo><mensaje>Se te asignó el pedido PED-20261013-000154 (parada 2).</mensaje><leida>true</leida><referencia><tipo>entrega</tipo><id>130</id></referencia><creada_en>2026-10-13T08:11:59-06:00</creada_en></notificacion><notificacion><id>1</id><tipo>entrega</tipo><titulo>Nueva entrega asignada</titulo><mensaje>Se te asignó el pedido PED-20261013-000153 (parada 1).</mensaje><leida>false</leida><referencia><tipo>entrega</tipo><id>129</id></referencia><creada_en>2026-10-13T08:11:59-06:00</creada_en></notificacion></datos><paginacion><pagina>1</pagina><por_pagina>2</por_pagina><total>2</total><paginas>1</paginas></paginacion></notificaciones>
 ```
 
 ## Servicio auth · puerto 5101
@@ -3495,10 +3374,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: e00faf43-349a-443e-8434-93bad4570415
+X-Traza-Id: 0711bfb5-ada7-4532-9207-25656cca4c68
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 15 ms · traza `e00faf43-349a-443e-8434-93bad4570415`
+**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `0711bfb5-ada7-4532-9207-25656cca4c68`
 
 ```json
 {
@@ -3523,10 +3402,10 @@ X-Traza-Id: e00faf43-349a-443e-8434-93bad4570415
 
 ```http
 Accept: application/json
-X-Traza-Id: b7ceabaf-59af-475b-a369-0181a58439d0
+X-Traza-Id: 9a9b45cb-63c7-4cab-ac2b-f7314fa71ce6
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `b7ceabaf-59af-475b-a369-0181a58439d0`
+**Respuesta.** HTTP 200 (esperado 200) · 18 ms · traza `9a9b45cb-63c7-4cab-ac2b-f7314fa71ce6`
 
 ```json
 {
@@ -3541,24 +3420,24 @@ X-Traza-Id: b7ceabaf-59af-475b-a369-0181a58439d0
 }
 ```
 
-## Servicio catalogos · puerto 5103
+## Servicio productos · puerto 5103
 
-### SAL-CAT · Salud de catalogos · PASA
+### SAL-PRO · Salud de productos · PASA
 
 **Objetivo.** Estado del servicio y de sus dependencias.
 
-**Petición.** `GET http://catalogos:5103/api/v1/health`
+**Petición.** `GET http://productos:5103/api/v1/health`
 
 ```http
 Accept: application/json
-X-Traza-Id: be50f0a0-045a-4557-a2ed-faacca43c2fb
+X-Traza-Id: f43a3f9c-83b7-45b4-8daa-9306a4a73b28
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 15 ms · traza `be50f0a0-045a-4557-a2ed-faacca43c2fb`
+**Respuesta.** HTTP 200 (esperado 200) · 32 ms · traza `f43a3f9c-83b7-45b4-8daa-9306a4a73b28`
 
 ```json
 {
-  "servicio": "catalogos",
+  "servicio": "productos",
   "version": "1.0.0",
   "estado": "ok",
   "dependencias": {
@@ -3579,10 +3458,10 @@ X-Traza-Id: be50f0a0-045a-4557-a2ed-faacca43c2fb
 
 ```http
 Accept: application/json
-X-Traza-Id: c3e2cf96-f789-4a87-9a11-8a5b69ea0a3b
+X-Traza-Id: 2968864a-27ab-4366-b7fc-7921ec58e47e
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `c3e2cf96-f789-4a87-9a11-8a5b69ea0a3b`
+**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `2968864a-27ab-4366-b7fc-7921ec58e47e`
 
 ```json
 {
@@ -3607,10 +3486,10 @@ X-Traza-Id: c3e2cf96-f789-4a87-9a11-8a5b69ea0a3b
 
 ```http
 Accept: application/json
-X-Traza-Id: ba082ec5-2e1f-4b52-99b8-7097b619278f
+X-Traza-Id: 2cc5f595-e623-4e21-8d59-45ebebeac82a
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 21 ms · traza `ba082ec5-2e1f-4b52-99b8-7097b619278f`
+**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `2cc5f595-e623-4e21-8d59-45ebebeac82a`
 
 ```json
 {
@@ -3635,10 +3514,10 @@ X-Traza-Id: ba082ec5-2e1f-4b52-99b8-7097b619278f
 
 ```http
 Accept: application/json
-X-Traza-Id: 8e94097f-a936-4634-b393-7ade29280ea6
+X-Traza-Id: 4451c503-704a-4636-b4eb-2baccedd3f8e
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 21 ms · traza `8e94097f-a936-4634-b393-7ade29280ea6`
+**Respuesta.** HTTP 200 (esperado 200) · 18 ms · traza `4451c503-704a-4636-b4eb-2baccedd3f8e`
 
 ```json
 {
@@ -3663,10 +3542,10 @@ X-Traza-Id: 8e94097f-a936-4634-b393-7ade29280ea6
 
 ```http
 Accept: application/json
-X-Traza-Id: c0c0ced3-6d10-4cd1-857f-b95ab4c979b6
+X-Traza-Id: 466feb21-c008-4beb-9e29-23b1b2ac5634
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `c0c0ced3-6d10-4cd1-857f-b95ab4c979b6`
+**Respuesta.** HTTP 200 (esperado 200) · 18 ms · traza `466feb21-c008-4beb-9e29-23b1b2ac5634`
 
 ```json
 {
@@ -3681,30 +3560,86 @@ X-Traza-Id: c0c0ced3-6d10-4cd1-857f-b95ab4c979b6
 }
 ```
 
-## Servicio notificaciones · puerto 5108
+## Servicio zonas · puerto 5108
 
-### SAL-NOT · Salud de notificaciones · PASA
+### SAL-ZON · Salud de zonas · PASA
 
 **Objetivo.** Estado del servicio y de sus dependencias.
 
-**Petición.** `GET http://notificaciones:5108/api/v1/health`
+**Petición.** `GET http://zonas:5108/api/v1/health`
 
 ```http
 Accept: application/json
-X-Traza-Id: 32597578-f057-48f1-a7d8-53a8a2032040
+X-Traza-Id: db540f44-c95c-4849-9dcd-ccbef9c3ef02
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 15 ms · traza `32597578-f057-48f1-a7d8-53a8a2032040`
+**Respuesta.** HTTP 200 (esperado 200) · 26 ms · traza `db540f44-c95c-4849-9dcd-ccbef9c3ef02`
 
 ```json
 {
-  "servicio": "notificaciones",
+  "servicio": "zonas",
   "version": "1.0.0",
   "estado": "ok",
   "dependencias": {
     "postgres": "ok",
     "redis": "ok",
     "mongo": "no_aplica"
+  }
+}
+```
+
+## Servicio microhubs · puerto 5109
+
+### SAL-MIC · Salud de microhubs · PASA
+
+**Objetivo.** Estado del servicio y de sus dependencias.
+
+**Petición.** `GET http://microhubs:5109/api/v1/health`
+
+```http
+Accept: application/json
+X-Traza-Id: 24bc704d-6248-4d0f-89e7-1de7eec8aa81
+```
+
+**Respuesta.** HTTP 200 (esperado 200) · 19 ms · traza `24bc704d-6248-4d0f-89e7-1de7eec8aa81`
+
+```json
+{
+  "servicio": "microhubs",
+  "version": "1.0.0",
+  "estado": "ok",
+  "dependencias": {
+    "postgres": "ok",
+    "redis": "ok",
+    "mongo": "no_aplica"
+  }
+}
+```
+
+## Servicio seguimiento · puerto 5110
+
+### SAL-SEG · Salud de seguimiento · PASA
+
+**Objetivo.** Estado del servicio y de sus dependencias.
+
+**Petición.** `GET http://seguimiento:5110/api/v1/health`
+
+```http
+Accept: application/json
+X-Traza-Id: c10147b8-3f8a-4bfb-a925-97543ca76e68
+```
+
+**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `c10147b8-3f8a-4bfb-a925-97543ca76e68`
+
+```json
+{
+  "servicio": "seguimiento",
+  "version": "1.0.0",
+  "estado": "ok",
+  "dependencias": {
+    "postgres": "ok",
+    "redis": "ok",
+    "mongo": "ok"
   }
 }
 ```
@@ -3719,16 +3654,16 @@ X-Traza-Id: 32597578-f057-48f1-a7d8-53a8a2032040
 
 ```http
 Accept: application/json
-X-Traza-Id: 027bc2a8-f6d6-4c8a-8a10-4b1a30efcd4d
+X-Traza-Id: 7860f153-17bc-414b-a9c4-4f52e1452719
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 87 ms · traza `027bc2a8-f6d6-4c8a-8a10-4b1a30efcd4d`
+**Respuesta.** HTTP 200 (esperado 200) · 5 ms · traza `7860f153-17bc-414b-a9c4-4f52e1452719`
 
 ```json
 {
   "valido": true,
-  "expira_en": 893,
+  "expira_en": 890,
   "usuario": {
     "id": 1,
     "rol": "administrador",
@@ -3739,18 +3674,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Explicación.** El X-Traza-Id de la petición se recupera en logs_tecnicos.correlacion_id.
 
-**Evidencia en MongoDB.** `db.logs_tecnicos.findOne({correlacion_id: '027bc2a8-f6d6-4c8a-8a10-4b1a30efcd4d'})`
+**Evidencia en MongoDB.** `db.logs_tecnicos.findOne({correlacion_id: '7860f153-17bc-414b-a9c4-4f52e1452719'})`
 
 ```json
 {
   "nivel": "INFO",
   "componente": "auth",
-  "registrado_en": "2026-10-13 14:12:08.082000+00:00",
-  "correlacion_id": "027bc2a8-f6d6-4c8a-8a10-4b1a30efcd4d",
+  "registrado_en": "2026-10-13 21:27:43.953000+00:00",
+  "correlacion_id": "7860f153-17bc-414b-a9c4-4f52e1452719",
   "mensaje": "GET /api/v1/auth/validar -> 200",
   "usuario_id": 1,
   "ruta": "/api/v1/auth/validar",
-  "duracion_ms": 3,
+  "duracion_ms": 1,
   "contexto": {
     "metodo": "GET",
     "status": 200,
@@ -3768,84 +3703,94 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   {
     "_id": "auth",
     "peticiones": 18,
-    "ms_promedio": 153.44444444444446
-  },
-  {
-    "_id": "catalogos",
-    "peticiones": 9,
-    "ms_promedio": 41.22222222222222
+    "ms_promedio": 221.44444444444446
   },
   {
     "_id": "documentos",
     "peticiones": 10,
-    "ms_promedio": 16.1
+    "ms_promedio": 29.6
   },
   {
     "_id": "entregas",
-    "peticiones": 14,
-    "ms_promedio": 69.57142857142857
+    "peticiones": 12,
+    "ms_promedio": 90.25
   },
   {
-    "_id": "notificaciones",
-    "peticiones": 9,
-    "ms_promedio": 31.333333333333332
+    "_id": "microhubs",
+    "peticiones": 3,
+    "ms_promedio": 68.0
   },
   {
     "_id": "pedidos",
     "peticiones": 8,
-    "ms_promedio": 52.375
+    "ms_promedio": 69.375
   },
   {
     "_id": "planeacion",
     "peticiones": 16,
-    "ms_promedio": 69.25
+    "ms_promedio": 77.625
+  },
+  {
+    "_id": "productos",
+    "peticiones": 7,
+    "ms_promedio": 48.0
+  },
+  {
+    "_id": "seguimiento",
+    "peticiones": 4,
+    "ms_promedio": 35.25
   },
   {
     "_id": "usuarios",
     "peticiones": 8,
-    "ms_promedio": 27.75
+    "ms_promedio": 47.125
+  },
+  {
+    "_id": "zonas",
+    "peticiones": 4,
+    "ms_promedio": 46.5
   }
 ]
 ```
 
-## Servicio catalogos · puerto 5103
+## Servicio zonas · puerto 5108
 
 ### RAT-01 · Límite de consumo excedido · PASA
 
 **Objetivo.** Más de 240 solicitudes por minuto desde la misma IP.
 
-**Petición.** `GET http://catalogos:5103/api/v1/zonas`
+**Petición.** `GET http://zonas:5108/api/v1/zonas`
 
 ```http
 Accept: application/json
-X-Traza-Id: ee6181ab-8772-49f2-b4b2-486f8c128219
+X-Traza-Id: 08471f50-02aa-496f-bf9d-ab2edfc30c5d
 ```
 
-**Respuesta.** HTTP 429 (esperado 429) · 4 ms · traza `ee6181ab-8772-49f2-b4b2-486f8c128219`
+**Respuesta.** HTTP 429 (esperado 429) · 4 ms · traza `08471f50-02aa-496f-bf9d-ab2edfc30c5d`
 
 ```json
 {
   "error": {
     "codigo": "LIMITE_EXCEDIDO",
-    "mensaje": "Máximo 240 solicitudes por minuto. Espera 50 segundos.",
-    "traza_id": "ee6181ab-8772-49f2-b4b2-486f8c128219"
+    "mensaje": "Máximo 240 solicitudes por minuto. Espera 13 segundos.",
+    "traza_id": "08471f50-02aa-496f-bf9d-ab2edfc30c5d"
   }
 }
 ```
 
-**Explicación.** Contador rate:catalogos:{ip}:{minuto} en Redis (db 1) con TTL de 120 s; responde Retry-After.
+**Explicación.** Contador rate:zonas:{ip}:{minuto} en Redis (db 1) con TTL de 120 s; responde Retry-After.
 
-**Evidencia en Redis.** `db1 GET rate:catalogos:a2c150a8debab0b5:29865012; db1 TTL rate:catalogos:a2c150a8debab0b5:29865012`
+**Evidencia en Redis.** `db1 GET rate:zonas:01e0126676ba0221:29865447; db1 TTL rate:zonas:01e0126676ba0221:29865447`
 
 ```json
 [
   {
-    "comando": "db1 GET rate:catalogos:a2c150a8debab0b5:29865012",
+    "comando": "db1 GET rate:zonas:01e0126676ba0221:29865447",
     "valor": "242"
   },
   {
-    "comando": "db1 TTL rate:catalogos:a2c150a8debab0b5:29865012",
-    "valor": 113
+    "comando": "db1 TTL rate:zonas:01e0126676ba0221:29865447",
+    "valor": 110
   }
 ]
 ```
