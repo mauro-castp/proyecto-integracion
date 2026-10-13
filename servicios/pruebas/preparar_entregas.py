@@ -5,8 +5,10 @@ Sirve para la demostración y para las pruebas de las apps contra el backend
 real (BackendRealTest de Android necesita 2 entregas en ruta). Recorre el
 mismo camino que la operación real, pasando por las reglas del motor:
 
-  1. Toma pedidos «asignado»; si no hay suficientes, crea pedidos nuevos con
-     un carrito que supera el ticket mínimo y los pasa por fn_asignar_pedido.
+  1. Crea pedidos nuevos con un carrito que supera el ticket mínimo y los pasa
+     por fn_asignar_pedido (motor real de asignación). Solo si el motor no
+     encuentra microhub usa un pedido «asignado» que ya exista, para no vaciar
+     la bandeja del operador al repetir la demostración.
   2. Como el operador de su microhub: en_preparacion → listo para despacho.
   3. Crea la entrega para el repartidor (turno de hoy) → el trigger le envía
      el aviso «Nueva entrega asignada» → el pedido pasa a en_ruta.
@@ -66,12 +68,20 @@ def preparar(correo, cantidad, dsn=DSN):
         intentos = 0
         while len(creadas) < cantidad and intentos < cantidad * 10:
             intentos += 1
-            cur.execute("SELECT p.id FROM pedido p WHERE p.estado = 'asignado' AND p.microhub_id IS NOT NULL "
-                        "AND NOT EXISTS (SELECT 1 FROM entrega e WHERE e.pedido_id = p.id) "
-                        "AND EXISTS (SELECT 1 FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'operador' "
-                        "AND u.microhub_id = p.microhub_id) ORDER BY p.id LIMIT 1")
-            fila = cur.fetchone()
-            pid = fila["id"] if fila else crear_pedido(cur)
+            cur.execute("SAVEPOINT nuevo")
+            try:
+                pid = crear_pedido(cur)
+                cur.execute("RELEASE SAVEPOINT nuevo")
+            except psycopg.Error:
+                cur.execute("ROLLBACK TO SAVEPOINT nuevo")
+                pid = None
+            if not pid:
+                cur.execute("SELECT p.id FROM pedido p WHERE p.estado = 'asignado' AND p.microhub_id IS NOT NULL "
+                            "AND NOT EXISTS (SELECT 1 FROM entrega e WHERE e.pedido_id = p.id) "
+                            "AND EXISTS (SELECT 1 FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'operador' "
+                            "AND u.microhub_id = p.microhub_id) ORDER BY p.id LIMIT 1")
+                fila = cur.fetchone()
+                pid = fila["id"] if fila else None
             if not pid:
                 continue
             cur.execute("SELECT p.folio, p.microhub_id, (SELECT u.id FROM usuario u JOIN rol r ON r.id = u.rol_id "

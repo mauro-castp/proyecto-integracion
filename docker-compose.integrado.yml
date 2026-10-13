@@ -22,10 +22,6 @@ x-entorno: &entorno
   REDIS_URL: redis://redis:6379
   MONGO_URL: mongodb://mongo:27017/microhubs_eventos
 
-x-construir: &construir
-  context: .
-  dockerfile: servicios/Dockerfile
-
 x-servicio: &servicio
   depends_on:
     migraciones: {condition: service_completed_successfully}
@@ -75,7 +71,7 @@ services:
 
   # Aplica 06, 07 y 08 a volúmenes que ya existían (idempotente) y termina.
   migraciones:
-    build: {<<: *construir, args: {SERVICIO: auth}}
+    build: {context: ., dockerfile: servicios/auth/Dockerfile}
     command: ["python", "migrar.py"]
     environment: *entorno
     volumes:
@@ -87,7 +83,9 @@ services:
 
   web:
     build: ./sistema_web
-    environment: *entorno
+    environment:
+      <<: *entorno
+      MICROSERVICIOS_URL: "http://{servicio}:{puerto}"   # el web consume los servicios por la red interna
     volumes:
       - ./bloque_c/sql/06_planeacion.sql:/app/06_planeacion.sql:ro
       - ./bloque_c/sql/07_web_ampliado.sql:/app/07_web_ampliado.sql:ro
@@ -103,50 +101,50 @@ services:
 
   auth:
     <<: *servicio
-    build: {<<: *construir, args: {SERVICIO: auth}}
-    environment: {<<: *entorno, PUERTO: "5101"}
+    build: {context: ., dockerfile: servicios/auth/Dockerfile}
+    environment: *entorno
     ports: ["5101:5101"]
 
   usuarios:
     <<: *servicio
-    build: {<<: *construir, args: {SERVICIO: usuarios}}
-    environment: {<<: *entorno, PUERTO: "5102"}
+    build: {context: ., dockerfile: servicios/usuarios/Dockerfile}
+    environment: *entorno
     ports: ["5102:5102"]
 
   catalogos:
     <<: *servicio
-    build: {<<: *construir, args: {SERVICIO: catalogos}}
-    environment: {<<: *entorno, PUERTO: "5103"}
+    build: {context: ., dockerfile: servicios/catalogos/Dockerfile}
+    environment: *entorno
     ports: ["5103:5103"]
 
   pedidos:
     <<: *servicio
-    build: {<<: *construir, args: {SERVICIO: pedidos}}
-    environment: {<<: *entorno, PUERTO: "5104"}
+    build: {context: ., dockerfile: servicios/pedidos/Dockerfile}
+    environment: *entorno
     ports: ["5104:5104"]
 
   entregas:
     <<: *servicio
-    build: {<<: *construir, args: {SERVICIO: entregas}}
-    environment: {<<: *entorno, PUERTO: "5105"}
+    build: {context: ., dockerfile: servicios/entregas/Dockerfile}
+    environment: *entorno
     ports: ["5105:5105"]
 
   planeacion:
     <<: *servicio
-    build: {<<: *construir, args: {SERVICIO: planeacion}}
-    environment: {<<: *entorno, PUERTO: "5106"}
+    build: {context: ., dockerfile: servicios/planeacion/Dockerfile}
+    environment: *entorno
     ports: ["5106:5106"]
 
   documentos:
     <<: *servicio
-    build: {<<: *construir, args: {SERVICIO: documentos}}
-    environment: {<<: *entorno, PUERTO: "5107"}
+    build: {context: ., dockerfile: servicios/documentos/Dockerfile}
+    environment: *entorno
     ports: ["5107:5107"]
 
   notificaciones:
     <<: *servicio
-    build: {<<: *construir, args: {SERVICIO: notificaciones}}
-    environment: {<<: *entorno, PUERTO: "5108"}
+    build: {context: ., dockerfile: servicios/notificaciones/Dockerfile}
+    environment: *entorno
     ports: ["5108:5108"]
 
 networks:

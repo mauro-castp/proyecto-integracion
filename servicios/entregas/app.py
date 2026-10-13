@@ -99,8 +99,11 @@ def entregas():
     estado = filtro_opcion("estado_pedido", ESTADOS)
     abiertas = filtro_opcion("abiertas", ["true", "false"])
     rep = filtro_entero("repartidor_id")
+    ped = filtro_entero("pedido_id")
     w, args = ambito()
     where = [w]
+    if ped:
+        where.append("e.pedido_id = %s"); args.append(ped)
     if estado:
         where.append("p.estado = %s"); args.append(estado)
     if abiertas:
@@ -365,7 +368,7 @@ documentar(app, "GET", f"{P}/entregas/mias", "Mis entregas", permisos=["entregas
            respuestas={200: ("Página de paradas", "EntregaLista.ok")}, errores=[400, 403])
 documentar(app, "GET", f"{P}/entregas", "Entregas del ámbito", permisos=["entregas.ver"], parametros=PAG + [
            ("estado_pedido", "query", "string", "Estado del pedido"), ("abiertas", "query", "boolean", "true|false"),
-           ("repartidor_id", "query", "integer", "Repartidor")],
+           ("repartidor_id", "query", "integer", "Repartidor"), ("pedido_id", "query", "integer", "Pedido")],
            descripcion="Repartidor: las suyas. Operador: las de su microhub. Administrador y auditor: todas.",
            respuestas={200: ("Página de entregas", "EntregaLista.ok")}, errores=[400, 403])
 documentar(app, "GET", f"{P}/entregas/{{id}}", "Detalle de la entrega", permisos=["entregas.ver"], parametros=ID,

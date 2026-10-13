@@ -6,6 +6,7 @@ Servicio de documentos · puerto 5107 · contrato v1
   GET  /api/v1/documentos/resumen          agregación ($group) por tipo de referencia
   GET  /api/v1/documentos/{id}             metadatos
   GET  /api/v1/documentos/{id}/contenido   metadatos + contenido en Base64
+  DELETE /api/v1/documentos/{id}           eliminar (autor o administrador; no la evidencia de una entrega cerrada)
 
 Almacén: MongoDB, colección `documentos` (id = ObjectId de 24 caracteres).
 Se valida tipo MIME contra la firma real del archivo, tamaño máximo de
@@ -152,6 +153,19 @@ def contenido(did):
                      raiz="documento_contenido")
 
 
+@app.delete(f"{P}/documentos/<did>")
+@requiere("archivos.crear")
+def borrar(did):
+    """Solo quien lo subió (o el administrador) y solo si no es evidencia de una entrega ya cerrada."""
+    d = _uno(did)
+    if d["subido_por"] != g.usuario["id"] and g.usuario["rol"] != "administrador":
+        raise prohibido("Solo quien subió el documento puede eliminarlo.")
+    if consultar("SELECT 1 FROM entrega WHERE %s = ANY(evidencia_ids)", (did,), una=True):
+        raise ErrorApi(409, "CONFLICTO", "El documento es evidencia de una entrega cerrada y no se puede eliminar.")
+    coleccion().delete_one({"_id": d["_id"]})
+    return responder(None, 204)
+
+
 documentar(app, "POST", f"{P}/documentos", "Subir documento", permisos=["archivos.crear"], cuerpo="DocumentoNuevo.ok",
            solo_json=True, descripcion="JPEG, PNG o PDF de hasta 5 MB en Base64. Se valida la firma del archivo, "
            "se calcula su SHA-256 y se guarda en MongoDB. Un repartidor solo adjunta evidencia a sus entregas.",
@@ -171,3 +185,7 @@ documentar(app, "GET", f"{P}/documentos/{{id}}", "Metadatos de un documento", pe
 documentar(app, "GET", f"{P}/documentos/{{id}}/contenido", "Contenido de un documento", permisos=["archivos.ver"],
            parametros=[("id", "path", "string", "ObjectId")],
            respuestas={200: ("Documento con Base64", "DocumentoContenido.ok")}, errores=[403, 404])
+documentar(app, "DELETE", f"{P}/documentos/{{id}}", "Eliminar documento", permisos=["archivos.crear"],
+           parametros=[("id", "path", "string", "ObjectId")],
+           descripcion="Solo quien lo subió o el administrador. La evidencia de una entrega cerrada no se borra (409).",
+           respuestas={204: ("Eliminado, sin cuerpo", None)}, errores=[403, 404, 409])

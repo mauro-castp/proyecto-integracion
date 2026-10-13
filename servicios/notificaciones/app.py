@@ -5,6 +5,7 @@ Servicio de notificaciones · puerto 5108 · contrato v1
   GET  /api/v1/notificaciones/conteo       número de avisos sin leer
   POST /api/v1/notificaciones/{id}/leer    marcar como leída
   POST /api/v1/notificaciones              enviar un aviso (notificaciones.crear; solo JSON)
+  DELETE /api/v1/notificaciones/{id}       borrar un aviso de la bandeja propia
 
 Usa la MISMA tabla que el portal web (web_notificacion): un aviso enviado
 desde el web aparece en la app y al revés. Los avisos automáticos (entrega
@@ -70,6 +71,16 @@ def leer(nid):
     return responder(aviso(f), raiz="notificacion")
 
 
+@app.delete(f"{P}/notificaciones/<int:nid>")
+@requiere("notificaciones.ver")
+def borrar(nid):
+    with conexion() as con, con.cursor() as cur:
+        cur.execute("DELETE FROM web_notificacion WHERE id = %s AND destinatario_id = %s", (nid, g.usuario["id"]))
+        if cur.rowcount == 0:
+            raise no_encontrado("No existe ese aviso en tu bandeja.")
+    return responder(None, 204)
+
+
 @app.post(f"{P}/notificaciones")
 @requiere("notificaciones.crear")
 def crear():
@@ -107,3 +118,6 @@ documentar(app, "POST", f"{P}/notificaciones", "Enviar un aviso", permisos=["not
            cuerpo="NotificacionNueva.ok", solo_json=True,
            descripcion="Aviso manual (administrador). Los avisos automáticos los generan triggers de PostgreSQL.",
            respuestas={201: ("Aviso creado", "Notificacion.ok")}, errores=[400, 403, 422])
+documentar(app, "DELETE", f"{P}/notificaciones/{{id}}", "Borrar un aviso de mi bandeja", permisos=["notificaciones.ver"],
+           parametros=[("id", "path", "integer", "Id del aviso")],
+           respuestas={204: ("Borrado, sin cuerpo", None)}, errores=[403, 404])

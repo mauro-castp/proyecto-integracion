@@ -197,6 +197,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:var(-
       {% if 'archivos.ver' in web_permisos|default([]) %}<a href="{{ url_for('web.archivos') }}">Archivos</a>{% endif %}
       {% if 'notificaciones.ver' in web_permisos|default([]) %}<a href="{{ url_for('web.notificaciones') }}">Notificaciones</a>{% endif %}
       {% if 'roles.ver' in web_permisos|default([]) %}<a href="{{ url_for('web.roles') }}">Perfiles</a>{% endif %}
+      {% if 'roles.ver' in web_permisos|default([]) %}<a href="{{ url_for('servicios.tablero') }}" class="{{ 'sel' if ep=='servicios.tablero' }}">Microservicios</a>{% endif %}
       <span class="quien">{{ usuario.nombre }} · {{ usuario.rol }}</span>
       <form method="post" action="{{ url_for('auth.salir') }}"><button class="salir">Salir</button></form>
     {% else %}

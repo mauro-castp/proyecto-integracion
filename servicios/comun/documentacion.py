@@ -88,10 +88,12 @@ def especificacion(app):
             resp[str(e)] = _error(e)
         op["responses"] = resp
         rutas.setdefault(r["ruta"], {})[r["metodo"].lower()] = op
-    rutas[f"{config.PREFIJO}/salud"] = {"get": {
+    salud = {"get": {
         "summary": "Estado del servicio y de sus dependencias", "tags": ["operación"], "security": [],
         "responses": {"200": {"description": "Dependencias en orden", "content": _contenido("Salud.ok")},
                       "503": {"description": "Alguna dependencia no responde (estado degradado)"}}}}
+    rutas[f"{config.PREFIJO}/salud"] = salud
+    rutas[f"{config.PREFIJO}/health"] = {"get": {**salud["get"], "summary": "Alias en inglés de /salud"}}
     return {
         "openapi": "3.0.3",
         "info": {"title": doc["titulo"], "version": config.VERSION,
