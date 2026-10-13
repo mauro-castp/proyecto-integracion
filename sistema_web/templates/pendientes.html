@@ -1,5 +1,6 @@
 {% extends "base.html" %}{% block titulo %}Pendientes{% endblock %}
 {% block cuerpo %}
+{% include '_buscar_lista.html' %}
 <h1>Pedidos pendientes de asignación</h1>
 <p class="sub">Ningún microhub pudo surtirlos automáticamente. Requieren decisión de una persona.</p>
 
@@ -22,4 +23,5 @@
 </div>
 {% endfor %}
 {% endif %}
+{% include '_paginacion.html' %}
 {% endblock %}

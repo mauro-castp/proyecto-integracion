@@ -1,6 +1,7 @@
 """CRUD administrativos adicionales, compatibles con PostgreSQL y SQLite local."""
 import os
 import sqlite3
+from paginacion import paginar
 from pathlib import Path
 
 from flask import Blueprint, abort, flash, g, redirect, render_template, request, url_for
@@ -69,7 +70,10 @@ def _permiso(clave):
         abort(403)
 
 
-def _consulta(sql_local, sql_pg=None, args=(), una=False):
+def _consulta(sql_local, sql_pg=None, args=(), una=False, campos=()):
+    if campos:
+        sql = sql_local if MODO_LOCAL else (sql_pg or sql_local.replace('?', '%s'))
+        return paginar(sql, args, lambda q, p=(), una=False: _consulta(q, args=p, una=una), campos=campos, marcador='?' if MODO_LOCAL else '%s', campo_estatus='estatus')
     if MODO_LOCAL:
         with _db() as con:
             cur = con.execute(sql_local, args)
@@ -100,7 +104,7 @@ def _estado(modulo, pid, valor, permiso):
 @catalogos_bp.route("/categorias")
 def categorias():
     _permiso("productos.ver")
-    filas = _consulta("SELECT id,nombre,orden,estatus FROM categoria ORDER BY orden,nombre")
+    filas = _consulta("SELECT id,nombre,orden,estatus FROM categoria ORDER BY orden,nombre,id", campos=("nombre",))
     return render_template("crud_lista.html", titulo="Categorías", descripcion="Organiza los productos del catálogo.", filas=filas,
         columnas=[("nombre","Nombre"),("orden","Orden"),("estatus","Estatus")], nuevo="catalogos.categoria_nueva", editar="catalogos.categoria_editar", modulo="categorias", permiso_crear="productos.crear", permiso_editar="productos.editar", permiso_baja="productos.baja")
 
@@ -139,7 +143,7 @@ MH_FIELDS=[("clave","Clave","text",True),("nombre","Nombre","text",True),("direc
 
 @catalogos_bp.route("/microhubs")
 def microhubs():
-    _permiso("microhubs.ver"); filas=_consulta("SELECT id,clave,nombre,direccion,capacidad_turno,hora_apertura,hora_cierre,estatus FROM microhub ORDER BY nombre")
+    _permiso("microhubs.ver"); filas=_consulta("SELECT id,clave,nombre,direccion,capacidad_turno,hora_apertura,hora_cierre,estatus FROM microhub ORDER BY nombre,id", campos=("clave","nombre","direccion"))
     return render_template("crud_lista.html", titulo="Microhubs", descripcion="Ubicaciones que preparan y surten pedidos.", filas=filas, columnas=[("clave","Clave"),("nombre","Nombre"),("direccion","Dirección"),("capacidad_turno","Capacidad"),("estatus","Estatus")], nuevo="catalogos.microhub_nuevo", editar="catalogos.microhub_editar", modulo="microhubs", permiso_crear="microhubs.crear", permiso_editar="microhubs.editar", permiso_baja="microhubs.baja")
 
 def _datos_mh(f):
@@ -175,7 +179,7 @@ Z_FIELDS=[("clave","Clave","text",True),("nombre","Nombre","text",True),("coloni
 
 @catalogos_bp.route("/zonas")
 def zonas():
-    _permiso("zonas.ver"); filas=_consulta("SELECT id,clave,nombre,colonia,codigo_postal,municipio,estatus FROM zona ORDER BY colonia")
+    _permiso("zonas.ver"); filas=_consulta("SELECT id,clave,nombre,colonia,codigo_postal,municipio,estatus FROM zona ORDER BY colonia,id", campos=("clave","nombre","colonia","codigo_postal"))
     return render_template("crud_lista.html",titulo="Zonas de cobertura",descripcion="Colonias, códigos postales y condiciones comerciales.",filas=filas,columnas=[("clave","Clave"),("colonia","Colonia"),("codigo_postal","CP"),("municipio","Municipio"),("estatus","Estatus")],nuevo="catalogos.zona_nueva",editar="catalogos.zona_editar",modulo="zonas",permiso_crear="zonas.crear",permiso_editar="zonas.editar",permiso_baja="zonas.baja")
 
 def _optfloat(f,k): return float(f[k]) if f.get(k) else None
@@ -213,7 +217,7 @@ def _hubs(): return _consulta("SELECT id,nombre FROM microhub WHERE estatus='act
 @catalogos_bp.route("/gestion-usuarios")
 def usuarios():
     _permiso("usuarios.ver")
-    filas=_consulta("SELECT u.id,u.nombre||' '||u.apellidos AS nombre_completo,u.correo,r.nombre AS rol,COALESCE(m.clave,'—') AS microhub,u.estatus FROM usuario u JOIN rol r ON r.id=u.rol_id LEFT JOIN microhub m ON m.id=u.microhub_id ORDER BY u.apellidos", "SELECT u.id,concat(u.nombre,' ',u.apellidos) AS nombre_completo,u.correo,r.nombre AS rol,COALESCE(m.clave,'—') AS microhub,u.estatus::text AS estatus FROM usuario u JOIN rol r ON r.id=u.rol_id LEFT JOIN microhub m ON m.id=u.microhub_id ORDER BY u.apellidos")
+    filas=_consulta("SELECT u.id,u.nombre||' '||u.apellidos AS nombre_completo,u.correo,r.nombre AS rol,COALESCE(m.clave,'—') AS microhub,u.estatus FROM usuario u JOIN rol r ON r.id=u.rol_id LEFT JOIN microhub m ON m.id=u.microhub_id ORDER BY u.apellidos", "SELECT u.id,concat(u.nombre,' ',u.apellidos) AS nombre_completo,u.correo,r.nombre AS rol,COALESCE(m.clave,'—') AS microhub,u.estatus::text AS estatus FROM usuario u JOIN rol r ON r.id=u.rol_id LEFT JOIN microhub m ON m.id=u.microhub_id ORDER BY u.apellidos,u.id", campos=("nombre_completo","correo","rol","microhub"))
     return render_template("crud_lista.html",titulo="Usuarios",descripcion="Personas, roles y ámbito de operación.",filas=filas,columnas=[("nombre_completo","Nombre"),("correo","Correo"),("rol","Rol"),("microhub","Microhub"),("estatus","Estatus")],nuevo="catalogos.usuario_nuevo",editar="catalogos.usuario_editar",modulo="usuarios",permiso_crear="usuarios.crear",permiso_editar="usuarios.editar",permiso_baja="usuarios.baja")
 
 def _user_fields(password_required):

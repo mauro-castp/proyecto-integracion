@@ -350,12 +350,13 @@ def confirmar():
 @cliente.route("/mis-pedidos")
 @requiere("pedidos.ver")
 def mis_pedidos():
-    return render_template("mis_pedidos.html", pedidos=consultar(
+    from paginacion import paginar
+    return render_template("mis_pedidos.html", pedidos=paginar(
         "SELECT p.id, p.folio, p.estado, p.subtotal, p.costo_envio, p.total, p.creado_en, "
         "       m.nombre AS microhub "
         "  FROM pedido p JOIN cliente c ON c.id = p.cliente_id "
         "  LEFT JOIN microhub m ON m.id = p.microhub_id "
-        " WHERE c.usuario_id = %s ORDER BY p.creado_en DESC", (g.usuario["id"],)))
+        " WHERE c.usuario_id = %s ORDER BY p.creado_en DESC,p.id DESC", (g.usuario["id"],), consultar, campos=('folio','microhub')))
 
 
 @cliente.route("/pedido/<int:pid>")
@@ -408,14 +409,15 @@ def cancelar(pid):
 @operacion.route("/operacion")
 @requiere("pedidos.cambiar_estado")
 def bandeja():
-    pedidos = consultar(
+    from paginacion import paginar
+    pedidos = paginar(
         "SELECT p.id, p.folio, p.estado, p.total, p.creado_en, "
         "       u.nombre || ' ' || u.apellidos AS cliente, "
         "       (SELECT count(*) FROM pedido_detalle d WHERE d.pedido_id = p.id) AS lineas "
         "  FROM fn_pedidos_visibles(%s) p "
         "  JOIN cliente c ON c.id = p.cliente_id JOIN usuario u ON u.id = c.usuario_id "
         " WHERE p.estado IN ('asignado','en_preparacion','en_ruta') "
-        " ORDER BY p.creado_en", (g.usuario["id"],))
+        " ORDER BY p.creado_en,p.id", (g.usuario["id"],), consultar, campos=('folio','cliente'))
     ocupacion = consultar(
         "SELECT * FROM v_ocupacion_microhub WHERE microhub_id = %s",
         (g.usuario["microhub_id"],), una=True) if g.usuario["microhub_id"] else None
@@ -589,6 +591,7 @@ def indicadores():
 @admin.route("/bitacora")
 @requiere("bitacora.ver")
 def bitacora():
+    from paginacion import paginar
     modulo = request.args.get("modulo") or ""
     sql = ("SELECT a.fecha, a.modulo, a.accion::text AS accion, a.entidad, a.entidad_id, "
            "       a.detalle, a.exitoso, COALESCE(u.correo, a.correo_intento) AS quien, "
@@ -598,8 +601,8 @@ def bitacora():
     if modulo:
         sql += " WHERE a.modulo = %s"
         args = (modulo,)
-    sql += " ORDER BY a.fecha DESC LIMIT 120"
-    return render_template("bitacora.html", filas=consultar(sql, args), modulo=modulo,
+    sql += " ORDER BY a.fecha DESC,a.id DESC"
+    return render_template("bitacora.html", filas=paginar(sql, args, consultar, campos=('quien','detalle','accion')), modulo=modulo,
         modulos=consultar("SELECT DISTINCT modulo FROM auditoria ORDER BY modulo"),
         total=consultar("SELECT count(*) AS n FROM auditoria", una=True)["n"])
 
@@ -607,10 +610,11 @@ def bitacora():
 @admin.route("/admin/pendientes")
 @requiere("pedidos.reasignar")
 def pendientes():
-    return render_template("pendientes.html", pedidos=consultar(
+    from paginacion import paginar
+    return render_template("pendientes.html", pedidos=paginar(
         "SELECT p.id, p.folio, p.total, p.motivo_no_asignacion, p.creado_en, z.colonia "
         "  FROM pedido p JOIN zona z ON z.id = p.zona_id "
-        " WHERE p.estado = 'pendiente_asignacion' ORDER BY p.creado_en"))
+        " WHERE p.estado = 'pendiente_asignacion' ORDER BY p.creado_en,p.id", (), consultar, campos=('folio','colonia')))
 
 
 @admin.route("/admin/pendientes/<int:pid>/reasignar", methods=["POST"])

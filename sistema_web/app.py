@@ -12,6 +12,7 @@ from rutas import publico, auth, cliente, operacion, admin
 from productos_crud import productos_bp
 from catalogos_crud import catalogos_bp
 from planeacion import planeacion_bp
+from web_ampliado import instalar
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -24,6 +25,7 @@ app.register_blueprint(admin)
 app.register_blueprint(productos_bp)
 app.register_blueprint(catalogos_bp)
 app.register_blueprint(planeacion_bp)
+instalar(app)
 
 
 @app.before_request

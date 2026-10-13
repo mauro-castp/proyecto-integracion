@@ -1,0 +1,22 @@
+{% extends 'base.html' %}{% block titulo %}Reportes{% endblock %}{% block cuerpo %}
+<h1>Reportes de pedidos</h1><p class="sub">Consulta estados, importe de pedidos y actividad por día.</p>
+{% if modo_local %}<div class="aviso medio">Datos de demostración locales; no representan pedidos reales.</div>{% endif %}
+<form method="get" class="panel rejilla cols3">
+<div><label for="desde">Desde</label><input id="desde" type="date" name="desde" value="{{ desde }}" required></div>
+<div><label for="hasta">Hasta</label><input id="hasta" type="date" name="hasta" value="{{ hasta }}" required></div>
+<div><label for="estado">Estado</label><select id="estado" name="estado"><option value="">Todos</option>{% for e in estados %}<option value="{{ e }}" {{ 'selected' if request.args.get('estado')==e }}>{{ e }}</option>{% endfor %}</select></div>
+<div><label for="q">Folio</label><input id="q" name="q" value="{{ request.args.get('q','') }}" maxlength="120"></div>
+<div><label for="hub">Microhub (ID)</label><input id="hub" name="microhub_id" type="number" min="1" value="{{ request.args.get('microhub_id','') }}"></div>
+<div><label for="cantidad">Por página</label><select id="cantidad" name="por_pagina">{% for n in [10,20,50,100] %}<option {{ 'selected' if request.args.get('por_pagina','20')==n|string }}>{{ n }}</option>{% endfor %}</select></div>
+<button class="btn">Consultar</button>
+{% if 'reportes.exportar' in web_permisos %}<a class="btn sec" href="{{ url_for('web.exportar', **request.args.to_dict()) }}">Exportar CSV del filtro</a>{% endif %}
+</form>
+<div class="kpis"><div class="kpi"><div class="v">{{ resumen.pedidos }}</div><div class="l">Pedidos del filtro</div></div><div class="kpi"><div class="v">{{ resumen.importe|dinero }}</div><div class="l">Importe de pedidos (incluye todos los estados seleccionados)</div></div></div>
+<div class="rejilla cols2" style="margin-top:20px"><div class="panel"><div id="grafica-estados" style="min-height:300px"></div></div><div class="panel"><div id="grafica-diaria" style="min-height:300px"></div></div></div>
+<p id="grafica-aviso" class="ayuda">Cargando gráficas… Los datos también están en la tabla.</p>
+<div class="panel" style="overflow:auto"><table><thead><tr><th>Folio</th><th>Estado</th><th>Importe</th><th>Fecha</th><th>Microhub</th><th>Zona</th></tr></thead><tbody>{% for p in pedidos %}<tr><td><a href="{{ url_for('web.detalle_pedido', **dict(request.args.to_dict(),pid=p.id)) }}">{{ p.folio }}</a></td><td>{{ p.estado }}</td><td>{{ p.total|dinero }}</td><td>{{ p.creado_en }}</td><td>{{ p.microhub_id or 'Sin asignar' }}</td><td>{{ p.zona }}</td></tr>{% else %}<tr><td colspan="6">No hay pedidos con estos filtros.</td></tr>{% endfor %}</tbody></table>{% include '_paginacion.html' %}</div>
+<script id="datos-estados" type="application/json">{{ grafica_estados|tojson }}</script><script id="datos-diarios" type="application/json">{{ grafica_diaria|tojson }}</script>
+<script src="https://code.highcharts.com/12.4.0/highcharts.js"></script>
+<script src="https://code.highcharts.com/12.4.0/modules/accessibility.js"></script>
+<script src="{{ url_for('static',filename='web_reportes.js') }}"></script>
+{% endblock %}

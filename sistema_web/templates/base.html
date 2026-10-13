@@ -193,6 +193,10 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:var(-
       {% if 'usuarios.ver' in permisos %}<a href="{{ url_for('catalogos.usuarios') }}" class="{{ 'sel' if ep and 'usuario' in ep }}">Usuarios</a>{% endif %}
       {% if 'configuracion.ver' in permisos %}<a href="{{ url_for('admin.parametros') }}" class="{{ 'sel' if ep=='admin.parametros' }}">Parámetros</a>{% endif %}
       {% if 'bitacora.ver' in permisos %}<a href="{{ url_for('admin.bitacora') }}" class="{{ 'sel' if ep=='admin.bitacora' }}">Bitácora</a>{% endif %}
+      {% if 'reportes.ver' in web_permisos|default([]) %}<a href="{{ url_for('web.reportes') }}">Reportes</a>{% endif %}
+      {% if 'archivos.ver' in web_permisos|default([]) %}<a href="{{ url_for('web.archivos') }}">Archivos</a>{% endif %}
+      {% if 'notificaciones.ver' in web_permisos|default([]) %}<a href="{{ url_for('web.notificaciones') }}">Notificaciones</a>{% endif %}
+      {% if 'roles.ver' in web_permisos|default([]) %}<a href="{{ url_for('web.roles') }}">Perfiles</a>{% endif %}
       <span class="quien">{{ usuario.nombre }} · {{ usuario.rol }}</span>
       <form method="post" action="{{ url_for('auth.salir') }}"><button class="salir">Salir</button></form>
     {% else %}

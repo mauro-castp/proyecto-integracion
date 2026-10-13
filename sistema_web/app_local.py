@@ -2,7 +2,7 @@
 import os
 os.environ["MODO_LOCAL"] = "1"
 
-from flask import Blueprint, Flask, redirect, url_for
+from flask import Blueprint, Flask, g, redirect, url_for
 from productos_crud import inicializar_local, productos_bp
 from catalogos_crud import catalogos_bp, inicializar_local as inicializar_catalogos
 from planeacion import planeacion_bp
@@ -47,6 +47,13 @@ def dinero(v):
 
 inicializar_local()
 inicializar_catalogos()
+
+from web_ampliado import instalar
+instalar(app, modo_local=True)
+
+@app.before_request
+def usuario_demo():
+    g.usuario = {'id': 1, 'nombre': 'Modo local', 'rol': 'administrador', 'microhub_id': None}
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

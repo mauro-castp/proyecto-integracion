@@ -1,5 +1,7 @@
 # Bloque C — Modelo de datos
 
+> Segundo parcial: funciones web, arranque, pruebas y demostración en [WEB_SEGUNDO_PARCIAL.md](WEB_SEGUNDO_PARCIAL.md).
+
 **Plataforma de Microhubs y Comercio de Proximidad**
 Codex Innovations · Equipo 04 · Primer Parcial
 

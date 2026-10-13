@@ -1,0 +1,5 @@
+<form method="get" class="panel" style="display:flex;gap:12px;align-items:end;flex-wrap:wrap">
+{% for key,value in request.args.items() %}{% if key not in ['q','pagina','por_pagina'] %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endif %}{% endfor %}
+<div><label for="buscar-lista">Buscar en esta lista</label><input id="buscar-lista" name="q" maxlength="120" value="{{ request.args.get('q','') }}"></div>
+<div><label for="cantidad-lista">Por página</label><select id="cantidad-lista" name="por_pagina">{% for n in [10,20,50,100] %}<option {{ 'selected' if request.args.get('por_pagina','20')==n|string }}>{{ n }}</option>{% endfor %}</select></div>
+<button class="btn sec">Consultar</button></form>

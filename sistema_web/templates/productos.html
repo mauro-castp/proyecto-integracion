@@ -3,6 +3,7 @@
 <div style="display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap">
   <div><h1>Administración de productos</h1><p class="sub">Crear, consultar, editar y dar de baja productos.</p></div>
   {% if 'productos.crear' in permisos %}<a class="btn" href="{{ url_for('productos.nuevo') }}">+ Agregar producto</a>{% endif %}
+{% include '_paginacion.html' %}
 </div>
 <div class="panel">
   <form method="get" class="rejilla cols3" style="align-items:end;margin-bottom:18px">
