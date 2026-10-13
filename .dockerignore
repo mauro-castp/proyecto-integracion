@@ -1,0 +1,19 @@
+# Contexto de las imágenes de servicios/ (raíz del repositorio): solo lo que copian.
+**/.git
+**/__pycache__
+**/.venv
+**/node_modules
+**/*.db
+**/.env
+app_movil/.gradle
+app_movil/.tools
+app_movil/**/build
+app_escritorio/bin
+app_escritorio/obj
+app_escritorio/.tools
+bloque_a
+bloque_b
+bloque_d
+presentacion
+reporte_tecnico
+*.docx
