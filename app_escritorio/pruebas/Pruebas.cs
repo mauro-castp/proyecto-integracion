@@ -146,7 +146,8 @@ static class Pruebas
         foreach (var (srv, recurso) in new[] { ("catalogos", "productos"), ("catalogos", "zonas"), ("catalogos", "microhubs"), ("pedidos", "pedidos"), ("planeacion", "candidatos"), ("planeacion", "escenarios") })
         {
             var tabla = MainWindow.ToTable(await plan.Call(srv, $"{recurso}?pagina=1&por_pagina=20&q="));
-            Check(tabla.Columns.Contains("id") && tabla.Rows.Count > 0, $"Pantalla {recurso}: la tabla tiene columna id y {tabla.Rows.Count} filas (columnas: {tabla.Columns.Count})");
+            var vacioValido = recurso == "escenarios" && tabla.Rows.Count == 0;       // en una base nueva aún no hay escenarios guardados
+            Check(vacioValido || tabla.Columns.Contains("id") && tabla.Rows.Count > 0, $"Pantalla {recurso}: la tabla tiene columna id y {tabla.Rows.Count} filas (columnas: {tabla.Columns.Count})");
         }
 
         // candidatos: crear, editar, simular, decidir
@@ -176,7 +177,9 @@ static class Pruebas
         var esc = Api.Example("EscenarioNuevo.ok.xml"); esc.Element(Api.Ns + "candidato_id")!.Value = cid; esc.Element(Api.Ns + "nombre")!.Value = "Escenario de prueba " + clavec;
         var escR = (await plan.Call("planeacion", "escenarios", HttpMethod.Post, esc)).Root!;
         Check((await plan.Call("planeacion", $"escenarios/{escR.Element(Api.Ns + "id")!.Value}")).Root!.Name == Api.Ns + "escenario", "Planeación: guardar y abrir un escenario");
-        Check((await plan.Call("planeacion", "escenarios?pagina=1&por_pagina=5")).Root!.Name == Api.Ns + "escenarios", "Planeación: lista de escenarios");
+        var listaEsc = await plan.Call("planeacion", "escenarios?pagina=1&por_pagina=5");
+        var tablaEsc = MainWindow.ToTable(listaEsc);
+        Check(listaEsc.Root!.Name == Api.Ns + "escenarios" && tablaEsc.Rows.Count >= 1 && tablaEsc.Columns.Contains("id"), "Planeación: lista de escenarios y su tabla (con el que se acaba de guardar)");
         var resumen = (await plan.Call("planeacion", "simulaciones/resumen")).Root!;
         Check(int.Parse(resumen.Element(Api.Ns + "total")!.Value) >= 2, "Planeación: resumen por agregación de MongoDB");
 

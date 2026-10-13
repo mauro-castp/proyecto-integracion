@@ -47,6 +47,16 @@ class Api(
 
     fun clear() { session = null; store.clear() }
 
+    /** Tras editar el perfil, el nombre de la sesión guardada (saludo, menú) se mantiene al día. */
+    fun actualizarUsuarioLocal(perfil: JSONObject) {
+        val actual = session ?: return
+        val copia = JSONObject(actual.toString())
+        val u = copia.getJSONObject("usuario")
+        listOf("nombre", "apellidos", "telefono").forEach { if (perfil.has(it)) u.put(it, perfil.get(it)) }
+        session = copia
+        if (!demo) store.save(copia)
+    }
+
     fun restore() { if (!demo) session = store.load() }
 
     /** Revoca la sesión en el servidor (acceso y renovación) y borra las credenciales locales aunque falle la red. */
@@ -71,7 +81,7 @@ class Api(
         val sentToken = session?.optString("token_acceso")
         val connection = open(url)
         try {
-            connection.requestMethod = method
+            fijarMetodo(connection, method)
             connection.connectTimeout = 15000
             connection.readTimeout = 20000
             connection.setRequestProperty("Accept", "application/json")
@@ -95,6 +105,11 @@ class Api(
         } finally {
             connection.disconnect()
         }
+    }
+
+    /** `HttpURLConnection` de la JVM no conoce PATCH (el de Android sí). El servicio de usuarios acepta PUT con el mismo cuerpo parcial. */
+    private fun fijarMetodo(c: HttpURLConnection, metodo: String) {
+        try { c.requestMethod = metodo } catch (e: java.net.ProtocolException) { if (metodo == "PATCH") c.requestMethod = "PUT" else throw e }
     }
 
     /** Una sola renovación a la vez: quien llegue después ya encuentra los tokens nuevos y solo repite su petición. */
@@ -133,6 +148,7 @@ class Api(
     private val demoLines = """[{"pedido_detalle_id":51,"nombre":"Arroz","cantidad":2},{"pedido_detalle_id":52,"nombre":"Agua purificada","cantidad":4}]"""
     private fun example(path: String, method: String, body: JSONObject?): JSONObject = when {
         path == "auth/login" || path == "auth/renovar" -> JSONObject("""{"token_acceso":"demo","token_renovacion":"demo","tipo":"Bearer","expira_en":900,"usuario":{"id":7,"nombre":"Ramiro","apellidos":"Alanís Lozano","correo":"repartidor1@codex.mx","rol":"repartidor","microhub_id":null,"permisos":["entregas.ver","entregas.cerrar","pedidos.ver"]}}""")
+        path == "usuarios/yo" && method == "PATCH" -> JSONObject(example("usuarios/yo", "GET", null).toString()).also { p -> body!!.keys().forEach { k -> p.put(k, body.get(k)) } }
         path == "usuarios/yo" -> JSONObject("""{"id":7,"nombre":"Ramiro","apellidos":"Alanís Lozano","correo":"repartidor1@codex.mx","telefono":"8114641034","rol":"repartidor","microhub":null,"ultimo_acceso":"2026-10-12T08:02:11-06:00"}""")
         path == "auth/salir" -> JSONObject()
         path.startsWith("notificaciones/conteo") -> JSONObject().put("no_leidas", 1)
