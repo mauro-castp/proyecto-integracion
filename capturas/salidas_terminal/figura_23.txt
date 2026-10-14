@@ -1,0 +1,19 @@
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> docker compose -f docker-compose.integrado.yml ps -a
+
+NAME                                IMAGE                             COMMAND                  SERVICE       CREATED              STATUS                          PORTS
+microhubs-integrado-auth-1          microhubs-integrado-auth          "gunicorn -b 0.0.0.0…"   auth          7 hours ago          Up 42 minutes (healthy)         0.0.0.0:5101->5101/tcp, [::]:5101->5101/tcp
+microhubs-integrado-documentos-1    microhubs-integrado-documentos    "gunicorn -b 0.0.0.0…"   documentos    7 hours ago          Up 42 minutes (healthy)         0.0.0.0:5107->5107/tcp, [::]:5107->5107/tcp
+microhubs-integrado-entregas-1      microhubs-integrado-entregas      "gunicorn -b 0.0.0.0…"   entregas      7 hours ago          Up 42 minutes (healthy)         0.0.0.0:5105->5105/tcp, [::]:5105->5105/tcp
+microhubs-integrado-microhubs-1     microhubs-integrado-microhubs     "gunicorn -b 0.0.0.0…"   microhubs     7 hours ago          Up 42 minutes (healthy)         0.0.0.0:5109->5109/tcp, [::]:5109->5109/tcp
+microhubs-integrado-migraciones-1   microhubs-integrado-migraciones   "python migrar.py"       migraciones   About a minute ago   Exited (0) About a minute ago   
+microhubs-integrado-mongo-1         mongo:7                           "docker-entrypoint.s…"   mongo         7 hours ago          Up 41 minutes (healthy)         27017/tcp
+microhubs-integrado-pedidos-1       microhubs-integrado-pedidos       "gunicorn -b 0.0.0.0…"   pedidos       7 hours ago          Up 42 minutes (healthy)         0.0.0.0:5104->5104/tcp, [::]:5104->5104/tcp
+microhubs-integrado-planeacion-1    microhubs-integrado-planeacion    "gunicorn -b 0.0.0.0…"   planeacion    7 hours ago          Up 42 minutes (healthy)         0.0.0.0:5106->5106/tcp, [::]:5106->5106/tcp
+microhubs-integrado-postgres-1      postgres:16-alpine                "docker-entrypoint.s…"   postgres      7 hours ago          Up 41 minutes (healthy)         5432/tcp
+microhubs-integrado-productos-1     microhubs-integrado-productos     "gunicorn -b 0.0.0.0…"   productos     7 hours ago          Up 42 minutes (healthy)         0.0.0.0:5103->5103/tcp, [::]:5103->5103/tcp
+microhubs-integrado-redis-1         redis:7-alpine                    "docker-entrypoint.s…"   redis         7 hours ago          Up 41 minutes (healthy)         6379/tcp
+microhubs-integrado-seguimiento-1   microhubs-integrado-seguimiento   "gunicorn -b 0.0.0.0…"   seguimiento   7 hours ago          Up 42 minutes (healthy)         0.0.0.0:5110->5110/tcp, [::]:5110->5110/tcp
+microhubs-integrado-usuarios-1      microhubs-integrado-usuarios      "gunicorn -b 0.0.0.0…"   usuarios      7 hours ago          Up 42 minutes (healthy)         0.0.0.0:5102->5102/tcp, [::]:5102->5102/tcp
+microhubs-integrado-web-1           microhubs-integrado-web           "sh -c 'python migra…"   web           About a minute ago   Up About a minute (healthy)     0.0.0.0:5051->5000/tcp, [::]:5051->5000/tcp
+microhubs-integrado-zonas-1         microhubs-integrado-zonas         "gunicorn -b 0.0.0.0…"   zonas         7 hours ago          Up 42 minutes (healthy)         0.0.0.0:5108->5108/tcp, [::]:5108->5108/tcp
+

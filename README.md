@@ -54,4 +54,4 @@ Ruth Elizabeth Soriano · Vanessa Morante López · Mauro Castillo Peña · Mar�
 
 Catálogos se separó en Productos, Zonas y Microhubs. Seguimiento recibe el GPS en :5110. Los avisos permanecen en PostgreSQL y el portal; :5108 ahora corresponde a Zonas.
 
-Las evidencias adjuntas registran 93 casos aprobados el 13 de octubre de 2026 a las 21:27 UTC. Las capturas manuales anteriores se conservan como históricas, identificadas en `capturas/LEEME.md`. Esta actualización no reejecutó el sistema.
+Las evidencias adjuntas registran 93 casos aprobados el 13 de octubre de 2026 a las 21:27 UTC. Las figuras 13 a 26 del reporte se renovaron contra el despliegue de diez servicios; cómo se obtuvo cada una está en `capturas/LEEME.md`. Las pruebas del repositorio y las capturas se ejecutaron de nuevo el 13 de octubre de 2026 sobre el despliegue de diez servicios.
