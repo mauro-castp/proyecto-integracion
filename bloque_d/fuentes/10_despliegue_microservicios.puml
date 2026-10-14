@@ -58,8 +58,8 @@ MIG --> PG : migraciones idempotentes
 
 legend bottom
   Cada servicio tiene su Dockerfile (servicios/<servicio>/Dockerfile): python:3.12-slim,
-  usuario sin privilegios y HEALTHCHECK /health. Los 11 contenedores de aplicación esperan
-  a que migraciones termine y a que redis y mongo estén sanos. Volúmenes: datos_pg y
+  usuario sin privilegios y HEALTHCHECK /health. Los diez servicios esperan migraciones, Redis y MongoDB.
+  El web espera migraciones y Redis. Volúmenes: datos_pg y
   datos_mongo (persisten con "down"; "down -v" borra los datos).
 endlegend
 @enduml

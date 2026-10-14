@@ -1,65 +1,476 @@
-Prompt para Claude Create (u otra herramienta de IA)
-=====================================================
+DIAPOSITIVA 1
+CODEX INNOVATIONS
+Microhubs y comercio
+de proximidad
+Arquitectura distribuida y demostración funcional
+Segundo parcial · Equipo 04 · 13 octubre 2026
+Ruth Elizabeth Soriano · Vanessa Morante López · Mauro Castillo Peña
+María José Cedillo Mata · Jorge Antonio Arreola Cantú
+GUION: Presentamos nuestra plataforma de microhubs y comercio de proximidad. La idea es acercar los productos al cliente mediante puntos de distribución en su zona. En esta presentación explicaremos la arquitectura actual, que ya cuenta con diez microservicios, y después mostraremos su funcionamiento en vivo.
 
-Crea una presentación de 12-13 diapositivas para exponer el proyecto escolar
-"Plataforma de Microhubs y Comercio de Proximidad" (Codex Innovations, Equipo 04,
-Primer Parcial de Ingeniería de Software). Todo en español.
+DIAPOSITIVA 2
+Problema y objetivo
+CODEX INNOVATIONS
+02
+01
+El problema
+Pedidos pequeños, entregas costosas y disponibilidad limitada por zona.
+02
+Nuestra solución
+Administrar microhubs cercanos al cliente, con inventario, pedidos y cobertura.
+03
+Objetivo del parcial
+Integrar la web con diez servicios, seguridad común y datos persistentes.
+GUION: Las tres columnas resumen el problema, la solución y el objetivo del parcial. Buscamos reducir las dificultades de atender pedidos pequeños y controlar la disponibilidad por zona. Para hacerlo, integramos el portal con diez servicios que comparten seguridad y almacenamiento persistente.
 
-ESTILO: paleta de marca — azul #1F4E79 (dominante), verde #2E6B4F, ámbar #8A5A17,
-vino #7B2D4E, violeta #54417B. Fondo oscuro (navy #12283C) para portada, la
-diapositiva de la "decisión clave", la de "verificado de verdad" y el cierre;
-fondo blanco para el resto. Motivo visual repetido: iconos dentro de círculos de
-color. Nada de barras/franjas de acento decorativas.
+DIAPOSITIVA 3
+Alcance y requerimientos del parcial
+CODEX INNOVATIONS
+03
+Funcionales
+Pedidos, entregas con evidencia, planeación, documentos y avisos.
+No funcionales
+JWT común, permisos, errores controlados, contratos y despliegue reproducible.
+Alcance técnico
+Web funcional, 10 servicios, PostgreSQL, MongoDB, Redis y Docker.
+Clientes y siguiente etapa
+APIs para Android (JSON) y escritorio (XML). TLS y nube: siguiente parcial.
+GUION: En esta diapositiva separamos los requisitos funcionales de los técnicos. El sistema cubre pedidos, entregas, planeación, documentos y avisos. La arquitectura utiliza diez servicios, tres motores de datos y Docker. Las APIs también atienden Android con JSON y escritorio con XML; TLS y el despliegue en nube quedan para la siguiente etapa.
 
-CONTENIDO POR DIAPOSITIVA:
+DIAPOSITIVA 4
+Correcciones del primer parcial
+CODEX INNOVATIONS
+04
+Viabilidad
+Planeación de ubicaciones, simulación, capacidad, ABC y escenarios.
+Operación
+Repartidor, rutas, cierre parcial, devoluciones e incidencias.
+Integración
+Diez servicios y pantallas web que los consumen por HTTP.
+Documentación
+Reporte integral, diagramas actualizados y 93 casos de evidencia.
+GUION: Los cuatro apartados muestran las mejoras del proyecto. Ampliamos la planeación y los flujos de operación, conectamos diez servicios por HTTP y actualizamos la documentación. Las evidencias adjuntas registran 93 casos, que sirven para comprobar respuestas y cambios en los datos.
 
-1. Portada: "Microhubs — Comercio de proximidad para el sector San Bernabé".
-   Codex Innovations · Equipo 04 · Primer Parcial.
+DIAPOSITIVA 5
+Evolución del sistema web
+CODEX INNOVATIONS
+05
+01
+Operación
+CRUD, permisos, pedidos e inventario.
+Filtros, paginación y validaciones.
+02
+Administración
+Reportes CSV y gráficas Highcharts.
+Archivos, avisos e historial.
+03
+Planeación
+Ubicaciones, capacidad y costos.
+Simulación, surtido ABC y rutas.
+GUION: Las tres columnas muestran cómo creció la web. Operación reúne pedidos, inventario y validaciones; Administración incorpora reportes, archivos y avisos; Planeación permite evaluar ubicaciones, costos y capacidad. Estas funciones del portal conviven con las APIs de los microservicios.
 
-2. El problema: bajo ticket promedio, alta sensibilidad al costo, densidad
-   variable, infraestructura limitada, conectividad irregular, márgenes reducidos.
+DIAPOSITIVA 6
+Perfiles, permisos y ámbito de datos
+CODEX INNOVATIONS
+06
+Cliente / visitante
+Catálogo, cobertura y pedidos propios.
+Operador / repartidor
+Preparación por microhub y entregas asignadas.
+Planeador / auditor
+Simulación y decisiones / consulta de solo lectura.
+Analista / supervisor
+Reportes generales / reportes de su microhub.
+Administrador
+Usuarios, permisos, parámetros y estado de los servicios.
+GUION: La lista muestra que cada perfil tiene un alcance distinto. El cliente consulta sus pedidos, el operador trabaja con su microhub y el repartidor con sus entregas. Los perfiles de planeación, auditoría y análisis tienen funciones específicas. El administrador gestiona usuarios, permisos y el estado de los servicios.
 
-3. La zona: 4 colonias de San Bernabé, Monterrey (San Bernabé CP64100, Valles de
-   San Bernabé CP64103 $80 mínimo, Paseo de San Bernabé CP64103 $90 mínimo, San
-   Bernabé X F-113 CP64105). Destacar: Valles y Paseo comparten CP pero tienen
-   condiciones distintas, por eso el sistema pregunta la colonia en vez de adivinar.
+DIAPOSITIVA 7
+Arquitectura implementada
+CODEX INNOVATIONS
+07
+Navegador
+Android / escritorio / Swagger
+Web Flask :5000
+Operación e integración
+10 microservicios Flask
+:5101 a :5110
+PostgreSQL
+Datos del negocio
+MongoDB
+Evidencias y eventos
+Redis
+Sesiones y caché
+HTTP + JWT
+Almacenes compartidos según responsabilidad. La web también usa Redis y MongoDB.
+GUION: En el diagrama, el navegador entra al portal Flask por el puerto 5000. La web y los clientes HTTP se conectan a los diez microservicios, del 5101 al 5110, usando HTTP y JWT. Abajo están PostgreSQL, MongoDB y Redis. Compartimos estos almacenes según la operación, y el portal conserva funciones que trabajan directamente con ellos.
 
-4. Objetivos: analizar demanda, proponer ubicaciones, estimar cobertura, simular
-   operación, calcular capacidad, planear surtido, gestionar pedidos, optimizar
-   entregas, calcular punto de equilibrio.
+DIAPOSITIVA 8
+Responsabilidades de los diez servicios
+CODEX INNOVATIONS
+08
+Servicio | Puerto | Responsabilidad
+Auth / Usuarios | 5101 / 5102 | Sesión común y perfiles
+Productos | 5103 | Catálogo comercial de solo lectura
+Pedidos / Entregas | 5104 / 5105 | Estados del pedido y cierre de entrega
+Planeación | 5106 | Candidatos, simulaciones y escenarios
+Documentos | 5107 | Archivos y evidencias en MongoDB
+Zonas / Microhubs | 5108 / 5109 | Cobertura y puntos de operación
+Seguimiento | 5110 | Puntos GPS y resumen del recorrido
+GUION: La tabla resume la distribución actual. Catálogos se separó en Productos, Zonas y Microhubs, para que cada servicio tenga una responsabilidad concreta. Seguimiento ahora se encarga del recorrido GPS. Auth, Usuarios, Pedidos, Entregas, Planeación y Documentos completan los diez servicios. Los avisos siguen en la web y PostgreSQL, sin un microservicio de Notificaciones.
 
-5. Arquitectura: 4 componentes — Sistema web (construido y probado en este
-   parcial), Microservicios/App Android/App Escritorio (diseñados, se construyen
-   en el Segundo Parcial). Capa de datos compartida: PostgreSQL, MongoDB, Redis.
+DIAPOSITIVA 9
+Diseño interno y componentes comunes
+CODEX INNOVATIONS
+09
+Rutas y negocio
+Cada servicios/<nombre>/app.py define su responsabilidad.
+Seguridad y formatos
+comun/base.py, validar.py, formatos.py y esquemas.py.
+Acceso a datos
+psycopg, PyMongo y cliente Redis según la operación.
+Registro y contratos
+OpenAPI, X-Traza-Id, logs_tecnicos y metricas_servicio.
+GUION: Los cuatro bloques explican la estructura del código. Cada servicio define sus rutas y reglas en su app.py. Los módulos comunes concentran seguridad, validación y formatos. El acceso a datos usa el cliente correspondiente a cada motor, y los contratos y trazas ayudan a documentar y revisar las peticiones.
 
-6. Decisión clave: las reglas de negocio viven en PostgreSQL (restricciones,
-   funciones, triggers), no en Python — por eso no hay ORM. Sobreventa imposible
-   por CHECK, bitácora inmutable por diseño, transiciones de estado como tabla
-   de reglas.
+DIAPOSITIVA 10
+Un Dockerfile por microservicio
+CODEX INNOVATIONS
+10
+Imagen base
+python:3.12-slim con dependencias de requirements.txt.
+Contenido
+Código del servicio, módulo común, contratos XSD y ejemplos.
+Ejecución
+Usuario sin privilegios y Gunicorn con 2 workers.
+Puerto y salud
+EXPOSE del puerto propio y HEALTHCHECK sobre /health.
+GUION: Cada microservicio tiene su propio Dockerfile. Como muestran los apartados, parte de Python 3.12, instala dependencias e incluye el código y los contratos. Gunicorn ejecuta dos workers con un usuario sin privilegios. EXPOSE identifica el puerto y el healthcheck revisa que el servicio responda.
 
-7. Modelo de datos en números: 24 tablas, 41 restricciones CHECK, 37 llaves
-   foráneas, 66 índices, 19 funciones, 22 triggers, 8 enums, 3 vistas.
+DIAPOSITIVA 11
+Diez contenedores y puertos propios
+CODEX INNOVATIONS
+11
+Contenedor | Puerto | Responsabilidad
+Auth | 5101 | Sesión y tokens
+Usuarios | 5102 | Perfil y consulta
+Productos | 5103 | Catálogo comercial
+Pedidos | 5104 | Consulta, historial y estados
+Entregas | 5105 | Cierre, cobro y evidencia
+Planeación | 5106 | Candidatos y simulaciones
+Documentos | 5107 | Archivos en MongoDB
+Zonas | 5108 | Colonias y cobertura
+Microhubs | 5109 | Red de puntos de operación
+Seguimiento | 5110 | Ubicaciones GPS y recorrido
+GUION: Esta tabla muestra el contenedor y puerto de cada servicio. Los cambios clave son Productos en 5103, Zonas en 5108, Microhubs en 5109 y Seguimiento en 5110. El puerto 5108 ya no corresponde a Notificaciones. Esta separación permite ejecutar y revisar cada responsabilidad en su propio contenedor.
 
-8. Tres bases de datos con propósito: PostgreSQL (transaccional), MongoDB
-   (documentos flexibles/eventos), Redis (caché/sesiones, con dos bases lógicas:
-   una nunca expulsa datos por ser bloqueos de inventario, la otra sí por ser
-   caché).
+DIAPOSITIVA 12
+Despliegue, redes y persistencia
+CODEX INNOVATIONS
+12
+Web :5000
+10 contenedores de servicios :5101–5110
+Red datos interna · acceso por nombres de servicio
+PostgreSQL 16
+volumen datos_pg
+MongoDB 7
+volumen datos_mongo
+Redis 7
+sin persistencia
+Red publica: web y servicios. Las bases no publican puertos al equipo.
+Arranque: PostgreSQL saludable, migraciones (Exit 0) y dependencias de cada servicio.
+GUION: El diagrama muestra la web y los diez servicios conectados a la red interna de datos. PostgreSQL y MongoDB conservan información en volúmenes; Redis está configurado sin persistencia. Las bases no publican puertos al equipo. Compose espera a que PostgreSQL esté saludable y a que terminen las migraciones antes de iniciar los servicios dependientes.
 
-9. Verificado de verdad: 26/26 reglas de negocio pasan contra PostgreSQL real,
-   4 contenedores Docker sanos, datos reales (51 productos, 148 pedidos, 3,113
-   registros de bitácora, 48 usuarios), recorridos probados en vivo.
+DIAPOSITIVA 13
+Configuración y operación con Compose
+CODEX INNOVATIONS
+13
+Variables
+SECRET_KEY común, PG_DSN, MONGO_URL, REDIS_URL y WEB_PORT.
+Descubrimiento
+MICROSERVICIOS_URL usa http://{servicio}:{puerto}.
+Inicio y revisión
+docker compose -f docker-compose.integrado.yml
+up --build -d
+Detención
+docker compose -f docker-compose.integrado.yml down
+GUION: Los primeros dos apartados muestran la configuración: una llave común para JWT, conexiones a las bases y una plantilla para localizar cada servicio por nombre y puerto. El comando de inicio construye y levanta el entorno en segundo plano. El comando down detiene los contenedores y conserva los volúmenes al no incluir la opción -v.
 
-10. Producto mínimo funcional: sitio público, JWT + roles, bitácora automática,
-    proceso de pedido completo (carrito→asignación→preparación→entrega), panel
-    de indicadores, control de acceso por ruta.
+DIAPOSITIVA 14
+Un pedido de principio a fin
+CODEX INNOVATIONS
+14
+Cliente
+Catálogo y pedido
+Operador
+Preparación
+Entregas
+Cierre y evidencia
+PostgreSQL
+Estado y aviso
+Cliente en web
+Resultado e historial
+Cobertura, stock,
+permisos y transiciones
+Seguimiento registra el GPS. Documentos guarda archivos. El folio conecta toda la operación.
+GUION: El flujo empieza con el pedido del cliente y continúa con la preparación del operador. Entregas registra el cierre, el cobro y las referencias de evidencia. PostgreSQL actualiza el estado y genera el aviso mediante un trigger. Seguimiento registra el GPS y Documentos guarda los archivos; los identificadores permiten relacionar todo con el mismo pedido.
 
-11. Seguridad por diseño: contraseñas con bcrypt, JWT de corta duración con
-    revocación en Redis, control por rol y ruta, bitácora inmutable.
+DIAPOSITIVA 15
+Secuencia del cierre y comunicación
+CODEX INNOVATIONS
+15
+Cliente HTTP
+Entregas
+Redis
+PostgreSQL
+1. POST resultado
+2. Sesión y revocación
+3. Transacción, historial y aviso
+4. Estado confirmado
+5. HTTP 201 / 200 al repetir
+El trigger crea el aviso en PostgreSQL. Seguimiento guarda GPS en MongoDB, sin transacción global.
+GUION: En la secuencia, el cliente envía el resultado a Entregas. El servicio valida la sesión y la revocación en Redis, y registra el cierre en una transacción de PostgreSQL, junto con el historial y el aviso generado por el trigger. El primer cierre devuelve 201; repetir el mismo UUID devuelve 200 sin aplicar el cierre dos veces. No existe una transacción global entre PostgreSQL y MongoDB.
 
-12. Ruta del semestre (línea de tiempo): Primer Parcial (hoy) → Segundo Parcial
-    (microservicios y apps) → Tercer Parcial (integración, nube, seguridad) →
-    Entrega Final (estabilización y documentación).
+DIAPOSITIVA 16
+Cada almacén tiene una función
+CODEX INNOVATIONS
+16
+01
+PostgreSQL
+Usuarios, permisos, inventario y pedidos.
+Relaciones, transacciones y auditoría.
+02
+MongoDB
+Evidencias, GPS y simulaciones.
+Consultas, índices y agregaciones.
+03
+Redis
+Sesiones, revocación y caché.
+Contadores, límites y expiración.
+GUION: Las tres columnas muestran la función de cada almacén. PostgreSQL conserva los datos relacionados del negocio y sus transacciones. MongoDB almacena documentos, GPS, simulaciones y registros. Redis guarda sesiones, revocaciones, caché y contadores temporales. Elegimos cada motor según las características de los datos.
 
-13. Cierre: "Gracias" + nombres del equipo (Ruth Elizabeth Soriano, Vanessa
-    Morante López, Mauro Castillo Peña, María José Cedillo Mata, Jorge Antonio
-    Arreola Cantú).
+DIAPOSITIVA 17
+Modelo lógico y físico de PostgreSQL
+CODEX INNOVATIONS
+17
+Cliente / usuario
+Pedido
+Entrega
+Pedido_detalle
+Producto
+Inventario
+microhub + producto
+Lógico: relaciones por claves primarias y foráneas.
+Físico: índices, CHECK, triggers, funciones y migraciones SQL 01–08.
+FOR UPDATE protege existencias. UUID único evita repetir el cierre.
+GUION: En el modelo se relacionan el usuario, el pedido, sus detalles, los productos y la entrega. El inventario se identifica por microhub y producto. Las claves mantienen las relaciones, mientras que restricciones, triggers y funciones aplican reglas. Los bloqueos protegen existencias y el UUID de operación ayuda a evitar cierres duplicados.
+
+DIAPOSITIVA 18
+MongoDB: operaciones del proyecto
+CODEX INNOVATIONS
+18
+Insertar y recuperar
+Documentos guarda archivos. Seguimiento inserta puntos GPS por entrega.
+Actualizar y filtrar
+Upsert de sincronizaciones por operacion_uuid y filtros por identificador.
+Agregaciones
+Seguimiento resume el recorrido. Documentos y Planeación generan resúmenes.
+Índices y validadores
+referencia.tipo + referencia.id, 2dsphere, TTL y $jsonSchema.
+GUION: Los cuatro apartados muestran operaciones reales de MongoDB. Documentos inserta y recupera archivos, y Seguimiento guarda puntos GPS en ubicaciones_entrega. Las sincronizaciones se actualizan por UUID. Las agregaciones permiten resumir recorridos y simulaciones, mientras que los índices y validadores organizan y restringen los datos.
+
+DIAPOSITIVA 19
+Redis: claves, TTL y efecto
+CODEX INNOVATIONS
+19
+auth:sesion:{usuario}
+Sesión activa. Evidencia: TTL inicial de 900 s.
+auth:jti:revocado:{jti}
+Bloquea el JWT durante su vigencia restante.
+auth:refresh:{hash}
+Renovación de un solo uso. Evidencia: 604800 s.
+cache:catalogo:*
+Evita consultas repetidas. TTL por omisión: 300 s.
+rate:{servicio}:
+{ip}:{minuto}
+Contador por ventana. TTL 120 s y respuesta 429.
+GUION: Cada fila muestra una clave de Redis y su efecto. La sesión tiene un TTL inicial de 900 segundos; la revocación bloquea un JWT durante su vigencia restante. El refresh dura hasta siete días y se usa una sola vez. La caché de catálogo dura cinco minutos y los contadores de consumo permiten devolver 429 al superar el límite.
+
+DIAPOSITIVA 20
+JWT, permisos y sesión común
+CODEX INNOVATIONS
+20
+Validación | Qué comprueba
+JWT | Firma, vigencia e identidad
+Redis | Sesión activa y token no revocado
+Permisos | Operación permitida para el rol
+Ámbito | Pedidos propios, microhub o entregas asignadas
+200  Acceso válido        403  Sin permiso        401  Sesión inválida
+GUION: La tabla resume las capas de validación. Primero comprobamos la firma y vigencia del JWT. Después Redis confirma que la sesión siga activa y que el token no esté revocado. Finalmente revisamos permisos y alcance de los datos. Por eso una sesión válida no significa que el usuario pueda consultar cualquier pedido o entrega.
+
+DIAPOSITIVA 21
+Contratos JSON y XML
+CODEX INNOVATIONS
+21
+GET /api/v1/productos
+JSON
+Accept: application/json
+
+Datos tipados, filtros
+y paginación.
+XML
+Accept: application/xml
+
+Namespace urn:microhubs:v1
+Validación de entrada con XSD.
+Accept negocia la respuesta. Content-Type define la entrada. Los lotes GPS solo admiten JSON.
+GUION: Las dos columnas muestran que una misma consulta de productos puede responder en JSON o XML según Accept. Content-Type indica el formato del cuerpo enviado. El XML de entrada se valida con XSD. Hay una excepción relevante: el envío de lotes de puntos GPS en Seguimiento admite únicamente JSON.
+
+DIAPOSITIVA 22
+Detalle de los contratos de integración
+CODEX INNOVATIONS
+22
+JSON
+Campos requeridos/opcionales, tipos, validaciones y errores.
+Paginación
+datos + paginacion: pagina, por_pagina, total y paginas.
+XML
+UTF-8, raíz por recurso, versión, namespace y jerarquías.
+XSD
+Nueve esquemas. Validación de entrada y rechazo de DTD/entidades.
+GUION: Estos apartados detallan el contrato. JSON define tipos, campos y errores; las listas incluyen datos y paginación. XML conserva raíz, versión y namespace. Los nueve XSD validan las entradas XML, y se rechazan DTD y entidades. El número de esquemas no tiene que coincidir con los diez servicios, porque algunos comparten contratos.
+
+DIAPOSITIVA 23
+Swagger y salud de los diez servicios
+CODEX INNOVATIONS
+23
+Documentación
+Ejemplo: http://localhost:5110/api/v1/docs
+Especificación
+/api/v1/openapi.json: rutas, métodos y parámetros.
+Ejecución
+Authorize con JWT y Try it out contra el servicio activo.
+Respuestas
+Ejemplos JSON/XML, códigos de éxito y error.
+Salud
+GET /health o /api/v1/salud: estado y dependencias.
+GUION: Cada servicio, desde el puerto 5101 hasta el 5110, tiene su propia página en /api/v1/docs. Swagger permite cargar el JWT con Authorize y probar las rutas. OpenAPI describe los parámetros y respuestas. Para revisar disponibilidad usamos /health o /api/v1/salud, que muestran el servicio y sus dependencias.
+
+DIAPOSITIVA 24
+Evidencia completa por endpoint
+CODEX INNOVATIONS
+24
+Solicitud
+URL completa, método, propósito, parámetros, headers y body.
+Respuesta
+Body completo, código HTTP, tiempo y X-Traza-Id.
+Persistencia
+Consulta del resultado en PostgreSQL, MongoDB o Redis.
+Casos
+Éxito, entrada inválida, inexistente, no autorizado y error de negocio.
+Soporte
+evidencias.html, evidencias.md, evidencias.json y capturas.
+GUION: Los cinco apartados indican qué guardamos como evidencia. Incluimos la solicitud, la respuesta completa, el tiempo y la traza. También comprobamos qué quedó en las bases de datos. Los casos cubren operaciones correctas y errores, y se conservan en archivos HTML, Markdown y JSON para poder revisarlos.
+
+DIAPOSITIVA 25
+Evidencia real: cierre de una entrega
+CODEX INNOVATIONS
+25
+POST  /api/v1/entregas/129/resultado
+Solicitud (extracto)
+Authorization: Bearer <JWT>
+Content-Type: application/json
+
+resultado: "entregado"
+monto_cobrado: 146.80
+id_cliente_local: UUID de operación
+Respuesta 201 (extracto)
+entrega_id: 129
+pedido_id: 153
+estado_pedido: "entregado"
+duplicado: false
+Mismo UUID: HTTP 200 y duplicado = true. Monto incorrecto: 422.
+Evidencia guardada: ENT-05 / ENT-06 / ENT-04 · 13 octubre 2026
+GUION: Este ejemplo corresponde a la entrega 129 y al pedido 153. A la izquierda se ve el cobro de 146.80 y el UUID de la operación. A la derecha, el primer cierre responde 201 y marca duplicado como falso. Repetir el UUID devuelve 200 y duplicado verdadero; un monto incorrecto devuelve 422. Son resultados de la evidencia adjunta.
+
+DIAPOSITIVA 26
+Errores, validaciones y observabilidad
+CODEX INNOVATIONS
+26
+400 / 422
+Formato, parámetros o reglas de negocio inválidos.
+401 / 403 / 404
+Token o sesión inválida, permiso insuficiente o recurso no visible.
+409 / 429 / 503
+Conflicto, límite de consumo o dependencia no disponible.
+Error común
+error: {codigo, mensaje, detalles, traza_id}.
+Registro
+X-Traza-Id correlaciona HTTP con logs y métricas en MongoDB.
+GUION: La diapositiva agrupa los errores por causa: datos inválidos, problemas de acceso, conflictos, límites y dependencias no disponibles. El cuerpo de error mantiene una estructura común. X-Traza-Id conecta la respuesta HTTP con los registros y métricas, lo que facilita localizar una petición al investigar una falla.
+
+DIAPOSITIVA 27
+Integración desde el portal web
+CODEX INNOVATIONS
+27
+Integración del código actual: HTTP + JWT común, tiempo y X-Traza-Id por llamada.
+Pantalla / función | Servicio | Qué consulta o registra
+Estado de servicios | Los 10 | Salud, dependencias y Swagger
+Resúmenes | Documentos / Planeación | Agregaciones de MongoDB
+Ejemplo XML | Zonas :5108 | Cobertura en formato XML
+Detalle del pedido | Pedidos / Entregas | Historial y datos de la entrega
+Recorrido GPS | Seguimiento :5110 | Puntos, distancia y última ubicación
+Adjuntar evidencia | Documentos :5107 | Archivo asociado al pedido o entrega
+GUION: Esta tabla representa la integración del código actual. El tablero consulta la salud de los diez servicios, los resúmenes y un ejemplo XML desde Zonas. La vista del pedido combina Pedidos, Entregas, Seguimiento y Documentos. Cada llamada utiliza el JWT del usuario y registra código HTTP, tiempo y traza. Si un servicio falla, el portal informa el problema y conserva el resto de su funcionamiento.
+
+DIAPOSITIVA 28
+Pruebas unitarias y de integración
+CODEX INNOVATIONS
+28
+14 pruebas unitarias
+Formatos, XSD, validaciones, OpenAPI y cálculos.
+7 pruebas de contrato
+Los 10 servicios: perfiles, JSON/XML, seguridad y errores.
+5 de integración web
+Llamadas HTTP, pedido, adjuntos, CSRF y degradación.
+93 casos de evidencia
+Esperado vs. obtenido, estado y comprobación en datos.
+GUION: Los cuatro bloques distinguen las pruebas: catorce unitarias, siete de contrato y cinco de integración web, además de los 93 casos de evidencia. Las de contrato recorren los diez servicios y verifican perfiles y formatos. Las pruebas automáticas usan MongoDB simulado, así que sus validadores requieren comprobación adicional con el motor real.
+
+DIAPOSITIVA 29
+Pruebas y resultados registrados
+CODEX INNOVATIONS
+29
+93 / 93
+casos registrados como aprobados
+Éxitos y errores controlados
+Contratos JSON/XML y permisos
+Cambios en PostgreSQL, MongoDB y Redis
+Ejecución guardada del 13 de octubre de 2026. La demo confirma el entorno actual.
+GUION: El resultado guardado en el proyecto es de 93 casos aprobados de 93. Incluye respuestas correctas, errores controlados y comprobaciones en los tres almacenes. Este resultado pertenece a la ejecución registrada del 13 de octubre; la demostración en vivo permitirá comprobar el entorno que estamos utilizando ahora.
+
+DIAPOSITIVA 30
+Trazabilidad: requisito, componente y prueba
+CODEX INNOVATIONS
+30
+Requisito | Componente | Evidencia
+MS-01 / INF-R1 | 10 Dockerfiles y Compose | Contenedores + /health
+MS-03 | Formatos y XSD | AUTH-02 / PRO-03
+SEG-01 / SEG-02 | JWT, Redis y permisos | AUTH-11 / USR-06
+ENT-R1 / ENT-R2 | Cierre de entrega | ENT-04 a ENT-07
+WEB-R1 / BD-R1 | Portal y almacenes | HTTP + evidencias en datos
+GUION: La tabla relaciona cada requisito con el componente y la evidencia que lo respalda. Por ejemplo, el despliegue se verifica con los diez Dockerfiles y la salud de los contenedores. Los contratos se comprueban con casos JSON y XML, y el cierre de entregas con casos de validación, éxito, repetición y conflicto.
+
+DIAPOSITIVA 31
+Resultados, problemas y pendientes
+CODEX INNOVATIONS
+31
+Problemas resueltos
+Catálogos separados, GPS en Seguimiento y avisos desde PostgreSQL.
+Resultado registrado
+10 servicios y 93 casos aprobados en la ejecución adjunta.
+Pendientes técnicos
+Caché hasta 5 min y validadores MongoDB por comprobar en entorno real.
+Siguiente despliegue
+TLS, secretos propios, nube y pruebas de carga.
+GUION: Para cerrar, la arquitectura actual separa los catálogos, mueve el GPS a Seguimiento y conserva los avisos mediante PostgreSQL y la web. El proyecto registra diez servicios y 93 casos aprobados. Quedan aspectos por comprobar o mejorar, como la caché y los validadores de MongoDB real. La siguiente etapa contempla TLS, secretos propios, nube y pruebas de carga.
