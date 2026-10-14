@@ -1,7 +1,7 @@
 # Bloque D — Arquitectura y prototipos
 
 **Plataforma de Microhubs y Comercio de Proximidad**
-Codex Innovations · Equipo 04 · Primer Parcial
+Codex Innovations · Equipo 04 · Primer y Segundo Parcial
 
 ## Contenido
 
@@ -22,7 +22,7 @@ Los 9 diagramas de arquitectura pedidos en el Primer Parcial: contexto, contened
 
 ### `fuentes/`
 
-Los `.puml` de cada diagrama más `tema.iuml`, el tema PlantUML compartido por los nueve. Cambiar un color en `tema.iuml` cambia los nueve diagramas — así se mantiene consistente la paleta entre ellos y con el resto del proyecto (modelo de datos, prototipos, sistema web).
+Los `.puml` de cada diagrama más `tema.iuml`, el tema PlantUML compartido. Cambiar un color en `tema.iuml` afecta los diagramas que lo incluyen — así se mantiene consistente la paleta entre ellos y con el resto del proyecto (modelo de datos, prototipos, sistema web).
 
 Para regenerar un diagrama a partir de su fuente hace falta PlantUML:
 
@@ -45,3 +45,9 @@ Capturas de pantalla del prototipo usadas como evidencia documental.
 ## Nota
 
 Los prototipos son maquetas de interfaz — a diferencia de `sistema_web/`, que sí guarda y consulta información real en PostgreSQL. `prototipos.html` cubre las pantallas de móvil y escritorio, cuya implementación real corresponde al Segundo Parcial.
+
+## Versión vigente
+
+Los diagramas 2, 3 y 10 a 17 documentan el Segundo Parcial. Los diagramas 1 y 4 a 9 conservan el diseño histórico del Primer Parcial y no sustituyen al despliegue vigente.
+
+El diagrama 10 representa 15 contenedores, de los cuales migraciones es de un solo uso. La exportación PNG actual procede del SVG editable `fuentes/10_despliegue_microservicios.svg`; la fuente PlantUML conserva la misma topología y las dependencias corregidas.

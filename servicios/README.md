@@ -44,7 +44,7 @@ hacia `seguimiento` (las rutas pasaron de `entregas/{id}/ubicaciones|recorrido` 
 Cada servicio publica `GET /health` (alias de `/salud`, también bajo `/api/v1/`) y su documentación en
 **`http://localhost:51XX/api/v1/docs`** (Swagger UI, ejecutable con «Authorize» + «Try it out») y `/api/v1/openapi.json`.
 Los ejemplos de Swagger son los archivos oficiales del contrato. Métodos usados: GET, POST, PUT (candidatos), PATCH
-(perfil y estado de pedido) y DELETE (documentos, avisos, candidatos con baja lógica y escenarios).
+(perfil y estado de pedido) y DELETE (documentos, candidatos con baja lógica y escenarios).
 
 Cada servicio tiene **su propio Dockerfile** (`servicios/<servicio>/Dockerfile`) y corre en su propio contenedor.
 
@@ -69,7 +69,7 @@ Los cálculos de planeación **no se duplican**: el servicio usa `sistema_web/pl
 - `bloque_c/sql/08_microservicios.sql` (idempotente): cierre idempotente de entregas (`entrega.id_cliente_local`), evidencias y
   ubicación del cierre, tipo y referencia en `web_notificacion`, y el trigger que avisa al repartidor cuando se le asigna una entrega.
 - `bloque_c/mongo/02_microservicios.js`: colecciones `documentos` y `ubicaciones_entrega` (índice 2dsphere, TTL de 180 días).
-- MongoDB en uso: `documentos` (insertar, consultar, agregar), `ubicaciones_entrega` (insertar en lote, agregación del recorrido),
+- MongoDB en uso: `documentos` (insertar, consultar, agregar), `ubicaciones_entrega` (Seguimiento: insertar en lote, agregación del recorrido),
   `sincronizaciones_moviles` (upsert por UUID: cada reintento actualiza el mismo documento), `ejecuciones_analiticas` (cada
   simulación; resumen con `$group`), `logs_tecnicos` y `metricas_servicio`.
 
@@ -163,3 +163,9 @@ Para probar las apps Android y de escritorio contra estos servicios, ver `INSTRU
 - La contraseña de demostración es común a todas las cuentas y `SECRET_KEY` tiene un valor por omisión: cambiar ambos fuera
   de desarrollo.
 - Catálogo en caché hasta 5 minutos: un cambio hecho en el web tarda ese tiempo en verse en las apps.
+
+## Inventario y revisión documental
+
+El código expone 45 operaciones de negocio por método y ruta; ver `INVENTARIO_ENDPOINTS.md`. Hay 10 contenedores de microservicios, 1 web, 3 almacenes y 1 de migraciones: 15 definidos, 14 continuos. Web espera migraciones y Redis; los diez servicios esperan migraciones, Redis y MongoDB.
+
+Los nueve XSD se conservan: `catalogos.xsd` atiende tres servicios y `entregas.xsd` también contiene estructuras de Seguimiento. `notificaciones.xsd` no representa un servicio activo.
