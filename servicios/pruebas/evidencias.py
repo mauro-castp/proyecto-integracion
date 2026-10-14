@@ -571,6 +571,46 @@ def ejecutar(ev):
                                     *[(1, "TTL", k) for k in bd.r_cache.keys("rate:zonas:*")[:1]])])
 
 
+def ejecutar_complementarias(ev):
+    """Tres operaciones que la corrida principal (93 casos) no ejercitaba: GET /documentos/resumen,
+    GET /escenarios y PUT /usuarios/yo. Se ejecutan aparte, con --complementarias, para no alterar la
+    evidencia principal ni los identificadores que cita el reporte."""
+    print("Evidencias complementarias (3 operaciones)")
+    t_adm = ev.entrar("admin@codex.mx")
+    t_plan = ev.entrar("planeador@codex.mx")
+    t_rep = ev.entrar("repartidor1@codex.mx")
+
+    # DOC-11 · resumen de documentos (agregación $group en MongoDB). Se asegura un documento de partida.
+    ev.http("documentos", "POST", "documentos", token=t_rep, cuerpo={
+        "nombre": "complemento.jpg", "tipo_mime": "image/jpeg", "contenido_base64": B64,
+        "referencia": {"tipo": "usuario", "id": "7"}})
+    ev.caso("DOC-11", "documentos", "Resumen de documentos", "Agregación $group por tipo de referencia en MongoDB.",
+            "GET", "documentos/resumen", token=t_adm, verificar=lambda r: r.json["total"] >= 1,
+            explicacion="Pipeline $group sobre referencia.tipo con conteo y suma de bytes; lo consume el tablero Microservicios del web.",
+            evidencia=lambda r: [mg("db.documentos.aggregate([{$group:{_id:'$referencia.tipo', cantidad:{$sum:1}, tamano_bytes:{$sum:'$tamano_bytes'}}}, {$sort:{_id:1}}])",
+                                    lambda db: list(db.documentos.aggregate([
+                                        {"$group": {"_id": "$referencia.tipo", "cantidad": {"$sum": 1},
+                                                    "tamano_bytes": {"$sum": "$tamano_bytes"}}}, {"$sort": {"_id": 1}}])))])
+
+    # PLA-17 · lista de escenarios. Se guarda uno de partida y se borra al terminar.
+    cand = ev.http("planeacion", "GET", "candidatos?pagina=1&por_pagina=1", token=t_plan)[0].json["datos"][0]["id"]
+    supuestos = {"demanda_diaria": 120, "operadores": 3, "repartidores": 4, "ticket": 135.0, "costo_entrega": 22.0,
+                 "margen_bruto": 0.28, "renta": 18000.0, "nomina": 42000.0, "servicios": 7000.0, "otros": 5000.0,
+                 "distancia_km": 2.4, "capacidad_fisica": 150}
+    esc = ev.http("planeacion", "POST", "escenarios", token=t_plan,
+                  cuerpo={"nombre": "Escenario complementario", "candidato_id": cand, "supuestos": supuestos})[0].json["id"]
+    ev.caso("PLA-17", "planeacion", "Lista de escenarios guardados", "Paginación y búsqueda de escenarios compartidos con el web.",
+            "GET", "escenarios?pagina=1&por_pagina=5", token=t_plan, verificar=lambda r: r.json["paginacion"]["total"] >= 1,
+            evidencia=lambda r: [pg("SELECT id, nombre, ubicacion_candidata_id, creado_por FROM escenario_planeacion ORDER BY id DESC LIMIT 3")])
+    ev.http("planeacion", "DELETE", f"escenarios/{esc}", token=t_plan)
+
+    # USR-08 · PUT como alias de PATCH (la JVM de Android no admite PATCH)
+    ev.caso("USR-08", "usuarios", "Actualizar mi teléfono (PUT)", "PUT es alias de PATCH: lo usa la app Android cuando la JVM no admite PATCH.",
+            "PUT", "usuarios/yo", cuerpo={"telefono": "8112345678"}, token=t_rep,
+            explicacion="Misma validación y misma auditoría que PATCH; el trigger registra quién cambió el dato.",
+            evidencia=lambda r: [pg("SELECT id, telefono, actualizado_en FROM usuario WHERE id = 7")])
+
+
 # --------------------------------------------------------------------
 # Salidas
 # --------------------------------------------------------------------
@@ -656,11 +696,18 @@ pre{{background:#111827;color:#e5e7eb;padding:10px;border-radius:6px;overflow:au
 def main():
     ap = argparse.ArgumentParser(description="Evidencias reales de los microservicios")
     ap.add_argument("--salida", default="/tmp/evidencias")
+    ap.add_argument("--complementarias", action="store_true",
+                    help="Solo las 3 operaciones que la corrida principal no cubre (salida en /tmp/evidencias_complementarias)")
     ap.add_argument("--servicios", default=os.environ.get("MICROSERVICIOS_URL", "http://{servicio}:{puerto}"),
                     help="Plantilla de URL, p. ej. http://localhost:{puerto} desde fuera de Docker")
     a = ap.parse_args()
     ev = Evidencias(a.servicios)
-    ejecutar(ev)
+    if a.complementarias:
+        ejecutar_complementarias(ev)
+        if a.salida == "/tmp/evidencias":
+            a.salida = "/tmp/evidencias_complementarias"
+    else:
+        ejecutar(ev)
     salida = Path(a.salida)
     salida.mkdir(parents=True, exist_ok=True)
     (salida / "evidencias.json").write_text(json.dumps(ev.casos, ensure_ascii=False, indent=2, default=str), encoding="utf-8")

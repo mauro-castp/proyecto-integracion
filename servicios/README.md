@@ -147,6 +147,8 @@ espera un minuto antes de volver a usar ese servicio desde el mismo contenedor.
 
 Para probar las apps Android y de escritorio contra estos servicios, ver `INSTRUCCIONES_PARTE_B.md` en la raíz.
 
+La corrida principal se complementa con `pruebas/evidencias.py --complementarias` (3 casos: `DOC-11`, `PLA-17` y `USR-08`, en `evidencias/complementarias/`) para que las 45 operaciones tengan evidencia; ver `INVENTARIO_ENDPOINTS.md`.
+
 ## Decisiones
 
 - **HTTP en los puertos locales.** Las apps permiten HTTP solo hacia `localhost` (escritorio) y `10.0.2.2` o el host fijado al
