@@ -1,5 +1,5 @@
 """
-evidencias.py — Evidencias REALES de petición y respuesta de los 8 microservicios.
+evidencias.py — Evidencias REALES de petición y respuesta de los diez microservicios.
 
 Ejecuta contra los servicios levantados (docker-compose.integrado.yml) un
 recorrido completo de casos por endpoint: operaciones correctas, parámetros

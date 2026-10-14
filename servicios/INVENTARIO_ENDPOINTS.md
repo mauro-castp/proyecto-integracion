@@ -1,6 +1,6 @@
 # Inventario vigente de microservicios
 
-Fuente: servicios/*/app.py y docker-compose.integrado.yml del ZIP recibido.
+Fuente: servicios/*/app.py y docker-compose.integrado.yml.
 
 45 pares método HTTP y ruta de negocio. Excluye salud, OpenAPI, Swagger, HEAD y OPTIONS.
 
