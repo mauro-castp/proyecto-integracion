@@ -1,7 +1,8 @@
-Presentación del Segundo Parcial actualizada
+Presentación del Segundo Parcial
 
-Microhubs_Presentacion.pptx: 31 diapositivas con diez microservicios y guion en notas.
-Guion_Microhubs_Actualizado.pdf: guion por diapositiva.
-brief_contenido.txt: contenido actual extraído de las diapositivas.
+Microhubs_Presentacion.pptx: 31 diapositivas con los diez microservicios; el guion está en las notas de cada diapositiva.
+Guion_Microhubs_Actualizado.pdf: el mismo guion, una diapositiva por apartado.
+brief_contenido.txt: el texto de las diapositivas junto con su guion.
 
-El generador JS y las capturas originales del repositorio pertenecen a una versión anterior. No regeneran esta presentación actualizada. Conserva el PPTX como archivo editable.
+Los archivos generar_presentacion.js, generar_capturas.js e icons.js y la carpeta capturas_reales son de la presentación anterior;
+con ellos no se vuelve a generar esta presentación. Para cambiar algo, se edita el .pptx directamente.

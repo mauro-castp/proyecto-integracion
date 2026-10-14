@@ -1,47 +1,35 @@
-# Actualización documental del Segundo Parcial
-
-Base analizada: `proyecto-integracion-main (3).zip`, recibido en esta conversación. Versión documental 4.2, 13 de octubre de 2026. No se consultó una versión posterior de GitHub.
+# Cambios de la documentación del Segundo Parcial
 
 ## Cambios de arquitectura
 
-| Antes | Ahora | Impacto |
+| Antes | Ahora | Efecto |
 |---|---|---|
-| Catálogos :5103 | Productos :5103, Zonas :5108, Microhubs :5109 | Cada recurso tiene un servicio de solo lectura |
-| GPS dentro de Entregas | Seguimiento :5110 | Ubicaciones y recorrido usan `/api/v1/seguimiento/{id}` |
-| Notificaciones :5108 | Triggers PostgreSQL y bandeja web | Se retira la API independiente, se conserva la función |
-| 8 microservicios | 10 microservicios | 15 contenedores definidos, 14 continuos y migraciones |
-| Reporte con 48 endpoints | 45 pares método-ruta en el código | Inventario explícito, excluye salud y documentación |
+| Catálogos (5103) | Productos (5103), Zonas (5108) y Microhubs (5109) | Cada recurso de consulta tiene su propio servicio |
+| GPS dentro de Entregas | Seguimiento (5110) | Las rutas son `/api/v1/seguimiento/{id}/ubicaciones` y `/recorrido` |
+| Notificaciones (5108) | Triggers de PostgreSQL y bandeja del portal | Se quitó la API; los avisos se siguen generando |
+| 8 microservicios | 10 microservicios | 15 contenedores definidos: 14 en ejecución y el de migraciones |
+| 48 endpoints en el reporte | 45 operaciones en el código | El detalle está en `servicios/INVENTARIO_ENDPOINTS.md` (sin salud ni documentación) |
 
-## Documentos incluidos
+## Documentos
 
-- Reporte técnico integral DOCX versión 4.2: diez fichas, requisitos, historias, contratos, despliegue, pruebas y trazabilidad.
-- Documento de arquitectura DOCX actualizado.
-- Fuentes y exportaciones de diagramas.
-- Presentación de 31 slides, guion PDF y contenido en texto.
-- README general, de servicios, diagramas, presentación y capturas.
-- Inventario completo de endpoints.
-- Evidencias adjuntas de los diez servicios, conservadas sin alterar sus resultados.
+- `reporte_tecnico/Reporte_Tecnico_Segundo_Parcial_Equipo04.docx`, versión 4.3: diez fichas completas, requisitos, historias, contratos, despliegue, pruebas y trazabilidad.
+- `Arquitectura_Plataforma_Microhubs (1).docx`: arquitectura de la plataforma con los diez servicios.
+- `bloque_d/`: diagramas y sus fuentes PlantUML.
+- `presentacion/`: presentación de 31 diapositivas, guion en PDF y el mismo contenido en texto.
+- `servicios/INVENTARIO_ENDPOINTS.md`: las 45 operaciones y los casos de evidencia de cada una.
+- `evidencias/`: 93 casos y, en `evidencias/complementarias/`, 3 más.
+- `capturas/`: figuras del reporte; las 13 a 26 se tomaron de nuevo con el sistema de diez servicios.
 
-## Verificación realizada
+## Pruebas del 13 de octubre de 2026
 
-Se compararon Docker Compose, las rutas declaradas en `servicios/*/app.py`, `sistema_web/integracion.py` y las evidencias del ZIP. Se revisó la presentación y se renderizaron los documentos para revisar su formato. No se levantaron PostgreSQL, Redis ni MongoDB, ni se ejecutaron nuevas pruebas funcionales.
+- Servicios: 14 unitarias, 7 de contrato y 5 de integración web.
+- Web y planeación: 35 pruebas. Reglas SQL: 26 verificaciones.
+- Evidencias: 93 de 93 casos y 3 de 3 complementarios.
+- App de escritorio: 64 comprobaciones. App Android: 46 pruebas unitarias y 3 contra los servicios.
+- Docker: el sistema se levantó desde cero con `docker compose -f docker-compose.integrado.yml up --build -d`.
 
-La ejecución adjunta registra 93/93 casos aprobados a las 21:27 UTC del 13 de octubre. El ejemplo de cierre vigente es ENT-05: entrega 129, pedido 153, monto 146.80, HTTP 201. ENT-06 repite el UUID y devuelve 200. El GPS usa SEG-01 y SEG-02.
+No se repitieron los dos scripts de extremo a extremo del web ni las pruebas de emulador de Android.
 
-Las capturas manuales antiguas se identifican como históricas. Renueva las figuras 18, 23, 19 y 25 para demostrar el despliegue actual; consulta `capturas/LEEME.md`. Las aportaciones y commits históricos no se reasignaron ni se inventaron nuevas autorías. Los documentos especializados del Primer Parcial permanecen como antecedentes.
+Ejemplo de cierre de entrega: ENT-05 (entrega 129, pedido 153, monto 146.80, HTTP 201). ENT-06 repite el UUID y devuelve 200. El GPS usa SEG-01 y SEG-02.
 
-## Cómo aplicar el paquete en GitHub
-
-1. Extrae este ZIP.
-2. Copia el contenido de `Documentos_Segundo_Parcial/` sobre la raíz de tu copia del repositorio, conservando las carpetas y aceptando reemplazar los archivos con el mismo nombre. No borres ni reemplaces carpetas completas: combina su contenido.
-3. Revisa los archivos en `git status`. Este paquete contiene documentación y evidencias, no modifica código, Dockerfiles ni bases de datos.
-4. Agrega los cambios, crea un commit y haz push a tu rama de trabajo:
-
-```bash
-git add README.md CAMBIOS_DOCUMENTACION_SEGUNDO_PARCIAL.md "Arquitectura_Plataforma_Microhubs (1).docx" reporte_tecnico bloque_d capturas servicios/README.md servicios/INVENTARIO_ENDPOINTS.md presentacion evidencias
-git diff --cached --stat
-git commit -m "Actualiza documentacion del segundo parcial a diez microservicios"
-git push
-```
-
-Si los microservicios cambiaron después del ZIP analizado, compara esa versión nueva antes de aplicar este paquete.
+Los documentos del Primer Parcial se quedan como antecedente.

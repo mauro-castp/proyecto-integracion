@@ -12,7 +12,7 @@ Implementación de la parte asignada a Vanessa en `PLAN_SEGUNDO_PARCIAL.md`. Cam
 - `/web/roles`: el administrador puede consultar perfiles y asignar permisos del nuevo módulo; conserva los permisos de operación anteriores y no puede quitar el perfil administrador. Las asignaciones actualizadas invalidan su caché en Redis. No se delega administración de roles ni envío de avisos desde esta pantalla.
 - Dos perfiles nuevos: `analista` (consulta/exportación sin modificar pedidos) y `supervisor` (consulta/exportación restringida al microhub asignado). Aparecen en el CRUD de usuarios existente. No se crean credenciales nuevas automáticamente.
 
-Las rutas nuevas comprueban permisos en el servidor y los POST exigen CSRF. El ámbito del supervisor se aplica a reportes, CSV e historial, aunque cambie el filtro en la URL. El módulo sigue funcionando sin los ocho microservicios.
+Las rutas nuevas comprueban permisos en el servidor y los POST exigen CSRF. El ámbito del supervisor se aplica a reportes, CSV e historial, aunque cambie el filtro en la URL. El módulo sigue funcionando sin los diez microservicios.
 
 ## Arranque
 

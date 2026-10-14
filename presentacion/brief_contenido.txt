@@ -49,7 +49,7 @@ Integración
 Diez servicios y pantallas web que los consumen por HTTP.
 Documentación
 Reporte integral, diagramas actualizados y 93 casos de evidencia.
-GUION: Los cuatro apartados muestran las mejoras del proyecto. Ampliamos la planeación y los flujos de operación, conectamos diez servicios por HTTP y actualizamos la documentación. Las evidencias adjuntas registran 93 casos, que sirven para comprobar respuestas y cambios en los datos.
+GUION: Los cuatro apartados muestran las mejoras del proyecto. Ampliamos la planeación y los flujos de operación, conectamos diez servicios por HTTP y actualizamos la documentación. Las evidencias registran 93 casos, que sirven para comprobar respuestas y cambios en los datos.
 
 DIAPOSITIVA 5
 Evolución del sistema web
@@ -416,7 +416,7 @@ DIAPOSITIVA 27
 Integración desde el portal web
 CODEX INNOVATIONS
 27
-Integración del código actual: HTTP + JWT común, tiempo y X-Traza-Id por llamada.
+Cada llamada lleva el JWT del usuario y registra el tiempo y el X-Traza-Id.
 Pantalla / función | Servicio | Qué consulta o registra
 Estado de servicios | Los 10 | Salud, dependencias y Swagger
 Resúmenes | Documentos :5107 y Planeación :5106 | Agregaciones de MongoDB
@@ -424,7 +424,7 @@ Ejemplo XML | Zonas :5108 | Cobertura en formato XML
 Detalle del pedido | Pedidos :5104 y Entregas :5105 | Historial y datos de la entrega
 Recorrido GPS | Seguimiento :5110 | Puntos, distancia y última ubicación
 Adjuntar evidencia | Documentos :5107 | Archivo asociado al pedido o entrega
-GUION: Esta tabla representa la integración del código actual. El tablero consulta la salud de los diez servicios, los resúmenes y un ejemplo XML desde Zonas. La vista del pedido combina Pedidos, Entregas, Seguimiento y Documentos. Cada llamada utiliza el JWT del usuario y registra código HTTP, tiempo y traza. Si un servicio falla, el portal informa el problema y conserva el resto de su funcionamiento.
+GUION: En esta tabla se ve qué servicios consulta cada pantalla del portal. El tablero revisa la salud de los diez servicios, los resúmenes y un ejemplo XML de Zonas. La vista del pedido junta Pedidos, Entregas, Seguimiento y Documentos. Cada llamada usa el JWT del usuario y deja el código HTTP, el tiempo y la traza. Si un servicio falla, el portal avisa y el resto sigue funcionando.
 
 DIAPOSITIVA 28
 Pruebas unitarias y de integración
@@ -471,9 +471,9 @@ CODEX INNOVATIONS
 Problemas resueltos
 Catálogos separados, GPS en Seguimiento y avisos desde PostgreSQL.
 Resultado registrado
-10 servicios y 93 casos aprobados en la ejecución adjunta.
+10 servicios y 93 casos aprobados el 13 de octubre.
 Pendientes técnicos
 Caché hasta 5 min y validadores MongoDB por comprobar en entorno real.
 Siguiente despliegue
 TLS, secretos propios, nube y pruebas de carga.
-GUION: Para cerrar, la arquitectura actual separa los catálogos, mueve el GPS a Seguimiento y conserva los avisos mediante PostgreSQL y la web. El proyecto registra diez servicios y 93 casos aprobados. Quedan aspectos por comprobar o mejorar, como la caché y los validadores de MongoDB real. La siguiente etapa contempla TLS, secretos propios, nube y pruebas de carga.
+GUION: Para cerrar: separamos los catálogos, movimos el GPS a Seguimiento y dejamos los avisos en PostgreSQL y en el portal. Tenemos diez servicios y 93 casos aprobados. Falta revisar la caché y los validadores de MongoDB en un entorno real. Lo siguiente es TLS, secretos propios, la nube y pruebas de carga.

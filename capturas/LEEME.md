@@ -31,13 +31,13 @@ Una imagen por cada figura del reporte, con el mismo número. Las figuras 2 a 12
 | 25 | `figura_25_el_mismo_flujo_que_hace_la_app.png` | El mismo flujo que hace la app del repartidor, ejecutado desde PowerShell contra los servicios (el GPS va al servicio de seguimiento): login, mis entregas, foto, tres puntos GPS, cierre (estado_pedido: entregado, duplicado: False) y recorrido calculado por MongoDB. |
 | 26 | `figura_26_la_clienta_del_pedido_recibe_en_el.png` | La clienta del pedido recibe en el web el aviso que generó el trigger de PostgreSQL al cerrar la entrega. |
 
-## Vigencia
+## Cómo se tomaron
 
-Todas las figuras muestran la estructura vigente de diez servicios. Las figuras 1 a 12 son diagramas y contratos; las figuras 13 a 26 se renovaron el 13 de octubre de 2026 (noche, hora de Monterrey) contra el despliegue actual de `docker-compose.integrado.yml`:
+Las figuras 1 a 12 son diagramas y modelos. Las figuras 13 a 26 se tomaron de nuevo el 13 de octubre de 2026 (por la noche, hora de Monterrey) con el sistema de diez servicios levantado desde `docker-compose.integrado.yml`.
 
-- **Pantallas del navegador** (15, 16, 18, 19, 20, 21, 22, 24 y 26): capturas reales con Chrome en modo automático sobre el sistema en ejecución, con sesión real de cada perfil. En la 15 la clave de demostración está enmascarada con `********` (la petición se ejecutó con la clave real); en la 19 se ocultan la tabla de líneas y el formulario de adjuntar, y en la 20 y la 24 se muestran solo las primeras filas.
-- **Salidas de terminal** (13, 14, 17, 23 y 25): son el texto real que devolvió cada comando, dibujado en una consola oscura con letra monoespaciada; no son capturas de una ventana. El texto original está en `salidas_terminal/` (en la 17 la imagen omite las líneas intermedias; el archivo tiene la salida completa de 107 líneas). En la 25 la clave se toma de una variable de entorno y no aparece.
+- **Pantallas de Swagger y del portal** (15, 16, 18, 19, 20, 21, 22, 24 y 26): capturas reales con Chrome, con la sesión de cada perfil. En la 15 la clave de demostración aparece como `********`; la petición se hizo con la clave real. En la 19 se ocultaron la tabla de líneas y el formulario de adjuntar, y en la 20 y la 24 solo se ven las primeras filas.
+- **Salidas de terminal** (13, 14, 17, 23 y 25): son el texto real que devolvió cada comando, dibujado en una consola oscura; no son capturas de una ventana. El texto original está en `salidas_terminal/`. En la 17 la imagen omite las líneas intermedias y el archivo tiene la salida completa (107 líneas). En la 25 la clave sale de una variable de entorno y no se ve.
 
-Los nombres de archivo se conservan para no romper referencias; solo la figura 19 cambió de nombre porque incluía el folio del pedido anterior.
+Los nombres de archivo no cambiaron, salvo la figura 19, porque llevaba el folio del pedido anterior.
 
-La evidencia estructurada vigente está en `evidencias/`: corrida adjunta de 93 casos, 13-oct-2026 21:27 UTC.
+Los casos de petición y respuesta están en `evidencias/`: 93 casos, 13-oct-2026 21:27 UTC.

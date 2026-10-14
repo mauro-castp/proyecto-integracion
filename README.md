@@ -50,7 +50,7 @@ Ruth Elizabeth Soriano · Vanessa Morante López · Mauro Castillo Peña · Mar�
 - `reporte_tecnico/Reporte_Tecnico_Segundo_Parcial_Equipo04.docx`: reporte integral versión 4.3, con diez fichas completas, trazabilidad y enlace del video.
 - `Arquitectura_Plataforma_Microhubs (1).docx`: arquitectura vigente.
 - `servicios/INVENTARIO_ENDPOINTS.md`: 45 operaciones método-ruta obtenidas del código.
-- `CAMBIOS_DOCUMENTACION_SEGUNDO_PARCIAL.md`: análisis y guía de sustitución.
+- `CAMBIOS_DOCUMENTACION_SEGUNDO_PARCIAL.md`: resumen de lo que cambió en la documentación del Segundo Parcial.
 
 Catálogos se separó en Productos, Zonas y Microhubs. Seguimiento recibe el GPS en :5110. Los avisos permanecen en PostgreSQL y el portal; :5108 ahora corresponde a Zonas.
 
