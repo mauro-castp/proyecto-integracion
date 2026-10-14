@@ -1,0 +1,64 @@
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> # 1. Login del repartidor (servicio auth, puerto 5101)
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $s = Invoke-RestMethod -Method Post -Uri 'http://localhost:5101/api/v1/auth/login' -ContentType 'application/json' -Body (@{ correo='repartidor1@codex.mx'; clave=$env:MICROHUBS_CLAVE; dispositivo='PowerShell' } | ConvertTo-Json)
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $auth = @{ Authorization = "Bearer $($s.token_acceso)" }
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> # 2. Mis entregas (servicio entregas, puerto 5105)
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $mias = Invoke-RestMethod -Uri 'http://localhost:5105/api/v1/entregas/mias' -Headers $auth
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $mias.datos | Format-Table id, pedido_id, folio, estado_pedido, total
+
+
+ id pedido_id folio               estado_pedido total
+ -- --------- -----               ------------- -----
+142       166 PED-20261014-000166 en_ruta       101.0
+
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $e = $mias.datos[0]; $det = Invoke-RestMethod -Uri "http://localhost:5105/api/v1/entregas/$($e.id)" -Headers $auth
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> # 3. Foto de evidencia (servicio documentos, puerto 5107, se guarda en MongoDB)
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $jpg = [byte[]](0xFF,0xD8,0xFF,0xE0,0,16,74,70,73,70,0,1,1,0,0,1,0,1,0,0) + [byte[]](0..255)
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $docBody = @{ nombre="evidencia-entrega-$($e.id).jpg"; tipo_mime='image/jpeg'; contenido_base64=[Convert]::ToBase64String($jpg); referencia=@{ tipo='entrega'; id="$($e.id)" } } | ConvertTo-Json
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $doc = Invoke-RestMethod -Method Post -Uri 'http://localhost:5107/api/v1/documentos' -Headers $auth -ContentType 'application/json' -Body $docBody
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $doc | Select-Object id, nombre, tipo_mime, tamano_bytes
+
+
+id                       nombre                    tipo_mime  tamano_bytes
+--                       ------                    ---------  ------------
+6acefff6a274869f55500ec8 evidencia-entrega-142.jpg image/jpeg          276
+
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> # 4. Recorrido GPS (servicio seguimiento, puerto 5110, se guarda en MongoDB)
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $t = Get-Date
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $puntos = @( @{ latitud=25.7480; longitud=-100.3600; precision_m=9.0; capturado_en=$t.AddMinutes(-4).ToString('yyyy-MM-ddTHH:mm:sszzz') }, @{ latitud=25.7486; longitud=-100.3606; precision_m=8.0; capturado_en=$t.AddMinutes(-2).ToString('yyyy-MM-ddTHH:mm:sszzz') }, @{ latitud=25.7491; longitud=-100.3611; precision_m=8.5; capturado_en=$t.ToString('yyyy-MM-ddTHH:mm:sszzz') } )
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> Invoke-RestMethod -Method Post -Uri "http://localhost:5110/api/v1/seguimiento/$($e.id)/ubicaciones" -Headers $auth -ContentType 'application/json' -Body (@{ puntos=$puntos } | ConvertTo-Json -Depth 4)
+
+
+recibidos
+---------
+        3
+
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> # 5. Cerrar la entrega como entregado (servicio entregas, puerto 5105)
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $cierre = @{ resultado='entregado'; monto_cobrado=[double]$det.total; cambio_entregado=0; ubicacion=@{ latitud=25.7491; longitud=-100.3611; precision_m=8.5 }; evidencia_ids=@($doc.id); capturado_en=$t.ToString('yyyy-MM-ddTHH:mm:sszzz'); id_cliente_local=[guid]::NewGuid().ToString() } | ConvertTo-Json -Depth 4
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $r = Invoke-RestMethod -Method Post -Uri "http://localhost:5105/api/v1/entregas/$($e.id)/resultado" -Headers $auth -ContentType 'application/json' -Body $cierre
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $r
+
+
+
+entrega_id    : 142
+pedido_id     : 166
+estado_pedido : entregado
+cerrado_en    : 2026-10-13T22:07:18-06:00
+duplicado     : False
+
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> # 6. Recorrido calculado por MongoDB (servicio seguimiento)
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> Invoke-RestMethod -Uri "http://localhost:5110/api/v1/seguimiento/$($e.id)/recorrido" -Headers $auth
+
+
+
+entrega_id           : 142
+puntos               : 3
+distancia_km         : 0.16
+inicio               : 2026-10-13T22:03:18-06:00
+fin                  : 2026-10-13T22:07:18-06:00
+precision_promedio_m : 8.5
+ultimo_punto         : @{latitud=25.7491; longitud=-100.3611; precision_m=8.5}
+
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> "Folio cerrado: $($e.folio)"
+
+Folio cerrado: PED-20261014-000166
+

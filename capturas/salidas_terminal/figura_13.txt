@@ -1,0 +1,13 @@
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> docker compose -f docker-compose.integrado.yml exec -T mongo mongosh --quiet microhubs_eventos --eval "db.getCollectionNames().sort().forEach(c => print(c.padEnd(28), db[c].countDocuments()))"
+
+decisiones_asignacion        0
+documentos                   9
+ejecuciones_analiticas       10
+eventos_demanda              0
+logs_tecnicos                740
+metricas_servicio            740
+sincronizaciones_moviles     10
+system.buckets.metricas_servicio 76
+system.views                 1
+ubicaciones_entrega          12
+

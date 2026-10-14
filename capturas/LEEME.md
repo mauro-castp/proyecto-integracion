@@ -21,23 +21,23 @@ Una imagen por cada figura del reporte, con el mismo número. Las figuras 2 a 12
 | 15 | `figura_15_swagger_del_servicio_de_autenticacion_ejecutando_post.png` | Swagger del servicio de autenticación ejecutando POST /api/v1/auth/login contra el servicio desplegado: respuesta 200 con el token. |
 | 16 | `figura_16_swagger_del_servicio_de_entregas_con_authorize.png` | Swagger del servicio de entregas con «Authorize»: GET /api/v1/entregas/mias con Authorization: Bearer, respuesta 200 paginada. |
 | 17 | `figura_17_ejecucion_de_evidencias_py_dentro_del_contenedor.png` | Ejecución de evidencias.py dentro del contenedor de entregas: 93 de 93 casos pasan. |
-| 18 | `figura_18_pantalla_microservicios_del_portal_web_salud_de.png` | Pantalla Microservicios del portal web: captura histórica de salud de los 8 servicios, agregaciones de MongoDB y una respuesta XML real, todo obtenido por HTTP. |
-| 19 | `figura_19_ped_20261013_000155_armado_por_el_web.png` | PED-20261013-000155 armado por el web con los servicios de pedidos, entregas y documentos: historial (el cierre lo hizo repartidor1@codex.mx a través del servicio), recorrido GPS de MongoDB y evidencia. |
+| 18 | `figura_18_pantalla_microservicios_del_portal_web_salud_de.png` | Pantalla Microservicios del portal web: salud de los diez servicios, agregaciones de MongoDB y una respuesta XML real del servicio de zonas, todo obtenido por HTTP. |
+| 19 | `figura_19_ped_20261014_000166_armado_por_el_web.png` | PED-20261014-000166 armado por el web con los servicios de pedidos, entregas, seguimiento y documentos: historial (el cierre lo hizo repartidor1@codex.mx a través del servicio), recorrido GPS de MongoDB y evidencia. Se omiten la tabla de líneas y el formulario de adjuntar. |
 | 20 | `figura_20_reporte_de_pedidos_con_filtros_importe_y.png` | Reporte de pedidos con filtros, importe y gráficas Highcharts. |
 | 21 | `figura_21_cobertura_y_mapa_microhubs_con_su_radio.png` | Cobertura y mapa: microhubs con su radio, candidatos, demanda por zona y demanda no atendida. |
 | 22 | `figura_22_simulacion_de_operacion_con_supuestos_editables_ficha.png` | Simulación de operación con supuestos editables, ficha de viabilidad y capacidad. |
-| 23 | `figura_23_docker_compose_f_docker_compose_integrado_yml.png` | docker compose -f docker-compose.integrado.yml ps -a: captura histórica de 12 contenedores en ejecución y migraciones. La configuración actual define 14 continuos y migraciones. |
-| 24 | `figura_24_bitacora_del_web_el_login_inicio_de.png` | Bitácora del web: el login «Inicio de sesión por API (PowerShell)», la modificación de la entrega 129 y el cambio del pedido 1 a entregado, hechos por el repartidor a través de los microservicios. |
-| 25 | `figura_25_el_mismo_flujo_que_hace_la_app.png` | El mismo flujo que hace la app del repartidor, ejecutado desde PowerShell contra los servicios: login, mis entregas, foto, tres puntos GPS, cierre (estado_pedido: entregado, duplicado: False) y recorrido calculado por MongoDB. |
+| 23 | `figura_23_docker_compose_f_docker_compose_integrado_yml.png` | docker compose -f docker-compose.integrado.yml ps -a: los 15 contenedores definidos; 14 en ejecución y sanos y migraciones terminada con código 0 (el web se publica en el puerto 5051 de esta máquina porque el 5000 estaba ocupado). |
+| 24 | `figura_24_bitacora_del_web_el_login_inicio_de.png` | Bitácora del web: el login «Inicio de sesión por API (PowerShell)», la modificación de la entrega 142 y el cambio del pedido 166 a entregado, hechos por el repartidor a través de los microservicios. |
+| 25 | `figura_25_el_mismo_flujo_que_hace_la_app.png` | El mismo flujo que hace la app del repartidor, ejecutado desde PowerShell contra los servicios (el GPS va al servicio de seguimiento): login, mis entregas, foto, tres puntos GPS, cierre (estado_pedido: entregado, duplicado: False) y recorrido calculado por MongoDB. |
 | 26 | `figura_26_la_clienta_del_pedido_recibe_en_el.png` | La clienta del pedido recibe en el web el aviso que generó el trigger de PostgreSQL al cerrar la entrega. |
 
-## Vigencia y capturas por renovar
+## Vigencia
 
-Las figuras 1 a 5 fueron actualizadas con los diagramas vigentes. Las figuras 6 a 12 muestran contratos o modelos sin cambios en esta refactorización. Las capturas manuales 13 a 26 son históricas; no se editaron para aparentar una nueva ejecución. Los nombres de archivo se conservan para no romper referencias (incluido el nombre antiguo de la figura 2).
+Todas las figuras muestran la estructura vigente de diez servicios. Las figuras 1 a 12 son diagramas y contratos; las figuras 13 a 26 se renovaron el 13 de octubre de 2026 (noche, hora de Monterrey) contra el despliegue actual de `docker-compose.integrado.yml`:
 
-Renovar prioritariamente:
-1. Figura 18: tablero con los diez servicios, Productos :5103, Zonas :5108, Microhubs :5109 y Seguimiento :5110.
-2. Figura 23: `docker compose -f docker-compose.integrado.yml ps -a`, con 14 contenedores continuos y migraciones en Exited (0).
-3. Figuras 19 y 25: pedido integrado y llamadas GPS bajo `/api/v1/seguimiento/{id}`.
+- **Pantallas del navegador** (15, 16, 18, 19, 20, 21, 22, 24 y 26): capturas reales con Chrome en modo automático sobre el sistema en ejecución, con sesión real de cada perfil. En la 15 la clave de demostración está enmascarada con `********` (la petición se ejecutó con la clave real); en la 19 se ocultan la tabla de líneas y el formulario de adjuntar, y en la 20 y la 24 se muestran solo las primeras filas.
+- **Salidas de terminal** (13, 14, 17, 23 y 25): son el texto real que devolvió cada comando, dibujado en una consola oscura con letra monoespaciada; no son capturas de una ventana. El texto original está en `salidas_terminal/` (en la 17 la imagen omite las líneas intermedias; el archivo tiene la salida completa de 107 líneas). En la 25 la clave se toma de una variable de entorno y no aparece.
+
+Los nombres de archivo se conservan para no romper referencias; solo la figura 19 cambió de nombre porque incluía el folio del pedido anterior.
 
 La evidencia estructurada vigente está en `evidencias/`: corrida adjunta de 93 casos, 13-oct-2026 21:27 UTC.

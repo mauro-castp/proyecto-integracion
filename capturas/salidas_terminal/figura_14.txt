@@ -1,0 +1,27 @@
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> docker compose -f docker-compose.integrado.yml exec -T redis redis-cli -n 0 keys "auth:sesion:*"
+
+auth:sesion:7
+
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> docker compose -f docker-compose.integrado.yml exec -T redis redis-cli -n 0 ttl auth:sesion:7
+
+852
+
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> $k = (docker compose -f docker-compose.integrado.yml exec -T redis redis-cli -n 0 --scan --pattern "auth:refresh:*" | Select-Object -First 1).Trim(); $k
+
+auth:refresh:c1774512509023185e699e0ea1e746c0c62db93b3af4c1428b167d14c5e2d9bb
+
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> docker compose -f docker-compose.integrado.yml exec -T redis redis-cli -n 0 ttl $k
+
+603531
+
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> docker compose -f docker-compose.integrado.yml exec -T redis redis-cli -n 1 keys "cache:permisos:*"
+
+cache:permisos:repartidor
+
+PS C:\Users\rutil\Desktop\proyecto final integracion de aplicaciones> docker compose -f docker-compose.integrado.yml exec -T redis redis-cli -n 1 keys "rate:*"
+
+rate:login:51fb9c0c4a5c7bb3:29865839
+rate:seguimiento:51fb9c0c4a5c7bb3:29865839
+rate:entregas:51fb9c0c4a5c7bb3:29865839
+rate:documentos:51fb9c0c4a5c7bb3:29865839
+
