@@ -110,12 +110,15 @@ Responsabilidades de los diez servicios
 CODEX INNOVATIONS
 08
 Servicio | Puerto | Responsabilidad
-Auth / Usuarios | 5101 / 5102 | Sesión común y perfiles
+Auth | 5101 | Sesión común: login, renovación y revocación
+Usuarios | 5102 | Perfil de la cuenta y directorio de usuarios
 Productos | 5103 | Catálogo comercial de solo lectura
-Pedidos / Entregas | 5104 / 5105 | Estados del pedido y cierre de entrega
+Pedidos | 5104 | Consulta, historial y estados del pedido
+Entregas | 5105 | Paradas del repartidor y cierre de la entrega
 Planeación | 5106 | Candidatos, simulaciones y escenarios
 Documentos | 5107 | Archivos y evidencias en MongoDB
-Zonas / Microhubs | 5108 / 5109 | Cobertura y puntos de operación
+Zonas | 5108 | Zonas de cobertura (colonias)
+Microhubs | 5109 | Red de microhubs y su radio de cobertura
 Seguimiento | 5110 | Puntos GPS y resumen del recorrido
 GUION: La tabla resume la distribución actual. Catálogos se separó en Productos, Zonas y Microhubs, para que cada servicio tenga una responsabilidad concreta. Seguimiento ahora se encarga del recorrido GPS. Auth, Usuarios, Pedidos, Entregas, Planeación y Documentos completan los diez servicios. Los avisos siguen en la web y PostgreSQL, sin un microservicio de Notificaciones.
 
@@ -416,9 +419,9 @@ CODEX INNOVATIONS
 Integración del código actual: HTTP + JWT común, tiempo y X-Traza-Id por llamada.
 Pantalla / función | Servicio | Qué consulta o registra
 Estado de servicios | Los 10 | Salud, dependencias y Swagger
-Resúmenes | Documentos / Planeación | Agregaciones de MongoDB
+Resúmenes | Documentos :5107 y Planeación :5106 | Agregaciones de MongoDB
 Ejemplo XML | Zonas :5108 | Cobertura en formato XML
-Detalle del pedido | Pedidos / Entregas | Historial y datos de la entrega
+Detalle del pedido | Pedidos :5104 y Entregas :5105 | Historial y datos de la entrega
 Recorrido GPS | Seguimiento :5110 | Puntos, distancia y última ubicación
 Adjuntar evidencia | Documentos :5107 | Archivo asociado al pedido o entrega
 GUION: Esta tabla representa la integración del código actual. El tablero consulta la salud de los diez servicios, los resúmenes y un ejemplo XML desde Zonas. La vista del pedido combina Pedidos, Entregas, Seguimiento y Documentos. Cada llamada utiliza el JWT del usuario y registra código HTTP, tiempo y traza. Si un servicio falla, el portal informa el problema y conserva el resto de su funcionamiento.

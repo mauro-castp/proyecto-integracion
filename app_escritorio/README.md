@@ -37,10 +37,10 @@ dotnet publish Microhubs.csproj -c Release -r win-x64 --self-contained true -o b
 
 ```powershell
 dotnet build Microhubs.csproj
-dotnet run --project pruebas/Microhubs.Pruebas.csproj          # 33 comprobaciones sin red
+dotnet run --project pruebas/Microhubs.Pruebas.csproj          # 35 comprobaciones sin red
 python -m pip install lxml; python -m unittest discover -s pruebas -v    # 10 pruebas de los XSD con un validador independiente
 $env:MICROHUBS_BACKEND='http://localhost'; $env:MICROHUBS_CLAVE='<clave de las cuentas de demostración>'
-dotnet run --project pruebas/Microhubs.Pruebas.csproj          # +29 contra los servicios reales (62 en total)
+dotnet run --project pruebas/Microhubs.Pruebas.csproj          # +29 contra los servicios reales (64 en total)
 ```
 
 Qué comprueba cada bloque:
