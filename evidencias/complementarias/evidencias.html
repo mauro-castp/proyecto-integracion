@@ -1,0 +1,246 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Evidencias · Microhubs</title>
+<style>body{font:14px system-ui,sans-serif;margin:24px;background:#f4f4f1;color:#1d2420}h1{margin:0}
+section{background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px;margin:16px 0}
+h3{margin:0 0 6px}.id{font:600 12px monospace;background:#1d2420;color:#fff;padding:2px 6px;border-radius:4px}
+.e{float:right;font-size:12px;padding:2px 8px;border-radius:10px}.ok{color:#11663d}.mal{color:#a3202f}
+.e.ok{background:#dff3e7}.e.mal{background:#f8dde1}.obj{color:#555;margin:0 0 10px}
+.req{font-size:15px;margin-bottom:8px}.m{font:700 12px monospace;color:#fff;padding:3px 8px;border-radius:4px;background:#2563eb}
+.m.POST{background:#16a34a}.m.PUT{background:#b45309}.m.PATCH{background:#7c3aed}.m.DELETE{background:#dc2626}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}.b .t{font-size:12px;color:#555;margin:6px 0 2px}
+pre{background:#111827;color:#e5e7eb;padding:10px;border-radius:6px;overflow:auto;max-height:420px;font-size:12px;margin:0}
+.ev pre{background:#0f2a1d}.st{margin:10px 0 2px;font-size:13px}.ex{background:#f1f5f9;padding:8px;border-radius:6px}
+.idx a{display:inline-block;margin:2px;font:12px monospace;text-decoration:none}</style></head><body>
+<h1>Evidencias de petición y respuesta · microservicios v1</h1>
+<p>Plataforma de Microhubs · Codex Innovations · Equipo 04 · 2026-10-14 03:34 · <b>3 de 3 casos pasan</b></p>
+<div class="idx"><a href="#DOC-11" class="ok">DOC-11</a><a href="#PLA-17" class="ok">PLA-17</a><a href="#USR-08" class="ok">USR-08</a></div><section id="DOC-11"><h3><span class="id">DOC-11</span> Resumen de documentos
+<span class="e ok">PASA</span></h3>
+<p class="obj">Agregación $group por tipo de referencia en MongoDB.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://documentos:5107/api/v1/documentos/resumen</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: d0acd26b-8a6a-42e5-b868-6e1a826f1d5c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 19 ms · traza d0acd26b-8a6a-42e5-b868-6e1a826f1d5c</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: d0acd26b-8a6a-42e5-b868-6e1a826f1d5c</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;total&quot;: 6,
+  &quot;tamano_total_bytes&quot;: 1656,
+  &quot;por_tipo&quot;: [
+    {
+      &quot;referencia_tipo&quot;: &quot;entrega&quot;,
+      &quot;cantidad&quot;: 5,
+      &quot;tamano_bytes&quot;: 1380
+    },
+    {
+      &quot;referencia_tipo&quot;: &quot;usuario&quot;,
+      &quot;cantidad&quot;: 1,
+      &quot;tamano_bytes&quot;: 276
+    }
+  ]
+}</pre></div></div>
+<p class="ex">Pipeline $group sobre referencia.tipo con conteo y suma de bytes; lo consume el tablero Microservicios del web.</p><div class="b ev"><div class="t">Evidencia en MongoDB · db.documentos.aggregate([{$group:{_id:&#x27;$referencia.tipo&#x27;, cantidad:{$sum:1}, tamano_bytes:{$sum:&#x27;$tamano_bytes&#x27;}}}, {$sort:{_id:1}}])</div><pre>[
+  {
+    &quot;_id&quot;: &quot;entrega&quot;,
+    &quot;cantidad&quot;: 5,
+    &quot;tamano_bytes&quot;: 1380
+  },
+  {
+    &quot;_id&quot;: &quot;usuario&quot;,
+    &quot;cantidad&quot;: 1,
+    &quot;tamano_bytes&quot;: 276
+  }
+]</pre></div></section><section id="PLA-17"><h3><span class="id">PLA-17</span> Lista de escenarios guardados
+<span class="e ok">PASA</span></h3>
+<p class="obj">Paginación y búsqueda de escenarios compartidos con el web.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://planeacion:5106/api/v1/escenarios?pagina=1&amp;por_pagina=5</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 42126c55-8536-439a-90af-7ed5d5de5d0b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 43 ms · traza 42126c55-8536-439a-90af-7ed5d5de5d0b</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 42126c55-8536-439a-90af-7ed5d5de5d0b</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;datos&quot;: [
+    {
+      &quot;id&quot;: 4,
+      &quot;nombre&quot;: &quot;Escenario complementario&quot;,
+      &quot;candidato_id&quot;: 1,
+      &quot;supuestos&quot;: {
+        &quot;demanda_diaria&quot;: 120.0,
+        &quot;operadores&quot;: 3,
+        &quot;repartidores&quot;: 4,
+        &quot;ticket&quot;: 135.0,
+        &quot;costo_entrega&quot;: 22.0,
+        &quot;margen_bruto&quot;: 0.28,
+        &quot;renta&quot;: 18000.0,
+        &quot;nomina&quot;: 42000.0,
+        &quot;servicios&quot;: 7000.0,
+        &quot;otros&quot;: 5000.0,
+        &quot;distancia_km&quot;: 2.4,
+        &quot;capacidad_fisica&quot;: 150
+      },
+      &quot;resultados&quot;: {
+        &quot;atendidos&quot;: 120.0,
+        &quot;rechazados&quot;: 0.0,
+        &quot;utilizacion&quot;: 80.0,
+        &quot;nivel&quot;: &quot;atencion&quot;,
+        &quot;tiempo_estimado_min&quot;: 19.4,
+        &quot;operadores_requeridos&quot;: 3,
+        &quot;repartidores_requeridos&quot;: 2,
+        &quot;ingreso_dia&quot;: 16200.0,
+        &quot;margen_dia&quot;: -504.0,
+        &quot;costo_por_pedido&quot;: 42.0,
+        &quot;equilibrio&quot;: {
+          &quot;margen_pedido&quot;: 15.8,
+          &quot;mensual&quot;: 4557.0,
+          &quot;diario&quot;: 151.9
+        },
+        &quot;decision&quot;: &quot;NO VIABLE CON LOS SUPUESTOS ACTUALES&quot;,
+        &quot;explicacion&quot;: [
+          &quot;la demanda atendida (120/día) no alcanza el equilibrio (152/día)&quot;,
+          &quot;el espacio físico del local limita la capacidad&quot;,
+          &quot;reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda&quot;
+        ]
+      },
+      &quot;creado_en&quot;: &quot;2026-10-13T21:34:33-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 3,
+      &quot;nombre&quot;: &quot;Escenario de prueba D-1791927087&quot;,
+      &quot;candidato_id&quot;: 20,
+      &quot;supuestos&quot;: {
+        &quot;demanda_diaria&quot;: 120.0,
+        &quot;operadores&quot;: 3,
+        &quot;repartidores&quot;: 4,
+        &quot;ticket&quot;: 135.0,
+        &quot;costo_entrega&quot;: 22.0,
+        &quot;margen_bruto&quot;: 0.28,
+        &quot;renta&quot;: 18000.0,
+        &quot;nomina&quot;: 42000.0,
+        &quot;servicios&quot;: 7000.0,
+        &quot;otros&quot;: 5000.0,
+        &quot;distancia_km&quot;: 2.4,
+        &quot;capacidad_fisica&quot;: 150
+      },
+      &quot;resultados&quot;: {
+        &quot;atendidos&quot;: 120.0,
+        &quot;rechazados&quot;: 0.0,
+        &quot;utilizacion&quot;: 80.0,
+        &quot;nivel&quot;: &quot;atencion&quot;,
+        &quot;tiempo_estimado_min&quot;: 19.4,
+        &quot;operadores_requeridos&quot;: 3,
+        &quot;repartidores_requeridos&quot;: 2,
+        &quot;ingreso_dia&quot;: 16200.0,
+        &quot;margen_dia&quot;: -504.0,
+        &quot;costo_por_pedido&quot;: 42.0,
+        &quot;equilibrio&quot;: {
+          &quot;margen_pedido&quot;: 15.8,
+          &quot;mensual&quot;: 4557.0,
+          &quot;diario&quot;: 151.9
+        },
+        &quot;decision&quot;: &quot;NO VIABLE CON LOS SUPUESTOS ACTUALES&quot;,
+        &quot;explicacion&quot;: [
+          &quot;la demanda atendida (120/día) no alcanza el equilibrio (152/día)&quot;,
+          &quot;el espacio físico del local limita la capacidad&quot;,
+          &quot;reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda&quot;
+        ]
+      },
+      &quot;creado_en&quot;: &quot;2026-10-13T15:31:28-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 2,
+      &quot;nombre&quot;: &quot;Escenario de prueba D-dfc361b4&quot;,
+      &quot;candidato_id&quot;: 18,
+      &quot;supuestos&quot;: {
+        &quot;demanda_diaria&quot;: 120.0,
+        &quot;operadores&quot;: 3,
+        &quot;repartidores&quot;: 4,
+        &quot;ticket&quot;: 135.0,
+        &quot;costo_entrega&quot;: 22.0,
+        &quot;margen_bruto&quot;: 0.28,
+        &quot;renta&quot;: 18000.0,
+        &quot;nomina&quot;: 42000.0,
+        &quot;servicios&quot;: 7000.0,
+        &quot;otros&quot;: 5000.0,
+        &quot;distancia_km&quot;: 2.4,
+        &quot;capacidad_fisica&quot;: 150
+      },
+      &quot;resultados&quot;: {
+        &quot;atendidos&quot;: 120.0,
+        &quot;rechazados&quot;: 0.0,
+        &quot;utilizacion&quot;: 80.0,
+        &quot;nivel&quot;: &quot;atencion&quot;,
+        &quot;tiempo_estimado_min&quot;: 19.4,
+        &quot;operadores_requeridos&quot;: 3,
+        &quot;repartidores_requeridos&quot;: 2,
+        &quot;ingreso_dia&quot;: 16200.0,
+        &quot;margen_dia&quot;: -504.0,
+        &quot;costo_por_pedido&quot;: 42.0,
+        &quot;equilibrio&quot;: {
+          &quot;margen_pedido&quot;: 15.8,
+          &quot;mensual&quot;: 4557.0,
+          &quot;diario&quot;: 151.9
+        },
+        &quot;decision&quot;: &quot;NO VIABLE CON LOS SUPUESTOS ACTUALES&quot;,
+        &quot;explicacion&quot;: [
+          &quot;la demanda atendida (120/día) no alcanza el equilibrio (152/día)&quot;,
+          &quot;el espacio físico del local limita la capacidad&quot;,
+          &quot;reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda&quot;
+        ]
+      },
+      &quot;creado_en&quot;: &quot;2026-10-13T15:29:04-06:00&quot;
+    }
+  ],
+  &quot;paginacion&quot;: {
+    &quot;pagina&quot;: 1,
+    &quot;por_pagina&quot;: 5,
+    &quot;total&quot;: 3,
+    &quot;paginas&quot;: 1
+  }
+}</pre></div></div>
+<div class="b ev"><div class="t">Evidencia en PostgreSQL · SELECT id, nombre, ubicacion_candidata_id, creado_por FROM escenario_planeacion ORDER BY id DESC LIMIT 3</div><pre>[
+  {
+    &quot;id&quot;: 4,
+    &quot;nombre&quot;: &quot;Escenario complementario&quot;,
+    &quot;ubicacion_candidata_id&quot;: 1,
+    &quot;creado_por&quot;: 5
+  },
+  {
+    &quot;id&quot;: 3,
+    &quot;nombre&quot;: &quot;Escenario de prueba D-1791927087&quot;,
+    &quot;ubicacion_candidata_id&quot;: 20,
+    &quot;creado_por&quot;: 5
+  },
+  {
+    &quot;id&quot;: 2,
+    &quot;nombre&quot;: &quot;Escenario de prueba D-dfc361b4&quot;,
+    &quot;ubicacion_candidata_id&quot;: 18,
+    &quot;creado_por&quot;: 5
+  }
+]</pre></div></section><section id="USR-08"><h3><span class="id">USR-08</span> Actualizar mi teléfono (PUT)
+<span class="e ok">PASA</span></h3>
+<p class="obj">PUT es alias de PATCH: lo usa la app Android cuando la JVM no admite PATCH.</p>
+<div class="req"><span class="m PUT">PUT</span> <code>http://usuarios:5102/api/v1/usuarios/yo</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: c4a86d2d-a4a7-4831-a440-7fb4caf4e450
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;telefono&quot;: &quot;8112345678&quot;
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 685 ms · traza c4a86d2d-a4a7-4831-a440-7fb4caf4e450</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: c4a86d2d-a4a7-4831-a440-7fb4caf4e450</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 7,
+  &quot;nombre&quot;: &quot;Ramiro&quot;,
+  &quot;apellidos&quot;: &quot;Alanís Lozano&quot;,
+  &quot;correo&quot;: &quot;repartidor1@codex.mx&quot;,
+  &quot;telefono&quot;: &quot;8112345678&quot;,
+  &quot;rol&quot;: &quot;repartidor&quot;,
+  &quot;microhub&quot;: null,
+  &quot;ultimo_acceso&quot;: &quot;2026-10-13T21:34:33-06:00&quot;
+}</pre></div></div>
+<p class="ex">Misma validación y misma auditoría que PATCH; el trigger registra quién cambió el dato.</p><div class="b ev"><div class="t">Evidencia en PostgreSQL · SELECT id, telefono, actualizado_en FROM usuario WHERE id = 7</div><pre>[
+  {
+    &quot;id&quot;: 7,
+    &quot;telefono&quot;: &quot;8112345678&quot;,
+    &quot;actualizado_en&quot;: &quot;2026-10-14 03:34:34.205137+00:00&quot;
+  }
+]</pre></div></section></body></html>

@@ -1,0 +1,144 @@
+[
+  {
+    "id": "DOC-11",
+    "servicio": "documentos",
+    "puerto": 5107,
+    "titulo": "Resumen de documentos",
+    "objetivo": "Agregación $group por tipo de referencia en MongoDB.",
+    "metodo": "GET",
+    "url": "http://documentos:5107/api/v1/documentos/resumen",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "d0acd26b-8a6a-42e5-b868-6e1a826f1d5c",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "d0acd26b-8a6a-42e5-b868-6e1a826f1d5c"
+    },
+    "respuesta": "{\n  \"total\": 6,\n  \"tamano_total_bytes\": 1656,\n  \"por_tipo\": [\n    {\n      \"referencia_tipo\": \"entrega\",\n      \"cantidad\": 5,\n      \"tamano_bytes\": 1380\n    },\n    {\n      \"referencia_tipo\": \"usuario\",\n      \"cantidad\": 1,\n      \"tamano_bytes\": 276\n    }\n  ]\n}",
+    "ms": 19,
+    "traza": "d0acd26b-8a6a-42e5-b868-6e1a826f1d5c",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "Pipeline $group sobre referencia.tipo con conteo y suma de bytes; lo consume el tablero Microservicios del web.",
+    "evidencia": [
+      {
+        "motor": "MongoDB",
+        "consulta": "db.documentos.aggregate([{$group:{_id:'$referencia.tipo', cantidad:{$sum:1}, tamano_bytes:{$sum:'$tamano_bytes'}}}, {$sort:{_id:1}}])",
+        "resultado": [
+          {
+            "_id": "entrega",
+            "cantidad": 5,
+            "tamano_bytes": 1380
+          },
+          {
+            "_id": "usuario",
+            "cantidad": 1,
+            "tamano_bytes": 276
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "PLA-17",
+    "servicio": "planeacion",
+    "puerto": 5106,
+    "titulo": "Lista de escenarios guardados",
+    "objetivo": "Paginación y búsqueda de escenarios compartidos con el web.",
+    "metodo": "GET",
+    "url": "http://planeacion:5106/api/v1/escenarios?pagina=1&por_pagina=5",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "42126c55-8536-439a-90af-7ed5d5de5d0b",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "42126c55-8536-439a-90af-7ed5d5de5d0b"
+    },
+    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 4,\n      \"nombre\": \"Escenario complementario\",\n      \"candidato_id\": 1,\n      \"supuestos\": {\n        \"demanda_diaria\": 120.0,\n        \"operadores\": 3,\n        \"repartidores\": 4,\n        \"ticket\": 135.0,\n        \"costo_entrega\": 22.0,\n        \"margen_bruto\": 0.28,\n        \"renta\": 18000.0,\n        \"nomina\": 42000.0,\n        \"servicios\": 7000.0,\n        \"otros\": 5000.0,\n        \"distancia_km\": 2.4,\n        \"capacidad_fisica\": 150\n      },\n      \"resultados\": {\n        \"atendidos\": 120.0,\n        \"rechazados\": 0.0,\n        \"utilizacion\": 80.0,\n        \"nivel\": \"atencion\",\n        \"tiempo_estimado_min\": 19.4,\n        \"operadores_requeridos\": 3,\n        \"repartidores_requeridos\": 2,\n        \"ingreso_dia\": 16200.0,\n        \"margen_dia\": -504.0,\n        \"costo_por_pedido\": 42.0,\n        \"equilibrio\": {\n          \"margen_pedido\": 15.8,\n          \"mensual\": 4557.0,\n          \"diario\": 151.9\n        },\n        \"decision\": \"NO VIABLE CON LOS SUPUESTOS ACTUALES\",\n        \"explicacion\": [\n          \"la demanda atendida (120/día) no alcanza el equilibrio (152/día)\",\n          \"el espacio físico del local limita la capacidad\",\n          \"reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda\"\n        ]\n      },\n      \"creado_en\": \"2026-10-13T21:34:33-06:00\"\n    },\n    {\n      \"id\": 3,\n      \"nombre\": \"Escenario de prueba D-1791927087\",\n      \"candidato_id\": 20,\n      \"supuestos\": {\n        \"demanda_diaria\": 120.0,\n        \"operadores\": 3,\n        \"repartidores\": 4,\n        \"ticket\": 135.0,\n        \"costo_entrega\": 22.0,\n        \"margen_bruto\": 0.28,\n        \"renta\": 18000.0,\n        \"nomina\": 42000.0,\n        \"servicios\": 7000.0,\n        \"otros\": 5000.0,\n        \"distancia_km\": 2.4,\n        \"capacidad_fisica\": 150\n      },\n      \"resultados\": {\n        \"atendidos\": 120.0,\n        \"rechazados\": 0.0,\n        \"utilizacion\": 80.0,\n        \"nivel\": \"atencion\",\n        \"tiempo_estimado_min\": 19.4,\n        \"operadores_requeridos\": 3,\n        \"repartidores_requeridos\": 2,\n        \"ingreso_dia\": 16200.0,\n        \"margen_dia\": -504.0,\n        \"costo_por_pedido\": 42.0,\n        \"equilibrio\": {\n          \"margen_pedido\": 15.8,\n          \"mensual\": 4557.0,\n          \"diario\": 151.9\n        },\n        \"decision\": \"NO VIABLE CON LOS SUPUESTOS ACTUALES\",\n        \"explicacion\": [\n          \"la demanda atendida (120/día) no alcanza el equilibrio (152/día)\",\n          \"el espacio físico del local limita la capacidad\",\n          \"reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda\"\n        ]\n      },\n      \"creado_en\": \"2026-10-13T15:31:28-06:00\"\n    },\n    {\n      \"id\": 2,\n      \"nombre\": \"Escenario de prueba D-dfc361b4\",\n      \"candidato_id\": 18,\n      \"supuestos\": {\n        \"demanda_diaria\": 120.0,\n        \"operadores\": 3,\n        \"repartidores\": 4,\n        \"ticket\": 135.0,\n        \"costo_entrega\": 22.0,\n        \"margen_bruto\": 0.28,\n        \"renta\": 18000.0,\n        \"nomina\": 42000.0,\n        \"servicios\": 7000.0,\n        \"otros\": 5000.0,\n        \"distancia_km\": 2.4,\n        \"capacidad_fisica\": 150\n      },\n      \"resultados\": {\n        \"atendidos\": 120.0,\n        \"rechazados\": 0.0,\n        \"utilizacion\": 80.0,\n        \"nivel\": \"atencion\",\n        \"tiempo_estimado_min\": 19.4,\n        \"operadores_requeridos\": 3,\n        \"repartidores_requeridos\": 2,\n        \"ingreso_dia\": 16200.0,\n        \"margen_dia\": -504.0,\n        \"costo_por_pedido\": 42.0,\n        \"equilibrio\": {\n          \"margen_pedido\": 15.8,\n          \"mensual\": 4557.0,\n          \"diario\": 151.9\n        },\n        \"decision\": \"NO VIABLE CON LOS SUPUESTOS ACTUALES\",\n        \"explicacion\": [\n          \"la demanda atendida (120/día) no alcanza el equilibrio (152/día)\",\n          \"el espacio físico del local limita la capacidad\",\n          \"reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda\"\n        ]\n      },\n      \"creado_en\": \"2026-10-13T15:29:04-06:00\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 5,\n    \"total\": 3,\n    \"paginas\": 1\n  }\n}",
+    "ms": 43,
+    "traza": "42126c55-8536-439a-90af-7ed5d5de5d0b",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": [
+      {
+        "motor": "PostgreSQL",
+        "consulta": "SELECT id, nombre, ubicacion_candidata_id, creado_por FROM escenario_planeacion ORDER BY id DESC LIMIT 3",
+        "resultado": [
+          {
+            "id": 4,
+            "nombre": "Escenario complementario",
+            "ubicacion_candidata_id": 1,
+            "creado_por": 5
+          },
+          {
+            "id": 3,
+            "nombre": "Escenario de prueba D-1791927087",
+            "ubicacion_candidata_id": 20,
+            "creado_por": 5
+          },
+          {
+            "id": 2,
+            "nombre": "Escenario de prueba D-dfc361b4",
+            "ubicacion_candidata_id": 18,
+            "creado_por": 5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "USR-08",
+    "servicio": "usuarios",
+    "puerto": 5102,
+    "titulo": "Actualizar mi teléfono (PUT)",
+    "objetivo": "PUT es alias de PATCH: lo usa la app Android cuando la JVM no admite PATCH.",
+    "metodo": "PUT",
+    "url": "http://usuarios:5102/api/v1/usuarios/yo",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "c4a86d2d-a4a7-4831-a440-7fb4caf4e450",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"telefono\": \"8112345678\"\n}",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "c4a86d2d-a4a7-4831-a440-7fb4caf4e450"
+    },
+    "respuesta": "{\n  \"id\": 7,\n  \"nombre\": \"Ramiro\",\n  \"apellidos\": \"Alanís Lozano\",\n  \"correo\": \"repartidor1@codex.mx\",\n  \"telefono\": \"8112345678\",\n  \"rol\": \"repartidor\",\n  \"microhub\": null,\n  \"ultimo_acceso\": \"2026-10-13T21:34:33-06:00\"\n}",
+    "ms": 685,
+    "traza": "c4a86d2d-a4a7-4831-a440-7fb4caf4e450",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "Misma validación y misma auditoría que PATCH; el trigger registra quién cambió el dato.",
+    "evidencia": [
+      {
+        "motor": "PostgreSQL",
+        "consulta": "SELECT id, telefono, actualizado_en FROM usuario WHERE id = 7",
+        "resultado": [
+          {
+            "id": 7,
+            "telefono": "8112345678",
+            "actualizado_en": "2026-10-14 03:34:34.205137+00:00"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -41,9 +41,13 @@ Abre `http://localhost:5000`. Cuentas de demostración y detalle completo en [`s
 
 Ruth Elizabeth Soriano · Vanessa Morante López · Mauro Castillo Peña · María José Cedillo Mata · Jorge Antonio Arreola Cantú
 
+## Video de la presentación
+
+[Presentación Equipo 4 Microhubs en YouTube](https://youtu.be/wEvJhCQN4rM) (también en el archivo `Liga de video de Youtube 2ndo Parcial`).
+
 ## Documentación del Segundo Parcial actualizada
 
-- `reporte_tecnico/Reporte_Tecnico_Segundo_Parcial_Equipo04.docx`: reporte integral versión 4.2, con diez fichas y trazabilidad.
+- `reporte_tecnico/Reporte_Tecnico_Segundo_Parcial_Equipo04.docx`: reporte integral versión 4.3, con diez fichas completas, trazabilidad y enlace del video.
 - `Arquitectura_Plataforma_Microhubs (1).docx`: arquitectura vigente.
 - `servicios/INVENTARIO_ENDPOINTS.md`: 45 operaciones método-ruta obtenidas del código.
 - `CAMBIOS_DOCUMENTACION_SEGUNDO_PARCIAL.md`: análisis y guía de sustitución.
