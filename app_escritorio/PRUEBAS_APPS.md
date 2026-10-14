@@ -7,7 +7,7 @@ ignoradas por Git.
 ## Escritorio (C# / Windows Forms · solo XML)
 - **Compilación:** `dotnet build` sin errores ni advertencias; publicación autónoma Windows x64 generada (`bin/Publicacion/`, incluye
   el runtime y `contratos/`); la ventana arranca.
-- **Pruebas C# (`pruebas/`):** 62 comprobaciones aprobadas: 33 sin red (46 ejemplos XML oficiales + rechazos; protocolo con
+- **Pruebas C# (`pruebas/`):** 64 comprobaciones aprobadas: 35 sin red (46 ejemplos XML oficiales + rechazos; protocolo con
   transporte simulado: 401→renovación única, concurrencia, 429, errores XML, JSON y HTTP rechazados) y 29 contra el backend real
   (ver README).
 - **Pruebas Python (`pruebas/test_contratos.py`, lxml):** 10 aprobadas con un validador independiente de los XSD.
@@ -16,7 +16,7 @@ ignoradas por Git.
 - **APK debug:** `app/build/outputs/apk/debug/app-debug.apk`. Lint: 0 errores y 17 advertencias (versiones de dependencias, recursos
   sin usar, `ExifInterface`, `DataExtractionRules`, `ApplySharedPref`; `InsecureBaseConfiguration` es el HTTP permitido solo
   en debug). No se afirma que el análisis esté libre de advertencias.
-- **Unitarias (JVM): 47 aprobadas** — protocolo (cabeceras, puertos, errores, renovación única y concurrente, 429, reglas de HTTP/HTTPS,
+- **Unitarias (JVM): 46 aprobadas** — protocolo (cabeceras, puertos, errores, renovación única y concurrente, 429, reglas de HTTP/HTTPS,
   JSON obligatorio), contrato (los 53 ejemplos oficiales, estructura de la sesión y de los errores, cuerpo de cierre idéntico en claves
   al ejemplo oficial) y entregas (reglas RN28/RN29 antes de enviar, orden documento → GPS → cierre, **reintento con el mismo UUID sin
   duplicar ni volver a subir la foto**, 200 duplicado = éxito, 422 conserva el UUID, 409 lo descarta, GPS en lotes de 500) y perfil
