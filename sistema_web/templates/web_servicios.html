@@ -1,6 +1,6 @@
 {% extends 'base.html' %}{% block titulo %}Microservicios{% endblock %}{% block cuerpo %}
 <h1>Microservicios</h1>
-<p class="sub">El portal web consulta a los diez servicios del contrato v1. Todo lo de esta página llegó por HTTP desde ellos.</p>
+<p class="sub">El portal web consulta a los servicios del contrato v1. Todo lo de esta página llegó por HTTP desde ellos.</p>
 <div class="panel" style="overflow:auto"><h2>Estado de los servicios</h2><table><thead><tr><th>Servicio</th><th>Puerto</th><th>Estado</th><th>PostgreSQL</th><th>Redis</th><th>MongoDB</th><th>ms</th><th>Swagger</th></tr></thead><tbody>
 {% for s in salud %}<tr><td>{{ s.servicio }}</td><td>{{ s.puerto }}</td>
 <td>{% if s.estado == 'ok' %}<span class="pill verde">ok</span>{% else %}<span class="pill rojo">{{ s.estado }}</span>{% endif %}</td>

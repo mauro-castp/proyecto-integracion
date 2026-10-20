@@ -32,7 +32,7 @@ ZONA = ZoneInfo(config.ZONA_HORARIA)
 # Nombre del elemento hijo cuando el valor es una lista (según los XSD).
 ITEMS = {"lineas": "linea", "eventos": "evento", "explicacion": "motivo", "permisos": "permiso",
          "por_decision": "grupo", "por_tipo": "grupo", "evidencia_ids": "evidencia_id",
-         "puntos": "punto", "detalles": "detalle"}
+         "puntos": "punto", "detalles": "detalle", "zonas": "zona_id", "ids": "id"}
 
 
 def dinero(valor):

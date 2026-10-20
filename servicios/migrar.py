@@ -1,11 +1,13 @@
 """
-migrar.py — Aplica 06, 07 y 08 a una base que ya existía.
+migrar.py — Aplica 06 a 09 a una base que ya existía.
 
 PostgreSQL solo ejecuta /docker-entrypoint-initdb.d al crear el volumen. Con
 un volumen existente (por ejemplo, el del Primer Parcial), este paso agrega
-lo de planeación (06), web ampliado (07) y microservicios (08) sin borrar
-datos. Los tres scripts son idempotentes. docker-compose.integrado.yml lo
-corre una vez antes de levantar el web y los servicios.
+lo de planeación (06), web ampliado (07), microservicios (08) y flujo de
+negocio (09) sin borrar datos. Los cuatro scripts son idempotentes.
+docker-compose.integrado.yml lo corre una vez antes de levantar el web y los
+servicios, y al terminar borra la caché de permisos para que los permisos
+nuevos se lean de nuevo.
 """
 import os
 import sys
@@ -16,7 +18,18 @@ import psycopg
 
 DSN = os.environ.get("PG_DSN", "host=127.0.0.1 port=5432 dbname=microhubs_p1 user=postgres password=microhubs_dev")
 CARPETA = Path(os.environ.get("SQL_DIR", "/app/sql"))
-SCRIPTS = ["06_planeacion.sql", "07_web_ampliado.sql", "08_microservicios.sql"]
+SCRIPTS = ["06_planeacion.sql", "07_web_ampliado.sql", "08_microservicios.sql", "09_ola1_flujo_negocio.sql"]
+
+
+def borrar_cache_permisos():
+    """Los permisos nuevos no se verían hasta 5 minutos después si quedara la caché anterior."""
+    try:
+        import redis
+        r = redis.Redis.from_url(os.environ.get("REDIS_URL", "redis://127.0.0.1:6379"), db=1, socket_timeout=2)
+        for llave in r.scan_iter("cache:permisos:*"):
+            r.delete(llave)
+    except Exception as e:                     # Redis puede no estar disponible al migrar
+        print(f"migrar: no se borró la caché de permisos ({e}).", file=sys.stderr)
 
 
 def main():
@@ -30,6 +43,7 @@ def main():
                 for nombre in SCRIPTS:
                     con.execute((CARPETA / nombre).read_text(encoding="utf-8"))
                     print(f"migrar: {nombre} aplicado.")
+                borrar_cache_permisos()
                 return 0
         except psycopg.OperationalError as e:
             print(f"migrar: esperando PostgreSQL ({intento}/30): {e}", file=sys.stderr)

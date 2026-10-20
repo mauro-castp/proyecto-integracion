@@ -1,5 +1,5 @@
 """
-config.py — Configuración compartida por los diez microservicios.
+config.py — Configuración compartida por los microservicios.
 
 Los valores llegan por variables de entorno (docker-compose.integrado.yml).
 SECRET_KEY y las claves de Redis son las mismas que usa el sistema web
@@ -35,6 +35,15 @@ MAX_ARCHIVO_BYTES = 5 * 1024 * 1024
 
 VERSION = "1.0.0"
 PREFIJO = "/api/v1"
+
+# Puertos de los servicios que existen. Cada uno se llama por su nombre en la red de Docker.
+PUERTOS = {"auth": 5101, "usuarios": 5102, "productos": 5103, "pedidos": 5104, "entregas": 5105,
+           "planeacion": 5106, "documentos": 5107, "zonas": 5108, "microhubs": 5109, "seguimiento": 5110,
+           "inventario": 5111, "precios": 5112, "proveedores": 5113, "abastecimiento": 5114,
+           "notificaciones": 5124}
+# Cómo un servicio llama a otro (el mismo patrón que usa el web) y cuánto espera la respuesta.
+MICROSERVICIOS_URL = os.environ.get("MICROSERVICIOS_URL", "http://{servicio}:{puerto}")
+MICROSERVICIOS_TIEMPO = float(os.environ.get("MICROSERVICIOS_TIEMPO", "4"))
 
 # Ejemplos oficiales del contrato: XML (escritorio) y JSON (Android). Swagger los muestra tal cual.
 EJEMPLOS_XML = CONTRATOS / "ejemplos"

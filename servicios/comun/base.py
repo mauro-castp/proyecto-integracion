@@ -1,5 +1,5 @@
 """
-base.py — Plantilla que comparten los diez microservicios.
+base.py — Plantilla que comparten los microservicios.
 
 Cada servicio se crea con crear_app() y hereda, sin repetir código:
   · Rutas versionadas bajo /api/v1.
@@ -219,6 +219,25 @@ def requiere(*permisos):
 
 def tiene(permiso):
     return permiso in permisos_de(g.usuario["rol"])
+
+
+ROLES_DE_MICROHUB = ("operador", "supervisor")
+
+
+def microhub_del_usuario():
+    """Id del microhub al que se limita el perfil (operador, supervisor) o None si ve todos."""
+    u = g.usuario
+    return u.get("microhub_id") if u["rol"] in ROLES_DE_MICROHUB else None
+
+
+def limitar_microhub(microhub_id):
+    """Un perfil de microhub solo puede trabajar con el suyo. Devuelve el id que se debe usar."""
+    propio = microhub_del_usuario()
+    if g.usuario["rol"] in ROLES_DE_MICROHUB:
+        if propio is None or (microhub_id is not None and int(microhub_id) != int(propio)):
+            raise ErrorApi(403, "PROHIBIDO", "Tu perfil solo puede trabajar con su propio microhub.")
+        return int(propio)
+    return int(microhub_id) if microhub_id is not None else None
 
 
 # --------------------------------------------------------------------

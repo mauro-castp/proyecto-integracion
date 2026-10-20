@@ -174,6 +174,19 @@ TRADUCCIONES = [
     ("ck_el_motivo", "Cada línea con unidades devueltas necesita su motivo."),
     ("ck_cand_decision_motivo", "La decisión sobre un candidato exige motivo."),
     ("uq_usuario_correo", "Ese correo ya está registrado."),
+    ("inventario_producto_id_fkey", "El producto no existe."),
+    ("inventario_microhub_id_fkey", "El microhub no existe."),
+    ("fk_pp_producto", "El producto no existe."),
+    ("fk_pz_zona", "La zona no existe."),
+    ("fk_lpi_producto", "El producto no existe."),
+    ("lista_precio_zona_id_fkey", "La zona no existe."),
+    ("promocion_zona_id_fkey", "La zona no existe."),
+    ("fk_promo_producto", "El producto no existe."),
+    ("fk_promo_categoria", "La categoría no existe."),
+    ("ck_oc_recibida", "No se puede recibir más de lo que se pidió."),
+    ("ck_reserva_cantidad", "La cantidad a reservar debe ser mayor que cero."),
+    ("uq_proveedor_clave", "Ya existe un proveedor con esa clave."),
+    ("uq_lista_precio_nombre", "Ya existe una lista de precios con ese nombre."),
 ]
 
 

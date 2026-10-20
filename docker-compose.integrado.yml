@@ -4,11 +4,12 @@
 #   docker compose -f docker-compose.integrado.yml up --build -d
 #
 # Levanta PostgreSQL, Redis y MongoDB, el sistema web (http://localhost:5000)
-# y los diez microservicios del contrato v1, cada uno en su contenedor y su
-# puerto (5101 a 5110), que son los que usan la app Android y la de escritorio.
+# y los microservicios del contrato v1, cada uno en su contenedor y su puerto:
+# 5101 a 5110 (Primer avance del Segundo Parcial) y, de la Ola 1, inventario (5111),
+# precios (5112), proveedores (5113), abastecimiento (5114) y notificaciones (5124).
 #
-#   Swagger de cada servicio:  http://localhost:51XX/api/v1/docs  (51XX = 5101 a 5110)
-#   Salud de cada servicio:    http://localhost:51XX/api/v1/salud
+#   Swagger de cada servicio:  http://localhost:PUERTO/api/v1/docs
+#   Salud de cada servicio:    http://localhost:PUERTO/api/v1/salud
 #   Entregas de demostración:  docker compose -f docker-compose.integrado.yml exec entregas python pruebas/preparar_entregas.py --cantidad 2
 #
 # Sigue existiendo sistema_web/docker-compose.yml para levantar solo el web:
@@ -21,6 +22,7 @@ x-entorno: &entorno
   PG_DSN: host=postgres port=5432 dbname=microhubs_p1 user=microhubs password=${POSTGRES_PASSWORD:-microhubs_dev}
   REDIS_URL: redis://redis:6379
   MONGO_URL: mongodb://mongo:27017/microhubs_eventos
+  MICROSERVICIOS_URL: "http://{servicio}:{puerto}"     # cómo un servicio llama a otro por la red interna
 
 x-servicio: &servicio
   depends_on:
@@ -39,7 +41,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-microhubs_dev}
     volumes:
       - datos_pg:/var/lib/postgresql/data
-      - ./bloque_c/sql:/docker-entrypoint-initdb.d:ro       # 01 a 08 en el primer arranque
+      - ./bloque_c/sql:/docker-entrypoint-initdb.d:ro       # 01 a 09 en el primer arranque
     networks: [datos]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U microhubs -d microhubs_p1"]
@@ -69,7 +71,7 @@ services:
       timeout: 5s
       retries: 12
 
-  # Aplica 06, 07 y 08 a volúmenes que ya existían (idempotente) y termina.
+  # Aplica 06 a 09 a volúmenes que ya existían (idempotente) y termina.
   migraciones:
     build: {context: ., dockerfile: servicios/auth/Dockerfile}
     command: ["python", "migrar.py"]
@@ -158,6 +160,36 @@ services:
     build: {context: ., dockerfile: servicios/seguimiento/Dockerfile}
     environment: *entorno
     ports: ["5110:5110"]
+
+  inventario:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/inventario/Dockerfile}
+    environment: *entorno
+    ports: ["5111:5111"]
+
+  precios:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/precios/Dockerfile}
+    environment: *entorno
+    ports: ["5112:5112"]
+
+  proveedores:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/proveedores/Dockerfile}
+    environment: *entorno
+    ports: ["5113:5113"]
+
+  abastecimiento:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/abastecimiento/Dockerfile}
+    environment: *entorno
+    ports: ["5114:5114"]
+
+  notificaciones:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/notificaciones/Dockerfile}
+    environment: *entorno
+    ports: ["5124:5124"]
 
 networks:
   publica:

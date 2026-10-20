@@ -18,7 +18,7 @@ Si un servicio no responde, la página lo dice y el resto del web sigue
 funcionando: el sistema web es independiente de los microservicios.
 
 Pantallas:
-  /web/servicios                    estado de los 10 servicios, resúmenes de MongoDB y una respuesta XML
+  /web/servicios                    estado de los servicios, resúmenes de MongoDB y una respuesta XML
   /web/servicios/pedido/<id>        pedido, historial, entrega, recorrido GPS y evidencias desde los servicios;
                                     adjuntar un documento al pedido (se guarda en MongoDB vía documentos)
   /web/servicios/documento/<id>     ver o descargar un documento guardado en MongoDB
@@ -39,7 +39,8 @@ from flask import (Blueprint, Response, abort, flash, g, redirect, render_templa
 servicios_bp = Blueprint("servicios", __name__, url_prefix="/web/servicios")
 
 PUERTOS = {"auth": 5101, "usuarios": 5102, "productos": 5103, "pedidos": 5104, "entregas": 5105,
-           "planeacion": 5106, "documentos": 5107, "zonas": 5108, "microhubs": 5109, "seguimiento": 5110}
+           "planeacion": 5106, "documentos": 5107, "zonas": 5108, "microhubs": 5109, "seguimiento": 5110,
+           "inventario": 5111, "precios": 5112, "proveedores": 5113, "abastecimiento": 5114, "notificaciones": 5124}
 # Dentro de docker-compose.integrado.yml cada servicio se alcanza por su nombre en la red interna.
 PLANTILLA = os.environ.get("MICROSERVICIOS_URL", "http://{servicio}:{puerto}")
 TIEMPO_ESPERA = float(os.environ.get("MICROSERVICIOS_TIEMPO", "4"))
