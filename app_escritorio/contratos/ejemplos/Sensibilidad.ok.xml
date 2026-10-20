@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sensibilidad xmlns="urn:microhubs:v1" version="1">
+  <producto_id>4</producto_id>
+  <zona_id>1</zona_id>
+  <precio_final>44.03</precio_final>
+  <costo>31.50</costo>
+  <volumen_base>100</volumen_base>
+  <elasticidad>-1.2</elasticidad>
+  <supuestos>La elasticidad es un supuesto, no una medición: indica cuánto cambia el volumen por cada 1 % que cambia el precio.</supuestos>
+  <escenarios>
+    <escenario>
+      <variacion_pct>10</variacion_pct>
+      <precio>48.43</precio>
+      <volumen_estimado>88.0</volumen_estimado>
+      <ingreso>4261.84</ingreso>
+      <ingreso_vs_base_pct>-3.2</ingreso_vs_base_pct>
+      <margen_total>1494.24</margen_total>
+      <volumen_para_igualar_margen>74.2</volumen_para_igualar_margen>
+    </escenario>
+  </escenarios>
+</sensibilidad>

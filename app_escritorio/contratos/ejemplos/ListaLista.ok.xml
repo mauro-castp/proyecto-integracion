@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listas xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <datos>
+    <lista>
+      <id>2</id>
+      <nombre>Lista San Bernabé Centro</nombre>
+      <zona_id>1</zona_id>
+      <vigente_desde>2026-10-01</vigente_desde>
+      <vigente_hasta xsi:nil="true" />
+      <estatus>activo</estatus>
+      <productos>20</productos>
+    </lista>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</listas>

@@ -1,0 +1,30 @@
+{
+  "datos": [
+    {
+      "id": 2,
+      "clave": "PV-02",
+      "nombre": "Distribuidora Regia",
+      "contacto": "Luis Treviño",
+      "correo": "pedidos@distregia.example",
+      "telefono": "8181000102",
+      "dias_entrega": 1,
+      "pedido_minimo": 500.0,
+      "condiciones_pago": "Crédito a 7 días",
+      "estatus": "activo",
+      "zonas": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "calificacion": 4.0,
+      "evaluaciones": 1
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

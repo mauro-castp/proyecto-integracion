@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decision_compra xmlns="urn:microhubs:v1" version="1">
+  <decision>aprobada</decision>
+  <motivo>Hay presupuesto de octubre</motivo>
+</decision_compra>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: comun (referencias de la Ola 1) · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+
+  <xs:complexType name="TRefNombre">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRefProductoClave">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="clave_interna" type="xs:string" nillable="true"/>
+      <xs:element name="nombre" type="xs:string" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRefTipoId">
+    <xs:sequence>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="30"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="id">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="40"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

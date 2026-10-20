@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movimientos xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <movimiento>
+      <id>912</id>
+      <microhub_id>1</microhub_id>
+      <producto_id>4</producto_id>
+      <tipo>recepcion</tipo>
+      <cantidad>24</cantidad>
+      <existencia_resultante>42</existencia_resultante>
+      <referencia>
+        <tipo>orden_compra</tipo>
+        <id>7</id>
+      </referencia>
+      <motivo>Recepción de la orden OC-20261019-000007</motivo>
+      <usuario_id>2</usuario_id>
+      <fecha>2026-10-19T09:30:00-06:00</fecha>
+    </movimiento>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</movimientos>

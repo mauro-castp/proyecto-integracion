@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<calculo xmlns="urn:microhubs:v1" version="1">
+  <zona_id>1</zona_id>
+  <fecha>2026-10-19</fecha>
+  <lineas>
+    <linea>
+      <producto_id>4</producto_id>
+      <cantidad>2</cantidad>
+      <precio_unitario>44.03</precio_unitario>
+      <descuento_unitario>2.32</descuento_unitario>
+      <importe>88.06</importe>
+      <promocion_id>3</promocion_id>
+      <bajo_margen>false</bajo_margen>
+    </linea>
+  </lineas>
+  <subtotal>92.70</subtotal>
+  <descuento_total>4.64</descuento_total>
+  <total>88.06</total>
+</calculo>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proveedor_cambio xmlns="urn:microhubs:v1" version="1">
+  <dias_entrega>2</dias_entrega>
+  <zonas>
+    <zona_id>1</zona_id>
+    <zona_id>2</zona_id>
+    <zona_id>3</zona_id>
+  </zonas>
+</proveedor_cambio>

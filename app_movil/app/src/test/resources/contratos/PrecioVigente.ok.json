@@ -1,0 +1,23 @@
+{
+  "producto_id": 4,
+  "zona_id": 1,
+  "fecha": "2026-10-19",
+  "precio_base": 45.0,
+  "lista": {
+    "id": 2,
+    "nombre": "Lista San Bernabé Centro"
+  },
+  "precio_vigente": 46.35,
+  "promocion": {
+    "id": 3,
+    "nombre": "Aceite -5 %",
+    "tipo": "porcentaje",
+    "valor": 5.0
+  },
+  "descuento": 2.32,
+  "descuento_limitado": false,
+  "precio_final": 44.03,
+  "costo": 31.5,
+  "margen_pct": 28.5,
+  "bajo_margen": false
+}

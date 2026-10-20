@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recepcion_nueva xmlns="urn:microhubs:v1" version="1">
+  <operacion_uuid>9b3c2d10-55aa-4e1b-8f6c-1d2e3f405162</operacion_uuid>
+  <nota>Llegó completo</nota>
+  <lineas>
+    <linea>
+      <producto_id>4</producto_id>
+      <cantidad>24</cantidad>
+    </linea>
+  </lineas>
+</recepcion_nueva>

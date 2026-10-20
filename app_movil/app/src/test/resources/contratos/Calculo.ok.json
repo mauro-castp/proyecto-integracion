@@ -1,0 +1,18 @@
+{
+  "zona_id": 1,
+  "fecha": "2026-10-19",
+  "lineas": [
+    {
+      "producto_id": 4,
+      "cantidad": 2,
+      "precio_unitario": 44.03,
+      "descuento_unitario": 2.32,
+      "importe": 88.06,
+      "promocion_id": 3,
+      "bajo_margen": false
+    }
+  ],
+  "subtotal": 92.7,
+  "descuento_total": 4.64,
+  "total": 88.06
+}

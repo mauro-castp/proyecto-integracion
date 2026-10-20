@@ -1,0 +1,19 @@
+{
+  "datos": [
+    {
+      "id": 2,
+      "nombre": "Lista San Bernabé Centro",
+      "zona_id": 1,
+      "vigente_desde": "2026-10-01",
+      "vigente_hasta": null,
+      "estatus": "activo",
+      "productos": 20
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

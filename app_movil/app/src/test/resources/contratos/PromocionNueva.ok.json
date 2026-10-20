@@ -1,0 +1,9 @@
+{
+  "nombre": "Aceite -5 %",
+  "tipo": "porcentaje",
+  "valor": 5.0,
+  "producto_id": 4,
+  "zona_id": 1,
+  "vigente_desde": "2026-10-19",
+  "vigente_hasta": "2026-11-30"
+}

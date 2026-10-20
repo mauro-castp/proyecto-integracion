@@ -1,0 +1,8 @@
+{
+  "origen_microhub_id": 1,
+  "destino_microhub_id": 2,
+  "producto_id": 4,
+  "cantidad": 6,
+  "motivo": "El microhub 2 se quedó sin aceite",
+  "operacion_uuid": "7d2f4b1a-93c0-4c7e-8b55-0a6f3e9d2b41"
+}

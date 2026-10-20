@@ -1,0 +1,13 @@
+{
+  "nombre": "Lista Valles",
+  "zona_id": 2,
+  "vigente_desde": "2026-11-01",
+  "vigente_hasta": "2027-03-31",
+  "items": [
+    {
+      "producto_id": 4,
+      "precio": 46.0,
+      "costo": 31.5
+    }
+  ]
+}

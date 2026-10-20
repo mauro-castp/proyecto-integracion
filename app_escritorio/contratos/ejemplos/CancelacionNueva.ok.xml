@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cancelacion_nueva xmlns="urn:microhubs:v1" version="1">
+  <motivo>El proveedor ya no surte este producto</motivo>
+</cancelacion_nueva>

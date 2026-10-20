@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proveedores xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <proveedor>
+      <id>2</id>
+      <clave>PV-02</clave>
+      <nombre>Distribuidora Regia</nombre>
+      <contacto>Luis Treviño</contacto>
+      <correo>pedidos@distregia.example</correo>
+      <telefono>8181000102</telefono>
+      <dias_entrega>1</dias_entrega>
+      <pedido_minimo>500.00</pedido_minimo>
+      <condiciones_pago>Crédito a 7 días</condiciones_pago>
+      <estatus>activo</estatus>
+      <zonas>
+        <zona_id>1</zona_id>
+        <zona_id>2</zona_id>
+        <zona_id>3</zona_id>
+        <zona_id>4</zona_id>
+      </zonas>
+      <calificacion>4.0</calificacion>
+      <evaluaciones>1</evaluaciones>
+    </proveedor>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</proveedores>

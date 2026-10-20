@@ -1,0 +1,14 @@
+{
+  "clave": "PV-04",
+  "nombre": "Frutas y Verduras del Valle",
+  "contacto": "Ana Salinas",
+  "correo": "ventas@fvvalle.example",
+  "telefono": "8181000104",
+  "dias_entrega": 1,
+  "pedido_minimo": 400.0,
+  "condiciones_pago": "Contado",
+  "zonas": [
+    1,
+    2
+  ]
+}

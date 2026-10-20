@@ -1,0 +1,18 @@
+{
+  "microhub_id": 1,
+  "solicitudes": {
+    "pendiente": 1,
+    "aprobada": 0,
+    "rechazada": 0,
+    "ordenada": 2
+  },
+  "ordenes": {
+    "emitida": 1,
+    "parcial": 0,
+    "recibida": 1,
+    "cancelada": 0
+  },
+  "atrasadas": 0,
+  "pendientes_inventario": 0,
+  "proxima_entrega": "2026-10-20"
+}

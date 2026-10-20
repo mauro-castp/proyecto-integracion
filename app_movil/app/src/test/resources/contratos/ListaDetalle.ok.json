@@ -1,0 +1,21 @@
+{
+  "id": 2,
+  "nombre": "Lista San Bernabé Centro",
+  "zona_id": 1,
+  "vigente_desde": "2026-10-01",
+  "vigente_hasta": null,
+  "estatus": "activo",
+  "productos": 20,
+  "items": [
+    {
+      "producto": {
+        "id": 4,
+        "nombre": "Aceite vegetal 1 L"
+      },
+      "precio": 46.35,
+      "costo": 31.5,
+      "margen_pct": 32.0,
+      "actualizado_en": "2026-10-19T09:30:00-06:00"
+    }
+  ]
+}

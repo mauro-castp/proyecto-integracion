@@ -1,0 +1,29 @@
+{
+  "datos": [
+    {
+      "proveedor": {
+        "id": 2,
+        "clave": "PV-02",
+        "nombre": "Distribuidora Regia"
+      },
+      "producto": {
+        "id": 4,
+        "nombre": "Aceite vegetal 1 L"
+      },
+      "precio_compra": 33.3,
+      "unidad_compra": "pieza",
+      "capacidad_semanal": 200,
+      "minimo_compra": 12,
+      "dias_entrega": 1,
+      "pedido_minimo": 500.0,
+      "vigente_hasta": null,
+      "calificacion": 4.0
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

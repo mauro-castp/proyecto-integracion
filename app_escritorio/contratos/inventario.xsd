@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: inventario · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola1.xsd"/>
+
+  <xs:complexType name="TInvExistencia">
+    <xs:sequence>
+      <xs:element name="microhub" type="tns:TRefNombre"/>
+      <xs:element name="producto" type="tns:TRefProductoClave"/>
+      <xs:element name="existencia" type="xs:int"/>
+      <xs:element name="minimo" type="xs:int"/>
+      <xs:element name="reservado" type="xs:int"/>
+      <xs:element name="disponible" type="xs:int"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="agotado"/>
+            <xs:enumeration value="bajo_minimo"/>
+            <xs:enumeration value="normal"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="actualizado_en" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvExistenciaLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="existencia" type="tns:TInvExistencia" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvMinimoNuevo">
+    <xs:sequence>
+      <xs:element name="minimo">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvMovimiento">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="microhub_id" type="xs:long"/>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="recepcion"/>
+            <xs:enumeration value="salida_pedido"/>
+            <xs:enumeration value="devolucion_cancelacion"/>
+            <xs:enumeration value="devolucion_parcial"/>
+            <xs:enumeration value="merma"/>
+            <xs:enumeration value="ajuste"/>
+            <xs:enumeration value="conteo"/>
+            <xs:enumeration value="transferencia_salida"/>
+            <xs:enumeration value="transferencia_entrada"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cantidad" type="xs:int"/>
+      <xs:element name="existencia_resultante">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="referencia" type="tns:TRefTipoId" nillable="true"/>
+      <xs:element name="motivo" type="xs:string" nillable="true"/>
+      <xs:element name="usuario_id" type="xs:long" nillable="true"/>
+      <xs:element name="fecha" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvMovimientoLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="movimiento" type="tns:TInvMovimiento" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvMovimientoNuevo">
+    <xs:sequence>
+      <xs:element name="microhub_id" type="xs:long"/>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="recepcion"/>
+            <xs:enumeration value="merma"/>
+            <xs:enumeration value="ajuste"/>
+            <xs:enumeration value="conteo"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cantidad" type="xs:int"/>
+      <xs:element name="motivo" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="300"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="referencia" type="tns:TRefTipoId" minOccurs="0" nillable="true"/>
+      <xs:element name="operacion_uuid" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="80"/>
+            <xs:minLength value="8"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvMovimientoRegistrado">
+    <xs:sequence>
+      <xs:element name="movimiento" type="tns:TInvMovimiento"/>
+      <xs:element name="duplicado" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvTransferenciaNueva">
+    <xs:sequence>
+      <xs:element name="origen_microhub_id" type="xs:long"/>
+      <xs:element name="destino_microhub_id" type="xs:long"/>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="cantidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="motivo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="300"/>
+            <xs:minLength value="3"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="operacion_uuid" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="80"/>
+            <xs:minLength value="8"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvTransferenciaExtremo">
+    <xs:sequence>
+      <xs:element name="microhub_id" type="xs:long"/>
+      <xs:element name="existencia">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="movimiento_id" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvTransferencia">
+    <xs:sequence>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="cantidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="duplicado" type="xs:boolean"/>
+      <xs:element name="origen" type="tns:TInvTransferenciaExtremo"/>
+      <xs:element name="destino" type="tns:TInvTransferenciaExtremo"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvReserva">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="microhub_id" type="xs:long"/>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="cantidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="activa"/>
+            <xs:enumeration value="liberada"/>
+            <xs:enumeration value="consumida"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="vigente" type="xs:boolean"/>
+      <xs:element name="referencia" type="tns:TRefTipoId"/>
+      <xs:element name="creada_en" type="xs:dateTime"/>
+      <xs:element name="vence_en" type="xs:dateTime"/>
+      <xs:element name="cerrada_en" type="xs:dateTime" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvReservaLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="reserva" type="tns:TInvReserva" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvReservaNueva">
+    <xs:sequence>
+      <xs:element name="microhub_id" type="xs:long"/>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="cantidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="referencia" type="tns:TRefTipoId"/>
+      <xs:element name="minutos" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="1440"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvAlerta">
+    <xs:sequence>
+      <xs:element name="microhub" type="tns:TRefNombre"/>
+      <xs:element name="producto" type="tns:TRefProductoClave"/>
+      <xs:element name="existencia" type="xs:int"/>
+      <xs:element name="minimo" type="xs:int"/>
+      <xs:element name="disponible" type="xs:int"/>
+      <xs:element name="faltante">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="severidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="agotado"/>
+            <xs:enumeration value="critica"/>
+            <xs:enumeration value="baja"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TInvAlertaLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="alerta" type="tns:TInvAlerta" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="existencias">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TInvExistenciaLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="existencia">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TInvExistencia">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="minimo_nuevo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TInvMinimoNuevo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="movimientos">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TInvMovimientoLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="movimiento_nuevo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TInvMovimientoNuevo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="movimiento_registrado">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TInvMovimientoRegistrado">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="transferencia_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TInvTransferenciaNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="transferencia">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TInvTransferencia">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reservas">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TInvReservaLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reserva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TInvReserva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reserva_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TInvReservaNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="alertas">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TInvAlertaLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

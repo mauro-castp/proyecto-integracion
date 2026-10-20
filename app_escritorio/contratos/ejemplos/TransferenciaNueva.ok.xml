@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transferencia_nueva xmlns="urn:microhubs:v1" version="1">
+  <origen_microhub_id>1</origen_microhub_id>
+  <destino_microhub_id>2</destino_microhub_id>
+  <producto_id>4</producto_id>
+  <cantidad>6</cantidad>
+  <motivo>El microhub 2 se quedó sin aceite</motivo>
+  <operacion_uuid>7d2f4b1a-93c0-4c7e-8b55-0a6f3e9d2b41</operacion_uuid>
+</transferencia_nueva>

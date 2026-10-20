@@ -1,0 +1,11 @@
+{
+  "producto": {
+    "id": 4,
+    "nombre": "Aceite vegetal 1 L"
+  },
+  "precio_compra": 33.3,
+  "unidad_compra": "pieza",
+  "capacidad_semanal": 200,
+  "minimo_compra": 12,
+  "vigente_hasta": null
+}

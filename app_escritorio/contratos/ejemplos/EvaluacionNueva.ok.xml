@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<evaluacion_nueva xmlns="urn:microhubs:v1" version="1">
+  <puntualidad>5</puntualidad>
+  <calidad>4</calidad>
+  <precio>3</precio>
+  <comentario>Muy puntual; precio algo alto.</comentario>
+</evaluacion_nueva>

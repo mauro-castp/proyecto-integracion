@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<calculo_nuevo xmlns="urn:microhubs:v1" version="1">
+  <zona_id>1</zona_id>
+  <fecha>2026-10-19</fecha>
+  <lineas>
+    <linea>
+      <producto_id>4</producto_id>
+      <cantidad>2</cantidad>
+    </linea>
+    <linea>
+      <producto_id>12</producto_id>
+      <cantidad>1</cantidad>
+    </linea>
+  </lineas>
+</calculo_nuevo>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<evaluaciones xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <evaluacion>
+      <id>3</id>
+      <proveedor_id>2</proveedor_id>
+      <puntualidad>5</puntualidad>
+      <calidad>4</calidad>
+      <precio>3</precio>
+      <comentario>Muy puntual; precio algo alto.</comentario>
+      <evaluado_por>2</evaluado_por>
+      <evaluado_en>2026-10-19T09:30:00-06:00</evaluado_en>
+    </evaluacion>
+  </datos>
+  <promedio>
+    <puntualidad>5.0</puntualidad>
+    <calidad>4.0</calidad>
+    <precio>3.0</precio>
+    <general>4.0</general>
+  </promedio>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</evaluaciones>

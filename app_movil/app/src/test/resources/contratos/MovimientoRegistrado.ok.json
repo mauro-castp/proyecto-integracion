@@ -1,0 +1,18 @@
+{
+  "movimiento": {
+    "id": 912,
+    "microhub_id": 1,
+    "producto_id": 4,
+    "tipo": "recepcion",
+    "cantidad": 24,
+    "existencia_resultante": 42,
+    "referencia": {
+      "tipo": "orden_compra",
+      "id": "7"
+    },
+    "motivo": "Recepción de la orden OC-20261019-000007",
+    "usuario_id": 2,
+    "fecha": "2026-10-19T09:30:00-06:00"
+  },
+  "duplicado": false
+}

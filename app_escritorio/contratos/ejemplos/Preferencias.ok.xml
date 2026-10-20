@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferencias xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <preferencia>
+      <tipo>pedido</tipo>
+      <activa>true</activa>
+    </preferencia>
+    <preferencia>
+      <tipo>entrega</tipo>
+      <activa>true</activa>
+    </preferencia>
+    <preferencia>
+      <tipo>planeacion</tipo>
+      <activa>false</activa>
+    </preferencia>
+    <preferencia>
+      <tipo>inventario</tipo>
+      <activa>true</activa>
+    </preferencia>
+    <preferencia>
+      <tipo>abastecimiento</tipo>
+      <activa>true</activa>
+    </preferencia>
+  </datos>
+</preferencias>

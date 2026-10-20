@@ -1,0 +1,27 @@
+{
+  "datos": [
+    {
+      "microhub": {
+        "id": 1,
+        "nombre": "Microhub San Bernabé Centro"
+      },
+      "producto": {
+        "id": 4,
+        "clave_interna": "AB-004",
+        "nombre": "Aceite vegetal 1 L"
+      },
+      "existencia": 18,
+      "minimo": 10,
+      "reservado": 3,
+      "disponible": 15,
+      "estado": "normal",
+      "actualizado_en": "2026-10-19T09:30:00-06:00"
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

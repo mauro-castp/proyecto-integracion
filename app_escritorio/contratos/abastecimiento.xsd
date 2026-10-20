@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: abastecimiento · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola1.xsd"/>
+
+  <xs:complexType name="TAbaOferta">
+    <xs:sequence>
+      <xs:element name="proveedor" type="tns:TRefNombre"/>
+      <xs:element name="precio_compra">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="dias_entrega">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="capacidad_semanal">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="minimo_compra">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaNecesidad">
+    <xs:sequence>
+      <xs:element name="producto" type="tns:TRefNombre"/>
+      <xs:element name="existencia" type="xs:int"/>
+      <xs:element name="minimo" type="xs:int"/>
+      <xs:element name="disponible" type="xs:int"/>
+      <xs:element name="en_camino">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="solicitado">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cantidad_sugerida">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cantidad_a_comprar">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="mejor_oferta" type="tns:TAbaOferta" nillable="true"/>
+      <xs:element name="costo_estimado" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaNecesidadLista">
+    <xs:sequence>
+      <xs:element name="microhub_id" type="xs:long"/>
+      <xs:element name="factor_objetivo" type="xs:decimal"/>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="necesidad" type="tns:TAbaNecesidad" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaLineaSolicitud">
+    <xs:sequence>
+      <xs:element name="producto" type="tns:TRefNombre"/>
+      <xs:element name="cantidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaSolicitud">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="folio" type="xs:string"/>
+      <xs:element name="microhub_id" type="xs:long"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="pendiente"/>
+            <xs:enumeration value="aprobada"/>
+            <xs:enumeration value="rechazada"/>
+            <xs:enumeration value="ordenada"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="motivo" type="xs:string" nillable="true"/>
+      <xs:element name="solicitada_por" type="xs:long" nillable="true"/>
+      <xs:element name="decidida_por" type="xs:long" nillable="true"/>
+      <xs:element name="decision_motivo" type="xs:string" nillable="true"/>
+      <xs:element name="decidida_en" type="xs:dateTime" nillable="true"/>
+      <xs:element name="creada_en" type="xs:dateTime"/>
+      <xs:element name="lineas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="linea" type="tns:TAbaLineaSolicitud" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaSolicitudLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="solicitud" type="tns:TAbaSolicitud" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaLineaNueva">
+    <xs:sequence>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="cantidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaSolicitudNueva">
+    <xs:sequence>
+      <xs:element name="microhub_id" type="xs:long"/>
+      <xs:element name="motivo" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="300"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="lineas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="linea" type="tns:TAbaLineaNueva" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaDecision">
+    <xs:sequence>
+      <xs:element name="decision">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="aprobada"/>
+            <xs:enumeration value="rechazada"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="motivo" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="300"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaOrdenarNuevo">
+    <xs:sequence>
+      <xs:element name="proveedor_id" type="xs:long" minOccurs="0" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaLineaOrden">
+    <xs:sequence>
+      <xs:element name="producto" type="tns:TRefNombre"/>
+      <xs:element name="cantidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="precio_compra">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cantidad_recibida">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="pendiente_inventario">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaOrden">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="folio" type="xs:string"/>
+      <xs:element name="solicitud_id" type="xs:long" nillable="true"/>
+      <xs:element name="proveedor" type="tns:TRefNombre"/>
+      <xs:element name="microhub_id" type="xs:long"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="emitida"/>
+            <xs:enumeration value="parcial"/>
+            <xs:enumeration value="recibida"/>
+            <xs:enumeration value="cancelada"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="fecha_esperada" type="xs:date"/>
+      <xs:element name="total">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="creada_en" type="xs:dateTime"/>
+      <xs:element name="cerrada_en" type="xs:dateTime" nillable="true"/>
+      <xs:element name="lineas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="linea" type="tns:TAbaLineaOrden" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaOrdenLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="orden" type="tns:TAbaOrden" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaOrdenesGeneradas">
+    <xs:sequence>
+      <xs:element name="solicitud_id" type="xs:long"/>
+      <xs:element name="ordenes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="orden" type="tns:TAbaOrden" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaLineaRecepcion">
+    <xs:sequence>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="cantidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaRecepcionNueva">
+    <xs:sequence>
+      <xs:element name="operacion_uuid" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="60"/>
+            <xs:minLength value="8"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nota" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="300"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="lineas" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="linea" type="tns:TAbaLineaRecepcion" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaRecepcion">
+    <xs:sequence>
+      <xs:element name="orden" type="tns:TAbaOrden"/>
+      <xs:element name="aplicadas">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="pendientes">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="aviso" type="xs:string" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaCancelacion">
+    <xs:sequence>
+      <xs:element name="motivo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="300"/>
+            <xs:minLength value="3"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaConteoSolicitudes">
+    <xs:sequence>
+      <xs:element name="pendiente">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="aprobada">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="rechazada">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ordenada">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaConteoOrdenes">
+    <xs:sequence>
+      <xs:element name="emitida">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="parcial">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="recibida">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cancelada">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAbaSeguimiento">
+    <xs:sequence>
+      <xs:element name="microhub_id" type="xs:long" nillable="true"/>
+      <xs:element name="solicitudes" type="tns:TAbaConteoSolicitudes"/>
+      <xs:element name="ordenes" type="tns:TAbaConteoOrdenes"/>
+      <xs:element name="atrasadas">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="pendientes_inventario">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="proxima_entrega" type="xs:date" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="necesidades">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAbaNecesidadLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="solicitudes">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAbaSolicitudLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="solicitud">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAbaSolicitud">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="solicitud_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAbaSolicitudNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="decision_compra">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAbaDecision">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ordenar_nuevo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAbaOrdenarNuevo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ordenes_generadas">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAbaOrdenesGeneradas">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ordenes">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAbaOrdenLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="orden">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAbaOrden">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="recepcion_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAbaRecepcionNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="recepcion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAbaRecepcion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cancelacion_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAbaCancelacion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="seguimiento_abastecimiento">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAbaSeguimiento">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

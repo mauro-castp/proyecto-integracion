@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transferencia xmlns="urn:microhubs:v1" version="1">
+  <producto_id>4</producto_id>
+  <cantidad>6</cantidad>
+  <duplicado>false</duplicado>
+  <origen>
+    <microhub_id>1</microhub_id>
+    <existencia>12</existencia>
+    <movimiento_id>913</movimiento_id>
+  </origen>
+  <destino>
+    <microhub_id>2</microhub_id>
+    <existencia>14</existencia>
+    <movimiento_id>914</movimiento_id>
+  </destino>
+</transferencia>
