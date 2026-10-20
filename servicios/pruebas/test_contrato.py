@@ -1,5 +1,5 @@
 """
-test_contrato.py — Los diez microservicios contra PostgreSQL y Redis reales.
+test_contrato.py — Los microservicios contra PostgreSQL y Redis reales.
 
 Reproduce los recorridos con los que se probaron las apps (BackendReal de
 app_escritorio/pruebas/Pruebas.cs y BackendRealTest.kt de Android) y además
@@ -35,7 +35,8 @@ if not config.MONGO_URL:
     import mongomock
     datos.usar_mongo(mongomock.MongoClient(tz_aware=True)[config.MONGO_DB])
 
-SERVICIOS = ["auth", "usuarios", "productos", "pedidos", "entregas", "planeacion", "documentos", "zonas", "microhubs", "seguimiento"]
+SERVICIOS = ["auth", "usuarios", "productos", "pedidos", "entregas", "planeacion", "documentos", "zonas", "microhubs", "seguimiento",
+             "inventario", "precios", "proveedores", "abastecimiento", "notificaciones"]
 APPS = {s: importlib.import_module(f"{s}.app").app for s in SERVICIOS}
 CLAVE = os.environ.get("MICROHUBS_CLAVE", "Codex#2026")
 EJEMPLOS = config.EJEMPLOS_JSON
@@ -400,7 +401,7 @@ class T3Contrato(unittest.TestCase):
             config.LIMITE_POR_MINUTO = limite
             datos.r_cache.delete(*datos.r_cache.keys("rate:zonas:*") or ["x"])
 
-    def test_salud_y_swagger_de_los_diez(self):
+    def test_salud_y_swagger_de_todos(self):
         for s in SERVICIOS:
             with self.subTest(s):
                 c = APPS[s].test_client()

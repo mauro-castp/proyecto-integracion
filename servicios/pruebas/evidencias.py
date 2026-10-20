@@ -1,5 +1,5 @@
 """
-evidencias.py — Evidencias REALES de petición y respuesta de los diez microservicios.
+evidencias.py — Evidencias REALES de petición y respuesta de los microservicios.
 
 Ejecuta contra los servicios levantados (docker-compose.integrado.yml) un
 recorrido completo de casos por endpoint: operaciones correctas, parámetros
@@ -28,6 +28,7 @@ import os
 import re
 import sys
 import time
+import types
 import urllib.error
 import urllib.request
 import uuid
@@ -37,10 +38,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 os.environ.setdefault("LOG_STDOUT", "0")
 
 from comun import datos as bd  # noqa: E402
+from pruebas.evidencias_ola1 import ejecutar_ola1  # noqa: E402
 from pruebas.preparar_entregas import preparar  # noqa: E402
 
 PUERTOS = {"auth": 5101, "usuarios": 5102, "productos": 5103, "pedidos": 5104, "entregas": 5105,
-           "planeacion": 5106, "documentos": 5107, "zonas": 5108, "microhubs": 5109, "seguimiento": 5110}
+           "planeacion": 5106, "documentos": 5107, "zonas": 5108, "microhubs": 5109, "seguimiento": 5110,
+           "inventario": 5111, "precios": 5112, "proveedores": 5113, "abastecimiento": 5114, "notificaciones": 5124}
 CLAVE = os.environ.get("MICROHUBS_CLAVE", "Codex#2026")
 NS = "urn:microhubs:v1"
 JPEG = bytes([0xFF, 0xD8, 0xFF, 0xE0, 0, 16, 74, 70, 73, 70, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0]) + bytes(range(256))
@@ -543,8 +546,11 @@ def ejecutar(ev):
     ev.caso("PLA-16", "planeacion", "Candidato inexistente", "Registro que no existe.", "GET", "candidatos/999999",
             token=t_plan, esperado=404)
 
-    # ---------- 11. TRANSVERSALES ----------
-    print("11. Transversales")
+    # ---------- 11. OLA 1: INVENTARIO, PRECIOS, PROVEEDORES, ABASTECIMIENTO Y NOTIFICACIONES ----------
+    ejecutar_ola1(ev, types.SimpleNamespace(pg=pg, bd=bd, NS=NS))
+
+    # ---------- 12. TRANSVERSALES ----------
+    print("12. Transversales")
     for s in PUERTOS:
         ev.caso(f"SAL-{s[:3].upper()}", s, f"Salud de {s}", "Estado del servicio y de sus dependencias.", "GET", "health",
                 verificar=lambda r: r.json["estado"] == "ok")
