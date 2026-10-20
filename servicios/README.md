@@ -1,8 +1,8 @@
-# Microservicios · contrato v1 (Segundo Parcial)
+# Microservicios · contrato v1
 
 **Codex Innovations · Equipo 04**
 
-Diez servicios Flask, cada uno con **una sola responsabilidad de negocio**, en su contenedor y su puerto, que atienden a la app Android (JSON) y a la app de escritorio (XML
+Quince servicios Flask (diez del Segundo Parcial y cinco de la Ola 1 del Tercer Parcial), cada uno con **una sola responsabilidad de negocio**, en su contenedor y su puerto, que atienden a la app Android (JSON) y a la app de escritorio (XML
 validado con los XSD oficiales de `app_escritorio/contratos/`). Comparten PostgreSQL, Redis y MongoDB con el sistema web, que
 sigue funcionando por su cuenta.
 
@@ -18,6 +18,11 @@ sigue funcionando por su cuenta.
 | zonas | 5108 | Zonas de cobertura (solo lectura) | `zonas[/{id}]` | PostgreSQL, caché Redis |
 | microhubs | 5109 | Red de microhubs (solo lectura) | `microhubs[/{id}]` | PostgreSQL, caché Redis |
 | seguimiento | 5110 | Rastro GPS de la entrega | `seguimiento/{id}/ubicaciones`, `seguimiento/{id}/recorrido` | MongoDB (PostgreSQL solo para el ámbito del perfil) |
+| inventario | 5111 | Existencias, movimientos, transferencias, reservas y alertas | `inventario`, `inventario/{mh}/{producto}[/minimo]`, `inventario/movimientos`, `inventario/transferencias`, `inventario/reservas[/{id}/liberar]`, `inventario/alertas` | PostgreSQL |
+| precios | 5112 | Política de precios: listas por zona, promociones, márgenes y sensibilidad | `precios/listas[/{id}[/items/{producto}]]`, `precios/vigente`, `precios/calcular`, `precios/promociones[/{id}]`, `precios/historial`, `precios/margenes`, `precios/sensibilidad` | PostgreSQL (precio base y categoría desde productos) |
+| proveedores | 5113 | Quién surte, qué, a qué precio y qué tan bien cumple | `proveedores[/{id}]`, `proveedores/{id}/catalogo[/{producto}]`, `proveedores/ofertas`, `proveedores/{id}/evaluaciones` | PostgreSQL |
+| abastecimiento | 5114 | Ciclo de reposición: necesidades, solicitudes, órdenes y recepción | `abastecimiento/necesidades`, `abastecimiento/solicitudes[/{id}[/decision\|/ordenar]]`, `abastecimiento/ordenes[/{id}[/recepcion\|/cancelar]]`, `abastecimiento/seguimiento` | PostgreSQL (alertas desde inventario, ofertas desde proveedores) |
+| notificaciones | 5124 | Bandeja de avisos, envío por persona o rol y preferencias | `notificaciones[/{id}[/leer]]`, `notificaciones/conteo`, `notificaciones/leer-todas`, `notificaciones/preferencias[/{tipo}]` | PostgreSQL |
 
 ## Una responsabilidad por servicio
 
@@ -35,11 +40,17 @@ Cada servicio responde a un solo objetivo de negocio y no mezcla temas ajenos:
 | seguimiento | Dónde va el repartidor (GPS) |
 | planeacion | Decidir si conviene abrir un microhub |
 | documentos | Archivos y evidencias |
+| inventario | Cuántas unidades hay de cada producto en cada microhub y cómo se mueven |
+| precios | A qué precio se vende cada producto en cada zona |
+| proveedores | Quién nos surte, a qué precio y con qué plazo |
+| abastecimiento | Reponer lo que falta, desde la solicitud hasta la recepción |
+| notificaciones | Que cada persona reciba, lea y administre sus avisos |
 
-Cambios de este parcial respecto a la primera versión: `catalogos` se separó en `productos`, `zonas` y `microhubs`; el GPS salió de `entregas`
-hacia `seguimiento` (las rutas pasaron de `entregas/{id}/ubicaciones|recorrido` a `seguimiento/{id}/ubicaciones|recorrido`); y se retiró
-`notificaciones` para quedar en 10 servicios (el máximo del parcial). Los avisos siguen existiendo: los crea el trigger del motor en
-`web_notificacion` y el portal web los muestra en su propia bandeja. `notificaciones.xsd` y sus ejemplos se conservan en el contrato v1.
+Cambios respecto a la primera versión: `catalogos` se separó en `productos`, `zonas` y `microhubs`; el GPS salió de `entregas`
+hacia `seguimiento` (las rutas pasaron de `entregas/{id}/ubicaciones|recorrido` a `seguimiento/{id}/ubicaciones|recorrido`); en el Segundo
+Parcial `notificaciones` se había retirado para quedar en 10 servicios, y en la Ola 1 vuelve en el puerto 5124 con su bandeja, envío por
+rol y preferencias. Los avisos automáticos siguen naciendo en triggers de PostgreSQL (`web_notificacion`) y el portal web los muestra en
+su propia bandeja; el servicio ofrece esa misma bandeja a las apps.
 
 Cada servicio publica `GET /health` (alias de `/salud`, también bajo `/api/v1/`) y su documentación en
 **`http://localhost:51XX/api/v1/docs`** (Swagger UI, ejecutable con «Authorize» + «Try it out») y `/api/v1/openapi.json`.
@@ -57,6 +68,7 @@ Cada servicio tiene **su propio Dockerfile** (`servicios/<servicio>/Dockerfile`)
 | Autorización | `datos.py` | Permisos de la tabla `rol_permiso` (caché `cache:permisos:{rol}`, 5 min), los mismos del web |
 | Errores | `base_errores.py`, `validar.py` | `{codigo, mensaje, detalles[campo, mensaje], traza_id}`; todos los errores de validación juntos |
 | Límites | `base.py` | 240 solicitudes/min por IP y servicio (30 para login) en Redis; 429 con `Retry-After` |
+| Llamadas entre servicios | `clientes.py` | Un servicio le pregunta a otro por HTTP con el mismo JWT y la misma traza (`llamar`, `exigir`); `mapa` trae un catálogo completo con caché para poner nombres a ids |
 | Caché de catálogo | `catalogo.py` | Redis (base 1, `cache:catalogo:*`) para productos, zonas y microhubs; cada servicio conserva su propia consulta |
 | Registro | `base.py` | Cada petición: `logs_tecnicos` y `metricas_servicio` en MongoDB, sin tokens ni contraseñas |
 | Auditoría | PostgreSQL | El servicio declara quién actúa (`app.usuario_id`, `app.rol`); los triggers del motor auditan y validan transiciones |
@@ -68,6 +80,8 @@ Los cálculos de planeación **no se duplican**: el servicio usa `sistema_web/pl
 
 - `bloque_c/sql/08_microservicios.sql` (idempotente): cierre idempotente de entregas (`entrega.id_cliente_local`), evidencias y
   ubicación del cierre, tipo y referencia en `web_notificacion`, y el trigger que avisa al repartidor cuando se le asigna una entrega.
+- `bloque_c/sql/09_ola1_flujo_negocio.sql` (idempotente): reservas de inventario y la vista `v_inventario_disponible`, listas de precios, promociones,
+  proveedores, solicitudes y órdenes de compra, preferencias de avisos, los triggers de aviso (faltante, solicitud, orden) y los permisos nuevos.
 - `bloque_c/mongo/02_microservicios.js`: colecciones `documentos` y `ubicaciones_entrega` (índice 2dsphere, TTL de 180 días).
 - MongoDB en uso: `documentos` (insertar, consultar, agregar), `ubicaciones_entrega` (Seguimiento: insertar en lote, agregación del recorrido),
   `sincronizaciones_moviles` (upsert por UUID: cada reintento actualiza el mismo documento), `ejecuciones_analiticas` (cada
@@ -79,7 +93,7 @@ El portal web consume los servicios por HTTP con el **mismo JWT de la sesión de
 
 | Pantalla del web | Servicios que llama | Qué demuestra |
 |---|---|---|
-| **Microservicios** (menú del administrador, `/web/servicios`) | los 10 (`/salud`), documentos y planeación (resúmenes), zonas (XML) | estado de cada servicio, agregaciones de MongoDB y una respuesta XML real |
+| **Microservicios** (menú del administrador, `/web/servicios`) | los 15 (`/salud`), documentos y planeación (resúmenes), zonas (XML) | estado de cada servicio, agregaciones de MongoDB y una respuesta XML real |
 | **Pedido → «Entrega, recorrido y evidencias»** (`/web/servicios/pedido/<id>`) | pedidos, entregas, seguimiento, documentos | detalle, historial, recorrido GPS (MongoDB) y fotos de evidencia; adjuntar un archivo que se guarda en MongoDB |
 
 Cada llamada muestra su código HTTP, tiempo y `X-Traza-Id`, que también queda en `logs_tecnicos` de MongoDB. Si un servicio no
@@ -90,7 +104,7 @@ responde, el web lo indica y sigue funcionando.
 Desde la raíz del repositorio:
 
 ```bash
-docker compose -f docker-compose.integrado.yml up --build -d          # levantar (la primera vez construye 12 imágenes)
+docker compose -f docker-compose.integrado.yml up --build -d          # levantar (la primera vez construye 17 imágenes)
 docker compose -f docker-compose.integrado.yml ps -a                  # todo healthy; «migraciones» termina en Exited (0)
 docker compose -f docker-compose.integrado.yml logs -f entregas       # registro de un servicio
 docker compose -f docker-compose.integrado.yml exec entregas python pruebas/preparar_entregas.py --cantidad 2
@@ -98,8 +112,8 @@ docker compose -f docker-compose.integrado.yml down                   # detener 
 docker compose -f docker-compose.integrado.yml down -v                # detener y borrar volúmenes (base desde cero)
 ```
 
-Web: `http://localhost:5000`. Servicios: puertos 5101 a 5110. Cuentas: `sistema_web/README.md` (clave `Codex#2026`).
-Con un volumen de PostgreSQL ya existente, el contenedor `migraciones` aplica 06, 07 y 08 sin borrar datos. Si el puerto
+Web: `http://localhost:5000`. Servicios: puertos 5101 a 5114 y 5124. Cuentas: `sistema_web/README.md` (clave `Codex#2026`).
+Con un volumen de PostgreSQL ya existente, el contenedor `migraciones` aplica 06 a 09 sin borrar datos. Si el puerto
 5000 está ocupado (por ejemplo, por `sistema_web/docker-compose.yml`), detener ese compose o usar `WEB_PORT=5050`.
 
 ### Variables de entorno
@@ -113,41 +127,42 @@ Con un volumen de PostgreSQL ya existente, el contenedor `migraciones` aplica 06
 | `POSTGRES_PASSWORD` | `${POSTGRES_PASSWORD:-microhubs_dev}` | Clave de PostgreSQL |
 | `WEB_PORT` | `5000` | Puerto del portal web en el equipo |
 | `LIMITE_POR_MINUTO`, `LIMITE_LOGIN_POR_MINUTO` | 240 y 30 (por omisión) | Límite de consumo por IP |
-| `MICROSERVICIOS_URL` (web) | `http://{servicio}:{puerto}` | Cómo el web encuentra a los servicios en la red de Docker |
+| `MICROSERVICIOS_URL` (web y servicios) | `http://{servicio}:{puerto}` | Cómo el web y cada servicio encuentran a los demás en la red de Docker |
 
 Redes: `datos` (interna: PostgreSQL, Redis y MongoDB sin puertos al equipo) y `publica` (web y servicios). Volúmenes:
 `datos_pg` y `datos_mongo`.
 
 ## Pruebas
 
-**Cambian datos: úsenlas en una base de pruebas** (requieren PostgreSQL y Redis con el modelo 01 a 08).
+**Cambian datos: úsenlas en una base de pruebas** (requieren PostgreSQL y Redis con el modelo 01 a 09).
 
 ```bash
 pip install -r servicios/requirements.txt mongomock
 cd servicios
-python -m unittest -v pruebas.test_unitarias          # 14 · sin bases de datos: formatos, validación, XSD, OpenAPI, cálculos
-python -m unittest -v pruebas.test_contrato           # 7  · los 10 servicios: recorridos de escritorio y Android, XML vs XSD, JSON vs ejemplos
-python -m unittest -v pruebas.test_web_integracion    # 5  · el web llamando a los servicios por HTTP real
+python -m unittest -v pruebas.test_unitarias          # 36 · sin bases de datos: formatos, validación, XSD, OpenAPI, precios, reposición, cliente entre servicios
+python -m unittest -v pruebas.test_contrato           # 7  · los 15 servicios: recorridos de escritorio y Android, XML vs XSD, JSON vs ejemplos
+python -m unittest -v pruebas.test_web_integracion    # 5  · el web llamando a los 15 servicios por HTTP real
+python -m unittest -v pruebas.test_ola1               # 24 · inventario, precios, proveedores, abastecimiento y notificaciones, con permisos por perfil
 ```
 
 ## Evidencias de petición y respuesta
 
-`pruebas/evidencias.py` ejecuta **93 casos reales** contra los servicios desplegados (correctos, datos inválidos, registros
+`pruebas/evidencias.py` ejecuta **204 casos reales** (los 93 del Segundo Parcial, 5 de salud y 106 de la Ola 1) contra los servicios desplegados (correctos, datos inválidos, registros
 inexistentes, sin permiso, token inválido, sesión revocada, errores de negocio, límite de consumo) y documenta de cada uno la
 petición, la respuesta y lo que quedó en PostgreSQL, MongoDB o Redis:
 
 ```bash
 docker compose -f docker-compose.integrado.yml exec entregas python pruebas/evidencias.py
-docker compose -f docker-compose.integrado.yml cp entregas:/tmp/evidencias ./evidencias
+docker compose -f docker-compose.integrado.yml cp entregas:/tmp/evidencias ./evidencias/ola1
 ```
 
-Resultado en `./evidencias`: `evidencias.html` (para capturas), `evidencias.md` (para el reporte), `pruebas.md` (tabla de
+Resultado en `./evidencias/ola1`: `evidencias.html` (para capturas), `evidencias.md` (para el reporte), `pruebas.md` (tabla de
 casos con esperado contra obtenido) y `evidencias.json`. Al final agota a propósito el límite de consumo de catálogos:
 espera un minuto antes de volver a usar ese servicio desde el mismo contenedor.
 
 Para probar las apps Android y de escritorio contra estos servicios, ver `INSTRUCCIONES_PARTE_B.md` en la raíz.
 
-La corrida principal se complementa con `pruebas/evidencias.py --complementarias` (3 casos: `DOC-11`, `PLA-17` y `USR-08`, en `evidencias/complementarias/`) para que las 45 operaciones tengan evidencia; ver `INVENTARIO_ENDPOINTS.md`.
+La corrida principal se complementa con `pruebas/evidencias.py --complementarias` (3 casos: `DOC-11`, `PLA-17` y `USR-08`, en `evidencias/ola1/complementarias/`) para que todas las operaciones tengan evidencia; ver `INVENTARIO_ENDPOINTS.md`, que escribe `pruebas/generar_inventario.py` a partir del código y de esos casos. La corrida del 13 de octubre (93 casos) se conserva en `evidencias/` porque el reporte del Segundo Parcial cita sus números.
 
 ## Decisiones
 
@@ -155,7 +170,15 @@ La corrida principal se complementa con `pruebas/evidencias.py --complementarias
   compilar (Android debug). TLS con proxy inverso queda para el despliegue en nube del Tercer Parcial.
 - **Token de renovación opaco** (`rt_…`) que se guarda en Redis como hash y sirve una sola vez; no puede usarse como acceso.
 - **Notificaciones automáticas por trigger**, no por llamada entre servicios: llegan aunque el cambio lo haga el web, un servicio
-  o un script.
+  o un script, y respetan las preferencias de quien las recibe.
+- **Un servicio no lee las tablas de otro.** Los de la Ola 1 son dueños de sus tablas; lo que no es suyo (nombres y precios base de
+  productos, alertas de inventario, ofertas de proveedores) lo piden por HTTP con el JWT de quien hizo la petición (`comun/clientes.py`).
+  La base de datos sigue siendo una sola; separarla por servicio queda declarado como deuda técnica.
+- **Recepción de mercancía sin pérdidas ni duplicados.** Abastecimiento guarda la recepción antes de avisar a inventario y cada línea lleva
+  una `operacion_uuid`. Si inventario no responde, la respuesta es 202 con la entrada pendiente, y repetir el POST sin líneas la aplica una
+  sola vez.
+- **La fecha de hoy es la de Monterrey.** PostgreSQL trabaja en UTC; `fn_hoy()` y `hoy()` evitan que una lista de precios que empieza «hoy»
+  empiece mañana a partir de las 6 de la tarde.
 - **MongoDB no bloquea la operación de pedidos**: si no responde, el cierre de entrega se aplica en PostgreSQL y solo se pierde
   el rastro analítico; los servicios cuyo almacén es MongoDB (documentos, recorrido, resumen) responden 503.
 
@@ -168,6 +191,6 @@ La corrida principal se complementa con `pruebas/evidencias.py --complementarias
 
 ## Inventario y revisión documental
 
-El código expone 45 operaciones de negocio por método y ruta; ver `INVENTARIO_ENDPOINTS.md`. Hay 10 contenedores de microservicios, 1 web, 3 almacenes y 1 de migraciones: 15 definidos, 14 continuos. Web espera migraciones y Redis; los diez servicios esperan migraciones, Redis y MongoDB.
+El código expone 98 operaciones de negocio por método y ruta (45 de los diez primeros servicios y 53 de la Ola 1, contando PUT y PATCH por separado); ver `INVENTARIO_ENDPOINTS.md`. Hay 15 contenedores de microservicios, 1 web, 3 almacenes y 1 de migraciones: 20 definidos, 19 continuos. Web espera migraciones y Redis; los quince servicios esperan migraciones, Redis y MongoDB.
 
-Los nueve XSD se conservan: `catalogos.xsd` atiende tres servicios y `entregas.xsd` también contiene estructuras de Seguimiento. `notificaciones.xsd` no representa un servicio activo.
+Los XSD: `catalogos.xsd` atiende tres servicios y `entregas.xsd` también contiene estructuras de Seguimiento. `inventario.xsd`, `precios.xsd`, `proveedores.xsd`, `abastecimiento.xsd` y `notificaciones.xsd` se generan con `contratos/generar.py` a partir de `contratos/ola1.py` (que también escribe los ejemplos XML y JSON); `comun_ola1.xsd` guarda las referencias que comparten. Para agregar un servicio, ver `NUEVO_SERVICIO.md`.
