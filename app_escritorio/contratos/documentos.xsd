@@ -41,6 +41,37 @@
       </xs:element>
       <xs:element name="contenido_base64" type="xs:string"/>
       <xs:element name="referencia" type="tns:TReferencia"/>
+      <xs:element name="privacidad" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="privado"/>
+            <xs:enumeration value="interno"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDocumentoMetadatos">
+    <xs:sequence>
+      <xs:element name="almacen">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="gcs"/>
+            <xs:enumeration value="local"/>
+            <xs:enumeration value="mongodb"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="origen">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="api"/>
+            <xs:enumeration value="web"/>
+            <xs:enumeration value="movil"/>
+            <xs:enumeration value="escritorio"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="TDocumento">
@@ -65,6 +96,24 @@
       <xs:element name="referencia" type="tns:TReferencia"/>
       <xs:element name="subido_por" type="xs:long"/>
       <xs:element name="creado_en" type="xs:dateTime"/>
+      <xs:element name="ruta" type="xs:string"/>
+      <xs:element name="privacidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="privado"/>
+            <xs:enumeration value="interno"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="activo"/>
+            <xs:enumeration value="eliminado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="metadatos" type="tns:TDocumentoMetadatos"/>
     </xs:sequence>
   </xs:complexType>
   <xs:annotation><xs:documentation>DocumentoLista: Página de documentos.</xs:documentation></xs:annotation>
@@ -102,7 +151,54 @@
       <xs:element name="referencia" type="tns:TReferencia"/>
       <xs:element name="subido_por" type="xs:long"/>
       <xs:element name="creado_en" type="xs:dateTime"/>
+      <xs:element name="ruta" type="xs:string"/>
+      <xs:element name="privacidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="privado"/>
+            <xs:enumeration value="interno"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="activo"/>
+            <xs:enumeration value="eliminado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="metadatos" type="tns:TDocumentoMetadatos"/>
       <xs:element name="contenido_base64" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:annotation><xs:documentation>DocumentoEnlace: URL firmada y con caducidad para descargar el archivo directo del bucket.</xs:documentation></xs:annotation>
+  <xs:complexType name="TDocumentoEnlace">
+    <xs:sequence>
+      <xs:element name="id">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9a-f]{24}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="url_firmada" type="xs:string"/>
+      <xs:element name="metodo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="GET"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="segundos">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="expira_en" type="xs:dateTime"/>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="TDocumentosPorTipo">
@@ -182,6 +278,15 @@
     <xs:complexType>
       <xs:complexContent>
         <xs:extension base="tns:TDocumentoContenido">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="documento_enlace">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TDocumentoEnlace">
           <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
         </xs:extension>
       </xs:complexContent>

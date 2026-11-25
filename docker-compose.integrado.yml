@@ -24,6 +24,11 @@ x-entorno: &entorno
   REDIS_URL: redis://redis:6379
   MONGO_URL: mongodb://mongo:27017/microhubs_eventos
   MICROSERVICIOS_URL: "http://{servicio}:{puerto}"     # cómo un servicio llama a otro por la red interna
+  # Almacén de archivos (servicios/comun/almacen.py): "local" en desarrollo; en la nube "gcs" + el bucket (deploy/gcp/.env)
+  ALMACEN: ${ALMACEN:-local}
+  GCS_BUCKET: ${GCS_BUCKET:-}
+  URL_FIRMADA_SEGUNDOS: ${URL_FIRMADA_SEGUNDOS:-300}
+  VERSION_DESPLEGADA: ${VERSION_DESPLEGADA:-1.0.0}         # lo que /salud informa como versión
 
 x-servicio: &servicio
   depends_on:
@@ -64,7 +69,7 @@ services:
     image: mongo:7
     volumes:
       - datos_mongo:/data/db
-      - ./bloque_c/mongo:/docker-entrypoint-initdb.d:ro    # 01 y 02 en el primer arranque
+      - ./bloque_c/mongo:/docker-entrypoint-initdb.d:ro    # 01, 02 y 03 en el primer arranque
     networks: [datos]
     healthcheck:
       test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]

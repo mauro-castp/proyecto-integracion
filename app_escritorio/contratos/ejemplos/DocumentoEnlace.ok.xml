@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documento_enlace xmlns="urn:microhubs:v1" version="1">
+  <id>665f1c2e8a3b4d0012a7c9e1</id>
+  <nombre>evidencia-entrega-61.jpg</nombre>
+  <url_firmada>https://storage.googleapis.com/microhubs-evidencias-637044/documentos/2026/10/665f1c2e8a3b4d0012a7c9e1.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Expires=300&amp;X-Goog-Signature=ejemplo</url_firmada>
+  <metodo>GET</metodo>
+  <segundos>300</segundos>
+  <expira_en>2026-10-12T18:34:30-06:00</expira_en>
+</documento_enlace>

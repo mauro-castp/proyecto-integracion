@@ -9,8 +9,11 @@
  * (servicios/comun/datos.py) y las colecciones se crean al primer insert.
  *
  * documentos           — evidencias de entrega y archivos (servicio 5107).
- *                        Binario de hasta 5 MB dentro del documento: muy por
- *                        debajo del límite de 16 MB de BSON, sin GridFS.
+ *                        Solo los DATOS del archivo: id, ruta del objeto en el bucket (Google
+ *                        Cloud Storage), tipo, tamaño, propietario (subido_por), fecha, SHA-256,
+ *                        privacidad, estado y metadatos. El archivo NO se guarda aquí.
+ *                        `contenido` (binario) sigue permitido solo para los documentos
+ *                        anteriores a la nube; documentos/migrar_a_almacen.py los mueve al bucket.
  * ubicaciones_entrega  — puntos GPS del recorrido del repartidor (5105).
  *                        Alta frecuencia y esquema simple: no pertenecen a
  *                        PostgreSQL. Índice 2dsphere para consultas espaciales.
@@ -22,8 +25,16 @@ db.createCollection("documentos", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["nombre", "tipo_mime", "tamano_bytes", "sha256", "referencia", "subido_por", "creado_en", "contenido"],
+      required: ["nombre", "tipo_mime", "tamano_bytes", "sha256", "referencia", "subido_por", "creado_en"],
       properties: {
+        ruta: { bsonType: "string", maxLength: 300, description: "Clave del objeto en el bucket: documentos/AAAA/MM/<id>.<ext>" },
+        privacidad: { enum: ["privado", "interno"] },
+        estado: { enum: ["activo", "eliminado"] },
+        eliminado_en: { bsonType: "date" },
+        metadatos: {
+          bsonType: "object",
+          properties: { almacen: { enum: ["gcs", "local", "mongodb"] }, origen: { enum: ["api", "web", "movil", "escritorio"] } }
+        },
         nombre: { bsonType: "string", maxLength: 160 },
         tipo_mime: { enum: ["image/jpeg", "image/png", "application/pdf"] },
         tamano_bytes: { bsonType: ["int", "long"], minimum: 1, maximum: 5242880 },

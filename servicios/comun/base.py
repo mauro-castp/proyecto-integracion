@@ -28,7 +28,7 @@ import redis
 from flask import Flask, Response, g, request
 from werkzeug.exceptions import HTTPException
 
-from . import config
+from . import almacen, config
 from .base_errores import ErrorApi, filtro_invalido
 from .datos import (ahora, auditar, conexion, mensaje_motor, mongo, mongo_disponible, mongo_insertar,
                     permisos_de, r_cache, r_sesion)
@@ -295,6 +295,12 @@ def crear_app(servicio, titulo, descripcion, puerto, dependencias=("postgres", "
         g.excepcion = f"{type(e).__name__}: {e}"
         return respuesta_error(503, "SERVICIO_NO_DISPONIBLE", "Una base de datos no responde. Intenta más tarde.")
 
+    @app.errorhandler(almacen.ErrorAlmacen)
+    def _error_almacen(e):
+        g.excepcion = f"ErrorAlmacen: {e}"
+        print(json.dumps({"nivel": "ERROR", "traza_id": g.get("traza_id"), "error": g.excepcion}), file=sys.stderr, flush=True)
+        return respuesta_error(503, "SERVICIO_NO_DISPONIBLE", "El almacén de archivos no responde. Intenta más tarde.")
+
     @app.errorhandler(Exception)
     def _error_interno(e):
         g.excepcion = f"{type(e).__name__}: {e}"
@@ -307,15 +313,22 @@ def crear_app(servicio, titulo, descripcion, puerto, dependencias=("postgres", "
     @app.get(f"{config.PREFIJO}/salud")
     @app.get(f"{config.PREFIJO}/health")
     def salud():
-        dep = {"postgres": "no_aplica", "redis": "no_aplica", "mongo": "no_aplica"}
+        """Estado del proceso, de PostgreSQL, Redis, MongoDB y del bucket, versión desplegada y tiempo de respuesta.
+        `bucket` solo se comprueba en los servicios que guardan archivos (los demás no dependen de él: si el bucket
+        cae, no deben aparecer degradados)."""
+        inicio = time.perf_counter()
+        dep = {"postgres": "no_aplica", "redis": "no_aplica", "mongo": "no_aplica", "bucket": "no_aplica"}
         if "postgres" in dependencias:
             dep["postgres"] = "ok" if _probar(_pg) else "error"
         if "redis" in dependencias:
             dep["redis"] = "ok" if _probar(r_sesion.ping) else "error"
         if "mongo" in dependencias:
             dep["mongo"] = "ok" if mongo_disponible() else "error"
+        if "bucket" in dependencias:
+            dep["bucket"] = "ok" if _probar(lambda: _exigir(almacen.obtener().disponible())) else "error"
         estado = "ok" if "error" not in dep.values() else "degradado"
-        cuerpo = {"servicio": servicio, "version": config.VERSION, "estado": estado, "dependencias": dep}
+        cuerpo = {"servicio": servicio, "version": config.VERSION, "estado": estado, "dependencias": dep,
+                  "tiempo_ms": round((time.perf_counter() - inicio) * 1000, 1)}
         return responder(cuerpo, 200 if estado == "ok" else 503, raiz="salud")
 
     @app.get(f"{config.PREFIJO}/openapi.json")
@@ -401,6 +414,11 @@ def _probar(fn):
         return True
     except Exception:
         return False
+
+
+def _exigir(condicion):
+    if not condicion:
+        raise RuntimeError("dependencia no disponible")
 
 
 def _pg():

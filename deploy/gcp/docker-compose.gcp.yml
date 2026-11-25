@@ -1,0 +1,58 @@
+# docker-compose.gcp.yml — GENERADO por deploy/gcp/generar.py: no editar a mano.
+#
+# Ajustes para la nube. Se usa JUNTO con el compose base (los valores de ALMACEN, GCS_BUCKET, SECRET_KEY, etc. salen de .env):
+#   docker compose --env-file .env -f docker-compose.integrado.yml -f deploy/gcp/docker-compose.gcp.yml up -d --build
+#
+# Los puertos del portal (5000) y de los servicios (5101-5124) se publican solo en 127.0.0.1: desde Internet solo se llega a
+# Nginx (80/443). PostgreSQL, Redis y MongoDB no publican puertos (red interna).
+# `!override` reemplaza la lista de puertos del compose base (sin el, se sumaria y seguirian abiertos).
+
+services:
+  web:
+    ports: !override ["127.0.0.1:5000:5000"]
+  auth:
+    ports: !override ["127.0.0.1:5101:5101"]
+  usuarios:
+    ports: !override ["127.0.0.1:5102:5102"]
+  productos:
+    ports: !override ["127.0.0.1:5103:5103"]
+  pedidos:
+    ports: !override ["127.0.0.1:5104:5104"]
+  entregas:
+    ports: !override ["127.0.0.1:5105:5105"]
+  planeacion:
+    ports: !override ["127.0.0.1:5106:5106"]
+  documentos:
+    ports: !override ["127.0.0.1:5107:5107"]
+  zonas:
+    ports: !override ["127.0.0.1:5108:5108"]
+  microhubs:
+    ports: !override ["127.0.0.1:5109:5109"]
+  seguimiento:
+    ports: !override ["127.0.0.1:5110:5110"]
+  inventario:
+    ports: !override ["127.0.0.1:5111:5111"]
+  precios:
+    ports: !override ["127.0.0.1:5112:5112"]
+  proveedores:
+    ports: !override ["127.0.0.1:5113:5113"]
+  abastecimiento:
+    ports: !override ["127.0.0.1:5114:5114"]
+  demanda:
+    ports: !override ["127.0.0.1:5115:5115"]
+  cobertura:
+    ports: !override ["127.0.0.1:5116:5116"]
+  capacidad:
+    ports: !override ["127.0.0.1:5117:5117"]
+  rutas:
+    ports: !override ["127.0.0.1:5118:5118"]
+  costos:
+    ports: !override ["127.0.0.1:5119:5119"]
+  punto-equilibrio:
+    ports: !override ["127.0.0.1:5120:5120"]
+  simulacion:
+    ports: !override ["127.0.0.1:5121:5121"]
+  surtido:
+    ports: !override ["127.0.0.1:5122:5122"]
+  notificaciones:
+    ports: !override ["127.0.0.1:5124:5124"]

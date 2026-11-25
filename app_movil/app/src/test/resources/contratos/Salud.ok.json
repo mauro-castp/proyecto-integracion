@@ -5,6 +5,8 @@
   "dependencias": {
     "postgres": "ok",
     "redis": "ok",
-    "mongo": "no_aplica"
-  }
+    "mongo": "no_aplica",
+    "bucket": "no_aplica"
+  },
+  "tiempo_ms": 3.2
 }

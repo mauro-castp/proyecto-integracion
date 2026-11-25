@@ -9,5 +9,12 @@
     "id": "61"
   },
   "subido_por": 7,
-  "creado_en": "2026-10-12T18:29:30-06:00"
+  "creado_en": "2026-10-12T18:29:30-06:00",
+  "ruta": "documentos/2026/10/665f1c2e8a3b4d0012a7c9e1.jpg",
+  "privacidad": "privado",
+  "estado": "activo",
+  "metadatos": {
+    "almacen": "gcs",
+    "origen": "movil"
+  }
 }

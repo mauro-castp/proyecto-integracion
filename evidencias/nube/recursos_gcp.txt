@@ -1,0 +1,71 @@
+# Recursos de GCP de la plataforma de Microhubs (obtenidos con gcloud el 2026-11-25 12:26). Sin llaves ni secretos.
+
+## Máquina virtual
+NAME: microhubs-vm
+ZONE: northamerica-south1-c
+MACHINE_TYPE: e2-standard-4
+STATUS: RUNNING
+DISCO_GB: 80
+TIPO_DISCO: PERSISTENT
+ETIQUETAS: microhubs
+LABELS: {'entorno': 'entrega', 'proyecto': 'microhubs'}
+
+## IP externa fija
+NAME: microhubs-ip
+ADDRESS: 34.51.89.253
+STATUS: IN_USE
+ADDRESS_TYPE: EXTERNAL
+
+## Firewall (solo 80/443 hacia la etiqueta microhubs)
+allowed:
+- IPProtocol: tcp
+  ports:
+  - '80'
+- IPProtocol: tcp
+  ports:
+  - '443'
+direction: INGRESS
+name: microhubs-web
+sourceRanges:
+- 0.0.0.0/0
+targetTags:
+- microhubs
+
+## Bucket (privado, acceso uniforme, acceso público bloqueado)
+location: NORTHAMERICA-SOUTH1
+name: microhubs-evidencias-637044
+public_access_prevention: enforced
+soft_delete_policy:
+  effectiveTime: '2026-11-25T17:54:07.386000+00:00'
+  retentionDurationSeconds: '604800'
+uniform_bucket_level_access: true
+
+## Permisos del bucket (solo la cuenta de servicio de la VM)
+bindings:
+- members:
+  - projectEditor:integracion-sistemas-637044
+  - projectOwner:integracion-sistemas-637044
+  role: roles/storage.legacyBucketOwner
+- members:
+  - projectViewer:integracion-sistemas-637044
+  role: roles/storage.legacyBucketReader
+- members:
+  - projectEditor:integracion-sistemas-637044
+  - projectOwner:integracion-sistemas-637044
+  role: roles/storage.legacyObjectOwner
+- members:
+  - projectViewer:integracion-sistemas-637044
+  role: roles/storage.legacyObjectReader
+- members:
+  - serviceAccount:microhubs-vm@integracion-sistemas-637044.iam.gserviceaccount.com
+  role: roles/storage.objectAdmin
+
+## Roles de la cuenta de servicio de la VM en el proyecto
+ROLE: roles/logging.logWriter
+
+ROLE: roles/monitoring.metricWriter
+
+## Llaves de la cuenta de servicio (debe ser solo las administradas por Google, ninguna descargada)
+KEY_ID: 23debf1885f79f65b12ae78ffd7b5f59fed4e7f0
+KEY_TYPE: SYSTEM_MANAGED
+CREATED_AT: 2026-11-25T17:54:03Z

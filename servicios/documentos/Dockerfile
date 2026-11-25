@@ -1,5 +1,5 @@
 # Microservicio documentos · puerto 5107
-# Documentos: evidencias y archivos en MongoDB.
+# Documentos: evidencias y archivos. El archivo vive en el almacén de objetos (Google Cloud Storage); MongoDB guarda solo sus datos.
 #
 # Contexto de construcción: la RAÍZ del repositorio (docker-compose.integrado.yml lo indica), porque la
 # imagen incluye los XSD y ejemplos oficiales del contrato v1 y la base común servicios/comun.

@@ -33,7 +33,14 @@ LIMITE_LOGIN_POR_MINUTO = int(os.environ.get("LIMITE_LOGIN_POR_MINUTO", "30"))
 MAX_CUERPO_BYTES = 8 * 1024 * 1024
 MAX_ARCHIVO_BYTES = 5 * 1024 * 1024
 
-VERSION = "1.0.0"
+# Almacén de archivos (ver comun/almacen.py). "gcs" en la nube; "local" (carpeta del contenedor) en desarrollo y pruebas.
+ALMACEN = os.environ.get("ALMACEN", "local").strip().lower()
+GCS_BUCKET = os.environ.get("GCS_BUCKET", "").strip()
+ALMACEN_DIR = os.environ.get("ALMACEN_DIR", "/tmp/microhubs_almacen")
+# Cuánto vive una URL firmada de descarga (segundos): corta a propósito; cada descarga pide una nueva.
+URL_FIRMADA_SEGUNDOS = int(os.environ.get("URL_FIRMADA_SEGUNDOS", "300"))
+
+VERSION = os.environ.get("VERSION_DESPLEGADA", "1.0.0")      # en la nube: etiqueta o commit desplegado
 PREFIJO = "/api/v1"
 
 # Puertos de los servicios que existen. Cada uno se llama por su nombre en la red de Docker.
