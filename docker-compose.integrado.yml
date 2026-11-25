@@ -5,8 +5,9 @@
 #
 # Levanta PostgreSQL, Redis y MongoDB, el sistema web (http://localhost:5000)
 # y los microservicios del contrato v1, cada uno en su contenedor y su puerto:
-# 5101 a 5110 (Primer avance del Segundo Parcial) y, de la Ola 1, inventario (5111),
-# precios (5112), proveedores (5113), abastecimiento (5114) y notificaciones (5124).
+# 5101 a 5110 (Segundo Parcial), de la Ola 1 inventario (5111), precios (5112), proveedores (5113),
+# abastecimiento (5114) y notificaciones (5124), y de la Ola 2 demanda (5115), cobertura (5116),
+# capacidad (5117), rutas (5118), costos (5119), punto-equilibrio (5120), simulacion (5121) y surtido (5122).
 #
 #   Swagger de cada servicio:  http://localhost:PUERTO/api/v1/docs
 #   Salud de cada servicio:    http://localhost:PUERTO/api/v1/salud
@@ -41,7 +42,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-microhubs_dev}
     volumes:
       - datos_pg:/var/lib/postgresql/data
-      - ./bloque_c/sql:/docker-entrypoint-initdb.d:ro       # 01 a 09 en el primer arranque
+      - ./bloque_c/sql:/docker-entrypoint-initdb.d:ro       # 01 a 10 en el primer arranque
     networks: [datos]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U microhubs -d microhubs_p1"]
@@ -71,7 +72,7 @@ services:
       timeout: 5s
       retries: 12
 
-  # Aplica 06 a 09 a volúmenes que ya existían (idempotente) y termina.
+  # Aplica 06 a 10 a volúmenes que ya existían (idempotente) y termina.
   migraciones:
     build: {context: ., dockerfile: servicios/auth/Dockerfile}
     command: ["python", "migrar.py"]
@@ -190,6 +191,54 @@ services:
     build: {context: ., dockerfile: servicios/notificaciones/Dockerfile}
     environment: *entorno
     ports: ["5124:5124"]
+
+  demanda:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/demanda/Dockerfile}
+    environment: *entorno
+    ports: ["5115:5115"]
+
+  cobertura:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/cobertura/Dockerfile}
+    environment: *entorno
+    ports: ["5116:5116"]
+
+  capacidad:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/capacidad/Dockerfile}
+    environment: *entorno
+    ports: ["5117:5117"]
+
+  rutas:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/rutas/Dockerfile}
+    environment: *entorno
+    ports: ["5118:5118"]
+
+  costos:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/costos/Dockerfile}
+    environment: *entorno
+    ports: ["5119:5119"]
+
+  punto-equilibrio:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/punto_equilibrio/Dockerfile}
+    environment: *entorno
+    ports: ["5120:5120"]
+
+  simulacion:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/simulacion/Dockerfile}
+    environment: *entorno
+    ports: ["5121:5121"]
+
+  surtido:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/surtido/Dockerfile}
+    environment: *entorno
+    ports: ["5122:5122"]
 
 networks:
   publica:
