@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trazabilidad xmlns="urn:microhubs:v1" version="1">
+  <objeto>
+    <tipo>pedido</tipo>
+    <id>163</id>
+  </objeto>
+  <total>2</total>
+  <eventos>
+    <evento>
+      <fecha>2026-11-25T10:30:00-06:00</fecha>
+      <origen>estados</origen>
+      <accion>cambio_estado</accion>
+      <descripcion>confirmado → en_preparacion</descripcion>
+      <usuario>
+        <id>3</id>
+        <nombre>Mariana Ortega</nombre>
+      </usuario>
+      <entidad>
+        <tipo>pedido</tipo>
+        <id>163</id>
+      </entidad>
+      <cambios />
+    </evento>
+    <evento>
+      <fecha>2026-11-25T10:30:00-06:00</fecha>
+      <origen>auditoria</origen>
+      <accion>cambio_estado</accion>
+      <descripcion>estado: confirmado → en_preparacion</descripcion>
+      <usuario>
+        <id>3</id>
+        <nombre>Mariana Ortega</nombre>
+      </usuario>
+      <entidad>
+        <tipo>pedido</tipo>
+        <id>163</id>
+      </entidad>
+      <cambios>
+        <cambio>
+          <campo>estado</campo>
+          <anterior>confirmado</anterior>
+          <nuevo>en_preparacion</nuevo>
+        </cambio>
+      </cambios>
+    </evento>
+  </eventos>
+</trazabilidad>

@@ -1,0 +1,44 @@
+{
+  "generado_en": "2026-11-25T10:30:00-06:00",
+  "resumen": {
+    "total": 24,
+    "ok": 22,
+    "degradados": 1,
+    "caidos": 1,
+    "sin_datos": 0,
+    "alertas_abiertas": 2,
+    "monitor_activo": true,
+    "intervalo_seg": 30,
+    "ultima_ronda": "2026-11-25T10:30:00-06:00"
+  },
+  "servicios": [
+    {
+      "servicio": "pedidos",
+      "puerto": 5104,
+      "estado": "ok",
+      "verificado_en": "2026-11-25T10:30:00-06:00",
+      "antiguedad_seg": 12,
+      "tiempo_ms": 18.4,
+      "version": "1.0.0",
+      "dependencias": {
+        "postgres": "ok",
+        "redis": "ok",
+        "mongo": "ok",
+        "bucket": "no_aplica"
+      },
+      "error": null,
+      "peticiones_hora": 340,
+      "errores_5xx_hora": 0,
+      "disponibilidad_24h_pct": 100.0,
+      "bajo_objetivo": false
+    }
+  ],
+  "dependencias_caidas": [
+    {
+      "dependencia": "bucket",
+      "afectados": [
+        "documentos"
+      ]
+    }
+  ]
+}

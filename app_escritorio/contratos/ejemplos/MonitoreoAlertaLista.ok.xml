@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monitoreo_alertas xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <datos>
+    <alerta>
+      <id>12</id>
+      <servicio>documentos</servicio>
+      <tipo>dependencia_caida</tipo>
+      <severidad>alta</severidad>
+      <detalle>documentos no alcanza: bucket.</detalle>
+      <abierta_en>2026-11-25T10:30:00-06:00</abierta_en>
+      <cerrada_en xsi:nil="true" />
+      <duracion_seg>95</duracion_seg>
+      <reconocida>
+        <por>
+          <id>3</id>
+          <nombre>Mariana Ortega</nombre>
+        </por>
+        <en>2026-11-25T10:30:00-06:00</en>
+      </reconocida>
+    </alerta>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</monitoreo_alertas>

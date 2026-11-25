@@ -245,6 +245,12 @@ services:
     environment: *entorno
     ports: ["5122:5122"]
 
+  auditoria-monitoreo:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/auditoria_monitoreo/Dockerfile}
+    environment: *entorno
+    ports: ["5126:5126"]
+
 networks:
   publica:
   datos:

@@ -1,0 +1,45 @@
+{
+  "objeto": {
+    "tipo": "pedido",
+    "id": "163"
+  },
+  "total": 2,
+  "eventos": [
+    {
+      "fecha": "2026-11-25T10:30:00-06:00",
+      "origen": "estados",
+      "accion": "cambio_estado",
+      "descripcion": "confirmado → en_preparacion",
+      "usuario": {
+        "id": 3,
+        "nombre": "Mariana Ortega"
+      },
+      "entidad": {
+        "tipo": "pedido",
+        "id": "163"
+      },
+      "cambios": []
+    },
+    {
+      "fecha": "2026-11-25T10:30:00-06:00",
+      "origen": "auditoria",
+      "accion": "cambio_estado",
+      "descripcion": "estado: confirmado → en_preparacion",
+      "usuario": {
+        "id": 3,
+        "nombre": "Mariana Ortega"
+      },
+      "entidad": {
+        "tipo": "pedido",
+        "id": "163"
+      },
+      "cambios": [
+        {
+          "campo": "estado",
+          "anterior": "confirmado",
+          "nuevo": "en_preparacion"
+        }
+      ]
+    }
+  ]
+}

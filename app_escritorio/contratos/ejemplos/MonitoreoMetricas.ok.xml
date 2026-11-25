@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monitoreo_metricas xmlns="urn:microhubs:v1" version="1">
+  <minutos>60</minutos>
+  <peticiones_total>340</peticiones_total>
+  <servicios>
+    <servicio>
+      <servicio>pedidos</servicio>
+      <peticiones>340</peticiones>
+      <errores_5xx>0</errores_5xx>
+      <errores_4xx>4</errores_4xx>
+      <tasa_5xx_pct>0.0</tasa_5xx_pct>
+      <duracion_p50_ms>21</duracion_p50_ms>
+      <duracion_p95_ms>80</duracion_p95_ms>
+      <duracion_p99_ms>140</duracion_p99_ms>
+    </servicio>
+  </servicios>
+</monitoreo_metricas>

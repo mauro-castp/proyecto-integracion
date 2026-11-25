@@ -54,7 +54,8 @@ PUERTOS = {"auth": 5101, "usuarios": 5102, "productos": 5103, "pedidos": 5104, "
            "planeacion": 5106, "documentos": 5107, "zonas": 5108, "microhubs": 5109, "seguimiento": 5110,
            "inventario": 5111, "precios": 5112, "proveedores": 5113, "abastecimiento": 5114,
            "demanda": 5115, "cobertura": 5116, "capacidad": 5117, "rutas": 5118, "costos": 5119,
-           "punto-equilibrio": 5120, "simulacion": 5121, "surtido": 5122, "notificaciones": 5124}
+           "punto-equilibrio": 5120, "simulacion": 5121, "surtido": 5122, "notificaciones": 5124,
+           "auditoria-monitoreo": 5126}
 JPEG = bytes([0xFF, 0xD8, 0xFF, 0xE0, 0, 16, 74, 70, 73, 70, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0]) + bytes(range(256))
 _servidores = []
 APPS = {}
@@ -165,6 +166,38 @@ class WebConMicroservicios(unittest.TestCase):
             r = self.cliente().get("/web/servicios")
             self.assertEqual(r.status_code, 200)
             self.assertIn("sin respuesta", r.get_data(as_text=True))
+        finally:
+            integracion.PLANTILLA = original
+
+    def test_6_panel_central_de_monitoreo(self):
+        c = self.cliente()
+        r = c.post("/web/servicios/monitoreo", data={"csrf": "csrf-de-prueba", "accion": "verificar"})
+        self.assertEqual(r.status_code, 302, "verificar ahora vuelve al panel")
+        html = c.get("/web/servicios/monitoreo").get_data(as_text=True)
+        self.assertIn("Panel de monitoreo", html)
+        self.assertEqual(html.count('<span class="pill verde">ok</span>'), len(PUERTOS), "el panel muestra a cada servicio sano")
+        self.assertIn("Sin alertas abiertas.", html)
+        self.assertNotIn("Dependencias con falla", html)
+        self.assertEqual(c.post("/web/servicios/monitoreo", data={"csrf": "otro", "accion": "verificar"}).status_code, 400)
+        self.assertEqual(self.web.test_client().get("/web/servicios/monitoreo").status_code, 302, "sin sesión manda al login")
+
+    def test_7_el_panel_es_solo_para_quien_tiene_permiso(self):
+        import nucleo
+        op = datos.consultar("SELECT id, microhub_id FROM usuario WHERE correo = 'operador.mh01@codex.mx'", una=True)
+        with self.web.test_request_context():
+            token = nucleo.emitir_token({"id": op["id"], "rol": "operador", "nombre": "Operador", "microhub_id": op["microhub_id"]})
+        c = self.web.test_client()
+        c.set_cookie("sesion", token)
+        self.assertEqual(c.get("/web/servicios/monitoreo").status_code, 403)
+
+    def test_8_sin_el_servicio_de_monitoreo_el_panel_avisa_y_el_web_sigue(self):
+        import integracion
+        original = integracion.PLANTILLA
+        integracion.PLANTILLA = "http://127.0.0.1:1{puerto}"
+        try:
+            r = self.cliente().get("/web/servicios/monitoreo")
+            self.assertEqual(r.status_code, 200)
+            self.assertIn("El servicio de monitoreo no respondió", r.get_data(as_text=True))
         finally:
             integracion.PLANTILLA = original
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monitoreo_historial xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <datos>
+    <verificacion>
+      <verificado_en>2026-11-25T10:30:00-06:00</verificado_en>
+      <estado>ok</estado>
+      <http_status>200</http_status>
+      <tiempo_ms>18.4</tiempo_ms>
+      <version>1.0.0</version>
+      <dependencias>
+        <postgres>ok</postgres>
+        <redis>ok</redis>
+        <mongo>ok</mongo>
+        <bucket>no_aplica</bucket>
+      </dependencias>
+      <error xsi:nil="true" />
+    </verificacion>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</monitoreo_historial>

@@ -28,7 +28,8 @@ from comun.validar import Campo, validar  # noqa: E402
 
 SERVICIOS = ["auth", "usuarios", "productos", "pedidos", "entregas", "planeacion", "documentos", "zonas", "microhubs", "seguimiento",
              "inventario", "precios", "proveedores", "abastecimiento", "notificaciones",
-             "demanda", "cobertura", "capacidad", "rutas", "costos", "punto-equilibrio", "simulacion", "surtido"]
+             "demanda", "cobertura", "capacidad", "rutas", "costos", "punto-equilibrio", "simulacion", "surtido",
+             "auditoria-monitoreo"]
 
 
 def cargar(nombre):

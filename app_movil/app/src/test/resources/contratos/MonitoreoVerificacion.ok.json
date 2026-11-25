@@ -1,0 +1,14 @@
+{
+  "verificados": 1,
+  "ok": 1,
+  "degradados": 0,
+  "caidos": 0,
+  "servicios": [
+    {
+      "servicio": "pedidos",
+      "estado": "ok",
+      "tiempo_ms": 18.4,
+      "error": null
+    }
+  ]
+}

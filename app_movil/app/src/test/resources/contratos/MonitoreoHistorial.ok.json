@@ -1,0 +1,24 @@
+{
+  "datos": [
+    {
+      "verificado_en": "2026-11-25T10:30:00-06:00",
+      "estado": "ok",
+      "http_status": 200,
+      "tiempo_ms": 18.4,
+      "version": "1.0.0",
+      "dependencias": {
+        "postgres": "ok",
+        "redis": "ok",
+        "mongo": "ok",
+        "bucket": "no_aplica"
+      },
+      "error": null
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

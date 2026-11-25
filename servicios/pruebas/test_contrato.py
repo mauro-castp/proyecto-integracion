@@ -37,7 +37,8 @@ if not config.MONGO_URL:
 
 SERVICIOS = ["auth", "usuarios", "productos", "pedidos", "entregas", "planeacion", "documentos", "zonas", "microhubs", "seguimiento",
              "inventario", "precios", "proveedores", "abastecimiento", "notificaciones",
-             "demanda", "cobertura", "capacidad", "rutas", "costos", "punto-equilibrio", "simulacion", "surtido"]
+             "demanda", "cobertura", "capacidad", "rutas", "costos", "punto-equilibrio", "simulacion", "surtido",
+             "auditoria-monitoreo"]
 APPS = {s: importlib.import_module(f"{s.replace('-', '_')}.app").app for s in SERVICIOS}
 CLAVE = os.environ.get("MICROHUBS_CLAVE", "Codex#2026")
 EJEMPLOS = config.EJEMPLOS_JSON

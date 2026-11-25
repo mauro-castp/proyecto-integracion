@@ -15,7 +15,7 @@ from . import config
 ARCHIVOS = ["comun", "comun_ola1", "auth", "usuarios", "catalogos", "pedidos", "entregas",
             "planeacion", "documentos", "notificaciones", "inventario", "precios", "proveedores", "abastecimiento",
             "comun_ola2", "pedidos_ola2", "entregas_ola2", "inventario_ola2", "demanda", "cobertura", "capacidad", "rutas", "costos",
-            "punto_equilibrio", "simulacion", "surtido"]
+            "punto_equilibrio", "simulacion", "surtido", "auditoria_monitoreo"]
 
 
 @lru_cache(maxsize=1)

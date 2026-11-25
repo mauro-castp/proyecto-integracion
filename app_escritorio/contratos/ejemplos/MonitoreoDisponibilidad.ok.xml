@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monitoreo_disponibilidad xmlns="urn:microhubs:v1" version="1">
+  <horas>24</horas>
+  <objetivo_pct>99.0</objetivo_pct>
+  <servicios>
+    <servicio>
+      <servicio>pedidos</servicio>
+      <verificaciones>2880</verificaciones>
+      <caidas>0</caidas>
+      <disponibilidad_pct>100.0</disponibilidad_pct>
+      <salud_plena_pct>100.0</salud_plena_pct>
+      <tiempo_p50_ms>14.2</tiempo_p50_ms>
+      <tiempo_p95_ms>31.0</tiempo_p95_ms>
+      <tiempo_max_ms>120.5</tiempo_max_ms>
+      <bajo_objetivo>false</bajo_objetivo>
+    </servicio>
+  </servicios>
+</monitoreo_disponibilidad>

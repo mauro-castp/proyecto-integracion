@@ -42,7 +42,8 @@ PUERTOS = {"auth": 5101, "usuarios": 5102, "productos": 5103, "pedidos": 5104, "
            "planeacion": 5106, "documentos": 5107, "zonas": 5108, "microhubs": 5109, "seguimiento": 5110,
            "inventario": 5111, "precios": 5112, "proveedores": 5113, "abastecimiento": 5114,
            "demanda": 5115, "cobertura": 5116, "capacidad": 5117, "rutas": 5118, "costos": 5119,
-           "punto-equilibrio": 5120, "simulacion": 5121, "surtido": 5122, "notificaciones": 5124}
+           "punto-equilibrio": 5120, "simulacion": 5121, "surtido": 5122, "notificaciones": 5124,
+           "auditoria-monitoreo": 5126}
 # Dentro de docker-compose.integrado.yml cada servicio se alcanza por su nombre en la red interna.
 PLANTILLA = os.environ.get("MICROSERVICIOS_URL", "http://{servicio}:{puerto}")
 TIEMPO_ESPERA = float(os.environ.get("MICROSERVICIOS_TIEMPO", "4"))
@@ -139,6 +140,40 @@ def tablero():
     host = request.host.split(":")[0]
     return render_template("web_servicios.html", salud=salud, resumen_docs=resumen_docs, resumen_sim=resumen_sim,
                            ejemplo_xml=ejemplo_xml, host=host)
+
+
+@servicios_bp.route("/monitoreo", methods=["GET", "POST"])
+def monitoreo():
+    """Panel central de monitoreo: lo que dice el servicio auditoria-monitoreo sobre la salud de todos los servicios."""
+    if (r := _requiere_sesion()):
+        return r
+    from web_ampliado import permisos_usuario
+    permisos = permisos_usuario()
+    if "monitoreo.ver" not in permisos:
+        abort(403)
+    if request.method == "POST":
+        if not _csrf_valido():
+            abort(400, "Formulario vencido; recarga la página.")
+        if "monitoreo.operar" not in permisos:
+            abort(403)
+        if request.form.get("accion") == "verificar":
+            ll = llamar("auditoria-monitoreo", "POST", "monitoreo/verificaciones", {})
+            flash(f"Verificación terminada: {ll.datos['ok']} ok, {ll.datos['degradados']} degradados, {ll.datos['caidos']} caídos." if ll.ok
+                  else f"No se pudo verificar: {ll.mensaje or ll.status}", "ok" if ll.ok else "alto")
+        elif request.form.get("accion") == "reconocer" and (request.form.get("alerta") or "").isdigit():
+            ll = llamar("auditoria-monitoreo", "POST", f"monitoreo/alertas/{int(request.form['alerta'])}/reconocer", {})
+            flash("Alerta reconocida." if ll.ok else f"No se pudo reconocer: {ll.mensaje or ll.status}", "ok" if ll.ok else "alto")
+        return redirect(url_for("servicios.monitoreo"))
+    estado = llamar("auditoria-monitoreo", "GET", "monitoreo/estado")
+    alertas = llamar("auditoria-monitoreo", "GET", "monitoreo/alertas?estado=abiertas&por_pagina=50")
+    cerradas = llamar("auditoria-monitoreo", "GET", "monitoreo/alertas?estado=cerradas&por_pagina=10")
+    disponibilidad = llamar("auditoria-monitoreo", "GET", "monitoreo/disponibilidad?horas=24")
+    if estado.status in (401, 403):
+        abort(estado.status)
+    return render_template("web_monitoreo.html", estado=estado, alertas=alertas, cerradas=cerradas, disponibilidad=disponibilidad,
+                           puede_operar="monitoreo.operar" in permisos,
+                           disp={s["servicio"]: s for s in (disponibilidad.datos or {}).get("servicios", [])} if disponibilidad.ok else {},
+                           host=request.host.split(":")[0])
 
 
 @servicios_bp.route("/pedido/<int:pid>", methods=["GET", "POST"])

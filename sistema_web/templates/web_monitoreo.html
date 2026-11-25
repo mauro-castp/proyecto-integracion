@@ -1,0 +1,54 @@
+{% extends 'base.html' %}{% block titulo %}Monitoreo{% endblock %}{% block cuerpo %}
+<meta http-equiv="refresh" content="30">
+<h1>Panel de monitoreo</h1>
+<p class="sub">Salud de todos los servicios, según el servicio de auditoría y monitoreo (<code>auditoria-monitoreo</code>, puerto 5126). Se actualiza solo cada 30 segundos.</p>
+
+{% if not estado.ok %}
+<div class="aviso alto">El servicio de monitoreo no respondió: {{ estado.mensaje or estado.status }}. Sin él no hay panel; el resto del portal sigue funcionando.</div>
+{% else %}
+{% set r = estado.datos.resumen %}
+{% if not r.monitor_activo %}<div class="aviso alto">El verificador no ha corrido en los últimos minutos{% if r.ultima_ronda %} (última ronda: {{ r.ultima_ronda }}){% endif %}. Los estados de abajo pueden estar vencidos.</div>{% endif %}
+<div class="kpis">
+  <div class="kpi"><div class="v">{{ r.total }}</div><div class="l">Servicios vigilados</div></div>
+  <div class="kpi"><div class="v">{{ r.ok }}</div><div class="l">Sanos</div></div>
+  <div class="kpi"><div class="v">{{ r.degradados }}</div><div class="l">Degradados (una dependencia falla)</div></div>
+  <div class="kpi"><div class="v">{{ r.caidos }}</div><div class="l">Caídos (no responden)</div></div>
+  <div class="kpi"><div class="v">{{ r.alertas_abiertas }}</div><div class="l">Alertas abiertas</div></div>
+</div>
+{% if puede_operar %}<form method="post" style="margin:8px 0"><input type="hidden" name="csrf" value="{{ web_csrf() }}"><input type="hidden" name="accion" value="verificar"><button class="btn">Verificar ahora</button> <span class="ayuda">Cada {{ r.intervalo_seg }} s se verifica sola. Última ronda: {{ r.ultima_ronda or 'ninguna' }}.</span></form>{% endif %}
+
+{% if estado.datos.dependencias_caidas %}
+<div class="panel"><h2>Dependencias con falla</h2>
+{% for d in estado.datos.dependencias_caidas %}<div class="aviso alto"><b>{{ d.dependencia }}</b> falla y alcanza a {{ d.afectados|length }} servicio{{ 's' if d.afectados|length != 1 }}: {{ d.afectados|join(', ') }}.</div>{% endfor %}
+</div>
+{% endif %}
+
+<div class="panel" style="overflow:auto"><h2>Estado por servicio</h2><table><thead><tr><th>Servicio</th><th>Puerto</th><th>Estado</th><th>Última verificación</th><th>ms</th><th>Versión</th><th>PostgreSQL</th><th>Redis</th><th>MongoDB</th><th>Bucket</th><th>Peticiones/h</th><th>5xx/h</th><th>Disponib. 24 h</th><th>p95 ms</th></tr></thead><tbody>
+{% for s in estado.datos.servicios %}<tr>
+<td>{{ s.servicio }}</td><td>{{ s.puerto }}</td>
+<td>{% if s.estado == 'ok' %}<span class="pill verde">ok</span>{% elif s.estado == 'sin_datos' %}<span class="pill">sin datos</span>{% else %}<span class="pill rojo">{{ s.estado }}</span>{% endif %}</td>
+<td>{% if s.verificado_en %}hace {{ s.antiguedad_seg }} s{% else %}—{% endif %}</td><td>{{ s.tiempo_ms if s.tiempo_ms is not none else '—' }}</td><td>{{ s.version or '—' }}</td>
+{% for d in ['postgres','redis','mongo','bucket'] %}<td>{% if s.dependencias %}{% set v = s.dependencias[d] %}{% if v == 'error' %}<span class="pill rojo">error</span>{% elif v == 'ok' %}ok{% else %}<span style="opacity:.5">—</span>{% endif %}{% else %}—{% endif %}</td>{% endfor %}
+<td>{{ s.peticiones_hora if s.peticiones_hora is not none else '—' }}</td><td>{{ s.errores_5xx_hora if s.errores_5xx_hora is not none else '—' }}</td>
+<td>{% if s.disponibilidad_24h_pct is not none %}{% if s.bajo_objetivo %}<span class="pill rojo">{{ s.disponibilidad_24h_pct }} %</span>{% else %}{{ s.disponibilidad_24h_pct }} %{% endif %}{% else %}—{% endif %}</td>
+<td>{{ disp.get(s.servicio, {}).get('tiempo_p95_ms') if disp.get(s.servicio, {}).get('tiempo_p95_ms') is not none else '—' }}</td></tr>
+{% if s.error %}<tr><td></td><td colspan="13" class="ayuda">{{ s.error }}</td></tr>{% endif %}
+{% endfor %}</tbody></table></div>
+{% endif %}
+
+<div class="panel" style="overflow:auto"><h2>Alertas abiertas</h2>
+{% if alertas.ok %}<table><thead><tr><th>Servicio</th><th>Tipo</th><th>Severidad</th><th>Detalle</th><th>Abierta</th><th>Duración</th><th>Responsable</th></tr></thead><tbody>
+{% for a in alertas.datos.datos %}<tr><td>{{ a.servicio }}</td><td>{{ a.tipo }}</td>
+<td><span class="pill {{ 'rojo' if a.severidad in ('critica','alta') else '' }}">{{ a.severidad }}</span></td><td>{{ a.detalle }}</td><td>{{ a.abierta_en }}</td><td>{{ (a.duracion_seg // 60) }} min</td>
+<td>{% if a.reconocida %}{{ a.reconocida.por.nombre or a.reconocida.por.id }}{% elif puede_operar %}<form method="post" style="display:inline"><input type="hidden" name="csrf" value="{{ web_csrf() }}"><input type="hidden" name="accion" value="reconocer"><input type="hidden" name="alerta" value="{{ a.id }}"><button class="btn">Reconocer</button></form>{% else %}sin atender{% endif %}</td></tr>
+{% else %}<tr><td colspan="7">Sin alertas abiertas.</td></tr>{% endfor %}
+</tbody></table>{% else %}<div class="aviso medio">{{ alertas.mensaje or 'Sin respuesta' }}</div>{% endif %}</div>
+
+<div class="panel" style="overflow:auto"><h2>Últimas alertas cerradas (se cierran solas al recuperarse el servicio)</h2>
+{% if cerradas.ok %}<table><thead><tr><th>Servicio</th><th>Tipo</th><th>Abierta</th><th>Cerrada</th><th>Duración</th></tr></thead><tbody>
+{% for a in cerradas.datos.datos %}<tr><td>{{ a.servicio }}</td><td>{{ a.tipo }}</td><td>{{ a.abierta_en }}</td><td>{{ a.cerrada_en }}</td><td>{{ (a.duracion_seg // 60) }} min</td></tr>
+{% else %}<tr><td colspan="5">Todavía no se ha cerrado ninguna.</td></tr>{% endfor %}
+</tbody></table>{% else %}<div class="aviso medio">{{ cerradas.mensaje or 'Sin respuesta' }}</div>{% endif %}</div>
+
+<p class="ayuda">Swagger del servicio: <a href="http://{{ host }}:5126/api/v1/docs" target="_blank" rel="noopener">/api/v1/docs</a> · Objetivo de disponibilidad: {{ disponibilidad.datos.objetivo_pct if disponibilidad.ok else '—' }} %.</p>
+{% endblock %}
