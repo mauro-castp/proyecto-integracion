@@ -65,10 +65,11 @@ def responder(datos, status=200, raiz=None, xml=None, items=None, encabezados=No
     return resp
 
 
-def lista(datos, pag, item, raiz, transformar=None):
-    """Página del contrato: {datos: [...], paginacion: {...}}; en XML <raiz><datos><item/>…"""
+def lista(datos, pag, item, raiz, transformar=None, items=None):
+    """Página del contrato: {datos: [...], paginacion: {...}}; en XML <raiz><datos><item/>…
+    `items` nombra los hijos de las listas que cada renglón trae dentro (en XML)."""
     filas = [transformar(d) for d in datos] if transformar else datos
-    return responder({"datos": filas, "paginacion": pag}, raiz=raiz, items={"datos": item})
+    return responder({"datos": filas, "paginacion": pag}, raiz=raiz, items={**(items or {}), "datos": item})
 
 
 def _json_default(v):

@@ -174,7 +174,7 @@ def main(nombre):
         (destino_xsd / f"{archivo}.xsd").write_text(xsd(archivo, d["incluye"], d["tipos"], d["raices"], d["titulo"]), encoding="utf-8", newline="\n")
         todos.update(d["tipos"])
         print(f"  {archivo}.xsd: {len(d['tipos'])} tipos, {len(d['raices'])} raíces")
-    tipos_globales = {**TIPOS_BASE, **todos}
+    tipos_globales = {**TIPOS_BASE, **getattr(spec, "TIPOS_EXTERNOS", {}), **todos}
     raiz_de = {r: t for d in spec.ARCHIVOS.values() for r, t in d["raices"].items()}
     nuevos = 0
     for nombre_ej, (raiz, datos) in spec.EJEMPLOS.items():

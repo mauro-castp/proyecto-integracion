@@ -17,6 +17,7 @@ from contextlib import contextmanager
 
 import psycopg
 import redis
+from psycopg.types.json import Json
 from flask import g, has_request_context, request
 from psycopg.rows import dict_row
 
@@ -162,6 +163,11 @@ def mongo_insertar(coleccion, documento):
 
 def ahora():
     return dt.datetime.now(dt.timezone.utc)
+
+
+def como_json(valor):
+    """Para guardar un resultado en una columna json (no jsonb): conserva el orden de las llaves, que el XML exige."""
+    return Json(valor, dumps=lambda v: json.dumps(v, ensure_ascii=False, default=str))
 
 
 # --------------------------------------------------------------------

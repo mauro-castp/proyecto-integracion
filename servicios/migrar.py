@@ -1,10 +1,10 @@
 """
-migrar.py — Aplica 06 a 09 a una base que ya existía.
+migrar.py — Aplica 06 a 10 a una base que ya existía.
 
 PostgreSQL solo ejecuta /docker-entrypoint-initdb.d al crear el volumen. Con
 un volumen existente (por ejemplo, el del Primer Parcial), este paso agrega
-lo de planeación (06), web ampliado (07), microservicios (08) y flujo de
-negocio (09) sin borrar datos. Los cuatro scripts son idempotentes.
+lo de planeación (06), web ampliado (07), microservicios (08), flujo de
+negocio (09) y análisis (10) sin borrar datos. Los cinco scripts son idempotentes.
 docker-compose.integrado.yml lo corre una vez antes de levantar el web y los
 servicios, y al terminar borra la caché de permisos para que los permisos
 nuevos se lean de nuevo.
@@ -18,7 +18,7 @@ import psycopg
 
 DSN = os.environ.get("PG_DSN", "host=127.0.0.1 port=5432 dbname=microhubs_p1 user=postgres password=microhubs_dev")
 CARPETA = Path(os.environ.get("SQL_DIR", "/app/sql"))
-SCRIPTS = ["06_planeacion.sql", "07_web_ampliado.sql", "08_microservicios.sql", "09_ola1_flujo_negocio.sql"]
+SCRIPTS = ["06_planeacion.sql", "07_web_ampliado.sql", "08_microservicios.sql", "09_ola1_flujo_negocio.sql", "10_ola2_analitica.sql"]
 
 
 def borrar_cache_permisos():
