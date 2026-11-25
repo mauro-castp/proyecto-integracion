@@ -11,6 +11,7 @@ Servicio de inventario · puerto 5111 · contrato v1
   POST  /api/v1/inventario/reservas                  aparta existencia para una referencia
   POST  /api/v1/inventario/reservas/{id}/liberar     devuelve lo apartado a la existencia disponible
   GET   /api/v1/inventario/alertas                   faltantes: agotados, críticos y bajo el mínimo
+  GET   /api/v1/inventario/quiebres                  veces que una salida dejó un producto en cero (lo usa surtido)
 
 Responsabilidad única: cuántas unidades hay de cada producto en cada microhub y cómo se mueven.
 Los nombres de productos y microhubs se piden a sus servicios (clientes.mapa); este servicio no
@@ -388,6 +389,39 @@ def alertas():
 
 
 # --------------------------------------------------------------------
+# Quiebres
+# --------------------------------------------------------------------
+@app.get(f"{P}/inventario/quiebres")
+@requiere("inventario.ver")
+def quiebres():
+    """Cuántas veces una salida (pedido, merma o transferencia) dejó el producto en cero dentro de la ventana, y si hoy está agotado."""
+    pagina, por, desde = leer_paginacion(defecto=100)
+    hub = limitar_microhub(filtro_entero("microhub_id"))
+    dias = filtro_entero("dias")
+    if dias is None:
+        dias = int(parametro("ventana_analisis_dias", 90))
+    if not 1 <= dias <= 365:
+        raise ErrorApi(400, "FILTRO_INVALIDO", "dias debe estar entre 1 y 365.", [{"campo": "dias", "mensaje": "dias debe estar entre 1 y 365."}])
+    filtro_q, filtro_a, args_q, args_a = "", "", [dias], []
+    if hub:
+        filtro_q, filtro_a = " AND microhub_id = %s", " AND microhub_id = %s"
+        args_q.append(hub); args_a.append(hub)
+    base = (f"WITH q AS (SELECT microhub_id, producto_id, count(*)::integer AS quiebres, max(fecha) AS ultimo FROM movimiento_inventario "
+            f"WHERE existencia_resultante = 0 AND tipo IN ('salida_pedido', 'merma', 'transferencia_salida') "
+            f"AND fecha >= fn_hoy() - %s{filtro_q} GROUP BY microhub_id, producto_id), "
+            f"a AS (SELECT microhub_id, producto_id FROM v_inventario_disponible WHERE disponible <= 0{filtro_a}) "
+            f"SELECT COALESCE(q.microhub_id, a.microhub_id) AS microhub_id, COALESCE(q.producto_id, a.producto_id) AS producto_id, "
+            f"COALESCE(q.quiebres, 0) AS quiebres, q.ultimo, (a.producto_id IS NOT NULL) AS agotado_hoy "
+            f"FROM q FULL JOIN a ON a.microhub_id = q.microhub_id AND a.producto_id = q.producto_id")
+    args = args_q + args_a
+    total = consultar(f"SELECT count(*) AS n FROM ({base}) t", args, una=True)["n"]
+    filas = consultar(f"SELECT * FROM ({base}) t ORDER BY quiebres DESC, microhub_id, producto_id LIMIT %s OFFSET %s", (*args, por, desde))
+    return lista(filas, paginacion(pagina, por, total), "quiebre", "quiebres",
+                 lambda f: {"microhub_id": f["microhub_id"], "producto_id": f["producto_id"], "quiebres": f["quiebres"],
+                            "ultimo": fecha(f["ultimo"]), "agotado_hoy": bool(f["agotado_hoy"])})
+
+
+# --------------------------------------------------------------------
 # Documentación
 # --------------------------------------------------------------------
 PAG = [("pagina", "query", "integer", "Página (1…)"), ("por_pagina", "query", "integer", "1 a 100")]
@@ -434,3 +468,8 @@ documentar(app, "GET", f"{P}/inventario/alertas", "Faltantes", permisos=["invent
            parametros=PAG + [HUB, ("severidad", "query", "string", "agotado | critica | baja")],
            descripcion="Productos agotados o por debajo de su mínimo. Es crítica la que está por debajo de `alerta_critica_pct` % del mínimo.",
            respuestas={200: ("Página de alertas, las más graves primero", "AlertaLista.ok")}, errores=[400, 403])
+documentar(app, "GET", f"{P}/inventario/quiebres", "Quiebres de inventario", permisos=["inventario.ver"],
+           parametros=PAG + [HUB, ("dias", "query", "integer", "Ventana en días (1 a 365); por omisión `ventana_analisis_dias`")],
+           descripcion="Cuántas veces una salida por pedido, merma o transferencia dejó el producto en cero en la ventana, y si hoy está agotado. "
+                       "Solo trae los productos con algún quiebre o agotados hoy. Lo consume el servicio de surtido.",
+           respuestas={200: ("Página de quiebres, los más frecuentes primero", "QuiebreLista.ok")}, errores=[400, 403])
