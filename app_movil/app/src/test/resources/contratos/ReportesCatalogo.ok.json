@@ -1,0 +1,16 @@
+{
+  "datos": [
+    {
+      "clave": "pedidos_por_dia",
+      "familia": "operativo",
+      "titulo": "Pedidos por día",
+      "descripcion": "Pedidos, unidades y venta de cada día.",
+      "filtros": [
+        "desde",
+        "hasta",
+        "zona_id",
+        "microhub_id"
+      ]
+    }
+  ]
+}

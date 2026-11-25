@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grafica xmlns="urn:microhubs:v1" version="1">
+  <reporte>pedidos_por_dia</reporte>
+  <titulo>Pedidos por día</titulo>
+  <tipo>line</tipo>
+  <unidad>pedidos / MXN</unidad>
+  <categorias>
+    <categoria>2026-11-24</categoria>
+  </categorias>
+  <series>
+    <serie>
+      <nombre>Pedidos</nombre>
+      <datos>
+        <dato>12.0</dato>
+      </datos>
+    </serie>
+    <serie>
+      <nombre>Venta</nombre>
+      <datos>
+        <dato>1534.5</dato>
+      </datos>
+    </serie>
+  </series>
+</grafica>

@@ -13,6 +13,7 @@ import json
 import os
 import sys
 import unittest
+import uuid
 from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
@@ -24,6 +25,7 @@ from comun import clientes, config, datos  # noqa: E402
 from pruebas.test_contrato import APPS, JPEG, Cliente, ejemplo, mismas_llaves, xml  # noqa: E402
 
 mon = sys.modules["auditoria_monitoreo.app"]
+rep = sys.modules["reportes.app"]
 APAGADOS = set()
 DEGRADADOS = {}
 LIMITE = {}
@@ -399,9 +401,9 @@ class T2Auditoria(Base):
             quien.llamar(AM, "GET", "auditoria?por_pagina=1", estado=200)
 
     def test_un_inicio_de_sesion_fallido_queda_y_se_encuentra(self):
-        correo = "no.existe.ola3@codex.mx"
+        correo = f"no.existe.{uuid.uuid4().hex[:10]}@codex.mx"       # distinto en cada corrida: la cuenta se bloquea a los 5 intentos
         Cliente(self, "json").llamar("auth", "POST", "auth/login", {"correo": correo, "clave": "mal", "dispositivo": "t"}, token=False, estado=401)
-        j = self.aud.llamar(AM, "GET", f"auditoria?accion=login_fallido&q=no.existe.ola3", estado=200)[1]
+        j = self.aud.llamar(AM, "GET", f"auditoria?accion=login_fallido&q={correo}", estado=200)[1]
         self.assertGreaterEqual(j["paginacion"]["total"], 1)
         e = j["datos"][0]
         self.assertEqual((e["accion"], e["correo_intento"], e["usuario"], e["exitoso"]), ("login_fallido", correo, None, False))
@@ -507,6 +509,239 @@ class T2Auditoria(Base):
         self.error(self.aud, AM, "GET", "auditoria/trazabilidad/entrega/99999999", None, 404)
         self.error(self.aud, AM, "GET", "auditoria/trazabilidad/inventario?microhub_id=1", None, 400, "FILTRO_INVALIDO")
         self.error(self.aud, AM, "GET", "auditoria/trazabilidad/inventario?microhub_id=99999&producto_id=99999", None, 404)
+
+
+# ====================================================================
+# Reportes
+# ====================================================================
+RP = "reportes"
+DESDE = "2026-01-01"
+COLS = [{"clave": "a", "titulo": "Texto", "tipo": "texto"}, {"clave": "n", "titulo": "Cuántos", "tipo": "entero"},
+        {"clave": "d", "titulo": "Importe", "tipo": "dinero"}]
+
+
+class T3Logica(unittest.TestCase):
+    def test_porcentajes_y_celdas(self):
+        self.assertEqual((rep.pct(1, 8), rep.pct(1, 0), rep.dividir(10, 4), rep.dividir(1, 0)), (12.5, None, 2.5, None))
+        self.assertEqual((rep.celda(None, "dinero"), rep.celda(3.0, "entero"), rep.celda(3.456, "dinero"), rep.celda(True, "texto"),
+                          rep.celda("x", "texto")), ("", "3", "3.46", "sí", "x"))
+
+    def test_neutraliza_formulas(self):
+        for peligroso in ("=CMD()", "+1+1", "-2+3", "@SUM(A1)", "\tx"):
+            self.assertEqual(rep.neutralizar(peligroso), "'" + peligroso)
+        self.assertEqual((rep.neutralizar("normal"), rep.neutralizar("")), ("normal", ""))
+
+    def test_agrupar_por_dia_y_zona(self):
+        filas = [{"fecha": "2026-11-02", "zona_id": 1, "pedidos": 2, "unidades": 5, "venta": "100.5", "no_atendidos": 1},
+                 {"fecha": "2026-11-01", "zona_id": 2, "pedidos": 1, "unidades": 2, "venta": 40, "no_atendidos": 0},
+                 {"fecha": "2026-11-02", "zona_id": 2, "pedidos": 3, "unidades": 6, "venta": 60, "no_atendidos": 2}]
+        self.assertEqual(rep.agrupar_por_dia(filas), [["2026-11-01", 1, 2, 40.0, 40.0, 0], ["2026-11-02", 5, 11, 160.5, 32.1, 3]])
+        z = rep.agrupar_por_zona(filas, {1: {"nombre": "Centro"}})
+        self.assertEqual(z[0], ["Centro", 2, 5, 100.5, 50.25, 1, 33.33])
+        self.assertEqual(z[1][0], "Zona 2", "una zona sin nombre conocido no tumba el reporte")
+        self.assertEqual(rep.totales_de(COLS, [["a", 1, 2.5], ["b", 2, 3.0]], [1, 2]), ["Total", 3, 5.5])
+        self.assertIsNone(rep.totales_de(COLS, [], [1]))
+
+    def test_csv_trae_bom_crlf_y_celdas_seguras(self):
+        b = rep.csv_bytes(COLS, [["=CMD()", 2, 10.5], ["ok, con coma", None, None]], ["Total", 2, 10.5])
+        self.assertTrue(b.startswith(b"\xef\xbb\xbf"))
+        t = b.decode("utf-8-sig").split("\r\n")
+        self.assertEqual(t[0], "Texto,Cuántos,Importe")
+        self.assertEqual(t[1], "'=CMD(),2,10.50")
+        self.assertEqual(t[2], '"ok, con coma",,')
+        self.assertEqual(t[3], "Total,2,10.50")
+
+    def test_xlsx_es_un_libro_valido_con_numeros_y_sin_formulas(self):
+        import io
+        from openpyxl import load_workbook
+        b = rep.xlsx_bytes("Pedidos: por [día]", COLS, [["=1+1", 2, 10.5], ["ok", None, None]], ["Total", 2, 10.5])
+        ws = load_workbook(io.BytesIO(b)).active
+        self.assertEqual(ws.title, "Pedidos por día", "el nombre de la hoja no admite : [ ] ni más de 31 caracteres")
+        self.assertEqual([c.value for c in ws[1]], ["Texto", "Cuántos", "Importe"])
+        self.assertEqual((ws["A2"].value, ws["A2"].data_type), ("'=1+1", "s"), "lo que parece fórmula queda como texto")
+        self.assertEqual((ws["B2"].value, ws["C2"].value), (2, 10.5))
+        self.assertIsNone(ws["B3"].value)
+        self.assertEqual([c.value for c in ws[4]], ["Total", 2, 10.5])
+
+    def test_pdf_es_un_pdf_completo(self):
+        b = rep.pdf_bytes("Pedidos <por> día", "Periodo X", COLS, [[f"fila {i} & más", i, i * 1.5] for i in range(200)], ["Total", 1, 2.0])
+        self.assertTrue(b.startswith(b"%PDF-") and b.rstrip().endswith(b"%%EOF"))
+        self.assertGreater(b.count(b"/Type /Page"), 2, "200 filas ocupan varias páginas")
+
+
+class T4Reportes(Base):
+    def setUp(self):
+        super().setUp()
+        APAGADOS.clear()
+
+    def tearDown(self):
+        APAGADOS.clear()
+        ejecutar("UPDATE configuracion SET valor = '50000' WHERE clave = 'rep_filas_max' AND ambito = 'global'")
+
+    def q(self, **kw):
+        return "&".join(f"{k}={v}" for k, v in {"desde": DESDE, **kw}.items() if v is not None)
+
+    def descargar(self, ruta, quien=None):
+        return APPS[RP].test_client().get(f"/api/v1/{ruta}", headers={"Authorization": f"Bearer {(quien or self.adm).token}"})
+
+    def test_catalogo_en_json_y_xml(self):
+        j, raiz, x = self.ambos_formatos(RP, "reportes")
+        self.assertEqual(raiz, "reportes_catalogo")
+        mismas_llaves(self, j, ejemplo("ReportesCatalogo.ok"))
+        self.assertEqual({r["clave"] for r in j["datos"]}, set(rep.REPORTES))
+        self.assertEqual({r["familia"] for r in j["datos"]}, {"operativo", "logistico", "comercial", "financiero"})
+
+    def test_cada_reporte_responde_en_json_y_en_xml_conforme_al_contrato(self):
+        for clave in rep.REPORTES:
+            with self.subTest(clave):
+                ruta = f"reportes/{clave}" + ("?" + self.q() if "desde" in rep.REPORTES[clave][3] else "")
+                j, raiz, x = self.ambos_formatos(RP, ruta)
+                self.assertEqual(raiz, "reporte")
+                mismas_llaves(self, j, ejemplo("Reporte.ok"))
+                self.assertEqual(j["reporte"], clave)
+                self.assertEqual(j["total_filas"], len(j["filas"]))
+                ncol = len(j["columnas"])
+                self.assertTrue(all(len(f["celdas"]) == ncol for f in j["filas"]), "toda fila trae una celda por columna")
+                if j["totales"]:
+                    self.assertEqual(len(j["totales"]["celdas"]), ncol)
+
+    def test_pedidos_por_dia_coincide_con_la_base(self):
+        hoy = dt.date.today().isoformat()
+        j = self.adm.llamar(RP, "GET", f"reportes/pedidos_por_dia?desde={DESDE}&hasta={hoy}", estado=200)[1]
+        esperado = uno("SELECT count(*) AS n, COALESCE(sum(subtotal), 0) AS venta FROM pedido WHERE estado <> 'cancelado' "
+                       "AND (creado_en AT TIME ZONE 'America/Monterrey')::date BETWEEN %s AND %s", (DESDE, hoy))
+        self.assertGreater(esperado["n"], 0, "la base de demostración tiene pedidos")
+        self.assertEqual(int(j["totales"]["celdas"][1]), esperado["n"])
+        self.assertAlmostEqual(float(j["totales"]["celdas"][3]), float(esperado["venta"]), places=2)
+        dias = [f["celdas"][0] for f in j["filas"]]
+        self.assertEqual(dias, sorted(dias), "un renglón por día, en orden")
+        self.assertEqual(len(dias), len(set(dias)))
+
+    def test_ventas_por_producto_suma_la_venta_y_su_participacion(self):
+        hoy = dt.date.today().isoformat()
+        j = self.adm.llamar(RP, "GET", f"reportes/ventas_por_producto?desde={DESDE}&hasta={hoy}", estado=200)[1]
+        esperado = uno("SELECT COALESCE(sum(d.importe), 0) AS v FROM pedido p JOIN pedido_detalle d ON d.pedido_id = p.id "
+                       "WHERE p.estado NOT IN ('cancelado', 'creado', 'pendiente_asignacion') "
+                       "AND (p.creado_en AT TIME ZONE 'America/Monterrey')::date BETWEEN %s AND %s", (DESDE, hoy))["v"]
+        self.assertAlmostEqual(float(j["totales"]["celdas"][3]), float(esperado), places=2)
+        participacion = sum(float(f["celdas"][5]) for f in j["filas"])
+        self.assertAlmostEqual(participacion, 100.0, delta=0.5 + 0.01 * len(j["filas"]), msg="las participaciones suman 100 %")
+        ventas = [float(f["celdas"][3]) for f in j["filas"]]
+        self.assertEqual(ventas, sorted(ventas, reverse=True), "el más vendido primero")
+
+    def test_comparacion_entre_microhubs_y_un_solo_microhub(self):
+        hoy = dt.date.today().isoformat()
+        j = self.adm.llamar(RP, "GET", f"reportes/comparacion_microhubs?desde={DESDE}&hasta={hoy}", estado=200)[1]
+        self.assertGreaterEqual(len(j["filas"]), 2)
+        hub = uno("SELECT m.id, m.nombre FROM microhub m JOIN pedido p ON p.microhub_id = m.id WHERE p.estado <> 'cancelado' "
+                  "GROUP BY m.id, m.nombre ORDER BY count(*) DESC LIMIT 1")
+        fila = [f for f in j["filas"] if f["celdas"][0] == hub["nombre"]][0]["celdas"]
+        n = uno("SELECT count(*) AS n FROM pedido WHERE microhub_id = %s AND estado <> 'cancelado' "
+                "AND (creado_en AT TIME ZONE 'America/Monterrey')::date BETWEEN %s AND %s", (hub["id"], DESDE, hoy))["n"]
+        self.assertEqual(int(fila[1]), n)
+        self.assertAlmostEqual(sum(float(f["celdas"][5]) for f in j["filas"]), 100.0, delta=0.1)
+        solo = self.adm.llamar(RP, "GET", f"reportes/comparacion_microhubs?desde={DESDE}&hasta={hoy}&microhub_id={hub['id']}", estado=200)[1]
+        self.assertEqual([f["celdas"][0] for f in solo["filas"]], [hub["nombre"]])
+        self.error(self.adm, RP, "GET", "reportes/comparacion_microhubs?microhub_id=999999", None, 404)
+
+    def test_filtros_que_el_reporte_no_admite_se_rechazan(self):
+        for ruta in ("carga_repartidores?zona_id=1", "carga_repartidores?desde=2026-01-01", "inventario_alertas?zona_id=1",
+                     "inventario_alertas?desde=2026-01-01", "equilibrio_microhubs?hasta=2026-02-01", "ventas_por_producto?zona_id=1"):
+            with self.subTest(ruta):
+                self.error(self.adm, RP, "GET", f"reportes/{ruta}", None, 400, "FILTRO_INVALIDO")
+
+    def test_filtros_invalidos(self):
+        for q in ("desde=ayer", "hasta=31-12-2026", "desde=2026-05-01&hasta=2026-04-01", "desde=2020-01-01&hasta=2026-01-01", "zona_id=abc",
+                  "microhub_id=1.5"):
+            with self.subTest(q):
+                self.error(self.adm, RP, "GET", f"reportes/pedidos_por_dia?{q}", None, 400, "FILTRO_INVALIDO")
+        self.error(self.adm, RP, "GET", "reportes/no_existe", None, 404, "NO_ENCONTRADO")
+        self.error(self.adm, RP, "GET", "reportes/pedidos_por_dia/exportar?formato=exe", None, 400)
+        self.error(self.adm, RP, "GET", "reportes/no_existe/grafica", None, 404)
+
+    def test_un_reporte_muy_grande_pide_acotar(self):
+        ejecutar("UPDATE configuracion SET valor = '1' WHERE clave = 'rep_filas_max' AND ambito = 'global'")
+        e = self.error(self.adm, RP, "GET", f"reportes/pedidos_por_dia?{self.q()}", None, 422, "REPORTE_DEMASIADO_GRANDE")
+        self.assertIn("Acota", e["mensaje"])
+
+    def test_grafica_para_highcharts(self):
+        j, raiz, x = self.ambos_formatos(RP, f"reportes/pedidos_por_dia/grafica?{self.q()}")
+        self.assertEqual(raiz, "grafica")
+        mismas_llaves(self, j, ejemplo("ReporteGrafica.ok"))
+        self.assertEqual((j["tipo"], [s["nombre"] for s in j["series"]]), ("line", ["Pedidos", "Venta"]))
+        self.assertTrue(all(len(s["datos"]) == len(j["categorias"]) for s in j["series"]))
+        top = self.adm.llamar(RP, "GET", f"reportes/ventas_por_producto/grafica?{self.q()}", estado=200)[1]
+        self.assertLessEqual(len(top["categorias"]), 10, "la gráfica de productos muestra los 10 primeros")
+        al = self.adm.llamar(RP, "GET", "reportes/inventario_alertas/grafica", estado=200)[1]
+        self.assertEqual(len(al["categorias"]), len(set(al["categorias"])), "las alertas se suman por microhub")
+
+    def test_exportar_csv_xlsx_y_pdf_con_huella_y_bitacora(self):
+        import hashlib
+        antes = uno("SELECT count(*) AS n FROM reporte_exportacion")["n"]
+        tipos = {"csv": "text/csv", "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "pdf": "application/pdf"}
+        for fmt, mime in tipos.items():
+            with self.subTest(fmt):
+                r = self.descargar(f"reportes/pedidos_por_dia/exportar?formato={fmt}&{self.q()}")
+                self.assertEqual(r.status_code, 200, r.data[:300])
+                self.assertEqual(r.mimetype, mime)
+                self.assertIn(f'attachment; filename="pedidos_por_dia_{DESDE}_', r.headers["Content-Disposition"])
+                self.assertEqual(r.headers["X-Reporte-SHA256"], hashlib.sha256(r.data).hexdigest())
+                if fmt == "pdf":
+                    self.assertTrue(r.data.startswith(b"%PDF-"))
+                if fmt == "xlsx":
+                    self.assertTrue(r.data.startswith(b"PK"))
+        self.assertEqual(uno("SELECT count(*) AS n FROM reporte_exportacion")["n"] - antes, 3)
+        fila = uno("SELECT * FROM reporte_exportacion ORDER BY id DESC LIMIT 1")
+        self.assertEqual((fila["reporte"], fila["formato"], fila["creado_por"]), ("pedidos_por_dia", "pdf", self.adm.usuario["id"]))
+        self.assertEqual(fila["filtros"]["desde"], DESDE)
+        self.assertEqual(len(fila["sha256"]), 64)
+
+    def test_por_omision_se_exporta_csv_y_sin_token_no_hay_archivo(self):
+        r = self.descargar("reportes/carga_repartidores/exportar")
+        self.assertEqual((r.status_code, r.mimetype), (200, "text/csv"))
+        self.assertTrue(r.data.startswith(b"\xef\xbb\xbf"))
+        self.assertEqual(APPS[RP].test_client().get("/api/v1/reportes/carga_repartidores/exportar").status_code, 401)
+
+    def test_exportaciones_cada_quien_ve_las_suyas_y_el_administrador_todas(self):
+        for quien in (self.adm, self.plan):
+            self.assertEqual(self.descargar("reportes/carga_repartidores/exportar?formato=csv", quien).status_code, 200)
+        j = self.plan.llamar(RP, "GET", "reportes/exportaciones?por_pagina=100", estado=200)[1]
+        self.assertTrue(j["datos"] and all(e["creado_por"]["id"] == self.plan.usuario["id"] for e in j["datos"]))
+        mismas_llaves(self, j, ejemplo("ReportesExportacionLista.ok"))
+        a = self.adm.llamar(RP, "GET", "reportes/exportaciones?por_pagina=100", estado=200)[1]
+        self.assertGreater(len({e["creado_por"]["id"] for e in a["datos"]}), 1, "el administrador ve las de todos")
+        j, raiz, x = self.ambos_formatos(RP, "reportes/exportaciones")
+        self.assertEqual(raiz, "reportes_exportaciones")
+
+    def test_indicadores_y_un_servicio_caido_solo_quita_su_indicador(self):
+        j, raiz, x = self.ambos_formatos(RP, f"reportes/indicadores?{self.q()}")
+        mismas_llaves(self, j, ejemplo("ReportesIndicadores.ok"))
+        claves = {i["clave"] for i in j["indicadores"]}
+        self.assertEqual(claves, {"pedidos", "venta", "ticket_promedio", "no_atendidos", "alertas_inventario", "repartidores_activos",
+                                  "entregas_abiertas", "microhubs_no_viables"})
+        self.assertEqual(j["fuentes_no_disponibles"], [])
+        with Apagado("inventario"):
+            c = self.adm.llamar(RP, "GET", f"reportes/indicadores?{self.q()}", estado=200)[1]
+        self.assertEqual(c["fuentes_no_disponibles"], ["inventario"])
+        self.assertEqual({i["clave"] for i in c["indicadores"]}, claves - {"alertas_inventario"}, "los demás indicadores se entregan")
+        with Apagado("pedidos", "entregas"):
+            c = self.adm.llamar(RP, "GET", f"reportes/indicadores?{self.q()}", estado=200)[1]
+        self.assertEqual(sorted(c["fuentes_no_disponibles"]), ["entregas", "pedidos"])
+
+    def test_un_reporte_con_su_fuente_caida_responde_503_y_no_deja_rastro(self):
+        n = uno("SELECT count(*) AS n FROM reporte_exportacion")["n"]
+        with Apagado("pedidos"):
+            self.error(self.adm, RP, "GET", f"reportes/pedidos_por_dia?{self.q()}", None, 503, "SERVICIO_NO_DISPONIBLE")
+            self.error(self.adm, RP, "GET", f"reportes/pedidos_por_dia/exportar?{self.q()}", None, 503)
+        self.assertEqual(uno("SELECT count(*) AS n FROM reporte_exportacion")["n"], n, "una exportación fallida no se registra")
+
+    def test_permisos_de_reportes(self):
+        for ruta in ("reportes", "reportes/indicadores", f"reportes/pedidos_por_dia?{self.q()}", "reportes/exportaciones"):
+            for quien in (self.op1, self.rep, self.cli):
+                self.error(quien, RP, "GET", ruta, None, 403, "PROHIBIDO")
+            for quien in (self.adm, self.aud, self.plan):
+                quien.llamar(RP, "GET", ruta, estado=200)
+        Cliente(self, "json").llamar(RP, "GET", "reportes", token=False, estado=401)
 
 
 if __name__ == "__main__":

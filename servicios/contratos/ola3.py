@@ -80,7 +80,35 @@ AUDITORIA_MONITOREO_RAICES = {
     "monitoreo_alertas": "TMonAlertaLista", "monitoreo_alerta": "TMonAlerta", "monitoreo_verificacion": "TMonRonda",
     "verificacion_nueva": "TMonVerificacionNueva", "supuestos_monitoreo": "TSupuestosDoc"}
 
+# --------------------------------------------------------------------
+# reportes
+# --------------------------------------------------------------------
+REPORTES = {
+    "TRepFiltros": [F("desde", "date"), F("hasta", "date"), F("zona_id", "long", nil=True), F("microhub_id", "long", nil=True)],
+    "TRepColumna": [F("clave", "string"), F("titulo", "string"), F("tipo", "string", enum=["texto", "entero", "dinero", "porcentaje", "fecha"])],
+    "TRepFila": [F("celdas", ["string"], item="celda")],
+    "TReporte": [F("reporte", "string"), F("familia", "string", enum=["operativo", "logistico", "comercial", "financiero"]), F("titulo", "string"),
+                 F("generado_en", "dateTime"), F("filtros", "TRepFiltros"), F("columnas", ["TRepColumna"], item="columna"),
+                 F("filas", ["TRepFila"], item="fila"), F("totales", "TRepFila", nil=True), F("total_filas", "long")],
+    "TRepCatalogoItem": [F("clave", "string"), F("familia", "string", enum=["operativo", "logistico", "comercial", "financiero"]), F("titulo", "string"),
+                         F("descripcion", "string"), F("filtros", ["string"], item="filtro")],
+    "TRepCatalogo": [F("datos", ["TRepCatalogoItem"], item="reporte")],
+    "TRepSerie": [F("nombre", "string"), F("datos", ["num"], item="dato")],
+    "TRepGrafica": [F("reporte", "string"), F("titulo", "string"), F("tipo", "string", enum=["column", "line", "bar", "pie"]), F("unidad", "string"),
+                    F("categorias", ["string"], item="categoria"), F("series", ["TRepSerie"], item="serie")],
+    "TRepIndicador": [F("clave", "string"), F("titulo", "string"), F("valor", "num", nil=True), F("unidad", "string"), F("fuente", "string")],
+    "TRepIndicadores": [F("desde", "date"), F("hasta", "date"), F("indicadores", ["TRepIndicador"], item="indicador"),
+                        F("fuentes_no_disponibles", ["string"], item="servicio")],
+    "TRepUsuario": [F("id", "long"), F("nombre", "string", nil=True)],
+    "TRepExportacion": [F("id", "long"), F("reporte", "string"), F("formato", "string", enum=["csv", "xlsx", "pdf"]), F("filtros", "TRepFiltros"),
+                        F("filas", "long"), F("bytes", "long"), F("sha256", "string"), F("creado_por", "TRepUsuario", nil=True), F("creado_en", "dateTime")],
+    "TRepExportacionLista": L("TRepExportacion", "exportacion"),
+}
+REPORTES_RAICES = {"reporte": "TReporte", "reportes_catalogo": "TRepCatalogo", "grafica": "TRepGrafica", "indicadores": "TRepIndicadores",
+                   "reportes_exportaciones": "TRepExportacionLista"}
+
 ARCHIVOS = {
+    "reportes": {"titulo": "servicio: reportes", "incluye": ["comun"], "tipos": REPORTES, "raices": REPORTES_RAICES},
     "auditoria_monitoreo": {"titulo": "servicio: auditoria-monitoreo", "incluye": ["comun", "comun_ola1", "comun_ola2"],
                             "tipos": AUDITORIA_MONITOREO, "raices": AUDITORIA_MONITOREO_RAICES},
 }
@@ -100,7 +128,25 @@ ALERTA = {"id": 12, "servicio": "documentos", "tipo": "dependencia_caida", "seve
           "detalle": "documentos no alcanza: bucket.", "abierta_en": HUB, "cerrada_en": None, "duracion_seg": 95,
           "reconocida": {"por": USUARIO, "en": HUB}}
 
+FILTROS = {"desde": "2026-10-26", "hasta": "2026-11-25", "zona_id": None, "microhub_id": None}
+
 EJEMPLOS = {
+    "Reporte": ("reporte", {
+        "reporte": "pedidos_por_dia", "familia": "operativo", "titulo": "Pedidos por día", "generado_en": HUB, "filtros": FILTROS,
+        "columnas": [{"clave": "fecha", "titulo": "Día", "tipo": "fecha"}, {"clave": "pedidos", "titulo": "Pedidos", "tipo": "entero"},
+                     {"clave": "venta", "titulo": "Venta", "tipo": "dinero"}],
+        "filas": [{"celdas": ["2026-11-24", "12", "1534.50"]}], "totales": {"celdas": ["Total", "12", "1534.50"]}, "total_filas": 1}),
+    "ReportesCatalogo": ("reportes_catalogo", {"datos": [
+        {"clave": "pedidos_por_dia", "familia": "operativo", "titulo": "Pedidos por día", "descripcion": "Pedidos, unidades y venta de cada día.",
+         "filtros": ["desde", "hasta", "zona_id", "microhub_id"]}]}),
+    "ReporteGrafica": ("grafica", {"reporte": "pedidos_por_dia", "titulo": "Pedidos por día", "tipo": "line", "unidad": "pedidos / MXN",
+                                   "categorias": ["2026-11-24"], "series": [{"nombre": "Pedidos", "datos": [12.0]}, {"nombre": "Venta", "datos": [1534.5]}]}),
+    "ReportesIndicadores": ("indicadores", {"desde": "2026-10-26", "hasta": "2026-11-25", "indicadores": [
+        {"clave": "pedidos", "titulo": "Pedidos del periodo", "valor": 12, "unidad": "pedidos", "fuente": "pedidos"}], "fuentes_no_disponibles": ["inventario"]}),
+    "ReportesExportacionLista": ("reportes_exportaciones", {"datos": [
+        {"id": 4, "reporte": "pedidos_por_dia", "formato": "xlsx", "filtros": FILTROS, "filas": 1, "bytes": 5120,
+         "sha256": "9f2c0ab4d5e7c1d8a3b6f0e2d4c8a1b7e5f3d9c2a0b8e6f4d2c0a8b6e4f2d0c8", "creado_por": {"id": 3, "nombre": "Mariana Ortega"}, "creado_en": HUB}],
+        "paginacion": PAG}),
     "BitacoraLista": ("bitacora", {"datos": [
         {"id": 5021, "fecha": HUB, "usuario": USUARIO, "correo_intento": None, "ip_origen": "172.18.0.9", "modulo": "pedidos",
          "accion": "cambio_estado", "entidad": {"tipo": "pedido", "id": "163"}, "exitoso": True, "detalle": None, "cambios": [CAMBIO]}],

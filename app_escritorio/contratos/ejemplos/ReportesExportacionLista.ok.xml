@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reportes_exportaciones xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <datos>
+    <exportacion>
+      <id>4</id>
+      <reporte>pedidos_por_dia</reporte>
+      <formato>xlsx</formato>
+      <filtros>
+        <desde>2026-10-26</desde>
+        <hasta>2026-11-25</hasta>
+        <zona_id xsi:nil="true" />
+        <microhub_id xsi:nil="true" />
+      </filtros>
+      <filas>1</filas>
+      <bytes>5120</bytes>
+      <sha256>9f2c0ab4d5e7c1d8a3b6f0e2d4c8a1b7e5f3d9c2a0b8e6f4d2c0a8b6e4f2d0c8</sha256>
+      <creado_por>
+        <id>3</id>
+        <nombre>Mariana Ortega</nombre>
+      </creado_por>
+      <creado_en>2026-11-25T10:30:00-06:00</creado_en>
+    </exportacion>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</reportes_exportaciones>

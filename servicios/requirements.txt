@@ -10,3 +10,5 @@ lxml==6.0.2
 defusedxml==0.7.1
 tzdata==2026.5
 google-cloud-storage==3.17.2   # almacén de archivos en Google Cloud Storage (comun/almacen.py); se importa solo con ALMACEN=gcs
+openpyxl==3.1.5                # reportes: exportación a Excel (servicio reportes)
+reportlab==4.2.5               # reportes: exportación a PDF (servicio reportes)

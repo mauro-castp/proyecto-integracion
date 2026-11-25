@@ -43,7 +43,7 @@ PUERTOS = {"auth": 5101, "usuarios": 5102, "productos": 5103, "pedidos": 5104, "
            "inventario": 5111, "precios": 5112, "proveedores": 5113, "abastecimiento": 5114,
            "demanda": 5115, "cobertura": 5116, "capacidad": 5117, "rutas": 5118, "costos": 5119,
            "punto-equilibrio": 5120, "simulacion": 5121, "surtido": 5122, "notificaciones": 5124,
-           "auditoria-monitoreo": 5126}
+           "reportes": 5123, "auditoria-monitoreo": 5126}
 # Dentro de docker-compose.integrado.yml cada servicio se alcanza por su nombre en la red interna.
 PLANTILLA = os.environ.get("MICROSERVICIOS_URL", "http://{servicio}:{puerto}")
 TIEMPO_ESPERA = float(os.environ.get("MICROSERVICIOS_TIEMPO", "4"))

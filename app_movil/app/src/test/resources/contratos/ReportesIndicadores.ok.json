@@ -1,0 +1,16 @@
+{
+  "desde": "2026-10-26",
+  "hasta": "2026-11-25",
+  "indicadores": [
+    {
+      "clave": "pedidos",
+      "titulo": "Pedidos del periodo",
+      "valor": 12,
+      "unidad": "pedidos",
+      "fuente": "pedidos"
+    }
+  ],
+  "fuentes_no_disponibles": [
+    "inventario"
+  ]
+}
