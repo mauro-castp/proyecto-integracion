@@ -36,8 +36,9 @@ if not config.MONGO_URL:
     datos.usar_mongo(mongomock.MongoClient(tz_aware=True)[config.MONGO_DB])
 
 SERVICIOS = ["auth", "usuarios", "productos", "pedidos", "entregas", "planeacion", "documentos", "zonas", "microhubs", "seguimiento",
-             "inventario", "precios", "proveedores", "abastecimiento", "notificaciones"]
-APPS = {s: importlib.import_module(f"{s}.app").app for s in SERVICIOS}
+             "inventario", "precios", "proveedores", "abastecimiento", "notificaciones",
+             "demanda", "cobertura", "capacidad", "rutas", "costos", "punto-equilibrio", "simulacion", "surtido"]
+APPS = {s: importlib.import_module(f"{s.replace('-', '_')}.app").app for s in SERVICIOS}
 CLAVE = os.environ.get("MICROHUBS_CLAVE", "Codex#2026")
 EJEMPLOS = config.EJEMPLOS_JSON
 JPEG = bytes([0xFF, 0xD8, 0xFF, 0xE0, 0, 16, 74, 70, 73, 70, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0]) + bytes(range(256))

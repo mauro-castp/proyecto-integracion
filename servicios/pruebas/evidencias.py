@@ -39,11 +39,14 @@ os.environ.setdefault("LOG_STDOUT", "0")
 
 from comun import datos as bd  # noqa: E402
 from pruebas.evidencias_ola1 import ejecutar_ola1  # noqa: E402
+from pruebas.evidencias_ola2 import ejecutar_ola2  # noqa: E402
 from pruebas.preparar_entregas import preparar  # noqa: E402
 
 PUERTOS = {"auth": 5101, "usuarios": 5102, "productos": 5103, "pedidos": 5104, "entregas": 5105,
            "planeacion": 5106, "documentos": 5107, "zonas": 5108, "microhubs": 5109, "seguimiento": 5110,
-           "inventario": 5111, "precios": 5112, "proveedores": 5113, "abastecimiento": 5114, "notificaciones": 5124}
+           "inventario": 5111, "precios": 5112, "proveedores": 5113, "abastecimiento": 5114,
+           "demanda": 5115, "cobertura": 5116, "capacidad": 5117, "rutas": 5118, "costos": 5119,
+           "punto-equilibrio": 5120, "simulacion": 5121, "surtido": 5122, "notificaciones": 5124}
 CLAVE = os.environ.get("MICROHUBS_CLAVE", "Codex#2026")
 NS = "urn:microhubs:v1"
 JPEG = bytes([0xFF, 0xD8, 0xFF, 0xE0, 0, 16, 74, 70, 73, 70, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0]) + bytes(range(256))
@@ -549,8 +552,11 @@ def ejecutar(ev):
     # ---------- 11. OLA 1: INVENTARIO, PRECIOS, PROVEEDORES, ABASTECIMIENTO Y NOTIFICACIONES ----------
     ejecutar_ola1(ev, types.SimpleNamespace(pg=pg, bd=bd, NS=NS))
 
-    # ---------- 12. TRANSVERSALES ----------
-    print("12. Transversales")
+    # ---------- 12. OLA 2: DEMANDA, COBERTURA, CAPACIDAD, COSTOS, EQUILIBRIO, SURTIDO, RUTAS Y SIMULACIÓN ----------
+    ejecutar_ola2(ev, types.SimpleNamespace(pg=pg, bd=bd, NS=NS, xml=xml))
+
+    # ---------- 13. TRANSVERSALES ----------
+    print("13. Transversales")
     for s in PUERTOS:
         ev.caso(f"SAL-{s[:3].upper()}", s, f"Salud de {s}", "Estado del servicio y de sus dependencias.", "GET", "health",
                 verificar=lambda r: r.json["estado"] == "ok")

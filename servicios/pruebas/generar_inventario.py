@@ -5,7 +5,7 @@ Recorre las rutas de cada servicio (Flask) y, por cada operación, busca los cas
 de la corrida de evidencias (evidencias.json y complementarias/evidencias.json) que la ejercitan. Así el
 inventario no se escribe a mano: si una ruta no tiene caso de evidencia, la columna sale vacía y se nota.
 
-  cd servicios && python pruebas/generar_inventario.py [carpeta de la corrida, por omisión evidencias/ola1]
+  cd servicios && python pruebas/generar_inventario.py [carpeta de la corrida, por omisión evidencias/ola2]
 """
 import importlib
 import json
@@ -40,11 +40,11 @@ def casos_de(ruta_json):
 
 
 def main():
-    corrida = RAIZ / (sys.argv[1] if len(sys.argv) > 1 else "evidencias/ola1")
+    corrida = RAIZ / (sys.argv[1] if len(sys.argv) > 1 else "evidencias/ola2")
     casos = casos_de(corrida / "evidencias.json") + casos_de(corrida / "complementarias" / "evidencias.json")
     filas, total = [], 0
     for servicio in sorted(config.PUERTOS):
-        app = importlib.import_module(f"{servicio}.app").app
+        app = importlib.import_module(f"{servicio.replace('-', '_')}.app").app
         enlace = app.url_map.bind("localhost")
         por_operacion = {}
         for c in casos:
@@ -72,8 +72,11 @@ def main():
               "| Servicio | Método | Ruta | Casos de evidencia |", "|---|---|---|---|", *filas, "",
               "## Contratos y compatibilidad", "",
               "Productos, Zonas y Microhubs conservan catalogos.xsd. Seguimiento utiliza estructuras de entregas.xsd. "
-              "Inventario, Precios, Proveedores, Abastecimiento y Notificaciones tienen su propio XSD, generado con "
-              "`servicios/contratos/generar.py`; las referencias que comparten están en comun_ola1.xsd.", "",
+              "Inventario, Precios, Proveedores, Abastecimiento y Notificaciones (Ola 1) y Demanda, Cobertura, Capacidad, Rutas, Costos, "
+              "Punto de equilibrio, Simulación y Surtido (Ola 2) tienen su propio XSD, generado con `servicios/contratos/generar.py` a partir de "
+              "`contratos/ola1.py` y `contratos/ola2.py`; las referencias que comparten están en comun_ola1.xsd y comun_ola2.xsd. Lo que pedidos, "
+              "entregas e inventario ganaron en la Ola 2 (resumen, ventas, listos, repartidores, quiebres) está en pedidos_ola2.xsd, "
+              "entregas_ola2.xsd e inventario_ola2.xsd.", "",
               "La ruta GPS antigua bajo entregas ya no se ofrece. El puerto 5108 corresponde a Zonas y el 5124 a Notificaciones, "
               "que vuelve como servicio de la Ola 1 con su propia bandeja, envío por rol y preferencias.", ""]
     (AQUI.parent / "INVENTARIO_ENDPOINTS.md").write_text("\n".join(salida), encoding="utf-8", newline="\r\n")

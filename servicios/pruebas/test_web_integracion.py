@@ -1,12 +1,12 @@
 """
 test_web_integracion.py — El sistema web como cliente de los microservicios.
 
-Levanta los quince servicios en sus puertos reales (5101 a 5114 y 5124, hilos de un
+Levanta los veintitrés servicios en sus puertos reales (5101 a 5122 y 5124, hilos de un
 mismo proceso para compartir MongoDB en memoria) y recorre las pantallas del
 web que los consumen con una sesión real de administrador:
 
   1. Un repartidor cierra una entrega por los servicios (foto, GPS, cierre).
-  2. El web muestra el estado de los 15 servicios, agregaciones de MongoDB y
+  2. El web muestra el estado de los 23 servicios, agregaciones de MongoDB y
      una respuesta XML obtenida del servicio de zonas.
   3. El web arma el detalle del pedido con pedidos, entregas, seguimiento y documentos:
      historial, recorrido GPS y la evidencia de la entrega.
@@ -52,7 +52,9 @@ if not config.MONGO_URL:
 
 PUERTOS = {"auth": 5101, "usuarios": 5102, "productos": 5103, "pedidos": 5104, "entregas": 5105,
            "planeacion": 5106, "documentos": 5107, "zonas": 5108, "microhubs": 5109, "seguimiento": 5110,
-           "inventario": 5111, "precios": 5112, "proveedores": 5113, "abastecimiento": 5114, "notificaciones": 5124}
+           "inventario": 5111, "precios": 5112, "proveedores": 5113, "abastecimiento": 5114,
+           "demanda": 5115, "cobertura": 5116, "capacidad": 5117, "rutas": 5118, "costos": 5119,
+           "punto-equilibrio": 5120, "simulacion": 5121, "surtido": 5122, "notificaciones": 5124}
 JPEG = bytes([0xFF, 0xD8, 0xFF, 0xE0, 0, 16, 74, 70, 73, 70, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0]) + bytes(range(256))
 _servidores = []
 APPS = {}
@@ -61,7 +63,7 @@ APPS = {}
 def servicio(nombre):
     """Carga servicios/<nombre>/app.py con un nombre único (el web también tiene un módulo «planeacion»)."""
     if nombre not in APPS:
-        spec = importlib.util.spec_from_file_location(f"svc_{nombre}", AQUI.parent / nombre / "app.py")
+        spec = importlib.util.spec_from_file_location(f"svc_{nombre.replace('-', '_')}", AQUI.parent / nombre.replace("-", "_") / "app.py")
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
         APPS[nombre] = mod.app
@@ -122,7 +124,7 @@ class WebConMicroservicios(unittest.TestCase):
         r = self.cliente().get("/web/servicios")
         self.assertEqual(r.status_code, 200)
         html = r.get_data(as_text=True)
-        self.assertEqual(html.count('<span class="pill verde">ok</span>'), 15, "los 15 servicios responden por HTTP")
+        self.assertEqual(html.count('<span class="pill verde">ok</span>'), len(PUERTOS), f"los {len(PUERTOS)} servicios responden por HTTP")
         self.assertIn("urn:microhubs:v1", html, "el web recibe y muestra una respuesta XML del servicio")
         self.assertIn("Documentos por tipo", html)
 

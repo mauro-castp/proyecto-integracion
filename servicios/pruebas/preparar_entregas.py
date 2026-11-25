@@ -31,11 +31,19 @@ def actor(cur, rol, uid=None):
     cur.execute("SELECT set_config('app.rol', %s, true), set_config('app.usuario_id', %s, true)", (rol, str(uid or "")))
 
 
-def crear_pedido(cur):
-    """Pedido nuevo de un cliente real que pasa por fn_asignar_pedido. Devuelve el id o None."""
-    cur.execute("SELECT c.id AS cliente_id, d.id AS domicilio_id, d.zona_id FROM cliente c "
-                "JOIN domicilio d ON d.cliente_id = c.id AND d.activo ORDER BY random() LIMIT 1")
+def crear_pedido(cur, cerca_de=None):
+    """Pedido nuevo de un cliente real que pasa por fn_asignar_pedido. Devuelve el id o None.
+    Con `cerca_de` (id de microhub) elige un domicilio dentro de la mitad del radio de ese microhub, para que el motor lo asigne ahí."""
+    if cerca_de:
+        cur.execute("SELECT c.id AS cliente_id, d.id AS domicilio_id, d.zona_id FROM cliente c "
+                    "JOIN domicilio d ON d.cliente_id = c.id AND d.activo JOIN microhub m ON m.id = %s "
+                    "WHERE fn_distancia_km(m.latitud, m.longitud, d.latitud, d.longitud) <= m.radio_km * 0.5 ORDER BY random() LIMIT 1", (cerca_de,))
+    else:
+        cur.execute("SELECT c.id AS cliente_id, d.id AS domicilio_id, d.zona_id FROM cliente c "
+                    "JOIN domicilio d ON d.cliente_id = c.id AND d.activo ORDER BY random() LIMIT 1")
     cli = cur.fetchone()
+    if not cli:
+        return None
     cur.execute("SELECT fn_ticket_minimo(%s) AS t", (cli["zona_id"],))
     minimo = float(cur.fetchone()["t"])
     cur.execute("SELECT p.id, p.precio FROM producto p WHERE p.estatus = 'activo' "

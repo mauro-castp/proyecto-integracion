@@ -27,11 +27,12 @@ from comun.formatos import a_xml, dinero, fecha, leer_xml, sin_nulos  # noqa: E4
 from comun.validar import Campo, validar  # noqa: E402
 
 SERVICIOS = ["auth", "usuarios", "productos", "pedidos", "entregas", "planeacion", "documentos", "zonas", "microhubs", "seguimiento",
-             "inventario", "precios", "proveedores", "abastecimiento", "notificaciones"]
+             "inventario", "precios", "proveedores", "abastecimiento", "notificaciones",
+             "demanda", "cobertura", "capacidad", "rutas", "costos", "punto-equilibrio", "simulacion", "surtido"]
 
 
 def cargar(nombre):
-    spec = importlib.util.spec_from_file_location(f"u_{nombre}", AQUI.parent / nombre / "app.py")
+    spec = importlib.util.spec_from_file_location(f"u_{nombre}", AQUI.parent / nombre.replace("-", "_") / "app.py")
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
@@ -105,7 +106,7 @@ class Validacion(unittest.TestCase):
 class Contrato(unittest.TestCase):
     def test_los_ejemplos_oficiales_cumplen_los_xsd(self):
         ejemplos = sorted(config.EJEMPLOS_XML.glob("*.xml"))
-        self.assertGreaterEqual(len(ejemplos), 100, "46 del contrato original y 54 de la Ola 1")
+        self.assertGreaterEqual(len(ejemplos), 170, "46 del contrato original, 54 de la Ola 1 y 71 de la Ola 2")
         for f in ejemplos:
             self.assertEqual(errores_xml(f.read_bytes()), [], f.name)
 
@@ -303,29 +304,46 @@ class Clientes(unittest.TestCase):
 
 @unittest.skipUnless((AQUI.parent / "contratos").is_dir(), "el generador de contratos no está en esta imagen")
 class GeneradorDeContratos(unittest.TestCase):
-    """Cada ejemplo de la Ola 1 existe en JSON y XML y es el que describe el generador."""
+    """Cada ejemplo de las olas 1 y 2 existe en JSON y XML y es el que describe el generador."""
 
     @classmethod
     def setUpClass(cls):
         sys.path.insert(0, str(AQUI.parent / "contratos"))
-        import ola1
-        cls.ola1 = ola1
+        import ola1, ola2
+        cls.olas = {"ola1": ola1, "ola2": ola2}
 
     def test_cada_ejemplo_esta_en_json_y_en_xml_y_el_xml_cumple_el_xsd(self):
-        for nombre, (raiz, datos) in self.ola1.EJEMPLOS.items():
-            with self.subTest(nombre):
-                js = config.EJEMPLOS_JSON / f"{nombre}.ok.json"
-                self.assertTrue(js.exists(), js)
-                if raiz is not None:
-                    xml_ej = config.EJEMPLOS_XML / f"{nombre}.ok.xml"
-                    self.assertEqual(errores_xml(xml_ej.read_bytes()), [], xml_ej.name)
-                    self.assertEqual(leer_xml(xml_ej.read_bytes())[0], raiz)
+        for ola, modulo in self.olas.items():
+            for nombre, (raiz, datos) in modulo.EJEMPLOS.items():
+                with self.subTest(f"{ola}: {nombre}"):
+                    js = config.EJEMPLOS_JSON / f"{nombre}.ok.json"
+                    self.assertTrue(js.exists(), js)
+                    if raiz is not None:
+                        xml_ej = config.EJEMPLOS_XML / f"{nombre}.ok.xml"
+                        self.assertEqual(errores_xml(xml_ej.read_bytes()), [], xml_ej.name)
+                        self.assertEqual(leer_xml(xml_ej.read_bytes())[0], raiz)
 
     def test_los_xsd_declaran_todas_las_raices(self):
-        for archivo, d in self.ola1.ARCHIVOS.items():
-            texto = (config.CONTRATOS / f"{archivo}.xsd").read_text(encoding="utf-8")
-            for raiz in d["raices"]:
-                self.assertIn(f'<xs:element name="{raiz}">', texto)
+        for ola, modulo in self.olas.items():
+            for archivo, d in modulo.ARCHIVOS.items():
+                texto = (config.CONTRATOS / f"{archivo}.xsd").read_text(encoding="utf-8")
+                for raiz in d["raices"]:
+                    with self.subTest(f"{ola}: {archivo}.{raiz}"):
+                        self.assertIn(f'<xs:element name="{raiz}">', texto)
+
+    def test_toda_respuesta_documentada_tiene_ejemplo(self):
+        """Lo que la documentación (Swagger) promete con «Nombre.ok» existe como ejemplo JSON y XML."""
+        faltan = []
+        for s in SERVICIOS:
+            app = cargar(s).app
+            spec = app.test_client().get("/api/v1/openapi.json").get_json()
+            for ruta, ops in spec["paths"].items():
+                for metodo, op in ops.items():
+                    for estado, r in op.get("responses", {}).items():
+                        for tipo, c in (r.get("content") or {}).items() if estado.startswith("2") else ():
+                            if tipo == "application/json" and "example" not in c and "examples" not in c:
+                                faltan.append(f"{s} {metodo.upper()} {ruta} {estado}")
+        self.assertEqual(faltan, [], "respuestas 2xx sin ejemplo en Swagger")
 
 
 if __name__ == "__main__":
