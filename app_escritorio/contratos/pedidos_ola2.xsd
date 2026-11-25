@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: pedidos (resumen, ventas, listos) · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola1.xsd"/>
+  <xs:include schemaLocation="comun_ola2.xsd"/>
+
+  <xs:complexType name="TPedResumenLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="fila" type="tns:TPedResumenFila" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPedResumenFila">
+    <xs:sequence>
+      <xs:element name="fecha" type="xs:date"/>
+      <xs:element name="zona_id" type="xs:long"/>
+      <xs:element name="categoria_id" type="xs:long" nillable="true"/>
+      <xs:element name="pedidos" type="xs:long"/>
+      <xs:element name="unidades" type="xs:long"/>
+      <xs:element name="venta" type="xs:decimal"/>
+      <xs:element name="clientes" type="xs:long"/>
+      <xs:element name="no_atendidos" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPedVentasLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="producto" type="tns:TPedVentaProducto" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPedVentaProducto">
+    <xs:sequence>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="unidades" type="xs:long"/>
+      <xs:element name="venta" type="xs:decimal"/>
+      <xs:element name="pedidos" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPedListosLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="pedido" type="tns:TPedListo" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPedListo">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="folio" type="xs:string"/>
+      <xs:element name="zona" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="latitud" type="xs:decimal"/>
+      <xs:element name="longitud" type="xs:decimal"/>
+      <xs:element name="total" type="xs:decimal"/>
+      <xs:element name="listo_en" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="resumen_pedidos">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPedResumenLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ventas_pedidos">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPedVentasLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="pedidos_listos">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPedListosLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<surtido_recomendacion xmlns="urn:microhubs:v1" version="1">
+  <id>2</id>
+  <microhub>
+    <id>1</id>
+    <nombre>Microhub San Bernabé Centro</nombre>
+  </microhub>
+  <ventana_dias>90</ventana_dias>
+  <nota>Exploración</nota>
+  <resumen>
+    <productos>51</productos>
+    <aumentar>1</aumentar>
+    <mantener>0</mantener>
+    <reducir>48</reducir>
+    <eliminar>1</eliminar>
+    <excluir>1</excluir>
+    <clase_a>30</clase_a>
+    <clase_b>13</clase_b>
+    <clase_c>8</clase_c>
+    <unidades_a_comprar>0</unidades_a_comprar>
+    <con_costo_estimado>51</con_costo_estimado>
+    <espacio>
+      <total>2500.0</total>
+      <ocupado>2527.0</ocupado>
+      <sugerido>0.0</sugerido>
+      <ocupacion_pct>101.1</ocupacion_pct>
+    </espacio>
+    <presupuesto>
+      <total>90000.0</total>
+      <requerido>0.0</requerido>
+      <uso_pct>0.0</uso_pct>
+    </presupuesto>
+  </resumen>
+  <creado_por>1</creado_por>
+  <creado_en>2026-10-19T23:49:48-06:00</creado_en>
+  <lineas>
+    <linea>
+      <producto>
+        <id>13</id>
+        <clave_interna>AB-013</clave_interna>
+        <nombre>Puré de tomate</nombre>
+      </producto>
+      <clase>A</clase>
+      <recomendacion>Reducir</recomendacion>
+      <unidades>13</unidades>
+      <existencia>52</existencia>
+      <sugerido>0</sugerido>
+      <margen_unitario>3.08</margen_unitario>
+      <rotacion>0.25</rotacion>
+      <motivo>cobertura de 360 días, exceso de stock</motivo>
+    </linea>
+    <linea>
+      <producto>
+        <id>7</id>
+        <clave_interna>AB-007</clave_interna>
+        <nombre>Harina de trigo</nombre>
+      </producto>
+      <clase>A</clase>
+      <recomendacion>Reducir</recomendacion>
+      <unidades>12</unidades>
+      <existencia>12</existencia>
+      <sugerido>0</sugerido>
+      <margen_unitario>6.86</margen_unitario>
+      <rotacion>1.0</rotacion>
+      <motivo>cobertura de 90 días, exceso de stock</motivo>
+    </linea>
+  </lineas>
+  <supuestos_usados>
+    <supuesto>
+      <clave>abc_a_pct</clave>
+      <valor>80.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>abc_b_pct</clave>
+      <valor>95.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</surtido_recomendacion>

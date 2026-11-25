@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<demanda_comparacion xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <metodo>tendencia_estacional</metodo>
+  <zona xsi:nil="true" />
+  <dias_prueba>7</dias_prueba>
+  <dias_entrenamiento>53</dias_entrenamiento>
+  <mape_pct>100.0</mape_pct>
+  <sesgo_pct>-100.0</sesgo_pct>
+  <dentro_banda_pct>100.0</dentro_banda_pct>
+  <filas>
+    <dia>
+      <fecha>2026-10-13</fecha>
+      <observado>4</observado>
+      <proyectado>0.0</proyectado>
+      <error>-4.0</error>
+      <error_pct>-100.0</error_pct>
+    </dia>
+    <dia>
+      <fecha>2026-10-14</fecha>
+      <observado>3</observado>
+      <proyectado>0.0</proyectado>
+      <error>-3.0</error>
+      <error_pct>-100.0</error_pct>
+    </dia>
+  </filas>
+  <supuestos_usados>
+    <supuesto>
+      <clave>dem_banda_z</clave>
+      <valor>1.28</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>dem_backtest_dias</clave>
+      <valor>7.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</demanda_comparacion>

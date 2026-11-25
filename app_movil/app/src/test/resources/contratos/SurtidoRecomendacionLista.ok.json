@@ -1,0 +1,80 @@
+{
+  "datos": [
+    {
+      "id": 3,
+      "microhub": {
+        "id": 1,
+        "nombre": "Microhub San Bernabé Centro"
+      },
+      "ventana_dias": 90,
+      "nota": "Exploración",
+      "resumen": {
+        "productos": 51,
+        "aumentar": 1,
+        "mantener": 0,
+        "reducir": 48,
+        "eliminar": 1,
+        "excluir": 1,
+        "clase_a": 30,
+        "clase_b": 13,
+        "clase_c": 8,
+        "unidades_a_comprar": 0,
+        "con_costo_estimado": 51,
+        "espacio": {
+          "total": 2500.0,
+          "ocupado": 2527.0,
+          "sugerido": 0.0,
+          "ocupacion_pct": 101.1
+        },
+        "presupuesto": {
+          "total": 90000.0,
+          "requerido": 0.0,
+          "uso_pct": 0.0
+        }
+      },
+      "creado_por": 1,
+      "creado_en": "2026-10-19T23:49:49-06:00"
+    },
+    {
+      "id": 2,
+      "microhub": {
+        "id": 1,
+        "nombre": "Microhub San Bernabé Centro"
+      },
+      "ventana_dias": 90,
+      "nota": "Exploración",
+      "resumen": {
+        "productos": 51,
+        "aumentar": 1,
+        "mantener": 0,
+        "reducir": 48,
+        "eliminar": 1,
+        "excluir": 1,
+        "clase_a": 30,
+        "clase_b": 13,
+        "clase_c": 8,
+        "unidades_a_comprar": 0,
+        "con_costo_estimado": 51,
+        "espacio": {
+          "total": 2500.0,
+          "ocupado": 2527.0,
+          "sugerido": 0.0,
+          "ocupacion_pct": 101.1
+        },
+        "presupuesto": {
+          "total": 90000.0,
+          "requerido": 0.0,
+          "uso_pct": 0.0
+        }
+      },
+      "creado_por": 1,
+      "creado_en": "2026-10-19T23:49:48-06:00"
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 3,
+    "total": 3,
+    "paginas": 1
+  }
+}

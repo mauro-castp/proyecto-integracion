@@ -1,0 +1,20 @@
+{
+  "datos": [
+    {
+      "clave": "dem_backtest_dias",
+      "valor": "7",
+      "unidad": "días",
+      "origen": "supuesto",
+      "justificacion": "Se ocultan los últimos 7 días para medir el error del modelo contra lo que de verdad pasó.",
+      "como_calibrar": "Ninguna; es el tamaño de la prueba."
+    },
+    {
+      "clave": "dem_banda_z",
+      "valor": "1.28",
+      "unidad": "desviaciones",
+      "origen": "supuesto",
+      "justificacion": "Con 1.28 desviaciones, la banda deja afuera 10 % por arriba y 10 % por abajo si los errores se reparten como una campana.",
+      "como_calibrar": "Revisar qué porcentaje de los días reales cae dentro de la banda."
+    }
+  ]
+}

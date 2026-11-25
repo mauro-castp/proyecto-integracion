@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ventas_pedidos xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <producto>
+      <producto_id>3</producto_id>
+      <unidades>21</unidades>
+      <venta>882.0</venta>
+      <pedidos>17</pedidos>
+    </producto>
+    <producto>
+      <producto_id>40</producto_id>
+      <unidades>21</unidades>
+      <venta>588.0</venta>
+      <pedidos>20</pedidos>
+    </producto>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>3</por_pagina>
+    <total>51</total>
+    <paginas>17</paginas>
+  </paginacion>
+</ventas_pedidos>

@@ -1,0 +1,46 @@
+{
+  "datos": [
+    {
+      "id": "08e63110-fab7-44e0-a970-4a0f50ba56f1",
+      "nombre": "Simulación de escenario manual 2026-10-19",
+      "estado": "terminada",
+      "objeto": {
+        "tipo": "manual",
+        "id": null,
+        "nombre": null
+      },
+      "semilla": 12,
+      "dias": 14,
+      "replicas": 100,
+      "utilidad_media": -24794.668,
+      "prob_perdida_pct": 100.0,
+      "huella": "96035bc707e56aa939066e110b77bd3cb60cc944cd6d0fed0adde4abea84ff71",
+      "creado_en": "2026-10-19T23:49:54-06:00",
+      "fin_en": "2026-10-19T23:49:56-06:00"
+    },
+    {
+      "id": "f1e113b5-4f7a-4938-a44a-b0050a452fc8",
+      "nombre": "Repetición de Simulación de Microhub San Bernabé Centro 2026-10-19",
+      "estado": "terminada",
+      "objeto": {
+        "tipo": "microhub",
+        "id": 1,
+        "nombre": "Microhub San Bernabé Centro"
+      },
+      "semilla": 11,
+      "dias": 14,
+      "replicas": 100,
+      "utilidad_media": -32022.5963,
+      "prob_perdida_pct": 100.0,
+      "huella": "2070f03b07cc488550c6f8f5fcae4245394529e921d24b896f9480ad36d13800",
+      "creado_en": "2026-10-19T23:49:54-06:00",
+      "fin_en": "2026-10-19T23:49:56-06:00"
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 3,
+    "total": 6,
+    "paginas": 2
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "datos": [
+    {
+      "microhub": {
+        "id": 1,
+        "nombre": "Microhub San Bernabé Centro"
+      },
+      "costos_fijos_mes": 69500.0,
+      "margen_pedido": 5.95,
+      "equilibrio_diario": 389.5,
+      "pedidos_dia": 5.0,
+      "diferencia_pedidos_dia": -384.5,
+      "utilidad_mes": -68608.63,
+      "decision": "no_viable"
+    },
+    {
+      "microhub": {
+        "id": 2,
+        "nombre": "Microhub Valles"
+      },
+      "costos_fijos_mes": 66500.0,
+      "margen_pedido": 5.95,
+      "equilibrio_diario": 372.6,
+      "pedidos_dia": 3.79,
+      "diferencia_pedidos_dia": -368.81,
+      "utilidad_mes": -65824.56,
+      "decision": "no_viable"
+    }
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "peq_margen_seguridad_pct",
+      "valor": 15.0,
+      "modificado": false
+    },
+    {
+      "clave": "dias_operacion_mes",
+      "valor": 30.0,
+      "modificado": false
+    }
+  ]
+}

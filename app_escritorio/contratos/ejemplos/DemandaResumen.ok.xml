@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<demanda_resumen xmlns="urn:microhubs:v1" version="1">
+  <desde>2026-08-21</desde>
+  <hasta>2026-10-19</hasta>
+  <dias>60</dias>
+  <total>
+    <pedidos>663</pedidos>
+    <pedidos_dia>11.05</pedidos_dia>
+    <unidades_por_pedido>5.1</unidades_por_pedido>
+    <venta>91511.31</venta>
+    <ticket_promedio>138.03</ticket_promedio>
+    <pedidos_por_cliente>1.14</pedidos_por_cliente>
+    <no_atendidos>84</no_atendidos>
+    <pct_no_atendida>11.2</pct_no_atendida>
+  </total>
+  <zonas>
+    <zona_demanda>
+      <zona>
+        <id>1</id>
+        <nombre>San Bernabé Centro</nombre>
+      </zona>
+      <pedidos>209</pedidos>
+      <pedidos_dia>3.48</pedidos_dia>
+      <unidades_por_pedido>5.16</unidades_por_pedido>
+      <venta>28294.61</venta>
+      <ticket_promedio>135.38</ticket_promedio>
+      <pedidos_por_cliente>1.15</pedidos_por_cliente>
+      <no_atendidos>23</no_atendidos>
+      <pct_no_atendida>9.9</pct_no_atendida>
+    </zona_demanda>
+    <zona_demanda>
+      <zona>
+        <id>2</id>
+        <nombre>Valles de San Bernabé</nombre>
+      </zona>
+      <pedidos>182</pedidos>
+      <pedidos_dia>3.03</pedidos_dia>
+      <unidades_por_pedido>4.99</unidades_por_pedido>
+      <venta>25111.53</venta>
+      <ticket_promedio>137.98</ticket_promedio>
+      <pedidos_por_cliente>1.13</pedidos_por_cliente>
+      <no_atendidos>24</no_atendidos>
+      <pct_no_atendida>11.7</pct_no_atendida>
+    </zona_demanda>
+  </zonas>
+  <observaciones_por_fuente>
+    <pedidos>103</pedidos>
+    <sintetica>44</sintetica>
+    <manual>0</manual>
+  </observaciones_por_fuente>
+</demanda_resumen>

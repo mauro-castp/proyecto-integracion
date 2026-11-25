@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resumen_costos xmlns="urn:microhubs:v1" version="1">
+  <ambito>microhub</ambito>
+  <ambito_id>1</ambito_id>
+  <origen>costos</origen>
+  <conceptos>8</conceptos>
+  <fijos_mes>69500.0</fijos_mes>
+  <por_categoria>
+    <categoria_costo>
+      <categoria>otros</categoria>
+      <monto>2500.0</monto>
+    </categoria_costo>
+    <categoria_costo>
+      <categoria>personal</categoria>
+      <monto>42000.0</monto>
+    </categoria_costo>
+  </por_categoria>
+  <variables>
+    <variable>
+      <nombre>Comisión por pago con tarjeta</nombre>
+      <unidad>pct_venta</unidad>
+      <monto>2.9</monto>
+    </variable>
+    <variable>
+      <nombre>Empaque por pedido</nombre>
+      <unidad>pedido</unidad>
+      <monto>3.5</monto>
+    </variable>
+  </variables>
+  <variable_pedido>3.5</variable_pedido>
+  <variable_entrega>18.0</variable_entrega>
+  <variable_km>4.5</variable_km>
+  <comision_pct>2.9</comision_pct>
+</resumen_costos>

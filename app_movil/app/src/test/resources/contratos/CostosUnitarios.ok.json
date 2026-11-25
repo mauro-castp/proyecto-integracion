@@ -1,0 +1,32 @@
+{
+  "entrada": {
+    "ambito": "microhub",
+    "ambito_id": 1,
+    "origen": "costos",
+    "pedidos_mes": 1800.0,
+    "ticket": 135.0,
+    "margen_bruto": 0.28,
+    "distancia_km": 2.4,
+    "paradas_por_viaje": 3.0,
+    "valores_modificados": []
+  },
+  "fijos_mes": 69500.0,
+  "costo_fijo_pedido": 38.61,
+  "variable_pedido": 3.5,
+  "comision_pedido": 3.92,
+  "costo_entrega": 25.2,
+  "costo_variable_pedido": 32.62,
+  "costo_por_pedido": 71.23,
+  "supuestos_usados": [
+    {
+      "clave": "pedidos_mes",
+      "valor": 1800.0,
+      "modificado": false
+    },
+    {
+      "clave": "ticket",
+      "valor": 135.0,
+      "modificado": false
+    }
+  ]
+}

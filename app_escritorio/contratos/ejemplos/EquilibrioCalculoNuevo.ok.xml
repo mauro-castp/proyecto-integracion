@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<equilibrio_calculo_nuevo xmlns="urn:microhubs:v1" version="1">
+  <nombre>Escenario A de la retroalimentación</nombre>
+  <pedidos_dia>45</pedidos_dia>
+  <ticket>135</ticket>
+  <margen_bruto>0.28</margen_bruto>
+  <costos_fijos>60000</costos_fijos>
+  <costo_variable_pedido>32.6</costo_variable_pedido>
+  <guardar>true</guardar>
+</equilibrio_calculo_nuevo>

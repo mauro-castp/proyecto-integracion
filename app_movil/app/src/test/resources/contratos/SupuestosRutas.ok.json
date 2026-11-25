@@ -1,0 +1,20 @@
+{
+  "datos": [
+    {
+      "clave": "cob_tiempo_max_min",
+      "valor": "30",
+      "unidad": "minutos",
+      "origen": "normativo",
+      "justificacion": "Promesa de entrega que fija el equipo: llegar en 30 minutos o menos desde que sale el repartidor.",
+      "como_calibrar": "Se revisa con el tiempo real de las entregas cerradas."
+    },
+    {
+      "clave": "costo_base_entrega",
+      "valor": "18",
+      "unidad": "MXN",
+      "origen": "supuesto",
+      "justificacion": "Pago fijo por entrega al repartidor; se suma al costo por distancia.",
+      "como_calibrar": "Lo que se paga de verdad por entrega en el contrato o en la nómina de repartidores."
+    }
+  ]
+}

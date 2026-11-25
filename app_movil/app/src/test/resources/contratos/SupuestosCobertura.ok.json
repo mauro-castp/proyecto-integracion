@@ -1,0 +1,20 @@
+{
+  "datos": [
+    {
+      "clave": "cob_solape_max_pct",
+      "valor": "40",
+      "unidad": "%",
+      "origen": "supuesto",
+      "justificacion": "Si más del 40 % de las zonas de un microhub ya las cubre otro, los dos se reparten la misma demanda y se canibalizan.",
+      "como_calibrar": "Comparar la demanda de las zonas compartidas antes y después de abrir el segundo microhub."
+    },
+    {
+      "clave": "cob_tiempo_max_min",
+      "valor": "30",
+      "unidad": "minutos",
+      "origen": "normativo",
+      "justificacion": "Promesa de entrega que fija el equipo: llegar en 30 minutos o menos desde que sale el repartidor.",
+      "como_calibrar": "Se revisa con el tiempo real de las entregas cerradas."
+    }
+  ]
+}

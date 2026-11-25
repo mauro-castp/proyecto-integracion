@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supuestos_surtido xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <supuesto>
+      <clave>abc_a_pct</clave>
+      <valor>80</valor>
+      <unidad>porcentaje</unidad>
+      <origen>normativo</origen>
+      <justificacion>Regla de Pareto: los productos que acumulan hasta 80 % del movimiento son clase A.</justificacion>
+      <como_calibrar>No se calibra; es una convención de clasificación.</como_calibrar>
+    </supuesto>
+    <supuesto>
+      <clave>abc_b_pct</clave>
+      <valor>95</valor>
+      <unidad>porcentaje</unidad>
+      <origen>normativo</origen>
+      <justificacion>Los productos hasta 95 % acumulado son clase B; el resto, clase C.</justificacion>
+      <como_calibrar>No se calibra; es una convención de clasificación.</como_calibrar>
+    </supuesto>
+  </datos>
+</supuestos_surtido>

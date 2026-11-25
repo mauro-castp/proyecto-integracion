@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conceptos_costo xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <datos>
+    <concepto>
+      <id>2</id>
+      <ambito>global</ambito>
+      <ambito_id xsi:nil="true" />
+      <nombre>Combustible y desgaste</nombre>
+      <categoria>transporte</categoria>
+      <tipo>variable</tipo>
+      <unidad>km</unidad>
+      <monto>4.5</monto>
+      <vigente_desde>2026-10-19</vigente_desde>
+      <vigente_hasta xsi:nil="true" />
+      <estatus>activo</estatus>
+      <fuente>supuesto</fuente>
+      <justificacion>Combustible, mantenimiento y desgaste de una moto pequeña; mismo valor que costo_km_reparto.</justificacion>
+    </concepto>
+    <concepto>
+      <id>4</id>
+      <ambito>global</ambito>
+      <ambito_id xsi:nil="true" />
+      <nombre>Comisión por pago con tarjeta</nombre>
+      <categoria>operacion</categoria>
+      <tipo>variable</tipo>
+      <unidad>pct_venta</unidad>
+      <monto>2.9</monto>
+      <vigente_desde>2026-10-19</vigente_desde>
+      <vigente_hasta xsi:nil="true" />
+      <estatus>activo</estatus>
+      <fuente>supuesto</fuente>
+      <justificacion>Comisión típica de un cobro con terminal o link de pago. Confirmar con el contrato del procesador.</justificacion>
+    </concepto>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>3</por_pagina>
+    <total>20</total>
+    <paginas>7</paginas>
+  </paginacion>
+</conceptos_costo>

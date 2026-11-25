@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<observaciones_demanda xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <datos>
+    <observacion>
+      <fecha>2026-10-19</fecha>
+      <zona>
+        <id>1</id>
+        <nombre>San Bernabé Centro</nombre>
+      </zona>
+      <categoria xsi:nil="true" />
+      <pedidos>7</pedidos>
+      <unidades>48</unidades>
+      <venta>1043.0</venta>
+      <clientes>5</clientes>
+      <no_atendidos>0</no_atendidos>
+      <fuente>pedidos</fuente>
+    </observacion>
+    <observacion>
+      <fecha>2026-10-19</fecha>
+      <zona>
+        <id>2</id>
+        <nombre>Valles de San Bernabé</nombre>
+      </zona>
+      <categoria xsi:nil="true" />
+      <pedidos>4</pedidos>
+      <unidades>20</unidades>
+      <venta>670.5</venta>
+      <clientes>3</clientes>
+      <no_atendidos>0</no_atendidos>
+      <fuente>pedidos</fuente>
+    </observacion>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>3</por_pagina>
+    <total>367</total>
+    <paginas>123</paginas>
+  </paginacion>
+</observaciones_demanda>

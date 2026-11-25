@@ -1,0 +1,37 @@
+{
+  "metodo": "tendencia_estacional",
+  "zona": null,
+  "dias_prueba": 7,
+  "dias_entrenamiento": 53,
+  "mape_pct": 100.0,
+  "sesgo_pct": -100.0,
+  "dentro_banda_pct": 100.0,
+  "filas": [
+    {
+      "fecha": "2026-10-13",
+      "observado": 4,
+      "proyectado": 0.0,
+      "error": -4.0,
+      "error_pct": -100.0
+    },
+    {
+      "fecha": "2026-10-14",
+      "observado": 3,
+      "proyectado": 0.0,
+      "error": -3.0,
+      "error_pct": -100.0
+    }
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "dem_banda_z",
+      "valor": 1.28,
+      "modificado": false
+    },
+    {
+      "clave": "dem_backtest_dias",
+      "valor": 7.0,
+      "modificado": false
+    }
+  ]
+}

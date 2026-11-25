@@ -1,0 +1,58 @@
+{
+  "datos": [
+    {
+      "candidato": {
+        "id": 3,
+        "clave": "CAND-05",
+        "nombre": "Alianza Real"
+      },
+      "latitud": 25.7625,
+      "longitud": -100.353,
+      "radio_km": 1.6,
+      "zonas_nuevas": 0,
+      "hogares_nuevos": 0,
+      "hogares_con_mejor_tiempo": 0,
+      "minutos_ahorrados": 0.0,
+      "solapamiento_pct": 0.0,
+      "canibaliza": false,
+      "minutos_promedio": 4.0,
+      "costo_ultima_milla": 18.0,
+      "ranking": 1
+    },
+    {
+      "candidato": {
+        "id": 25,
+        "clave": "D-1792460274",
+        "nombre": "Alianza Norte (editado)"
+      },
+      "latitud": 25.7601,
+      "longitud": -100.3555,
+      "radio_km": 1.5,
+      "zonas_nuevas": 0,
+      "hogares_nuevos": 0,
+      "hogares_con_mejor_tiempo": 0,
+      "minutos_ahorrados": 0.0,
+      "solapamiento_pct": 0.0,
+      "canibaliza": false,
+      "minutos_promedio": 4.0,
+      "costo_ultima_milla": 18.0,
+      "ranking": 2
+    }
+  ],
+  "red_actual": {
+    "pct_zonas": 100.0,
+    "pct_hogares": 100.0
+  },
+  "supuestos_usados": [
+    {
+      "clave": "factor_rodeo_distancia",
+      "valor": 1.3,
+      "modificado": false
+    },
+    {
+      "clave": "velocidad_reparto_kmh",
+      "valor": 22.0,
+      "modificado": false
+    }
+  ]
+}

@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: simulacion · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola1.xsd"/>
+  <xs:include schemaLocation="comun_ola2.xsd"/>
+
+  <xs:complexType name="TSimEjecucion">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="en_cola"/>
+            <xs:enumeration value="ejecutando"/>
+            <xs:enumeration value="terminada"/>
+            <xs:enumeration value="fallida"/>
+            <xs:enumeration value="cancelada"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="objeto" type="tns:TObjetoAnalisis"/>
+      <xs:element name="semilla" type="xs:long"/>
+      <xs:element name="version_modelo" type="xs:string"/>
+      <xs:element name="dias" type="xs:long"/>
+      <xs:element name="replicas" type="xs:long"/>
+      <xs:element name="entrada" type="tns:TSimEntrada"/>
+      <xs:element name="resultados" type="tns:TSimResultados" nillable="true"/>
+      <xs:element name="huella" type="xs:string" nillable="true"/>
+      <xs:element name="repeticion_de" type="xs:string" nillable="true"/>
+      <xs:element name="reproducible" type="xs:boolean" nillable="true"/>
+      <xs:element name="error" type="xs:string" nillable="true"/>
+      <xs:element name="creado_por" type="xs:long"/>
+      <xs:element name="creado_en" type="xs:dateTime"/>
+      <xs:element name="inicio_en" type="xs:dateTime" nillable="true"/>
+      <xs:element name="fin_en" type="xs:dateTime" nillable="true"/>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSimEntrada">
+    <xs:sequence>
+      <xs:element name="pedidos_dia" type="xs:decimal"/>
+      <xs:element name="ticket" type="xs:decimal"/>
+      <xs:element name="margen_bruto" type="xs:decimal"/>
+      <xs:element name="costos_fijos_mes" type="xs:decimal"/>
+      <xs:element name="costo_variable_pedido" type="xs:decimal"/>
+      <xs:element name="dias_mes" type="xs:decimal"/>
+      <xs:element name="operadores" type="xs:long"/>
+      <xs:element name="repartidores" type="xs:long"/>
+      <xs:element name="capacidad_fisica" type="xs:decimal" nillable="true"/>
+      <xs:element name="horas" type="xs:decimal"/>
+      <xs:element name="distancia_km" type="xs:decimal"/>
+      <xs:element name="ausentismo" type="xs:decimal"/>
+      <xs:element name="variacion_demanda" type="xs:decimal"/>
+      <xs:element name="indice_semanal">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="indice" type="xs:decimal" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="dia_inicio" type="xs:long"/>
+      <xs:element name="origen_de_datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="dato" type="tns:TSimOrigenDato" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSimOrigenDato">
+    <xs:sequence>
+      <xs:element name="dato" type="xs:string"/>
+      <xs:element name="fuente" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSimResultados">
+    <xs:sequence>
+      <xs:element name="dias" type="xs:long"/>
+      <xs:element name="replicas" type="xs:long"/>
+      <xs:element name="metricas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="metrica" type="tns:TSimMetrica" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="prob_perdida_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="dias_saturados_pct" type="xs:decimal"/>
+      <xs:element name="contraste" type="tns:TSimContraste"/>
+      <xs:element name="lectura">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="motivo" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="serie">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="dia" type="tns:TSimDia" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSimMetrica">
+    <xs:sequence>
+      <xs:element name="clave" type="xs:string"/>
+      <xs:element name="etiqueta" type="xs:string"/>
+      <xs:element name="unidad" type="xs:string"/>
+      <xs:element name="media" type="xs:decimal"/>
+      <xs:element name="p10" type="xs:decimal"/>
+      <xs:element name="p50" type="xs:decimal"/>
+      <xs:element name="p90" type="xs:decimal"/>
+      <xs:element name="minimo" type="xs:decimal"/>
+      <xs:element name="maximo" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSimContraste">
+    <xs:sequence>
+      <xs:element name="utilidad_sin_variacion" type="xs:decimal"/>
+      <xs:element name="utilidad_media" type="xs:decimal" nillable="true"/>
+      <xs:element name="diferencia" type="xs:decimal"/>
+      <xs:element name="capacidad_dia_con_todo_el_personal" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSimDia">
+    <xs:sequence>
+      <xs:element name="dia" type="xs:long"/>
+      <xs:element name="demanda_media" type="xs:decimal"/>
+      <xs:element name="atendidos_media" type="xs:decimal"/>
+      <xs:element name="utilidad_acumulada_media" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSimEjecucionLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ejecucion" type="tns:TSimEjecucionResumen" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSimEjecucionResumen">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="en_cola"/>
+            <xs:enumeration value="ejecutando"/>
+            <xs:enumeration value="terminada"/>
+            <xs:enumeration value="fallida"/>
+            <xs:enumeration value="cancelada"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="objeto" type="tns:TObjetoAnalisis"/>
+      <xs:element name="semilla" type="xs:long"/>
+      <xs:element name="dias" type="xs:long"/>
+      <xs:element name="replicas" type="xs:long"/>
+      <xs:element name="utilidad_media" type="xs:decimal" nillable="true"/>
+      <xs:element name="prob_perdida_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="huella" type="xs:string" nillable="true"/>
+      <xs:element name="creado_en" type="xs:dateTime"/>
+      <xs:element name="fin_en" type="xs:dateTime" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSimComparacion">
+    <xs:sequence>
+      <xs:element name="ejecuciones">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ejecucion" type="tns:TSimComparacionFila" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="mejor_id" type="xs:string"/>
+      <xs:element name="criterio" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSimComparacionFila">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="objeto" type="tns:TObjetoAnalisis"/>
+      <xs:element name="dias" type="xs:long"/>
+      <xs:element name="replicas" type="xs:long"/>
+      <xs:element name="utilidad_media" type="xs:decimal" nillable="true"/>
+      <xs:element name="utilidad_p10" type="xs:decimal"/>
+      <xs:element name="utilidad_p90" type="xs:decimal"/>
+      <xs:element name="prob_perdida_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="atendidos_media" type="xs:decimal"/>
+      <xs:element name="rechazados_media" type="xs:decimal"/>
+      <xs:element name="dias_saturados_pct" type="xs:decimal"/>
+      <xs:element name="huella" type="xs:string" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSimNueva">
+    <xs:sequence>
+      <xs:element name="nombre" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="120"/>
+            <xs:minLength value="3"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="microhub_id" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="candidato_id" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="dias" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="365"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="replicas" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="10"/>
+            <xs:maxInclusive value="2000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="semilla" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="2147483647"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="pedidos_dia" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ticket" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="margen_bruto" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costos_fijos" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100000000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costo_variable_pedido" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="operadores" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="50"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="repartidores" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="50"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="capacidad_fisica" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="horas" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="24"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="distancia_km" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ausentismo" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="0.5"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="variacion_demanda" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="simulacion_ejecucion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSimEjecucion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="simulacion_ejecuciones">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSimEjecucionLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="simulacion_comparacion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSimComparacion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="supuestos_simulacion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSupuestosDoc">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="simulacion_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSimNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

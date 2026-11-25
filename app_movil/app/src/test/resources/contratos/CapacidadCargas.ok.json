@@ -1,0 +1,39 @@
+{
+  "microhub": {
+    "id": 1,
+    "nombre": "Microhub San Bernabé Centro"
+  },
+  "capacidad_dia": 150,
+  "carga_en_riesgo": 127.5,
+  "carga_estable": 105.0,
+  "filas": [
+    {
+      "pedidos_dia": 37.5,
+      "utilizacion_pct": 25.0,
+      "nivel": "estable",
+      "utilizacion_pico_pct": 30.9,
+      "atendidos": 37.5,
+      "rechazados": 0
+    },
+    {
+      "pedidos_dia": 64.3,
+      "utilizacion_pct": 42.9,
+      "nivel": "estable",
+      "utilizacion_pico_pct": 53.0,
+      "atendidos": 64.3,
+      "rechazados": 0
+    }
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "umbral_utilizacion_estable",
+      "valor": 70.0,
+      "modificado": false
+    },
+    {
+      "clave": "umbral_utilizacion_riesgo",
+      "valor": 85.0,
+      "modificado": false
+    }
+  ]
+}

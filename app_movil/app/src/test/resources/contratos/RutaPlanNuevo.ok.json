@@ -1,0 +1,14 @@
+{
+  "microhub_id": 1,
+  "pedido_ids": [
+    163,
+    168,
+    169
+  ],
+  "repartidor_ids": [
+    11,
+    12
+  ],
+  "metodo": "automatico",
+  "guardar": true
+}

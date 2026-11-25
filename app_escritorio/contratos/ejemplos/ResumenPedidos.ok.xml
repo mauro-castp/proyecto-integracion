@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resumen_pedidos xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <datos>
+    <fila>
+      <fecha>2026-09-19</fecha>
+      <zona_id>1</zona_id>
+      <categoria_id xsi:nil="true" />
+      <pedidos>1</pedidos>
+      <unidades>3</unidades>
+      <venta>96.9</venta>
+      <clientes>1</clientes>
+      <no_atendidos>0</no_atendidos>
+    </fila>
+    <fila>
+      <fecha>2026-09-19</fecha>
+      <zona_id>3</zona_id>
+      <categoria_id xsi:nil="true" />
+      <pedidos>1</pedidos>
+      <unidades>6</unidades>
+      <venta>153.4</venta>
+      <clientes>1</clientes>
+      <no_atendidos>1</no_atendidos>
+    </fila>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>3</por_pagina>
+    <total>70</total>
+    <paginas>24</paginas>
+  </paginacion>
+</resumen_pedidos>

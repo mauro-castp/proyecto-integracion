@@ -1,0 +1,46 @@
+{
+  "latitud": 25.6866,
+  "longitud": -100.3161,
+  "cubierto": false,
+  "zona_mas_cercana": {
+    "id": 1,
+    "nombre": "San Bernabé Centro",
+    "distancia_km": 7.81
+  },
+  "opciones": [
+    {
+      "microhub": {
+        "id": 1,
+        "nombre": "Microhub San Bernabé Centro"
+      },
+      "distancia_km": 8.35,
+      "distancia_calle_km": 10.85,
+      "minutos": 33.6,
+      "cubre": false,
+      "dentro_promesa": false
+    },
+    {
+      "microhub": {
+        "id": 2,
+        "nombre": "Microhub Valles"
+      },
+      "distancia_km": 9.49,
+      "distancia_calle_km": 12.34,
+      "minutos": 37.6,
+      "cubre": false,
+      "dentro_promesa": false
+    }
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "factor_rodeo_distancia",
+      "valor": 1.3,
+      "modificado": false
+    },
+    {
+      "clave": "velocidad_reparto_kmh",
+      "valor": 22.0,
+      "modificado": false
+    }
+  ]
+}

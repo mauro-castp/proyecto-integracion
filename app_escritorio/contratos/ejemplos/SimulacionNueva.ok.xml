@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulacion_nueva xmlns="urn:microhubs:v1" version="1">
+  <nombre>Centro con 3 operadores</nombre>
+  <microhub_id>1</microhub_id>
+  <dias>30</dias>
+  <replicas>200</replicas>
+  <semilla>2026</semilla>
+  <ausentismo>0.05</ausentismo>
+</simulacion_nueva>

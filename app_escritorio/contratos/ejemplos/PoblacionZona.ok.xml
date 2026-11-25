@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<poblacion_zona xmlns="urn:microhubs:v1" version="1">
+  <zona>
+    <id>1</id>
+    <nombre>San Bernabé Centro</nombre>
+  </zona>
+  <poblacion>4300</poblacion>
+  <hogares>1194</hogares>
+  <fuente>INEGI, Censo 2020, AGEB 1902600010532</fuente>
+</poblacion_zona>

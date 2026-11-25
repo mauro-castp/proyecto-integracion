@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<demanda_potencial xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <zona xsi:nil="true" />
+  <hogares>6709</hogares>
+  <penetracion>0.12</penetracion>
+  <pedidos_hogar_mes>2.5</pedidos_hogar_mes>
+  <pedidos_mes_potencial>2012.7</pedidos_mes_potencial>
+  <pedidos_dia_potencial>67.1</pedidos_dia_potencial>
+  <pedidos_dia_observados>3.4</pedidos_dia_observados>
+  <cuota_capturada_pct>5.0</cuota_capturada_pct>
+  <brecha_pedidos_dia>63.7</brecha_pedidos_dia>
+  <escenarios>
+    <escenario>
+      <penetracion>0.04</penetracion>
+      <pedidos_mes>670.9</pedidos_mes>
+      <pedidos_dia>22.4</pedidos_dia>
+      <cuota_capturada_pct>15.0</cuota_capturada_pct>
+      <brecha_pedidos_dia>19.0</brecha_pedidos_dia>
+    </escenario>
+    <escenario>
+      <penetracion>0.08</penetracion>
+      <pedidos_mes>1341.8</pedidos_mes>
+      <pedidos_dia>44.7</pedidos_dia>
+      <cuota_capturada_pct>7.5</cuota_capturada_pct>
+      <brecha_pedidos_dia>41.4</brecha_pedidos_dia>
+    </escenario>
+  </escenarios>
+  <supuestos_usados>
+    <supuesto>
+      <clave>dem_penetracion</clave>
+      <valor>0.12</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>dem_pedidos_hogar_mes</clave>
+      <valor>2.5</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</demanda_potencial>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<concepto_costo xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <id>2</id>
+  <ambito>global</ambito>
+  <ambito_id xsi:nil="true" />
+  <nombre>Combustible y desgaste</nombre>
+  <categoria>transporte</categoria>
+  <tipo>variable</tipo>
+  <unidad>km</unidad>
+  <monto>4.5</monto>
+  <vigente_desde>2026-10-19</vigente_desde>
+  <vigente_hasta xsi:nil="true" />
+  <estatus>activo</estatus>
+  <fuente>supuesto</fuente>
+  <justificacion>Combustible, mantenimiento y desgaste de una moto pequeña; mismo valor que costo_km_reparto.</justificacion>
+</concepto_costo>

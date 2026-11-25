@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruta_plan_nuevo xmlns="urn:microhubs:v1" version="1">
+  <microhub_id>1</microhub_id>
+  <pedido_ids>
+    <id>163</id>
+    <id>168</id>
+    <id>169</id>
+  </pedido_ids>
+  <repartidor_ids>
+    <id>11</id>
+    <id>12</id>
+  </repartidor_ids>
+  <metodo>automatico</metodo>
+  <guardar>true</guardar>
+</ruta_plan_nuevo>

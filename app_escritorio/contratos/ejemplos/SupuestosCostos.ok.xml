@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supuestos_costos xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <supuesto>
+      <clave>cap_distancia_entrega_km</clave>
+      <valor>2.4</valor>
+      <unidad>km</unidad>
+      <origen>supuesto</origen>
+      <justificacion>Distancia típica de entrega desde el microhub, ida solamente; es el valor del Escenario A de la retroalimentación.</justificacion>
+      <como_calibrar>Distancia promedio entre el microhub y los domicilios de las entregas cerradas.</como_calibrar>
+    </supuesto>
+    <supuesto>
+      <clave>cos_pedidos_mes_ref</clave>
+      <valor>1800</valor>
+      <unidad>pedidos</unidad>
+      <origen>supuesto</origen>
+      <justificacion>Volumen de referencia de 60 pedidos al día para repartir los costos fijos cuando no se indica otro.</justificacion>
+      <como_calibrar>Pedidos reales por mes del microhub.</como_calibrar>
+    </supuesto>
+  </datos>
+</supuestos_costos>

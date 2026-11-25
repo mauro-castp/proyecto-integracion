@@ -1,0 +1,8 @@
+{
+  "nombre": "Centro con 3 operadores",
+  "microhub_id": 1,
+  "dias": 30,
+  "replicas": 200,
+  "semilla": 2026,
+  "ausentismo": 0.05
+}

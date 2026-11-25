@@ -1,0 +1,20 @@
+{
+  "datos": [
+    {
+      "id": 7,
+      "nombre": "Ramiro Alanís Lozano",
+      "entregas_abiertas": 0
+    },
+    {
+      "id": 8,
+      "nombre": "Diana Sepúlveda Ibarra",
+      "entregas_abiertas": 0
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 100,
+    "total": 2,
+    "paginas": 1
+  }
+}

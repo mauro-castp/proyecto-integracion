@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<costos_unitarios xmlns="urn:microhubs:v1" version="1">
+  <entrada>
+    <ambito>microhub</ambito>
+    <ambito_id>1</ambito_id>
+    <origen>costos</origen>
+    <pedidos_mes>1800.0</pedidos_mes>
+    <ticket>135.0</ticket>
+    <margen_bruto>0.28</margen_bruto>
+    <distancia_km>2.4</distancia_km>
+    <paradas_por_viaje>3.0</paradas_por_viaje>
+    <valores_modificados />
+  </entrada>
+  <fijos_mes>69500.0</fijos_mes>
+  <costo_fijo_pedido>38.61</costo_fijo_pedido>
+  <variable_pedido>3.5</variable_pedido>
+  <comision_pedido>3.92</comision_pedido>
+  <costo_entrega>25.2</costo_entrega>
+  <costo_variable_pedido>32.62</costo_variable_pedido>
+  <costo_por_pedido>71.23</costo_por_pedido>
+  <supuestos_usados>
+    <supuesto>
+      <clave>pedidos_mes</clave>
+      <valor>1800.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>ticket</clave>
+      <valor>135.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</costos_unitarios>

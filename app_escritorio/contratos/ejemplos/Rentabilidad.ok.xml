@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rentabilidad xmlns="urn:microhubs:v1" version="1">
+  <entrada>
+    <ambito>microhub</ambito>
+    <ambito_id>1</ambito_id>
+    <origen>costos</origen>
+    <pedidos_mes>1800.0</pedidos_mes>
+    <ticket>135.0</ticket>
+    <margen_bruto>0.28</margen_bruto>
+    <distancia_km>2.4</distancia_km>
+    <paradas_por_viaje>3.0</paradas_por_viaje>
+    <valores_modificados />
+  </entrada>
+  <ingresos_mes>243000.0</ingresos_mes>
+  <margen_bruto_mes>68040.0</margen_bruto_mes>
+  <costo_variable_mes>58707.0</costo_variable_mes>
+  <margen_contribucion_pedido>5.19</margen_contribucion_pedido>
+  <margen_contribucion_mes>9333.0</margen_contribucion_mes>
+  <costos_fijos_mes>69500.0</costos_fijos_mes>
+  <utilidad_mes>-60167.0</utilidad_mes>
+  <margen_operativo_pct>-24.76</margen_operativo_pct>
+  <costo_por_pedido>71.23</costo_por_pedido>
+  <cubre_costos>false</cubre_costos>
+  <supuestos_usados>
+    <supuesto>
+      <clave>pedidos_mes</clave>
+      <valor>1800.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>ticket</clave>
+      <valor>135.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</rentabilidad>

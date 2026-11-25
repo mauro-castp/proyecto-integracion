@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sincronizacion_nueva xmlns="urn:microhubs:v1" version="1">
+  <desde>2026-09-01</desde>
+  <hasta>2026-10-18</hasta>
+  <por_categoria>true</por_categoria>
+</sincronizacion_nueva>

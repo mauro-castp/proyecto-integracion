@@ -1,0 +1,44 @@
+{
+  "entrada": {
+    "ambito": "microhub",
+    "ambito_id": 1,
+    "origen": "costos",
+    "pedidos_mes": 1800.0,
+    "ticket": 135.0,
+    "margen_bruto": 0.28,
+    "distancia_km": 2.4,
+    "paradas_por_viaje": 3.0,
+    "valores_modificados": []
+  },
+  "costo_por_pedido": 71.23,
+  "utilidad_mes": -60167.0,
+  "palanca_mas_sensible": "Pago y kilometraje de la entrega",
+  "filas": [
+    {
+      "palanca": "Fijo: otros",
+      "cambio_pct": -20,
+      "costo_por_pedido": 70.95,
+      "utilidad_mes": -59667.0,
+      "cambio_utilidad": 500.0
+    },
+    {
+      "palanca": "Fijo: otros",
+      "cambio_pct": -10,
+      "costo_por_pedido": 71.09,
+      "utilidad_mes": -59917.0,
+      "cambio_utilidad": 250.0
+    }
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "pedidos_mes",
+      "valor": 1800.0,
+      "modificado": false
+    },
+    {
+      "clave": "ticket",
+      "valor": 135.0,
+      "modificado": false
+    }
+  ]
+}

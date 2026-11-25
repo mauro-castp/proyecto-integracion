@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: rutas · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola1.xsd"/>
+  <xs:include schemaLocation="comun_ola2.xsd"/>
+
+  <xs:complexType name="TRutPlan">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long" nillable="true"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="calculo"/>
+            <xs:enumeration value="propuesto"/>
+            <xs:enumeration value="confirmado"/>
+            <xs:enumeration value="cancelado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="version" type="xs:long"/>
+      <xs:element name="microhub" type="tns:TRefNombre"/>
+      <xs:element name="fecha" type="xs:date"/>
+      <xs:element name="metodo_pedido">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="automatico"/>
+            <xs:enumeration value="vecino"/>
+            <xs:enumeration value="2opt"/>
+            <xs:enumeration value="exacto"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="rutas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ruta" type="tns:TRutRuta" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sin_asignar">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="pedido" type="tns:TRutPlanPedido" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="total" type="tns:TRutTotal"/>
+      <xs:element name="cambios">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="cambio" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paradas_fuera_de_promesa" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="folio" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRutRuta">
+    <xs:sequence>
+      <xs:element name="repartidor" type="tns:TRefNombre"/>
+      <xs:element name="metodo" type="xs:string"/>
+      <xs:element name="zonas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="nombre_zona" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paradas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="parada" type="tns:TRutParada" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="distancia_km" type="xs:decimal"/>
+      <xs:element name="minutos" type="xs:decimal"/>
+      <xs:element name="costo" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRutParada">
+    <xs:sequence>
+      <xs:element name="orden" type="xs:long"/>
+      <xs:element name="pedido" type="tns:TRutPedidoRef"/>
+      <xs:element name="zona" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="latitud" type="xs:decimal"/>
+      <xs:element name="longitud" type="xs:decimal"/>
+      <xs:element name="tramo_km" type="xs:decimal"/>
+      <xs:element name="minutos_acum" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRutPedidoRef">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="folio" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRutPlanPedido">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="folio" type="xs:string"/>
+      <xs:element name="zona" type="tns:TRefNombre" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRutTotal">
+    <xs:sequence>
+      <xs:element name="rutas" type="xs:long"/>
+      <xs:element name="paradas" type="xs:long"/>
+      <xs:element name="distancia_km" type="xs:decimal"/>
+      <xs:element name="minutos_maximo" type="xs:decimal"/>
+      <xs:element name="costo" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRutPlanLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="plan" type="tns:TRutPlanResumen" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRutPlanResumen">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="propuesto"/>
+            <xs:enumeration value="confirmado"/>
+            <xs:enumeration value="cancelado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="version" type="xs:long"/>
+      <xs:element name="microhub" type="tns:TRefNombre"/>
+      <xs:element name="fecha" type="xs:date"/>
+      <xs:element name="rutas" type="xs:long"/>
+      <xs:element name="paradas" type="xs:long"/>
+      <xs:element name="distancia_km" type="xs:decimal"/>
+      <xs:element name="costo" type="xs:decimal"/>
+      <xs:element name="creado_por" type="xs:long"/>
+      <xs:element name="creado_en" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRutComparacion">
+    <xs:sequence>
+      <xs:element name="microhub" type="tns:TRefNombre"/>
+      <xs:element name="paradas" type="xs:long"/>
+      <xs:element name="filas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="fila" type="tns:TRutComparacionFila" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="mejor_metodo" type="xs:string"/>
+      <xs:element name="nota" type="xs:string" nillable="true"/>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRutComparacionFila">
+    <xs:sequence>
+      <xs:element name="metodo" type="xs:string"/>
+      <xs:element name="distancia_km" type="xs:decimal"/>
+      <xs:element name="minutos" type="xs:decimal"/>
+      <xs:element name="costo" type="xs:decimal"/>
+      <xs:element name="mejora_pct" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRutAjusteNuevo">
+    <xs:sequence>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="quitar_pedido"/>
+            <xs:enumeration value="agregar_pedido"/>
+            <xs:enumeration value="retraso"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="pedido_id" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="repartidor_id" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="minutos" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="600"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRutComparacionNueva">
+    <xs:sequence>
+      <xs:element name="microhub_id">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="pedido_ids" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRutPlanNuevo">
+    <xs:sequence>
+      <xs:element name="microhub_id">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="pedido_ids" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="repartidor_ids" minOccurs="0" nillable="true">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="metodo" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="automatico"/>
+            <xs:enumeration value="vecino"/>
+            <xs:enumeration value="2opt"/>
+            <xs:enumeration value="exacto"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="guardar" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="ruta_plan">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TRutPlan">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ruta_planes">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TRutPlanLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ruta_comparacion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TRutComparacion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="supuestos_rutas">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSupuestosDoc">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ruta_plan_nuevo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TRutPlanNuevo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ruta_comparacion_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TRutComparacionNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ruta_ajuste_nuevo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TRutAjusteNuevo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<capacidad_simulacion_nueva xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <microhub_id>1</microhub_id>
+  <pedidos_dia>90</pedidos_dia>
+  <operadores>4</operadores>
+  <repartidores>3</repartidores>
+  <horas>10</horas>
+  <distancia_km>2.4</distancia_km>
+  <capacidad_fisica xsi:nil="true" />
+</capacidad_simulacion_nueva>

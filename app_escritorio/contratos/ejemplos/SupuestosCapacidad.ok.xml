@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supuestos_capacidad xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <supuesto>
+      <clave>cap_distancia_entrega_km</clave>
+      <valor>2.4</valor>
+      <unidad>km</unidad>
+      <origen>supuesto</origen>
+      <justificacion>Distancia típica de entrega desde el microhub, ida solamente; es el valor del Escenario A de la retroalimentación.</justificacion>
+      <como_calibrar>Distancia promedio entre el microhub y los domicilios de las entregas cerradas.</como_calibrar>
+    </supuesto>
+    <supuesto>
+      <clave>cap_factor_pico</clave>
+      <valor>1.35</valor>
+      <unidad>veces</unidad>
+      <origen>supuesto</origen>
+      <justificacion>La hora pico recibe de 1.3 a 1.4 veces el promedio horario.</justificacion>
+      <como_calibrar>Distribución de pedidos por hora de pedido.creado_en.</como_calibrar>
+    </supuesto>
+  </datos>
+</supuestos_capacidad>

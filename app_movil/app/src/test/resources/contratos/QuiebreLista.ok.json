@@ -1,0 +1,24 @@
+{
+  "datos": [
+    {
+      "microhub_id": 1,
+      "producto_id": 21,
+      "quiebres": 1,
+      "ultimo": "2026-10-19T19:30:44-06:00",
+      "agotado_hoy": true
+    },
+    {
+      "microhub_id": 2,
+      "producto_id": 13,
+      "quiebres": 1,
+      "ultimo": "2026-09-15T10:55:50-06:00",
+      "agotado_hoy": true
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 3,
+    "total": 6,
+    "paginas": 2
+  }
+}

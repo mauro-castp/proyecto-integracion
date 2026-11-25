@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<surtido_abc xmlns="urn:microhubs:v1" version="1">
+  <microhub>
+    <id>1</id>
+    <nombre>Microhub San Bernabé Centro</nombre>
+  </microhub>
+  <ventana_dias>90</ventana_dias>
+  <clases>
+    <clase>
+      <clase>A</clase>
+      <productos>30</productos>
+      <unidades>194</unidades>
+      <venta>5535.5</venta>
+      <pct_unidades>81.5</pct_unidades>
+      <pct_venta>78.8</pct_venta>
+    </clase>
+    <clase>
+      <clase>B</clase>
+      <productos>13</productos>
+      <unidades>34</unidades>
+      <venta>1168.0</venta>
+      <pct_unidades>14.3</pct_unidades>
+      <pct_venta>16.6</pct_venta>
+    </clase>
+  </clases>
+  <filas>
+    <fila>
+      <producto>
+        <id>13</id>
+        <clave_interna>AB-013</clave_interna>
+        <nombre>Puré de tomate</nombre>
+      </producto>
+      <clase>A</clase>
+      <unidades>13</unidades>
+      <venta>143.0</venta>
+      <pct_acum>5.5</pct_acum>
+    </fila>
+    <fila>
+      <producto>
+        <id>7</id>
+        <clave_interna>AB-007</clave_interna>
+        <nombre>Harina de trigo</nombre>
+      </producto>
+      <clase>A</clase>
+      <unidades>12</unidades>
+      <venta>294.0</venta>
+      <pct_acum>10.5</pct_acum>
+    </fila>
+  </filas>
+  <supuestos_usados>
+    <supuesto>
+      <clave>abc_a_pct</clave>
+      <valor>80.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>abc_b_pct</clave>
+      <valor>95.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</surtido_abc>

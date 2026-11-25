@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recurso_capacidad_nuevo xmlns="urn:microhubs:v1" version="1">
+  <operadores>3</operadores>
+  <repartidores>3</repartidores>
+  <capacidad_fisica>150</capacidad_fisica>
+</recurso_capacidad_nuevo>

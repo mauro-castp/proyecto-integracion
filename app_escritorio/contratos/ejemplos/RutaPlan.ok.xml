@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruta_plan xmlns="urn:microhubs:v1" version="1">
+  <id>1</id>
+  <estado>propuesto</estado>
+  <version>1</version>
+  <microhub>
+    <id>1</id>
+    <nombre>Microhub San Bernabé Centro</nombre>
+  </microhub>
+  <fecha>2026-10-19</fecha>
+  <metodo_pedido>automatico</metodo_pedido>
+  <rutas>
+    <ruta>
+      <repartidor>
+        <id>7</id>
+        <nombre>Ramiro Alanís Lozano</nombre>
+      </repartidor>
+      <metodo>TSP exacto</metodo>
+      <zonas>
+        <nombre_zona>San Bernabé Centro</nombre_zona>
+      </zonas>
+      <paradas>
+        <parada>
+          <orden>1</orden>
+          <pedido>
+            <id>163</id>
+            <folio>PED-20261020-000163</folio>
+          </pedido>
+          <zona>
+            <id>1</id>
+            <nombre>San Bernabé Centro</nombre>
+          </zona>
+          <latitud>25.745527</latitud>
+          <longitud>-100.362981</longitud>
+          <tramo_km>0.38</tramo_km>
+          <minutos_acum>5.0</minutos_acum>
+        </parada>
+        <parada>
+          <orden>2</orden>
+          <pedido>
+            <id>168</id>
+            <folio>PED-20261020-000168</folio>
+          </pedido>
+          <zona>
+            <id>1</id>
+            <nombre>San Bernabé Centro</nombre>
+          </zona>
+          <latitud>25.745527</latitud>
+          <longitud>-100.362981</longitud>
+          <tramo_km>0.0</tramo_km>
+          <minutos_acum>9.0</minutos_acum>
+        </parada>
+      </paradas>
+      <distancia_km>2.29</distancia_km>
+      <minutos>26.2</minutos>
+      <costo>100.3</costo>
+    </ruta>
+    <ruta>
+      <repartidor>
+        <id>8</id>
+        <nombre>Diana Sepúlveda Ibarra</nombre>
+      </repartidor>
+      <metodo>TSP exacto</metodo>
+      <zonas>
+        <nombre_zona>Valles de San Bernabé</nombre_zona>
+      </zonas>
+      <paradas>
+        <parada>
+          <orden>1</orden>
+          <pedido>
+            <id>176</id>
+            <folio>PED-20261020-000176</folio>
+          </pedido>
+          <zona>
+            <id>2</id>
+            <nombre>Valles de San Bernabé</nombre>
+          </zona>
+          <latitud>25.748439</latitud>
+          <longitud>-100.369944</longitud>
+          <tramo_km>0.78</tramo_km>
+          <minutos_acum>6.1</minutos_acum>
+        </parada>
+      </paradas>
+      <distancia_km>0.78</distancia_km>
+      <minutos>6.1</minutos>
+      <costo>21.49</costo>
+    </ruta>
+  </rutas>
+  <sin_asignar />
+  <total>
+    <rutas>2</rutas>
+    <paradas>6</paradas>
+    <distancia_km>3.07</distancia_km>
+    <minutos_maximo>26.2</minutos_maximo>
+    <costo>121.79</costo>
+  </total>
+  <cambios />
+  <supuestos_usados>
+    <supuesto>
+      <clave>velocidad_reparto_kmh</clave>
+      <valor>22.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>tiempo_servicio_min</clave>
+      <valor>4.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</ruta_plan>

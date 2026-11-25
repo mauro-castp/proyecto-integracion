@@ -1,0 +1,25 @@
+{
+  "zonas": 4,
+  "zonas_cubiertas": 4,
+  "pct_zonas": 100.0,
+  "hogares": 6709,
+  "hogares_cubiertos": 6709,
+  "pct_hogares": 100.0,
+  "tiempo_promedio_min": 5.5,
+  "dentro_promesa_pct": 100.0,
+  "zonas_solapadas": 3,
+  "zonas_sin_cobertura": [],
+  "microhubs_activos": 3,
+  "supuestos_usados": [
+    {
+      "clave": "factor_rodeo_distancia",
+      "valor": 1.3,
+      "modificado": false
+    },
+    {
+      "clave": "velocidad_reparto_kmh",
+      "valor": 22.0,
+      "modificado": false
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulacion_ejecucion xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <id>424e011f-a7ae-4bf7-ba84-24dd4b6dd75d</id>
+  <nombre>Simulación de Microhub San Bernabé Centro 2026-10-19</nombre>
+  <estado>terminada</estado>
+  <objeto>
+    <tipo>microhub</tipo>
+    <id>1</id>
+    <nombre>Microhub San Bernabé Centro</nombre>
+  </objeto>
+  <semilla>11</semilla>
+  <version_modelo>1.0</version_modelo>
+  <dias>14</dias>
+  <replicas>100</replicas>
+  <entrada>
+    <pedidos_dia>5.0</pedidos_dia>
+    <ticket>138.03</ticket>
+    <margen_bruto>0.28</margen_bruto>
+    <costos_fijos_mes>69500.0</costos_fijos_mes>
+    <costo_variable_pedido>32.7</costo_variable_pedido>
+    <dias_mes>30.0</dias_mes>
+    <operadores>3</operadores>
+    <repartidores>3</repartidores>
+    <capacidad_fisica>150</capacidad_fisica>
+    <horas>10.0</horas>
+    <distancia_km>2.4</distancia_km>
+    <ausentismo>0.05</ausentismo>
+    <variacion_demanda>0.1</variacion_demanda>
+    <indice_semanal>
+      <indice>1.166</indice>
+      <indice>0.679</indice>
+    </indice_semanal>
+    <dia_inicio>1</dia_inicio>
+    <origen_de_datos>
+      <dato>
+        <dato>costos_fijos</dato>
+        <fuente>costos</fuente>
+      </dato>
+      <dato>
+        <dato>costo_variable_pedido</dato>
+        <fuente>costos</fuente>
+      </dato>
+    </origen_de_datos>
+  </entrada>
+  <resultados>
+    <dias>14</dias>
+    <replicas>100</replicas>
+    <metricas>
+      <metrica>
+        <clave>utilidad</clave>
+        <etiqueta>Utilidad del periodo</etiqueta>
+        <unidad>MXN</unidad>
+        <media>-32022.5963</media>
+        <p10>-32088.921</p10>
+        <p50>-32016.9453</p50>
+        <p90>-31975.3065</p90>
+        <minimo>-32129.9649</minimo>
+        <maximo>-31868.2353</maximo>
+      </metrica>
+      <metrica>
+        <clave>ingreso</clave>
+        <etiqueta>Ingreso del periodo</etiqueta>
+        <unidad>MXN</unidad>
+        <media>9530.9715</media>
+        <p10>7991.937</p10>
+        <p50>9662.1</p50>
+        <p90>10628.31</p90>
+        <minimo>7039.53</minimo>
+        <maximo>13112.85</maximo>
+      </metrica>
+    </metricas>
+    <prob_perdida_pct>100.0</prob_perdida_pct>
+    <dias_saturados_pct>0.0714</dias_saturados_pct>
+    <contraste>
+      <utilidad_sin_variacion>-32016.9453</utilidad_sin_variacion>
+      <utilidad_media>-32022.5963</utilidad_media>
+      <diferencia>-5.651</diferencia>
+      <capacidad_dia_con_todo_el_personal>150.0</capacidad_dia_con_todo_el_personal>
+    </contraste>
+    <lectura>
+      <motivo>En 100 réplicas de 14 días, la utilidad media fue de -32,023 MXN (P10 -32,089, P90 -31,975).</motivo>
+      <motivo>Hubo pérdida en 100.0 % de las réplicas y 0.1 % de los días estuvieron saturados.</motivo>
+    </lectura>
+    <serie>
+      <dia>
+        <dia>1</dia>
+        <demanda_media>5.95</demanda_media>
+        <atendidos_media>5.95</atendidos_media>
+        <utilidad_acumulada_media>-2281.2737</utilidad_acumulada_media>
+      </dia>
+      <dia>
+        <dia>2</dia>
+        <demanda_media>3.35</demanda_media>
+        <atendidos_media>3.35</atendidos_media>
+        <utilidad_acumulada_media>-4578.0132</utilidad_acumulada_media>
+      </dia>
+    </serie>
+  </resultados>
+  <huella>2070f03b07cc488550c6f8f5fcae4245394529e921d24b896f9480ad36d13800</huella>
+  <repeticion_de xsi:nil="true" />
+  <reproducible xsi:nil="true" />
+  <error xsi:nil="true" />
+  <creado_por>1</creado_por>
+  <creado_en>2026-10-19T23:49:52-06:00</creado_en>
+  <inicio_en>2026-10-19T23:49:53-06:00</inicio_en>
+  <fin_en>2026-10-19T23:49:53-06:00</fin_en>
+  <supuestos_usados>
+    <supuesto>
+      <clave>picking_pedidos_hora</clave>
+      <valor>10.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>packing_pedidos_hora</clave>
+      <valor>20.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</simulacion_ejecucion>

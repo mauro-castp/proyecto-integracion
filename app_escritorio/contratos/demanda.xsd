@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: demanda · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola1.xsd"/>
+  <xs:include schemaLocation="comun_ola2.xsd"/>
+
+  <xs:complexType name="TDemSincronizacion">
+    <xs:sequence>
+      <xs:element name="desde" type="xs:date"/>
+      <xs:element name="hasta" type="xs:date"/>
+      <xs:element name="filas_escritas" type="xs:long"/>
+      <xs:element name="pedidos_leidos" type="xs:long"/>
+      <xs:element name="sinteticas_reemplazadas" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemObservacionLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="observacion" type="tns:TDemObservacion" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemObservacion">
+    <xs:sequence>
+      <xs:element name="fecha" type="xs:date"/>
+      <xs:element name="zona" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="categoria" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="pedidos" type="xs:long"/>
+      <xs:element name="unidades" type="xs:long"/>
+      <xs:element name="venta" type="xs:decimal"/>
+      <xs:element name="clientes" type="xs:long"/>
+      <xs:element name="no_atendidos" type="xs:long"/>
+      <xs:element name="fuente">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="pedidos"/>
+            <xs:enumeration value="sintetica"/>
+            <xs:enumeration value="manual"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemProyeccion">
+    <xs:sequence>
+      <xs:element name="metodo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="tendencia_estacional"/>
+            <xs:enumeration value="promedio_movil"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="zona" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="historia_desde" type="xs:date"/>
+      <xs:element name="historia_hasta" type="xs:date"/>
+      <xs:element name="historia_dias" type="xs:long"/>
+      <xs:element name="horizonte" type="xs:long"/>
+      <xs:element name="indices_confiables" type="xs:boolean"/>
+      <xs:element name="nivel_pedidos_dia" type="xs:decimal"/>
+      <xs:element name="pendiente_pedidos_dia" type="xs:decimal"/>
+      <xs:element name="desviacion_error" type="xs:decimal"/>
+      <xs:element name="total_pedidos" type="xs:decimal"/>
+      <xs:element name="promedio_dia" type="xs:decimal"/>
+      <xs:element name="serie">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="dia" type="tns:TDemProyeccionDia" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemProyeccionDia">
+    <xs:sequence>
+      <xs:element name="fecha" type="xs:date"/>
+      <xs:element name="pedidos" type="xs:decimal"/>
+      <xs:element name="minimo" type="xs:decimal"/>
+      <xs:element name="maximo" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemComparacion">
+    <xs:sequence>
+      <xs:element name="metodo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="tendencia_estacional"/>
+            <xs:enumeration value="promedio_movil"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="zona" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="dias_prueba" type="xs:long"/>
+      <xs:element name="dias_entrenamiento" type="xs:long"/>
+      <xs:element name="mape_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="sesgo_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="dentro_banda_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="filas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="dia" type="tns:TDemComparacionDia" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemComparacionDia">
+    <xs:sequence>
+      <xs:element name="fecha" type="xs:date"/>
+      <xs:element name="observado" type="xs:decimal"/>
+      <xs:element name="proyectado" type="xs:decimal"/>
+      <xs:element name="error" type="xs:decimal" nillable="true"/>
+      <xs:element name="error_pct" type="xs:decimal" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemPotencial">
+    <xs:sequence>
+      <xs:element name="zona" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="hogares" type="xs:long"/>
+      <xs:element name="penetracion" type="xs:decimal"/>
+      <xs:element name="pedidos_hogar_mes" type="xs:decimal"/>
+      <xs:element name="pedidos_mes_potencial" type="xs:decimal"/>
+      <xs:element name="pedidos_dia_potencial" type="xs:decimal"/>
+      <xs:element name="pedidos_dia_observados" type="xs:decimal"/>
+      <xs:element name="cuota_capturada_pct" type="xs:decimal"/>
+      <xs:element name="brecha_pedidos_dia" type="xs:decimal"/>
+      <xs:element name="escenarios">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="escenario" type="tns:TDemPotencialEscenario" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemPotencialEscenario">
+    <xs:sequence>
+      <xs:element name="penetracion" type="xs:decimal"/>
+      <xs:element name="pedidos_mes" type="xs:decimal"/>
+      <xs:element name="pedidos_dia" type="xs:decimal"/>
+      <xs:element name="cuota_capturada_pct" type="xs:decimal"/>
+      <xs:element name="brecha_pedidos_dia" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemResumen">
+    <xs:sequence>
+      <xs:element name="desde" type="xs:date"/>
+      <xs:element name="hasta" type="xs:date"/>
+      <xs:element name="dias" type="xs:long"/>
+      <xs:element name="total" type="tns:TDemTotal"/>
+      <xs:element name="zonas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="zona_demanda" type="tns:TDemZonaDemanda" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="observaciones_por_fuente" type="tns:TDemPorFuente"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemTotal">
+    <xs:sequence>
+      <xs:element name="pedidos" type="xs:long"/>
+      <xs:element name="pedidos_dia" type="xs:decimal"/>
+      <xs:element name="unidades_por_pedido" type="xs:decimal" nillable="true"/>
+      <xs:element name="venta" type="xs:decimal"/>
+      <xs:element name="ticket_promedio" type="xs:decimal" nillable="true"/>
+      <xs:element name="pedidos_por_cliente" type="xs:decimal" nillable="true"/>
+      <xs:element name="no_atendidos" type="xs:long"/>
+      <xs:element name="pct_no_atendida" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemZonaDemanda">
+    <xs:sequence>
+      <xs:element name="zona" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="pedidos" type="xs:long"/>
+      <xs:element name="pedidos_dia" type="xs:decimal"/>
+      <xs:element name="unidades_por_pedido" type="xs:decimal" nillable="true"/>
+      <xs:element name="venta" type="xs:decimal"/>
+      <xs:element name="ticket_promedio" type="xs:decimal" nillable="true"/>
+      <xs:element name="pedidos_por_cliente" type="xs:decimal" nillable="true"/>
+      <xs:element name="no_atendidos" type="xs:long"/>
+      <xs:element name="pct_no_atendida" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemPorFuente">
+    <xs:sequence>
+      <xs:element name="pedidos" type="xs:long"/>
+      <xs:element name="sintetica" type="xs:long"/>
+      <xs:element name="manual" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemPatrones">
+    <xs:sequence>
+      <xs:element name="desde" type="xs:date"/>
+      <xs:element name="hasta" type="xs:date"/>
+      <xs:element name="dias" type="xs:long"/>
+      <xs:element name="suficiente" type="xs:boolean"/>
+      <xs:element name="semanal">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="dia_semana" type="tns:TDemDiaSemana" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="categorias">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="categoria_venta" type="tns:TDemCategoriaVenta" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="dia_pico" type="xs:string" nillable="true"/>
+      <xs:element name="dia_valle" type="xs:string" nillable="true"/>
+      <xs:element name="fuerza_estacional" type="xs:decimal" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemDiaSemana">
+    <xs:sequence>
+      <xs:element name="dia" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="pedidos_promedio" type="xs:decimal"/>
+      <xs:element name="indice" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemCategoriaVenta">
+    <xs:sequence>
+      <xs:element name="categoria" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="unidades" type="xs:long"/>
+      <xs:element name="venta" type="xs:decimal"/>
+      <xs:element name="pct_venta" type="xs:decimal" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TDemSincronizacionNueva">
+    <xs:sequence>
+      <xs:element name="desde" type="xs:date"/>
+      <xs:element name="hasta" type="xs:date"/>
+      <xs:element name="por_categoria" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="sincronizacion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TDemSincronizacion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="observaciones_demanda">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TDemObservacionLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="demanda_proyeccion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TDemProyeccion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="demanda_comparacion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TDemComparacion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="demanda_potencial">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TDemPotencial">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="demanda_resumen">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TDemResumen">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="demanda_patrones">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TDemPatrones">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="supuestos_demanda">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSupuestosDoc">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sincronizacion_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TDemSincronizacionNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,20 @@
+{
+  "datos": [
+    {
+      "clave": "cap_distancia_entrega_km",
+      "valor": "2.4",
+      "unidad": "km",
+      "origen": "supuesto",
+      "justificacion": "Distancia típica de entrega desde el microhub, ida solamente; es el valor del Escenario A de la retroalimentación.",
+      "como_calibrar": "Distancia promedio entre el microhub y los domicilios de las entregas cerradas."
+    },
+    {
+      "clave": "despacho_pedidos_hora",
+      "valor": "30",
+      "unidad": "pedidos/h",
+      "origen": "supuesto",
+      "justificacion": "Un operador despacha unos 30 pedidos por hora (2 minutos: verificar y entregar al repartidor).",
+      "como_calibrar": "Tiempo entre listo_en y la salida del repartidor."
+    }
+  ]
+}

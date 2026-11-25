@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruta_ajuste_nuevo xmlns="urn:microhubs:v1" version="1">
+  <tipo>retraso</tipo>
+  <repartidor_id>11</repartidor_id>
+  <minutos>20</minutos>
+</ruta_ajuste_nuevo>

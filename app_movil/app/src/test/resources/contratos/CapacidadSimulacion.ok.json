@@ -1,0 +1,94 @@
+{
+  "microhub": {
+    "id": 1,
+    "nombre": "Microhub San Bernabé Centro"
+  },
+  "pedidos_dia": 90.0,
+  "escenario": {
+    "operadores": 4,
+    "repartidores": 3,
+    "capacidad_fisica": 150,
+    "horas": 10.0,
+    "distancia_km": 2.4,
+    "carga_dia": 90.0,
+    "capacidad_hora": 21.52,
+    "capacidad_dia": 150,
+    "utilizacion_pct": 60.0,
+    "nivel": "estable",
+    "utilizacion_pico_pct": 56.5,
+    "nivel_pico": "estable",
+    "cuello_botella": "espacio físico",
+    "minutos_por_pedido_operacion": 11.0,
+    "minutos_por_entrega": 8.4,
+    "etapas": [
+      {
+        "etapa": "picking",
+        "minutos_por_pedido": 6.0,
+        "pct_tiempo": 54.5,
+        "capacidad_hora": 40.0
+      },
+      {
+        "etapa": "empaque",
+        "minutos_por_pedido": 3.0,
+        "pct_tiempo": 27.3,
+        "capacidad_hora": 80.0
+      }
+    ],
+    "operadores_requeridos": 2,
+    "repartidores_requeridos": 2,
+    "holgura_pedidos_dia": 60.0,
+    "formula": "4 operadores × 5.45 pedidos/h combinados; 3 repartidores × 7.17 entregas/h"
+  },
+  "actual": {
+    "operadores": 3,
+    "repartidores": 3,
+    "capacidad_fisica": 150,
+    "horas": 10.0,
+    "distancia_km": 2.4,
+    "carga_dia": 90.0,
+    "capacidad_hora": 16.36,
+    "capacidad_dia": 150,
+    "utilizacion_pct": 60.0,
+    "nivel": "estable",
+    "utilizacion_pico_pct": 74.3,
+    "nivel_pico": "atencion",
+    "cuello_botella": "espacio físico",
+    "minutos_por_pedido_operacion": 11.0,
+    "minutos_por_entrega": 8.4,
+    "etapas": [
+      {
+        "etapa": "picking",
+        "minutos_por_pedido": 6.0,
+        "pct_tiempo": 54.5,
+        "capacidad_hora": 30.0
+      },
+      {
+        "etapa": "empaque",
+        "minutos_por_pedido": 3.0,
+        "pct_tiempo": 27.3,
+        "capacidad_hora": 60.0
+      }
+    ],
+    "operadores_requeridos": 2,
+    "repartidores_requeridos": 2,
+    "holgura_pedidos_dia": 60.0,
+    "formula": "3 operadores × 5.45 pedidos/h combinados; 3 repartidores × 7.17 entregas/h"
+  },
+  "diferencia_capacidad_dia": 0,
+  "diferencia_utilizacion_pct": 0.0,
+  "valores_modificados": [
+    "operadores"
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "umbral_utilizacion_estable",
+      "valor": 70.0,
+      "modificado": false
+    },
+    {
+      "clave": "umbral_utilizacion_riesgo",
+      "valor": 85.0,
+      "modificado": false
+    }
+  ]
+}

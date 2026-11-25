@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<demanda_patrones xmlns="urn:microhubs:v1" version="1">
+  <desde>2026-08-21</desde>
+  <hasta>2026-10-19</hasta>
+  <dias>60</dias>
+  <suficiente>true</suficiente>
+  <semanal>
+    <dia_semana>
+      <dia>1</dia>
+      <nombre>lunes</nombre>
+      <pedidos_promedio>12.89</pedidos_promedio>
+      <indice>1.166</indice>
+    </dia_semana>
+    <dia_semana>
+      <dia>2</dia>
+      <nombre>martes</nombre>
+      <pedidos_promedio>7.5</pedidos_promedio>
+      <indice>0.679</indice>
+    </dia_semana>
+  </semanal>
+  <categorias>
+    <categoria_venta>
+      <categoria>
+        <id>1</id>
+        <nombre>Abarrote básico</nombre>
+      </categoria>
+      <unidades>1195</unidades>
+      <venta>30803.02</venta>
+      <pct_venta>45.0</pct_venta>
+    </categoria_venta>
+    <categoria_venta>
+      <categoria>
+        <id>2</id>
+        <nombre>Bebidas</nombre>
+      </categoria>
+      <unidades>527</unidades>
+      <venta>13690.25</venta>
+      <pct_venta>20.0</pct_venta>
+    </categoria_venta>
+  </categorias>
+  <dia_pico>sábado</dia_pico>
+  <dia_valle>miércoles</dia_valle>
+  <fuerza_estacional>2.23</fuerza_estacional>
+</demanda_patrones>

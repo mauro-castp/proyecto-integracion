@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<equilibrio_calculo xmlns="urn:microhubs:v1" version="1">
+  <id>2</id>
+  <nombre>Exploración MH-01</nombre>
+  <objeto>
+    <tipo>microhub</tipo>
+    <id>1</id>
+    <nombre>Microhub San Bernabé Centro</nombre>
+  </objeto>
+  <entrada>
+    <costos_fijos_mes>69500.0</costos_fijos_mes>
+    <costo_variable_pedido>32.7</costo_variable_pedido>
+    <ticket>138.03</ticket>
+    <margen_bruto>0.28</margen_bruto>
+    <pedidos_dia>5.0</pedidos_dia>
+    <dias_mes>30.0</dias_mes>
+    <margen_seguridad_minimo_pct>15.0</margen_seguridad_minimo_pct>
+    <origen>
+      <costos_fijos>costos</costos_fijos>
+      <costo_variable_pedido>costos</costo_variable_pedido>
+      <ticket>demanda</ticket>
+      <margen_bruto>configuracion</margen_bruto>
+      <pedidos_dia>demanda_repartida</pedidos_dia>
+    </origen>
+  </entrada>
+  <margen_pedido>5.95</margen_pedido>
+  <equilibrio_mensual>11683.8</equilibrio_mensual>
+  <equilibrio_diario>389.5</equilibrio_diario>
+  <ingresos_equilibrio_mes>1612714.91</ingresos_equilibrio_mes>
+  <diferencia_pedidos_dia>-384.5</diferencia_pedidos_dia>
+  <margen_seguridad_pct>-98.72</margen_seguridad_pct>
+  <utilidad_dia>-2286.95</utilidad_dia>
+  <utilidad_mes>-68608.63</utilidad_mes>
+  <decision>no_viable</decision>
+  <explicacion>
+    <motivo>la demanda esperada (5.0 pedidos/día) no alcanza el equilibrio (389.5 pedidos/día)</motivo>
+  </explicacion>
+  <pasos>
+    <paso>Margen por pedido = ticket × margen bruto − costo de entrega = 138.03 × 28.00% − 32.70 = 5.95</paso>
+    <paso>Punto de equilibrio mensual = costos fijos ÷ margen por pedido = 69,500.00 ÷ 5.95 = 11,684 pedidos/mes</paso>
+  </pasos>
+  <supuestos_usados>
+    <supuesto>
+      <clave>peq_margen_seguridad_pct</clave>
+      <valor>15.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>dias_operacion_mes</clave>
+      <valor>30.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</equilibrio_calculo>

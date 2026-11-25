@@ -1,0 +1,61 @@
+{
+  "microhub": {
+    "id": 1,
+    "nombre": "Microhub San Bernabé Centro"
+  },
+  "ventana_dias": 90,
+  "clases": [
+    {
+      "clase": "A",
+      "productos": 30,
+      "unidades": 194,
+      "venta": 5535.5,
+      "pct_unidades": 81.5,
+      "pct_venta": 78.8
+    },
+    {
+      "clase": "B",
+      "productos": 13,
+      "unidades": 34,
+      "venta": 1168.0,
+      "pct_unidades": 14.3,
+      "pct_venta": 16.6
+    }
+  ],
+  "filas": [
+    {
+      "producto": {
+        "id": 13,
+        "clave_interna": "AB-013",
+        "nombre": "Puré de tomate"
+      },
+      "clase": "A",
+      "unidades": 13,
+      "venta": 143.0,
+      "pct_acum": 5.5
+    },
+    {
+      "producto": {
+        "id": 7,
+        "clave_interna": "AB-007",
+        "nombre": "Harina de trigo"
+      },
+      "clase": "A",
+      "unidades": 12,
+      "venta": 294.0,
+      "pct_acum": 10.5
+    }
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "abc_a_pct",
+      "valor": 80.0,
+      "modificado": false
+    },
+    {
+      "clave": "abc_b_pct",
+      "valor": 95.0,
+      "modificado": false
+    }
+  ]
+}

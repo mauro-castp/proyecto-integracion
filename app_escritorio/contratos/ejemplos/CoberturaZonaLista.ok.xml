@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cobertura_zonas xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <zona_cobertura>
+      <zona>
+        <id>1</id>
+        <nombre>San Bernabé Centro</nombre>
+      </zona>
+      <hogares>2339</hogares>
+      <estado>cubierta</estado>
+      <solapada>false</solapada>
+      <cubierta_por>
+        <opcion>
+          <microhub>
+            <id>1</id>
+            <nombre>Microhub San Bernabé Centro</nombre>
+          </microhub>
+          <distancia_km>0.62</distancia_km>
+          <distancia_calle_km>0.8</distancia_calle_km>
+          <minutos>6.2</minutos>
+          <cubre>true</cubre>
+          <dentro_promesa>true</dentro_promesa>
+        </opcion>
+      </cubierta_por>
+      <mas_cercano>
+        <microhub>
+          <id>1</id>
+          <nombre>Microhub San Bernabé Centro</nombre>
+        </microhub>
+        <distancia_km>0.62</distancia_km>
+        <distancia_calle_km>0.8</distancia_calle_km>
+        <minutos>6.2</minutos>
+        <cubre>true</cubre>
+        <dentro_promesa>true</dentro_promesa>
+      </mas_cercano>
+      <minutos_mejor>6.2</minutos_mejor>
+    </zona_cobertura>
+    <zona_cobertura>
+      <zona>
+        <id>2</id>
+        <nombre>Valles de San Bernabé</nombre>
+      </zona>
+      <hogares>1717</hogares>
+      <estado>cubierta</estado>
+      <solapada>true</solapada>
+      <cubierta_por>
+        <opcion>
+          <microhub>
+            <id>2</id>
+            <nombre>Microhub Valles</nombre>
+          </microhub>
+          <distancia_km>0.41</distancia_km>
+          <distancia_calle_km>0.53</distancia_calle_km>
+          <minutos>5.5</minutos>
+          <cubre>true</cubre>
+          <dentro_promesa>true</dentro_promesa>
+        </opcion>
+        <opcion>
+          <microhub>
+            <id>1</id>
+            <nombre>Microhub San Bernabé Centro</nombre>
+          </microhub>
+          <distancia_km>0.75</distancia_km>
+          <distancia_calle_km>0.97</distancia_calle_km>
+          <minutos>6.7</minutos>
+          <cubre>true</cubre>
+          <dentro_promesa>true</dentro_promesa>
+        </opcion>
+      </cubierta_por>
+      <mas_cercano>
+        <microhub>
+          <id>2</id>
+          <nombre>Microhub Valles</nombre>
+        </microhub>
+        <distancia_km>0.41</distancia_km>
+        <distancia_calle_km>0.53</distancia_calle_km>
+        <minutos>5.5</minutos>
+        <cubre>true</cubre>
+        <dentro_promesa>true</dentro_promesa>
+      </mas_cercano>
+      <minutos_mejor>5.5</minutos_mejor>
+    </zona_cobertura>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>2</por_pagina>
+    <total>4</total>
+    <paginas>2</paginas>
+  </paginacion>
+</cobertura_zonas>

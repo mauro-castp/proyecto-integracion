@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicios de análisis (tipos compartidos) · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola1.xsd"/>
+
+  <xs:complexType name="TSupuestoUsado">
+    <xs:sequence>
+      <xs:element name="clave" type="xs:string"/>
+      <xs:element name="valor" type="xs:decimal"/>
+      <xs:element name="modificado" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSupuestosDoc">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoDoc" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSupuestoDoc">
+    <xs:sequence>
+      <xs:element name="clave" type="xs:string"/>
+      <xs:element name="valor" type="xs:string"/>
+      <xs:element name="unidad" type="xs:string"/>
+      <xs:element name="origen">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="medido"/>
+            <xs:enumeration value="supuesto"/>
+            <xs:enumeration value="normativo"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="justificacion" type="xs:string"/>
+      <xs:element name="como_calibrar" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TObjetoAnalisis">
+    <xs:sequence>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="microhub"/>
+            <xs:enumeration value="candidato"/>
+            <xs:enumeration value="manual"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="id" type="xs:long" nillable="true"/>
+      <xs:element name="nombre" type="xs:string" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

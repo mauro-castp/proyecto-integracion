@@ -1,0 +1,9 @@
+{
+  "nombre": "Escenario A de la retroalimentación",
+  "pedidos_dia": 45,
+  "ticket": 135,
+  "margen_bruto": 0.28,
+  "costos_fijos": 60000,
+  "costo_variable_pedido": 32.6,
+  "guardar": true
+}

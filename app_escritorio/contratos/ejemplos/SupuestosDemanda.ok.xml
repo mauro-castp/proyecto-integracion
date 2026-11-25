@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supuestos_demanda xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <supuesto>
+      <clave>dem_backtest_dias</clave>
+      <valor>7</valor>
+      <unidad>días</unidad>
+      <origen>supuesto</origen>
+      <justificacion>Se ocultan los últimos 7 días para medir el error del modelo contra lo que de verdad pasó.</justificacion>
+      <como_calibrar>Ninguna; es el tamaño de la prueba.</como_calibrar>
+    </supuesto>
+    <supuesto>
+      <clave>dem_banda_z</clave>
+      <valor>1.28</valor>
+      <unidad>desviaciones</unidad>
+      <origen>supuesto</origen>
+      <justificacion>Con 1.28 desviaciones, la banda deja afuera 10 % por arriba y 10 % por abajo si los errores se reparten como una campana.</justificacion>
+      <como_calibrar>Revisar qué porcentaje de los días reales cae dentro de la banda.</como_calibrar>
+    </supuesto>
+  </datos>
+</supuestos_demanda>

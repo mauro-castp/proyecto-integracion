@@ -1,0 +1,20 @@
+{
+  "datos": [
+    {
+      "clave": "cap_distancia_entrega_km",
+      "valor": "2.4",
+      "unidad": "km",
+      "origen": "supuesto",
+      "justificacion": "Distancia típica de entrega desde el microhub, ida solamente; es el valor del Escenario A de la retroalimentación.",
+      "como_calibrar": "Distancia promedio entre el microhub y los domicilios de las entregas cerradas."
+    },
+    {
+      "clave": "cos_pedidos_mes_ref",
+      "valor": "1800",
+      "unidad": "pedidos",
+      "origen": "supuesto",
+      "justificacion": "Volumen de referencia de 60 pedidos al día para repartir los costos fijos cuando no se indica otro.",
+      "como_calibrar": "Pedidos reales por mes del microhub."
+    }
+  ]
+}

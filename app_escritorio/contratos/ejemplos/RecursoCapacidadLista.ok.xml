@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recursos_capacidad xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <recurso>
+      <microhub>
+        <id>1</id>
+        <nombre>Microhub San Bernabé Centro</nombre>
+      </microhub>
+      <operadores>3</operadores>
+      <repartidores>3</repartidores>
+      <capacidad_fisica>150</capacidad_fisica>
+      <actualizado_en>2026-10-19T23:44:58-06:00</actualizado_en>
+    </recurso>
+    <recurso>
+      <microhub>
+        <id>2</id>
+        <nombre>Microhub Valles</nombre>
+      </microhub>
+      <operadores>3</operadores>
+      <repartidores>2</repartidores>
+      <capacidad_fisica>120</capacidad_fisica>
+      <actualizado_en>2026-10-19T23:44:58-06:00</actualizado_en>
+    </recurso>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>2</por_pagina>
+    <total>4</total>
+    <paginas>2</paginas>
+  </paginacion>
+</recursos_capacidad>

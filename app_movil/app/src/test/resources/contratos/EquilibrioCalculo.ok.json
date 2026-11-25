@@ -1,0 +1,53 @@
+{
+  "id": 2,
+  "nombre": "Exploración MH-01",
+  "objeto": {
+    "tipo": "microhub",
+    "id": 1,
+    "nombre": "Microhub San Bernabé Centro"
+  },
+  "entrada": {
+    "costos_fijos_mes": 69500.0,
+    "costo_variable_pedido": 32.7,
+    "ticket": 138.03,
+    "margen_bruto": 0.28,
+    "pedidos_dia": 5.0,
+    "dias_mes": 30.0,
+    "margen_seguridad_minimo_pct": 15.0,
+    "origen": {
+      "costos_fijos": "costos",
+      "costo_variable_pedido": "costos",
+      "ticket": "demanda",
+      "margen_bruto": "configuracion",
+      "pedidos_dia": "demanda_repartida"
+    }
+  },
+  "margen_pedido": 5.95,
+  "equilibrio_mensual": 11683.8,
+  "equilibrio_diario": 389.5,
+  "ingresos_equilibrio_mes": 1612714.91,
+  "diferencia_pedidos_dia": -384.5,
+  "margen_seguridad_pct": -98.72,
+  "utilidad_dia": -2286.95,
+  "utilidad_mes": -68608.63,
+  "decision": "no_viable",
+  "explicacion": [
+    "la demanda esperada (5.0 pedidos/día) no alcanza el equilibrio (389.5 pedidos/día)"
+  ],
+  "pasos": [
+    "Margen por pedido = ticket × margen bruto − costo de entrega = 138.03 × 28.00% − 32.70 = 5.95",
+    "Punto de equilibrio mensual = costos fijos ÷ margen por pedido = 69,500.00 ÷ 5.95 = 11,684 pedidos/mes"
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "peq_margen_seguridad_pct",
+      "valor": 15.0,
+      "modificado": false
+    },
+    {
+      "clave": "dias_operacion_mes",
+      "valor": 30.0,
+      "modificado": false
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "datos": [
+    {
+      "zona": {
+        "id": 1,
+        "nombre": "San Bernabé Centro"
+      },
+      "hogares": 2339,
+      "estado": "cubierta",
+      "solapada": false,
+      "cubierta_por": [
+        {
+          "microhub": {
+            "id": 1,
+            "nombre": "Microhub San Bernabé Centro"
+          },
+          "distancia_km": 0.62,
+          "distancia_calle_km": 0.8,
+          "minutos": 6.2,
+          "cubre": true,
+          "dentro_promesa": true
+        }
+      ],
+      "mas_cercano": {
+        "microhub": {
+          "id": 1,
+          "nombre": "Microhub San Bernabé Centro"
+        },
+        "distancia_km": 0.62,
+        "distancia_calle_km": 0.8,
+        "minutos": 6.2,
+        "cubre": true,
+        "dentro_promesa": true
+      },
+      "minutos_mejor": 6.2
+    },
+    {
+      "zona": {
+        "id": 2,
+        "nombre": "Valles de San Bernabé"
+      },
+      "hogares": 1717,
+      "estado": "cubierta",
+      "solapada": true,
+      "cubierta_por": [
+        {
+          "microhub": {
+            "id": 2,
+            "nombre": "Microhub Valles"
+          },
+          "distancia_km": 0.41,
+          "distancia_calle_km": 0.53,
+          "minutos": 5.5,
+          "cubre": true,
+          "dentro_promesa": true
+        },
+        {
+          "microhub": {
+            "id": 1,
+            "nombre": "Microhub San Bernabé Centro"
+          },
+          "distancia_km": 0.75,
+          "distancia_calle_km": 0.97,
+          "minutos": 6.7,
+          "cubre": true,
+          "dentro_promesa": true
+        }
+      ],
+      "mas_cercano": {
+        "microhub": {
+          "id": 2,
+          "nombre": "Microhub Valles"
+        },
+        "distancia_km": 0.41,
+        "distancia_calle_km": 0.53,
+        "minutos": 5.5,
+        "cubre": true,
+        "dentro_promesa": true
+      },
+      "minutos_mejor": 5.5
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 2,
+    "total": 4,
+    "paginas": 2
+  }
+}

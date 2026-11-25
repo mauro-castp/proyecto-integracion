@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repartidores xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <repartidor>
+      <id>7</id>
+      <nombre>Ramiro Alanís Lozano</nombre>
+      <entregas_abiertas>0</entregas_abiertas>
+    </repartidor>
+    <repartidor>
+      <id>8</id>
+      <nombre>Diana Sepúlveda Ibarra</nombre>
+      <entregas_abiertas>0</entregas_abiertas>
+    </repartidor>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>100</por_pagina>
+    <total>2</total>
+    <paginas>1</paginas>
+  </paginacion>
+</repartidores>

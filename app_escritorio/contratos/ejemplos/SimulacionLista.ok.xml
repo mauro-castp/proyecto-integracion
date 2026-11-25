@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulacion_ejecuciones xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <datos>
+    <ejecucion>
+      <id>08e63110-fab7-44e0-a970-4a0f50ba56f1</id>
+      <nombre>Simulación de escenario manual 2026-10-19</nombre>
+      <estado>terminada</estado>
+      <objeto>
+        <tipo>manual</tipo>
+        <id xsi:nil="true" />
+        <nombre xsi:nil="true" />
+      </objeto>
+      <semilla>12</semilla>
+      <dias>14</dias>
+      <replicas>100</replicas>
+      <utilidad_media>-24794.668</utilidad_media>
+      <prob_perdida_pct>100.0</prob_perdida_pct>
+      <huella>96035bc707e56aa939066e110b77bd3cb60cc944cd6d0fed0adde4abea84ff71</huella>
+      <creado_en>2026-10-19T23:49:54-06:00</creado_en>
+      <fin_en>2026-10-19T23:49:56-06:00</fin_en>
+    </ejecucion>
+    <ejecucion>
+      <id>f1e113b5-4f7a-4938-a44a-b0050a452fc8</id>
+      <nombre>Repetición de Simulación de Microhub San Bernabé Centro 2026-10-19</nombre>
+      <estado>terminada</estado>
+      <objeto>
+        <tipo>microhub</tipo>
+        <id>1</id>
+        <nombre>Microhub San Bernabé Centro</nombre>
+      </objeto>
+      <semilla>11</semilla>
+      <dias>14</dias>
+      <replicas>100</replicas>
+      <utilidad_media>-32022.5963</utilidad_media>
+      <prob_perdida_pct>100.0</prob_perdida_pct>
+      <huella>2070f03b07cc488550c6f8f5fcae4245394529e921d24b896f9480ad36d13800</huella>
+      <creado_en>2026-10-19T23:49:54-06:00</creado_en>
+      <fin_en>2026-10-19T23:49:56-06:00</fin_en>
+    </ejecucion>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>3</por_pagina>
+    <total>6</total>
+    <paginas>2</paginas>
+  </paginacion>
+</simulacion_ejecuciones>

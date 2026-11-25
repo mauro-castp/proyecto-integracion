@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: punto-equilibrio · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola1.xsd"/>
+  <xs:include schemaLocation="comun_ola2.xsd"/>
+
+  <xs:complexType name="TEqCalculo">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long" nillable="true"/>
+      <xs:element name="nombre" type="xs:string" nillable="true"/>
+      <xs:element name="objeto" type="tns:TObjetoAnalisis"/>
+      <xs:element name="entrada" type="tns:TEqEntrada"/>
+      <xs:element name="margen_pedido" type="xs:decimal"/>
+      <xs:element name="equilibrio_mensual" type="xs:decimal" nillable="true"/>
+      <xs:element name="equilibrio_diario" type="xs:decimal" nillable="true"/>
+      <xs:element name="ingresos_equilibrio_mes" type="xs:decimal" nillable="true"/>
+      <xs:element name="diferencia_pedidos_dia" type="xs:decimal" nillable="true"/>
+      <xs:element name="margen_seguridad_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="utilidad_dia" type="xs:decimal"/>
+      <xs:element name="utilidad_mes" type="xs:decimal"/>
+      <xs:element name="decision">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="viable"/>
+            <xs:enumeration value="viable_ajustado"/>
+            <xs:enumeration value="no_viable"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="explicacion">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="motivo" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="pasos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="paso" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEqEntrada">
+    <xs:sequence>
+      <xs:element name="costos_fijos_mes" type="xs:decimal"/>
+      <xs:element name="costo_variable_pedido" type="xs:decimal"/>
+      <xs:element name="ticket" type="xs:decimal"/>
+      <xs:element name="margen_bruto" type="xs:decimal"/>
+      <xs:element name="pedidos_dia" type="xs:decimal"/>
+      <xs:element name="dias_mes" type="xs:decimal"/>
+      <xs:element name="margen_seguridad_minimo_pct" type="xs:decimal"/>
+      <xs:element name="origen" type="tns:TEqOrigen"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEqOrigen">
+    <xs:sequence>
+      <xs:element name="costos_fijos" type="xs:string"/>
+      <xs:element name="costo_variable_pedido" type="xs:string"/>
+      <xs:element name="ticket" type="xs:string"/>
+      <xs:element name="margen_bruto" type="xs:string"/>
+      <xs:element name="pedidos_dia" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEqMicrohubs">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="microhub" type="tns:TEqMicrohubFila" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEqMicrohubFila">
+    <xs:sequence>
+      <xs:element name="microhub" type="tns:TRefNombre"/>
+      <xs:element name="costos_fijos_mes" type="xs:decimal"/>
+      <xs:element name="margen_pedido" type="xs:decimal"/>
+      <xs:element name="equilibrio_diario" type="xs:decimal" nillable="true"/>
+      <xs:element name="pedidos_dia" type="xs:decimal"/>
+      <xs:element name="diferencia_pedidos_dia" type="xs:decimal" nillable="true"/>
+      <xs:element name="utilidad_mes" type="xs:decimal"/>
+      <xs:element name="decision">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="viable"/>
+            <xs:enumeration value="viable_ajustado"/>
+            <xs:enumeration value="no_viable"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEqSensibilidad">
+    <xs:sequence>
+      <xs:element name="objeto" type="tns:TObjetoAnalisis"/>
+      <xs:element name="entrada" type="tns:TEqEntrada"/>
+      <xs:element name="decision_base">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="viable"/>
+            <xs:enumeration value="viable_ajustado"/>
+            <xs:enumeration value="no_viable"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="utilidad_mes_base" type="xs:decimal" nillable="true"/>
+      <xs:element name="equilibrio_diario_base" type="xs:decimal" nillable="true"/>
+      <xs:element name="variable_mas_sensible" type="xs:string"/>
+      <xs:element name="ranking">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="variable" type="tns:TEqVariable" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="filas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="fila" type="tns:TEqSensibilidadFila" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEqVariable">
+    <xs:sequence>
+      <xs:element name="variable" type="xs:string"/>
+      <xs:element name="etiqueta" type="xs:string"/>
+      <xs:element name="rango_utilidad_mes" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEqSensibilidadFila">
+    <xs:sequence>
+      <xs:element name="variable" type="xs:string"/>
+      <xs:element name="etiqueta" type="xs:string"/>
+      <xs:element name="cambio_pct" type="xs:long"/>
+      <xs:element name="valor" type="xs:decimal"/>
+      <xs:element name="equilibrio_diario" type="xs:decimal" nillable="true"/>
+      <xs:element name="utilidad_mes" type="xs:decimal"/>
+      <xs:element name="cambio_utilidad" type="xs:decimal"/>
+      <xs:element name="decision">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="viable"/>
+            <xs:enumeration value="viable_ajustado"/>
+            <xs:enumeration value="no_viable"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEqEscenarioLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="escenario" type="tns:TEqEscenarioResumen" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEqEscenarioResumen">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="microhub_id" type="xs:long" nillable="true"/>
+      <xs:element name="candidato_id" type="xs:long" nillable="true"/>
+      <xs:element name="decision">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="viable"/>
+            <xs:enumeration value="viable_ajustado"/>
+            <xs:enumeration value="no_viable"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="equilibrio_diario" type="xs:decimal" nillable="true"/>
+      <xs:element name="pedidos_dia" type="xs:decimal"/>
+      <xs:element name="utilidad_mes" type="xs:decimal"/>
+      <xs:element name="creado_por" type="xs:long"/>
+      <xs:element name="creado_en" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEqComparacion">
+    <xs:sequence>
+      <xs:element name="filas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="escenario" type="tns:TEqComparacionFila" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="mejor_utilidad_id" type="xs:long"/>
+      <xs:element name="mejor_utilidad_nombre" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEqComparacionFila">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="decision">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="viable"/>
+            <xs:enumeration value="viable_ajustado"/>
+            <xs:enumeration value="no_viable"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="pedidos_dia" type="xs:decimal"/>
+      <xs:element name="equilibrio_diario" type="xs:decimal" nillable="true"/>
+      <xs:element name="diferencia_pedidos_dia" type="xs:decimal" nillable="true"/>
+      <xs:element name="margen_seguridad_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="utilidad_mes" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEqCalculoNuevo">
+    <xs:sequence>
+      <xs:element name="nombre" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="120"/>
+            <xs:minLength value="3"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="microhub_id" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="candidato_id" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="pedidos_dia" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ticket" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="margen_bruto" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costos_fijos" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100000000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costo_variable_pedido" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="dias_mes" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="31"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="margen_desde_precios" type="xs:boolean" minOccurs="0"/>
+      <xs:element name="guardar" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TEqSensibilidadNueva">
+    <xs:sequence>
+      <xs:element name="nombre" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="120"/>
+            <xs:minLength value="3"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="microhub_id" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="candidato_id" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="pedidos_dia" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ticket" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="margen_bruto" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costos_fijos" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100000000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costo_variable_pedido" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="dias_mes" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="31"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="margen_desde_precios" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="equilibrio_calculo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TEqCalculo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="equilibrio_microhubs">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TEqMicrohubs">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="equilibrio_sensibilidad">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TEqSensibilidad">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="equilibrio_escenarios">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TEqEscenarioLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="equilibrio_comparacion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TEqComparacion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="supuestos_equilibrio">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSupuestosDoc">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="equilibrio_calculo_nuevo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TEqCalculoNuevo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="equilibrio_sensibilidad_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TEqSensibilidadNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
