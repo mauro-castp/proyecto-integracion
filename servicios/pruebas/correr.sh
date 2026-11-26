@@ -35,7 +35,7 @@ correr() {               # correr <carpeta de salida o ""> comando...
     -e SECRET_KEY="${SECRET_KEY:-cambiar-en-produccion}" \
     -e "PG_DSN=host=postgres port=5432 dbname=microhubs_p1 user=microhubs password=${POSTGRES_PASSWORD:-microhubs_dev}" \
     -e REDIS_URL=redis://redis:6379 -e MONGO_URL=mongodb://mongo:27017/microhubs_eventos \
-    -e "ALMACEN=${ALMACEN:-local}" -e "GCS_BUCKET=${GCS_BUCKET:-}" -e "MICROHUBS_CLAVE=${MICROHUBS_CLAVE:-Codex#2026}" \
+    -e "ALMACEN=${ALMACEN:-local}" -e "GCS_BUCKET=${GCS_BUCKET:-}" -e "MICROHUBS_CLAVE=${MICROHUBS_CLAVE:-Codex#2026}" -e "VOLUMEN_PEDIDOS=${VOLUMEN_PEDIDOS:-200000}" \
     -e LOG_STDOUT=0 -e PYTHONPATH=/work -e PYTHONIOENCODING=utf-8 \
     -v "$RAIZ/servicios:/work" -v "$RAIZ/sistema_web:/app/web" -v "$RAIZ/sistema_web:/sistema_web" \
     -v "$RAIZ/app_escritorio/contratos:/app/contratos" -v "$RAIZ/app_movil/app/src/test/resources/contratos:/app/ejemplos_json" \
@@ -58,6 +58,7 @@ case "$orden" in
   test)        correr "" python -m unittest "$@" ;;
   evidencias)  carpeta="${1:?falta la carpeta de salida}"; shift; correr "$carpeta" python pruebas/evidencias.py --salida /salida "$@" ;;
   flujos)      carpeta="${1:?falta la carpeta de salida}"; correr "$carpeta" python pruebas/flujos_integrales.py --salida /salida ;;
+  volumen)     carpeta="${1:?falta la carpeta de salida}"; correr "$carpeta" python pruebas/volumen.py --salida /salida ;;
   escenarios)  carpeta="${1:?falta la carpeta de salida}"; correr "$carpeta" python pruebas/escenarios_ola2.py --salida /salida ;;
   modulo)      correr "" python -m "$@" ;;
   *)           echo "Orden desconocida: $orden" >&2; exit 2 ;;

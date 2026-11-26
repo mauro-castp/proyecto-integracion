@@ -29,6 +29,8 @@ x-entorno: &entorno
   GCS_BUCKET: ${GCS_BUCKET:-}
   URL_FIRMADA_SEGUNDOS: ${URL_FIRMADA_SEGUNDOS:-300}
   VERSION_DESPLEGADA: ${VERSION_DESPLEGADA:-1.0.0}         # lo que /salud informa como versión
+  LIMITE_POR_MINUTO: ${LIMITE_POR_MINUTO:-240}             # límite de consumo por IP (rendimiento/correr_locust.sh lo sube mientras mide)
+  LIMITE_LOGIN_POR_MINUTO: ${LIMITE_LOGIN_POR_MINUTO:-30}
 
 x-servicio: &servicio
   depends_on:
