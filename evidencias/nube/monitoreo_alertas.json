@@ -1,0 +1,27 @@
+{
+    "datos": [
+        {
+            "id": 1,
+            "servicio": "zonas",
+            "tipo": "latencia_alta",
+            "severidad": "media",
+            "detalle": "/salud de zonas tardó 13 ms (umbral 0 ms).",
+            "abierta_en": "2026-11-26T14:55:47-06:00",
+            "cerrada_en": "2026-11-26T14:55:47-06:00",
+            "duracion_seg": 0,
+            "reconocida": {
+                "por": {
+                    "id": 1,
+                    "nombre": "Mauro Castillo Peña"
+                },
+                "en": "2026-11-26T14:55:47-06:00"
+            }
+        }
+    ],
+    "paginacion": {
+        "pagina": 1,
+        "por_pagina": 15,
+        "total": 1,
+        "paginas": 1
+    }
+}

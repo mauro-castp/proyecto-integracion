@@ -1,0 +1,292 @@
+{
+    "horas": 24,
+    "objetivo_pct": 99.0,
+    "servicios": [
+        {
+            "servicio": "auth",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 44.1,
+            "tiempo_p95_ms": 66.5,
+            "tiempo_max_ms": 73.2,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "usuarios",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 38.2,
+            "tiempo_p95_ms": 72.7,
+            "tiempo_max_ms": 115.2,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "productos",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 45.8,
+            "tiempo_p95_ms": 77.9,
+            "tiempo_max_ms": 81.8,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "pedidos",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 40.4,
+            "tiempo_p95_ms": 69.3,
+            "tiempo_max_ms": 120.5,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "entregas",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 45.9,
+            "tiempo_p95_ms": 78.9,
+            "tiempo_max_ms": 111.9,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "planeacion",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 48.8,
+            "tiempo_p95_ms": 86.6,
+            "tiempo_max_ms": 111.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "documentos",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 73.7,
+            "tiempo_p95_ms": 128.5,
+            "tiempo_max_ms": 146.9,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "zonas",
+            "verificaciones": 48,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 51.0,
+            "tiempo_p95_ms": 92.3,
+            "tiempo_max_ms": 113.9,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "microhubs",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 43.4,
+            "tiempo_p95_ms": 88.2,
+            "tiempo_max_ms": 96.9,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "seguimiento",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 42.9,
+            "tiempo_p95_ms": 94.8,
+            "tiempo_max_ms": 142.8,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "inventario",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 48.5,
+            "tiempo_p95_ms": 98.6,
+            "tiempo_max_ms": 145.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "precios",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 52.5,
+            "tiempo_p95_ms": 99.1,
+            "tiempo_max_ms": 126.9,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "proveedores",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 47.4,
+            "tiempo_p95_ms": 91.0,
+            "tiempo_max_ms": 123.1,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "abastecimiento",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 54.1,
+            "tiempo_p95_ms": 88.2,
+            "tiempo_max_ms": 118.9,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "demanda",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 49.7,
+            "tiempo_p95_ms": 93.9,
+            "tiempo_max_ms": 135.7,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "cobertura",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 50.2,
+            "tiempo_p95_ms": 80.5,
+            "tiempo_max_ms": 177.8,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "capacidad",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 49.7,
+            "tiempo_p95_ms": 75.8,
+            "tiempo_max_ms": 203.7,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "rutas",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 52.0,
+            "tiempo_p95_ms": 103.3,
+            "tiempo_max_ms": 119.9,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "costos",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 49.3,
+            "tiempo_p95_ms": 88.8,
+            "tiempo_max_ms": 108.9,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "punto-equilibrio",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 48.3,
+            "tiempo_p95_ms": 80.8,
+            "tiempo_max_ms": 108.3,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "simulacion",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 52.9,
+            "tiempo_p95_ms": 112.4,
+            "tiempo_max_ms": 123.3,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "surtido",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 45.5,
+            "tiempo_p95_ms": 84.6,
+            "tiempo_max_ms": 128.4,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "notificaciones",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 45.8,
+            "tiempo_p95_ms": 96.0,
+            "tiempo_max_ms": 117.6,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "reportes",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 41.1,
+            "tiempo_p95_ms": 75.1,
+            "tiempo_max_ms": 103.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "sincronizacion",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 37.3,
+            "tiempo_p95_ms": 77.0,
+            "tiempo_max_ms": 100.2,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "auditoria-monitoreo",
+            "verificaciones": 47,
+            "caidas": 0,
+            "disponibilidad_pct": 100.0,
+            "salud_plena_pct": 100.0,
+            "tiempo_p50_ms": 32.8,
+            "tiempo_p95_ms": 62.3,
+            "tiempo_max_ms": 77.0,
+            "bajo_objetivo": false
+        }
+    ]
+}

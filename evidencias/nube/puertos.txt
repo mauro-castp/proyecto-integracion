@@ -1,0 +1,7 @@
+# Puertos que escuchan fuera de 127.0.0.1 en la VM. El firewall de GCP solo abre 80 y 443 (y SSH, 22); 20201 y 20202 son las métricas internas del agente de operaciones y no son alcanzables desde fuera.
+*:20201
+0.0.0.0:20202
+0.0.0.0:22
+0.0.0.0:80
+[::]:22
+[::]:80
