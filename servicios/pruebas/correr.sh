@@ -6,7 +6,7 @@
 #
 # Uso (desde la raíz del repositorio):
 #   servicios/pruebas/correr.sh test pruebas.test_ola2              un módulo de unittest (agregar -v para ver cada prueba)
-#   servicios/pruebas/correr.sh evidencias ola2                      corrida completa de evidencias en evidencias/ola2
+#   servicios/pruebas/correr.sh evidencias ola3                      corrida completa de evidencias (Olas 1 a 3) en evidencias/ola3
 #   servicios/pruebas/correr.sh evidencias ola2/complementarias --complementarias
 #   servicios/pruebas/correr.sh escenarios ola2                      qué cambia cuando cambia un supuesto (evidencias/ola2/escenarios.md)
 #   servicios/pruebas/correr.sh modulo pruebas.generar_supuestos     cualquier módulo de Python (python -m ...)
@@ -34,7 +34,7 @@ correr() {               # correr <carpeta de salida o ""> comando...
     -e SECRET_KEY="${SECRET_KEY:-cambiar-en-produccion}" \
     -e "PG_DSN=host=postgres port=5432 dbname=microhubs_p1 user=microhubs password=${POSTGRES_PASSWORD:-microhubs_dev}" \
     -e REDIS_URL=redis://redis:6379 -e MONGO_URL=mongodb://mongo:27017/microhubs_eventos \
-    -e "ALMACEN=${ALMACEN:-local}" -e "GCS_BUCKET=${GCS_BUCKET:-}" \
+    -e "ALMACEN=${ALMACEN:-local}" -e "GCS_BUCKET=${GCS_BUCKET:-}" -e "MICROHUBS_CLAVE=${MICROHUBS_CLAVE:-Codex#2026}" \
     -e LOG_STDOUT=0 -e PYTHONPATH=/work -e PYTHONIOENCODING=utf-8 \
     -v "$RAIZ/servicios:/work" -v "$RAIZ/sistema_web:/app/web" -v "$RAIZ/sistema_web:/sistema_web" \
     -v "$RAIZ/app_escritorio/contratos:/app/contratos" -v "$RAIZ/app_movil/app/src/test/resources/contratos:/app/ejemplos_json" \

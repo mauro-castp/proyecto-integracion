@@ -2,7 +2,7 @@
 
 **Codex Innovations · Equipo 04**
 
-Veintitrés servicios Flask (diez del Segundo Parcial, cinco de la Ola 1 y ocho de la Ola 2 del Tercer Parcial), cada uno con **una sola responsabilidad de negocio**, en su contenedor y su puerto, que atienden a la app Android (JSON) y a la app de escritorio (XML
+Veintiséis servicios Flask (diez del Segundo Parcial, cinco de la Ola 1 y ocho de la Ola 2 del Tercer Parcial, y tres de la Ola 3 de la entrega final), cada uno con **una sola responsabilidad de negocio**, en su contenedor y su puerto, que atienden a la app Android (JSON) y a la app de escritorio (XML
 validado con los XSD oficiales de `app_escritorio/contratos/`). Comparten PostgreSQL, Redis y MongoDB con el sistema web, que
 sigue funcionando por su cuenta.
 
@@ -31,6 +31,9 @@ sigue funcionando por su cuenta.
 | punto-equilibrio | 5120 | Cuántos pedidos hacen falta para no perder y si la demanda esperada los alcanza, paso a paso | `punto-equilibrio/calculos`, `punto-equilibrio/microhubs`, `punto-equilibrio/sensibilidad`, `punto-equilibrio/escenarios[/{id}]`, `punto-equilibrio/comparacion`, `punto-equilibrio/supuestos` | PostgreSQL (costos, demanda y cobertura desde sus servicios) |
 | simulacion | 5121 | Qué tan estable es la operación cuando la demanda varía y falta personal (Monte Carlo, asíncrona y reproducible) | `simulacion/ejecuciones[/{id}[/cancelar\|/repetir]]`, `simulacion/comparacion`, `simulacion/supuestos` | PostgreSQL (entrada desde punto-equilibrio y capacidad) |
 | surtido | 5122 | Qué productos tener y cuántos: ABC, rotación, margen, quiebres y recomendaciones con espacio y presupuesto | `surtido/abc`, `surtido/analisis`, `surtido/recomendaciones[/{id}]`, `surtido/restricciones/{mh}`, `surtido/supuestos` | PostgreSQL (ventas, existencias, catálogo y costos desde sus servicios) |
+| reportes | 5123 | Reportes operativos, logísticos, comerciales y financieros, indicadores, gráficas y exportación a CSV, Excel y PDF | `reportes`, `reportes/indicadores`, `reportes/{clave}[/grafica\|/exportar]`, `reportes/exportaciones` | PostgreSQL (bitácora de exportaciones); los datos, de sus servicios dueños |
+| sincronizacion | 5125 | Aplica sin duplicar lo que Android y escritorio hicieron sin conexión; conflictos y reintentos | `sincronizacion/lotes[/{id}]`, `sincronizacion/pendientes`, `sincronizacion/conflictos`, `sincronizacion/estado`, `sincronizacion/supuestos` | PostgreSQL |
+| auditoria-monitoreo | 5126 | Bitácora y trazabilidad; salud, disponibilidad, métricas y alertas de todos los servicios | `auditoria[/accesos\|/trazabilidad/…]`, `monitoreo/estado`, `monitoreo/disponibilidad`, `monitoreo/metricas`, `monitoreo/alertas[/{id}/reconocer]`, `monitoreo/verificaciones` | PostgreSQL, MongoDB |
 
 ## Una responsabilidad por servicio
 
@@ -72,6 +75,16 @@ La Ola 2 agrega los ocho servicios de análisis y planeación (puertos 5115 a 51
 de quien consulta. Cada uno publica sus **supuestos** (`GET /<servicio>/supuestos`: valor, si es medido, supuesto o normativo, justificación y cómo
 calibrarlo) y cada resultado dice cuáles usó; ver [`SUPUESTOS.md`](SUPUESTOS.md) y los escenarios en `evidencias/ola2/escenarios.md`.
 
+La Ola 3 completa los 26 servicios del plan:
+
+- **auditoria-monitoreo** consulta la bitácora que escriben los triggers (y, para la línea de tiempo, `historial_estatus` y `movimiento_inventario`, que son
+  bitácoras de solo lectura). Cada 30 s pregunta `/salud` a todos, guarda estado, tiempo y dependencias, y abre y cierra alertas sola (caído, degradado,
+  dependencia con falla, latencia y errores 5xx). Con Redis caído sigue verificando.
+- **reportes** no lee tablas de otros: arma cada reporte con las respuestas de los servicios dueños y el JWT de quien lo pide, así que cada uno aplica su
+  alcance. Si un servicio no responde, el indicador falta y se nombra; un reporte nunca inventa datos.
+- **sincronizacion** aplica en el orden en que ocurrieron las operaciones hechas sin conexión llamando al servicio dueño. `(dispositivo, operacion_uuid)` es
+  único (reenviar no duplica), un conflicto lo gana el servidor y lo que no se pudo aplicar queda pendiente para reintentar.
+
 Cada servicio publica `GET /health` (alias de `/salud`, también bajo `/api/v1/`) y su documentación en
 **`http://localhost:51XX/api/v1/docs`** (Swagger UI, ejecutable con «Authorize» + «Try it out») y `/api/v1/openapi.json`.
 Los ejemplos de Swagger son los archivos oficiales del contrato. Métodos usados: GET, POST, PUT (candidatos), PATCH
@@ -105,6 +118,9 @@ Los cálculos de planeación **no se duplican**: el servicio usa `sistema_web/pl
 - `bloque_c/sql/10_ola2_analitica.sql` (idempotente): demanda por día, zona y categoría (con historia sintética de demostración, marcada como tal), población por zona,
   evaluaciones de cobertura, personal por microhub, conceptos de costo, escenarios de equilibrio, ejecuciones de simulación, restricciones y recomendaciones de surtido,
   planes de despacho, `supuesto_documentado` (de dónde sale y cómo se calibra cada supuesto), parámetros nuevos en `configuracion` y permisos.
+- `bloque_c/sql/11_ola3_observabilidad.sql` (idempotente): verificaciones y alertas del monitoreo, bitácora de exportaciones, lotes y operaciones de sincronización,
+  parámetros y permisos nuevos, la acción de bitácora `descarga` y la zona horaria de la base en Monterrey (para que `current_date` sea el día local).
+- `bloque_c/mongo/03_documentos_nube.js`: validador de `documentos` para los archivos en Cloud Storage (en MongoDB quedan solo sus datos).
 - `bloque_c/mongo/02_microservicios.js`: colecciones `documentos` y `ubicaciones_entrega` (índice 2dsphere, TTL de 180 días).
 - MongoDB en uso: `documentos` (insertar, consultar, agregar), `ubicaciones_entrega` (Seguimiento: insertar en lote, agregación del recorrido),
   `sincronizaciones_moviles` (upsert por UUID: cada reintento actualiza el mismo documento), `ejecuciones_analiticas` (cada
@@ -116,7 +132,8 @@ El portal web consume los servicios por HTTP con el **mismo JWT de la sesión de
 
 | Pantalla del web | Servicios que llama | Qué demuestra |
 |---|---|---|
-| **Microservicios** (menú del administrador, `/web/servicios`) | los 23 (`/salud`), documentos y planeación (resúmenes), zonas (XML) | estado de cada servicio, agregaciones de MongoDB y una respuesta XML real |
+| **Monitoreo** (`/web/servicios/monitoreo`) | auditoria-monitoreo | panel central: estado, disponibilidad, tiempos, dependencias caídas y alertas; verificar y reconocer |
+| **Microservicios** (menú del administrador, `/web/servicios`) | los 26 (`/salud`), documentos y planeación (resúmenes), zonas (XML) | estado de cada servicio, agregaciones de MongoDB y una respuesta XML real |
 | **Pedido → «Entrega, recorrido y evidencias»** (`/web/servicios/pedido/<id>`) | pedidos, entregas, seguimiento, documentos | detalle, historial, recorrido GPS (MongoDB) y fotos de evidencia; adjuntar un archivo que se guarda en MongoDB |
 
 Cada llamada muestra su código HTTP, tiempo y `X-Traza-Id`, que también queda en `logs_tecnicos` de MongoDB. Si un servicio no
@@ -127,7 +144,7 @@ responde, el web lo indica y sigue funcionando.
 Desde la raíz del repositorio:
 
 ```bash
-docker compose -f docker-compose.integrado.yml up --build -d          # levantar (la primera vez construye las imágenes de los 23 servicios y del portal)
+docker compose -f docker-compose.integrado.yml up --build -d          # levantar (la primera vez construye las imágenes de los 26 servicios y del portal)
 docker compose -f docker-compose.integrado.yml ps -a                  # todo healthy; «migraciones» termina en Exited (0)
 docker compose -f docker-compose.integrado.yml logs -f entregas       # registro de un servicio
 docker compose -f docker-compose.integrado.yml exec entregas python pruebas/preparar_entregas.py --cantidad 2
@@ -135,8 +152,9 @@ docker compose -f docker-compose.integrado.yml down                   # detener 
 docker compose -f docker-compose.integrado.yml down -v                # detener y borrar volúmenes (base desde cero)
 ```
 
-Web: `http://localhost:5000`. Servicios: puertos 5101 a 5122 y 5124. Cuentas: `sistema_web/README.md` (clave `Codex#2026`).
-Con un volumen de PostgreSQL ya existente, el contenedor `migraciones` aplica 06 a 10 sin borrar datos. Si el puerto
+Web: `http://localhost:5000`. Servicios: puertos 5101 a 5126. Cuentas: `sistema_web/README.md` (clave `Codex#2026`, solo para desarrollo local; el
+despliegue en la nube la cambia, ver [`deploy/gcp/LEEME.md`](../deploy/gcp/LEEME.md)).
+Con un volumen de PostgreSQL ya existente, el contenedor `migraciones` aplica 06 a 11 sin borrar datos. Si el puerto
 5000 está ocupado (por ejemplo, por `sistema_web/docker-compose.yml`), detener ese compose o usar `WEB_PORT=5050`.
 
 ### Variables de entorno
@@ -148,6 +166,10 @@ Con un volumen de PostgreSQL ya existente, el contenedor `migraciones` aplica 06
 | `REDIS_URL` | `redis://redis:6379` | Sesiones y revocación (db 0), caché y límites (db 1) |
 | `MONGO_URL` | `mongodb://mongo:27017/microhubs_eventos` | Documentos, GPS, simulaciones, sincronizaciones, logs |
 | `POSTGRES_PASSWORD` | `${POSTGRES_PASSWORD:-microhubs_dev}` | Clave de PostgreSQL |
+| `ALMACEN`, `GCS_BUCKET` | `local` y vacío | Dónde guarda los archivos `documentos`: carpeta del contenedor o bucket de Cloud Storage |
+| `URL_FIRMADA_SEGUNDOS` | 300 | Vigencia del enlace firmado de descarga |
+| `VERSION_DESPLEGADA` | 1.0.0 | La versión que informa `/salud` |
+| `MONITOR_AUTO` | 1 | `0` apaga la verificación periódica del monitoreo (pruebas) |
 | `WEB_PORT` | `5000` | Puerto del portal web en el equipo |
 | `LIMITE_POR_MINUTO`, `LIMITE_LOGIN_POR_MINUTO` | 240 y 30 (por omisión) | Límite de consumo por IP |
 | `MICROSERVICIOS_URL` (web y servicios) | `http://{servicio}:{puerto}` | Cómo el web y cada servicio encuentran a los demás en la red de Docker |
@@ -157,44 +179,47 @@ Redes: `datos` (interna: PostgreSQL, Redis y MongoDB sin puertos al equipo) y `p
 
 ## Pruebas
 
-**Cambian datos: úsenlas en una base de pruebas** (requieren PostgreSQL y Redis con el modelo 01 a 10).
+**Cambian datos: úsenlas en una base de pruebas** (requieren PostgreSQL y Redis con el modelo 01 a 11).
 
 ```bash
 pip install -r servicios/requirements.txt mongomock
 cd servicios
-python -m unittest -v pruebas.test_unitarias          # 37 · sin bases de datos: formatos, validación, XSD, OpenAPI, precios, reposición, cliente entre servicios, ejemplos de las olas 1 y 2
-python -m unittest -v pruebas.test_unitarias_ola2     # 65 · sin bases de datos: las fórmulas de demanda, cobertura, capacidad, costos, equilibrio, rutas, surtido y simulación
-python -m unittest -v pruebas.test_contrato           # 7  · los 23 servicios: recorridos de escritorio y Android, XML vs XSD, JSON vs ejemplos
-python -m unittest -v pruebas.test_web_integracion    # 5  · el web llamando a los 23 servicios por HTTP real
+python -m unittest -v pruebas.test_unitarias          # 37 · sin bases de datos: formatos, validación, XSD, OpenAPI, precios, reposición, cliente entre servicios y ejemplos
+python -m unittest -v pruebas.test_unitarias_ola2     # 65 · sin bases de datos: las fórmulas de la Ola 2
+python -m unittest -v pruebas.test_almacen            # 31 · archivos en el bucket: URL firmada, caducidad, manipulación y bucket caído
+python -m unittest -v pruebas.test_contrato           # 7  · los 26 servicios: recorridos de escritorio y Android, XML vs XSD, JSON vs ejemplos
+python -m unittest -v pruebas.test_web_integracion    # 8  · el web llamando a los servicios por HTTP real, con el panel de monitoreo
 python -m unittest -v pruebas.test_ola1               # 24 · inventario, precios, proveedores, abastecimiento y notificaciones, con permisos por perfil
-python -m unittest -v pruebas.test_ola2               # 102 · los ocho servicios de la Ola 2: permisos por perfil, JSON y XML, servicio vecino caído, simulación reproducible
+python -m unittest -v pruebas.test_ola2               # 102 · los ocho servicios de la Ola 2
+python -m unittest -v pruebas.test_ola3               # 74 · monitoreo, auditoría, reportes y sincronización: servicio caído, conflictos, idempotencia
+python -m unittest -v pruebas.test_nube               # contra el bucket real, en la VM (ver deploy/gcp/LEEME.md)
 ```
 
 Para correr las pruebas sin instalar nada, dentro de la red de Docker del sistema integrado (`servicios/pruebas/correr.sh`).
 
 ## Evidencias de petición y respuesta
 
-`pruebas/evidencias.py` ejecuta **359 casos reales** (los 93 del Segundo Parcial, 13 de salud, 106 de la Ola 1 y 147 de la Ola 2) contra los servicios desplegados (correctos, datos inválidos, registros
-inexistentes, sin permiso, token inválido, sesión revocada, errores de negocio, límite de consumo) y documenta de cada uno la
-petición, la respuesta y lo que quedó en PostgreSQL, MongoDB o Redis:
+`pruebas/evidencias.py` ejecuta **403 casos reales** contra los servicios desplegados (correctos, datos inválidos, registros inexistentes, sin permiso,
+token inválido, sesión revocada, errores de negocio, límite de consumo) y documenta de cada uno la petición, la respuesta y lo que quedó en PostgreSQL,
+MongoDB o Redis. En la corrida adjunta pasan **403 de 403**.
 
 ```bash
-docker compose -f docker-compose.integrado.yml exec entregas python pruebas/evidencias.py
-docker compose -f docker-compose.integrado.yml cp entregas:/tmp/evidencias ./evidencias/ola2
+servicios/pruebas/correr.sh evidencias ola3
 ```
 
-Resultado en `./evidencias/ola2` (la corrida de la Ola 1, con 204 casos, se conserva en `./evidencias/ola1`): `evidencias.html` (para capturas), `evidencias.md` (para el reporte), `pruebas.md` (tabla de
-casos con esperado contra obtenido) y `evidencias.json`. Al final agota a propósito el límite de consumo de catálogos:
-espera un minuto antes de volver a usar ese servicio desde el mismo contenedor.
+Resultado en `./evidencias/ola3` (las corridas anteriores se conservan en `./evidencias/ola1` y `./evidencias/ola2`): `evidencias.html` (para capturas),
+`evidencias.md` (para el reporte), `pruebas.md` (tabla de casos con esperado contra obtenido) y `evidencias.json`. Al final agota a propósito el límite de
+consumo de catálogos: espera un minuto antes de volver a usar ese servicio desde el mismo contenedor.
 
 Para probar las apps Android y de escritorio contra estos servicios, ver `INSTRUCCIONES_PARTE_B.md` en la raíz.
 
-La corrida principal se complementa con `pruebas/evidencias.py --complementarias` (3 casos: `DOC-11`, `PLA-17` y `USR-08`, en `evidencias/ola2/complementarias/`) para que todas las operaciones tengan evidencia; ver `INVENTARIO_ENDPOINTS.md`, que escribe `pruebas/generar_inventario.py` a partir del código y de esos casos. La corrida del 13 de octubre (93 casos) se conserva en `evidencias/` porque el reporte del Segundo Parcial cita sus números.
+La corrida principal se complementa con `pruebas/evidencias.py --complementarias` (3 casos: `DOC-11`, `PLA-17` y `USR-08`, en `evidencias/ola3/complementarias/`) para que todas las operaciones tengan evidencia; ver `INVENTARIO_ENDPOINTS.md`, que escribe `pruebas/generar_inventario.py` a partir del código y de esos casos. La corrida del 13 de octubre (93 casos) se conserva en `evidencias/` porque el reporte del Segundo Parcial cita sus números.
 
 ## Decisiones
 
 - **HTTP en los puertos locales.** Las apps permiten HTTP solo hacia `localhost` (escritorio) y `10.0.2.2` o el host fijado al
-  compilar (Android debug). TLS con proxy inverso queda para el despliegue en nube del Tercer Parcial.
+  compilar (Android debug). En la nube, Nginx es la única puerta (80/443) y los servicios solo escuchan en
+  127.0.0.1; ver [`deploy/gcp/LEEME.md`](../deploy/gcp/LEEME.md) (el certificado HTTPS es un paso opcional del instalador).
 - **Token de renovación opaco** (`rt_…`) que se guarda en Redis como hash y sirve una sola vez; no puede usarse como acceso.
 - **Notificaciones automáticas por trigger**, no por llamada entre servicios: llegan aunque el cambio lo haga el web, un servicio
   o un script, y respetan las preferencias de quien las recibe.
@@ -235,6 +260,6 @@ La corrida principal se complementa con `pruebas/evidencias.py --complementarias
 
 ## Inventario y revisión documental
 
-El código expone 171 operaciones de negocio por método y ruta (45 de los diez primeros servicios, 53 de la Ola 1 y 73 de la Ola 2, contando PUT y PATCH por separado); ver `INVENTARIO_ENDPOINTS.md`, donde cada una tiene al menos un caso de evidencia. Hay 23 contenedores de microservicios, 1 web, 3 almacenes y 1 de migraciones: 28 definidos, 27 continuos. Web espera migraciones y Redis; los veintitrés servicios esperan migraciones, Redis y MongoDB.
+El código expone 199 operaciones de negocio por método y ruta (PUT y PATCH contados por separado); ver `INVENTARIO_ENDPOINTS.md`. Cada una tiene al menos un caso de evidencia (`evidencias/ola3`). Hay 26 contenedores de microservicios, 1 web, 3 almacenes y 1 de migraciones: 31 definidos, 30 continuos. Web espera migraciones y Redis; los servicios esperan migraciones, Redis y MongoDB.
 
 Los XSD: `catalogos.xsd` atiende tres servicios y `entregas.xsd` también contiene estructuras de Seguimiento. `inventario.xsd`, `precios.xsd`, `proveedores.xsd`, `abastecimiento.xsd` y `notificaciones.xsd` se generan con `contratos/generar.py` a partir de `contratos/ola1.py` (que también escribe los ejemplos XML y JSON); `comun_ola1.xsd` guarda las referencias que comparten. Los ocho servicios de la Ola 2 se describen en `contratos/ola2.py` (tipos tomados de las respuestas reales en JSON y XML y afinados a mano: enumeraciones y campos que pueden ir vacíos; los cuerpos de entrada llevan las mismas restricciones que `validar.py`) y generan `demanda.xsd`, `cobertura.xsd`, `capacidad.xsd`, `rutas.xsd`, `costos.xsd`, `punto_equilibrio.xsd`, `simulacion.xsd`, `surtido.xsd`, `comun_ola2.xsd` y los complementos `pedidos_ola2.xsd`, `entregas_ola2.xsd` e `inventario_ola2.xsd`. Para agregar un servicio, ver `NUEVO_SERVICIO.md`.

@@ -61,6 +61,7 @@ DEFECTOS = {"mon_intervalo_seg": 30.0, "mon_timeout_seg": 3.0, "mon_latencia_ms"
             "mon_errores_ventana_min": 10.0, "mon_errores_min_peticiones": 20.0, "mon_retencion_dias": 7.0,
             "mon_disponibilidad_objetivo_pct": 99.0}
 MAX_HORAS = 24 * 30
+CLAVES_SUPUESTOS = list(DEFECTOS)
 
 
 # --------------------------------------------------------------------

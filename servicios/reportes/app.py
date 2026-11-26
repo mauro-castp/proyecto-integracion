@@ -50,6 +50,7 @@ FAMILIAS = ["operativo", "logistico", "comercial", "financiero"]
 FORMATOS = {"csv": "text/csv; charset=utf-8", "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             "pdf": "application/pdf"}
 TIPOS_COLUMNA = ["texto", "entero", "dinero", "porcentaje", "fecha"]
+CLAVES_SUPUESTOS = list(DEFECTOS)
 
 
 # --------------------------------------------------------------------

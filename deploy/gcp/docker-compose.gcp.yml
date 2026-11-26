@@ -54,5 +54,11 @@ services:
     ports: !override ["127.0.0.1:5121:5121"]
   surtido:
     ports: !override ["127.0.0.1:5122:5122"]
+  reportes:
+    ports: !override ["127.0.0.1:5123:5123"]
   notificaciones:
     ports: !override ["127.0.0.1:5124:5124"]
+  sincronizacion:
+    ports: !override ["127.0.0.1:5125:5125"]
+  auditoria-monitoreo:
+    ports: !override ["127.0.0.1:5126:5126"]

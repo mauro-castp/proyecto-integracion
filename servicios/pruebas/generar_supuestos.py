@@ -16,12 +16,14 @@ from pathlib import Path
 AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI.parent))
 os.environ.setdefault("LOG_STDOUT", "0")
+os.environ.setdefault("MONITOR_AUTO", "0")
 os.environ.setdefault("SIM_TRABAJADOR", "0")
 
 from comun import datos as bd  # noqa: E402
 
 SERVICIOS = [("demanda", "Demanda"), ("cobertura", "Cobertura"), ("capacidad", "Capacidad"), ("rutas", "Rutas"), ("costos", "Costos"),
-             ("punto-equilibrio", "Punto de equilibrio"), ("simulacion", "Simulación"), ("surtido", "Surtido")]
+             ("punto-equilibrio", "Punto de equilibrio"), ("simulacion", "Simulación"), ("surtido", "Surtido"),
+             ("auditoria-monitoreo", "Auditoría y monitoreo"), ("reportes", "Reportes"), ("sincronizacion", "Sincronización")]
 ORIGEN = {"medido": "Sale de datos reales del sistema", "supuesto": "Es un valor razonable que aún no se ha medido",
           "normativo": "Lo fija el equipo o es una convención; no se estima"}
 
@@ -43,14 +45,14 @@ def main():
         por_servicio.setdefault(f["servicio"], []).append(f)
     total = len(filas)
     conteo = {o: sum(1 for f in filas if f["origen"] == o) for o in ORIGEN}
-    out = ["# Supuestos de los modelos de la Ola 2", "",
+    out = ["# Supuestos de los modelos y umbrales (Olas 2 y 3)", "",
            "Lo escribe `servicios/pruebas/generar_supuestos.py` a partir de las tablas `configuracion` y `supuesto_documentado`; no se edita a mano. "
            f"Generado el {time.strftime('%Y-%m-%d')}.", "",
            "## Cómo se manejan", "",
            "- **El valor vive en la base de datos**, en `configuracion` (RN40). Ningún peso, umbral ni productividad es una constante del código: el código solo "
            "trae un valor de respaldo para no caerse si una clave se borra. Cambiar un valor no requiere recompilar ni reiniciar.",
            "- **Cada supuesto dice de dónde sale y cómo se corrige.** `supuesto_documentado` guarda el origen (medido, supuesto o normativo), la justificación y "
-           "el dato real con el que habría que calibrarlo. Cada servicio lo publica en `GET /api/v1/<servicio>/supuestos`.",
+           "el dato real con el que habría que calibrarlo. Los servicios de análisis lo publican en `GET /api/v1/<servicio>/supuestos` (monitoreo en `/monitoreo/supuestos`; reportes solo lo documenta aquí).",
            "- **Cada resultado dice qué supuestos usó.** Las respuestas de los modelos traen `supuestos_usados` con la clave, el valor y si la petición lo cambió. "
            "Un dato que el usuario escribe a mano sustituye al que vendría de otro servicio, y la respuesta lo marca (`origen: manual`).",
            "- **Las conclusiones se prueban contra otros valores.** [`evidencias/ola2/escenarios.md`](../evidencias/ola2/escenarios.md) cambia un supuesto a la vez y "

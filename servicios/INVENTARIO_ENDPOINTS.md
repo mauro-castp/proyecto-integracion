@@ -2,9 +2,9 @@
 
 Fuente: servicios/*/app.py y docker-compose.integrado.yml.
 
-171 pares método HTTP y ruta de negocio. Excluye salud, OpenAPI, Swagger, HEAD y OPTIONS.
+199 pares método HTTP y ruta de negocio. Excluye salud, OpenAPI, Swagger, HEAD y OPTIONS.
 
-La última columna indica los casos de petición y respuesta que ejercitan cada operación: la corrida principal (`evidencias/ola2/`) y la complementaria (`evidencias/ola2/complementarias/`). Este archivo lo escribe `servicios/pruebas/generar_inventario.py` a partir del código y de esos casos.
+La última columna indica los casos de petición y respuesta que ejercitan cada operación: la corrida principal (`evidencias/ola3/`) y la complementaria (`evidencias/ola3/complementarias/`). Este archivo lo escribe `servicios/pruebas/generar_inventario.py` a partir del código y de esos casos.
 
 | Servicio | Método | Ruta | Casos de evidencia |
 |---|---|---|---|
@@ -19,6 +19,19 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | abastecimiento | POST | `/api/v1/abastecimiento/ordenes/<int:oid>/recepcion` | ABA-13, ABA-14, ABA-15, ABA-17, ABA-18 y 1 más |
 | abastecimiento | POST | `/api/v1/abastecimiento/ordenes/<int:oid>/cancelar` | ABA-16, ABA-22, ABA-23 |
 | abastecimiento | GET | `/api/v1/abastecimiento/seguimiento` | ABA-21 |
+| auditoria-monitoreo | GET | `/api/v1/monitoreo/estado` | MNT-02, MNT-03, MNT-11 |
+| auditoria-monitoreo | GET | `/api/v1/monitoreo/servicios/<nombre>/historial` | MNT-04 |
+| auditoria-monitoreo | GET | `/api/v1/monitoreo/disponibilidad` | MNT-05 |
+| auditoria-monitoreo | GET | `/api/v1/monitoreo/metricas` | MNT-06 |
+| auditoria-monitoreo | GET | `/api/v1/monitoreo/alertas` | MNT-08 |
+| auditoria-monitoreo | POST | `/api/v1/monitoreo/alertas/<int:aid>/reconocer` | MNT-09, MNT-10 |
+| auditoria-monitoreo | POST | `/api/v1/monitoreo/verificaciones` | MNT-01 |
+| auditoria-monitoreo | GET | `/api/v1/monitoreo/supuestos` | MNT-07 |
+| auditoria-monitoreo | GET | `/api/v1/auditoria` | AUD-01, AUD-06 |
+| auditoria-monitoreo | GET | `/api/v1/auditoria/accesos` | AUD-02 |
+| auditoria-monitoreo | GET | `/api/v1/auditoria/trazabilidad/pedido/<int:pid>` | AUD-03 |
+| auditoria-monitoreo | GET | `/api/v1/auditoria/trazabilidad/entrega/<int:eid>` | AUD-04 |
+| auditoria-monitoreo | GET | `/api/v1/auditoria/trazabilidad/inventario` | AUD-05 |
 | auth | POST | `/api/v1/auth/login` | AUTH-01, AUTH-02, AUTH-03, AUTH-04, AUTH-05 |
 | auth | POST | `/api/v1/auth/renovar` | AUTH-08, AUTH-09 |
 | auth | POST | `/api/v1/auth/salir` | AUTH-10 |
@@ -62,7 +75,9 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | documentos | POST | `/api/v1/documentos` | DOC-01, DOC-02, DOC-03, DOC-04, DOC-05 |
 | documentos | GET | `/api/v1/documentos` | DOC-06 |
 | documentos | GET | `/api/v1/documentos/resumen` | DOC-11 |
+| documentos | GET | `/api/v1/documentos/descarga` | ENL-02, ENL-03 |
 | documentos | GET | `/api/v1/documentos/<did>` | DOC-07, DOC-10 |
+| documentos | GET | `/api/v1/documentos/<did>/enlace` | ENL-01 |
 | documentos | GET | `/api/v1/documentos/<did>/contenido` | DOC-08 |
 | documentos | DELETE | `/api/v1/documentos/<did>` | DOC-09 |
 | entregas | GET | `/api/v1/entregas/repartidores` | ALI-06 |
@@ -146,6 +161,12 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | punto-equilibrio | DELETE | `/api/v1/punto-equilibrio/escenarios/<int:eid>` | EQU-16, EQU-17 |
 | punto-equilibrio | GET | `/api/v1/punto-equilibrio/comparacion` | EQU-14 |
 | punto-equilibrio | GET | `/api/v1/punto-equilibrio/supuestos` | EQU-19 |
+| reportes | GET | `/api/v1/reportes` | REP-01, REP-09 |
+| reportes | GET | `/api/v1/reportes/<clave>` | REP-03, REP-04, REP-08 |
+| reportes | GET | `/api/v1/reportes/<clave>/grafica` | REP-05 |
+| reportes | GET | `/api/v1/reportes/<clave>/exportar` | REP-06 |
+| reportes | GET | `/api/v1/reportes/exportaciones` | REP-07 |
+| reportes | GET | `/api/v1/reportes/indicadores` | REP-02 |
 | rutas | POST | `/api/v1/rutas/planes` | RUT-02, RUT-04, RUT-05, RUT-14, RUT-15 y 3 más |
 | rutas | GET | `/api/v1/rutas/planes` | RUT-12 |
 | rutas | GET | `/api/v1/rutas/planes/<int:pid>` | RUT-09 |
@@ -163,6 +184,13 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | simulacion | POST | `/api/v1/simulacion/ejecuciones/<eid>/repetir` | SIM-03 |
 | simulacion | GET | `/api/v1/simulacion/comparacion` | SIM-06 |
 | simulacion | GET | `/api/v1/simulacion/supuestos` | SIM-18 |
+| sincronizacion | POST | `/api/v1/sincronizacion/lotes` | SYN-01, SYN-02, SYN-03, SYN-10, SYN-11 |
+| sincronizacion | GET | `/api/v1/sincronizacion/lotes` | SYN-05 |
+| sincronizacion | GET | `/api/v1/sincronizacion/lotes/<int:lid>` | SYN-06 |
+| sincronizacion | GET | `/api/v1/sincronizacion/pendientes` | SYN-07 |
+| sincronizacion | GET | `/api/v1/sincronizacion/conflictos` | SYN-04 |
+| sincronizacion | GET | `/api/v1/sincronizacion/estado` | SYN-08, SYN-12 |
+| sincronizacion | GET | `/api/v1/sincronizacion/supuestos` | SYN-09 |
 | surtido | GET | `/api/v1/surtido/abc` | SUR-01 |
 | surtido | GET | `/api/v1/surtido/analisis` | SUR-02, SUR-03, SUR-04, SUR-05, SUR-06 y 2 más |
 | surtido | POST | `/api/v1/surtido/recomendaciones` | SUR-13, SUR-16 |
@@ -182,6 +210,6 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 
 ## Contratos y compatibilidad
 
-Productos, Zonas y Microhubs conservan catalogos.xsd. Seguimiento utiliza estructuras de entregas.xsd. Inventario, Precios, Proveedores, Abastecimiento y Notificaciones (Ola 1) y Demanda, Cobertura, Capacidad, Rutas, Costos, Punto de equilibrio, Simulación y Surtido (Ola 2) tienen su propio XSD, generado con `servicios/contratos/generar.py` a partir de `contratos/ola1.py` y `contratos/ola2.py`; las referencias que comparten están en comun_ola1.xsd y comun_ola2.xsd. Lo que pedidos, entregas e inventario ganaron en la Ola 2 (resumen, ventas, listos, repartidores, quiebres) está en pedidos_ola2.xsd, entregas_ola2.xsd e inventario_ola2.xsd.
+Productos, Zonas y Microhubs conservan catalogos.xsd. Seguimiento utiliza estructuras de entregas.xsd. Inventario, Precios, Proveedores, Abastecimiento y Notificaciones (Ola 1) y Demanda, Cobertura, Capacidad, Rutas, Costos, Punto de equilibrio, Simulación y Surtido (Ola 2) tienen su propio XSD, generado con `servicios/contratos/generar.py` a partir de `contratos/ola1.py` y `contratos/ola2.py`; las referencias que comparten están en comun_ola1.xsd y comun_ola2.xsd. Lo que pedidos, entregas e inventario ganaron en la Ola 2 (resumen, ventas, listos, repartidores, quiebres) está en pedidos_ola2.xsd, entregas_ola2.xsd e inventario_ola2.xsd. Auditoría y monitoreo, Reportes y Sincronización (Ola 3) tienen auditoria_monitoreo.xsd, reportes.xsd y sincronizacion.xsd (`contratos/ola3.py`). El envío de un lote de sincronización es solo JSON, y la descarga de un reporte devuelve el archivo (CSV, Excel o PDF).
 
 La ruta GPS antigua bajo entregas ya no se ofrece. El puerto 5108 corresponde a Zonas y el 5124 a Notificaciones, que vuelve como servicio de la Ola 1 con su propia bandeja, envío por rol y preferencias.

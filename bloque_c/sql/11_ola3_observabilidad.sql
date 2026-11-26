@@ -14,6 +14,16 @@ ALTER TYPE microhubs.accion_auditoria ADD VALUE IF NOT EXISTS 'descarga';
 BEGIN;
 SET LOCAL search_path TO microhubs, public;
 
+-- 0. La base trabaja en la hora de Monterrey ---------------------------------------------------------------
+-- Las entregas guardan su turno con current_date y se consultan con current_date (portal, planeación, fn de visibilidad RN26 y «Mis entregas»),
+-- mientras que otras consultas usan fn_hoy() (Monterrey). Con la base en UTC, desde las 18:00 current_date ya era «mañana»: las entregas del
+-- turno desaparecían para el repartidor. Con la zona de la base en Monterrey, current_date y fn_hoy() dicen lo mismo en todas partes.
+-- Las horas con zona (timestamptz) no cambian: solo cómo se interpreta el día. Rige en las conexiones nuevas.
+DO $$
+BEGIN
+  EXECUTE format('ALTER DATABASE %I SET timezone TO %L', current_database(), 'America/Monterrey');
+END $$;
+
 -- 1. Monitoreo ------------------------------------------------------------------------------------------
 -- Una fila por servicio y por ronda de verificación. Es la serie de tiempo de la que salen la disponibilidad,
 -- los tiempos de respuesta y el historial del panel. Se purga según mon_retencion_dias.

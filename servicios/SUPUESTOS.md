@@ -1,11 +1,11 @@
-# Supuestos de los modelos de la Ola 2
+# Supuestos de los modelos y umbrales (Olas 2 y 3)
 
-Lo escribe `servicios/pruebas/generar_supuestos.py` a partir de las tablas `configuracion` y `supuesto_documentado`; no se edita a mano. Generado el 2026-10-20.
+Lo escribe `servicios/pruebas/generar_supuestos.py` a partir de las tablas `configuracion` y `supuesto_documentado`; no se edita a mano. Generado el 2026-11-26.
 
 ## Cómo se manejan
 
 - **El valor vive en la base de datos**, en `configuracion` (RN40). Ningún peso, umbral ni productividad es una constante del código: el código solo trae un valor de respaldo para no caerse si una clave se borra. Cambiar un valor no requiere recompilar ni reiniciar.
-- **Cada supuesto dice de dónde sale y cómo se corrige.** `supuesto_documentado` guarda el origen (medido, supuesto o normativo), la justificación y el dato real con el que habría que calibrarlo. Cada servicio lo publica en `GET /api/v1/<servicio>/supuestos`.
+- **Cada supuesto dice de dónde sale y cómo se corrige.** `supuesto_documentado` guarda el origen (medido, supuesto o normativo), la justificación y el dato real con el que habría que calibrarlo. Los servicios de análisis lo publican en `GET /api/v1/<servicio>/supuestos` (monitoreo en `/monitoreo/supuestos`; reportes solo lo documenta aquí).
 - **Cada resultado dice qué supuestos usó.** Las respuestas de los modelos traen `supuestos_usados` con la clave, el valor y si la petición lo cambió. Un dato que el usuario escribe a mano sustituye al que vendría de otro servicio, y la respuesta lo marca (`origen: manual`).
 - **Las conclusiones se prueban contra otros valores.** [`evidencias/ola2/escenarios.md`](../evidencias/ola2/escenarios.md) cambia un supuesto a la vez y muestra si la decisión cambia; lo corre `servicios/pruebas/escenarios_ola2.py`.
 
@@ -15,7 +15,7 @@ Lo escribe `servicios/pruebas/generar_supuestos.py` a partir de las tablas `conf
 - **supuesto.** Es un valor razonable que aún no se ha medido.
 - **normativo.** Lo fija el equipo o es una convención; no se estima.
 
-Hoy hay 41 supuestos documentados: 0 medidos, 34 supuestos y 7 normativos. Ninguno es «medido» todavía porque la operación real es chica (pocos pedidos); cada fila dice con qué dato real se mediría. Hasta entonces las decisiones de viabilidad deben leerse como «con estos supuestos», no como una predicción.
+Hoy hay 54 supuestos documentados: 0 medidos, 45 supuestos y 9 normativos. Ninguno es «medido» todavía porque la operación real es chica (pocos pedidos); cada fila dice con qué dato real se mediría. Hasta entonces las decisiones de viabilidad deben leerse como «con estos supuestos», no como una predicción.
 
 ## Demanda (`demanda`)
 
@@ -97,6 +97,34 @@ Hoy hay 41 supuestos documentados: 0 medidos, 34 supuestos y 7 normativos. Ningu
 | `cobertura_dias_c` | 3 días | supuesto | Días de existencia que se quiere tener de un producto clase C. | Comparar con los quiebres de inventario de los productos C. | surtido |
 | `cobertura_dias_exceso` | 30 días | supuesto | Con más de 30 días de cobertura el producto se considera con exceso. | Revisar con la caducidad y la rotación real. | surtido |
 | `ventana_analisis_dias` | 90 días | supuesto | Tres meses de ventas para clasificar los productos: suficiente para ver la rotación sin arrastrar temporadas viejas. | Probar con 30 y 180 días y ver si cambian las clases A. | surtido |
+
+## Auditoría y monitoreo (`auditoria-monitoreo`)
+
+| Clave | Valor | Origen | De dónde sale | Cómo se calibra | La usan |
+|---|---|---|---|---|---|
+| `mon_disponibilidad_objetivo_pct` | 99 % | normativo | 99 % es el objetivo razonable para una VM única sin alta disponibilidad (unas 7 horas de caída al mes). | Cambiar si el acuerdo de servicio con el cliente pide otro valor. | auditoria-monitoreo |
+| `mon_errores_min_peticiones` | 20 peticiones | supuesto | Con menos de 20 peticiones un solo error ya sería 5 % o más; se exige una muestra mínima para no alertar por casualidad. | Ajustar al tráfico real: debe ser una fracción pequeña de lo que recibe un servicio en la ventana. | auditoria-monitoreo |
+| `mon_errores_pct` | 20 % | supuesto | 20 % de errores del servidor en 10 minutos es una falla clara y no un error aislado. | Revisar las alertas falsas del primer mes y ajustar. | auditoria-monitoreo |
+| `mon_errores_ventana_min` | 10 minutos | supuesto | 10 minutos son suficientes peticiones para distinguir una falla de un error aislado sin tardar en avisar. | Alargarla si el tráfico es muy bajo; acortarla si se quiere avisar más rápido. | auditoria-monitoreo |
+| `mon_intervalo_seg` | 30 segundos | supuesto | 30 segundos detecta una caída en menos de un minuto y genera unas 2 880 verificaciones al día por servicio, que PostgreSQL absorbe sin problema. | Subirlo si el panel carga demasiado la base; bajarlo si se exige detectar caídas en menos de medio minuto. | auditoria-monitoreo |
+| `mon_latencia_ms` | 1000 ms | supuesto | Un /salud sano responde en decenas de milisegundos; 1 s ya indica saturación de alguna dependencia. | Tomar el p95 de tiempo_ms de monitoreo_verificacion en una semana normal y poner el umbral al doble. | auditoria-monitoreo |
+| `mon_retencion_dias` | 7 días | supuesto | Una semana alcanza para ver tendencias y revisar un incidente reciente; a 30 s por servicio son unas 600 mil filas por semana. | Alargarla si se exige historial más largo y el volumen de la base lo permite. | auditoria-monitoreo |
+| `mon_timeout_seg` | 3 segundos | supuesto | 3 segundos es más de lo que tarda un /salud sano; un servicio que no contesta en ese tiempo ya no atiende a nadie en la práctica. | Subirlo si hay falsos «caído» por picos de carga; bajarlo para detectar antes. | auditoria-monitoreo |
+
+## Reportes (`reportes`)
+
+| Clave | Valor | Origen | De dónde sale | Cómo se calibra | La usan |
+|---|---|---|---|---|---|
+| `rep_filas_max` | 50000 filas | supuesto | Un reporte de 50 000 filas todavía se arma y se exporta en segundos; más allá conviene acotar por zona o periodo. | Medir el tiempo de armado y de exportación con el volumen real y bajar el límite si pasa de unos 10 segundos. | reportes |
+| `rep_periodo_dias` | 30 días | normativo | 30 días es el periodo de cierre que usa la operación para comparar microhubs. | Cambiarlo si el corte de la operación es otro. | reportes |
+
+## Sincronización (`sincronizacion`)
+
+| Clave | Valor | Origen | De dónde sale | Cómo se calibra | La usan |
+|---|---|---|---|---|---|
+| `sync_antiguedad_max_dias` | 14 días | supuesto | Un repartidor sin red por dos semanas ya no tiene datos vigentes: precios, inventario y pedidos habrán cambiado. | Medir cuántos días pasan realmente sin conexión en la operación. | sincronizacion |
+| `sync_lote_max` | 200 operaciones | supuesto | Un lote de 200 operaciones cabe en una petición de menos de 1 MB y se aplica en pocos segundos; un teléfono que estuvo días sin red rara vez junta más. | Medir cuántas operaciones junta un repartidor en una jornada sin conexión y poner el límite al doble. | sincronizacion |
+| `sync_reloj_tolerancia_min` | 10 minutos | supuesto | Los relojes de los teléfonos se desvían minutos; una operación fechada en el futuro lejano es un reloj mal puesto o un intento de manipulación. | Comparar la hora de creación de las operaciones con la hora de recepción. | sincronizacion |
 
 ## Dos valores que se parecen
 

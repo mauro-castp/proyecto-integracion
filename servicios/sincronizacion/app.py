@@ -59,6 +59,7 @@ ESTADOS = ["aplicada", "conflicto", "rechazada", "pendiente"]
 DEFECTOS = {"sync_lote_max": 200.0, "sync_antiguedad_max_dias": 14.0, "sync_reloj_tolerancia_min": 10.0}
 UUID = re.compile(r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
 RECHAZOS = {400, 403, 404, 413, 415, 422}
+CLAVES_SUPUESTOS = list(DEFECTOS)
 
 
 # --------------------------------------------------------------------

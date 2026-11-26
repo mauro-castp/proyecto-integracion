@@ -5,7 +5,7 @@ región `northamerica-south1` (Querétaro, México).
 
 ```
 Internet ──80/443──► Nginx (VM) ─┬─ /                       ► portal web        127.0.0.1:5000
-                                 └─ /servicios/<nombre>/    ► 23 microservicios 127.0.0.1:5101…5124
+                                 └─ /servicios/<nombre>/    ► 26 microservicios 127.0.0.1:5101…5126
                                        │
               Docker (red interna, sin puertos al host): PostgreSQL · Redis · MongoDB
                                        │
@@ -18,25 +18,42 @@ Internet ──80/443──► Nginx (VM) ─┬─ /                       ► 
 |---|---|---|
 | VM | `microhubs-vm` | e2-standard-4 (4 vCPU, 16 GB), Ubuntu 24.04, disco pd-balanced de 80 GB, zona `northamerica-south1-c`, etiqueta `microhubs` |
 | IP externa fija | `microhubs-ip` | 34.51.89.253 (nombre `34-51-89-253.sslip.io`) |
-| Firewall | `microhubs-web` | Solo TCP 80 y 443 hacia la etiqueta `microhubs`. Los puertos 5000 y 5101–5124 NO tienen regla: además se publican solo en 127.0.0.1 |
+| Firewall | `microhubs-web` | Solo TCP 80 y 443 hacia la etiqueta `microhubs`. Los puertos 5000 y 5101–5126 NO tienen regla: además se publican solo en 127.0.0.1 |
 | Cuenta de servicio | `microhubs-vm@…iam.gserviceaccount.com` | `objectAdmin` **solo sobre su bucket** y `serviceAccountTokenCreator` sobre sí misma (para firmar URLs con IAM). Sin llaves descargadas |
 | Bucket | `gs://microhubs-evidencias-637044` | Privado: acceso uniforme a nivel de bucket y **prevención de acceso público activa** |
 
 ## Cómo se despliega
 
-Desde tu computadora (el código viaja como archivo comprimido; el `.env` se crea en la VM y nunca sale de ella):
+Desde tu computadora, en la raíz del repositorio (viaja lo que está commiteado; el `.env` se crea en la VM y nunca sale de ella):
 
 ```bash
-tar czf microhubs.tgz --exclude=.venv --exclude=__pycache__ --exclude='*.db' --exclude=node_modules \
+git -c core.autocrlf=false archive --format=tar.gz -o microhubs.tgz HEAD \
   docker-compose.integrado.yml .dockerignore servicios sistema_web bloque_c app_escritorio/contratos \
   app_movil/app/src/test/resources/contratos deploy/gcp
 gcloud compute scp microhubs.tgz microhubs-vm:/tmp/ --zone northamerica-south1-c
-gcloud compute ssh microhubs-vm --zone northamerica-south1-c --command 'mkdir -p ~/microhubs && tar xzf /tmp/microhubs.tgz -C ~/microhubs && cd ~/microhubs && bash deploy/gcp/instalar_vm.sh'
+gcloud compute ssh microhubs-vm --zone northamerica-south1-c \
+  --command "mkdir -p ~/microhubs && tar xzf /tmp/microhubs.tgz -C ~/microhubs && cd ~/microhubs && VERSION_DESPLEGADA=$(git rev-parse --short HEAD) bash deploy/gcp/instalar_vm.sh"
 ```
 
 `instalar_vm.sh` crea el `.env` con secretos aleatorios (permiso 600), verifica que no queden los valores por defecto del repositorio,
-levanta los contenedores y configura Nginx. HTTPS opcional: `bash deploy/gcp/instalar_vm.sh --sin-construir --https tu@correo`.
-`python deploy/gcp/generar.py` regenera `docker-compose.gcp.yml` y `nginx-microhubs.conf` cuando cambian los servicios.
+levanta los contenedores, **cambia la clave de las cuentas de demostración** y configura Nginx. Es repetible. HTTPS opcional:
+`bash deploy/gcp/instalar_vm.sh --sin-construir --https tu@correo`. `python deploy/gcp/generar.py` regenera `docker-compose.gcp.yml` y
+`nginx-microhubs.conf` cuando cambian los servicios.
+
+### Claves en la nube
+
+La clave de demostración está en este repositorio público, así que en la VM **no sirve**: `cambiar_claves_demo.py` la sustituye por
+`MICROHUBS_CLAVE`, generada en la VM. Quien administra la VM la consulta con `grep MICROHUBS_CLAVE ~/microhubs/.env` y la comparte por un
+canal privado. Las pruebas en la VM la toman de ahí:
+
+```bash
+cd ~/microhubs && set -a && . ./.env && set +a && RED_EXTRA=microhubs-integrado_publica servicios/pruebas/correr.sh test pruebas.test_nube -v
+```
+
+## Monitoreo y registros
+
+El panel central está en el portal (`/web/servicios/monitoreo`) y en la API (`/servicios/auditoria-monitoreo/api/v1/monitoreo/estado`). Los
+registros de los contenedores y de Nginx llegan a Cloud Logging con el agente de operaciones (`deploy/gcp/ops-agent.yaml`).
 
 ## Archivos y URLs firmadas
 

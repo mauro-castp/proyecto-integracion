@@ -392,6 +392,37 @@ class T1Monitoreo(Base):
 
 
 # ====================================================================
+# La fecha del turno
+# ====================================================================
+class T2Fecha(Base):
+    def test_la_base_cuenta_los_dias_en_hora_de_monterrey(self):
+        """Con la base en UTC, desde las 18:00 de Monterrey current_date ya era mañana y las entregas del turno desaparecían."""
+        f = uno("SELECT current_setting('TimeZone') AS zona, current_date = fn_hoy() AS mismo_dia")
+        self.assertEqual((f["zona"], f["mismo_dia"]), ("America/Monterrey", True))
+        # a las 20:00 de Monterrey (02:00 UTC del día siguiente) el turno sigue siendo el del día local
+        d = uno("SELECT (timestamptz '2026-11-26 02:00:00+00')::date AS dia")["dia"]
+        self.assertEqual(d.isoformat(), "2026-11-25")
+
+    def test_una_entrega_del_turno_aparece_en_mis_entregas_y_en_la_carga(self):
+        e = preparar("repartidor1@codex.mx", 1)[0]
+        try:
+            _, mias = self.rep.llamar("entregas", "GET", "entregas/mias?por_pagina=100", estado=200)
+            self.assertIn(e["entrega_id"], [x["id"] for x in mias["datos"]])
+            _, reps = self.op1.llamar("entregas", "GET", "entregas/repartidores", estado=200)
+            yo = [r for r in reps["datos"] if r["id"] == self.rep.usuario["id"]][0]
+            self.assertEqual(yo["entregas_abiertas"], mias["paginacion"]["total"], "«Mis entregas» y la carga del repartidor cuentan lo mismo")
+        finally:
+            _, d = self.rep.llamar("documentos", "POST", "documentos", {
+                "nombre": "cierre_fecha_ola3.jpg", "tipo_mime": "image/jpeg", "contenido_base64": base64.b64encode(JPEG).decode(),
+                "referencia": {"tipo": "entrega", "id": str(e["entrega_id"])}}, estado=201)
+            self.rep.llamar("entregas", "POST", f"entregas/{e['entrega_id']}/resultado", {
+                "resultado": "fallida", "monto_cobrado": 0, "cambio_entregado": 0, "incidencia": "Prueba de fecha",
+                "ubicacion": {"latitud": 25.7491, "longitud": -100.3611}, "evidencia_ids": [d["id"]],
+                "capturado_en": dt.datetime.now(dt.timezone.utc).isoformat(), "id_cliente_local": str(uuid.uuid4())}, estado=201)
+            datos.mongo().documentos.delete_many({"nombre": "cierre_fecha_ola3.jpg"})
+
+
+# ====================================================================
 # Auditoría
 # ====================================================================
 class T2Auditoria(Base):

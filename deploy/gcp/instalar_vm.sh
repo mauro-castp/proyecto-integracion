@@ -6,7 +6,8 @@
 # Que hace (es repetible: correrlo otra vez actualiza):
 #   1. Crea .env (permiso 600) con secretos ALEATORIOS si no existe y verifica que no queden los valores por defecto del repo
 #      (cambiar-en-produccion, microhubs_dev). El .env vive solo en la VM: no se sube a Git.
-#   2. Levanta los ~27 contenedores: compose base + deploy/gcp/docker-compose.gcp.yml (puertos solo en 127.0.0.1).
+#   2. Levanta los ~31 contenedores: compose base + deploy/gcp/docker-compose.gcp.yml (puertos solo en 127.0.0.1) y cambia la clave de
+#      las cuentas de demostracion (la del repositorio es publica) por MICROHUBS_CLAVE, generada en la VM y guardada en .env.
 #   3. Instala la configuracion de Nginx (portal en "/", microservicios en "/servicios/<nombre>/") y recarga.
 #   4. Con --https pide el certificado de Let's Encrypt (acepta sus terminos de servicio y registra el correo): solo si lo pides.
 #
@@ -48,6 +49,10 @@ else
   sed -i "s/^VERSION_DESPLEGADA=.*/VERSION_DESPLEGADA=$VERSION/" .env
   echo "   .env ya existe: se conserva (solo se actualiza VERSION_DESPLEGADA)"
 fi
+if ! grep -q '^MICROHUBS_CLAVE=' .env; then
+  printf 'MICROHUBS_CLAVE=Mh.%s\n' "$(openssl rand -hex 9)" >> .env
+  echo "   clave nueva para las cuentas de demostracion generada (ver con:  grep MICROHUBS_CLAVE .env)"
+fi
 chmod 600 .env
 grep -q '^SECRET_KEY=.\{32,\}' .env || morir "SECRET_KEY ausente o corta en .env"
 grep -qE '^(SECRET_KEY=cambiar|POSTGRES_PASSWORD=microhubs_dev)' .env && morir ".env trae los valores por defecto del repositorio."
@@ -58,15 +63,21 @@ echo "   .env verificado (permisos: $(stat -c %a .env), proyecto GCP: $PROYECTO,
 decir "2) Contenedores"
 docker compose --env-file .env -f docker-compose.integrado.yml -f deploy/gcp/docker-compose.gcp.yml up -d $CONSTRUIR --remove-orphans
 echo "   esperando a que los servicios respondan..."
+PUERTOS="$(grep -o '127\.0\.0\.1:51[0-9][0-9]' deploy/gcp/docker-compose.gcp.yml | cut -d: -f2)"
+TOTAL="$(echo "$PUERTOS" | wc -w)"
 for i in $(seq 1 60); do
   malos=0
-  for p in 5101 5102 5103 5104 5105 5106 5107 5108 5109 5110; do
+  for p in $PUERTOS; do
     curl -fsS -m 3 -o /dev/null "http://127.0.0.1:$p/api/v1/salud" || malos=$((malos + 1))
   done
   [ "$malos" = 0 ] && break
   sleep 5
 done
-[ "$malos" = 0 ] && echo "   los 10 primeros servicios responden" || echo "   AVISO: $malos de 10 aun no responden (revisa: docker compose ps)"
+[ "$malos" = 0 ] && echo "   los $TOTAL servicios responden sanos" || echo "   AVISO: $malos de $TOTAL aun no responden sanos (revisa: docker compose ps)"
+
+MICROHUBS_CLAVE="$(grep '^MICROHUBS_CLAVE=' .env | cut -d= -f2-)" docker compose --env-file .env -f docker-compose.integrado.yml \
+  -f deploy/gcp/docker-compose.gcp.yml exec -T -e MICROHUBS_CLAVE auth python - < deploy/gcp/cambiar_claves_demo.py \
+  || morir "No se pudieron cambiar las claves de demostracion: no se publica el sistema."
 
 decir "3) Nginx"
 sudo install -m 644 deploy/gcp/nginx-microhubs.conf /etc/nginx/sites-available/microhubs

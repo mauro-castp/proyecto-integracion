@@ -5,7 +5,7 @@ Recorre las rutas de cada servicio (Flask) y, por cada operación, busca los cas
 de la corrida de evidencias (evidencias.json y complementarias/evidencias.json) que la ejercitan. Así el
 inventario no se escribe a mano: si una ruta no tiene caso de evidencia, la columna sale vacía y se nota.
 
-  cd servicios && python pruebas/generar_inventario.py [carpeta de la corrida, por omisión evidencias/ola2]
+  cd servicios && python pruebas/generar_inventario.py [carpeta de la corrida, por omisión evidencias/ola3]
 """
 import importlib
 import json
@@ -17,6 +17,7 @@ AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parents[1]
 sys.path.insert(0, str(AQUI.parent))
 os.environ.setdefault("LOG_STDOUT", "0")
+os.environ.setdefault("MONITOR_AUTO", "0")
 
 from comun import config  # noqa: E402
 
@@ -40,7 +41,7 @@ def casos_de(ruta_json):
 
 
 def main():
-    corrida = RAIZ / (sys.argv[1] if len(sys.argv) > 1 else "evidencias/ola2")
+    corrida = RAIZ / (sys.argv[1] if len(sys.argv) > 1 else "evidencias/ola3")
     casos = casos_de(corrida / "evidencias.json") + casos_de(corrida / "complementarias" / "evidencias.json")
     filas, total = [], 0
     for servicio in sorted(config.PUERTOS):
@@ -76,7 +77,9 @@ def main():
               "Punto de equilibrio, Simulación y Surtido (Ola 2) tienen su propio XSD, generado con `servicios/contratos/generar.py` a partir de "
               "`contratos/ola1.py` y `contratos/ola2.py`; las referencias que comparten están en comun_ola1.xsd y comun_ola2.xsd. Lo que pedidos, "
               "entregas e inventario ganaron en la Ola 2 (resumen, ventas, listos, repartidores, quiebres) está en pedidos_ola2.xsd, "
-              "entregas_ola2.xsd e inventario_ola2.xsd.", "",
+              "entregas_ola2.xsd e inventario_ola2.xsd. Auditoría y monitoreo, Reportes y Sincronización (Ola 3) tienen auditoria_monitoreo.xsd, "
+              "reportes.xsd y sincronizacion.xsd (`contratos/ola3.py`). El envío de un lote de sincronización es solo JSON, y la descarga de un reporte "
+              "devuelve el archivo (CSV, Excel o PDF).", "",
               "La ruta GPS antigua bajo entregas ya no se ofrece. El puerto 5108 corresponde a Zonas y el 5124 a Notificaciones, "
               "que vuelve como servicio de la Ola 1 con su propia bandeja, envío por rol y preferencias.", ""]
     (AQUI.parent / "INVENTARIO_ENDPOINTS.md").write_text("\n".join(salida), encoding="utf-8", newline="\r\n")
