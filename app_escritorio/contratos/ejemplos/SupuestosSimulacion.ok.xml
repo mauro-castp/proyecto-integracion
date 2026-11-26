@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supuestos_simulacion xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <supuesto>
+      <clave>cap_distancia_entrega_km</clave>
+      <valor>2.4</valor>
+      <unidad>km</unidad>
+      <origen>supuesto</origen>
+      <justificacion>Distancia típica de entrega desde el microhub, ida solamente; es el valor del Escenario A de la retroalimentación.</justificacion>
+      <como_calibrar>Distancia promedio entre el microhub y los domicilios de las entregas cerradas.</como_calibrar>
+    </supuesto>
+    <supuesto>
+      <clave>despacho_pedidos_hora</clave>
+      <valor>30</valor>
+      <unidad>pedidos/h</unidad>
+      <origen>supuesto</origen>
+      <justificacion>Un operador despacha unos 30 pedidos por hora (2 minutos: verificar y entregar al repartidor).</justificacion>
+      <como_calibrar>Tiempo entre listo_en y la salida del repartidor.</como_calibrar>
+    </supuesto>
+  </datos>
+</supuestos_simulacion>

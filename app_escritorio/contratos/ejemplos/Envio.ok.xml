@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<envio xmlns="urn:microhubs:v1" version="1">
+  <enviadas>2</enviadas>
+  <omitidas>1</omitidas>
+  <ids>
+    <id>311</id>
+    <id>312</id>
+  </ids>
+</envio>

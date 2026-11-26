@@ -15,6 +15,13 @@ def main():
         from nucleo import Config
         dsn = Config.PG_DSN
     with psycopg.connect(dsn, autocommit=True) as con:
+        # 07 redefine las funciones de aviso. Si ya se aplicó, volver a correrla en cada arranque
+        # desharía las versiones posteriores de 08 y 09 (tipo, referencia y preferencias).
+        ya = con.execute("SELECT to_regclass('microhubs.web_migracion') IS NOT NULL").fetchone()[0] and \
+            con.execute("SELECT EXISTS (SELECT 1 FROM microhubs.web_migracion WHERE clave = 'v1')").fetchone()[0]
+        if ya:
+            print('Web ampliado: ya estaba aplicada; no se repite.')
+            return
         con.execute(ruta.read_text(encoding='utf-8'))
     # Obliga a releer las asignaciones tras agregar los nuevos perfiles.
     from nucleo import r_cache

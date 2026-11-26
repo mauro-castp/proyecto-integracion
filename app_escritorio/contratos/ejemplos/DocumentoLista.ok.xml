@@ -13,6 +13,13 @@
       </referencia>
       <subido_por>7</subido_por>
       <creado_en>2026-10-12T18:29:30-06:00</creado_en>
+      <ruta>documentos/2026/10/665f1c2e8a3b4d0012a7c9e1.jpg</ruta>
+      <privacidad>privado</privacidad>
+      <estado>activo</estado>
+      <metadatos>
+        <almacen>gcs</almacen>
+        <origen>movil</origen>
+      </metadatos>
     </documento>
   </datos>
   <paginacion>

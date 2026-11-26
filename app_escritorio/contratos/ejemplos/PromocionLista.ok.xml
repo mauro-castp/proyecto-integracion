@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<promociones xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <datos>
+    <promocion>
+      <id>1</id>
+      <nombre>Bebidas -10 %</nombre>
+      <tipo>porcentaje</tipo>
+      <valor>10.00</valor>
+      <producto_id xsi:nil="true" />
+      <categoria_id>2</categoria_id>
+      <zona_id xsi:nil="true" />
+      <vigente_desde>2026-10-01</vigente_desde>
+      <vigente_hasta>2027-09-30</vigente_hasta>
+      <estatus>activo</estatus>
+    </promocion>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</promociones>

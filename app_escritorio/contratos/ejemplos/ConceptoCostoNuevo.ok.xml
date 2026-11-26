@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<concepto_costo_nuevo xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <ambito>microhub</ambito>
+  <ambito_id>1</ambito_id>
+  <nombre>Renta del local</nombre>
+  <categoria>renta</categoria>
+  <tipo>fijo</tipo>
+  <unidad>mes</unidad>
+  <monto>12000.0</monto>
+  <vigente_desde>2026-10-01</vigente_desde>
+  <vigente_hasta xsi:nil="true" />
+  <fuente>contrato</fuente>
+  <justificacion>Contrato de arrendamiento firmado en septiembre</justificacion>
+</concepto_costo_nuevo>

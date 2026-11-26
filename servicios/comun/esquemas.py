@@ -1,7 +1,7 @@
 """
 esquemas.py — Validación XML contra los XSD oficiales del contrato v1.
 
-Los nueve XSD (app_escritorio/contratos) se compilan en un solo conjunto,
+Los XSD (app_escritorio/contratos) se compilan en un solo conjunto,
 igual que lo hace la app de escritorio. El servicio valida cada cuerpo XML
 que recibe antes de procesarlo; las pruebas validan con el mismo conjunto
 cada respuesta XML que el servicio produce.
@@ -12,8 +12,10 @@ from lxml import etree
 
 from . import config
 
-ARCHIVOS = ["comun", "auth", "usuarios", "catalogos", "pedidos", "entregas",
-            "planeacion", "documentos", "notificaciones"]
+ARCHIVOS = ["comun", "comun_ola1", "auth", "usuarios", "catalogos", "pedidos", "entregas",
+            "planeacion", "documentos", "notificaciones", "inventario", "precios", "proveedores", "abastecimiento",
+            "comun_ola2", "pedidos_ola2", "entregas_ola2", "inventario_ola2", "demanda", "cobertura", "capacidad", "rutas", "costos",
+            "punto_equilibrio", "simulacion", "surtido", "auditoria_monitoreo", "reportes", "sincronizacion"]
 
 
 @lru_cache(maxsize=1)

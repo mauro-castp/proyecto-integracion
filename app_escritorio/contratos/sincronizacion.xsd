@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: sincronizacion · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola2.xsd"/>
+
+  <xs:complexType name="TSyncUsuario">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSyncOperacionResultado">
+    <xs:sequence>
+      <xs:element name="operacion_uuid" type="xs:string"/>
+      <xs:element name="tipo" type="xs:string"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="aplicada"/>
+            <xs:enumeration value="conflicto"/>
+            <xs:enumeration value="rechazada"/>
+            <xs:enumeration value="pendiente"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="duplicada" type="xs:boolean"/>
+      <xs:element name="http_status" type="xs:int" nillable="true"/>
+      <xs:element name="codigo" type="xs:string" nillable="true"/>
+      <xs:element name="mensaje" type="xs:string" nillable="true"/>
+      <xs:element name="reintentar" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSyncLoteResultado">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="lote_uuid" type="xs:string"/>
+      <xs:element name="dispositivo" type="xs:string"/>
+      <xs:element name="recibido_en" type="xs:dateTime"/>
+      <xs:element name="total" type="xs:long"/>
+      <xs:element name="aplicadas" type="xs:long"/>
+      <xs:element name="duplicadas" type="xs:long"/>
+      <xs:element name="conflictos" type="xs:long"/>
+      <xs:element name="rechazadas" type="xs:long"/>
+      <xs:element name="pendientes" type="xs:long"/>
+      <xs:element name="operaciones">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="operacion" type="tns:TSyncOperacionResultado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSyncLote">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="lote_uuid" type="xs:string"/>
+      <xs:element name="dispositivo" type="xs:string"/>
+      <xs:element name="cliente">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="android"/>
+            <xs:enumeration value="escritorio"/>
+            <xs:enumeration value="web"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="usuario" type="tns:TSyncUsuario"/>
+      <xs:element name="recibido_en" type="xs:dateTime"/>
+      <xs:element name="total" type="xs:long"/>
+      <xs:element name="aplicadas" type="xs:long"/>
+      <xs:element name="duplicadas" type="xs:long"/>
+      <xs:element name="conflictos" type="xs:long"/>
+      <xs:element name="rechazadas" type="xs:long"/>
+      <xs:element name="pendientes" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSyncLoteLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="lote" type="tns:TSyncLote" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSyncOperacion">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="lote_uuid" type="xs:string"/>
+      <xs:element name="dispositivo" type="xs:string"/>
+      <xs:element name="operacion_uuid" type="xs:string"/>
+      <xs:element name="tipo" type="xs:string"/>
+      <xs:element name="creada_en" type="xs:dateTime"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="aplicada"/>
+            <xs:enumeration value="conflicto"/>
+            <xs:enumeration value="rechazada"/>
+            <xs:enumeration value="pendiente"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="http_status" type="xs:int" nillable="true"/>
+      <xs:element name="codigo" type="xs:string" nillable="true"/>
+      <xs:element name="mensaje" type="xs:string" nillable="true"/>
+      <xs:element name="intentos" type="xs:int"/>
+      <xs:element name="procesada_en" type="xs:dateTime"/>
+      <xs:element name="usuario" type="tns:TSyncUsuario"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSyncOperacionLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="operacion" type="tns:TSyncOperacion" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSyncLoteDetalle">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="lote_uuid" type="xs:string"/>
+      <xs:element name="dispositivo" type="xs:string"/>
+      <xs:element name="cliente">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="android"/>
+            <xs:enumeration value="escritorio"/>
+            <xs:enumeration value="web"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="usuario" type="tns:TSyncUsuario"/>
+      <xs:element name="recibido_en" type="xs:dateTime"/>
+      <xs:element name="total" type="xs:long"/>
+      <xs:element name="aplicadas" type="xs:long"/>
+      <xs:element name="duplicadas" type="xs:long"/>
+      <xs:element name="conflictos" type="xs:long"/>
+      <xs:element name="rechazadas" type="xs:long"/>
+      <xs:element name="pendientes" type="xs:long"/>
+      <xs:element name="operaciones">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="operacion" type="tns:TSyncOperacion" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSyncEstado">
+    <xs:sequence>
+      <xs:element name="dispositivo" type="xs:string"/>
+      <xs:element name="ultima_sincronizacion" type="xs:dateTime" nillable="true"/>
+      <xs:element name="lotes" type="xs:long"/>
+      <xs:element name="aplicadas" type="xs:long"/>
+      <xs:element name="conflictos" type="xs:long"/>
+      <xs:element name="rechazadas" type="xs:long"/>
+      <xs:element name="pendientes" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="sync_lote_resultado">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSyncLoteResultado">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sync_lotes">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSyncLoteLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sync_lote">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSyncLoteDetalle">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sync_operaciones">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSyncOperacionLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sync_estado">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSyncEstado">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="supuestos_sincronizacion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSupuestosDoc">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

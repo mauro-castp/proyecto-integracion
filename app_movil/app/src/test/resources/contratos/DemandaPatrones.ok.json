@@ -1,0 +1,43 @@
+{
+  "desde": "2026-08-21",
+  "hasta": "2026-10-19",
+  "dias": 60,
+  "suficiente": true,
+  "semanal": [
+    {
+      "dia": 1,
+      "nombre": "lunes",
+      "pedidos_promedio": 12.89,
+      "indice": 1.166
+    },
+    {
+      "dia": 2,
+      "nombre": "martes",
+      "pedidos_promedio": 7.5,
+      "indice": 0.679
+    }
+  ],
+  "categorias": [
+    {
+      "categoria": {
+        "id": 1,
+        "nombre": "Abarrote básico"
+      },
+      "unidades": 1195,
+      "venta": 30803.02,
+      "pct_venta": 45.0
+    },
+    {
+      "categoria": {
+        "id": 2,
+        "nombre": "Bebidas"
+      },
+      "unidades": 527,
+      "venta": 13690.25,
+      "pct_venta": 20.0
+    }
+  ],
+  "dia_pico": "sábado",
+  "dia_valle": "miércoles",
+  "fuerza_estacional": 2.23
+}

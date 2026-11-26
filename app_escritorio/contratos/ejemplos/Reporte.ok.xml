@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reporte xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <reporte>pedidos_por_dia</reporte>
+  <familia>operativo</familia>
+  <titulo>Pedidos por día</titulo>
+  <generado_en>2026-11-25T10:30:00-06:00</generado_en>
+  <filtros>
+    <desde>2026-10-26</desde>
+    <hasta>2026-11-25</hasta>
+    <zona_id xsi:nil="true" />
+    <microhub_id xsi:nil="true" />
+  </filtros>
+  <columnas>
+    <columna>
+      <clave>fecha</clave>
+      <titulo>Día</titulo>
+      <tipo>fecha</tipo>
+    </columna>
+    <columna>
+      <clave>pedidos</clave>
+      <titulo>Pedidos</titulo>
+      <tipo>entero</tipo>
+    </columna>
+    <columna>
+      <clave>venta</clave>
+      <titulo>Venta</titulo>
+      <tipo>dinero</tipo>
+    </columna>
+  </columnas>
+  <filas>
+    <fila>
+      <celdas>
+        <celda>2026-11-24</celda>
+        <celda>12</celda>
+        <celda>1534.50</celda>
+      </celdas>
+    </fila>
+  </filas>
+  <totales>
+    <celdas>
+      <celda>Total</celda>
+      <celda>12</celda>
+      <celda>1534.50</celda>
+    </celdas>
+  </totales>
+  <total_filas>1</total_filas>
+</reporte>

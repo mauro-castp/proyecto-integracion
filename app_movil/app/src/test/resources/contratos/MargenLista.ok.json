@@ -1,0 +1,24 @@
+{
+  "datos": [
+    {
+      "lista": {
+        "id": 2,
+        "nombre": "Lista San Bernabé Centro"
+      },
+      "producto": {
+        "id": 4,
+        "nombre": "Aceite vegetal 1 L"
+      },
+      "precio": 46.35,
+      "costo": 31.5,
+      "margen_pct": 32.0,
+      "bajo_margen": false
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

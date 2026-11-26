@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item_precio xmlns="urn:microhubs:v1" version="1">
+  <producto>
+    <id>4</id>
+    <nombre>Aceite vegetal 1 L</nombre>
+  </producto>
+  <precio>46.35</precio>
+  <costo>31.50</costo>
+  <margen_pct>32.0</margen_pct>
+  <actualizado_en>2026-10-19T09:30:00-06:00</actualizado_en>
+</item_precio>

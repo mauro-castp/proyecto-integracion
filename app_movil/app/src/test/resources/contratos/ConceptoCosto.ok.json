@@ -1,0 +1,15 @@
+{
+  "id": 2,
+  "ambito": "global",
+  "ambito_id": null,
+  "nombre": "Combustible y desgaste",
+  "categoria": "transporte",
+  "tipo": "variable",
+  "unidad": "km",
+  "monto": 4.5,
+  "vigente_desde": "2026-10-19",
+  "vigente_hasta": null,
+  "estatus": "activo",
+  "fuente": "supuesto",
+  "justificacion": "Combustible, mantenimiento y desgaste de una moto pequeña; mismo valor que costo_km_reparto."
+}

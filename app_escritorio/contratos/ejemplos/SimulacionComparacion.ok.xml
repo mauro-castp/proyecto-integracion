@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulacion_comparacion xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <ejecuciones>
+    <ejecucion>
+      <id>424e011f-a7ae-4bf7-ba84-24dd4b6dd75d</id>
+      <nombre>Simulación de Microhub San Bernabé Centro 2026-10-19</nombre>
+      <objeto>
+        <tipo>microhub</tipo>
+        <id>1</id>
+        <nombre>Microhub San Bernabé Centro</nombre>
+      </objeto>
+      <dias>14</dias>
+      <replicas>100</replicas>
+      <utilidad_media>-32022.5963</utilidad_media>
+      <utilidad_p10>-32088.921</utilidad_p10>
+      <utilidad_p90>-31975.3065</utilidad_p90>
+      <prob_perdida_pct>100.0</prob_perdida_pct>
+      <atendidos_media>69.05</atendidos_media>
+      <rechazados_media>0.06</rechazados_media>
+      <dias_saturados_pct>0.0714</dias_saturados_pct>
+      <huella>2070f03b07cc488550c6f8f5fcae4245394529e921d24b896f9480ad36d13800</huella>
+    </ejecucion>
+    <ejecucion>
+      <id>08e63110-fab7-44e0-a970-4a0f50ba56f1</id>
+      <nombre>Simulación de escenario manual 2026-10-19</nombre>
+      <objeto>
+        <tipo>manual</tipo>
+        <id xsi:nil="true" />
+        <nombre xsi:nil="true" />
+      </objeto>
+      <dias>14</dias>
+      <replicas>100</replicas>
+      <utilidad_media>-24794.668</utilidad_media>
+      <utilidad_p10>-25047.44</utilidad_p10>
+      <utilidad_p90>-24551.88</utilidad_p90>
+      <prob_perdida_pct>100.0</prob_perdida_pct>
+      <atendidos_media>616.41</atendidos_media>
+      <rechazados_media>1.73</rechazados_media>
+      <dias_saturados_pct>1.8571</dias_saturados_pct>
+      <huella>96035bc707e56aa939066e110b77bd3cb60cc944cd6d0fed0adde4abea84ff71</huella>
+    </ejecucion>
+  </ejecuciones>
+  <mejor_id>08e63110-fab7-44e0-a970-4a0f50ba56f1</mejor_id>
+  <criterio>Mayor utilidad media entre las que pierden dinero en menos de la mitad de las réplicas.</criterio>
+</simulacion_comparacion>

@@ -1,0 +1,39 @@
+{
+  "lote_uuid": "0b8e6f1c-2a4d-4c7e-9a31-5d6e7f809a1b",
+  "dispositivo": "android-repartidor1",
+  "cliente": "android",
+  "operaciones": [
+    {
+      "operacion_uuid": "6a0f3b5c-1d2e-4f70-8a9b-0c1d2e3f4a5b",
+      "tipo": "ubicaciones",
+      "creada_en": "2026-11-25T10:30:00-06:00",
+      "datos": {
+        "entrega_id": 163,
+        "puntos": [
+          {
+            "latitud": 25.7491,
+            "longitud": -100.3611,
+            "capturado_en": "2026-11-25T10:30:00-06:00"
+          }
+        ]
+      }
+    },
+    {
+      "operacion_uuid": "4f1d7a2e-9b3c-4d5e-8f60-1a2b3c4d5e6f",
+      "tipo": "entrega_resultado",
+      "creada_en": "2026-11-25T10:30:00-06:00",
+      "datos": {
+        "entrega_id": 163,
+        "resultado": "entregado",
+        "monto_cobrado": 130.5,
+        "cambio_entregado": 0,
+        "ubicacion": {
+          "latitud": 25.7491,
+          "longitud": -100.3611
+        },
+        "evidencia_ids": [],
+        "capturado_en": "2026-11-25T10:30:00-06:00"
+      }
+    }
+  ]
+}

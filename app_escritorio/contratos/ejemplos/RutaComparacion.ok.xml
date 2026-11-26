@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruta_comparacion xmlns="urn:microhubs:v1" version="1">
+  <microhub>
+    <id>1</id>
+    <nombre>Microhub San Bernabé Centro</nombre>
+  </microhub>
+  <paradas>6</paradas>
+  <filas>
+    <fila>
+      <metodo>Orden de llegada</metodo>
+      <distancia_km>5.52</distancia_km>
+      <minutos>39.1</minutos>
+      <costo>132.84</costo>
+      <mejora_pct>0.0</mejora_pct>
+    </fila>
+    <fila>
+      <metodo>Vecino más cercano</metodo>
+      <distancia_km>4.67</distancia_km>
+      <minutos>36.7</minutos>
+      <costo>129.01</costo>
+      <mejora_pct>15.4</mejora_pct>
+    </fila>
+  </filas>
+  <mejor_metodo>Vecino más cercano + 2-opt</mejor_metodo>
+  <nota>Una sola ruta con todas las paradas.</nota>
+  <supuestos_usados>
+    <supuesto>
+      <clave>velocidad_reparto_kmh</clave>
+      <valor>22.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>tiempo_servicio_min</clave>
+      <valor>4.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</ruta_comparacion>

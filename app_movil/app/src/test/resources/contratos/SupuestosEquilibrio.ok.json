@@ -1,0 +1,20 @@
+{
+  "datos": [
+    {
+      "clave": "cos_ticket_ref",
+      "valor": "135",
+      "unidad": "MXN",
+      "origen": "supuesto",
+      "justificacion": "Ticket de referencia del escenario de la retroalimentación.",
+      "como_calibrar": "Ticket promedio real del servicio de demanda."
+    },
+    {
+      "clave": "dias_operacion_mes",
+      "valor": "30",
+      "unidad": "días",
+      "origen": "normativo",
+      "justificacion": "El microhub opera todos los días del mes.",
+      "como_calibrar": "Cambiar si se decide cerrar un día a la semana."
+    }
+  ]
+}

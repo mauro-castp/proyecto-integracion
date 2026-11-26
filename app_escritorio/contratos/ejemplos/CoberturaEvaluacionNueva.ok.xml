@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cobertura_evaluacion_nueva xmlns="urn:microhubs:v1" version="1">
+  <nombre>Local frente a la plaza</nombre>
+  <latitud>25.6866</latitud>
+  <longitud>-100.3161</longitud>
+  <radio_km>1.5</radio_km>
+  <guardar>false</guardar>
+</cobertura_evaluacion_nueva>

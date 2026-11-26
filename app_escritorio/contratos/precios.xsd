@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: precios · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola1.xsd"/>
+
+  <xs:complexType name="TPreListaResumen">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="zona_id" type="xs:long" nillable="true"/>
+      <xs:element name="vigente_desde" type="xs:date"/>
+      <xs:element name="vigente_hasta" type="xs:date" nillable="true"/>
+      <xs:element name="estatus">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="activo"/>
+            <xs:enumeration value="inactivo"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="productos" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreListaLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="lista" type="tns:TPreListaResumen" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreItem">
+    <xs:sequence>
+      <xs:element name="producto" type="tns:TRefNombre"/>
+      <xs:element name="precio">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costo" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="margen_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="actualizado_en" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreListaDetalle">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="zona_id" type="xs:long" nillable="true"/>
+      <xs:element name="vigente_desde" type="xs:date"/>
+      <xs:element name="vigente_hasta" type="xs:date" nillable="true"/>
+      <xs:element name="estatus">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="activo"/>
+            <xs:enumeration value="inactivo"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="productos" type="xs:int"/>
+      <xs:element name="items">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="item" type="tns:TPreItem" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreItemLista">
+    <xs:sequence>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="precio">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0.01"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costo" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreListaNueva">
+    <xs:sequence>
+      <xs:element name="nombre">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="80"/>
+            <xs:minLength value="3"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="zona_id" type="xs:long" minOccurs="0" nillable="true"/>
+      <xs:element name="vigente_desde" type="xs:date" minOccurs="0" nillable="true"/>
+      <xs:element name="vigente_hasta" type="xs:date" minOccurs="0" nillable="true"/>
+      <xs:element name="items" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="item" type="tns:TPreItemLista" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPrePrecioNuevo">
+    <xs:sequence>
+      <xs:element name="precio">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0.01"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costo" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPrePromocionAplicada">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="porcentaje"/>
+            <xs:enumeration value="monto"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valor">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPrePrecioVigente">
+    <xs:sequence>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="zona_id" type="xs:long" nillable="true"/>
+      <xs:element name="fecha" type="xs:date"/>
+      <xs:element name="precio_base">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="lista" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="precio_vigente">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="promocion" type="tns:TPrePromocionAplicada" nillable="true"/>
+      <xs:element name="descuento">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="descuento_limitado" type="xs:boolean"/>
+      <xs:element name="precio_final">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costo" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="margen_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="bajo_margen" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreLineaNueva">
+    <xs:sequence>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="cantidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="10000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreCalculoNuevo">
+    <xs:sequence>
+      <xs:element name="zona_id" type="xs:long" minOccurs="0" nillable="true"/>
+      <xs:element name="fecha" type="xs:date" minOccurs="0" nillable="true"/>
+      <xs:element name="lineas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="linea" type="tns:TPreLineaNueva" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreCalculoLinea">
+    <xs:sequence>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="cantidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="precio_unitario">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="descuento_unitario">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="importe">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="promocion_id" type="xs:long" nillable="true"/>
+      <xs:element name="bajo_margen" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreCalculo">
+    <xs:sequence>
+      <xs:element name="zona_id" type="xs:long" nillable="true"/>
+      <xs:element name="fecha" type="xs:date"/>
+      <xs:element name="lineas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="linea" type="tns:TPreCalculoLinea" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="subtotal">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="descuento_total">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="total">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPrePromocion">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="porcentaje"/>
+            <xs:enumeration value="monto"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valor">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="producto_id" type="xs:long" nillable="true"/>
+      <xs:element name="categoria_id" type="xs:long" nillable="true"/>
+      <xs:element name="zona_id" type="xs:long" nillable="true"/>
+      <xs:element name="vigente_desde" type="xs:date"/>
+      <xs:element name="vigente_hasta" type="xs:date"/>
+      <xs:element name="estatus">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="activo"/>
+            <xs:enumeration value="inactivo"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPrePromocionLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="promocion" type="tns:TPrePromocion" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPrePromocionNueva">
+    <xs:sequence>
+      <xs:element name="nombre">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="80"/>
+            <xs:minLength value="3"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="porcentaje"/>
+            <xs:enumeration value="monto"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="valor">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0.01"/>
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="producto_id" type="xs:long" minOccurs="0" nillable="true"/>
+      <xs:element name="categoria_id" type="xs:long" minOccurs="0" nillable="true"/>
+      <xs:element name="zona_id" type="xs:long" minOccurs="0" nillable="true"/>
+      <xs:element name="vigente_desde" type="xs:date" minOccurs="0" nillable="true"/>
+      <xs:element name="vigente_hasta" type="xs:date"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreCambio">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="lista_id" type="xs:long"/>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="precio_anterior" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="precio_nuevo">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="usuario_id" type="xs:long" nillable="true"/>
+      <xs:element name="fecha" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreHistorialLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="cambio" type="tns:TPreCambio" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreMargen">
+    <xs:sequence>
+      <xs:element name="lista" type="tns:TRefNombre"/>
+      <xs:element name="producto" type="tns:TRefNombre"/>
+      <xs:element name="precio">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costo">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="margen_pct" type="xs:decimal"/>
+      <xs:element name="bajo_margen" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreMargenLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="margen" type="tns:TPreMargen" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreEscenario">
+    <xs:sequence>
+      <xs:element name="variacion_pct" type="xs:int"/>
+      <xs:element name="precio">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="volumen_estimado" type="xs:decimal"/>
+      <xs:element name="ingreso">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ingreso_vs_base_pct" type="xs:decimal"/>
+      <xs:element name="margen_total" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="volumen_para_igualar_margen" type="xs:decimal" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TPreSensibilidad">
+    <xs:sequence>
+      <xs:element name="producto_id" type="xs:long"/>
+      <xs:element name="zona_id" type="xs:long" nillable="true"/>
+      <xs:element name="precio_final">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costo" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="volumen_base" type="xs:int"/>
+      <xs:element name="elasticidad" type="xs:decimal"/>
+      <xs:element name="supuestos" type="xs:string"/>
+      <xs:element name="escenarios">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="escenario" type="tns:TPreEscenario" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="listas">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPreListaLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="lista_detalle">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPreListaDetalle">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="lista_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPreListaNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="precio_nuevo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPrePrecioNuevo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="item_precio">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPreItem">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="precio_vigente">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPrePrecioVigente">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="calculo_nuevo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPreCalculoNuevo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="calculo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPreCalculo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="promociones">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPrePromocionLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="promocion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPrePromocion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="promocion_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPrePromocionNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="historial_precios">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPreHistorialLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="margenes">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPreMargenLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sensibilidad">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TPreSensibilidad">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

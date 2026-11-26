@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reportes_catalogo xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <reporte>
+      <clave>pedidos_por_dia</clave>
+      <familia>operativo</familia>
+      <titulo>Pedidos por día</titulo>
+      <descripcion>Pedidos, unidades y venta de cada día.</descripcion>
+      <filtros>
+        <filtro>desde</filtro>
+        <filtro>hasta</filtro>
+        <filtro>zona_id</filtro>
+        <filtro>microhub_id</filtro>
+      </filtros>
+    </reporte>
+  </datos>
+</reportes_catalogo>

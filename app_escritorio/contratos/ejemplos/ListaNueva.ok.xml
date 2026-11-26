@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lista_nueva xmlns="urn:microhubs:v1" version="1">
+  <nombre>Lista Valles</nombre>
+  <zona_id>2</zona_id>
+  <vigente_desde>2026-11-01</vigente_desde>
+  <vigente_hasta>2027-03-31</vigente_hasta>
+  <items>
+    <item>
+      <producto_id>4</producto_id>
+      <precio>46.00</precio>
+      <costo>31.50</costo>
+    </item>
+  </items>
+</lista_nueva>

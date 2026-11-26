@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sync_estado xmlns="urn:microhubs:v1" version="1">
+  <dispositivo>android-repartidor1</dispositivo>
+  <ultima_sincronizacion>2026-11-25T10:30:00-06:00</ultima_sincronizacion>
+  <lotes>8</lotes>
+  <aplicadas>20</aplicadas>
+  <conflictos>1</conflictos>
+  <rechazadas>0</rechazadas>
+  <pendientes>2</pendientes>
+</sync_estado>

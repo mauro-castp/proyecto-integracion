@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<equilibrio_microhubs xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <microhub>
+      <microhub>
+        <id>1</id>
+        <nombre>Microhub San Bernabé Centro</nombre>
+      </microhub>
+      <costos_fijos_mes>69500.0</costos_fijos_mes>
+      <margen_pedido>5.95</margen_pedido>
+      <equilibrio_diario>389.5</equilibrio_diario>
+      <pedidos_dia>5.0</pedidos_dia>
+      <diferencia_pedidos_dia>-384.5</diferencia_pedidos_dia>
+      <utilidad_mes>-68608.63</utilidad_mes>
+      <decision>no_viable</decision>
+    </microhub>
+    <microhub>
+      <microhub>
+        <id>2</id>
+        <nombre>Microhub Valles</nombre>
+      </microhub>
+      <costos_fijos_mes>66500.0</costos_fijos_mes>
+      <margen_pedido>5.95</margen_pedido>
+      <equilibrio_diario>372.6</equilibrio_diario>
+      <pedidos_dia>3.79</pedidos_dia>
+      <diferencia_pedidos_dia>-368.81</diferencia_pedidos_dia>
+      <utilidad_mes>-65824.56</utilidad_mes>
+      <decision>no_viable</decision>
+    </microhub>
+  </datos>
+  <supuestos_usados>
+    <supuesto>
+      <clave>peq_margen_seguridad_pct</clave>
+      <valor>15.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>dias_operacion_mes</clave>
+      <valor>30.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</equilibrio_microhubs>

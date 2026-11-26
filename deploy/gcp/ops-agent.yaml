@@ -1,0 +1,41 @@
+# ops-agent.yaml — Configuración del agente de operaciones de Google (logs y métricas de la VM hacia Cloud Logging y Cloud Monitoring).
+#
+# Instalar en la VM:   sudo cp deploy/gcp/ops-agent.yaml /etc/google-cloud-ops-agent/config.yaml && sudo systemctl restart google-cloud-ops-agent
+#
+# Los contenedores escriben en la salida estándar (una línea JSON por petición, con nivel, componente y correlacion_id); Docker las guarda en
+# archivos y aquí se envían a Cloud Logging, donde se buscan por servicio, nivel o correlación:
+#   logName="projects/<proyecto>/logs/contenedores" AND jsonPayload.componente="pedidos" AND severity>=WARNING
+# Nginx se envía por separado. Las métricas de la VM (CPU, memoria, disco, red) salen con la configuración por omisión del agente.
+logging:
+  receivers:
+    contenedores:
+      type: files
+      include_paths: [/var/lib/docker/containers/*/*-json.log]
+      record_log_file_path: true
+    nginx_acceso:
+      type: files
+      include_paths: [/var/log/nginx/access.log]
+    nginx_errores:
+      type: files
+      include_paths: [/var/log/nginx/error.log]
+  processors:
+    docker_json:
+      type: parse_json
+      time_key: time
+      time_format: "%Y-%m-%dT%H:%M:%S.%LZ"
+    app_json:                      # la línea de la aplicación viene como texto dentro de "log": se abre en campos
+      type: parse_json
+      field: log
+    nivel:
+      type: modify_fields
+      fields:
+        severity:
+          move_from: jsonPayload.nivel
+          map_values: {"DEBUG": "DEBUG", "INFO": "INFO", "WARNING": "WARNING", "ERROR": "ERROR", "CRITICAL": "CRITICAL"}
+  service:
+    pipelines:
+      microhubs_contenedores:
+        receivers: [contenedores]
+        processors: [docker_json, app_json, nivel]
+      microhubs_nginx:
+        receivers: [nginx_acceso, nginx_errores]

@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: auditoria-monitoreo · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola1.xsd"/>
+  <xs:include schemaLocation="comun_ola2.xsd"/>
+
+  <xs:complexType name="TAudUsuario">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAudCambio">
+    <xs:sequence>
+      <xs:element name="campo" type="xs:string"/>
+      <xs:element name="anterior" type="xs:string" nillable="true"/>
+      <xs:element name="nuevo" type="xs:string" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAudEvento">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="fecha" type="xs:dateTime"/>
+      <xs:element name="usuario" type="tns:TAudUsuario" nillable="true"/>
+      <xs:element name="correo_intento" type="xs:string" nillable="true"/>
+      <xs:element name="ip_origen" type="xs:string" nillable="true"/>
+      <xs:element name="modulo" type="xs:string"/>
+      <xs:element name="accion">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="alta"/>
+            <xs:enumeration value="modificacion"/>
+            <xs:enumeration value="baja_logica"/>
+            <xs:enumeration value="login_exitoso"/>
+            <xs:enumeration value="login_fallido"/>
+            <xs:enumeration value="logout"/>
+            <xs:enumeration value="bloqueo_cuenta"/>
+            <xs:enumeration value="desbloqueo"/>
+            <xs:enumeration value="acceso_denegado"/>
+            <xs:enumeration value="cambio_estado"/>
+            <xs:enumeration value="reasignacion"/>
+            <xs:enumeration value="reversion_administrativa"/>
+            <xs:enumeration value="movimiento_inventario"/>
+            <xs:enumeration value="cambio_configuracion"/>
+            <xs:enumeration value="descarga"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="entidad" type="tns:TRefTipoId" nillable="true"/>
+      <xs:element name="exitoso" type="xs:boolean"/>
+      <xs:element name="detalle" type="xs:string" nillable="true"/>
+      <xs:element name="cambios">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="cambio" type="tns:TAudCambio" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAudEventoLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="evento" type="tns:TAudEvento" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAudAccesosTotales">
+    <xs:sequence>
+      <xs:element name="login_exitoso" type="xs:long"/>
+      <xs:element name="login_fallido" type="xs:long"/>
+      <xs:element name="logout" type="xs:long"/>
+      <xs:element name="bloqueo_cuenta" type="xs:long"/>
+      <xs:element name="desbloqueo" type="xs:long"/>
+      <xs:element name="acceso_denegado" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAudCorreoFallo">
+    <xs:sequence>
+      <xs:element name="correo" type="xs:string"/>
+      <xs:element name="intentos" type="xs:long"/>
+      <xs:element name="ultimo_intento" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAudDenegado">
+    <xs:sequence>
+      <xs:element name="detalle" type="xs:string"/>
+      <xs:element name="veces" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAudAccesos">
+    <xs:sequence>
+      <xs:element name="desde" type="xs:date"/>
+      <xs:element name="hasta" type="xs:date"/>
+      <xs:element name="totales" type="tns:TAudAccesosTotales"/>
+      <xs:element name="correos_con_mas_fallos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="correo" type="tns:TAudCorreoFallo" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="denegados_frecuentes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="denegado" type="tns:TAudDenegado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAudTrazaEvento">
+    <xs:sequence>
+      <xs:element name="fecha" type="xs:dateTime"/>
+      <xs:element name="origen">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="auditoria"/>
+            <xs:enumeration value="estados"/>
+            <xs:enumeration value="inventario"/>
+            <xs:enumeration value="documentos"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="accion" type="xs:string"/>
+      <xs:element name="descripcion" type="xs:string"/>
+      <xs:element name="usuario" type="tns:TAudUsuario" nillable="true"/>
+      <xs:element name="entidad" type="tns:TRefTipoId" nillable="true"/>
+      <xs:element name="cambios">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="cambio" type="tns:TAudCambio" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAudObjeto">
+    <xs:sequence>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="pedido"/>
+            <xs:enumeration value="entrega"/>
+            <xs:enumeration value="inventario"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="id" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TAudTrazabilidad">
+    <xs:sequence>
+      <xs:element name="objeto" type="tns:TAudObjeto"/>
+      <xs:element name="total" type="xs:long"/>
+      <xs:element name="eventos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="evento" type="tns:TAudTrazaEvento" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonResumen">
+    <xs:sequence>
+      <xs:element name="total" type="xs:long"/>
+      <xs:element name="ok" type="xs:long"/>
+      <xs:element name="degradados" type="xs:long"/>
+      <xs:element name="caidos" type="xs:long"/>
+      <xs:element name="sin_datos" type="xs:long"/>
+      <xs:element name="alertas_abiertas" type="xs:long"/>
+      <xs:element name="monitor_activo" type="xs:boolean"/>
+      <xs:element name="intervalo_seg" type="xs:long"/>
+      <xs:element name="ultima_ronda" type="xs:dateTime" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonServicioEstado">
+    <xs:sequence>
+      <xs:element name="servicio" type="xs:string"/>
+      <xs:element name="puerto" type="xs:int"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="ok"/>
+            <xs:enumeration value="degradado"/>
+            <xs:enumeration value="caido"/>
+            <xs:enumeration value="sin_datos"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="verificado_en" type="xs:dateTime" nillable="true"/>
+      <xs:element name="antiguedad_seg" type="xs:long" nillable="true"/>
+      <xs:element name="tiempo_ms" type="xs:decimal" nillable="true"/>
+      <xs:element name="version" type="xs:string" nillable="true"/>
+      <xs:element name="dependencias" type="tns:TSaludDependencias" nillable="true"/>
+      <xs:element name="error" type="xs:string" nillable="true"/>
+      <xs:element name="peticiones_hora" type="xs:long" nillable="true"/>
+      <xs:element name="errores_5xx_hora" type="xs:long" nillable="true"/>
+      <xs:element name="disponibilidad_24h_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="bajo_objetivo" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonDependenciaCaida">
+    <xs:sequence>
+      <xs:element name="dependencia">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="postgres"/>
+            <xs:enumeration value="redis"/>
+            <xs:enumeration value="mongo"/>
+            <xs:enumeration value="bucket"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="afectados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="servicio" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonEstado">
+    <xs:sequence>
+      <xs:element name="generado_en" type="xs:dateTime"/>
+      <xs:element name="resumen" type="tns:TMonResumen"/>
+      <xs:element name="servicios">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="servicio" type="tns:TMonServicioEstado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="dependencias_caidas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="dependencia" type="tns:TMonDependenciaCaida" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonVerificacion">
+    <xs:sequence>
+      <xs:element name="verificado_en" type="xs:dateTime"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="ok"/>
+            <xs:enumeration value="degradado"/>
+            <xs:enumeration value="caido"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="http_status" type="xs:int" nillable="true"/>
+      <xs:element name="tiempo_ms" type="xs:decimal"/>
+      <xs:element name="version" type="xs:string" nillable="true"/>
+      <xs:element name="dependencias" type="tns:TSaludDependencias" nillable="true"/>
+      <xs:element name="error" type="xs:string" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonHistorialLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="verificacion" type="tns:TMonVerificacion" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonDisponibilidadServicio">
+    <xs:sequence>
+      <xs:element name="servicio" type="xs:string"/>
+      <xs:element name="verificaciones" type="xs:long"/>
+      <xs:element name="caidas" type="xs:long"/>
+      <xs:element name="disponibilidad_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="salud_plena_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="tiempo_p50_ms" type="xs:decimal" nillable="true"/>
+      <xs:element name="tiempo_p95_ms" type="xs:decimal" nillable="true"/>
+      <xs:element name="tiempo_max_ms" type="xs:decimal" nillable="true"/>
+      <xs:element name="bajo_objetivo" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonDisponibilidad">
+    <xs:sequence>
+      <xs:element name="horas" type="xs:long"/>
+      <xs:element name="objetivo_pct" type="xs:decimal"/>
+      <xs:element name="servicios">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="servicio" type="tns:TMonDisponibilidadServicio" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonMetricaServicio">
+    <xs:sequence>
+      <xs:element name="servicio" type="xs:string"/>
+      <xs:element name="peticiones" type="xs:long"/>
+      <xs:element name="errores_5xx" type="xs:long"/>
+      <xs:element name="errores_4xx" type="xs:long"/>
+      <xs:element name="tasa_5xx_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="duracion_p50_ms" type="xs:decimal" nillable="true"/>
+      <xs:element name="duracion_p95_ms" type="xs:decimal" nillable="true"/>
+      <xs:element name="duracion_p99_ms" type="xs:decimal" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonMetricas">
+    <xs:sequence>
+      <xs:element name="minutos" type="xs:long"/>
+      <xs:element name="peticiones_total" type="xs:long"/>
+      <xs:element name="servicios">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="servicio" type="tns:TMonMetricaServicio" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonReconocida">
+    <xs:sequence>
+      <xs:element name="por" type="tns:TAudUsuario"/>
+      <xs:element name="en" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonAlerta">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="servicio" type="xs:string"/>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="servicio_caido"/>
+            <xs:enumeration value="servicio_degradado"/>
+            <xs:enumeration value="dependencia_caida"/>
+            <xs:enumeration value="latencia_alta"/>
+            <xs:enumeration value="errores_altos"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="severidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="critica"/>
+            <xs:enumeration value="alta"/>
+            <xs:enumeration value="media"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="detalle" type="xs:string"/>
+      <xs:element name="abierta_en" type="xs:dateTime"/>
+      <xs:element name="cerrada_en" type="xs:dateTime" nillable="true"/>
+      <xs:element name="duracion_seg" type="xs:long"/>
+      <xs:element name="reconocida" type="tns:TMonReconocida" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonAlertaLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="alerta" type="tns:TMonAlerta" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonVerificacionNueva">
+    <xs:sequence>
+      <xs:element name="servicio" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="30"/>
+            <xs:minLength value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonRondaServicio">
+    <xs:sequence>
+      <xs:element name="servicio" type="xs:string"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="ok"/>
+            <xs:enumeration value="degradado"/>
+            <xs:enumeration value="caido"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="tiempo_ms" type="xs:decimal"/>
+      <xs:element name="error" type="xs:string" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TMonRonda">
+    <xs:sequence>
+      <xs:element name="verificados" type="xs:long"/>
+      <xs:element name="ok" type="xs:long"/>
+      <xs:element name="degradados" type="xs:long"/>
+      <xs:element name="caidos" type="xs:long"/>
+      <xs:element name="servicios">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="servicio" type="tns:TMonRondaServicio" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="bitacora">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAudEventoLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="accesos">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAudAccesos">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="trazabilidad">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TAudTrazabilidad">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="monitoreo_estado">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TMonEstado">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="monitoreo_historial">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TMonHistorialLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="monitoreo_disponibilidad">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TMonDisponibilidad">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="monitoreo_metricas">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TMonMetricas">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="monitoreo_alertas">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TMonAlertaLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="monitoreo_alerta">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TMonAlerta">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="monitoreo_verificacion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TMonRonda">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="verificacion_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TMonVerificacionNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="supuestos_monitoreo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSupuestosDoc">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

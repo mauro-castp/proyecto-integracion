@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<historial_precios xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <cambio>
+      <id>8</id>
+      <lista_id>2</lista_id>
+      <producto_id>4</producto_id>
+      <precio_anterior>45.90</precio_anterior>
+      <precio_nuevo>46.35</precio_nuevo>
+      <usuario_id>1</usuario_id>
+      <fecha>2026-10-19T09:30:00-06:00</fecha>
+    </cambio>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</historial_precios>

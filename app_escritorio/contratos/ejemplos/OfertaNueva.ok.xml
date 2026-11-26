@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oferta_nueva xmlns="urn:microhubs:v1" version="1">
+  <precio_compra>33.30</precio_compra>
+  <unidad_compra>pieza</unidad_compra>
+  <capacidad_semanal>200</capacidad_semanal>
+  <minimo_compra>12</minimo_compra>
+  <vigente_hasta>2027-03-31</vigente_hasta>
+</oferta_nueva>

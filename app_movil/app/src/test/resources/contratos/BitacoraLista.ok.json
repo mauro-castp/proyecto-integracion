@@ -1,0 +1,35 @@
+{
+  "datos": [
+    {
+      "id": 5021,
+      "fecha": "2026-11-25T10:30:00-06:00",
+      "usuario": {
+        "id": 3,
+        "nombre": "Mariana Ortega"
+      },
+      "correo_intento": null,
+      "ip_origen": "172.18.0.9",
+      "modulo": "pedidos",
+      "accion": "cambio_estado",
+      "entidad": {
+        "tipo": "pedido",
+        "id": "163"
+      },
+      "exitoso": true,
+      "detalle": null,
+      "cambios": [
+        {
+          "campo": "estado",
+          "anterior": "confirmado",
+          "nuevo": "en_preparacion"
+        }
+      ]
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

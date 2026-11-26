@@ -1,0 +1,22 @@
+{
+  "datos": [
+    {
+      "producto_id": 3,
+      "unidades": 21,
+      "venta": 882.0,
+      "pedidos": 17
+    },
+    {
+      "producto_id": 40,
+      "unidades": 21,
+      "venta": 588.0,
+      "pedidos": 20
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 3,
+    "total": 51,
+    "paginas": 17
+  }
+}

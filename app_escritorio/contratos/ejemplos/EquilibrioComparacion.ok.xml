@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<equilibrio_comparacion xmlns="urn:microhubs:v1" version="1">
+  <filas>
+    <escenario>
+      <id>5</id>
+      <nombre>Escenario A manual</nombre>
+      <decision>no_viable</decision>
+      <pedidos_dia>45.0</pedidos_dia>
+      <equilibrio_diario>384.6</equilibrio_diario>
+      <diferencia_pedidos_dia>-339.6</diferencia_pedidos_dia>
+      <margen_seguridad_pct>-88.3</margen_seguridad_pct>
+      <utilidad_mes>-52980.0</utilidad_mes>
+    </escenario>
+    <escenario>
+      <id>4</id>
+      <nombre>Escenario A manual</nombre>
+      <decision>no_viable</decision>
+      <pedidos_dia>45.0</pedidos_dia>
+      <equilibrio_diario>384.6</equilibrio_diario>
+      <diferencia_pedidos_dia>-339.6</diferencia_pedidos_dia>
+      <margen_seguridad_pct>-88.3</margen_seguridad_pct>
+      <utilidad_mes>-52980.0</utilidad_mes>
+    </escenario>
+  </filas>
+  <mejor_utilidad_id>5</mejor_utilidad_id>
+  <mejor_utilidad_nombre>Escenario A manual</mejor_utilidad_nombre>
+</equilibrio_comparacion>

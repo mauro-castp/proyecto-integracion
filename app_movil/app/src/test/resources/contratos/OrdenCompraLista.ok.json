@@ -1,0 +1,37 @@
+{
+  "datos": [
+    {
+      "id": 7,
+      "folio": "OC-20261019-000007",
+      "solicitud_id": 5,
+      "proveedor": {
+        "id": 2,
+        "nombre": "Distribuidora Regia"
+      },
+      "microhub_id": 1,
+      "estado": "emitida",
+      "fecha_esperada": "2026-10-20",
+      "total": 799.2,
+      "creada_en": "2026-10-19T09:30:00-06:00",
+      "cerrada_en": null,
+      "lineas": [
+        {
+          "producto": {
+            "id": 4,
+            "nombre": "Aceite vegetal 1 L"
+          },
+          "cantidad": 24,
+          "precio_compra": 33.3,
+          "cantidad_recibida": 0,
+          "pendiente_inventario": 0
+        }
+      ]
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

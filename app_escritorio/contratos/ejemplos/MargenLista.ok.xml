@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<margenes xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <margen>
+      <lista>
+        <id>2</id>
+        <nombre>Lista San Bernabé Centro</nombre>
+      </lista>
+      <producto>
+        <id>4</id>
+        <nombre>Aceite vegetal 1 L</nombre>
+      </producto>
+      <precio>46.35</precio>
+      <costo>31.50</costo>
+      <margen_pct>32.0</margen_pct>
+      <bajo_margen>false</bajo_margen>
+    </margen>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</margenes>

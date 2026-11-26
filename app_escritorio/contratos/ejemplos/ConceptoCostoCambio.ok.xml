@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<concepto_costo_cambio xmlns="urn:microhubs:v1" version="1">
+  <monto>12500.0</monto>
+  <justificacion>Ajuste anual de la renta por inflación</justificacion>
+</concepto_costo_cambio>

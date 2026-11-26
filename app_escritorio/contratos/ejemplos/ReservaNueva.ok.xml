@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reserva_nueva xmlns="urn:microhubs:v1" version="1">
+  <microhub_id>1</microhub_id>
+  <producto_id>4</producto_id>
+  <cantidad>3</cantidad>
+  <referencia>
+    <tipo>pedido</tipo>
+    <id>166</id>
+  </referencia>
+  <minutos>30</minutos>
+</reserva_nueva>

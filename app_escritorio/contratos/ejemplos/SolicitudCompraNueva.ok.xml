@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solicitud_nueva xmlns="urn:microhubs:v1" version="1">
+  <microhub_id>1</microhub_id>
+  <motivo>Se acabó el aceite el fin de semana</motivo>
+  <lineas>
+    <linea>
+      <producto_id>4</producto_id>
+      <cantidad>24</cantidad>
+    </linea>
+  </lineas>
+</solicitud_nueva>

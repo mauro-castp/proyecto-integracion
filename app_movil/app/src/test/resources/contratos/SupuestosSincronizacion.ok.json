@@ -1,0 +1,12 @@
+{
+  "datos": [
+    {
+      "clave": "sync_antiguedad_max_dias",
+      "valor": "14",
+      "unidad": "días",
+      "origen": "supuesto",
+      "justificacion": "Un /salud sano responde en decenas de milisegundos; 1 s ya indica saturación de alguna dependencia.",
+      "como_calibrar": "Tomar el p95 de tiempo_ms de monitoreo_verificacion en una semana normal y poner el umbral al doble."
+    }
+  ]
+}

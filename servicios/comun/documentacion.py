@@ -7,7 +7,10 @@ XML son los archivos OFICIALES del contrato v1 (los mismos con los que se
 prueban las apps), así que la documentación no puede divergir del contrato.
 """
 import json
+import re
 from functools import lru_cache
+
+from flask import has_request_context, request
 
 from . import config
 from .formatos import NS
@@ -100,13 +103,22 @@ def especificacion(app):
                  "description": doc["descripcion"] + "\n\nPlataforma de Microhubs · Codex Innovations · Equipo 04 · "
                  f"contrato v1. Puerto: {doc['puerto']}. Respuesta JSON o XML (urn:microhubs:v1) según `Accept`. "
                  "Errores: `{codigo, mensaje, detalles, traza_id}`."},
-        "servers": [{"url": "/", "description": "Este servicio"}],
+        "servers": [{"url": prefijo_publico() or "/", "description": "Este servicio"}],
         "components": {"securitySchemes": {"bearer": {
             "type": "http", "scheme": "bearer", "bearerFormat": "JWT",
             "description": "Token de acceso del servicio de autenticación (5101). Se valida la firma, la vigencia "
                            "y que la sesión siga activa en Redis."}}},
         "paths": rutas,
     }
+
+
+def prefijo_publico():
+    """Detras de Nginx cada servicio cuelga de /servicios/<nombre>/ (X-Forwarded-Prefix). Solo se acepta una ruta simple:
+    el encabezado viene de afuera y termina dentro de una pagina HTML."""
+    if not has_request_context():
+        return ""
+    valor = (request.headers.get("X-Forwarded-Prefix") or "").rstrip("/")
+    return valor if re.fullmatch(r"/[a-z0-9_/-]{1,60}", valor) else ""
 
 
 def pagina_swagger(titulo):
@@ -116,5 +128,5 @@ def pagina_swagger(titulo):
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.17.14/swagger-ui.css">
 </head><body><div id="swagger"></div>
 <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.17.14/swagger-ui-bundle.js"></script>
-<script>SwaggerUIBundle({{url: "{config.PREFIJO}/openapi.json", dom_id: "#swagger", persistAuthorization: true}});</script>
+<script>SwaggerUIBundle({{url: "{prefijo_publico()}{config.PREFIJO}/openapi.json", dom_id: "#swagger", persistAuthorization: true}});</script>
 </body></html>"""

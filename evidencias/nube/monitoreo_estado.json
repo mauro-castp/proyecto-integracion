@@ -1,0 +1,537 @@
+{
+    "generado_en": "2026-11-26T14:56:18-06:00",
+    "resumen": {
+        "total": 26,
+        "ok": 26,
+        "degradados": 0,
+        "caidos": 0,
+        "sin_datos": 0,
+        "alertas_abiertas": 0,
+        "monitor_activo": true,
+        "intervalo_seg": 30,
+        "ultima_ronda": "2026-11-26T14:56:18-06:00"
+    },
+    "servicios": [
+        {
+            "servicio": "auth",
+            "puerto": 5101,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 46.9,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 49,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "usuarios",
+            "puerto": 5102,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 21.0,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 8,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "productos",
+            "puerto": 5103,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 51.1,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 8,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "pedidos",
+            "puerto": 5104,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 48.9,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 48,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "entregas",
+            "puerto": 5105,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 47.2,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "ok",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 21,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "planeacion",
+            "puerto": 5106,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 68.6,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "ok",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 21,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "documentos",
+            "puerto": 5107,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 58.7,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "ok",
+                "bucket": "ok"
+            },
+            "error": null,
+            "peticiones_hora": 31,
+            "errores_5xx_hora": 1,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "zonas",
+            "puerto": 5108,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 58.1,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 243,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "microhubs",
+            "puerto": 5109,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 35.4,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 4,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "seguimiento",
+            "puerto": 5110,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 37.5,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "ok",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 5,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "inventario",
+            "puerto": 5111,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 47.1,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 58,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "precios",
+            "puerto": 5112,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 69.4,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 28,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "proveedores",
+            "puerto": 5113,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 49.8,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 26,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "abastecimiento",
+            "puerto": 5114,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 58.0,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 30,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "demanda",
+            "puerto": 5115,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 53.3,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 34,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "cobertura",
+            "puerto": 5116,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 73.3,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 30,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "capacidad",
+            "puerto": 5117,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 28.2,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 18,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "rutas",
+            "puerto": 5118,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 77.7,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 19,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "costos",
+            "puerto": 5119,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 46.4,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 32,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "punto-equilibrio",
+            "puerto": 5120,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 21.3,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 26,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "simulacion",
+            "puerto": 5121,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 25.9,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 34,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "surtido",
+            "puerto": 5122,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 42.5,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 19,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "notificaciones",
+            "puerto": 5124,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 35.1,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 16,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "reportes",
+            "puerto": 5123,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 44.4,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 9,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "sincronizacion",
+            "puerto": 5125,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 29.3,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 12,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "auditoria-monitoreo",
+            "puerto": 5126,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T14:56:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 38.8,
+            "version": "56f38c9",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "ok",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 21,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        }
+    ],
+    "dependencias_caidas": []
+}

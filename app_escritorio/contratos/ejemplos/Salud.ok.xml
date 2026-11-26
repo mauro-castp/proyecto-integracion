@@ -7,5 +7,7 @@
     <postgres>ok</postgres>
     <redis>ok</redis>
     <mongo>no_aplica</mongo>
+    <bucket>no_aplica</bucket>
   </dependencias>
+  <tiempo_ms>3.2</tiempo_ms>
 </salud>

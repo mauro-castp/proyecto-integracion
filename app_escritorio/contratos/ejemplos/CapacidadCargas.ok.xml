@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<capacidad_cargas xmlns="urn:microhubs:v1" version="1">
+  <microhub>
+    <id>1</id>
+    <nombre>Microhub San Bernabé Centro</nombre>
+  </microhub>
+  <capacidad_dia>150</capacidad_dia>
+  <carga_en_riesgo>127.5</carga_en_riesgo>
+  <carga_estable>105.0</carga_estable>
+  <filas>
+    <fila>
+      <pedidos_dia>37.5</pedidos_dia>
+      <utilizacion_pct>25.0</utilizacion_pct>
+      <nivel>estable</nivel>
+      <utilizacion_pico_pct>30.9</utilizacion_pico_pct>
+      <atendidos>37.5</atendidos>
+      <rechazados>0</rechazados>
+    </fila>
+    <fila>
+      <pedidos_dia>64.3</pedidos_dia>
+      <utilizacion_pct>42.9</utilizacion_pct>
+      <nivel>estable</nivel>
+      <utilizacion_pico_pct>53.0</utilizacion_pico_pct>
+      <atendidos>64.3</atendidos>
+      <rechazados>0</rechazados>
+    </fila>
+  </filas>
+  <supuestos_usados>
+    <supuesto>
+      <clave>umbral_utilizacion_estable</clave>
+      <valor>70.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>umbral_utilizacion_riesgo</clave>
+      <valor>85.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</capacidad_cargas>

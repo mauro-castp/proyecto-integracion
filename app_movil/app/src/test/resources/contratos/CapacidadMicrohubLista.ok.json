@@ -1,0 +1,112 @@
+{
+  "datos": [
+    {
+      "microhub": {
+        "id": 1,
+        "nombre": "Microhub San Bernabé Centro"
+      },
+      "operadores": 3,
+      "repartidores": 3,
+      "capacidad_fisica": 150,
+      "horas": 10.0,
+      "distancia_km": 2.4,
+      "carga_dia": 1.9,
+      "capacidad_hora": 16.36,
+      "capacidad_dia": 150,
+      "utilizacion_pct": 1.2,
+      "nivel": "estable",
+      "utilizacion_pico_pct": 1.5,
+      "nivel_pico": "estable",
+      "cuello_botella": "espacio físico",
+      "minutos_por_pedido_operacion": 11.0,
+      "minutos_por_entrega": 8.4,
+      "etapas": [
+        {
+          "etapa": "picking",
+          "minutos_por_pedido": 6.0,
+          "pct_tiempo": 54.5,
+          "capacidad_hora": 30.0
+        },
+        {
+          "etapa": "empaque",
+          "minutos_por_pedido": 3.0,
+          "pct_tiempo": 27.3,
+          "capacidad_hora": 60.0
+        }
+      ],
+      "operadores_requeridos": 1,
+      "repartidores_requeridos": 1,
+      "holgura_pedidos_dia": 148.1,
+      "formula": "3 operadores × 5.45 pedidos/h combinados; 3 repartidores × 7.17 entregas/h",
+      "supuestos_usados": [
+        {
+          "clave": "umbral_utilizacion_estable",
+          "valor": 70.0,
+          "modificado": false
+        },
+        {
+          "clave": "umbral_utilizacion_riesgo",
+          "valor": 85.0,
+          "modificado": false
+        }
+      ]
+    },
+    {
+      "microhub": {
+        "id": 2,
+        "nombre": "Microhub Valles"
+      },
+      "operadores": 3,
+      "repartidores": 2,
+      "capacidad_fisica": 120,
+      "horas": 10.0,
+      "distancia_km": 2.4,
+      "carga_dia": 1.9,
+      "capacidad_hora": 14.35,
+      "capacidad_dia": 120,
+      "utilizacion_pct": 1.5,
+      "nivel": "estable",
+      "utilizacion_pico_pct": 1.7,
+      "nivel_pico": "estable",
+      "cuello_botella": "espacio físico",
+      "minutos_por_pedido_operacion": 11.0,
+      "minutos_por_entrega": 8.4,
+      "etapas": [
+        {
+          "etapa": "picking",
+          "minutos_por_pedido": 6.0,
+          "pct_tiempo": 54.5,
+          "capacidad_hora": 30.0
+        },
+        {
+          "etapa": "empaque",
+          "minutos_por_pedido": 3.0,
+          "pct_tiempo": 27.3,
+          "capacidad_hora": 60.0
+        }
+      ],
+      "operadores_requeridos": 1,
+      "repartidores_requeridos": 1,
+      "holgura_pedidos_dia": 118.1,
+      "formula": "3 operadores × 5.45 pedidos/h combinados; 2 repartidores × 7.17 entregas/h",
+      "supuestos_usados": [
+        {
+          "clave": "umbral_utilizacion_estable",
+          "valor": 70.0,
+          "modificado": false
+        },
+        {
+          "clave": "umbral_utilizacion_riesgo",
+          "valor": 85.0,
+          "modificado": false
+        }
+      ]
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 2,
+    "total": 4,
+    "paginas": 2
+  }
+}

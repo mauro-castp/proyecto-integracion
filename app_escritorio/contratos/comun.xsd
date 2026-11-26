@@ -87,6 +87,15 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
+      <xs:element name="bucket">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="ok"/>
+            <xs:enumeration value="error"/>
+            <xs:enumeration value="no_aplica"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
   <xs:annotation><xs:documentation>Salud: Estado del servicio. Público, sin autenticación.</xs:documentation></xs:annotation>
@@ -103,6 +112,7 @@
         </xs:simpleType>
       </xs:element>
       <xs:element name="dependencias" type="tns:TSaludDependencias"/>
+      <xs:element name="tiempo_ms" type="xs:decimal"/>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="TClienteRef">

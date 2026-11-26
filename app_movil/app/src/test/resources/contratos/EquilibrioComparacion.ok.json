@@ -1,0 +1,26 @@
+{
+  "filas": [
+    {
+      "id": 5,
+      "nombre": "Escenario A manual",
+      "decision": "no_viable",
+      "pedidos_dia": 45.0,
+      "equilibrio_diario": 384.6,
+      "diferencia_pedidos_dia": -339.6,
+      "margen_seguridad_pct": -88.3,
+      "utilidad_mes": -52980.0
+    },
+    {
+      "id": 4,
+      "nombre": "Escenario A manual",
+      "decision": "no_viable",
+      "pedidos_dia": 45.0,
+      "equilibrio_diario": 384.6,
+      "diferencia_pedidos_dia": -339.6,
+      "margen_seguridad_pct": -88.3,
+      "utilidad_mes": -52980.0
+    }
+  ],
+  "mejor_utilidad_id": 5,
+  "mejor_utilidad_nombre": "Escenario A manual"
+}

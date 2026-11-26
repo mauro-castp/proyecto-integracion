@@ -1,0 +1,29 @@
+{
+  "datos": [
+    {
+      "id": 4,
+      "reporte": "pedidos_por_dia",
+      "formato": "xlsx",
+      "filtros": {
+        "desde": "2026-10-26",
+        "hasta": "2026-11-25",
+        "zona_id": null,
+        "microhub_id": null
+      },
+      "filas": 1,
+      "bytes": 5120,
+      "sha256": "9f2c0ab4d5e7c1d8a3b6f0e2d4c8a1b7e5f3d9c2a0b8e6f4d2c0a8b6e4f2d0c8",
+      "creado_por": {
+        "id": 3,
+        "nombre": "Mariana Ortega"
+      },
+      "creado_en": "2026-11-25T10:30:00-06:00"
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

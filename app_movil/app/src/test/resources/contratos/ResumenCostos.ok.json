@@ -1,0 +1,33 @@
+{
+  "ambito": "microhub",
+  "ambito_id": 1,
+  "origen": "costos",
+  "conceptos": 8,
+  "fijos_mes": 69500.0,
+  "por_categoria": [
+    {
+      "categoria": "otros",
+      "monto": 2500.0
+    },
+    {
+      "categoria": "personal",
+      "monto": 42000.0
+    }
+  ],
+  "variables": [
+    {
+      "nombre": "Comisión por pago con tarjeta",
+      "unidad": "pct_venta",
+      "monto": 2.9
+    },
+    {
+      "nombre": "Empaque por pedido",
+      "unidad": "pedido",
+      "monto": 3.5
+    }
+  ],
+  "variable_pedido": 3.5,
+  "variable_entrega": 18.0,
+  "variable_km": 4.5,
+  "comision_pct": 2.9
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movimiento_nuevo xmlns="urn:microhubs:v1" version="1">
+  <microhub_id>1</microhub_id>
+  <producto_id>4</producto_id>
+  <tipo>recepcion</tipo>
+  <cantidad>24</cantidad>
+  <motivo>Llegada del proveedor</motivo>
+  <referencia>
+    <tipo>orden_compra</tipo>
+    <id>7</id>
+  </referencia>
+  <operacion_uuid>c5a1f0e2-6b1d-4f0e-9a43-2b7d8e7a1c10</operacion_uuid>
+</movimiento_nuevo>

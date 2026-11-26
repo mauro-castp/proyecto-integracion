@@ -1,0 +1,30 @@
+{
+  "datos": [
+    {
+      "id": 3,
+      "nombre": "Evaluación de CAND-05",
+      "zonas_nuevas": 0,
+      "hogares_nuevos": 0,
+      "solapamiento_pct": 0.0,
+      "canibaliza": false,
+      "creado_por": 1,
+      "creado_en": "2026-10-19T23:49:41-06:00"
+    },
+    {
+      "id": 2,
+      "nombre": "Evaluación de CAND-05",
+      "zonas_nuevas": 0,
+      "hogares_nuevos": 0,
+      "solapamiento_pct": 0.0,
+      "canibaliza": false,
+      "creado_por": 1,
+      "creado_en": "2026-10-19T23:49:40-06:00"
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 3,
+    "total": 3,
+    "paginas": 1
+  }
+}

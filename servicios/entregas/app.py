@@ -2,6 +2,7 @@
 Servicio de entregas · puerto 5105 · contrato v1
 
   GET  /api/v1/entregas/mias                paradas abiertas del repartidor en su turno (RN25)
+  GET  /api/v1/entregas/repartidores        repartidores activos y sus entregas abiertas (entregas.asignar, rutas.planear)
   GET  /api/v1/entregas                     entregas en el ámbito del perfil (estado_pedido, abiertas, repartidor_id)
   GET  /api/v1/entregas/{id}                detalle con cliente, domicilio y líneas (RN26)
   POST /api/v1/entregas/{id}/resultado      registra y cierra la entrega (solo JSON, idempotente)
@@ -82,6 +83,21 @@ def _entrega(eid, para_cierre=False):
 
 
 # --------------------------------------------------------------------
+@app.get(f"{P}/entregas/repartidores")
+@requiere("entregas.asignar", "rutas.planear")
+def repartidores():
+    """Repartidores activos con las entregas que tienen abiertas hoy; lo consume el servicio de rutas."""
+    pagina, por, desde = leer_paginacion(defecto=100)
+    total = consultar("SELECT count(*) AS n FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'repartidor' AND u.estatus = 'activo'",
+                      una=True)["n"]
+    filas = consultar("SELECT u.id, u.nombre || ' ' || COALESCE(u.apellidos, '') AS nombre, "
+                      "(SELECT count(*) FROM entrega e WHERE e.repartidor_id = u.id AND e.cierre_en IS NULL AND e.turno_fecha = fn_hoy()) AS abiertas "
+                      "FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'repartidor' AND u.estatus = 'activo' "
+                      "ORDER BY u.id LIMIT %s OFFSET %s", (por, desde))
+    return lista(filas, paginacion(pagina, por, total), "repartidor", "repartidores",
+                 lambda f: {"id": f["id"], "nombre": f["nombre"].strip(), "entregas_abiertas": f["abiertas"]})
+
+
 @app.get(f"{P}/entregas/mias")
 @requiere("entregas.ver")
 def mias():
@@ -321,3 +337,7 @@ documentar(app, "POST", f"{P}/entregas/{{id}}/resultado", "Registrar y cerrar la
            respuestas={201: ("Cierre aplicado", "ResultadoEntregaRespuesta.ok"),
                        200: ("Reintento del mismo cierre (duplicado=true)", "ResultadoEntregaRespuesta.ok")},
            errores=[400, 403, 404, 409, 422])
+documentar(app, "GET", f"{P}/entregas/repartidores", "Repartidores disponibles", permisos=["entregas.asignar", "rutas.planear"],
+           parametros=[("pagina", "query", "integer", "Página"), ("por_pagina", "query", "integer", "1 a 100")],
+           descripcion="Repartidores activos y cuántas entregas tienen abiertas hoy. Lo consume el servicio de rutas.",
+           respuestas={200: ("Página de repartidores", "Repartidores.ok")}, errores=[400, 403])

@@ -1,0 +1,27 @@
+{
+  "datos": [
+    {
+      "id": 12,
+      "servicio": "documentos",
+      "tipo": "dependencia_caida",
+      "severidad": "alta",
+      "detalle": "documentos no alcanza: bucket.",
+      "abierta_en": "2026-11-25T10:30:00-06:00",
+      "cerrada_en": null,
+      "duracion_seg": 95,
+      "reconocida": {
+        "por": {
+          "id": 3,
+          "nombre": "Mariana Ortega"
+        },
+        "en": "2026-11-25T10:30:00-06:00"
+      }
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

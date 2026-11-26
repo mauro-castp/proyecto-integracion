@@ -1,0 +1,37 @@
+{
+  "microhub": {
+    "id": 1,
+    "nombre": "Microhub San Bernabé Centro"
+  },
+  "paradas": 6,
+  "filas": [
+    {
+      "metodo": "Orden de llegada",
+      "distancia_km": 5.52,
+      "minutos": 39.1,
+      "costo": 132.84,
+      "mejora_pct": 0.0
+    },
+    {
+      "metodo": "Vecino más cercano",
+      "distancia_km": 4.67,
+      "minutos": 36.7,
+      "costo": 129.01,
+      "mejora_pct": 15.4
+    }
+  ],
+  "mejor_metodo": "Vecino más cercano + 2-opt",
+  "nota": "Una sola ruta con todas las paradas.",
+  "supuestos_usados": [
+    {
+      "clave": "velocidad_reparto_kmh",
+      "valor": 22.0,
+      "modificado": false
+    },
+    {
+      "clave": "tiempo_servicio_min",
+      "valor": 4.0,
+      "modificado": false
+    }
+  ]
+}

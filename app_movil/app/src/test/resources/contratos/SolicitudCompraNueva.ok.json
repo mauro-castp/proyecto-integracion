@@ -1,0 +1,10 @@
+{
+  "microhub_id": 1,
+  "motivo": "Se acabó el aceite el fin de semana",
+  "lineas": [
+    {
+      "producto_id": 4,
+      "cantidad": 24
+    }
+  ]
+}

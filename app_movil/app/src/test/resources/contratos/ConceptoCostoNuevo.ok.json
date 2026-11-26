@@ -1,0 +1,13 @@
+{
+  "ambito": "microhub",
+  "ambito_id": 1,
+  "nombre": "Renta del local",
+  "categoria": "renta",
+  "tipo": "fijo",
+  "unidad": "mes",
+  "monto": 12000.0,
+  "vigente_desde": "2026-10-01",
+  "vigente_hasta": null,
+  "fuente": "contrato",
+  "justificacion": "Contrato de arrendamiento firmado en septiembre"
+}

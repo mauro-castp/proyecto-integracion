@@ -1,0 +1,23 @@
+{
+  "reporte": "pedidos_por_dia",
+  "titulo": "Pedidos por día",
+  "tipo": "line",
+  "unidad": "pedidos / MXN",
+  "categorias": [
+    "2026-11-24"
+  ],
+  "series": [
+    {
+      "nombre": "Pedidos",
+      "datos": [
+        12.0
+      ]
+    },
+    {
+      "nombre": "Venta",
+      "datos": [
+        1534.5
+      ]
+    }
+  ]
+}

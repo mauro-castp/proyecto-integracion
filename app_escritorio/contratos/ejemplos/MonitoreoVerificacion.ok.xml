@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monitoreo_verificacion xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <verificados>1</verificados>
+  <ok>1</ok>
+  <degradados>0</degradados>
+  <caidos>0</caidos>
+  <servicios>
+    <servicio>
+      <servicio>pedidos</servicio>
+      <estado>ok</estado>
+      <tiempo_ms>18.4</tiempo_ms>
+      <error xsi:nil="true" />
+    </servicio>
+  </servicios>
+</monitoreo_verificacion>

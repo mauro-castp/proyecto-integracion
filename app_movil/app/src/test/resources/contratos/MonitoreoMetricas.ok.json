@@ -1,0 +1,16 @@
+{
+  "minutos": 60,
+  "peticiones_total": 340,
+  "servicios": [
+    {
+      "servicio": "pedidos",
+      "peticiones": 340,
+      "errores_5xx": 0,
+      "errores_4xx": 4,
+      "tasa_5xx_pct": 0.0,
+      "duracion_p50_ms": 21,
+      "duracion_p95_ms": 80,
+      "duracion_p99_ms": 140
+    }
+  ]
+}

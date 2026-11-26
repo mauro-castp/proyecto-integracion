@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<equilibrio_sensibilidad xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <objeto>
+    <tipo>microhub</tipo>
+    <id>1</id>
+    <nombre>Microhub San Bernabé Centro</nombre>
+  </objeto>
+  <entrada>
+    <costos_fijos_mes>69500.0</costos_fijos_mes>
+    <costo_variable_pedido>32.7</costo_variable_pedido>
+    <ticket>138.03</ticket>
+    <margen_bruto>0.28</margen_bruto>
+    <pedidos_dia>5.0</pedidos_dia>
+    <dias_mes>30.0</dias_mes>
+    <margen_seguridad_minimo_pct>15.0</margen_seguridad_minimo_pct>
+    <origen>
+      <costos_fijos>costos</costos_fijos>
+      <costo_variable_pedido>costos</costo_variable_pedido>
+      <ticket>demanda</ticket>
+      <margen_bruto>configuracion</margen_bruto>
+      <pedidos_dia>demanda_repartida</pedidos_dia>
+    </origen>
+  </entrada>
+  <decision_base>no_viable</decision_base>
+  <utilidad_mes_base>-68608.63</utilidad_mes_base>
+  <equilibrio_diario_base>389.5</equilibrio_diario_base>
+  <variable_mas_sensible>Costos fijos del mes</variable_mas_sensible>
+  <ranking>
+    <variable>
+      <variable>costos_fijos</variable>
+      <etiqueta>Costos fijos del mes</etiqueta>
+      <rango_utilidad_mes>27800.0</rango_utilidad_mes>
+    </variable>
+    <variable>
+      <variable>ticket</variable>
+      <etiqueta>Ticket promedio</etiqueta>
+      <rango_utilidad_mes>2316.59</rango_utilidad_mes>
+    </variable>
+  </ranking>
+  <filas>
+    <fila>
+      <variable>ticket</variable>
+      <etiqueta>Ticket promedio</etiqueta>
+      <cambio_pct>-20</cambio_pct>
+      <valor>110.424</valor>
+      <equilibrio_diario xsi:nil="true" />
+      <utilidad_mes>-69766.92</utilidad_mes>
+      <cambio_utilidad>-1158.29</cambio_utilidad>
+      <decision>no_viable</decision>
+    </fila>
+    <fila>
+      <variable>ticket</variable>
+      <etiqueta>Ticket promedio</etiqueta>
+      <cambio_pct>-10</cambio_pct>
+      <valor>124.227</valor>
+      <equilibrio_diario>1111.9</equilibrio_diario>
+      <utilidad_mes>-69187.78</utilidad_mes>
+      <cambio_utilidad>-579.15</cambio_utilidad>
+      <decision>no_viable</decision>
+    </fila>
+  </filas>
+  <supuestos_usados>
+    <supuesto>
+      <clave>peq_margen_seguridad_pct</clave>
+      <valor>15.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>dias_operacion_mes</clave>
+      <valor>30.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</equilibrio_sensibilidad>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<orden xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <id>7</id>
+  <folio>OC-20261019-000007</folio>
+  <solicitud_id>5</solicitud_id>
+  <proveedor>
+    <id>2</id>
+    <nombre>Distribuidora Regia</nombre>
+  </proveedor>
+  <microhub_id>1</microhub_id>
+  <estado>emitida</estado>
+  <fecha_esperada>2026-10-20</fecha_esperada>
+  <total>799.20</total>
+  <creada_en>2026-10-19T09:30:00-06:00</creada_en>
+  <cerrada_en xsi:nil="true" />
+  <lineas>
+    <linea>
+      <producto>
+        <id>4</id>
+        <nombre>Aceite vegetal 1 L</nombre>
+      </producto>
+      <cantidad>24</cantidad>
+      <precio_compra>33.30</precio_compra>
+      <cantidad_recibida>0</cantidad_recibida>
+      <pendiente_inventario>0</pendiente_inventario>
+    </linea>
+  </lineas>
+</orden>

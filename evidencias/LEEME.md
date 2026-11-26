@@ -1,5 +1,9 @@
 # Evidencias de petición y respuesta (anexo E1)
 
+> Esta carpeta es la corrida del 13 de octubre de 2026 (Segundo Parcial, 93 casos); el reporte técnico v4.3 cita sus números. La corrida con los 15 servicios (204 casos) está en [`ola1/`](ola1/), la de la Ola 2 en
+> [`ola2/`](ola2/), la **vigente con los 26 servicios (403 casos, 403 aprobados, 26 de noviembre de 2026)** en [`ola3/`](ola3/) y lo comprobado en Google
+> Cloud en [`nube/`](nube/).
+
 Ejecución completa de `servicios/pruebas/evidencias.py` contra los diez microservicios desplegados con
 `docker-compose.integrado.yml`, sobre una base creada desde cero: **93 de 93 casos pasan** (13 de octubre de 2026,
 21:27 en la hora UTC del contenedor).

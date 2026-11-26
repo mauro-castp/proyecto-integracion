@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<necesidades xmlns="urn:microhubs:v1" version="1">
+  <microhub_id>1</microhub_id>
+  <factor_objetivo>3.0</factor_objetivo>
+  <datos>
+    <necesidad>
+      <producto>
+        <id>4</id>
+        <nombre>Aceite vegetal 1 L</nombre>
+      </producto>
+      <existencia>4</existencia>
+      <minimo>10</minimo>
+      <disponible>4</disponible>
+      <en_camino>0</en_camino>
+      <solicitado>0</solicitado>
+      <cantidad_sugerida>26</cantidad_sugerida>
+      <cantidad_a_comprar>26</cantidad_a_comprar>
+      <mejor_oferta>
+        <proveedor>
+          <id>2</id>
+          <nombre>Distribuidora Regia</nombre>
+        </proveedor>
+        <precio_compra>33.30</precio_compra>
+        <dias_entrega>1</dias_entrega>
+        <capacidad_semanal>200</capacidad_semanal>
+        <minimo_compra>12</minimo_compra>
+      </mejor_oferta>
+      <costo_estimado>865.80</costo_estimado>
+    </necesidad>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</necesidades>

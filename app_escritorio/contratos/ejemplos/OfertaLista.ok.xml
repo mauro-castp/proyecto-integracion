@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ofertas xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <datos>
+    <oferta>
+      <proveedor>
+        <id>2</id>
+        <clave>PV-02</clave>
+        <nombre>Distribuidora Regia</nombre>
+      </proveedor>
+      <producto>
+        <id>4</id>
+        <nombre>Aceite vegetal 1 L</nombre>
+      </producto>
+      <precio_compra>33.30</precio_compra>
+      <unidad_compra>pieza</unidad_compra>
+      <capacidad_semanal>200</capacidad_semanal>
+      <minimo_compra>12</minimo_compra>
+      <dias_entrega>1</dias_entrega>
+      <pedido_minimo>500.00</pedido_minimo>
+      <vigente_hasta xsi:nil="true" />
+      <calificacion>4.0</calificacion>
+    </oferta>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</ofertas>

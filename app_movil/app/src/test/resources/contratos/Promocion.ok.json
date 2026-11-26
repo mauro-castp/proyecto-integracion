@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "nombre": "Bebidas -10 %",
+  "tipo": "porcentaje",
+  "valor": 10.0,
+  "producto_id": null,
+  "categoria_id": 2,
+  "zona_id": null,
+  "vigente_desde": "2026-10-01",
+  "vigente_hasta": "2027-09-30",
+  "estatus": "activo"
+}

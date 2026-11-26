@@ -36,7 +36,8 @@ from comun.validar import Campo, validar
 
 # Código del sistema web: en Docker se copia a /app/web; en desarrollo se lee de sistema_web/.
 _web = Path("/app/web") if Path("/app/web").is_dir() else Path(__file__).resolve().parents[2] / "sistema_web"
-sys.path.insert(0, str(_web))
+if str(_web) not in sys.path:
+    sys.path.append(str(_web))        # al final: rutas.py y otros módulos del web no deben tapar a los paquetes de los servicios
 import planeacion_calc as pc          # noqa: E402
 
 # planeacion.py del web se carga con otro nombre: este paquete también se llama «planeacion».

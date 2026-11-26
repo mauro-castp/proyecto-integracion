@@ -1,0 +1,10 @@
+{
+  "microhub_id": 1,
+  "producto_id": 4,
+  "cantidad": 3,
+  "referencia": {
+    "tipo": "pedido",
+    "id": "166"
+  },
+  "minutos": 30
+}

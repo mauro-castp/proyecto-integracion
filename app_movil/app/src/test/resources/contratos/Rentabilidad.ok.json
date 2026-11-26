@@ -1,0 +1,35 @@
+{
+  "entrada": {
+    "ambito": "microhub",
+    "ambito_id": 1,
+    "origen": "costos",
+    "pedidos_mes": 1800.0,
+    "ticket": 135.0,
+    "margen_bruto": 0.28,
+    "distancia_km": 2.4,
+    "paradas_por_viaje": 3.0,
+    "valores_modificados": []
+  },
+  "ingresos_mes": 243000.0,
+  "margen_bruto_mes": 68040.0,
+  "costo_variable_mes": 58707.0,
+  "margen_contribucion_pedido": 5.19,
+  "margen_contribucion_mes": 9333.0,
+  "costos_fijos_mes": 69500.0,
+  "utilidad_mes": -60167.0,
+  "margen_operativo_pct": -24.76,
+  "costo_por_pedido": 71.23,
+  "cubre_costos": false,
+  "supuestos_usados": [
+    {
+      "clave": "pedidos_mes",
+      "valor": 1800.0,
+      "modificado": false
+    },
+    {
+      "clave": "ticket",
+      "valor": 135.0,
+      "modificado": false
+    }
+  ]
+}

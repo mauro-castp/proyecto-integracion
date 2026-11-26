@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sensibilidad_costos xmlns="urn:microhubs:v1" version="1">
+  <entrada>
+    <ambito>microhub</ambito>
+    <ambito_id>1</ambito_id>
+    <origen>costos</origen>
+    <pedidos_mes>1800.0</pedidos_mes>
+    <ticket>135.0</ticket>
+    <margen_bruto>0.28</margen_bruto>
+    <distancia_km>2.4</distancia_km>
+    <paradas_por_viaje>3.0</paradas_por_viaje>
+    <valores_modificados />
+  </entrada>
+  <costo_por_pedido>71.23</costo_por_pedido>
+  <utilidad_mes>-60167.0</utilidad_mes>
+  <palanca_mas_sensible>Pago y kilometraje de la entrega</palanca_mas_sensible>
+  <filas>
+    <fila>
+      <palanca>Fijo: otros</palanca>
+      <cambio_pct>-20</cambio_pct>
+      <costo_por_pedido>70.95</costo_por_pedido>
+      <utilidad_mes>-59667.0</utilidad_mes>
+      <cambio_utilidad>500.0</cambio_utilidad>
+    </fila>
+    <fila>
+      <palanca>Fijo: otros</palanca>
+      <cambio_pct>-10</cambio_pct>
+      <costo_por_pedido>71.09</costo_por_pedido>
+      <utilidad_mes>-59917.0</utilidad_mes>
+      <cambio_utilidad>250.0</cambio_utilidad>
+    </fila>
+  </filas>
+  <supuestos_usados>
+    <supuesto>
+      <clave>pedidos_mes</clave>
+      <valor>1800.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>ticket</clave>
+      <valor>135.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</sensibilidad_costos>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: reportes · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+
+  <xs:complexType name="TRepFiltros">
+    <xs:sequence>
+      <xs:element name="desde" type="xs:date"/>
+      <xs:element name="hasta" type="xs:date"/>
+      <xs:element name="zona_id" type="xs:long" nillable="true"/>
+      <xs:element name="microhub_id" type="xs:long" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRepColumna">
+    <xs:sequence>
+      <xs:element name="clave" type="xs:string"/>
+      <xs:element name="titulo" type="xs:string"/>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="texto"/>
+            <xs:enumeration value="entero"/>
+            <xs:enumeration value="dinero"/>
+            <xs:enumeration value="porcentaje"/>
+            <xs:enumeration value="fecha"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRepFila">
+    <xs:sequence>
+      <xs:element name="celdas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="celda" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TReporte">
+    <xs:sequence>
+      <xs:element name="reporte" type="xs:string"/>
+      <xs:element name="familia">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="operativo"/>
+            <xs:enumeration value="logistico"/>
+            <xs:enumeration value="comercial"/>
+            <xs:enumeration value="financiero"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="titulo" type="xs:string"/>
+      <xs:element name="generado_en" type="xs:dateTime"/>
+      <xs:element name="filtros" type="tns:TRepFiltros"/>
+      <xs:element name="columnas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="columna" type="tns:TRepColumna" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="filas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="fila" type="tns:TRepFila" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="totales" type="tns:TRepFila" nillable="true"/>
+      <xs:element name="total_filas" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRepCatalogoItem">
+    <xs:sequence>
+      <xs:element name="clave" type="xs:string"/>
+      <xs:element name="familia">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="operativo"/>
+            <xs:enumeration value="logistico"/>
+            <xs:enumeration value="comercial"/>
+            <xs:enumeration value="financiero"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="titulo" type="xs:string"/>
+      <xs:element name="descripcion" type="xs:string"/>
+      <xs:element name="filtros">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="filtro" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRepCatalogo">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="reporte" type="tns:TRepCatalogoItem" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRepSerie">
+    <xs:sequence>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="dato" type="xs:decimal" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRepGrafica">
+    <xs:sequence>
+      <xs:element name="reporte" type="xs:string"/>
+      <xs:element name="titulo" type="xs:string"/>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="column"/>
+            <xs:enumeration value="line"/>
+            <xs:enumeration value="bar"/>
+            <xs:enumeration value="pie"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="unidad" type="xs:string"/>
+      <xs:element name="categorias">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="categoria" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="series">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="serie" type="tns:TRepSerie" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRepIndicador">
+    <xs:sequence>
+      <xs:element name="clave" type="xs:string"/>
+      <xs:element name="titulo" type="xs:string"/>
+      <xs:element name="valor" type="xs:decimal" nillable="true"/>
+      <xs:element name="unidad" type="xs:string"/>
+      <xs:element name="fuente" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRepIndicadores">
+    <xs:sequence>
+      <xs:element name="desde" type="xs:date"/>
+      <xs:element name="hasta" type="xs:date"/>
+      <xs:element name="indicadores">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="indicador" type="tns:TRepIndicador" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="fuentes_no_disponibles">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="servicio" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRepUsuario">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRepExportacion">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="reporte" type="xs:string"/>
+      <xs:element name="formato">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="csv"/>
+            <xs:enumeration value="xlsx"/>
+            <xs:enumeration value="pdf"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="filtros" type="tns:TRepFiltros"/>
+      <xs:element name="filas" type="xs:long"/>
+      <xs:element name="bytes" type="xs:long"/>
+      <xs:element name="sha256" type="xs:string"/>
+      <xs:element name="creado_por" type="tns:TRepUsuario" nillable="true"/>
+      <xs:element name="creado_en" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TRepExportacionLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="exportacion" type="tns:TRepExportacion" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="reporte">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TReporte">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reportes_catalogo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TRepCatalogo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="grafica">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TRepGrafica">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="indicadores">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TRepIndicadores">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reportes_exportaciones">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TRepExportacionLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

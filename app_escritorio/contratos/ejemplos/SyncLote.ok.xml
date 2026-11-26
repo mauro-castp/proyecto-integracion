@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sync_lote xmlns="urn:microhubs:v1" version="1">
+  <id>8</id>
+  <lote_uuid>0b8e6f1c-2a4d-4c7e-9a31-5d6e7f809a1b</lote_uuid>
+  <dispositivo>android-repartidor1</dispositivo>
+  <cliente>android</cliente>
+  <usuario>
+    <id>3</id>
+    <nombre>Mariana Ortega</nombre>
+  </usuario>
+  <recibido_en>2026-11-25T10:30:00-06:00</recibido_en>
+  <total>2</total>
+  <aplicadas>1</aplicadas>
+  <duplicadas>0</duplicadas>
+  <conflictos>1</conflictos>
+  <rechazadas>0</rechazadas>
+  <pendientes>0</pendientes>
+  <operaciones>
+    <operacion>
+      <id>31</id>
+      <lote_uuid>0b8e6f1c-2a4d-4c7e-9a31-5d6e7f809a1b</lote_uuid>
+      <dispositivo>android-repartidor1</dispositivo>
+      <operacion_uuid>4f1d7a2e-9b3c-4d5e-8f60-1a2b3c4d5e6f</operacion_uuid>
+      <tipo>entrega_resultado</tipo>
+      <creada_en>2026-11-25T10:30:00-06:00</creada_en>
+      <estado>conflicto</estado>
+      <http_status>409</http_status>
+      <codigo>CONFLICTO</codigo>
+      <mensaje>La entrega ya se cerró con otro identificador.</mensaje>
+      <intentos>1</intentos>
+      <procesada_en>2026-11-25T10:30:00-06:00</procesada_en>
+      <usuario>
+        <id>3</id>
+        <nombre>Mariana Ortega</nombre>
+      </usuario>
+    </operacion>
+  </operaciones>
+</sync_lote>

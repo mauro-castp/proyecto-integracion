@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<surtido_restriccion_cambio xmlns="urn:microhubs:v1" version="1">
+  <espacio_total>2500.0</espacio_total>
+  <presupuesto>90000.0</presupuesto>
+</surtido_restriccion_cambio>

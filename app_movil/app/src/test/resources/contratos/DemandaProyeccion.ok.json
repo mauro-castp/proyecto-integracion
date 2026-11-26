@@ -1,0 +1,40 @@
+{
+  "metodo": "tendencia_estacional",
+  "zona": null,
+  "historia_desde": "2026-08-21",
+  "historia_hasta": "2026-10-19",
+  "historia_dias": 60,
+  "horizonte": 14,
+  "indices_confiables": true,
+  "nivel_pedidos_dia": -6.57,
+  "pendiente_pedidos_dia": -0.597,
+  "desviacion_error": 12.34,
+  "total_pedidos": 0.0,
+  "promedio_dia": 0.0,
+  "serie": [
+    {
+      "fecha": "2026-10-20",
+      "pedidos": 0.0,
+      "minimo": 0.0,
+      "maximo": 15.8
+    },
+    {
+      "fecha": "2026-10-21",
+      "pedidos": 0.0,
+      "minimo": 0.0,
+      "maximo": 15.8
+    }
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "dem_banda_z",
+      "valor": 1.28,
+      "modificado": false
+    },
+    {
+      "clave": "dem_ventana_dias",
+      "valor": 60.0,
+      "modificado": false
+    }
+  ]
+}

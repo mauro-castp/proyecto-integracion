@@ -1,0 +1,118 @@
+{
+  "id": "424e011f-a7ae-4bf7-ba84-24dd4b6dd75d",
+  "nombre": "Simulación de Microhub San Bernabé Centro 2026-10-19",
+  "estado": "terminada",
+  "objeto": {
+    "tipo": "microhub",
+    "id": 1,
+    "nombre": "Microhub San Bernabé Centro"
+  },
+  "semilla": 11,
+  "version_modelo": "1.0",
+  "dias": 14,
+  "replicas": 100,
+  "entrada": {
+    "pedidos_dia": 5.0,
+    "ticket": 138.03,
+    "margen_bruto": 0.28,
+    "costos_fijos_mes": 69500.0,
+    "costo_variable_pedido": 32.7,
+    "dias_mes": 30.0,
+    "operadores": 3,
+    "repartidores": 3,
+    "capacidad_fisica": 150,
+    "horas": 10.0,
+    "distancia_km": 2.4,
+    "ausentismo": 0.05,
+    "variacion_demanda": 0.1,
+    "indice_semanal": [
+      1.166,
+      0.679
+    ],
+    "dia_inicio": 1,
+    "origen_de_datos": [
+      {
+        "dato": "costos_fijos",
+        "fuente": "costos"
+      },
+      {
+        "dato": "costo_variable_pedido",
+        "fuente": "costos"
+      }
+    ]
+  },
+  "resultados": {
+    "dias": 14,
+    "replicas": 100,
+    "metricas": [
+      {
+        "clave": "utilidad",
+        "etiqueta": "Utilidad del periodo",
+        "unidad": "MXN",
+        "media": -32022.5963,
+        "p10": -32088.921,
+        "p50": -32016.9453,
+        "p90": -31975.3065,
+        "minimo": -32129.9649,
+        "maximo": -31868.2353
+      },
+      {
+        "clave": "ingreso",
+        "etiqueta": "Ingreso del periodo",
+        "unidad": "MXN",
+        "media": 9530.9715,
+        "p10": 7991.937,
+        "p50": 9662.1,
+        "p90": 10628.31,
+        "minimo": 7039.53,
+        "maximo": 13112.85
+      }
+    ],
+    "prob_perdida_pct": 100.0,
+    "dias_saturados_pct": 0.0714,
+    "contraste": {
+      "utilidad_sin_variacion": -32016.9453,
+      "utilidad_media": -32022.5963,
+      "diferencia": -5.651,
+      "capacidad_dia_con_todo_el_personal": 150.0
+    },
+    "lectura": [
+      "En 100 réplicas de 14 días, la utilidad media fue de -32,023 MXN (P10 -32,089, P90 -31,975).",
+      "Hubo pérdida en 100.0 % de las réplicas y 0.1 % de los días estuvieron saturados."
+    ],
+    "serie": [
+      {
+        "dia": 1,
+        "demanda_media": 5.95,
+        "atendidos_media": 5.95,
+        "utilidad_acumulada_media": -2281.2737
+      },
+      {
+        "dia": 2,
+        "demanda_media": 3.35,
+        "atendidos_media": 3.35,
+        "utilidad_acumulada_media": -4578.0132
+      }
+    ]
+  },
+  "huella": "2070f03b07cc488550c6f8f5fcae4245394529e921d24b896f9480ad36d13800",
+  "repeticion_de": null,
+  "reproducible": null,
+  "error": null,
+  "creado_por": 1,
+  "creado_en": "2026-10-19T23:49:52-06:00",
+  "inicio_en": "2026-10-19T23:49:53-06:00",
+  "fin_en": "2026-10-19T23:49:53-06:00",
+  "supuestos_usados": [
+    {
+      "clave": "picking_pedidos_hora",
+      "valor": 10.0,
+      "modificado": false
+    },
+    {
+      "clave": "packing_pedidos_hora",
+      "valor": 20.0,
+      "modificado": false
+    }
+  ]
+}

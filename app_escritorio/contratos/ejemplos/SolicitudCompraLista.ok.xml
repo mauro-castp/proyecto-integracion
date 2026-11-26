@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solicitudes xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <datos>
+    <solicitud>
+      <id>5</id>
+      <folio>SC-20261019-000005</folio>
+      <microhub_id>1</microhub_id>
+      <estado>pendiente</estado>
+      <motivo>Se acabó el aceite el fin de semana</motivo>
+      <solicitada_por>2</solicitada_por>
+      <decidida_por xsi:nil="true" />
+      <decision_motivo xsi:nil="true" />
+      <decidida_en xsi:nil="true" />
+      <creada_en>2026-10-19T09:30:00-06:00</creada_en>
+      <lineas>
+        <linea>
+          <producto>
+            <id>4</id>
+            <nombre>Aceite vegetal 1 L</nombre>
+          </producto>
+          <cantidad>24</cantidad>
+        </linea>
+      </lineas>
+    </solicitud>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</solicitudes>

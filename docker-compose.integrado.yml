@@ -4,11 +4,13 @@
 #   docker compose -f docker-compose.integrado.yml up --build -d
 #
 # Levanta PostgreSQL, Redis y MongoDB, el sistema web (http://localhost:5000)
-# y los diez microservicios del contrato v1, cada uno en su contenedor y su
-# puerto (5101 a 5110), que son los que usan la app Android y la de escritorio.
+# y los microservicios del contrato v1, cada uno en su contenedor y su puerto:
+# 5101 a 5110 (Segundo Parcial), de la Ola 1 inventario (5111), precios (5112), proveedores (5113),
+# abastecimiento (5114) y notificaciones (5124), y de la Ola 2 demanda (5115), cobertura (5116),
+# capacidad (5117), rutas (5118), costos (5119), punto-equilibrio (5120), simulacion (5121) y surtido (5122).
 #
-#   Swagger de cada servicio:  http://localhost:51XX/api/v1/docs  (51XX = 5101 a 5110)
-#   Salud de cada servicio:    http://localhost:51XX/api/v1/salud
+#   Swagger de cada servicio:  http://localhost:PUERTO/api/v1/docs
+#   Salud de cada servicio:    http://localhost:PUERTO/api/v1/salud
 #   Entregas de demostración:  docker compose -f docker-compose.integrado.yml exec entregas python pruebas/preparar_entregas.py --cantidad 2
 #
 # Sigue existiendo sistema_web/docker-compose.yml para levantar solo el web:
@@ -21,6 +23,12 @@ x-entorno: &entorno
   PG_DSN: host=postgres port=5432 dbname=microhubs_p1 user=microhubs password=${POSTGRES_PASSWORD:-microhubs_dev}
   REDIS_URL: redis://redis:6379
   MONGO_URL: mongodb://mongo:27017/microhubs_eventos
+  MICROSERVICIOS_URL: "http://{servicio}:{puerto}"     # cómo un servicio llama a otro por la red interna
+  # Almacén de archivos (servicios/comun/almacen.py): "local" en desarrollo; en la nube "gcs" + el bucket (deploy/gcp/.env)
+  ALMACEN: ${ALMACEN:-local}
+  GCS_BUCKET: ${GCS_BUCKET:-}
+  URL_FIRMADA_SEGUNDOS: ${URL_FIRMADA_SEGUNDOS:-300}
+  VERSION_DESPLEGADA: ${VERSION_DESPLEGADA:-1.0.0}         # lo que /salud informa como versión
 
 x-servicio: &servicio
   depends_on:
@@ -39,7 +47,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-microhubs_dev}
     volumes:
       - datos_pg:/var/lib/postgresql/data
-      - ./bloque_c/sql:/docker-entrypoint-initdb.d:ro       # 01 a 08 en el primer arranque
+      - ./bloque_c/sql:/docker-entrypoint-initdb.d:ro       # 01 a 10 en el primer arranque
     networks: [datos]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U microhubs -d microhubs_p1"]
@@ -61,7 +69,7 @@ services:
     image: mongo:7
     volumes:
       - datos_mongo:/data/db
-      - ./bloque_c/mongo:/docker-entrypoint-initdb.d:ro    # 01 y 02 en el primer arranque
+      - ./bloque_c/mongo:/docker-entrypoint-initdb.d:ro    # 01, 02 y 03 en el primer arranque
     networks: [datos]
     healthcheck:
       test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
@@ -69,7 +77,7 @@ services:
       timeout: 5s
       retries: 12
 
-  # Aplica 06, 07 y 08 a volúmenes que ya existían (idempotente) y termina.
+  # Aplica 06 a 10 a volúmenes que ya existían (idempotente) y termina.
   migraciones:
     build: {context: ., dockerfile: servicios/auth/Dockerfile}
     command: ["python", "migrar.py"]
@@ -158,6 +166,102 @@ services:
     build: {context: ., dockerfile: servicios/seguimiento/Dockerfile}
     environment: *entorno
     ports: ["5110:5110"]
+
+  inventario:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/inventario/Dockerfile}
+    environment: *entorno
+    ports: ["5111:5111"]
+
+  precios:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/precios/Dockerfile}
+    environment: *entorno
+    ports: ["5112:5112"]
+
+  proveedores:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/proveedores/Dockerfile}
+    environment: *entorno
+    ports: ["5113:5113"]
+
+  abastecimiento:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/abastecimiento/Dockerfile}
+    environment: *entorno
+    ports: ["5114:5114"]
+
+  notificaciones:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/notificaciones/Dockerfile}
+    environment: *entorno
+    ports: ["5124:5124"]
+
+  demanda:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/demanda/Dockerfile}
+    environment: *entorno
+    ports: ["5115:5115"]
+
+  cobertura:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/cobertura/Dockerfile}
+    environment: *entorno
+    ports: ["5116:5116"]
+
+  capacidad:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/capacidad/Dockerfile}
+    environment: *entorno
+    ports: ["5117:5117"]
+
+  rutas:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/rutas/Dockerfile}
+    environment: *entorno
+    ports: ["5118:5118"]
+
+  costos:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/costos/Dockerfile}
+    environment: *entorno
+    ports: ["5119:5119"]
+
+  punto-equilibrio:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/punto_equilibrio/Dockerfile}
+    environment: *entorno
+    ports: ["5120:5120"]
+
+  simulacion:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/simulacion/Dockerfile}
+    environment: *entorno
+    ports: ["5121:5121"]
+
+  surtido:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/surtido/Dockerfile}
+    environment: *entorno
+    ports: ["5122:5122"]
+
+  auditoria-monitoreo:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/auditoria_monitoreo/Dockerfile}
+    environment: *entorno
+    ports: ["5126:5126"]
+
+  reportes:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/reportes/Dockerfile}
+    environment: *entorno
+    ports: ["5123:5123"]
+
+  sincronizacion:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/sincronizacion/Dockerfile}
+    environment: *entorno
+    ports: ["5125:5125"]
 
 networks:
   publica:

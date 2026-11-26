@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<indicadores xmlns="urn:microhubs:v1" version="1">
+  <desde>2026-10-26</desde>
+  <hasta>2026-11-25</hasta>
+  <indicadores>
+    <indicador>
+      <clave>pedidos</clave>
+      <titulo>Pedidos del periodo</titulo>
+      <valor>12</valor>
+      <unidad>pedidos</unidad>
+      <fuente>pedidos</fuente>
+    </indicador>
+  </indicadores>
+  <fuentes_no_disponibles>
+    <servicio>inventario</servicio>
+  </fuentes_no_disponibles>
+</indicadores>

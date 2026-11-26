@@ -1,0 +1,73 @@
+{
+  "objeto": {
+    "tipo": "microhub",
+    "id": 1,
+    "nombre": "Microhub San Bernabé Centro"
+  },
+  "entrada": {
+    "costos_fijos_mes": 69500.0,
+    "costo_variable_pedido": 32.7,
+    "ticket": 138.03,
+    "margen_bruto": 0.28,
+    "pedidos_dia": 5.0,
+    "dias_mes": 30.0,
+    "margen_seguridad_minimo_pct": 15.0,
+    "origen": {
+      "costos_fijos": "costos",
+      "costo_variable_pedido": "costos",
+      "ticket": "demanda",
+      "margen_bruto": "configuracion",
+      "pedidos_dia": "demanda_repartida"
+    }
+  },
+  "decision_base": "no_viable",
+  "utilidad_mes_base": -68608.63,
+  "equilibrio_diario_base": 389.5,
+  "variable_mas_sensible": "Costos fijos del mes",
+  "ranking": [
+    {
+      "variable": "costos_fijos",
+      "etiqueta": "Costos fijos del mes",
+      "rango_utilidad_mes": 27800.0
+    },
+    {
+      "variable": "ticket",
+      "etiqueta": "Ticket promedio",
+      "rango_utilidad_mes": 2316.59
+    }
+  ],
+  "filas": [
+    {
+      "variable": "ticket",
+      "etiqueta": "Ticket promedio",
+      "cambio_pct": -20,
+      "valor": 110.424,
+      "equilibrio_diario": null,
+      "utilidad_mes": -69766.92,
+      "cambio_utilidad": -1158.29,
+      "decision": "no_viable"
+    },
+    {
+      "variable": "ticket",
+      "etiqueta": "Ticket promedio",
+      "cambio_pct": -10,
+      "valor": 124.227,
+      "equilibrio_diario": 1111.9,
+      "utilidad_mes": -69187.78,
+      "cambio_utilidad": -579.15,
+      "decision": "no_viable"
+    }
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "peq_margen_seguridad_pct",
+      "valor": 15.0,
+      "modificado": false
+    },
+    {
+      "clave": "dias_operacion_mes",
+      "valor": 30.0,
+      "modificado": false
+    }
+  ]
+}

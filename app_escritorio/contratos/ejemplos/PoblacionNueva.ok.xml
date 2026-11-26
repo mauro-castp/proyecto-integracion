@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<poblacion_nueva xmlns="urn:microhubs:v1" version="1">
+  <poblacion>4300</poblacion>
+  <fuente>INEGI, Censo 2020, AGEB 1902600010532</fuente>
+</poblacion_nueva>

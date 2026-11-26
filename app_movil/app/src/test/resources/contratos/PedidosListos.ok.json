@@ -1,0 +1,34 @@
+{
+  "datos": [
+    {
+      "id": 163,
+      "folio": "PED-20261020-000163",
+      "zona": {
+        "id": 1,
+        "nombre": "San Bernabé Centro"
+      },
+      "latitud": 25.745527,
+      "longitud": -100.362981,
+      "total": 130.5,
+      "listo_en": "2026-10-19T23:48:41-06:00"
+    },
+    {
+      "id": 168,
+      "folio": "PED-20261020-000168",
+      "zona": {
+        "id": 1,
+        "nombre": "San Bernabé Centro"
+      },
+      "latitud": 25.745527,
+      "longitud": -100.362981,
+      "total": 155.0,
+      "listo_en": "2026-10-19T23:48:41-06:00"
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 3,
+    "total": 6,
+    "paginas": 2
+  }
+}

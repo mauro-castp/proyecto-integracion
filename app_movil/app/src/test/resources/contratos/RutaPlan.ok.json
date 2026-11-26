@@ -1,0 +1,109 @@
+{
+  "id": 1,
+  "estado": "propuesto",
+  "version": 1,
+  "microhub": {
+    "id": 1,
+    "nombre": "Microhub San Bernabé Centro"
+  },
+  "fecha": "2026-10-19",
+  "metodo_pedido": "automatico",
+  "rutas": [
+    {
+      "repartidor": {
+        "id": 7,
+        "nombre": "Ramiro Alanís Lozano"
+      },
+      "metodo": "TSP exacto",
+      "zonas": [
+        "San Bernabé Centro"
+      ],
+      "paradas": [
+        {
+          "orden": 1,
+          "pedido": {
+            "id": 163,
+            "folio": "PED-20261020-000163"
+          },
+          "zona": {
+            "id": 1,
+            "nombre": "San Bernabé Centro"
+          },
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.38,
+          "minutos_acum": 5.0
+        },
+        {
+          "orden": 2,
+          "pedido": {
+            "id": 168,
+            "folio": "PED-20261020-000168"
+          },
+          "zona": {
+            "id": 1,
+            "nombre": "San Bernabé Centro"
+          },
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.0,
+          "minutos_acum": 9.0
+        }
+      ],
+      "distancia_km": 2.29,
+      "minutos": 26.2,
+      "costo": 100.3
+    },
+    {
+      "repartidor": {
+        "id": 8,
+        "nombre": "Diana Sepúlveda Ibarra"
+      },
+      "metodo": "TSP exacto",
+      "zonas": [
+        "Valles de San Bernabé"
+      ],
+      "paradas": [
+        {
+          "orden": 1,
+          "pedido": {
+            "id": 176,
+            "folio": "PED-20261020-000176"
+          },
+          "zona": {
+            "id": 2,
+            "nombre": "Valles de San Bernabé"
+          },
+          "latitud": 25.748439,
+          "longitud": -100.369944,
+          "tramo_km": 0.78,
+          "minutos_acum": 6.1
+        }
+      ],
+      "distancia_km": 0.78,
+      "minutos": 6.1,
+      "costo": 21.49
+    }
+  ],
+  "sin_asignar": [],
+  "total": {
+    "rutas": 2,
+    "paradas": 6,
+    "distancia_km": 3.07,
+    "minutos_maximo": 26.2,
+    "costo": 121.79
+  },
+  "cambios": [],
+  "supuestos_usados": [
+    {
+      "clave": "velocidad_reparto_kmh",
+      "valor": 22.0,
+      "modificado": false
+    },
+    {
+      "clave": "tiempo_servicio_min",
+      "valor": 4.0,
+      "modificado": false
+    }
+  ]
+}

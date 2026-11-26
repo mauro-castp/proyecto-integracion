@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item_catalogo xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <producto>
+    <id>4</id>
+    <nombre>Aceite vegetal 1 L</nombre>
+  </producto>
+  <precio_compra>33.30</precio_compra>
+  <unidad_compra>pieza</unidad_compra>
+  <capacidad_semanal>200</capacidad_semanal>
+  <minimo_compra>12</minimo_compra>
+  <vigente_hasta xsi:nil="true" />
+</item_catalogo>

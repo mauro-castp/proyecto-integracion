@@ -1,0 +1,30 @@
+{
+  "datos": [
+    {
+      "fecha": "2026-09-19",
+      "zona_id": 1,
+      "categoria_id": null,
+      "pedidos": 1,
+      "unidades": 3,
+      "venta": 96.9,
+      "clientes": 1,
+      "no_atendidos": 0
+    },
+    {
+      "fecha": "2026-09-19",
+      "zona_id": 3,
+      "categoria_id": null,
+      "pedidos": 1,
+      "unidades": 6,
+      "venta": 153.4,
+      "clientes": 1,
+      "no_atendidos": 1
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 3,
+    "total": 70,
+    "paginas": 24
+  }
+}

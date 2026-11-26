@@ -1,0 +1,30 @@
+{
+  "datos": [
+    {
+      "microhub": {
+        "id": 1,
+        "nombre": "Microhub San Bernabé Centro"
+      },
+      "operadores": 3,
+      "repartidores": 3,
+      "capacidad_fisica": 150,
+      "actualizado_en": "2026-10-19T23:44:58-06:00"
+    },
+    {
+      "microhub": {
+        "id": 2,
+        "nombre": "Microhub Valles"
+      },
+      "operadores": 3,
+      "repartidores": 2,
+      "capacidad_fisica": 120,
+      "actualizado_en": "2026-10-19T23:44:58-06:00"
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 2,
+    "total": 4,
+    "paginas": 2
+  }
+}

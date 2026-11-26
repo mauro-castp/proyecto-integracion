@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monitoreo_estado xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <generado_en>2026-11-25T10:30:00-06:00</generado_en>
+  <resumen>
+    <total>24</total>
+    <ok>22</ok>
+    <degradados>1</degradados>
+    <caidos>1</caidos>
+    <sin_datos>0</sin_datos>
+    <alertas_abiertas>2</alertas_abiertas>
+    <monitor_activo>true</monitor_activo>
+    <intervalo_seg>30</intervalo_seg>
+    <ultima_ronda>2026-11-25T10:30:00-06:00</ultima_ronda>
+  </resumen>
+  <servicios>
+    <servicio>
+      <servicio>pedidos</servicio>
+      <puerto>5104</puerto>
+      <estado>ok</estado>
+      <verificado_en>2026-11-25T10:30:00-06:00</verificado_en>
+      <antiguedad_seg>12</antiguedad_seg>
+      <tiempo_ms>18.4</tiempo_ms>
+      <version>1.0.0</version>
+      <dependencias>
+        <postgres>ok</postgres>
+        <redis>ok</redis>
+        <mongo>ok</mongo>
+        <bucket>no_aplica</bucket>
+      </dependencias>
+      <error xsi:nil="true" />
+      <peticiones_hora>340</peticiones_hora>
+      <errores_5xx_hora>0</errores_5xx_hora>
+      <disponibilidad_24h_pct>100.0</disponibilidad_24h_pct>
+      <bajo_objetivo>false</bajo_objetivo>
+    </servicio>
+  </servicios>
+  <dependencias_caidas>
+    <dependencia>
+      <dependencia>bucket</dependencia>
+      <afectados>
+        <servicio>documentos</servicio>
+      </afectados>
+    </dependencia>
+  </dependencias_caidas>
+</monitoreo_estado>

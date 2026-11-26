@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proveedor_nuevo xmlns="urn:microhubs:v1" version="1">
+  <clave>PV-04</clave>
+  <nombre>Frutas y Verduras del Valle</nombre>
+  <contacto>Ana Salinas</contacto>
+  <correo>ventas@fvvalle.example</correo>
+  <telefono>8181000104</telefono>
+  <dias_entrega>1</dias_entrega>
+  <pedido_minimo>400.00</pedido_minimo>
+  <condiciones_pago>Contado</condiciones_pago>
+  <zonas>
+    <zona_id>1</zona_id>
+    <zona_id>2</zona_id>
+  </zonas>
+</proveedor_nuevo>

@@ -1,0 +1,46 @@
+{
+  "reporte": "pedidos_por_dia",
+  "familia": "operativo",
+  "titulo": "Pedidos por día",
+  "generado_en": "2026-11-25T10:30:00-06:00",
+  "filtros": {
+    "desde": "2026-10-26",
+    "hasta": "2026-11-25",
+    "zona_id": null,
+    "microhub_id": null
+  },
+  "columnas": [
+    {
+      "clave": "fecha",
+      "titulo": "Día",
+      "tipo": "fecha"
+    },
+    {
+      "clave": "pedidos",
+      "titulo": "Pedidos",
+      "tipo": "entero"
+    },
+    {
+      "clave": "venta",
+      "titulo": "Venta",
+      "tipo": "dinero"
+    }
+  ],
+  "filas": [
+    {
+      "celdas": [
+        "2026-11-24",
+        "12",
+        "1534.50"
+      ]
+    }
+  ],
+  "totales": {
+    "celdas": [
+      "Total",
+      "12",
+      "1534.50"
+    ]
+  },
+  "total_filas": 1
+}

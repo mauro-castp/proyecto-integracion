@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supuestos_rutas xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <supuesto>
+      <clave>cob_tiempo_max_min</clave>
+      <valor>30</valor>
+      <unidad>minutos</unidad>
+      <origen>normativo</origen>
+      <justificacion>Promesa de entrega que fija el equipo: llegar en 30 minutos o menos desde que sale el repartidor.</justificacion>
+      <como_calibrar>Se revisa con el tiempo real de las entregas cerradas.</como_calibrar>
+    </supuesto>
+    <supuesto>
+      <clave>costo_base_entrega</clave>
+      <valor>18</valor>
+      <unidad>MXN</unidad>
+      <origen>supuesto</origen>
+      <justificacion>Pago fijo por entrega al repartidor; se suma al costo por distancia.</justificacion>
+      <como_calibrar>Lo que se paga de verdad por entrega en el contrato o en la nómina de repartidores.</como_calibrar>
+    </supuesto>
+  </datos>
+</supuestos_rutas>

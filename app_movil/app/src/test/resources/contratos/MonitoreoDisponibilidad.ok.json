@@ -1,0 +1,17 @@
+{
+  "horas": 24,
+  "objetivo_pct": 99.0,
+  "servicios": [
+    {
+      "servicio": "pedidos",
+      "verificaciones": 2880,
+      "caidas": 0,
+      "disponibilidad_pct": 100.0,
+      "salud_plena_pct": 100.0,
+      "tiempo_p50_ms": 14.2,
+      "tiempo_p95_ms": 31.0,
+      "tiempo_max_ms": 120.5,
+      "bajo_objetivo": false
+    }
+  ]
+}

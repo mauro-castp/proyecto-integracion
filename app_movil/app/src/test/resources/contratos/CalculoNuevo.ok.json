@@ -1,0 +1,14 @@
+{
+  "zona_id": 1,
+  "fecha": "2026-10-19",
+  "lineas": [
+    {
+      "producto_id": 4,
+      "cantidad": 2
+    },
+    {
+      "producto_id": 12,
+      "cantidad": 1
+    }
+  ]
+}

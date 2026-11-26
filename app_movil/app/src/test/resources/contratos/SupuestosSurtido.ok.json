@@ -1,0 +1,20 @@
+{
+  "datos": [
+    {
+      "clave": "abc_a_pct",
+      "valor": "80",
+      "unidad": "porcentaje",
+      "origen": "normativo",
+      "justificacion": "Regla de Pareto: los productos que acumulan hasta 80 % del movimiento son clase A.",
+      "como_calibrar": "No se calibra; es una convención de clasificación."
+    },
+    {
+      "clave": "abc_b_pct",
+      "valor": "95",
+      "unidad": "porcentaje",
+      "origen": "normativo",
+      "justificacion": "Los productos hasta 95 % acumulado son clase B; el resto, clase C.",
+      "como_calibrar": "No se calibra; es una convención de clasificación."
+    }
+  ]
+}

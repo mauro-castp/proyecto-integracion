@@ -1,0 +1,24 @@
+{
+  "datos": [
+    {
+      "tipo": "pedido",
+      "activa": true
+    },
+    {
+      "tipo": "entrega",
+      "activa": true
+    },
+    {
+      "tipo": "planeacion",
+      "activa": false
+    },
+    {
+      "tipo": "inventario",
+      "activa": true
+    },
+    {
+      "tipo": "abastecimiento",
+      "activa": true
+    }
+  ]
+}

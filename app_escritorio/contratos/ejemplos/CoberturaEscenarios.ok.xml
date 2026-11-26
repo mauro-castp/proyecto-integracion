@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cobertura_escenarios xmlns="urn:microhubs:v1" version="1">
+  <filas>
+    <fila>
+      <radio_km>1.0</radio_km>
+      <rodeo>1.3</rodeo>
+      <zonas_cubiertas>4</zonas_cubiertas>
+      <pct_zonas>100.0</pct_zonas>
+      <pct_hogares>100.0</pct_hogares>
+      <tiempo_promedio_min>5.5</tiempo_promedio_min>
+      <dentro_promesa_pct>100.0</dentro_promesa_pct>
+    </fila>
+    <fila>
+      <radio_km>1.5</radio_km>
+      <rodeo>1.3</rodeo>
+      <zonas_cubiertas>4</zonas_cubiertas>
+      <pct_zonas>100.0</pct_zonas>
+      <pct_hogares>100.0</pct_hogares>
+      <tiempo_promedio_min>5.5</tiempo_promedio_min>
+      <dentro_promesa_pct>100.0</dentro_promesa_pct>
+    </fila>
+  </filas>
+  <supuestos_usados>
+    <supuesto>
+      <clave>factor_rodeo_distancia</clave>
+      <valor>1.3</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>velocidad_reparto_kmh</clave>
+      <valor>22.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</cobertura_escenarios>

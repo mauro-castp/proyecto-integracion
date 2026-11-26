@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<precio_vigente xmlns="urn:microhubs:v1" version="1">
+  <producto_id>4</producto_id>
+  <zona_id>1</zona_id>
+  <fecha>2026-10-19</fecha>
+  <precio_base>45.00</precio_base>
+  <lista>
+    <id>2</id>
+    <nombre>Lista San Bernabé Centro</nombre>
+  </lista>
+  <precio_vigente>46.35</precio_vigente>
+  <promocion>
+    <id>3</id>
+    <nombre>Aceite -5 %</nombre>
+    <tipo>porcentaje</tipo>
+    <valor>5.00</valor>
+  </promocion>
+  <descuento>2.32</descuento>
+  <descuento_limitado>false</descuento_limitado>
+  <precio_final>44.03</precio_final>
+  <costo>31.50</costo>
+  <margen_pct>28.5</margen_pct>
+  <bajo_margen>false</bajo_margen>
+</precio_vigente>

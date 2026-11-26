@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Contrato XML v1 · servicio: notificaciones · generado por contratos/generar.py: no editar a mano -->
+<!-- Contrato XML v1 · servicio: notificaciones · generado por servicios/contratos/generar.py: no editar a mano -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
            elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
   <xs:include schemaLocation="comun.xsd"/>
@@ -13,6 +13,9 @@
             <xs:enumeration value="entrega"/>
             <xs:enumeration value="candidato"/>
             <xs:enumeration value="sistema"/>
+            <xs:enumeration value="producto"/>
+            <xs:enumeration value="solicitud"/>
+            <xs:enumeration value="orden"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
@@ -29,6 +32,8 @@
             <xs:enumeration value="entrega"/>
             <xs:enumeration value="sistema"/>
             <xs:enumeration value="planeacion"/>
+            <xs:enumeration value="inventario"/>
+            <xs:enumeration value="abastecimiento"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
@@ -39,7 +44,6 @@
       <xs:element name="creada_en" type="xs:dateTime"/>
     </xs:sequence>
   </xs:complexType>
-  <xs:annotation><xs:documentation>NotificacionLista: Página de notificaciones.</xs:documentation></xs:annotation>
   <xs:complexType name="TNotificacionLista">
     <xs:sequence>
       <xs:element name="datos">
@@ -63,10 +67,17 @@
       </xs:element>
     </xs:sequence>
   </xs:complexType>
-  <xs:annotation><xs:documentation>NotificacionNueva: Uso interno entre servicios (rol `servicio`). Solo JSON.</xs:documentation></xs:annotation>
   <xs:complexType name="TNotificacionNueva">
     <xs:sequence>
-      <xs:element name="usuario_id" type="xs:long"/>
+      <xs:element name="usuario_id" type="xs:long" minOccurs="0"/>
+      <xs:element name="rol" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="40"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="microhub_id" type="xs:long" minOccurs="0"/>
       <xs:element name="tipo">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -74,6 +85,8 @@
             <xs:enumeration value="entrega"/>
             <xs:enumeration value="sistema"/>
             <xs:enumeration value="planeacion"/>
+            <xs:enumeration value="inventario"/>
+            <xs:enumeration value="abastecimiento"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
@@ -92,6 +105,74 @@
         </xs:simpleType>
       </xs:element>
       <xs:element name="referencia" type="tns:TNotificacionReferencia" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TNotEnvio">
+    <xs:sequence>
+      <xs:element name="enviadas">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="omitidas">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ids">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TNotLectura">
+    <xs:sequence>
+      <xs:element name="marcadas">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TNotPreferencia">
+    <xs:sequence>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="pedido"/>
+            <xs:enumeration value="entrega"/>
+            <xs:enumeration value="planeacion"/>
+            <xs:enumeration value="inventario"/>
+            <xs:enumeration value="abastecimiento"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="activa" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TNotPreferencias">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="preferencia" type="tns:TNotPreferencia" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TNotPreferenciaNueva">
+    <xs:sequence>
+      <xs:element name="activa" type="xs:boolean"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -117,6 +198,51 @@
     <xs:complexType>
       <xs:complexContent>
         <xs:extension base="tns:TConteo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="envio">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TNotEnvio">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="lectura">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TNotLectura">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="preferencias">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TNotPreferencias">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="preferencia">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TNotPreferencia">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="preferencia_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TNotPreferenciaNueva">
           <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
         </xs:extension>
       </xs:complexContent>

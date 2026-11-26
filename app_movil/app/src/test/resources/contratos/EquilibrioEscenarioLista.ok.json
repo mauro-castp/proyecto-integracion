@@ -1,0 +1,34 @@
+{
+  "datos": [
+    {
+      "id": 5,
+      "nombre": "Escenario A manual",
+      "microhub_id": null,
+      "candidato_id": null,
+      "decision": "no_viable",
+      "equilibrio_diario": 384.6,
+      "pedidos_dia": 45.0,
+      "utilidad_mes": -52980.0,
+      "creado_por": 1,
+      "creado_en": "2026-10-19T23:49:44-06:00"
+    },
+    {
+      "id": 4,
+      "nombre": "Escenario A manual",
+      "microhub_id": null,
+      "candidato_id": null,
+      "decision": "no_viable",
+      "equilibrio_diario": 384.6,
+      "pedidos_dia": 45.0,
+      "utilidad_mes": -52980.0,
+      "creado_por": 1,
+      "creado_en": "2026-10-19T23:49:44-06:00"
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 3,
+    "total": 5,
+    "paginas": 2
+  }
+}

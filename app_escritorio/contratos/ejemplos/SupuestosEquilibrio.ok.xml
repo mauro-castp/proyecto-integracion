@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supuestos_equilibrio xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <supuesto>
+      <clave>cos_ticket_ref</clave>
+      <valor>135</valor>
+      <unidad>MXN</unidad>
+      <origen>supuesto</origen>
+      <justificacion>Ticket de referencia del escenario de la retroalimentación.</justificacion>
+      <como_calibrar>Ticket promedio real del servicio de demanda.</como_calibrar>
+    </supuesto>
+    <supuesto>
+      <clave>dias_operacion_mes</clave>
+      <valor>30</valor>
+      <unidad>días</unidad>
+      <origen>normativo</origen>
+      <justificacion>El microhub opera todos los días del mes.</justificacion>
+      <como_calibrar>Cambiar si se decide cerrar un día a la semana.</como_calibrar>
+    </supuesto>
+  </datos>
+</supuestos_equilibrio>

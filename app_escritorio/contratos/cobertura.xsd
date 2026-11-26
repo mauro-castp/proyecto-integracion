@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: cobertura · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola1.xsd"/>
+  <xs:include schemaLocation="comun_ola2.xsd"/>
+
+  <xs:complexType name="TCobEvaluacion">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long" nillable="true"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="candidato" type="tns:TCobCandidatoRef" nillable="true"/>
+      <xs:element name="latitud" type="xs:decimal"/>
+      <xs:element name="longitud" type="xs:decimal"/>
+      <xs:element name="radio_km" type="xs:decimal"/>
+      <xs:element name="zonas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="zona_evaluada" type="tns:TCobEvaluacionZonaEvaluada" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="zonas_nuevas" type="xs:long"/>
+      <xs:element name="hogares_en_radio" type="xs:long"/>
+      <xs:element name="hogares_nuevos" type="xs:long"/>
+      <xs:element name="hogares_con_mejor_tiempo" type="xs:long"/>
+      <xs:element name="minutos_ahorrados" type="xs:decimal" nillable="true"/>
+      <xs:element name="solapamiento_pct" type="xs:decimal"/>
+      <xs:element name="canibaliza" type="xs:boolean"/>
+      <xs:element name="distancia_promedio_km" type="xs:decimal"/>
+      <xs:element name="minutos_promedio" type="xs:decimal"/>
+      <xs:element name="costo_ultima_milla" type="xs:decimal"/>
+      <xs:element name="antes" type="tns:TCobPorcentajes"/>
+      <xs:element name="despues" type="tns:TCobPorcentajes"/>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobCandidatoRef">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="clave" type="xs:string"/>
+      <xs:element name="nombre" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobEvaluacionZonaEvaluada">
+    <xs:sequence>
+      <xs:element name="zona" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="hogares" type="xs:long"/>
+      <xs:element name="distancia_km" type="xs:decimal"/>
+      <xs:element name="distancia_calle_km" type="xs:decimal"/>
+      <xs:element name="minutos" type="xs:decimal"/>
+      <xs:element name="microhubs_que_ya_cubren" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobPorcentajes">
+    <xs:sequence>
+      <xs:element name="pct_zonas" type="xs:decimal"/>
+      <xs:element name="pct_hogares" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobZonaLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="zona_cobertura" type="tns:TCobZonaCobertura" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobZonaCobertura">
+    <xs:sequence>
+      <xs:element name="zona" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="hogares" type="xs:long"/>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="cubierta"/>
+            <xs:enumeration value="sin_cobertura"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="solapada" type="xs:boolean"/>
+      <xs:element name="cubierta_por">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="opcion" type="tns:TCobOpcion" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="mas_cercano" type="tns:TCobOpcion" nillable="true"/>
+      <xs:element name="minutos_mejor" type="xs:decimal" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobOpcion">
+    <xs:sequence>
+      <xs:element name="microhub" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="distancia_km" type="xs:decimal"/>
+      <xs:element name="distancia_calle_km" type="xs:decimal"/>
+      <xs:element name="minutos" type="xs:decimal"/>
+      <xs:element name="cubre" type="xs:boolean"/>
+      <xs:element name="dentro_promesa" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobResumen">
+    <xs:sequence>
+      <xs:element name="zonas" type="xs:long"/>
+      <xs:element name="zonas_cubiertas" type="xs:long"/>
+      <xs:element name="pct_zonas" type="xs:decimal"/>
+      <xs:element name="hogares" type="xs:long"/>
+      <xs:element name="hogares_cubiertos" type="xs:long"/>
+      <xs:element name="pct_hogares" type="xs:decimal"/>
+      <xs:element name="tiempo_promedio_min" type="xs:decimal" nillable="true"/>
+      <xs:element name="dentro_promesa_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="zonas_solapadas" type="xs:long"/>
+      <xs:element name="zonas_sin_cobertura">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="zona_sin_cobertura" type="tns:TCobResumenZonaSinCobertura" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="microhubs_activos" type="xs:long"/>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobResumenZonaSinCobertura">
+    <xs:sequence>
+      <xs:element name="zona" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="hogares" type="xs:long"/>
+      <xs:element name="microhub_mas_cercano" type="tns:TRefNombre" nillable="true"/>
+      <xs:element name="distancia_km" type="xs:decimal" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobPunto">
+    <xs:sequence>
+      <xs:element name="latitud" type="xs:decimal"/>
+      <xs:element name="longitud" type="xs:decimal"/>
+      <xs:element name="cubierto" type="xs:boolean"/>
+      <xs:element name="zona_mas_cercana" type="tns:TCobZonaCercana"/>
+      <xs:element name="opciones">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="opcion" type="tns:TCobOpcion" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobZonaCercana">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="distancia_km" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobCandidatos">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="candidato_cobertura" type="tns:TCobCandidatoCobertura" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="red_actual" type="tns:TCobPorcentajes"/>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobCandidatoCobertura">
+    <xs:sequence>
+      <xs:element name="candidato" type="tns:TCobCandidatoRef"/>
+      <xs:element name="latitud" type="xs:decimal"/>
+      <xs:element name="longitud" type="xs:decimal"/>
+      <xs:element name="radio_km" type="xs:decimal"/>
+      <xs:element name="zonas_nuevas" type="xs:long"/>
+      <xs:element name="hogares_nuevos" type="xs:long"/>
+      <xs:element name="hogares_con_mejor_tiempo" type="xs:long"/>
+      <xs:element name="minutos_ahorrados" type="xs:decimal" nillable="true"/>
+      <xs:element name="solapamiento_pct" type="xs:decimal"/>
+      <xs:element name="canibaliza" type="xs:boolean"/>
+      <xs:element name="minutos_promedio" type="xs:decimal"/>
+      <xs:element name="costo_ultima_milla" type="xs:decimal"/>
+      <xs:element name="ranking" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobEscenarios">
+    <xs:sequence>
+      <xs:element name="filas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="fila" type="tns:TCobEscenarioFila" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobEscenarioFila">
+    <xs:sequence>
+      <xs:element name="radio_km" type="xs:decimal"/>
+      <xs:element name="rodeo" type="xs:decimal"/>
+      <xs:element name="zonas_cubiertas" type="xs:long"/>
+      <xs:element name="pct_zonas" type="xs:decimal"/>
+      <xs:element name="pct_hogares" type="xs:decimal"/>
+      <xs:element name="tiempo_promedio_min" type="xs:decimal" nillable="true"/>
+      <xs:element name="dentro_promesa_pct" type="xs:decimal" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobEvaluacionLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="evaluacion" type="tns:TCobEvaluacionResumen" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobEvaluacionResumen">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="zonas_nuevas" type="xs:long"/>
+      <xs:element name="hogares_nuevos" type="xs:long"/>
+      <xs:element name="solapamiento_pct" type="xs:decimal"/>
+      <xs:element name="canibaliza" type="xs:boolean"/>
+      <xs:element name="creado_por" type="xs:long"/>
+      <xs:element name="creado_en" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobEvaluacionNueva">
+    <xs:sequence>
+      <xs:element name="nombre" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="120"/>
+            <xs:minLength value="3"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="latitud" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="20"/>
+            <xs:maxInclusive value="33"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="longitud" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="-118"/>
+            <xs:maxInclusive value="-86"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="radio_km" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0.1"/>
+            <xs:maxInclusive value="20"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="candidato_id" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="guardar" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobPoblacionNueva">
+    <xs:sequence>
+      <xs:element name="poblacion">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="10000000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="fuente">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="200"/>
+            <xs:minLength value="5"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCobPoblacionZona">
+    <xs:sequence>
+      <xs:element name="zona" type="tns:TRefNombre"/>
+      <xs:element name="poblacion" type="xs:long"/>
+      <xs:element name="hogares" type="xs:long"/>
+      <xs:element name="fuente" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="cobertura_evaluacion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCobEvaluacion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cobertura_zonas">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCobZonaLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cobertura_resumen">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCobResumen">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cobertura_punto">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCobPunto">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cobertura_candidatos">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCobCandidatos">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cobertura_escenarios">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCobEscenarios">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cobertura_evaluaciones">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCobEvaluacionLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="supuestos_cobertura">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSupuestosDoc">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cobertura_evaluacion_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCobEvaluacionNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="poblacion_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCobPoblacionNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="poblacion_zona">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCobPoblacionZona">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

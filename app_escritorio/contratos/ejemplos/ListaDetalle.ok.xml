@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lista_detalle xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <id>2</id>
+  <nombre>Lista San Bernabé Centro</nombre>
+  <zona_id>1</zona_id>
+  <vigente_desde>2026-10-01</vigente_desde>
+  <vigente_hasta xsi:nil="true" />
+  <estatus>activo</estatus>
+  <productos>20</productos>
+  <items>
+    <item>
+      <producto>
+        <id>4</id>
+        <nombre>Aceite vegetal 1 L</nombre>
+      </producto>
+      <precio>46.35</precio>
+      <costo>31.50</costo>
+      <margen_pct>32.0</margen_pct>
+      <actualizado_en>2026-10-19T09:30:00-06:00</actualizado_en>
+    </item>
+  </items>
+</lista_detalle>

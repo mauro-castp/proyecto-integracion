@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: capacidad · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola1.xsd"/>
+  <xs:include schemaLocation="comun_ola2.xsd"/>
+
+  <xs:complexType name="TCapRecurso">
+    <xs:sequence>
+      <xs:element name="microhub" type="tns:TRefNombre"/>
+      <xs:element name="operadores" type="xs:long"/>
+      <xs:element name="repartidores" type="xs:long"/>
+      <xs:element name="capacidad_fisica" type="xs:decimal" nillable="true"/>
+      <xs:element name="actualizado_en" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCapRecursoLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="recurso" type="tns:TCapRecurso" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCapMicrohub">
+    <xs:sequence>
+      <xs:element name="microhub" type="tns:TRefNombre"/>
+      <xs:element name="operadores" type="xs:long"/>
+      <xs:element name="repartidores" type="xs:long"/>
+      <xs:element name="capacidad_fisica" type="xs:decimal" nillable="true"/>
+      <xs:element name="horas" type="xs:decimal"/>
+      <xs:element name="distancia_km" type="xs:decimal"/>
+      <xs:element name="carga_dia" type="xs:decimal"/>
+      <xs:element name="capacidad_hora" type="xs:decimal"/>
+      <xs:element name="capacidad_dia" type="xs:decimal"/>
+      <xs:element name="utilizacion_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="nivel" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="estable"/>
+            <xs:enumeration value="atencion"/>
+            <xs:enumeration value="riesgo"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="utilizacion_pico_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="nivel_pico" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="estable"/>
+            <xs:enumeration value="atencion"/>
+            <xs:enumeration value="riesgo"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cuello_botella" type="xs:string"/>
+      <xs:element name="minutos_por_pedido_operacion" type="xs:decimal"/>
+      <xs:element name="minutos_por_entrega" type="xs:decimal"/>
+      <xs:element name="etapas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="etapa" type="tns:TCapEtapa" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="operadores_requeridos" type="xs:long"/>
+      <xs:element name="repartidores_requeridos" type="xs:long"/>
+      <xs:element name="holgura_pedidos_dia" type="xs:decimal"/>
+      <xs:element name="formula" type="xs:string"/>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCapEtapa">
+    <xs:sequence>
+      <xs:element name="etapa" type="xs:string"/>
+      <xs:element name="minutos_por_pedido" type="xs:decimal"/>
+      <xs:element name="pct_tiempo" type="xs:decimal" nillable="true"/>
+      <xs:element name="capacidad_hora" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCapMicrohubLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="microhub" type="tns:TCapMicrohub" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCapSimulacion">
+    <xs:sequence>
+      <xs:element name="microhub" type="tns:TRefNombre"/>
+      <xs:element name="pedidos_dia" type="xs:decimal"/>
+      <xs:element name="escenario" type="tns:TCapEscenario"/>
+      <xs:element name="actual" type="tns:TCapEscenario"/>
+      <xs:element name="diferencia_capacidad_dia" type="xs:decimal"/>
+      <xs:element name="diferencia_utilizacion_pct" type="xs:decimal"/>
+      <xs:element name="valores_modificados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="clave" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCapEscenario">
+    <xs:sequence>
+      <xs:element name="operadores" type="xs:long"/>
+      <xs:element name="repartidores" type="xs:long"/>
+      <xs:element name="capacidad_fisica" type="xs:decimal" nillable="true"/>
+      <xs:element name="horas" type="xs:decimal"/>
+      <xs:element name="distancia_km" type="xs:decimal"/>
+      <xs:element name="carga_dia" type="xs:decimal"/>
+      <xs:element name="capacidad_hora" type="xs:decimal"/>
+      <xs:element name="capacidad_dia" type="xs:decimal"/>
+      <xs:element name="utilizacion_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="nivel" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="estable"/>
+            <xs:enumeration value="atencion"/>
+            <xs:enumeration value="riesgo"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="utilizacion_pico_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="nivel_pico" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="estable"/>
+            <xs:enumeration value="atencion"/>
+            <xs:enumeration value="riesgo"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cuello_botella" type="xs:string"/>
+      <xs:element name="minutos_por_pedido_operacion" type="xs:decimal"/>
+      <xs:element name="minutos_por_entrega" type="xs:decimal"/>
+      <xs:element name="etapas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="etapa" type="tns:TCapEtapa" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="operadores_requeridos" type="xs:long"/>
+      <xs:element name="repartidores_requeridos" type="xs:long"/>
+      <xs:element name="holgura_pedidos_dia" type="xs:decimal"/>
+      <xs:element name="formula" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCapCargas">
+    <xs:sequence>
+      <xs:element name="microhub" type="tns:TRefNombre"/>
+      <xs:element name="capacidad_dia" type="xs:decimal"/>
+      <xs:element name="carga_en_riesgo" type="xs:decimal"/>
+      <xs:element name="carga_estable" type="xs:decimal"/>
+      <xs:element name="filas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="fila" type="tns:TCapCargaFila" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCapCargaFila">
+    <xs:sequence>
+      <xs:element name="pedidos_dia" type="xs:decimal"/>
+      <xs:element name="utilizacion_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="nivel" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="estable"/>
+            <xs:enumeration value="atencion"/>
+            <xs:enumeration value="riesgo"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="utilizacion_pico_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="atendidos" type="xs:decimal"/>
+      <xs:element name="rechazados" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCapRecursoNuevo">
+    <xs:sequence>
+      <xs:element name="operadores">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="50"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="repartidores">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="50"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="capacidad_fisica" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCapSimulacionNueva">
+    <xs:sequence>
+      <xs:element name="microhub_id">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="pedidos_dia">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="operadores" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="50"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="repartidores" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="50"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="horas" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="24"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="distancia_km" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="capacidad_fisica" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="100000"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="recurso_capacidad">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCapRecurso">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="recursos_capacidad">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCapRecursoLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="capacidad_microhub">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCapMicrohub">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="capacidad_microhubs">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCapMicrohubLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="capacidad_simulacion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCapSimulacion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="capacidad_cargas">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCapCargas">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="supuestos_capacidad">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSupuestosDoc">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="recurso_capacidad_nuevo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCapRecursoNuevo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="capacidad_simulacion_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCapSimulacionNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

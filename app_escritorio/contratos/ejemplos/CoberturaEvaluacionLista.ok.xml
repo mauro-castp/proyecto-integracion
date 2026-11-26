@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cobertura_evaluaciones xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <evaluacion>
+      <id>3</id>
+      <nombre>Evaluación de CAND-05</nombre>
+      <zonas_nuevas>0</zonas_nuevas>
+      <hogares_nuevos>0</hogares_nuevos>
+      <solapamiento_pct>0.0</solapamiento_pct>
+      <canibaliza>false</canibaliza>
+      <creado_por>1</creado_por>
+      <creado_en>2026-10-19T23:49:41-06:00</creado_en>
+    </evaluacion>
+    <evaluacion>
+      <id>2</id>
+      <nombre>Evaluación de CAND-05</nombre>
+      <zonas_nuevas>0</zonas_nuevas>
+      <hogares_nuevos>0</hogares_nuevos>
+      <solapamiento_pct>0.0</solapamiento_pct>
+      <canibaliza>false</canibaliza>
+      <creado_por>1</creado_por>
+      <creado_en>2026-10-19T23:49:40-06:00</creado_en>
+    </evaluacion>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>3</por_pagina>
+    <total>3</total>
+    <paginas>1</paginas>
+  </paginacion>
+</cobertura_evaluaciones>

@@ -1,0 +1,95 @@
+{
+  "microhub": {
+    "id": 1,
+    "nombre": "Microhub San Bernabé Centro"
+  },
+  "ventana_dias": 90,
+  "resumen": {
+    "productos": 51,
+    "aumentar": 1,
+    "mantener": 0,
+    "reducir": 48,
+    "eliminar": 1,
+    "excluir": 1,
+    "clase_a": 30,
+    "clase_b": 13,
+    "clase_c": 8,
+    "unidades_a_comprar": 0,
+    "con_costo_estimado": 51,
+    "espacio": {
+      "total": 2500.0,
+      "ocupado": 2527.0,
+      "sugerido": 0.0,
+      "ocupacion_pct": 101.1
+    },
+    "presupuesto": {
+      "total": 90000.0,
+      "requerido": 0.0,
+      "uso_pct": 0.0
+    }
+  },
+  "filas": [
+    {
+      "producto": {
+        "id": 13,
+        "clave_interna": "AB-013",
+        "nombre": "Puré de tomate"
+      },
+      "categoria": "Abarrote básico",
+      "clase": "A",
+      "pct_acum": 5.5,
+      "unidades": 13,
+      "venta": 143.0,
+      "margen_unitario": 3.08,
+      "margen_total": 40.04,
+      "costo_estimado": true,
+      "existencia": 52,
+      "minimo": 5,
+      "quiebres": 0,
+      "demanda_dia": 0.14,
+      "cobertura_dias": 360.0,
+      "rotacion": 0.25,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 360 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 7,
+        "clave_interna": "AB-007",
+        "nombre": "Harina de trigo"
+      },
+      "categoria": "Abarrote básico",
+      "clase": "A",
+      "pct_acum": 10.5,
+      "unidades": 12,
+      "venta": 294.0,
+      "margen_unitario": 6.86,
+      "margen_total": 82.32,
+      "costo_estimado": true,
+      "existencia": 12,
+      "minimo": 10,
+      "quiebres": 0,
+      "demanda_dia": 0.13,
+      "cobertura_dias": 90.0,
+      "rotacion": 1.0,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 90 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    }
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "abc_a_pct",
+      "valor": 80.0,
+      "modificado": false
+    },
+    {
+      "clave": "abc_b_pct",
+      "valor": 95.0,
+      "modificado": false
+    }
+  ]
+}

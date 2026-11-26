@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sincronizacion xmlns="urn:microhubs:v1" version="1">
+  <desde>2026-09-01</desde>
+  <hasta>2026-10-19</hasta>
+  <filas_escritas>103</filas_escritas>
+  <pedidos_leidos>153</pedidos_leidos>
+  <sinteticas_reemplazadas>1152</sinteticas_reemplazadas>
+</sincronizacion>

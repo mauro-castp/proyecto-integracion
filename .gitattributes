@@ -1,1 +1,3 @@
 *.pdf binary
+# Los scripts corren en Linux (contenedores y VM): siempre con fin de línea LF, aunque el clon sea en Windows.
+*.sh text eol=lf

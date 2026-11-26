@@ -1,0 +1,44 @@
+{
+  "ejecuciones": [
+    {
+      "id": "424e011f-a7ae-4bf7-ba84-24dd4b6dd75d",
+      "nombre": "Simulación de Microhub San Bernabé Centro 2026-10-19",
+      "objeto": {
+        "tipo": "microhub",
+        "id": 1,
+        "nombre": "Microhub San Bernabé Centro"
+      },
+      "dias": 14,
+      "replicas": 100,
+      "utilidad_media": -32022.5963,
+      "utilidad_p10": -32088.921,
+      "utilidad_p90": -31975.3065,
+      "prob_perdida_pct": 100.0,
+      "atendidos_media": 69.05,
+      "rechazados_media": 0.06,
+      "dias_saturados_pct": 0.0714,
+      "huella": "2070f03b07cc488550c6f8f5fcae4245394529e921d24b896f9480ad36d13800"
+    },
+    {
+      "id": "08e63110-fab7-44e0-a970-4a0f50ba56f1",
+      "nombre": "Simulación de escenario manual 2026-10-19",
+      "objeto": {
+        "tipo": "manual",
+        "id": null,
+        "nombre": null
+      },
+      "dias": 14,
+      "replicas": 100,
+      "utilidad_media": -24794.668,
+      "utilidad_p10": -25047.44,
+      "utilidad_p90": -24551.88,
+      "prob_perdida_pct": 100.0,
+      "atendidos_media": 616.41,
+      "rechazados_media": 1.73,
+      "dias_saturados_pct": 1.8571,
+      "huella": "96035bc707e56aa939066e110b77bd3cb60cc944cd6d0fed0adde4abea84ff71"
+    }
+  ],
+  "mejor_id": "08e63110-fab7-44e0-a970-4a0f50ba56f1",
+  "criterio": "Mayor utilidad media entre las que pierden dinero en menos de la mitad de las réplicas."
+}

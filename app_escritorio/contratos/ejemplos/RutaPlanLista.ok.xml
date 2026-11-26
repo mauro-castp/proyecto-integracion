@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruta_planes xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <plan>
+      <id>2</id>
+      <estado>propuesto</estado>
+      <version>1</version>
+      <microhub>
+        <id>1</id>
+        <nombre>Microhub San Bernabé Centro</nombre>
+      </microhub>
+      <fecha>2026-10-19</fecha>
+      <rutas>2</rutas>
+      <paradas>6</paradas>
+      <distancia_km>3.07</distancia_km>
+      <costo>121.79</costo>
+      <creado_por>1</creado_por>
+      <creado_en>2026-10-19T23:49:50-06:00</creado_en>
+    </plan>
+    <plan>
+      <id>1</id>
+      <estado>propuesto</estado>
+      <version>1</version>
+      <microhub>
+        <id>1</id>
+        <nombre>Microhub San Bernabé Centro</nombre>
+      </microhub>
+      <fecha>2026-10-19</fecha>
+      <rutas>2</rutas>
+      <paradas>6</paradas>
+      <distancia_km>3.07</distancia_km>
+      <costo>121.79</costo>
+      <creado_por>1</creado_por>
+      <creado_en>2026-10-19T23:49:50-06:00</creado_en>
+    </plan>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>3</por_pagina>
+    <total>2</total>
+    <paginas>1</paginas>
+  </paginacion>
+</ruta_planes>

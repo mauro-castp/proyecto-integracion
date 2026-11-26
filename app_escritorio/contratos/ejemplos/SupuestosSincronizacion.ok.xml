@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supuestos_sincronizacion xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <supuesto>
+      <clave>sync_antiguedad_max_dias</clave>
+      <valor>14</valor>
+      <unidad>días</unidad>
+      <origen>supuesto</origen>
+      <justificacion>Un /salud sano responde en decenas de milisegundos; 1 s ya indica saturación de alguna dependencia.</justificacion>
+      <como_calibrar>Tomar el p95 de tiempo_ms de monitoreo_verificacion en una semana normal y poner el umbral al doble.</como_calibrar>
+    </supuesto>
+  </datos>
+</supuestos_sincronizacion>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<supuestos_cobertura xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <supuesto>
+      <clave>cob_solape_max_pct</clave>
+      <valor>40</valor>
+      <unidad>%</unidad>
+      <origen>supuesto</origen>
+      <justificacion>Si más del 40 % de las zonas de un microhub ya las cubre otro, los dos se reparten la misma demanda y se canibalizan.</justificacion>
+      <como_calibrar>Comparar la demanda de las zonas compartidas antes y después de abrir el segundo microhub.</como_calibrar>
+    </supuesto>
+    <supuesto>
+      <clave>cob_tiempo_max_min</clave>
+      <valor>30</valor>
+      <unidad>minutos</unidad>
+      <origen>normativo</origen>
+      <justificacion>Promesa de entrega que fija el equipo: llegar en 30 minutos o menos desde que sale el repartidor.</justificacion>
+      <como_calibrar>Se revisa con el tiempo real de las entregas cerradas.</como_calibrar>
+    </supuesto>
+  </datos>
+</supuestos_cobertura>

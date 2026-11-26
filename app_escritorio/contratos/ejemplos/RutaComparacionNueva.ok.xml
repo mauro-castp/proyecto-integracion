@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruta_comparacion_nueva xmlns="urn:microhubs:v1" version="1">
+  <microhub_id>1</microhub_id>
+  <pedido_ids>
+    <id>163</id>
+    <id>168</id>
+    <id>169</id>
+    <id>176</id>
+  </pedido_ids>
+</ruta_comparacion_nueva>

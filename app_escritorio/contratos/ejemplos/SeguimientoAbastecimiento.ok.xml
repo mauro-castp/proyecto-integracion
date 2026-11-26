@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<seguimiento_abastecimiento xmlns="urn:microhubs:v1" version="1">
+  <microhub_id>1</microhub_id>
+  <solicitudes>
+    <pendiente>1</pendiente>
+    <aprobada>0</aprobada>
+    <rechazada>0</rechazada>
+    <ordenada>2</ordenada>
+  </solicitudes>
+  <ordenes>
+    <emitida>1</emitida>
+    <parcial>0</parcial>
+    <recibida>1</recibida>
+    <cancelada>0</cancelada>
+  </ordenes>
+  <atrasadas>0</atrasadas>
+  <pendientes_inventario>0</pendientes_inventario>
+  <proxima_entrega>2026-10-20</proxima_entrega>
+</seguimiento_abastecimiento>

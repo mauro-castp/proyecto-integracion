@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<existencia xmlns="urn:microhubs:v1" version="1">
+  <microhub>
+    <id>1</id>
+    <nombre>Microhub San Bernabé Centro</nombre>
+  </microhub>
+  <producto>
+    <id>4</id>
+    <clave_interna>AB-004</clave_interna>
+    <nombre>Aceite vegetal 1 L</nombre>
+  </producto>
+  <existencia>18</existencia>
+  <minimo>10</minimo>
+  <reservado>3</reservado>
+  <disponible>15</disponible>
+  <estado>normal</estado>
+  <actualizado_en>2026-10-19T09:30:00-06:00</actualizado_en>
+</existencia>

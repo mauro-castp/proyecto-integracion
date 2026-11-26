@@ -1,0 +1,9 @@
+{
+  "microhub_id": 1,
+  "pedidos_dia": 90,
+  "operadores": 4,
+  "repartidores": 3,
+  "horas": 10,
+  "distancia_km": 2.4,
+  "capacidad_fisica": null
+}

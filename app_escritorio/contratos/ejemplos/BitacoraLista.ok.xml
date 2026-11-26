@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bitacora xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <datos>
+    <evento>
+      <id>5021</id>
+      <fecha>2026-11-25T10:30:00-06:00</fecha>
+      <usuario>
+        <id>3</id>
+        <nombre>Mariana Ortega</nombre>
+      </usuario>
+      <correo_intento xsi:nil="true" />
+      <ip_origen>172.18.0.9</ip_origen>
+      <modulo>pedidos</modulo>
+      <accion>cambio_estado</accion>
+      <entidad>
+        <tipo>pedido</tipo>
+        <id>163</id>
+      </entidad>
+      <exitoso>true</exitoso>
+      <detalle xsi:nil="true" />
+      <cambios>
+        <cambio>
+          <campo>estado</campo>
+          <anterior>confirmado</anterior>
+          <nuevo>en_preparacion</nuevo>
+        </cambio>
+      </cambios>
+    </evento>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</bitacora>

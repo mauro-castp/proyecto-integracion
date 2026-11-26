@@ -1,0 +1,21 @@
+{
+  "id": 5,
+  "folio": "SC-20261019-000005",
+  "microhub_id": 1,
+  "estado": "pendiente",
+  "motivo": "Se acabó el aceite el fin de semana",
+  "solicitada_por": 2,
+  "decidida_por": null,
+  "decision_motivo": null,
+  "decidida_en": null,
+  "creada_en": "2026-10-19T09:30:00-06:00",
+  "lineas": [
+    {
+      "producto": {
+        "id": 4,
+        "nombre": "Aceite vegetal 1 L"
+      },
+      "cantidad": 24
+    }
+  ]
+}

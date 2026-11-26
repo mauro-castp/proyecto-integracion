@@ -1,0 +1,12 @@
+{
+  "microhub_id": 1,
+  "producto_id": 4,
+  "tipo": "recepcion",
+  "cantidad": 24,
+  "motivo": "Llegada del proveedor",
+  "referencia": {
+    "tipo": "orden_compra",
+    "id": "7"
+  },
+  "operacion_uuid": "c5a1f0e2-6b1d-4f0e-9a43-2b7d8e7a1c10"
+}

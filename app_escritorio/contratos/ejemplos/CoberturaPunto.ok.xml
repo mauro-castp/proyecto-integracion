@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cobertura_punto xmlns="urn:microhubs:v1" version="1">
+  <latitud>25.6866</latitud>
+  <longitud>-100.3161</longitud>
+  <cubierto>false</cubierto>
+  <zona_mas_cercana>
+    <id>1</id>
+    <nombre>San Bernabé Centro</nombre>
+    <distancia_km>7.81</distancia_km>
+  </zona_mas_cercana>
+  <opciones>
+    <opcion>
+      <microhub>
+        <id>1</id>
+        <nombre>Microhub San Bernabé Centro</nombre>
+      </microhub>
+      <distancia_km>8.35</distancia_km>
+      <distancia_calle_km>10.85</distancia_calle_km>
+      <minutos>33.6</minutos>
+      <cubre>false</cubre>
+      <dentro_promesa>false</dentro_promesa>
+    </opcion>
+    <opcion>
+      <microhub>
+        <id>2</id>
+        <nombre>Microhub Valles</nombre>
+      </microhub>
+      <distancia_km>9.49</distancia_km>
+      <distancia_calle_km>12.34</distancia_calle_km>
+      <minutos>37.6</minutos>
+      <cubre>false</cubre>
+      <dentro_promesa>false</dentro_promesa>
+    </opcion>
+  </opciones>
+  <supuestos_usados>
+    <supuesto>
+      <clave>factor_rodeo_distancia</clave>
+      <valor>1.3</valor>
+      <modificado>false</modificado>
+    </supuesto>
+    <supuesto>
+      <clave>velocidad_reparto_kmh</clave>
+      <valor>22.0</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</cobertura_punto>

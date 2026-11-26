@@ -1,0 +1,36 @@
+{
+  "microhub_id": 1,
+  "factor_objetivo": 3.0,
+  "datos": [
+    {
+      "producto": {
+        "id": 4,
+        "nombre": "Aceite vegetal 1 L"
+      },
+      "existencia": 4,
+      "minimo": 10,
+      "disponible": 4,
+      "en_camino": 0,
+      "solicitado": 0,
+      "cantidad_sugerida": 26,
+      "cantidad_a_comprar": 26,
+      "mejor_oferta": {
+        "proveedor": {
+          "id": 2,
+          "nombre": "Distribuidora Regia"
+        },
+        "precio_compra": 33.3,
+        "dias_entrega": 1,
+        "capacidad_semanal": 200,
+        "minimo_compra": 12
+      },
+      "costo_estimado": 865.8
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

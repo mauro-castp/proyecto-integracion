@@ -1,0 +1,25 @@
+{
+  "desde": "2026-11-18",
+  "hasta": "2026-11-25",
+  "totales": {
+    "login_exitoso": 42,
+    "login_fallido": 3,
+    "logout": 30,
+    "bloqueo_cuenta": 0,
+    "desbloqueo": 0,
+    "acceso_denegado": 2
+  },
+  "correos_con_mas_fallos": [
+    {
+      "correo": "alguien@ejemplo.mx",
+      "intentos": 3,
+      "ultimo_intento": "2026-11-25T10:30:00-06:00"
+    }
+  ],
+  "denegados_frecuentes": [
+    {
+      "detalle": "GET /api/v1/auditoria sin auditoria.ver",
+      "veces": 2
+    }
+  ]
+}

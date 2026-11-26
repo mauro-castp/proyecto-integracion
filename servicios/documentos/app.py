@@ -5,34 +5,45 @@ Servicio de documentos · puerto 5107 · contrato v1
   GET  /api/v1/documentos                  documentos visibles (referencia_tipo, referencia_id)
   GET  /api/v1/documentos/resumen          agregación ($group) por tipo de referencia
   GET  /api/v1/documentos/{id}             metadatos
-  GET  /api/v1/documentos/{id}/contenido   metadatos + contenido en Base64
+  GET  /api/v1/documentos/{id}/enlace      URL FIRMADA y con caducidad para descargar el archivo (recomendado)
+  GET  /api/v1/documentos/{id}/contenido   metadatos + contenido en Base64 (clientes sin descarga directa)
   DELETE /api/v1/documentos/{id}           eliminar (autor o administrador; no la evidencia de una entrega cerrada)
 
-Almacén: MongoDB, colección `documentos` (id = ObjectId de 24 caracteres).
-Se valida tipo MIME contra la firma real del archivo, tamaño máximo de
-5 MB y que la referencia pertenezca a quien sube (un repartidor solo
-adjunta evidencia a sus entregas). Se guarda el SHA-256 del contenido.
+El archivo NO vive en la base de datos. Se guarda en el almacén de objetos (Google Cloud Storage en la nube, carpeta local
+en desarrollo: ver comun/almacen.py) y MongoDB conserva solo sus datos: id (ObjectId de 24 caracteres), ruta del objeto,
+tipo, tamaño, propietario (subido_por), fecha, SHA-256, privacidad, estado y metadatos.
+
+Se valida el tipo MIME contra la firma real del archivo, el tamaño máximo (5 MB) y que la referencia pertenezca a quien
+sube (un repartidor solo adjunta evidencia a sus entregas).
+
+Privacidad:  privado (por omisión) = solo quien lo subió, administrador y auditor;  interno = cualquier persona con archivos.ver.
+Estado:      activo | eliminado (el borrado quita el objeto del almacén y deja el registro para la auditoría).
+Si el archivo se sube pero MongoDB falla, el objeto se borra: no quedan archivos huérfanos ni registros sin archivo.
 """
 import base64
 import binascii
 import hashlib
+import hmac as _hmac
+import datetime as dt
 
-from bson import Binary, ObjectId
-from flask import g, request
+from bson import ObjectId
+from flask import Response, g, request
 
-from comun import config
+from comun import almacen, config
 from comun.base import (crear_app, documentar, filtro_opcion, leer_cuerpo, leer_paginacion, lista, paginacion,
                         requiere, responder, tiene)
 from comun.base_errores import ErrorApi, invalido, no_encontrado, prohibido
-from comun.datos import ahora, consultar, mongo
+from comun.datos import ahora, auditar, consultar, mongo
 from comun.formatos import fecha
 from comun.validar import Campo, validar
 
-app = crear_app("documentos", "Microhubs · Documentos", "Evidencias y archivos en MongoDB.", 5107,
-                dependencias=("redis", "mongo", "postgres"))
+app = crear_app("documentos", "Microhubs · Documentos", "Evidencias y archivos en un almacén de objetos (Google Cloud Storage).",
+                5107, dependencias=("redis", "mongo", "postgres", "bucket"))
 P = config.PREFIJO
 FIRMAS = {"image/jpeg": b"\xff\xd8\xff", "image/png": b"\x89PNG\r\n\x1a\n", "application/pdf": b"%PDF-"}
 REFERENCIAS = ["entrega", "pedido", "usuario", "candidato"]
+PRIVACIDADES = ["privado", "interno"]
+ORIGENES = ["api", "web", "movil", "escritorio"]
 VEN_TODO = ("administrador", "auditor")
 
 
@@ -44,13 +55,20 @@ def coleccion():
 
 
 def metadatos(d):
+    """Datos del archivo. Los documentos anteriores a la nube (con el contenido dentro de MongoDB) se muestran igual."""
     return {"id": str(d["_id"]), "nombre": d["nombre"], "tipo_mime": d["tipo_mime"], "tamano_bytes": int(d["tamano_bytes"]),
             "sha256": d["sha256"], "referencia": {"tipo": d["referencia"]["tipo"], "id": d["referencia"]["id"]},
-            "subido_por": int(d["subido_por"]), "creado_en": fecha(d["creado_en"])}
+            "subido_por": int(d["subido_por"]), "creado_en": fecha(d["creado_en"]),
+            "ruta": d.get("ruta") or "", "privacidad": d.get("privacidad", "privado"), "estado": d.get("estado", "activo"),
+            "metadatos": {"almacen": (d.get("metadatos") or {}).get("almacen", "mongodb"),
+                          "origen": (d.get("metadatos") or {}).get("origen", "api")}}
 
 
 def _filtro_visible():
-    return {} if g.usuario["rol"] in VEN_TODO else {"subido_por": g.usuario["id"]}
+    f = {"estado": {"$ne": "eliminado"}}
+    if g.usuario["rol"] not in VEN_TODO:
+        f["$or"] = [{"subido_por": g.usuario["id"]}, {"privacidad": "interno"}]
+    return f
 
 
 def _uno(did):
@@ -60,6 +78,15 @@ def _uno(did):
     if not d:
         raise no_encontrado()
     return d
+
+
+def _bytes_de(d):
+    """Contenido del archivo: del almacén de objetos o, en documentos antiguos, del propio registro."""
+    if d.get("contenido") is not None:
+        return bytes(d["contenido"])
+    if not d.get("ruta"):
+        raise ErrorApi(404, "NO_ENCONTRADO", "El documento no tiene archivo asociado.")
+    return almacen.obtener().leer(d["ruta"])
 
 
 def _verificar_referencia(tipo, rid):
@@ -90,7 +117,8 @@ def _verificar_referencia(tipo, rid):
 @requiere("archivos.crear")
 def subir():
     d = validar(leer_cuerpo(), [Campo("nombre", min_len=1, max_len=160), Campo("tipo_mime", opciones=list(FIRMAS)),
-                                Campo("contenido_base64", min_len=4), Campo("referencia", "obj")])
+                                Campo("contenido_base64", min_len=4), Campo("referencia", "obj"),
+                                Campo("privacidad", req=False, opciones=PRIVACIDADES)])
     ref = validar(d["referencia"], [Campo("tipo", opciones=REFERENCIAS), Campo("id", min_len=1, max_len=40)],
                   prefijo="referencia.")
     try:
@@ -102,10 +130,27 @@ def subir():
     if not contenido.startswith(FIRMAS[d["tipo_mime"]]):
         raise invalido("tipo_mime", "El contenido no corresponde al tipo declarado.")
     _verificar_referencia(ref["tipo"], ref["id"])
-    doc = {"nombre": d["nombre"], "tipo_mime": d["tipo_mime"], "tamano_bytes": len(contenido),
-           "sha256": hashlib.sha256(contenido).hexdigest(), "referencia": ref, "subido_por": int(g.usuario["id"]),
-           "creado_en": ahora(), "contenido": Binary(contenido)}
-    doc["_id"] = coleccion().insert_one(doc).inserted_id
+
+    sha = hashlib.sha256(contenido).hexdigest()
+    oid = ObjectId()
+    ruta = almacen.clave_objeto(str(oid), d["tipo_mime"])
+    alm = almacen.obtener()
+    origen = (request.headers.get("X-Cliente") or "api").strip().lower()
+    doc = {"_id": oid, "nombre": d["nombre"], "tipo_mime": d["tipo_mime"], "tamano_bytes": len(contenido), "sha256": sha,
+           "referencia": ref, "subido_por": int(g.usuario["id"]), "creado_en": ahora(), "ruta": ruta,
+           "privacidad": d.get("privacidad") or "privado", "estado": "activo",
+           "metadatos": {"almacen": alm.nombre, "origen": origen if origen in ORIGENES else "api"}}
+    alm.guardar(ruta, contenido, d["tipo_mime"], sha)                       # 1) el archivo al almacén
+    try:
+        coleccion().insert_one(doc)                                          # 2) sus datos a MongoDB
+    except Exception:
+        try:
+            alm.borrar(ruta)                                                 # sin registro no debe quedar el archivo
+        except almacen.ErrorAlmacen:
+            pass
+        raise
+    auditar("documentos", "alta", f"{d['nombre']} ({len(contenido)} bytes) a {ref['tipo']} {ref['id']}.",
+            entidad="documento", entidad_id=str(oid))
     return responder(metadatos(doc), 201, raiz="documento")
 
 
@@ -130,6 +175,7 @@ def documentos():
 @requiere("reportes.ver", "bitacora.ver")
 def resumen():
     grupos = list(coleccion().aggregate([
+        {"$match": {"estado": {"$ne": "eliminado"}}},
         {"$group": {"_id": "$referencia.tipo", "cantidad": {"$sum": 1}, "tamano_bytes": {"$sum": "$tamano_bytes"}}},
         {"$sort": {"_id": 1}}]))
     por_tipo = [{"referencia_tipo": x["_id"], "cantidad": int(x["cantidad"]), "tamano_bytes": int(x["tamano_bytes"])}
@@ -139,17 +185,53 @@ def resumen():
                      raiz="documentos_resumen")
 
 
+@app.get(f"{P}/documentos/descarga")
+def descarga():
+    """Solo con ALMACEN=local: la 'URL firmada' que emite este mismo servicio (HMAC + caducidad). Con GCS no se usa:
+    la descarga la sirve Google Cloud Storage directamente."""
+    alm = almacen.obtener()
+    if alm.nombre != "local":
+        raise no_encontrado()
+    k, e, n, t, s = (request.args.get(x, "") for x in ("k", "e", "n", "t", "s"))
+    if not alm.firma_valida(k, e, n, t, s):
+        raise ErrorApi(403, "PROHIBIDO", "El enlace de descarga no es válido o ya caducó.")
+    resp = Response(alm.leer(k), content_type=t or "application/octet-stream")
+    resp.headers["Content-Disposition"] = f"attachment; filename*=UTF-8''{n}"
+    return resp
+
+
 @app.get(f"{P}/documentos/<did>")
 @requiere("archivos.ver")
 def documento(did):
     return responder(metadatos(_uno(did)), raiz="documento")
 
 
+@app.get(f"{P}/documentos/<did>/enlace")
+@requiere("archivos.ver")
+def enlace(did):
+    """URL firmada y con caducidad: el cliente descarga directo del bucket, sin pasar por el servicio ni por la base."""
+    d = _uno(did)
+    if not d.get("ruta"):
+        raise ErrorApi(409, "CONFLICTO", "El documento aún está en la base de datos; ejecuta documentos/migrar_a_almacen.py.")
+    segundos = config.URL_FIRMADA_SEGUNDOS
+    url, expira = almacen.obtener().url_firmada(d["ruta"], segundos, d["nombre"], d["tipo_mime"])
+    if url.startswith("/"):                                                  # almacén local: la URL es de este servicio
+        url = request.host_url.rstrip("/") + url
+    auditar("documentos", "descarga", f"Enlace de descarga de {d['nombre']} (caduca en {segundos} s).",
+            entidad="documento", entidad_id=str(d["_id"]))
+    return responder({"id": str(d["_id"]), "nombre": d["nombre"], "url_firmada": url, "metodo": "GET",
+                      "segundos": segundos, "expira_en": fecha(dt.datetime.fromtimestamp(expira, tz=dt.timezone.utc))},
+                     raiz="documento_enlace")
+
+
 @app.get(f"{P}/documentos/<did>/contenido")
 @requiere("archivos.ver")
 def contenido(did):
     d = _uno(did)
-    return responder({**metadatos(d), "contenido_base64": base64.b64encode(bytes(d["contenido"])).decode()},
+    contenido_bytes = _bytes_de(d)
+    if not _hmac.compare_digest(hashlib.sha256(contenido_bytes).hexdigest(), d["sha256"]):
+        raise ErrorApi(409, "CONFLICTO", "El archivo guardado no coincide con su SHA-256: puede estar dañado.")
+    return responder({**metadatos(d), "contenido_base64": base64.b64encode(contenido_bytes).decode()},
                      raiz="documento_contenido")
 
 
@@ -162,19 +244,25 @@ def borrar(did):
         raise prohibido("Solo quien subió el documento puede eliminarlo.")
     if consultar("SELECT 1 FROM entrega WHERE %s = ANY(evidencia_ids)", (did,), una=True):
         raise ErrorApi(409, "CONFLICTO", "El documento es evidencia de una entrega cerrada y no se puede eliminar.")
-    coleccion().delete_one({"_id": d["_id"]})
+    if d.get("ruta"):
+        almacen.obtener().borrar(d["ruta"])                                  # primero el objeto; si falla, el registro queda activo
+    coleccion().update_one({"_id": d["_id"]}, {"$set": {"estado": "eliminado", "eliminado_en": ahora()},
+                                               "$unset": {"contenido": ""}})
+    auditar("documentos", "baja_logica", f"{d['nombre']} eliminado.", entidad="documento", entidad_id=str(d["_id"]))
     return responder(None, 204)
 
 
 documentar(app, "POST", f"{P}/documentos", "Subir documento", permisos=["archivos.crear"], cuerpo="DocumentoNuevo.ok",
            solo_json=True, descripcion="JPEG, PNG o PDF de hasta 5 MB en Base64. Se valida la firma del archivo, "
-           "se calcula su SHA-256 y se guarda en MongoDB. Un repartidor solo adjunta evidencia a sus entregas.",
-           respuestas={201: ("Documento guardado", "Documento.ok")}, errores=[400, 403, 413, 422])
+           "se calcula su SHA-256 y el archivo se guarda en el bucket (Google Cloud Storage); MongoDB conserva solo sus "
+           "datos. Un repartidor solo adjunta evidencia a sus entregas. `privacidad` opcional: privado (por omisión) o interno.",
+           respuestas={201: ("Documento guardado", "Documento.ok")}, errores=[400, 403, 413, 422, 503])
 documentar(app, "GET", f"{P}/documentos", "Mis documentos", permisos=["archivos.ver"],
            parametros=[("pagina", "query", "integer", "Página"), ("por_pagina", "query", "integer", "1 a 100"),
                        ("referencia_tipo", "query", "string", "entrega|pedido|usuario|candidato"),
                        ("referencia_id", "query", "string", "Id del registro")],
-           descripcion="Cada persona ve lo que subió; administrador y auditor ven todo.",
+           descripcion="Cada persona ve lo que subió y lo marcado como interno; administrador y auditor ven todo. "
+           "No se listan los documentos eliminados.",
            respuestas={200: ("Página de documentos", "DocumentoLista.ok")}, errores=[400, 403])
 documentar(app, "GET", f"{P}/documentos/resumen", "Resumen por tipo (agregación MongoDB)",
            permisos=["reportes.ver", "bitacora.ver"], respuestas={200: ("Totales por tipo", "DocumentosResumen.ok")},
@@ -182,10 +270,17 @@ documentar(app, "GET", f"{P}/documentos/resumen", "Resumen por tipo (agregación
 documentar(app, "GET", f"{P}/documentos/{{id}}", "Metadatos de un documento", permisos=["archivos.ver"],
            parametros=[("id", "path", "string", "ObjectId de 24 caracteres")],
            respuestas={200: ("Documento", "Documento.ok")}, errores=[403, 404])
-documentar(app, "GET", f"{P}/documentos/{{id}}/contenido", "Contenido de un documento", permisos=["archivos.ver"],
+documentar(app, "GET", f"{P}/documentos/{{id}}/enlace", "URL firmada para descargar el archivo",
+           permisos=["archivos.ver"], parametros=[("id", "path", "string", "ObjectId")],
+           descripcion="Devuelve una URL firmada (V4) que caduca en `segundos`; el cliente descarga directo del bucket. "
+           "Quedan registradas en la auditoría.",
+           respuestas={200: ("Enlace de descarga", "DocumentoEnlace.ok")}, errores=[403, 404, 503])
+documentar(app, "GET", f"{P}/documentos/{{id}}/contenido", "Contenido de un documento (Base64)", permisos=["archivos.ver"],
            parametros=[("id", "path", "string", "ObjectId")],
-           respuestas={200: ("Documento con Base64", "DocumentoContenido.ok")}, errores=[403, 404])
+           descripcion="Para clientes que no pueden usar la URL firmada. Se verifica el SHA-256 antes de entregarlo.",
+           respuestas={200: ("Documento con Base64", "DocumentoContenido.ok")}, errores=[403, 404, 409, 503])
 documentar(app, "DELETE", f"{P}/documentos/{{id}}", "Eliminar documento", permisos=["archivos.crear"],
            parametros=[("id", "path", "string", "ObjectId")],
-           descripcion="Solo quien lo subió o el administrador. La evidencia de una entrega cerrada no se borra (409).",
-           respuestas={204: ("Eliminado, sin cuerpo", None)}, errores=[403, 404, 409])
+           descripcion="Solo quien lo subió o el administrador. Borra el objeto del bucket y marca el registro como "
+           "eliminado. La evidencia de una entrega cerrada no se borra (409).",
+           respuestas={204: ("Eliminado, sin cuerpo", None)}, errores=[403, 404, 409, 503])

@@ -1,0 +1,42 @@
+{
+  "datos": [
+    {
+      "id": 2,
+      "estado": "propuesto",
+      "version": 1,
+      "microhub": {
+        "id": 1,
+        "nombre": "Microhub San Bernabé Centro"
+      },
+      "fecha": "2026-10-19",
+      "rutas": 2,
+      "paradas": 6,
+      "distancia_km": 3.07,
+      "costo": 121.79,
+      "creado_por": 1,
+      "creado_en": "2026-10-19T23:49:50-06:00"
+    },
+    {
+      "id": 1,
+      "estado": "propuesto",
+      "version": 1,
+      "microhub": {
+        "id": 1,
+        "nombre": "Microhub San Bernabé Centro"
+      },
+      "fecha": "2026-10-19",
+      "rutas": 2,
+      "paradas": 6,
+      "distancia_km": 3.07,
+      "costo": 121.79,
+      "creado_por": 1,
+      "creado_en": "2026-10-19T23:49:50-06:00"
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 3,
+    "total": 2,
+    "paginas": 1
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "datos": [
+    {
+      "fecha": "2026-10-19",
+      "zona": {
+        "id": 1,
+        "nombre": "San Bernabé Centro"
+      },
+      "categoria": null,
+      "pedidos": 7,
+      "unidades": 48,
+      "venta": 1043.0,
+      "clientes": 5,
+      "no_atendidos": 0,
+      "fuente": "pedidos"
+    },
+    {
+      "fecha": "2026-10-19",
+      "zona": {
+        "id": 2,
+        "nombre": "Valles de San Bernabé"
+      },
+      "categoria": null,
+      "pedidos": 4,
+      "unidades": 20,
+      "venta": 670.5,
+      "clientes": 3,
+      "no_atendidos": 0,
+      "fuente": "pedidos"
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 3,
+    "total": 367,
+    "paginas": 123
+  }
+}

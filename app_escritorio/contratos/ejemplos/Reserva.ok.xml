@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reserva xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <id>31</id>
+  <microhub_id>1</microhub_id>
+  <producto_id>4</producto_id>
+  <cantidad>3</cantidad>
+  <estado>activa</estado>
+  <vigente>true</vigente>
+  <referencia>
+    <tipo>pedido</tipo>
+    <id>166</id>
+  </referencia>
+  <creada_en>2026-10-19T09:30:00-06:00</creada_en>
+  <vence_en>2026-10-19T10:00:00-06:00</vence_en>
+  <cerrada_en xsi:nil="true" />
+</reserva>

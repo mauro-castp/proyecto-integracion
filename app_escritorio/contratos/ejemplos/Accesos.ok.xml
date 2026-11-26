@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<accesos xmlns="urn:microhubs:v1" version="1">
+  <desde>2026-11-18</desde>
+  <hasta>2026-11-25</hasta>
+  <totales>
+    <login_exitoso>42</login_exitoso>
+    <login_fallido>3</login_fallido>
+    <logout>30</logout>
+    <bloqueo_cuenta>0</bloqueo_cuenta>
+    <desbloqueo>0</desbloqueo>
+    <acceso_denegado>2</acceso_denegado>
+  </totales>
+  <correos_con_mas_fallos>
+    <correo>
+      <correo>alguien@ejemplo.mx</correo>
+      <intentos>3</intentos>
+      <ultimo_intento>2026-11-25T10:30:00-06:00</ultimo_intento>
+    </correo>
+  </correos_con_mas_fallos>
+  <denegados_frecuentes>
+    <denegado>
+      <detalle>GET /api/v1/auditoria sin auditoria.ver</detalle>
+      <veces>2</veces>
+    </denegado>
+  </denegados_frecuentes>
+</accesos>

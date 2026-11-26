@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · servicio: costos · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+  <xs:include schemaLocation="comun_ola1.xsd"/>
+  <xs:include schemaLocation="comun_ola2.xsd"/>
+
+  <xs:complexType name="TCosResumen">
+    <xs:sequence>
+      <xs:element name="ambito" type="xs:string"/>
+      <xs:element name="ambito_id" type="xs:long" nillable="true"/>
+      <xs:element name="origen" type="xs:string"/>
+      <xs:element name="conceptos" type="xs:long"/>
+      <xs:element name="fijos_mes" type="xs:decimal"/>
+      <xs:element name="por_categoria">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="categoria_costo" type="tns:TCosCategoria" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="variables">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="variable" type="tns:TCosVariable" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="variable_pedido" type="xs:decimal"/>
+      <xs:element name="variable_entrega" type="xs:decimal"/>
+      <xs:element name="variable_km" type="xs:decimal"/>
+      <xs:element name="comision_pct" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCosCategoria">
+    <xs:sequence>
+      <xs:element name="categoria" type="xs:string" nillable="true"/>
+      <xs:element name="monto" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCosVariable">
+    <xs:sequence>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="unidad" type="xs:string"/>
+      <xs:element name="monto" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCosUnitarios">
+    <xs:sequence>
+      <xs:element name="entrada" type="tns:TCosEntrada"/>
+      <xs:element name="fijos_mes" type="xs:decimal"/>
+      <xs:element name="costo_fijo_pedido" type="xs:decimal" nillable="true"/>
+      <xs:element name="variable_pedido" type="xs:decimal"/>
+      <xs:element name="comision_pedido" type="xs:decimal"/>
+      <xs:element name="costo_entrega" type="xs:decimal"/>
+      <xs:element name="costo_variable_pedido" type="xs:decimal"/>
+      <xs:element name="costo_por_pedido" type="xs:decimal" nillable="true"/>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCosEntrada">
+    <xs:sequence>
+      <xs:element name="ambito" type="xs:string"/>
+      <xs:element name="ambito_id" type="xs:long" nillable="true"/>
+      <xs:element name="origen" type="xs:string"/>
+      <xs:element name="pedidos_mes" type="xs:decimal"/>
+      <xs:element name="ticket" type="xs:decimal"/>
+      <xs:element name="margen_bruto" type="xs:decimal"/>
+      <xs:element name="distancia_km" type="xs:decimal"/>
+      <xs:element name="paradas_por_viaje" type="xs:decimal"/>
+      <xs:element name="valores_modificados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="clave" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCosConcepto">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="ambito">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="global"/>
+            <xs:enumeration value="microhub"/>
+            <xs:enumeration value="candidato"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ambito_id" type="xs:long" nillable="true"/>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="categoria" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="renta"/>
+            <xs:enumeration value="personal"/>
+            <xs:enumeration value="servicios"/>
+            <xs:enumeration value="almacenamiento"/>
+            <xs:enumeration value="transporte"/>
+            <xs:enumeration value="operacion"/>
+            <xs:enumeration value="otros"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="fijo"/>
+            <xs:enumeration value="variable"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="unidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="mes"/>
+            <xs:enumeration value="pedido"/>
+            <xs:enumeration value="entrega"/>
+            <xs:enumeration value="km"/>
+            <xs:enumeration value="pct_venta"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="monto" type="xs:decimal"/>
+      <xs:element name="vigente_desde" type="xs:date"/>
+      <xs:element name="vigente_hasta" type="xs:date" nillable="true"/>
+      <xs:element name="estatus">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="activo"/>
+            <xs:enumeration value="inactivo"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="fuente">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="medido"/>
+            <xs:enumeration value="supuesto"/>
+            <xs:enumeration value="contrato"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="justificacion" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCosConceptoLista">
+    <xs:sequence>
+      <xs:element name="datos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="concepto" type="tns:TCosConcepto" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="paginacion" type="tns:TPaginacion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCosRentabilidad">
+    <xs:sequence>
+      <xs:element name="entrada" type="tns:TCosEntrada"/>
+      <xs:element name="ingresos_mes" type="xs:decimal"/>
+      <xs:element name="margen_bruto_mes" type="xs:decimal"/>
+      <xs:element name="costo_variable_mes" type="xs:decimal"/>
+      <xs:element name="margen_contribucion_pedido" type="xs:decimal"/>
+      <xs:element name="margen_contribucion_mes" type="xs:decimal"/>
+      <xs:element name="costos_fijos_mes" type="xs:decimal"/>
+      <xs:element name="utilidad_mes" type="xs:decimal"/>
+      <xs:element name="margen_operativo_pct" type="xs:decimal" nillable="true"/>
+      <xs:element name="costo_por_pedido" type="xs:decimal" nillable="true"/>
+      <xs:element name="cubre_costos" type="xs:boolean"/>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCosSensibilidad">
+    <xs:sequence>
+      <xs:element name="entrada" type="tns:TCosEntrada"/>
+      <xs:element name="costo_por_pedido" type="xs:decimal" nillable="true"/>
+      <xs:element name="utilidad_mes" type="xs:decimal"/>
+      <xs:element name="palanca_mas_sensible" type="xs:string"/>
+      <xs:element name="filas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="fila" type="tns:TCosSensibilidadFila" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="supuestos_usados">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCosSensibilidadFila">
+    <xs:sequence>
+      <xs:element name="palanca" type="xs:string"/>
+      <xs:element name="cambio_pct" type="xs:long"/>
+      <xs:element name="costo_por_pedido" type="xs:decimal" nillable="true"/>
+      <xs:element name="utilidad_mes" type="xs:decimal"/>
+      <xs:element name="cambio_utilidad" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCosConceptoCambio">
+    <xs:sequence>
+      <xs:element name="nombre" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="120"/>
+            <xs:minLength value="3"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="categoria" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="renta"/>
+            <xs:enumeration value="personal"/>
+            <xs:enumeration value="servicios"/>
+            <xs:enumeration value="almacenamiento"/>
+            <xs:enumeration value="transporte"/>
+            <xs:enumeration value="operacion"/>
+            <xs:enumeration value="otros"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="tipo" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="fijo"/>
+            <xs:enumeration value="variable"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="unidad" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="mes"/>
+            <xs:enumeration value="pedido"/>
+            <xs:enumeration value="entrega"/>
+            <xs:enumeration value="km"/>
+            <xs:enumeration value="pct_venta"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="monto" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="vigente_desde" type="xs:date" minOccurs="0" nillable="true"/>
+      <xs:element name="vigente_hasta" type="xs:date" minOccurs="0" nillable="true"/>
+      <xs:element name="fuente" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="medido"/>
+            <xs:enumeration value="supuesto"/>
+            <xs:enumeration value="contrato"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="justificacion" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="300"/>
+            <xs:minLength value="10"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TCosConceptoNuevo">
+    <xs:sequence>
+      <xs:element name="ambito">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="global"/>
+            <xs:enumeration value="microhub"/>
+            <xs:enumeration value="candidato"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ambito_id" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="nombre">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="120"/>
+            <xs:minLength value="3"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="categoria">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="renta"/>
+            <xs:enumeration value="personal"/>
+            <xs:enumeration value="servicios"/>
+            <xs:enumeration value="almacenamiento"/>
+            <xs:enumeration value="transporte"/>
+            <xs:enumeration value="operacion"/>
+            <xs:enumeration value="otros"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="tipo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="fijo"/>
+            <xs:enumeration value="variable"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="unidad">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="mes"/>
+            <xs:enumeration value="pedido"/>
+            <xs:enumeration value="entrega"/>
+            <xs:enumeration value="km"/>
+            <xs:enumeration value="pct_venta"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="monto">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="vigente_desde" type="xs:date" minOccurs="0" nillable="true"/>
+      <xs:element name="vigente_hasta" type="xs:date" minOccurs="0" nillable="true"/>
+      <xs:element name="fuente" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="medido"/>
+            <xs:enumeration value="supuesto"/>
+            <xs:enumeration value="contrato"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="justificacion">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="300"/>
+            <xs:minLength value="10"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="resumen_costos">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCosResumen">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="costos_unitarios">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCosUnitarios">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="concepto_costo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCosConcepto">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="conceptos_costo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCosConceptoLista">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="rentabilidad">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCosRentabilidad">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sensibilidad_costos">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCosSensibilidad">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="supuestos_costos">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TSupuestosDoc">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="concepto_costo_nuevo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCosConceptoNuevo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="concepto_costo_cambio">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TCosConceptoCambio">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

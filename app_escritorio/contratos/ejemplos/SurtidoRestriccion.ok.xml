@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<surtido_restriccion xmlns="urn:microhubs:v1" version="1">
+  <microhub>
+    <id>1</id>
+    <nombre>Microhub San Bernabé Centro</nombre>
+  </microhub>
+  <espacio_total>2500.0</espacio_total>
+  <presupuesto>90000.0</presupuesto>
+  <actualizado_en>2026-10-19T23:44:58-06:00</actualizado_en>
+</surtido_restriccion>

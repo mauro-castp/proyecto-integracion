@@ -1,0 +1,20 @@
+{
+  "producto_id": 4,
+  "zona_id": 1,
+  "precio_final": 44.03,
+  "costo": 31.5,
+  "volumen_base": 100,
+  "elasticidad": -1.2,
+  "supuestos": "La elasticidad es un supuesto, no una medición: indica cuánto cambia el volumen por cada 1 % que cambia el precio.",
+  "escenarios": [
+    {
+      "variacion_pct": 10,
+      "precio": 48.43,
+      "volumen_estimado": 88.0,
+      "ingreso": 4261.84,
+      "ingreso_vs_base_pct": -3.2,
+      "margen_total": 1494.24,
+      "volumen_para_igualar_margen": 74.2
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "zona": {
+    "id": 1,
+    "nombre": "San Bernabé Centro"
+  },
+  "poblacion": 4300,
+  "hogares": 1194,
+  "fuente": "INEGI, Censo 2020, AGEB 1902600010532"
+}

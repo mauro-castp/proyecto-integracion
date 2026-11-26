@@ -1,0 +1,26 @@
+{
+  "datos": [
+    {
+      "id": 3,
+      "proveedor_id": 2,
+      "puntualidad": 5,
+      "calidad": 4,
+      "precio": 3,
+      "comentario": "Muy puntual; precio algo alto.",
+      "evaluado_por": 2,
+      "evaluado_en": "2026-10-19T09:30:00-06:00"
+    }
+  ],
+  "promedio": {
+    "puntualidad": 5.0,
+    "calidad": 4.0,
+    "precio": 3.0,
+    "general": 4.0
+  },
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}
