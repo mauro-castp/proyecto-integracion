@@ -84,7 +84,7 @@ sudo install -m 644 deploy/gcp/nginx-microhubs.conf /etc/nginx/sites-available/m
 sudo sed -i "s/__SERVER_NAME__/$HOST_PUBLICO/" /etc/nginx/sites-available/microhubs
 sudo ln -sf /etc/nginx/sites-available/microhubs /etc/nginx/sites-enabled/microhubs
 sudo rm -f /etc/nginx/sites-enabled/default
-sudo nginx -t && sudo systemctl reload nginx
+sudo nginx -t && sudo systemctl reload-or-restart nginx
 echo "   Nginx sirve $HOST_PUBLICO"
 
 if [ -n "$HTTPS" ]; then
