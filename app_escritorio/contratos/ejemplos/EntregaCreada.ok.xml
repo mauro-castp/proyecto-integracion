@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entrega_creada xmlns="urn:microhubs:v1" version="1">
+  <entrega_id>412</entrega_id>
+  <pedido_id>901</pedido_id>
+  <repartidor_id>7</repartidor_id>
+  <estado_pedido>en_ruta</estado_pedido>
+</entrega_creada>

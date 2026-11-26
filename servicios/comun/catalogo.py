@@ -34,6 +34,16 @@ def con_cache(recurso, construir):
     return datos, "MISS"
 
 
+def invalidar(recurso, singular):
+    """Tras un alta, cambio o baja: borra las consultas guardadas del recurso y los mapas que otros servicios arman con él."""
+    try:
+        for patron in (f"cache:catalogo:{recurso}:*", f"cache:catalogo:{singular}:*", f"cache:mapa:{recurso}:*"):
+            for llave in r_cache.scan_iter(patron):
+                r_cache.delete(llave)
+    except redis.RedisError:
+        pass                                        # sin Redis no hay caché que quede vieja
+
+
 def responder_con_cache(datos, raiz, item, estado):
     """Responde una lista (raíz + item) o un registro (item) e informa X-Cache."""
     # La caché guarda JSON: los importes regresan como texto y se reconvierten a Decimal para el XML.

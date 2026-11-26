@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zona_cambio xmlns="urn:microhubs:v1" version="1">
+  <ticket_minimo>90</ticket_minimo>
+</zona_cambio>

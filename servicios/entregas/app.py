@@ -31,7 +31,7 @@ from flask import g, request
 from pymongo.errors import DuplicateKeyError
 
 from comun import config
-from comun.base import (crear_app, documentar, filtro_entero, filtro_opcion, leer_cuerpo, leer_paginacion, lista,
+from comun.base import (crear_app, documentar, filtro_entero, filtro_opcion, leer_cuerpo, leer_paginacion, limitar_microhub, lista,
                         paginacion, requiere, responder)
 from comun.base_errores import ErrorApi, conflicto, invalido, no_encontrado
 from comun.datos import ahora, conexion, consultar, mongo, mongo_disponible
@@ -152,6 +152,38 @@ def detalle(eid):
               "orden_parada": f["orden_parada"], "distancia_km": numero(f["distancia_km"]),
               "minutos_estimados": numero(f["minutos_estimados"]), "total": dinero(f["total"]), "lineas": lineas}
     return responder(cuerpo, raiz="entrega_detalle")
+
+
+# --------------------------------------------------------------------
+# Asignación a un repartidor
+# --------------------------------------------------------------------
+@app.post(f"{P}/entregas")
+@requiere("entregas.asignar")
+def asignar():
+    """Crea la entrega de un pedido listo y lo pone en ruta. El trigger avisa al repartidor."""
+    d = validar(leer_cuerpo("entrega_nueva"), [Campo("pedido_id", "int", minimo=1), Campo("repartidor_id", "int", minimo=1),
+                                               Campo("orden_parada", "int", req=False, nulo=True, minimo=1, maximo=500)])
+    with conexion() as con, con.cursor() as cur:
+        cur.execute("SELECT id, microhub_id, estado::text AS estado, listo_en FROM pedido WHERE id = %s FOR UPDATE", (d["pedido_id"],))
+        p = cur.fetchone()
+        if not p:
+            raise no_encontrado("No existe ese pedido.")
+        limitar_microhub(p["microhub_id"])
+        cur.execute("SELECT 1 AS x FROM entrega WHERE pedido_id = %s", (p["id"],))
+        if cur.fetchone():
+            raise conflicto("Ese pedido ya tiene una entrega asignada.")
+        if p["estado"] != "en_preparacion" or not p["listo_en"]:
+            raise conflicto("El pedido debe estar en preparación y marcado como listo.")
+        cur.execute("SELECT 1 AS x FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE u.id = %s AND r.clave = 'repartidor' AND u.estatus = 'activo'",
+                    (d["repartidor_id"],))
+        if not cur.fetchone():
+            raise invalido("repartidor_id", "No es un repartidor activo.")
+        cur.execute("INSERT INTO entrega (pedido_id, repartidor_id, turno_fecha, asignada_en, salida_en, orden_parada) "
+                    "VALUES (%s, %s, current_date, now(), now(), %s) RETURNING id", (p["id"], d["repartidor_id"], d.get("orden_parada")))
+        eid = cur.fetchone()["id"]
+        cur.execute("UPDATE pedido SET estado = 'en_ruta' WHERE id = %s", (p["id"],))
+    return responder({"entrega_id": eid, "pedido_id": p["id"], "repartidor_id": d["repartidor_id"], "estado_pedido": "en_ruta"}, 201,
+                     raiz="entrega_creada")
 
 
 # --------------------------------------------------------------------
@@ -341,3 +373,6 @@ documentar(app, "GET", f"{P}/entregas/repartidores", "Repartidores disponibles",
            parametros=[("pagina", "query", "integer", "Página"), ("por_pagina", "query", "integer", "1 a 100")],
            descripcion="Repartidores activos y cuántas entregas tienen abiertas hoy. Lo consume el servicio de rutas.",
            respuestas={200: ("Página de repartidores", "Repartidores.ok")}, errores=[400, 403])
+documentar(app, "POST", f"{P}/entregas", "Asignar una entrega", permisos=["entregas.asignar"], cuerpo="EntregaNueva.ok",
+           descripcion="El pedido debe estar en preparación y listo; queda en ruta y el repartidor recibe el aviso. Un operador solo asigna los de su microhub.",
+           respuestas={201: ("Entrega creada", "EntregaCreada.ok")}, errores=[400, 403, 404, 409, 422])

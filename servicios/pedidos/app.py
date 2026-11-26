@@ -19,13 +19,13 @@ from flask import g
 
 from comun import config
 from comun.base import (crear_app, documentar, filtro_entero, filtro_fecha, filtro_opcion, leer_cuerpo,
-                        leer_paginacion, lista, paginacion, requiere, responder, texto_busqueda, tiene)
-from comun.base_errores import ErrorApi, conflicto, filtro_invalido, no_encontrado, prohibido
+                        leer_paginacion, limitar_microhub, lista, paginacion, requiere, responder, texto_busqueda, tiene)
+from comun.base_errores import ErrorApi, conflicto, filtro_invalido, invalido, no_encontrado, prohibido
 from comun.datos import conexion, consultar, parametro
 from comun.formatos import ZONA, dinero, fecha, numero
-from comun.validar import Campo, validar
+from comun.validar import Campo, unir_errores, validar
 
-app = crear_app("pedidos", "Microhubs · Pedidos", "Consulta de pedidos, detalle, historial y cambio de estado.", 5104)
+app = crear_app("pedidos", "Microhubs · Pedidos", "Alta de pedidos, detalle, historial, cambio de estado y preparación.", 5104)
 P = config.PREFIJO
 ESTADOS = ["creado", "pendiente_asignacion", "asignado", "en_preparacion", "en_ruta", "entregado",
            "entrega_parcial", "entrega_fallida", "cancelado"]
@@ -144,6 +144,101 @@ def cambiar_estado(pid):
     f = consultar("SELECT p.id, p.folio, p.estado::text AS estado, p.zona_id, z.nombre AS zona, p.microhub_id, "
                   "p.total, p.creado_en FROM pedido p JOIN zona z ON z.id = p.zona_id WHERE p.id = %s", (pid,), una=True)
     return responder(pedido(f), raiz="pedido")
+
+
+# --------------------------------------------------------------------
+# Alta de un pedido y preparación
+# --------------------------------------------------------------------
+UUID = r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+SQL_CREADO = ("SELECT p.id, p.folio, p.estado::text AS estado, p.cliente_id, p.zona_id, p.microhub_id, p.subtotal, p.costo_envio, p.total, "
+              "p.motivo_no_asignacion FROM pedido p ")
+
+
+def _creado(f, duplicado):
+    return {"id": f["id"], "folio": f["folio"], "estado": f["estado"], "zona_id": f["zona_id"], "microhub_id": f["microhub_id"],
+            "subtotal": dinero(f["subtotal"]), "costo_envio": dinero(f["costo_envio"]), "total": dinero(f["total"]),
+            "asignado": f["microhub_id"] is not None, "motivo": f["motivo_no_asignacion"], "duplicado": duplicado}
+
+
+def _lineas(crudas):
+    if not 1 <= len(crudas) <= 50:
+        raise invalido("lineas", "Un pedido lleva entre 1 y 50 productos.")
+    campos = [Campo("producto_id", "int", minimo=1), Campo("cantidad", "int", minimo=1, maximo=1000)]
+    lineas = unir_errores(*[(lambda x=x, i=i: validar(x if isinstance(x, dict) else {}, campos, prefijo=f"lineas[{i}]."))
+                            for i, x in enumerate(crudas)])
+    if len({x["producto_id"] for x in lineas}) != len(lineas):
+        raise invalido("lineas", "Cada producto va en una sola línea.")
+    return lineas
+
+
+@app.post(f"{P}/pedidos")
+@requiere("pedidos.crear")
+def crear():
+    """Alta con las mismas reglas que el portal: precio vigente congelado, ticket mínimo, costo de envío y asignación del motor."""
+    d = validar(leer_cuerpo("pedido_nuevo"), [
+        Campo("cliente_id", "int", req=False, nulo=True, minimo=1), Campo("domicilio_id", "int", req=False, nulo=True, minimo=1),
+        Campo("lineas", "lista"), Campo("operacion_uuid", req=False, nulo=True, patron=UUID, mensaje="Debe ser un UUID.")])
+    lineas = _lineas(d["lineas"])
+    uid, operacion = g.usuario["id"], (d.get("operacion_uuid") or "").lower() or None
+    if g.usuario["rol"] == "cliente":
+        propio = consultar("SELECT id FROM cliente WHERE usuario_id = %s", (uid,), una=True)
+        if not propio or (d.get("cliente_id") and d["cliente_id"] != propio["id"]):
+            raise prohibido("Un cliente solo pide a su nombre.")
+        cliente_id = propio["id"]
+    else:
+        cliente_id = d.get("cliente_id")
+        if not cliente_id:
+            raise invalido("cliente_id", "Indica para qué cliente es el pedido.")
+    if operacion:
+        previo = consultar(SQL_CREADO + "WHERE p.operacion_uuid = %s", (operacion,), una=True)
+        if previo:
+            if previo["cliente_id"] != cliente_id:
+                raise conflicto("Esa operacion_uuid ya se usó en otro pedido.")
+            return responder(_creado(previo, True), 200, raiz="pedido_creado")
+    dom = consultar("SELECT id, zona_id FROM domicilio WHERE cliente_id = %s AND activo AND (%s::int IS NULL OR id = %s) ORDER BY id LIMIT 1",
+                    (cliente_id, d.get("domicilio_id"), d.get("domicilio_id")), una=True)
+    if not dom:
+        raise invalido("domicilio_id", "El cliente no tiene ese domicilio activo.")
+    if not dom["zona_id"]:
+        raise ErrorApi(422, "REGLA_NEGOCIO", "El domicilio está fuera de las zonas de cobertura.")
+    ids = [x["producto_id"] for x in lineas]
+    precios = {f["id"]: f["precio"] for f in consultar("SELECT id, precio FROM producto WHERE id = ANY(%s) AND estatus = 'activo'", (ids,))}
+    faltan = [i for i in ids if i not in precios]
+    if faltan:
+        raise invalido("lineas", f"Productos que no existen o no están activos: {', '.join(map(str, faltan))}.")
+    subtotal = sum(precios[x["producto_id"]] * x["cantidad"] for x in lineas)
+    minimo = consultar("SELECT fn_ticket_minimo(%s) AS t", (dom["zona_id"],), una=True)["t"]
+    if subtotal < minimo:
+        with conexion() as con, con.cursor() as cur:          # RN07/RN08: la demanda que no se atendió queda registrada
+            cur.execute("INSERT INTO demanda_no_atendida (tipo, zona_id, cliente_id, origen) VALUES ('bajo_ticket_minimo', %s, %s, 'api')",
+                        (dom["zona_id"], cliente_id))
+        raise ErrorApi(422, "REGLA_NEGOCIO", f"El subtotal ({subtotal:.2f}) no alcanza el pedido mínimo de la zona ({minimo:.2f}).")
+    with conexion() as con, con.cursor() as cur:
+        cur.execute("SELECT set_config('app.rol', 'sistema', true)")           # las transiciones del alta las hace el motor
+        cur.execute("INSERT INTO pedido (cliente_id, domicilio_id, zona_id, subtotal, costo_envio, operacion_uuid) "
+                    "VALUES (%s,%s,%s,%s, fn_costo_envio(%s, %s::numeric), %s) RETURNING id",
+                    (cliente_id, dom["id"], dom["zona_id"], subtotal, dom["zona_id"], subtotal, operacion))
+        pid = cur.fetchone()["id"]
+        for x in lineas:
+            cur.execute("INSERT INTO pedido_detalle (pedido_id, producto_id, cantidad, precio_unitario) VALUES (%s,%s,%s,%s)",
+                        (pid, x["producto_id"], x["cantidad"], precios[x["producto_id"]]))
+        cur.execute("SELECT * FROM fn_asignar_pedido(%s)", (pid,))           # microhub y descuento de inventario, atómicos
+        cur.fetchone()
+    return responder(_creado(consultar(SQL_CREADO + "WHERE p.id = %s", (pid,), una=True), False), 201, raiz="pedido_creado")
+
+
+@app.post(f"{P}/pedidos/<int:pid>/listo")
+@requiere("pedidos.cambiar_estado")
+def listo(pid):
+    """El operador marca un pedido en preparación como listo para despacho; es lo que el servicio de rutas toma."""
+    f = _visible(pid)
+    limitar_microhub(f["microhub_id"])
+    if f["estado"] != "en_preparacion":
+        raise conflicto("Solo un pedido en preparación puede marcarse listo.")
+    with conexion() as con, con.cursor() as cur:
+        cur.execute("UPDATE pedido SET listo_en = COALESCE(listo_en, now()) WHERE id = %s RETURNING listo_en", (pid,))
+        marca = cur.fetchone()["listo_en"]
+    return responder({"id": pid, "estado": "en_preparacion", "listo_en": fecha(marca)}, raiz="pedido_listo")
 
 
 # --------------------------------------------------------------------
@@ -286,3 +381,9 @@ documentar(app, "GET", f"{P}/pedidos/listos", "Pedidos listos para despachar", p
                        ("por_pagina", "query", "integer", "1 a 100")],
            descripcion="Pedidos en preparación que el operador ya marcó como listos, con las coordenadas de entrega. Lo consume el servicio de rutas.",
            respuestas={200: ("Página de pedidos listos", "PedidosListos.ok")}, errores=[400, 403])
+documentar(app, "POST", f"{P}/pedidos", "Crear un pedido", permisos=["pedidos.crear"], cuerpo="PedidoNuevo.ok",
+           descripcion="El precio lo pone el servidor y se congela. Aplica ticket mínimo, costo de envío, límite por línea y la asignación del motor "
+                       "(que descuenta inventario). Un cliente solo pide a su nombre. Con operacion_uuid reenviar no duplica (200, duplicado=true).",
+           respuestas={201: ("Pedido creado", "PedidoCreado.ok")}, errores=[400, 403, 409, 422])
+documentar(app, "POST", f"{P}/pedidos/{{id}}/listo", "Marcar listo para despacho", permisos=["pedidos.cambiar_estado"],
+           parametros=[("id", "path", "integer", "Id del pedido")], respuestas={200: ("Pedido listo", "PedidoListo.ok")}, errores=[403, 404, 409])

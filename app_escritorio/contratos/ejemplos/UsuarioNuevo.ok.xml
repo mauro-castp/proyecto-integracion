@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<usuario_nuevo xmlns="urn:microhubs:v1" version="1">
+  <nombre>Laura</nombre>
+  <apellidos>Cantú Ríos</apellidos>
+  <telefono>8110000000</telefono>
+  <rol>repartidor</rol>
+  <correo>laura.cantu@ejemplo.mx</correo>
+  <clave>Una-clave-larga-1</clave>
+</usuario_nuevo>

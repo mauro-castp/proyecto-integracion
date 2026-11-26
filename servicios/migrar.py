@@ -19,7 +19,7 @@ import psycopg
 DSN = os.environ.get("PG_DSN", "host=127.0.0.1 port=5432 dbname=microhubs_p1 user=postgres password=microhubs_dev")
 CARPETA = Path(os.environ.get("SQL_DIR", "/app/sql"))
 SCRIPTS = ["06_planeacion.sql", "07_web_ampliado.sql", "08_microservicios.sql", "09_ola1_flujo_negocio.sql", "10_ola2_analitica.sql",
-           "11_ola3_observabilidad.sql"]
+           "11_ola3_observabilidad.sql", "12_entrega_final.sql"]
 
 
 def borrar_cache_permisos():

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pedido_listo xmlns="urn:microhubs:v1" version="1">
+  <id>901</id>
+  <estado>en_preparacion</estado>
+  <listo_en>2026-11-26T10:40:00-06:00</listo_en>
+</pedido_listo>

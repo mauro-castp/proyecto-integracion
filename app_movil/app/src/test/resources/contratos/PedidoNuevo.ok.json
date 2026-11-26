@@ -1,0 +1,14 @@
+{
+  "cliente_id": 1,
+  "lineas": [
+    {
+      "producto_id": 3,
+      "cantidad": 4
+    },
+    {
+      "producto_id": 7,
+      "cantidad": 2
+    }
+  ],
+  "operacion_uuid": "7b1e4c2a-3f5d-4a6b-9c8d-0e1f2a3b4c5d"
+}

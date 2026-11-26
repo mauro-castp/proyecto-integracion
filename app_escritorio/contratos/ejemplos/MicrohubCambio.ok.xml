@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microhub_cambio xmlns="urn:microhubs:v1" version="1">
+  <capacidad_turno>140</capacidad_turno>
+</microhub_cambio>

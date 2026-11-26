@@ -1,0 +1,10 @@
+{
+  "clave": "ZN-NV01",
+  "nombre": "Nueva Esperanza",
+  "colonia": "Nueva Esperanza",
+  "codigo_postal": "64102",
+  "latitud": 25.7605,
+  "longitud": -100.3702,
+  "ticket_minimo": 80,
+  "costo_envio": 15
+}
