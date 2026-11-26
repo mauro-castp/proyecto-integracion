@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sync_operaciones xmlns="urn:microhubs:v1" version="1">
+  <datos>
+    <operacion>
+      <id>31</id>
+      <lote_uuid>0b8e6f1c-2a4d-4c7e-9a31-5d6e7f809a1b</lote_uuid>
+      <dispositivo>android-repartidor1</dispositivo>
+      <operacion_uuid>4f1d7a2e-9b3c-4d5e-8f60-1a2b3c4d5e6f</operacion_uuid>
+      <tipo>entrega_resultado</tipo>
+      <creada_en>2026-11-25T10:30:00-06:00</creada_en>
+      <estado>conflicto</estado>
+      <http_status>409</http_status>
+      <codigo>CONFLICTO</codigo>
+      <mensaje>La entrega ya se cerró con otro identificador.</mensaje>
+      <intentos>1</intentos>
+      <procesada_en>2026-11-25T10:30:00-06:00</procesada_en>
+      <usuario>
+        <id>3</id>
+        <nombre>Mariana Ortega</nombre>
+      </usuario>
+    </operacion>
+  </datos>
+  <paginacion>
+    <pagina>1</pagina>
+    <por_pagina>20</por_pagina>
+    <total>1</total>
+    <paginas>1</paginas>
+  </paginacion>
+</sync_operaciones>

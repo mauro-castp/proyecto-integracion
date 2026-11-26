@@ -44,6 +44,7 @@
             <xs:enumeration value="reversion_administrativa"/>
             <xs:enumeration value="movimiento_inventario"/>
             <xs:enumeration value="cambio_configuracion"/>
+            <xs:enumeration value="descarga"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:element>

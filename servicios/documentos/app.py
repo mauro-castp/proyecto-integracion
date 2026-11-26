@@ -149,8 +149,8 @@ def subir():
         except almacen.ErrorAlmacen:
             pass
         raise
-    auditar("documentos", "subir", f"{d['nombre']} ({len(contenido)} bytes) a {ref['tipo']} {ref['id']}.",
-            entidad="documento", entidad_id=None)
+    auditar("documentos", "alta", f"{d['nombre']} ({len(contenido)} bytes) a {ref['tipo']} {ref['id']}.",
+            entidad="documento", entidad_id=str(oid))
     return responder(metadatos(doc), 201, raiz="documento")
 
 
@@ -217,8 +217,8 @@ def enlace(did):
     url, expira = almacen.obtener().url_firmada(d["ruta"], segundos, d["nombre"], d["tipo_mime"])
     if url.startswith("/"):                                                  # almacén local: la URL es de este servicio
         url = request.host_url.rstrip("/") + url
-    auditar("documentos", "enlace", f"Enlace de descarga de {d['nombre']} (caduca en {segundos} s).",
-            entidad="documento", entidad_id=None)
+    auditar("documentos", "descarga", f"Enlace de descarga de {d['nombre']} (caduca en {segundos} s).",
+            entidad="documento", entidad_id=str(d["_id"]))
     return responder({"id": str(d["_id"]), "nombre": d["nombre"], "url_firmada": url, "metodo": "GET",
                       "segundos": segundos, "expira_en": fecha(dt.datetime.fromtimestamp(expira, tz=dt.timezone.utc))},
                      raiz="documento_enlace")
@@ -248,7 +248,7 @@ def borrar(did):
         almacen.obtener().borrar(d["ruta"])                                  # primero el objeto; si falla, el registro queda activo
     coleccion().update_one({"_id": d["_id"]}, {"$set": {"estado": "eliminado", "eliminado_en": ahora()},
                                                "$unset": {"contenido": ""}})
-    auditar("documentos", "eliminar", f"{d['nombre']} eliminado.", entidad="documento", entidad_id=None)
+    auditar("documentos", "baja_logica", f"{d['nombre']} eliminado.", entidad="documento", entidad_id=str(d["_id"]))
     return responder(None, 204)
 
 

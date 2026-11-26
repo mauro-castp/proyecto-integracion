@@ -15,7 +15,7 @@ DEP = ["postgres", "redis", "mongo", "bucket"]
 TIPOS_EXTERNOS = {**_COMUN1, **_COMUN2, "TSaludDependencias": [F(d, "string", enum=["ok", "error", "no_aplica"]) for d in DEP]}
 
 ACCIONES = ["alta", "modificacion", "baja_logica", "login_exitoso", "login_fallido", "logout", "bloqueo_cuenta", "desbloqueo",
-            "acceso_denegado", "cambio_estado", "reasignacion", "reversion_administrativa", "movimiento_inventario", "cambio_configuracion"]
+            "acceso_denegado", "cambio_estado", "reasignacion", "reversion_administrativa", "movimiento_inventario", "cambio_configuracion", "descarga"]
 ESTADOS = ["ok", "degradado", "caido"]
 TIPOS_ALERTA = ["servicio_caido", "servicio_degradado", "dependencia_caida", "latencia_alta", "errores_altos"]
 
@@ -107,7 +107,37 @@ REPORTES = {
 REPORTES_RAICES = {"reporte": "TReporte", "reportes_catalogo": "TRepCatalogo", "grafica": "TRepGrafica", "indicadores": "TRepIndicadores",
                    "reportes_exportaciones": "TRepExportacionLista"}
 
+# --------------------------------------------------------------------
+# sincronizacion (el lote de entrada es solo JSON: sus `datos` son el cuerpo del servicio dueño de cada operación, que no cabe en un XSD)
+# --------------------------------------------------------------------
+SYNC_ESTADOS = ["aplicada", "conflicto", "rechazada", "pendiente"]
+SINCRONIZACION = {
+    "TSyncUsuario": [F("id", "long"), F("nombre", "string", nil=True)],
+    "TSyncOperacionResultado": [F("operacion_uuid", "string"), F("tipo", "string"), F("estado", "string", enum=SYNC_ESTADOS), F("duplicada", "bool"),
+                                F("http_status", "int", nil=True), F("codigo", "string", nil=True), F("mensaje", "string", nil=True), F("reintentar", "bool")],
+    "TSyncLoteResultado": [F("id", "long"), F("lote_uuid", "string"), F("dispositivo", "string"), F("recibido_en", "dateTime"), F("total", "long"),
+                           F("aplicadas", "long"), F("duplicadas", "long"), F("conflictos", "long"), F("rechazadas", "long"), F("pendientes", "long"),
+                           F("operaciones", ["TSyncOperacionResultado"], item="operacion")],
+    "TSyncLote": [F("id", "long"), F("lote_uuid", "string"), F("dispositivo", "string"), F("cliente", "string", enum=["android", "escritorio", "web"]),
+                  F("usuario", "TSyncUsuario"), F("recibido_en", "dateTime"), F("total", "long"), F("aplicadas", "long"), F("duplicadas", "long"),
+                  F("conflictos", "long"), F("rechazadas", "long"), F("pendientes", "long")],
+    "TSyncLoteLista": L("TSyncLote", "lote"),
+    "TSyncOperacion": [F("id", "long"), F("lote_uuid", "string"), F("dispositivo", "string"), F("operacion_uuid", "string"), F("tipo", "string"),
+                       F("creada_en", "dateTime"), F("estado", "string", enum=SYNC_ESTADOS), F("http_status", "int", nil=True), F("codigo", "string", nil=True),
+                       F("mensaje", "string", nil=True), F("intentos", "int"), F("procesada_en", "dateTime"), F("usuario", "TSyncUsuario")],
+    "TSyncOperacionLista": L("TSyncOperacion", "operacion"),
+    "TSyncLoteDetalle": [F("id", "long"), F("lote_uuid", "string"), F("dispositivo", "string"), F("cliente", "string", enum=["android", "escritorio", "web"]),
+                         F("usuario", "TSyncUsuario"), F("recibido_en", "dateTime"), F("total", "long"), F("aplicadas", "long"), F("duplicadas", "long"),
+                         F("conflictos", "long"), F("rechazadas", "long"), F("pendientes", "long"),
+                         F("operaciones", ["TSyncOperacion"], item="operacion")],
+    "TSyncEstado": [F("dispositivo", "string"), F("ultima_sincronizacion", "dateTime", nil=True), F("lotes", "long"), F("aplicadas", "long"),
+                    F("conflictos", "long"), F("rechazadas", "long"), F("pendientes", "long")],
+}
+SINCRONIZACION_RAICES = {"sync_lote_resultado": "TSyncLoteResultado", "sync_lotes": "TSyncLoteLista", "sync_lote": "TSyncLoteDetalle",
+                         "sync_operaciones": "TSyncOperacionLista", "sync_estado": "TSyncEstado", "supuestos_sincronizacion": "TSupuestosDoc"}
+
 ARCHIVOS = {
+    "sincronizacion": {"titulo": "servicio: sincronizacion", "incluye": ["comun", "comun_ola2"], "tipos": SINCRONIZACION, "raices": SINCRONIZACION_RAICES},
     "reportes": {"titulo": "servicio: reportes", "incluye": ["comun"], "tipos": REPORTES, "raices": REPORTES_RAICES},
     "auditoria_monitoreo": {"titulo": "servicio: auditoria-monitoreo", "incluye": ["comun", "comun_ola1", "comun_ola2"],
                             "tipos": AUDITORIA_MONITOREO, "raices": AUDITORIA_MONITOREO_RAICES},
@@ -128,9 +158,34 @@ ALERTA = {"id": 12, "servicio": "documentos", "tipo": "dependencia_caida", "seve
           "detalle": "documentos no alcanza: bucket.", "abierta_en": HUB, "cerrada_en": None, "duracion_seg": 95,
           "reconocida": {"por": USUARIO, "en": HUB}}
 
+SYNC_U = "4f1d7a2e-9b3c-4d5e-8f60-1a2b3c4d5e6f"
+SYNC_LOTE = {"id": 8, "lote_uuid": "0b8e6f1c-2a4d-4c7e-9a31-5d6e7f809a1b", "dispositivo": "android-repartidor1", "cliente": "android", "usuario": USUARIO,
+             "recibido_en": HUB, "total": 2, "aplicadas": 1, "duplicadas": 0, "conflictos": 1, "rechazadas": 0, "pendientes": 0}
+SYNC_OP = {"id": 31, "lote_uuid": SYNC_LOTE["lote_uuid"], "dispositivo": "android-repartidor1", "operacion_uuid": SYNC_U, "tipo": "entrega_resultado",
+           "creada_en": HUB, "estado": "conflicto", "http_status": 409, "codigo": "CONFLICTO", "mensaje": "La entrega ya se cerró con otro identificador.",
+           "intentos": 1, "procesada_en": HUB, "usuario": USUARIO}
 FILTROS = {"desde": "2026-10-26", "hasta": "2026-11-25", "zona_id": None, "microhub_id": None}
 
 EJEMPLOS = {
+    "SyncLoteNuevo": (None, {"lote_uuid": SYNC_LOTE["lote_uuid"], "dispositivo": "android-repartidor1", "cliente": "android", "operaciones": [
+        {"operacion_uuid": "6a0f3b5c-1d2e-4f70-8a9b-0c1d2e3f4a5b", "tipo": "ubicaciones", "creada_en": HUB,
+         "datos": {"entrega_id": 163, "puntos": [{"latitud": 25.7491, "longitud": -100.3611, "capturado_en": HUB}]}},
+        {"operacion_uuid": SYNC_U, "tipo": "entrega_resultado", "creada_en": HUB,
+         "datos": {"entrega_id": 163, "resultado": "entregado", "monto_cobrado": 130.5, "cambio_entregado": 0,
+                   "ubicacion": {"latitud": 25.7491, "longitud": -100.3611}, "evidencia_ids": [], "capturado_en": HUB}}]}),
+    "SyncLoteResultado": ("sync_lote_resultado", {
+        "id": 8, "lote_uuid": SYNC_LOTE["lote_uuid"], "dispositivo": "android-repartidor1", "recibido_en": HUB, "total": 2, "aplicadas": 1, "duplicadas": 0,
+        "conflictos": 1, "rechazadas": 0, "pendientes": 0, "operaciones": [
+            {"operacion_uuid": "6a0f3b5c-1d2e-4f70-8a9b-0c1d2e3f4a5b", "tipo": "ubicaciones", "estado": "aplicada", "duplicada": False, "http_status": 201,
+             "codigo": None, "mensaje": None, "reintentar": False},
+            {"operacion_uuid": SYNC_U, "tipo": "entrega_resultado", "estado": "conflicto", "duplicada": False, "http_status": 409, "codigo": "CONFLICTO",
+             "mensaje": "La entrega ya se cerró con otro identificador.", "reintentar": False}]}),
+    "SyncLoteLista": ("sync_lotes", {"datos": [SYNC_LOTE], "paginacion": PAG}),
+    "SyncLote": ("sync_lote", {**SYNC_LOTE, "operaciones": [SYNC_OP]}),
+    "SyncOperacionLista": ("sync_operaciones", {"datos": [SYNC_OP], "paginacion": PAG}),
+    "SyncEstado": ("sync_estado", {"dispositivo": "android-repartidor1", "ultima_sincronizacion": HUB, "lotes": 8, "aplicadas": 20, "conflictos": 1,
+                                   "rechazadas": 0, "pendientes": 2}),
+    "SupuestosSincronizacion": ("supuestos_sincronizacion", {"datos": [{**SUPUESTO, "clave": "sync_antiguedad_max_dias", "valor": "14", "unidad": "días"}]}),
     "Reporte": ("reporte", {
         "reporte": "pedidos_por_dia", "familia": "operativo", "titulo": "Pedidos por día", "generado_en": HUB, "filtros": FILTROS,
         "columnas": [{"clave": "fecha", "titulo": "Día", "tipo": "fecha"}, {"clave": "pedidos", "titulo": "Pedidos", "tipo": "entero"},

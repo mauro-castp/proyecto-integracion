@@ -8,6 +8,9 @@
 --   auditoria-monitoreo (5126)  monitoreo_verificacion, monitoreo_alerta  (y consulta la bitácora `auditoria`, que ya existía)
 --   reportes            (5123)  reporte_exportacion
 --   sincronizacion      (5125)  sync_lote, sync_operacion
+-- Acción de bitácora para la entrega de un enlace firmado de descarga (servicio de documentos). Va fuera de la transacción.
+ALTER TYPE microhubs.accion_auditoria ADD VALUE IF NOT EXISTS 'descarga';
+
 BEGIN;
 SET LOCAL search_path TO microhubs, public;
 
@@ -102,11 +105,14 @@ CREATE TABLE IF NOT EXISTS sync_operacion (
     codigo          varchar(30),
     mensaje         varchar(300),
     resultado       json,
+    huella          char(64)     NOT NULL,
     intentos        smallint     NOT NULL DEFAULT 1,
     procesada_en    timestamptz  NOT NULL DEFAULT now(),
     CONSTRAINT uq_sync_op UNIQUE (dispositivo, operacion_uuid),
     CONSTRAINT ck_so_estado CHECK (estado IN ('aplicada', 'conflicto', 'rechazada', 'pendiente'))
 );
+-- Para una base que ya tenía la tabla sin la huella (SHA-256 de tipo, datos y fecha: detecta un uuid reutilizado con otro contenido).
+ALTER TABLE sync_operacion ADD COLUMN IF NOT EXISTS huella char(64);
 CREATE INDEX IF NOT EXISTS ix_so_lote ON sync_operacion (lote_id);
 CREATE INDEX IF NOT EXISTS ix_so_estado ON sync_operacion (estado, procesada_en DESC);
 
@@ -136,6 +142,9 @@ INSERT INTO supuesto_documentado (clave, servicio, origen, justificacion, como_c
  ('mon_latencia_ms', 'auditoria-monitoreo', 'supuesto', 'Un /salud sano responde en decenas de milisegundos; 1 s ya indica saturación de alguna dependencia.', 'Tomar el p95 de tiempo_ms de monitoreo_verificacion en una semana normal y poner el umbral al doble.'),
  ('mon_errores_pct', 'auditoria-monitoreo', 'supuesto', '20 % de errores del servidor en 10 minutos es una falla clara y no un error aislado.', 'Revisar las alertas falsas del primer mes y ajustar.'),
  ('mon_disponibilidad_objetivo_pct', 'auditoria-monitoreo', 'normativo', '99 % es el objetivo razonable para una VM única sin alta disponibilidad (unas 7 horas de caída al mes).', 'Cambiar si el acuerdo de servicio con el cliente pide otro valor.'),
+ ('sync_lote_max', 'sincronizacion', 'supuesto', 'Un lote de 200 operaciones cabe en una petición de menos de 1 MB y se aplica en pocos segundos; un teléfono que estuvo días sin red rara vez junta más.', 'Medir cuántas operaciones junta un repartidor en una jornada sin conexión y poner el límite al doble.'),
+ ('rep_filas_max', 'reportes', 'supuesto', 'Un reporte de 50 000 filas todavía se arma y se exporta en segundos; más allá conviene acotar por zona o periodo.', 'Medir el tiempo de armado y de exportación con el volumen real y bajar el límite si pasa de unos 10 segundos.'),
+ ('rep_periodo_dias', 'reportes', 'normativo', '30 días es el periodo de cierre que usa la operación para comparar microhubs.', 'Cambiarlo si el corte de la operación es otro.'),
  ('sync_antiguedad_max_dias', 'sincronizacion', 'supuesto', 'Un repartidor sin red por dos semanas ya no tiene datos vigentes: precios, inventario y pedidos habrán cambiado.', 'Medir cuántos días pasan realmente sin conexión en la operación.'),
  ('sync_reloj_tolerancia_min', 'sincronizacion', 'supuesto', 'Los relojes de los teléfonos se desvían minutos; una operación fechada en el futuro lejano es un reloj mal puesto o un intento de manipulación.', 'Comparar la hora de creación de las operaciones con la hora de recepción.')
 ON CONFLICT (clave) DO UPDATE SET servicio = EXCLUDED.servicio, origen = EXCLUDED.origen, justificacion = EXCLUDED.justificacion,

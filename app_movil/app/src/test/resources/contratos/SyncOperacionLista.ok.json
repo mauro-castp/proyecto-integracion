@@ -1,0 +1,28 @@
+{
+  "datos": [
+    {
+      "id": 31,
+      "lote_uuid": "0b8e6f1c-2a4d-4c7e-9a31-5d6e7f809a1b",
+      "dispositivo": "android-repartidor1",
+      "operacion_uuid": "4f1d7a2e-9b3c-4d5e-8f60-1a2b3c4d5e6f",
+      "tipo": "entrega_resultado",
+      "creada_en": "2026-11-25T10:30:00-06:00",
+      "estado": "conflicto",
+      "http_status": 409,
+      "codigo": "CONFLICTO",
+      "mensaje": "La entrega ya se cerró con otro identificador.",
+      "intentos": 1,
+      "procesada_en": "2026-11-25T10:30:00-06:00",
+      "usuario": {
+        "id": 3,
+        "nombre": "Mariana Ortega"
+      }
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

@@ -22,10 +22,12 @@ os.environ.setdefault("LOG_STDOUT", "0")
 os.environ.setdefault("MONITOR_AUTO", "0")
 
 from comun import clientes, config, datos  # noqa: E402
+from pruebas.preparar_entregas import preparar  # noqa: E402
 from pruebas.test_contrato import APPS, JPEG, Cliente, ejemplo, mismas_llaves, xml  # noqa: E402
 
 mon = sys.modules["auditoria_monitoreo.app"]
 rep = sys.modules["reportes.app"]
+sync = sys.modules["sincronizacion.app"]
 APAGADOS = set()
 DEGRADADOS = {}
 LIMITE = {}
@@ -288,9 +290,12 @@ class T1Monitoreo(Base):
     def test_errores_5xx_altos_en_mongodb_abren_alerta(self):
         db = datos.mongo()
         ahora = datos.ahora()
+        # el tráfico real que otras pruebas dejaron en la ventana diluye el porcentaje: los errores sembrados lo superan siempre
+        previas = db.metricas_servicio.count_documents({"etiquetas.servicio": "zonas", "momento": {"$gte": ahora - dt.timedelta(minutes=10)}})
+        malas = max(24, previas)
         db.metricas_servicio.insert_many([{"momento": ahora, "duracion_ms": 5, "prueba": "ola3",
-                                           "etiquetas": {"servicio": "zonas", "ruta": "/x", "metodo": "GET", "status": 500 if i < 8 else 200}}
-                                          for i in range(24)])
+                                           "etiquetas": {"servicio": "zonas", "ruta": "/x", "metodo": "GET", "status": 500}}
+                                          for _ in range(malas)])
         self.ronda("zonas")
         al = self.abiertas("zonas")
         self.assertEqual([a["tipo"] for a in al], ["errores_altos"], al)
@@ -487,7 +492,13 @@ class T2Auditoria(Base):
             self.assertIn("sha256", mios[0]["descripcion"])
             self.assertEqual(mios[0]["entidad"], {"tipo": "documento", "id": d["id"]})
             self.assertNotIn(b64[:40], json.dumps(j), "la línea de tiempo no lleva el contenido del archivo")
+            self.adm.llamar("documentos", "GET", f"documentos/{d['id']}/enlace", estado=200)
             self.adm.llamar("documentos", "DELETE", f"documentos/{d['id']}", estado=204)
+            filas = todos("SELECT accion::text AS accion, usuario_id FROM auditoria WHERE entidad = 'documento' AND entidad_id = %s ORDER BY id", (d["id"],))
+            self.assertEqual([f["accion"] for f in filas], ["alta", "descarga", "baja_logica"], "subir, pedir enlace y borrar quedan en la bitácora")
+            self.assertTrue(all(f["usuario_id"] == self.adm.usuario["id"] for f in filas))
+            b = self.aud.llamar(AM, "GET", f"auditoria?entidad=documento&entidad_id={d['id']}&accion=descarga", estado=200)[1]
+            self.assertEqual(b["paginacion"]["total"], 1)
             j = self.aud.llamar(AM, "GET", f"auditoria/trazabilidad/pedido/{pid}", estado=200)[1]
             borrado = [e for e in j["eventos"] if e["origen"] == "documentos" and e["entidad"]["id"] == d["id"]]
             self.assertIn("[eliminado]", borrado[0]["descripcion"], "el borrado lógico no borra la historia")
@@ -742,6 +753,305 @@ class T4Reportes(Base):
             for quien in (self.adm, self.aud, self.plan):
                 quien.llamar(RP, "GET", ruta, estado=200)
         Cliente(self, "json").llamar(RP, "GET", "reportes", token=False, estado=401)
+
+
+# ====================================================================
+# Sincronización
+# ====================================================================
+SY = "sincronizacion"
+
+
+def hace(minutos=0, dias=0):
+    return (dt.datetime.now(dt.timezone.utc) - dt.timedelta(minutes=minutos, days=dias)).isoformat()
+
+
+class T5LogicaSync(unittest.TestCase):
+    U = {"sync_antiguedad_max_dias": 14.0, "sync_reloj_tolerancia_min": 10.0}
+
+    def op(self, **kw):
+        return {"operacion_uuid": str(uuid.uuid4()), "tipo": "ubicaciones", "creada_en": hace(5), "datos": {"entrega_id": 1, "puntos": [{}]}, **kw}
+
+    def test_interpretar_la_respuesta_del_servicio_dueno(self):
+        self.assertEqual(sync.interpretar(201, {"duplicado": False})[0], "aplicada")
+        e, c, m = sync.interpretar(200, {"duplicado": True})
+        self.assertEqual((e, c), ("aplicada", None))
+        self.assertIn("Ya estaba aplicada", m)
+        self.assertEqual(sync.interpretar(409, {"error": {"codigo": "CONFLICTO", "mensaje": "ya cerrada"}}), ("conflicto", "CONFLICTO", "ya cerrada"))
+        for s in (400, 403, 404, 413, 415, 422):
+            self.assertEqual(sync.interpretar(s, {"error": {"codigo": "X", "mensaje": "m"}})[0], "rechazada", s)
+        for s in (None, 401, 429, 500, 502, 503):
+            self.assertEqual(sync.interpretar(s, None)[0], "pendiente", s)
+
+    def test_validar_el_sobre_de_una_operacion(self):
+        ok, malo = sync.validar_operacion(self.op(operacion_uuid=str(uuid.uuid4()).upper()), self.U)
+        self.assertIsNone(malo)
+        self.assertEqual(ok["operacion_uuid"], ok["operacion_uuid"].lower(), "el uuid se normaliza")
+        casos = {"uuid": self.op(operacion_uuid="123"), "tipo": self.op(tipo="borrar_todo"), "fecha": self.op(creada_en="ayer"),
+                 "datos": self.op(datos="x"), "falta entrega_id": self.op(datos={"puntos": [{}]}), "entrega_id texto": self.op(datos={"entrega_id": "1", "puntos": [{}]}),
+                 "futuro": self.op(creada_en=hace(-120)), "vieja": self.op(creada_en=hace(dias=30)), "no es objeto": "texto"}
+        for nombre, op in casos.items():
+            with self.subTest(nombre):
+                self.assertIsNone(sync.validar_operacion(op, self.U)[0])
+                self.assertTrue(sync.validar_operacion(op, self.U)[1])
+        self.assertIn("reloj", sync.validar_operacion(self.op(creada_en=hace(-120)), self.U)[1])
+        self.assertIn("14 días", sync.validar_operacion(self.op(creada_en=hace(dias=30)), self.U)[1])
+        self.assertIsNone(sync.validar_operacion(self.op(creada_en=hace(-5)), self.U)[1], "un reloj adelantado unos minutos se tolera")
+
+    def test_huella_no_depende_del_orden_de_las_llaves(self):
+        t = dt.datetime(2026, 11, 25, 10, 0, tzinfo=dt.timezone.utc)
+        self.assertEqual(sync.huella("x", {"a": 1, "b": 2}, t), sync.huella("x", {"b": 2, "a": 1}, t))
+        self.assertNotEqual(sync.huella("x", {"a": 1}, t), sync.huella("x", {"a": 2}, t))
+        self.assertNotEqual(sync.huella("x", {"a": 1}, t), sync.huella("y", {"a": 1}, t))
+        self.assertEqual(sync.huella("x", {"a": 1}, t), sync.huella("x", {"a": 1}, t.astimezone(dt.timezone(dt.timedelta(hours=-6)))),
+                         "la misma hora en otra zona es la misma operación")
+
+    def test_se_aplican_en_el_orden_en_que_ocurrieron(self):
+        ops = [{"creada_en": hace(1)}, {"creada_en": hace(30)}, {"creada_en": "basura"}, {"creada_en": hace(10)}]
+        self.assertEqual(sync.ordenar(ops), [1, 3, 0, 2], "las mal fechadas van al final y no rompen el orden")
+
+    def test_cada_tipo_arma_la_ruta_y_el_cuerpo_del_servicio_dueno(self):
+        u = "u-1"
+        s, _, ruta, cuerpo = sync.OPERACIONES["entrega_resultado"]
+        self.assertEqual((s, ruta({"entrega_id": 7}, u)), ("entregas", "entregas/7/resultado"))
+        self.assertEqual(cuerpo({"entrega_id": 7, "resultado": "fallida"}, u), {"resultado": "fallida", "id_cliente_local": u})
+        s, _, ruta, cuerpo = sync.OPERACIONES["ubicaciones"]
+        self.assertEqual((s, ruta({"entrega_id": 7}, u), cuerpo({"entrega_id": 7, "puntos": [1]}, u)), ("seguimiento", "seguimiento/7/ubicaciones", {"puntos": [1]}))
+        s, _, ruta, cuerpo = sync.OPERACIONES["movimiento_inventario"]
+        self.assertEqual((s, ruta({}, u), cuerpo({"cantidad": 2}, u)), ("inventario", "inventario/movimientos", {"cantidad": 2, "operacion_uuid": u}))
+        s, _, ruta, cuerpo = sync.OPERACIONES["notificacion_leida"]
+        self.assertEqual((s, ruta({"id": 5}, u), cuerpo({"id": 5}, u)), ("notificaciones", "notificaciones/5/leer", {}))
+
+
+class T6Sincronizacion(Base):
+    def setUp(self):
+        super().setUp()
+        APAGADOS.clear()
+        self.creadas = []
+
+    def tearDown(self):
+        APAGADOS.clear()
+        # las entregas que la prueba preparó y dejó abiertas se cierran como fallidas (devuelve el inventario): si se acumulan, la primera
+        # página de «Mis entregas» deja de mostrar las que preparan las demás pruebas
+        for eid in self.creadas:
+            if uno("SELECT 1 AS x FROM entrega WHERE id = %s AND cierre_en IS NULL", (eid,)):
+                cuerpo = {k: v for k, v in self.cierre(eid).items() if k != "entrega_id"}
+                self.rep.llamar("entregas", "POST", f"entregas/{eid}/resultado", cuerpo | {"id_cliente_local": str(uuid.uuid4())}, estado=201)
+        ejecutar("UPDATE configuracion SET valor = '200' WHERE clave = 'sync_lote_max' AND ambito = 'global'")
+        datos.mongo().documentos.delete_many({"nombre": "evidencia_sync_ola3.jpg"})
+
+    # -- ayudas
+    def entrega(self):
+        e = preparar("repartidor1@codex.mx", 1)[0]
+        self.creadas.append(e["entrega_id"])
+        return e["entrega_id"], e["pedido_id"]
+
+    def evidencia(self, eid):
+        _, d = self.rep.llamar("documentos", "POST", "documentos", {
+            "nombre": "evidencia_sync_ola3.jpg", "tipo_mime": "image/jpeg", "contenido_base64": base64.b64encode(JPEG).decode(),
+            "referencia": {"tipo": "entrega", "id": str(eid)}}, estado=201)
+        return d["id"]
+
+    def cierre(self, eid, resultado="fallida"):
+        d = {"entrega_id": eid, "resultado": resultado, "monto_cobrado": 0, "cambio_entregado": 0, "incidencia": "Cliente ausente (prueba)",
+             "ubicacion": {"latitud": 25.7491, "longitud": -100.3611}, "evidencia_ids": [self.evidencia(eid)], "capturado_en": hace(5)}
+        if resultado == "entregado":
+            total = self.rep.llamar("entregas", "GET", f"entregas/{eid}", estado=200)[1]["total"]
+            d.update(resultado="entregado", monto_cobrado=total, incidencia=None)
+            d.pop("incidencia")
+        return d
+
+    def gps(self, eid, n=2):
+        return {"entrega_id": eid, "puntos": [{"latitud": 25.748 + i / 1000, "longitud": -100.36, "capturado_en": hace(10 - i)} for i in range(n)]}
+
+    def op(self, tipo, datos, minutos=5, uid=None):
+        return {"operacion_uuid": uid or str(uuid.uuid4()), "tipo": tipo, "creada_en": hace(minutos), "datos": datos}
+
+    def lote(self, ops, quien=None, dispositivo="android-prueba-ola3", lote_uuid=None, estado=None, cliente="android"):
+        cuerpo = {"lote_uuid": lote_uuid or str(uuid.uuid4()), "dispositivo": dispositivo, "cliente": cliente, "operaciones": ops}
+        return (quien or self.rep).llamar(SY, "POST", "sincronizacion/lotes", cuerpo, estado=estado)[1], cuerpo
+
+    def puntos_gps(self, eid):
+        return datos.mongo().ubicaciones_entrega.count_documents({"entrega_id": eid})
+
+    # -- pruebas
+    def test_un_lote_hecho_sin_conexion_se_aplica_en_orden_y_cumple_el_contrato(self):
+        eid, pid = self.entrega()
+        antes = self.puntos_gps(eid)
+        # la app guardó primero el recorrido y luego el cierre, pero los manda al revés: se aplican por fecha
+        cierre = self.op("entrega_resultado", self.cierre(eid, "entregado"), minutos=3)
+        recorrido = self.op("ubicaciones", self.gps(eid, 3), minutos=12)
+        r, cuerpo = self.lote([cierre, recorrido], estado=201)
+        mismas_llaves(self, r, ejemplo("SyncLoteResultado.ok"))
+        self.assertEqual((r["total"], r["aplicadas"], r["duplicadas"], r["conflictos"], r["rechazadas"], r["pendientes"]), (2, 2, 0, 0, 0, 0), r)
+        self.assertEqual([o["operacion_uuid"] for o in r["operaciones"]], [cierre["operacion_uuid"], recorrido["operacion_uuid"]], "se responde en el orden recibido")
+        self.assertEqual([o["http_status"] for o in r["operaciones"]], [201, 201])
+        e = uno("SELECT e.cierre_en, e.id_cliente_local, p.estado::text AS estado FROM entrega e JOIN pedido p ON p.id = e.pedido_id WHERE e.id = %s", (eid,))
+        self.assertIsNotNone(e["cierre_en"])
+        self.assertEqual((e["id_cliente_local"], e["estado"]), (cierre["operacion_uuid"], "entregado"), "el uuid de la operación es el del cierre")
+        self.assertEqual(self.puntos_gps(eid) - antes, 3)
+        f = uno("SELECT * FROM sync_lote WHERE lote_uuid = %s", (cuerpo["lote_uuid"],))
+        self.assertEqual((f["total"], f["aplicadas"], f["duplicadas"], f["cliente"], f["usuario_id"]), (2, 2, 0, "android", self.rep.usuario["id"]))
+        ops = todos("SELECT estado, intentos, length(huella) AS h FROM sync_operacion WHERE lote_id = %s", (f["id"],))
+        self.assertTrue(all((o["estado"], o["intentos"], o["h"]) == ("aplicada", 1, 64) for o in ops))
+
+    def test_reenviar_el_mismo_lote_no_duplica_nada(self):
+        eid, _ = self.entrega()
+        ops = [self.op("ubicaciones", self.gps(eid, 2), 10), self.op("entrega_resultado", self.cierre(eid), 3)]
+        _, cuerpo = self.lote(ops, estado=201)
+        puntos = self.puntos_gps(eid)
+        r = self.rep.llamar(SY, "POST", "sincronizacion/lotes", cuerpo, estado=200)[1]
+        self.assertEqual((r["total"], r["aplicadas"], r["duplicadas"]), (2, 2, 2))
+        self.assertTrue(all(o["duplicada"] and o["estado"] == "aplicada" and not o["reintentar"] for o in r["operaciones"]))
+        self.assertEqual(self.puntos_gps(eid), puntos, "los puntos GPS no se repitieron")
+        self.assertEqual(uno("SELECT count(*) AS n FROM sync_operacion WHERE operacion_uuid = ANY(%s)", ([o["operacion_uuid"] for o in ops],))["n"], 2)
+        self.assertEqual(uno("SELECT duplicadas FROM sync_lote WHERE lote_uuid = %s", (cuerpo["lote_uuid"],))["duplicadas"], 2)
+        # las mismas operaciones en OTRO lote (la app perdió la respuesta y armó un lote nuevo) tampoco se repiten
+        r2, _ = self.lote(ops, estado=200)
+        self.assertEqual((r2["duplicadas"], r2["aplicadas"]), (2, 2))
+        self.assertEqual(self.puntos_gps(eid), puntos)
+
+    def test_un_uuid_reutilizado_con_otro_contenido_se_rechaza(self):
+        eid, _ = self.entrega()
+        u = str(uuid.uuid4())
+        self.lote([self.op("ubicaciones", self.gps(eid, 1), 9, uid=u)], estado=201)
+        puntos = self.puntos_gps(eid)
+        r, _ = self.lote([self.op("ubicaciones", self.gps(eid, 4), 8, uid=u)], estado=200)
+        o = r["operaciones"][0]
+        self.assertEqual((o["estado"], o["codigo"], o["reintentar"]), ("rechazada", "UUID_REUTILIZADO", False))
+        self.assertEqual(self.puntos_gps(eid), puntos)
+
+    def test_cerrar_una_entrega_ya_cerrada_por_otro_es_conflicto_y_gana_el_servidor(self):
+        eid, pid = self.entrega()
+        primero = self.cierre(eid, "fallida")
+        self.rep.llamar("entregas", "POST", f"entregas/{eid}/resultado", {k: v for k, v in primero.items() if k != "entrega_id"} | {"id_cliente_local": str(uuid.uuid4())}, estado=201)
+        r, _ = self.lote([self.op("entrega_resultado", self.cierre(eid, "fallida"))], estado=200)
+        o = r["operaciones"][0]
+        self.assertEqual((o["estado"], o["http_status"], o["reintentar"]), ("conflicto", 409, False), o)
+        self.assertEqual((r["conflictos"], r["aplicadas"]), (1, 0))
+        enc = self.aud.llamar(SY, "GET", "sincronizacion/conflictos?por_pagina=100", estado=200)[1]
+        mios = [x for x in enc["datos"] if x["operacion_uuid"] == o["operacion_uuid"]]
+        self.assertEqual(len(mios), 1, "el conflicto queda para que una persona lo revise")
+        mismas_llaves(self, enc, ejemplo("SyncOperacionLista.ok"))
+        self.error(self.rep, SY, "GET", "sincronizacion/conflictos", None, 403, "PROHIBIDO")
+        self.assertEqual(uno("SELECT estado::text AS e FROM pedido WHERE id = %s", (pid,))["e"], "entrega_fallida", "el estado del servidor no se tocó")
+
+    def test_un_servicio_caido_deja_la_operacion_pendiente_y_reenviar_la_reintenta(self):
+        eid, _ = self.entrega()
+        u_cierre = str(uuid.uuid4())
+        disp = f"android-reintento-{uuid.uuid4().hex[:8]}"          # un dispositivo distinto en cada corrida
+        ops = [self.op("ubicaciones", self.gps(eid, 2), 10), self.op("entrega_resultado", self.cierre(eid), 3, uid=u_cierre)]
+        with Apagado("entregas"):
+            r, cuerpo = self.lote(ops, dispositivo=disp, estado=201)
+        est = {o["tipo"]: o for o in r["operaciones"]}
+        self.assertEqual(est["ubicaciones"]["estado"], "aplicada", "lo que no depende del servicio caído sí se aplica")
+        self.assertEqual((est["entrega_resultado"]["estado"], est["entrega_resultado"]["reintentar"]), ("pendiente", True))
+        self.assertEqual((r["pendientes"], r["aplicadas"]), (1, 1))
+        self.assertIsNone(uno("SELECT cierre_en FROM entrega WHERE id = %s", (eid,))["cierre_en"], "no se cerró")
+        p = self.rep.llamar(SY, "GET", "sincronizacion/pendientes", estado=200)[1]
+        self.assertIn(u_cierre, [x["operacion_uuid"] for x in p["datos"]])
+        e = self.rep.llamar(SY, "GET", f"sincronizacion/estado?dispositivo={disp}", estado=200)[1]
+        mismas_llaves(self, e, ejemplo("SyncEstado.ok"))
+        self.assertEqual((e["pendientes"], e["aplicadas"], e["lotes"]), (1, 1, 1))
+        # vuelve el servicio: la app reenvía el mismo lote
+        r2 = self.rep.llamar(SY, "POST", "sincronizacion/lotes", cuerpo, estado=201)[1]
+        est2 = {o["tipo"]: o for o in r2["operaciones"]}
+        self.assertEqual((est2["ubicaciones"]["duplicada"], est2["entrega_resultado"]["estado"], est2["entrega_resultado"]["duplicada"]), (True, "aplicada", False))
+        self.assertEqual(r2["pendientes"], 0)
+        self.assertEqual(uno("SELECT intentos, estado FROM sync_operacion WHERE operacion_uuid = %s", (u_cierre,)), {"intentos": 2, "estado": "aplicada"})
+        self.assertIsNotNone(uno("SELECT cierre_en FROM entrega WHERE id = %s", (eid,))["cierre_en"])
+        self.assertEqual(self.rep.llamar(SY, "GET", f"sincronizacion/estado?dispositivo={disp}", estado=200)[1]["pendientes"], 0)
+
+    def test_cada_operacion_se_valida_sola_y_las_buenas_si_se_aplican(self):
+        eid, _ = self.entrega()
+        buena = self.op("ubicaciones", self.gps(eid, 1))
+        malas = [self.op("ubicaciones", {"puntos": [{}]}), self.op("borrar_todo", {}), self.op("ubicaciones", self.gps(eid, 1), uid="no-es-uuid"),
+                 self.op("ubicaciones", self.gps(eid, 1), minutos=-120), self.op("ubicaciones", self.gps(eid, 1), minutos=60 * 24 * 30)]
+        r, _ = self.lote(malas + [buena], estado=201)
+        self.assertEqual([o["estado"] for o in r["operaciones"]], ["rechazada"] * 5 + ["aplicada"])
+        self.assertTrue(all(o["codigo"] == "VALIDACION" and o["mensaje"] and not o["reintentar"] for o in r["operaciones"][:5]))
+        self.assertEqual((r["rechazadas"], r["aplicadas"]), (5, 1))
+        self.assertEqual(uno("SELECT count(*) AS n FROM sync_operacion WHERE operacion_uuid = %s", (malas[0]["operacion_uuid"],))["n"], 0,
+                         "un sobre mal formado no se guarda")
+        self.error(self.rep, SY, "POST", "sincronizacion/lotes", {"lote_uuid": str(uuid.uuid4()), "dispositivo": "x-1", "cliente": "android", "operaciones": []}, 422)
+
+    def test_el_servicio_dueno_rechaza_y_eso_no_se_reintenta(self):
+        r, cuerpo = self.lote([self.op("notificacion_leida", {"id": 999999999})], estado=200)
+        o = r["operaciones"][0]
+        self.assertEqual((o["estado"], o["http_status"], o["codigo"], o["reintentar"]), ("rechazada", 404, "NO_ENCONTRADO", False), o)
+        r2 = self.rep.llamar(SY, "POST", "sincronizacion/lotes", cuerpo, estado=200)[1]
+        self.assertTrue(r2["operaciones"][0]["duplicada"], "reenviarla devuelve el resultado guardado")
+        self.assertEqual(r2["operaciones"][0]["estado"], "rechazada")
+
+    def test_el_permiso_de_quien_envia_lo_aplica_el_servicio_dueno(self):
+        """Entrar por la sincronización no da permisos: cada servicio dueño decide con el JWT de quien envía."""
+        antes = uno("SELECT existencia FROM inventario WHERE microhub_id = 1 AND producto_id = 1")["existencia"]
+        mov = {"microhub_id": 1, "producto_id": 1, "tipo": "merma", "cantidad": 1, "motivo": "prueba de permisos de la sincronización"}
+        r, _ = self.lote([self.op("movimiento_inventario", mov)], quien=self.rep, estado=200)
+        o = r["operaciones"][0]
+        self.assertEqual((o["estado"], o["http_status"], o["reintentar"]), ("rechazada", 403, False), "un repartidor no ajusta inventario")
+        self.assertEqual(uno("SELECT existencia FROM inventario WHERE microhub_id = 1 AND producto_id = 1")["existencia"], antes)
+
+    def test_nadie_usa_el_uuid_ni_el_lote_de_otra_persona(self):
+        eid, _ = self.entrega()
+        u = str(uuid.uuid4())
+        lote_u = str(uuid.uuid4())
+        self.lote([self.op("ubicaciones", self.gps(eid, 1), uid=u)], lote_uuid=lote_u, dispositivo="tableta-compartida", estado=201)
+        r, _ = self.lote([self.op("ubicaciones", self.gps(eid, 1), uid=u)], quien=self.op1, dispositivo="tableta-compartida", estado=200)
+        self.assertEqual((r["operaciones"][0]["estado"], r["operaciones"][0]["codigo"]), ("rechazada", "OPERACION_AJENA"))
+        self.error(self.op1, SY, "POST", "sincronizacion/lotes", {"lote_uuid": lote_u, "dispositivo": "tableta-compartida", "cliente": "android",
+                                                                    "operaciones": [self.op("ubicaciones", self.gps(eid, 1))]}, 409, "CONFLICTO")
+
+    def test_lotes_invalidos(self):
+        base = {"lote_uuid": str(uuid.uuid4()), "dispositivo": "android-1", "cliente": "android", "operaciones": [self.op("notificacion_leida", {"id": 1})]}
+        for nombre, cuerpo in {"lote_uuid": {**base, "lote_uuid": "uno"}, "dispositivo corto": {**base, "dispositivo": "x"},
+                               "dispositivo con espacios": {**base, "dispositivo": "mi telefono"}, "cliente": {**base, "cliente": "ios"},
+                               "sin operaciones": {**base, "operaciones": []}, "operaciones no es lista": {**base, "operaciones": "x"}}.items():
+            with self.subTest(nombre):
+                self.error(self.rep, SY, "POST", "sincronizacion/lotes", cuerpo, 422, "VALIDACION")
+        ejecutar("UPDATE configuracion SET valor = '2' WHERE clave = 'sync_lote_max' AND ambito = 'global'")
+        e = self.error(self.rep, SY, "POST", "sincronizacion/lotes", {**base, "operaciones": [self.op("notificacion_leida", {"id": 1})] * 3}, 422, "VALIDACION")
+        self.assertIn("entre 1 y 2", e["detalles"][0]["mensaje"])
+
+    def test_cada_quien_ve_sus_lotes_y_quien_audita_ve_todos(self):
+        eid, _ = self.entrega()
+        r1, _ = self.lote([self.op("ubicaciones", self.gps(eid, 1))], estado=201)
+        r2, _ = self.lote([self.op("notificacion_leida", {"id": 999999999})], quien=self.op1, estado=200)
+        mios = self.rep.llamar(SY, "GET", "sincronizacion/lotes?por_pagina=100", estado=200)[1]
+        ids = {x["id"] for x in mios["datos"]}
+        self.assertIn(r1["id"], ids)
+        self.assertNotIn(r2["id"], ids)
+        self.assertTrue(all(x["usuario"]["id"] == self.rep.usuario["id"] for x in mios["datos"]))
+        mismas_llaves(self, mios, ejemplo("SyncLoteLista.ok"))
+        todos = {x["id"] for x in self.aud.llamar(SY, "GET", "sincronizacion/lotes?por_pagina=100", estado=200)[1]["datos"]}
+        self.assertTrue({r1["id"], r2["id"]} <= todos)
+        self.error(self.rep, SY, "GET", f"sincronizacion/lotes/{r2['id']}", None, 404, "NO_ENCONTRADO")
+        d = self.rep.llamar(SY, "GET", f"sincronizacion/lotes/{r1['id']}", estado=200)[1]
+        mismas_llaves(self, d, ejemplo("SyncLote.ok"))
+        self.assertEqual(d["operaciones"][0]["tipo"], "ubicaciones")
+        self.error(self.aud, SY, "GET", "sincronizacion/lotes/99999999", None, 404)
+        for q in ("pagina=0", "cliente=ios", "usuario_id=abc"):
+            self.error(self.rep, SY, "GET", f"sincronizacion/lotes?{q}", None, 400, "FILTRO_INVALIDO")
+
+    def test_las_consultas_tambien_responden_en_xml(self):
+        eid, _ = self.entrega()
+        r, _ = self.lote([self.op("ubicaciones", self.gps(eid, 1))], estado=201)
+        for ruta, raiz in ((f"sincronizacion/lotes/{r['id']}", "sync_lote"), ("sincronizacion/lotes", "sync_lotes"), ("sincronizacion/pendientes", "sync_operaciones"),
+                           ("sincronizacion/conflictos", "sync_operaciones"), ("sincronizacion/estado?dispositivo=android-prueba-ola3", "sync_estado"),
+                           ("sincronizacion/supuestos", "supuestos_sincronizacion")):
+            with self.subTest(ruta):
+                _, (nombre, _) = self.adm_xml.llamar(SY, "GET", ruta, estado=200)
+                self.assertEqual(nombre, raiz)
+        s = self.adm.llamar(SY, "GET", "sincronizacion/supuestos", estado=200)[1]
+        self.assertEqual({x["clave"] for x in s["datos"]}, set(sync.DEFECTOS))
+        self.error(self.rep, SY, "GET", "sincronizacion/estado", None, 400, "FILTRO_INVALIDO")
+
+    def test_permisos_de_la_sincronizacion(self):
+        cuerpo = {"lote_uuid": str(uuid.uuid4()), "dispositivo": "android-1", "cliente": "android", "operaciones": [self.op("notificacion_leida", {"id": 1})]}
+        for quien in (self.cli, self.plan, self.aud):
+            self.error(quien, SY, "POST", "sincronizacion/lotes", cuerpo, 403, "PROHIBIDO")
+        for quien in (self.cli, self.plan):
+            self.error(quien, SY, "GET", "sincronizacion/lotes", None, 403)
+        Cliente(self, "json").llamar(SY, "POST", "sincronizacion/lotes", cuerpo, token=False, estado=401)
 
 
 if __name__ == "__main__":

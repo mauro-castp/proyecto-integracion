@@ -1,0 +1,27 @@
+{
+  "datos": [
+    {
+      "id": 8,
+      "lote_uuid": "0b8e6f1c-2a4d-4c7e-9a31-5d6e7f809a1b",
+      "dispositivo": "android-repartidor1",
+      "cliente": "android",
+      "usuario": {
+        "id": 3,
+        "nombre": "Mariana Ortega"
+      },
+      "recibido_en": "2026-11-25T10:30:00-06:00",
+      "total": 2,
+      "aplicadas": 1,
+      "duplicadas": 0,
+      "conflictos": 1,
+      "rechazadas": 0,
+      "pendientes": 0
+    }
+  ],
+  "paginacion": {
+    "pagina": 1,
+    "por_pagina": 20,
+    "total": 1,
+    "paginas": 1
+  }
+}

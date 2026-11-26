@@ -53,7 +53,7 @@ app = crear_app("auditoria-monitoreo", "Microhubs · Auditoría y monitoreo",
 P = config.PREFIJO
 
 ACCIONES = ["alta", "modificacion", "baja_logica", "login_exitoso", "login_fallido", "logout", "bloqueo_cuenta", "desbloqueo",
-            "acceso_denegado", "cambio_estado", "reasignacion", "reversion_administrativa", "movimiento_inventario", "cambio_configuracion"]
+            "acceso_denegado", "cambio_estado", "reasignacion", "reversion_administrativa", "movimiento_inventario", "cambio_configuracion", "descarga"]
 ACCESOS = ["login_exitoso", "login_fallido", "logout", "bloqueo_cuenta", "desbloqueo", "acceso_denegado"]
 TIPOS_ALERTA = ["servicio_caido", "servicio_degradado", "dependencia_caida", "latencia_alta", "errores_altos"]
 DEPENDENCIAS = ["postgres", "redis", "mongo", "bucket"]
