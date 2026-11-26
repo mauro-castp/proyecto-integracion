@@ -281,9 +281,10 @@ def seguridad():
     r = pedir("documentos", "POST", "documentos", {"nombre": "falso.jpg", "tipo_mime": "image/jpeg", "contenido_base64": base64.b64encode(b"MZ ejecutable").decode(),
                                                   "referencia": {"tipo": "usuario", "id": "1"}}, adm)
     inf.paso("—", "Un archivo que dice ser imagen pero no lo es se rechaza (se revisa su firma)", r["status"] == 422, r)
-    grande = base64.b64encode(b"\xff\xd8\xff" + b"0" * (6 * 1024 * 1024)).decode()
+    # 5 MB y un poco más: pasa el límite del archivo pero cabe en el cuerpo, así que el servicio puede responder con el motivo
+    grande = base64.b64encode(b"\xff\xd8\xff" + b"0" * (5 * 1024 * 1024 + 100_000)).decode()
     r = pedir("documentos", "POST", "documentos", {"nombre": "grande.jpg", "tipo_mime": "image/jpeg", "contenido_base64": grande, "referencia": {"tipo": "usuario", "id": "1"}}, adm, timeout=60)
-    inf.paso("—", "Un archivo demasiado grande se rechaza", r["status"] in (413, 422), r)
+    inf.paso("—", "Un archivo de más de 5 MB se rechaza con el motivo", r["status"] in (413, 422), r)
     r = pedir("zonas", "GET", "zonas/no-existe", token=adm); inf.paso("—", "Los errores usan el formato del contrato, con traza y sin rutas internas", r["status"] == 404 and "traza_id" in r["texto"], r)
 
     inf.seccion("Archivos privados y cabeceras", "Enlaces firmados con caducidad y cabeceras de protección.")
@@ -331,6 +332,8 @@ def main():
     carpeta = RAIZ / (sys.argv[1] if len(sys.argv) > 1 else "evidencias/ola4")
     esperar_sano("auth")
     a = seguridad().guardar(carpeta, "seguridad")
+    if "--solo-seguridad" in sys.argv:
+        return 0 if a else 1
     time.sleep(61)                       # el límite de consumo que se agotó a propósito se libera
     b = fallos().guardar(carpeta, "fallos")
     return 0 if a and b else 1

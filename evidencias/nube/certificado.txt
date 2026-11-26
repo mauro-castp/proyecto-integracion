@@ -1,0 +1,5 @@
+subject=CN = 34-51-89-253.sslip.io
+notBefore=Nov 26 21:39:29 2026 GMT
+notAfter=Nov 26 21:39:29 2027 GMT
+X509v3 Subject Alternative Name: 
+    DNS:34-51-89-253.sslip.io, IP Address:34.51.89.253
