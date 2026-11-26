@@ -1,0 +1,2438 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Evidencias · Microhubs</title>
+<style>body{font:14px system-ui,sans-serif;margin:24px;background:#f4f4f1;color:#1d2420}h1{margin:0}
+section{background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px;margin:16px 0}
+h3{margin:0 0 6px}.id{font:600 12px monospace;background:#1d2420;color:#fff;padding:2px 6px;border-radius:4px}
+.e{float:right;font-size:12px;padding:2px 8px;border-radius:10px}.ok{color:#11663d}.mal{color:#a3202f}
+.e.ok{background:#dff3e7}.e.mal{background:#f8dde1}.obj{color:#555;margin:0 0 10px}
+.req{font-size:15px;margin-bottom:8px}.m{font:700 12px monospace;color:#fff;padding:3px 8px;border-radius:4px;background:#2563eb}
+.m.POST{background:#16a34a}.m.PUT{background:#b45309}.m.PATCH{background:#7c3aed}.m.DELETE{background:#dc2626}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}.b .t{font-size:12px;color:#555;margin:6px 0 2px}
+pre{background:#111827;color:#e5e7eb;padding:10px;border-radius:6px;overflow:auto;max-height:420px;font-size:12px;margin:0}
+.ev pre{background:#0f2a1d}.st{margin:10px 0 2px;font-size:13px}.ex{background:#f1f5f9;padding:8px;border-radius:6px}
+.idx a{display:inline-block;margin:2px;font:12px monospace;text-decoration:none}</style></head><body>
+<h1>Evidencias de petición y respuesta · microservicios v1</h1>
+<p>Plataforma de Microhubs · Codex Innovations · Equipo 04 · 2026-11-26 21:22 · <b>40 de 40 casos pasan</b></p>
+<div class="idx"><a href="#F1-01" class="ok">F1-01</a><a href="#F1-02" class="ok">F1-02</a><a href="#F1-03" class="ok">F1-03</a><a href="#F1-04" class="ok">F1-04</a><a href="#F1-05" class="ok">F1-05</a><a href="#F1-06" class="ok">F1-06</a><a href="#F1-07" class="ok">F1-07</a><a href="#F1-08a" class="ok">F1-08a</a><a href="#F1-08b" class="ok">F1-08b</a><a href="#F1-09" class="ok">F1-09</a><a href="#F1-10" class="ok">F1-10</a><a href="#F1-11" class="ok">F1-11</a><a href="#F1-12" class="ok">F1-12</a><a href="#F1-13" class="ok">F1-13</a><a href="#F1-14" class="ok">F1-14</a><a href="#F1-15" class="ok">F1-15</a><a href="#F1-16" class="ok">F1-16</a><a href="#F1-17" class="ok">F1-17</a><a href="#F1-18" class="ok">F1-18</a><a href="#F1-19" class="ok">F1-19</a><a href="#F1-20" class="ok">F1-20</a><a href="#F1-21" class="ok">F1-21</a><a href="#F2-01" class="ok">F2-01</a><a href="#F2-02" class="ok">F2-02</a><a href="#F2-03" class="ok">F2-03</a><a href="#F2-04" class="ok">F2-04</a><a href="#F2-05" class="ok">F2-05</a><a href="#F2-06" class="ok">F2-06</a><a href="#F2-07" class="ok">F2-07</a><a href="#F2-08" class="ok">F2-08</a><a href="#F2-09" class="ok">F2-09</a><a href="#F2-10" class="ok">F2-10</a><a href="#F3-01" class="ok">F3-01</a><a href="#F3-02" class="ok">F3-02</a><a href="#F3-03" class="ok">F3-03</a><a href="#F3-04" class="ok">F3-04</a><a href="#F3-05" class="ok">F3-05</a><a href="#F3-06" class="ok">F3-06</a><a href="#F3-07" class="ok">F3-07</a><a href="#F3-08" class="ok">F3-08</a></div><section id="F1-01"><h3><span class="id">F1-01</span> Escritorio (XML): el planeador registra una ubicación candidata
+<span class="e ok">PASA</span></h3>
+<p class="obj">Planeación de ubicación.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://planeacion:5106/api/v1/candidatos</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/xml
+X-Traza-Id: 97db450c-b0c5-44ec-b195-dfd8d220a9ec
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
+Content-Type: application/xml</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;candidato_nuevo xmlns=&quot;urn:microhubs:v1&quot;&gt;&lt;clave&gt;********&lt;/clave&gt;&lt;nombre&gt;Ubicación del flujo E0FDE&lt;/nombre&gt;&lt;latitud&gt;25.760195&lt;/latitud&gt;&lt;longitud&gt;-100.370891&lt;/longitud&gt;&lt;renta_estimada&gt;15000.00&lt;/renta_estimada&gt;&lt;nomina_estimada&gt;36000.00&lt;/nomina_estimada&gt;&lt;servicios_estimados&gt;6000.00&lt;/servicios_estimados&gt;&lt;otros_costos&gt;4000.00&lt;/otros_costos&gt;&lt;superficie_m2&gt;100&lt;/superficie_m2&gt;&lt;capacidad_fisica&gt;120&lt;/capacidad_fisica&gt;&lt;accesibilidad_vial&gt;8&lt;/accesibilidad_vial&gt;&lt;zona_id&gt;3&lt;/zona_id&gt;&lt;poblacion_cubierta&gt;5200&lt;/poblacion_cubierta&gt;&lt;radio_km&gt;1.5&lt;/radio_km&gt;&lt;/candidato_nuevo&gt;</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 86 ms · traza 97db450c-b0c5-44ec-b195-dfd8d220a9ec</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/xml; charset=utf-8
+X-Traza-Id: 97db450c-b0c5-44ec-b195-dfd8d220a9ec</pre></div><div class="b "><div class="t">Respuesta</div><pre>&lt;?xml version=&#x27;1.0&#x27; encoding=&#x27;utf-8&#x27;?&gt;
+&lt;candidato xmlns=&quot;urn:microhubs:v1&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; version=&quot;1&quot;&gt;&lt;id&gt;161&lt;/id&gt;&lt;clave&gt;FL-E0FDE&lt;/clave&gt;&lt;nombre&gt;Ubicación del flujo E0FDE&lt;/nombre&gt;&lt;latitud&gt;25.760195&lt;/latitud&gt;&lt;longitud&gt;-100.370891&lt;/longitud&gt;&lt;renta_estimada&gt;15000.00&lt;/renta_estimada&gt;&lt;nomina_estimada&gt;36000.00&lt;/nomina_estimada&gt;&lt;servicios_estimados&gt;6000.00&lt;/servicios_estimados&gt;&lt;otros_costos&gt;4000.00&lt;/otros_costos&gt;&lt;costo_fijo&gt;61000.00&lt;/costo_fijo&gt;&lt;superficie_m2&gt;100&lt;/superficie_m2&gt;&lt;capacidad_fisica&gt;120&lt;/capacidad_fisica&gt;&lt;accesibilidad_vial&gt;8&lt;/accesibilidad_vial&gt;&lt;zona_id&gt;3&lt;/zona_id&gt;&lt;poblacion_cubierta&gt;5200&lt;/poblacion_cubierta&gt;&lt;radio_km&gt;1.5&lt;/radio_km&gt;&lt;decision&gt;pendiente&lt;/decision&gt;&lt;decision_motivo xsi:nil=&quot;true&quot; /&gt;&lt;/candidato&gt;</pre></div></div>
+<div class="b ev"><div class="t">Evidencia en PostgreSQL · SELECT id, clave, nombre, costo_fijo, decision FROM ubicacion_candidata WHERE clave = %s</div><pre>[
+  {
+    &quot;id&quot;: 161,
+    &quot;clave&quot;: &quot;FL-E0FDE&quot;,
+    &quot;nombre&quot;: &quot;Ubicación del flujo E0FDE&quot;,
+    &quot;costo_fijo&quot;: &quot;61000.00&quot;,
+    &quot;decision&quot;: &quot;pendiente&quot;
+  }
+]</pre></div></section><section id="F1-02"><h3><span class="id">F1-02</span> El planeador simula la operación de la candidata
+<span class="e ok">PASA</span></h3>
+<p class="obj">Capacidad, utilización y decisión sugerida (MongoDB).</p>
+<div class="req"><span class="m POST">POST</span> <code>http://planeacion:5106/api/v1/candidatos/161/simular</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 8688e33e-12a8-4335-bd5b-b0cd0d227bf8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;supuestos&quot;: {
+    &quot;demanda_diaria&quot;: 100,
+    &quot;operadores&quot;: 3,
+    &quot;repartidores&quot;: 4,
+    &quot;ticket&quot;: 180.0,
+    &quot;costo_entrega&quot;: 22.0,
+    &quot;margen_bruto&quot;: 0.3,
+    &quot;renta&quot;: 15000.0,
+    &quot;nomina&quot;: 36000.0,
+    &quot;servicios&quot;: 6000.0,
+    &quot;otros&quot;: 4000.0,
+    &quot;distancia_km&quot;: 1.2,
+    &quot;capacidad_fisica&quot;: 120
+  }
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 345 ms · traza 8688e33e-12a8-4335-bd5b-b0cd0d227bf8</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 8688e33e-12a8-4335-bd5b-b0cd0d227bf8</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;atendidos&quot;: 100.0,
+  &quot;rechazados&quot;: 0.0,
+  &quot;utilizacion&quot;: 83.3,
+  &quot;nivel&quot;: &quot;atencion&quot;,
+  &quot;tiempo_estimado_min&quot;: 17.2,
+  &quot;operadores_requeridos&quot;: 3,
+  &quot;repartidores_requeridos&quot;: 2,
+  &quot;ingreso_dia&quot;: 18000.0,
+  &quot;margen_dia&quot;: 1166.67,
+  &quot;costo_por_pedido&quot;: 42.33,
+  &quot;equilibrio&quot;: {
+    &quot;margen_pedido&quot;: 32.0,
+    &quot;mensual&quot;: 1906.2,
+    &quot;diario&quot;: 63.5
+  },
+  &quot;decision&quot;: &quot;VIABLE&quot;,
+  &quot;explicacion&quot;: [
+    &quot;la demanda atendida supera el equilibrio en +36 pedidos/día&quot;,
+    &quot;la utilización es 83% (atencion)&quot;,
+    &quot;el espacio físico del local limita la capacidad&quot;
+  ]
+}</pre></div></div>
+</section><section id="F1-03"><h3><span class="id">F1-03</span> Punto de equilibrio de la candidata
+<span class="e ok">PASA</span></h3>
+<p class="obj">Viabilidad financiera antes de decidir.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://punto-equilibrio:5120/api/v1/punto-equilibrio/calculos</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: eb3157af-ee91-48bd-a6b4-af3c2d61531b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;candidato_id&quot;: 161,
+  &quot;pedidos_dia&quot;: 100,
+  &quot;ticket&quot;: 180,
+  &quot;margen_bruto&quot;: 0.3,
+  &quot;costos_fijos&quot;: 61000,
+  &quot;costo_variable_pedido&quot;: 22
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 30 ms · traza eb3157af-ee91-48bd-a6b4-af3c2d61531b</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: eb3157af-ee91-48bd-a6b4-af3c2d61531b</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: null,
+  &quot;nombre&quot;: null,
+  &quot;objeto&quot;: {
+    &quot;tipo&quot;: &quot;candidato&quot;,
+    &quot;id&quot;: 161,
+    &quot;nombre&quot;: null
+  },
+  &quot;entrada&quot;: {
+    &quot;costos_fijos_mes&quot;: 61000.0,
+    &quot;costo_variable_pedido&quot;: 22.0,
+    &quot;ticket&quot;: 180.0,
+    &quot;margen_bruto&quot;: 0.3,
+    &quot;pedidos_dia&quot;: 100.0,
+    &quot;dias_mes&quot;: 30.0,
+    &quot;margen_seguridad_minimo_pct&quot;: 15.0,
+    &quot;origen&quot;: {
+      &quot;costos_fijos&quot;: &quot;manual&quot;,
+      &quot;costo_variable_pedido&quot;: &quot;manual&quot;,
+      &quot;ticket&quot;: &quot;manual&quot;,
+      &quot;margen_bruto&quot;: &quot;manual&quot;,
+      &quot;pedidos_dia&quot;: &quot;manual&quot;
+    }
+  },
+  &quot;margen_pedido&quot;: 32.0,
+  &quot;equilibrio_mensual&quot;: 1906.25,
+  &quot;equilibrio_diario&quot;: 63.54,
+  &quot;ingresos_equilibrio_mes&quot;: 343125.0,
+  &quot;diferencia_pedidos_dia&quot;: 36.46,
+  &quot;margen_seguridad_pct&quot;: 57.38,
+  &quot;utilidad_dia&quot;: 1166.67,
+  &quot;utilidad_mes&quot;: 35000.0,
+  &quot;decision&quot;: &quot;viable&quot;,
+  &quot;explicacion&quot;: [
+    &quot;supera el equilibrio por 57.4 % (mínimo 15 %)&quot;
+  ],
+  &quot;pasos&quot;: [
+    &quot;Margen por pedido = ticket × margen bruto − costo de entrega = 180.00 × 30.00% − 22.00 = 32.00&quot;,
+    &quot;Punto de equilibrio mensual = costos fijos ÷ margen por pedido = 61,000.00 ÷ 32.00 = 1,906 pedidos/mes&quot;,
+    &quot;Punto de equilibrio diario = 1,906 ÷ 30 días = 63.5 pedidos/día&quot;
+  ],
+  &quot;supuestos_usados&quot;: [
+    {
+      &quot;clave&quot;: &quot;********&quot;,
+      &quot;valor&quot;: 15.0,
+      &quot;modificado&quot;: false
+    },
+    {
+      &quot;clave&quot;: &quot;********&quot;,
+      &quot;valor&quot;: 30.0,
+      &quot;modificado&quot;: false
+    },
+    {
+      &quot;clave&quot;: &quot;********&quot;,
+      &quot;valor&quot;: 0.28,
+      &quot;modificado&quot;: false
+    }
+  ]
+}</pre></div></div>
+</section><section id="F1-04"><h3><span class="id">F1-04</span> El planeador decide
+<span class="e ok">PASA</span></h3>
+<p class="obj">La decisión queda con motivo y en la bitácora.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://planeacion:5106/api/v1/candidatos/161/decision</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: ff71f4f5-2083-4c06-9a4d-601aee961d63
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;decision&quot;: &quot;aceptado&quot;,
+  &quot;motivo&quot;: &quot;Cubre la zona del cliente y la demanda esperada supera el equilibrio.&quot;
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 60 ms · traza ff71f4f5-2083-4c06-9a4d-601aee961d63</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: ff71f4f5-2083-4c06-9a4d-601aee961d63</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 161,
+  &quot;clave&quot;: &quot;********&quot;,
+  &quot;nombre&quot;: &quot;Ubicación del flujo E0FDE&quot;,
+  &quot;latitud&quot;: 25.760195,
+  &quot;longitud&quot;: -100.370891,
+  &quot;renta_estimada&quot;: 15000.0,
+  &quot;nomina_estimada&quot;: 36000.0,
+  &quot;servicios_estimados&quot;: 6000.0,
+  &quot;otros_costos&quot;: 4000.0,
+  &quot;costo_fijo&quot;: 61000.0,
+  &quot;superficie_m2&quot;: 100.0,
+  &quot;capacidad_fisica&quot;: 120,
+  &quot;accesibilidad_vial&quot;: 8,
+  &quot;zona_id&quot;: 3,
+  &quot;poblacion_cubierta&quot;: 5200,
+  &quot;radio_km&quot;: 1.5,
+  &quot;decision&quot;: &quot;aceptado&quot;,
+  &quot;decision_motivo&quot;: &quot;Cubre la zona del cliente y la demanda esperada supera el equilibrio.&quot;
+}</pre></div></div>
+<div class="b ev"><div class="t">Evidencia en PostgreSQL · SELECT decision, decision_motivo FROM ubicacion_candidata WHERE id = %s</div><pre>[
+  {
+    &quot;decision&quot;: &quot;aceptado&quot;,
+    &quot;decision_motivo&quot;: &quot;Cubre la zona del cliente y la demanda esperada supera el equilibrio.&quot;
+  }
+]</pre></div></section><section id="F1-05"><h3><span class="id">F1-05</span> Operación: el administrador abre el microhub
+<span class="e ok">PASA</span></h3>
+<p class="obj">La candidata viable se vuelve microhub activo.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://microhubs:5109/api/v1/microhubs</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 6e2709b0-73e5-4618-a034-540656837874
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;clave&quot;: &quot;********&quot;,
+  &quot;nombre&quot;: &quot;Microhub E0FDE&quot;,
+  &quot;direccion&quot;: &quot;Ubicación aprobada en planeación&quot;,
+  &quot;latitud&quot;: 25.760195,
+  &quot;longitud&quot;: -100.370891,
+  &quot;radio_km&quot;: 1.5,
+  &quot;capacidad_turno&quot;: 120
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 58 ms · traza 6e2709b0-73e5-4618-a034-540656837874</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 6e2709b0-73e5-4618-a034-540656837874</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 9,
+  &quot;clave&quot;: &quot;********&quot;,
+  &quot;nombre&quot;: &quot;Microhub E0FDE&quot;,
+  &quot;latitud&quot;: 25.760195,
+  &quot;longitud&quot;: -100.370891,
+  &quot;radio_km&quot;: 1.5,
+  &quot;estatus&quot;: &quot;activo&quot;
+}</pre></div></div>
+</section><section id="F1-06"><h3><span class="id">F1-06</span> Asignar personal al microhub
+<span class="e ok">PASA</span></h3>
+<p class="obj">Operadores, repartidores y capacidad física.</p>
+<div class="req"><span class="m PUT">PUT</span> <code>http://capacidad:5117/api/v1/capacidad/recursos/9</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: c5456370-317f-4ebf-8d95-012c988bb376
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;operadores&quot;: 2,
+  &quot;repartidores&quot;: 2,
+  &quot;capacidad_fisica&quot;: 120
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 172 ms · traza c5456370-317f-4ebf-8d95-012c988bb376</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: c5456370-317f-4ebf-8d95-012c988bb376</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;microhub&quot;: {
+    &quot;id&quot;: 9,
+    &quot;nombre&quot;: &quot;Microhub E0FDE&quot;
+  },
+  &quot;operadores&quot;: 2,
+  &quot;repartidores&quot;: 2,
+  &quot;capacidad_fisica&quot;: 120,
+  &quot;actualizado_en&quot;: &quot;2026-11-26T15:21:58-06:00&quot;
+}</pre></div></div>
+</section><section id="F1-07"><h3><span class="id">F1-07</span> Crear la cuenta del operador
+<span class="e ok">PASA</span></h3>
+<p class="obj">Cuenta nueva con su perfil y su microhub.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://usuarios:5102/api/v1/usuarios</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 8c3b4728-b8d7-4a6d-98b0-249658980ec2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;nombre&quot;: &quot;Operador&quot;,
+  &quot;apellidos&quot;: &quot;E0FDE&quot;,
+  &quot;correo&quot;: &quot;operador.e0fde@ejemplo.mx&quot;,
+  &quot;clave&quot;: &quot;********&quot;,
+  &quot;rol&quot;: &quot;operador&quot;,
+  &quot;microhub_id&quot;: 9
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 152 ms · traza 8c3b4728-b8d7-4a6d-98b0-249658980ec2</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 8c3b4728-b8d7-4a6d-98b0-249658980ec2</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 59,
+  &quot;nombre&quot;: &quot;Operador&quot;,
+  &quot;apellidos&quot;: &quot;E0FDE&quot;,
+  &quot;correo&quot;: &quot;operador.e0fde@ejemplo.mx&quot;,
+  &quot;telefono&quot;: null,
+  &quot;rol&quot;: &quot;operador&quot;,
+  &quot;microhub&quot;: {
+    &quot;id&quot;: 9,
+    &quot;clave&quot;: &quot;********&quot;,
+    &quot;nombre&quot;: &quot;Microhub E0FDE&quot;
+  },
+  &quot;ultimo_acceso&quot;: null
+}</pre></div></div>
+</section><section id="F1-08a"><h3><span class="id">F1-08a</span> Surtir el microhub nuevo
+<span class="e ok">PASA</span></h3>
+<p class="obj">Transferencia atómica desde MH-01.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://inventario:5111/api/v1/inventario/transferencias</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 913cf1be-a8af-4273-be28-605d01e6e464
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;origen_microhub_id&quot;: 1,
+  &quot;destino_microhub_id&quot;: 9,
+  &quot;producto_id&quot;: 31,
+  &quot;cantidad&quot;: 12,
+  &quot;motivo&quot;: &quot;Inventario inicial del microhub nuevo&quot;,
+  &quot;operacion_uuid&quot;: &quot;c2b42589-113c-4cd7-85a2-c56cbf2a4494&quot;
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 121 ms · traza 913cf1be-a8af-4273-be28-605d01e6e464</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 913cf1be-a8af-4273-be28-605d01e6e464</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;producto_id&quot;: 31,
+  &quot;cantidad&quot;: 12,
+  &quot;duplicado&quot;: false,
+  &quot;origen&quot;: {
+    &quot;microhub_id&quot;: 1,
+    &quot;existencia&quot;: 31,
+    &quot;movimiento_id&quot;: 2374
+  },
+  &quot;destino&quot;: {
+    &quot;microhub_id&quot;: 9,
+    &quot;existencia&quot;: 12,
+    &quot;movimiento_id&quot;: 2375
+  }
+}</pre></div></div>
+</section><section id="F1-08b"><h3><span class="id">F1-08b</span> Surtir el microhub nuevo
+<span class="e ok">PASA</span></h3>
+<p class="obj">Transferencia atómica desde MH-01.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://inventario:5111/api/v1/inventario/transferencias</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 3fc8c9ea-4d58-47ac-ba36-2c15a03c997a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;origen_microhub_id&quot;: 1,
+  &quot;destino_microhub_id&quot;: 9,
+  &quot;producto_id&quot;: 47,
+  &quot;cantidad&quot;: 12,
+  &quot;motivo&quot;: &quot;Inventario inicial del microhub nuevo&quot;,
+  &quot;operacion_uuid&quot;: &quot;6a1b90c4-a827-4c80-9ddd-1b28f4b0aac5&quot;
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 126 ms · traza 3fc8c9ea-4d58-47ac-ba36-2c15a03c997a</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 3fc8c9ea-4d58-47ac-ba36-2c15a03c997a</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;producto_id&quot;: 47,
+  &quot;cantidad&quot;: 12,
+  &quot;duplicado&quot;: false,
+  &quot;origen&quot;: {
+    &quot;microhub_id&quot;: 1,
+    &quot;existencia&quot;: 36,
+    &quot;movimiento_id&quot;: 2376
+  },
+  &quot;destino&quot;: {
+    &quot;microhub_id&quot;: 9,
+    &quot;existencia&quot;: 12,
+    &quot;movimiento_id&quot;: 2377
+  }
+}</pre></div></div>
+</section><section id="F1-09"><h3><span class="id">F1-09</span> Android (JSON): el cliente hace su pedido
+<span class="e ok">PASA</span></h3>
+<p class="obj">El motor lo asigna al microhub más cercano que tiene todo: el nuevo.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://pedidos:5104/api/v1/pedidos</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 912d04f0-75c9-470b-99ff-9b4cba7b9613
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;lineas&quot;: [
+    {
+      &quot;producto_id&quot;: 31,
+      &quot;cantidad&quot;: 3
+    },
+    {
+      &quot;producto_id&quot;: 47,
+      &quot;cantidad&quot;: 3
+    }
+  ],
+  &quot;operacion_uuid&quot;: &quot;b8eec5ef-9a9b-412d-9ba8-72d5f6167196&quot;
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 248 ms · traza 912d04f0-75c9-470b-99ff-9b4cba7b9613</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 912d04f0-75c9-470b-99ff-9b4cba7b9613</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 586,
+  &quot;folio&quot;: &quot;PED-20261126-000586&quot;,
+  &quot;estado&quot;: &quot;asignado&quot;,
+  &quot;zona_id&quot;: 3,
+  &quot;microhub_id&quot;: 9,
+  &quot;subtotal&quot;: 336.0,
+  &quot;costo_envio&quot;: 0.0,
+  &quot;total&quot;: 336.0,
+  &quot;asignado&quot;: true,
+  &quot;motivo&quot;: null,
+  &quot;duplicado&quot;: false
+}</pre></div></div>
+<div class="b ev"><div class="t">Evidencia en PostgreSQL · SELECT criterio, candidatos_evaluados, microhub_ganador_id, motivo FROM decision_asignacion WHERE pedido_id = %s</div><pre>[
+  {
+    &quot;criterio&quot;: &quot;menor_distancia&quot;,
+    &quot;candidatos_evaluados&quot;: 4,
+    &quot;microhub_ganador_id&quot;: 9,
+    &quot;motivo&quot;: null
+  }
+]</pre></div><div class="b ev"><div class="t">Evidencia en PostgreSQL · SELECT tipo, producto_id, cantidad, existencia_resultante FROM movimiento_inventario WHERE referencia_tipo = &#x27;pedido&#x27; AND referencia_id = %s</div><pre>[
+  {
+    &quot;tipo&quot;: &quot;salida_pedido&quot;,
+    &quot;producto_id&quot;: 31,
+    &quot;cantidad&quot;: -3,
+    &quot;existencia_resultante&quot;: 9
+  },
+  {
+    &quot;tipo&quot;: &quot;salida_pedido&quot;,
+    &quot;producto_id&quot;: 47,
+    &quot;cantidad&quot;: -3,
+    &quot;existencia_resultante&quot;: 9
+  }
+]</pre></div></section><section id="F1-10"><h3><span class="id">F1-10</span> El operador prepara el pedido
+<span class="e ok">PASA</span></h3>
+<p class="obj">La transición la valida el motor.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://pedidos:5104/api/v1/pedidos/586/estado</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 4992cb73-4b9e-431b-94da-e461b4e50fc4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1OSIs…(295 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;estado&quot;: &quot;en_preparacion&quot;
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 133 ms · traza 4992cb73-4b9e-431b-94da-e461b4e50fc4</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 4992cb73-4b9e-431b-94da-e461b4e50fc4</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 586,
+  &quot;folio&quot;: &quot;PED-20261126-000586&quot;,
+  &quot;estado&quot;: &quot;en_preparacion&quot;,
+  &quot;zona&quot;: {
+    &quot;id&quot;: 3,
+    &quot;nombre&quot;: &quot;Paseo de San Bernabé&quot;
+  },
+  &quot;microhub_id&quot;: 9,
+  &quot;total&quot;: 336.0,
+  &quot;creado_en&quot;: &quot;2026-11-26T15:21:59-06:00&quot;
+}</pre></div></div>
+</section><section id="F1-11"><h3><span class="id">F1-11</span> El operador lo marca listo
+<span class="e ok">PASA</span></h3>
+<p class="obj">Queda disponible para despacho.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://pedidos:5104/api/v1/pedidos/586/listo</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 760fe7f6-48cc-436c-a4cc-6d3b0bbb13a0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1OSIs…(295 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{}</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 67 ms · traza 760fe7f6-48cc-436c-a4cc-6d3b0bbb13a0</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 760fe7f6-48cc-436c-a4cc-6d3b0bbb13a0</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 586,
+  &quot;estado&quot;: &quot;en_preparacion&quot;,
+  &quot;listo_en&quot;: &quot;2026-11-26T15:21:59-06:00&quot;
+}</pre></div></div>
+</section><section id="F1-12"><h3><span class="id">F1-12</span> Proponer la ruta de despacho
+<span class="e ok">PASA</span></h3>
+<p class="obj">Agrupa, asigna repartidor y ordena las paradas (algoritmo de rutas).</p>
+<div class="req"><span class="m POST">POST</span> <code>http://rutas:5118/api/v1/rutas/planes</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 3765dd15-57bf-4415-afa1-0bc33d37b24d
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1OSIs…(295 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;microhub_id&quot;: 9,
+  &quot;pedido_ids&quot;: [
+    586
+  ],
+  &quot;repartidor_ids&quot;: [
+    7
+  ],
+  &quot;metodo&quot;: &quot;automatico&quot;,
+  &quot;guardar&quot;: true
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 205 ms · traza 3765dd15-57bf-4415-afa1-0bc33d37b24d</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 3765dd15-57bf-4415-afa1-0bc33d37b24d</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 102,
+  &quot;estado&quot;: &quot;propuesto&quot;,
+  &quot;version&quot;: 1,
+  &quot;microhub&quot;: {
+    &quot;id&quot;: 9,
+    &quot;nombre&quot;: &quot;Microhub E0FDE&quot;
+  },
+  &quot;fecha&quot;: &quot;2026-11-26&quot;,
+  &quot;metodo_pedido&quot;: &quot;automatico&quot;,
+  &quot;rutas&quot;: [
+    {
+      &quot;repartidor&quot;: {
+        &quot;id&quot;: 7,
+        &quot;nombre&quot;: &quot;Ramiro Alanís Lozano&quot;
+      },
+      &quot;metodo&quot;: &quot;TSP exacto&quot;,
+      &quot;zonas&quot;: [
+        &quot;Paseo de San Bernabé&quot;
+      ],
+      &quot;paradas&quot;: [
+        {
+          &quot;orden&quot;: 1,
+          &quot;pedido&quot;: {
+            &quot;id&quot;: 586,
+            &quot;folio&quot;: &quot;PED-20261126-000586&quot;
+          },
+          &quot;zona&quot;: {
+            &quot;id&quot;: 3,
+            &quot;nombre&quot;: &quot;Paseo de San Bernabé&quot;
+          },
+          &quot;latitud&quot;: 25.759995,
+          &quot;longitud&quot;: -100.371091,
+          &quot;tramo_km&quot;: 0.04,
+          &quot;minutos_acum&quot;: 4.1
+        }
+      ],
+      &quot;distancia_km&quot;: 0.04,
+      &quot;minutos&quot;: 4.1,
+      &quot;costo&quot;: 18.18
+    }
+  ],
+  &quot;sin_asignar&quot;: [],
+  &quot;total&quot;: {
+    &quot;rutas&quot;: 1,
+    &quot;paradas&quot;: 1,
+    &quot;distancia_km&quot;: 0.04,
+    &quot;minutos_maximo&quot;: 4.1,
+    &quot;costo&quot;: 18.18
+  },
+  &quot;cambios&quot;: [],
+  &quot;supuestos_usados&quot;: [
+    {
+      &quot;clave&quot;: &quot;********&quot;,
+      &quot;valor&quot;: 22.0,
+      &quot;modificado&quot;: false
+    },
+    {
+      &quot;clave&quot;: &quot;********&quot;,
+      &quot;valor&quot;: 4.0,
+      &quot;modificado&quot;: false
+    },
+    {
+      &quot;clave&quot;: &quot;********&quot;,
+      &quot;valor&quot;: 4.5,
+      &quot;modificado&quot;: false
+    },
+    {
+      &quot;clave&quot;: &quot;********&quot;,
+      &quot;valor&quot;: 18.0,
+      &quot;modificado&quot;: false
+    },
+    {
+      &quot;clave&quot;: &quot;********&quot;,
+      &quot;valor&quot;: 8.0,
+      &quot;modificado&quot;: false
+    },
+    {
+      &quot;clave&quot;: &quot;********&quot;,
+      &quot;valor&quot;: 1.3,
+      &quot;modificado&quot;: false
+    }
+  ]
+}</pre></div></div>
+</section><section id="F1-13"><h3><span class="id">F1-13</span> El operador asigna la entrega
+<span class="e ok">PASA</span></h3>
+<p class="obj">El pedido pasa a ruta y el repartidor recibe el aviso.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://entregas:5105/api/v1/entregas</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: a694e61a-a155-43a3-9c45-5a98186613f1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1OSIs…(295 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;pedido_id&quot;: 586,
+  &quot;repartidor_id&quot;: 7,
+  &quot;orden_parada&quot;: 1
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 63 ms · traza a694e61a-a155-43a3-9c45-5a98186613f1</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: a694e61a-a155-43a3-9c45-5a98186613f1</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;entrega_id&quot;: 300,
+  &quot;pedido_id&quot;: 586,
+  &quot;repartidor_id&quot;: 7,
+  &quot;estado_pedido&quot;: &quot;en_ruta&quot;
+}</pre></div></div>
+<div class="b ev"><div class="t">Evidencia en PostgreSQL · SELECT titulo, tipo, referencia_id FROM web_notificacion WHERE destinatario_id = %s ORDER BY id DESC LIMIT 1</div><pre>[
+  {
+    &quot;titulo&quot;: &quot;Nueva entrega asignada&quot;,
+    &quot;tipo&quot;: &quot;entrega&quot;,
+    &quot;referencia_id&quot;: &quot;300&quot;
+  }
+]</pre></div></section><section id="F1-14"><h3><span class="id">F1-14</span> Android: el repartidor ve su parada
+<span class="e ok">PASA</span></h3>
+<p class="obj">Sesión validada en Redis.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://entregas:5105/api/v1/entregas/mias?por_pagina=50</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 6e98799c-6e42-47ac-8398-b8f0856903f7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 57 ms · traza 6e98799c-6e42-47ac-8398-b8f0856903f7</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 6e98799c-6e42-47ac-8398-b8f0856903f7</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;datos&quot;: [
+    {
+      &quot;id&quot;: 300,
+      &quot;pedido_id&quot;: 586,
+      &quot;folio&quot;: &quot;PED-20261126-000586&quot;,
+      &quot;estado_pedido&quot;: &quot;en_ruta&quot;,
+      &quot;orden_parada&quot;: 1,
+      &quot;direccion&quot;: &quot;Nogal 1440, Paseo de San Bernabé&quot;,
+      &quot;zona&quot;: &quot;Paseo de San Bernabé&quot;,
+      &quot;distancia_km&quot;: null,
+      &quot;minutos_estimados&quot;: null,
+      &quot;total&quot;: 336.0
+    }
+  ],
+  &quot;paginacion&quot;: {
+    &quot;pagina&quot;: 1,
+    &quot;por_pagina&quot;: 50,
+    &quot;total&quot;: 1,
+    &quot;paginas&quot;: 1
+  }
+}</pre></div></div>
+<div class="b ev"><div class="t">Evidencia en Redis · SCARD auth:sesion:7</div><pre>[
+  {
+    &quot;comando&quot;: &quot;SCARD auth:sesion:7&quot;,
+    &quot;valor&quot;: 12
+  }
+]</pre></div></section><section id="F1-15"><h3><span class="id">F1-15</span> El repartidor envía su recorrido
+<span class="e ok">PASA</span></h3>
+<p class="obj">Puntos GPS en MongoDB (2dsphere).</p>
+<div class="req"><span class="m POST">POST</span> <code>http://seguimiento:5110/api/v1/seguimiento/300/ubicaciones</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: fa649aa5-9e58-4d01-a737-b550bd175f0d
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;puntos&quot;: [
+    {
+      &quot;latitud&quot;: 25.760195,
+      &quot;longitud&quot;: -100.370891,
+      &quot;capturado_en&quot;: &quot;2026-11-26T21:17:59.855594+00:00&quot;
+    },
+    {
+      &quot;latitud&quot;: 25.759995,
+      &quot;longitud&quot;: -100.371091,
+      &quot;capturado_en&quot;: &quot;2026-11-26T21:20:59.855621+00:00&quot;
+    }
+  ]
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 34 ms · traza fa649aa5-9e58-4d01-a737-b550bd175f0d</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: fa649aa5-9e58-4d01-a737-b550bd175f0d</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;recibidos&quot;: 2
+}</pre></div></div>
+</section><section id="F1-16"><h3><span class="id">F1-16</span> La foto de evidencia queda en el almacén
+<span class="e ok">PASA</span></h3>
+<p class="obj">En la base solo sus datos; se descarga con un enlace firmado.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://documentos:5107/api/v1/documentos/6b08a2f75ea8dba9ecdb0af4/enlace</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 595efc3d-9aa8-4065-98c5-3fa5440134cf
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 36 ms · traza 595efc3d-9aa8-4065-98c5-3fa5440134cf</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 595efc3d-9aa8-4065-98c5-3fa5440134cf</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: &quot;6b08a2f75ea8dba9ecdb0af4&quot;,
+  &quot;nombre&quot;: &quot;evidencia-flujo1-E0FDE.jpg&quot;,
+  &quot;url_firmada&quot;: &quot;http://documentos:5107/api/v1/documentos/descarga?k=document…(208 caracteres)&quot;,
+  &quot;metodo&quot;: &quot;GET&quot;,
+  &quot;segundos&quot;: 300,
+  &quot;expira_en&quot;: &quot;2026-11-26T15:26:59-06:00&quot;
+}</pre></div></div>
+<div class="b ev"><div class="t">Evidencia en MongoDB · db.documentos.findOne({_id}) sin contenido</div><pre>{
+  &quot;_id&quot;: &quot;6b08a2f75ea8dba9ecdb0af4&quot;,
+  &quot;nombre&quot;: &quot;evidencia-flujo1-E0FDE.jpg&quot;,
+  &quot;tipo_mime&quot;: &quot;image/jpeg&quot;,
+  &quot;tamano_bytes&quot;: 276,
+  &quot;sha256&quot;: &quot;7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc&quot;,
+  &quot;referencia&quot;: {
+    &quot;tipo&quot;: &quot;entrega&quot;,
+    &quot;id&quot;: &quot;300&quot;
+  },
+  &quot;subido_por&quot;: 7,
+  &quot;creado_en&quot;: &quot;2026-11-26 21:21:59.931000+00:00&quot;,
+  &quot;ruta&quot;: &quot;documentos/2026/11/6b08a2f75ea8dba9ecdb0af4.jpg&quot;,
+  &quot;privacidad&quot;: &quot;privado&quot;,
+  &quot;estado&quot;: &quot;activo&quot;,
+  &quot;metadatos&quot;: {
+    &quot;almacen&quot;: &quot;local&quot;,
+    &quot;origen&quot;: &quot;api&quot;
+  }
+}</pre></div></section><section id="F1-17"><h3><span class="id">F1-17</span> El repartidor cierra la entrega
+<span class="e ok">PASA</span></h3>
+<p class="obj">Cobro, ubicación y evidencia; idempotente.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://entregas:5105/api/v1/entregas/300/resultado</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 652412a8-661e-49f8-8ff0-04fb755c096f
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;resultado&quot;: &quot;entregado&quot;,
+  &quot;monto_cobrado&quot;: 336.0,
+  &quot;cambio_entregado&quot;: 0,
+  &quot;ubicacion&quot;: {
+    &quot;latitud&quot;: 25.759995,
+    &quot;longitud&quot;: -100.371091
+  },
+  &quot;evidencia_ids&quot;: [
+    &quot;6b08a2f75ea8dba9ecdb0af4&quot;
+  ],
+  &quot;capturado_en&quot;: &quot;2026-11-26T21:22:00.297425+00:00&quot;,
+  &quot;id_cliente_local&quot;: &quot;3770c331-e223-41d2-9c27-b032c20304d0&quot;
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 151 ms · traza 652412a8-661e-49f8-8ff0-04fb755c096f</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 652412a8-661e-49f8-8ff0-04fb755c096f</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;entrega_id&quot;: 300,
+  &quot;pedido_id&quot;: 586,
+  &quot;estado_pedido&quot;: &quot;entregado&quot;,
+  &quot;cerrado_en&quot;: &quot;2026-11-26T15:22:00-06:00&quot;,
+  &quot;duplicado&quot;: false
+}</pre></div></div>
+<div class="b ev"><div class="t">Evidencia en PostgreSQL · SELECT estado_anterior, estado_nuevo, usuario_id, proceso FROM historial_estatus WHERE pedido_id = %s ORDER BY id</div><pre>[
+  {
+    &quot;estado_anterior&quot;: null,
+    &quot;estado_nuevo&quot;: &quot;creado&quot;,
+    &quot;usuario_id&quot;: 9,
+    &quot;proceso&quot;: null
+  },
+  {
+    &quot;estado_anterior&quot;: &quot;creado&quot;,
+    &quot;estado_nuevo&quot;: &quot;asignado&quot;,
+    &quot;usuario_id&quot;: 9,
+    &quot;proceso&quot;: null
+  },
+  {
+    &quot;estado_anterior&quot;: &quot;asignado&quot;,
+    &quot;estado_nuevo&quot;: &quot;en_preparacion&quot;,
+    &quot;usuario_id&quot;: 59,
+    &quot;proceso&quot;: null
+  },
+  {
+    &quot;estado_anterior&quot;: &quot;en_preparacion&quot;,
+    &quot;estado_nuevo&quot;: &quot;en_ruta&quot;,
+    &quot;usuario_id&quot;: 59,
+    &quot;proceso&quot;: null
+  },
+  {
+    &quot;estado_anterior&quot;: &quot;en_ruta&quot;,
+    &quot;estado_nuevo&quot;: &quot;entregado&quot;,
+    &quot;usuario_id&quot;: 7,
+    &quot;proceso&quot;: null
+  }
+]</pre></div></section><section id="F1-18"><h3><span class="id">F1-18</span> El cliente recibe el aviso del cierre
+<span class="e ok">PASA</span></h3>
+<p class="obj">Aviso generado por el motor.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://notificaciones:5124/api/v1/notificaciones?por_pagina=5</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 99a9d573-7eb3-46e9-b43b-3d0a47fbd1be
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 415 ms · traza 99a9d573-7eb3-46e9-b43b-3d0a47fbd1be</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 99a9d573-7eb3-46e9-b43b-3d0a47fbd1be</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;datos&quot;: [
+    {
+      &quot;id&quot;: 850,
+      &quot;tipo&quot;: &quot;pedido&quot;,
+      &quot;titulo&quot;: &quot;Pedido PED-20261126-000586&quot;,
+      &quot;mensaje&quot;: &quot;El pedido cambió a entregado.&quot;,
+      &quot;leida&quot;: false,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;586&quot;
+      },
+      &quot;creada_en&quot;: &quot;2026-11-26T15:22:00-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 848,
+      &quot;tipo&quot;: &quot;pedido&quot;,
+      &quot;titulo&quot;: &quot;Pedido PED-20261126-000585&quot;,
+      &quot;mensaje&quot;: &quot;El pedido cambió a entrega_fallida.&quot;,
+      &quot;leida&quot;: false,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;585&quot;
+      },
+      &quot;creada_en&quot;: &quot;2026-11-26T15:21:29-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 846,
+      &quot;tipo&quot;: &quot;pedido&quot;,
+      &quot;titulo&quot;: &quot;Pedido PED-20261126-000584&quot;,
+      &quot;mensaje&quot;: &quot;El pedido cambió a cancelado.&quot;,
+      &quot;leida&quot;: false,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;584&quot;
+      },
+      &quot;creada_en&quot;: &quot;2026-11-26T15:21:26-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 843,
+      &quot;tipo&quot;: &quot;pedido&quot;,
+      &quot;titulo&quot;: &quot;Pedido PED-20261126-000583&quot;,
+      &quot;mensaje&quot;: &quot;El pedido cambió a entregado.&quot;,
+      &quot;leida&quot;: false,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;583&quot;
+      },
+      &quot;creada_en&quot;: &quot;2026-11-26T15:21:20-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 841,
+      &quot;tipo&quot;: &quot;pedido&quot;,
+      &quot;titulo&quot;: &quot;Pedido PED-20261126-000581&quot;,
+      &quot;mensaje&quot;: &quot;El pedido cambió a cancelado.&quot;,
+      &quot;leida&quot;: false,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;581&quot;
+      },
+      &quot;creada_en&quot;: &quot;2026-11-26T15:17:23-06:00&quot;
+    }
+  ],
+  &quot;paginacion&quot;: {
+    &quot;pagina&quot;: 1,
+    &quot;por_pagina&quot;: 5,
+    &quot;total&quot;: 16,
+    &quot;paginas&quot;: 4
+  }
+}</pre></div></div>
+</section><section id="F1-19"><h3><span class="id">F1-19</span> El auditor reconstruye la historia del pedido
+<span class="e ok">PASA</span></h3>
+<p class="obj">Bitácora, estados, inventario y archivos en una línea de tiempo.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://auditoria-monitoreo:5126/api/v1/auditoria/trazabilidad/pedido/586</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: d51e3e0d-7fd2-46ec-8aac-87d79dd55188
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 116 ms · traza d51e3e0d-7fd2-46ec-8aac-87d79dd55188</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: d51e3e0d-7fd2-46ec-8aac-87d79dd55188</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;objeto&quot;: {
+    &quot;tipo&quot;: &quot;pedido&quot;,
+    &quot;id&quot;: &quot;586&quot;
+  },
+  &quot;total&quot;: 15,
+  &quot;eventos&quot;: [
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:59-06:00&quot;,
+      &quot;origen&quot;: &quot;auditoria&quot;,
+      &quot;accion&quot;: &quot;alta&quot;,
+      &quot;descripcion&quot;: &quot;actualizado_en = 2026-11-26T15:21:59.1142-06:00; asignado_en = None; cerrado_en = None; cliente_id = 1&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 9,
+        &quot;nombre&quot;: &quot;Juan Chapa Sepúlveda&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;586&quot;
+      },
+      &quot;cambios&quot;: [
+        {
+          &quot;campo&quot;: &quot;actualizado_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:21:59.1142-06:00&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;asignado_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;cerrado_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;cliente_id&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;1&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;costo_envio&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;0.0&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;creado_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:21:59.1142-06:00&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;domicilio_id&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;1&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;estado&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;creado&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;folio&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;PED-20261126-000586&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;id&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;586&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;listo_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;microhub_id&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        }
+      ]
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:59-06:00&quot;,
+      &quot;origen&quot;: &quot;auditoria&quot;,
+      &quot;accion&quot;: &quot;cambio_estado&quot;,
+      &quot;descripcion&quot;: &quot;asignado_en = 2026-11-26T15:21:59.1142-06:00; estado: creado → asignado; microhub_id = 9&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 9,
+        &quot;nombre&quot;: &quot;Juan Chapa Sepúlveda&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;586&quot;
+      },
+      &quot;cambios&quot;: [
+        {
+          &quot;campo&quot;: &quot;asignado_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:21:59.1142-06:00&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;estado&quot;,
+          &quot;anterior&quot;: &quot;creado&quot;,
+          &quot;nuevo&quot;: &quot;asignado&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;microhub_id&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;9&quot;
+        }
+      ]
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:59-06:00&quot;,
+      &quot;origen&quot;: &quot;estados&quot;,
+      &quot;accion&quot;: &quot;cambio_estado&quot;,
+      &quot;descripcion&quot;: &quot;nuevo → creado&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 9,
+        &quot;nombre&quot;: &quot;Juan Chapa Sepúlveda&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;586&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:59-06:00&quot;,
+      &quot;origen&quot;: &quot;estados&quot;,
+      &quot;accion&quot;: &quot;cambio_estado&quot;,
+      &quot;descripcion&quot;: &quot;creado → asignado&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 9,
+        &quot;nombre&quot;: &quot;Juan Chapa Sepúlveda&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;586&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:59-06:00&quot;,
+      &quot;origen&quot;: &quot;inventario&quot;,
+      &quot;accion&quot;: &quot;movimiento_inventario&quot;,
+      &quot;descripcion&quot;: &quot;salida_pedido: -3 de producto 31 en microhub 9 (existencia 9)&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 9,
+        &quot;nombre&quot;: &quot;Juan Chapa Sepúlveda&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;inventario&quot;,
+        &quot;id&quot;: &quot;9-31&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:59-06:00&quot;,
+      &quot;origen&quot;: &quot;inventario&quot;,
+      &quot;accion&quot;: &quot;movimiento_inventario&quot;,
+      &quot;descripcion&quot;: &quot;salida_pedido: -3 de producto 47 en microhub 9 (existencia 9)&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 9,
+        &quot;nombre&quot;: &quot;Juan Chapa Sepúlveda&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;inventario&quot;,
+        &quot;id&quot;: &quot;9-47&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:59-06:00&quot;,
+      &quot;origen&quot;: &quot;auditoria&quot;,
+      &quot;accion&quot;: &quot;cambio_estado&quot;,
+      &quot;descripcion&quot;: &quot;actualizado_en: 2026-11-26T15:21:59.1142-06:00 → 2026-11-26T15:21:59.33476-06:00; estado: asignado → en_preparacion&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 59,
+        &quot;nombre&quot;: &quot;Operador E0FDE&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;586&quot;
+      },
+      &quot;cambios&quot;: [
+        {
+          &quot;campo&quot;: &quot;actualizado_en&quot;,
+          &quot;anterior&quot;: &quot;2026-11-26T15:21:59.1142-06:00&quot;,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:21:59.33476-06:00&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;estado&quot;,
+          &quot;anterior&quot;: &quot;asignado&quot;,
+          &quot;nuevo&quot;: &quot;en_preparacion&quot;
+        }
+      ]
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:59-06:00&quot;,
+      &quot;origen&quot;: &quot;estados&quot;,
+      &quot;accion&quot;: &quot;cambio_estado&quot;,
+      &quot;descripcion&quot;: &quot;asignado → en_preparacion&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 59,
+        &quot;nombre&quot;: &quot;Operador E0FDE&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;586&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:59-06:00&quot;,
+      &quot;origen&quot;: &quot;auditoria&quot;,
+      &quot;accion&quot;: &quot;modificacion&quot;,
+      &quot;descripcion&quot;: &quot;listo_en = 2026-11-26T15:21:59.465661-06:00&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 59,
+        &quot;nombre&quot;: &quot;Operador E0FDE&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;586&quot;
+      },
+      &quot;cambios&quot;: [
+        {
+          &quot;campo&quot;: &quot;listo_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:21:59.465661-06:00&quot;
+        }
+      ]
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:59-06:00&quot;,
+      &quot;origen&quot;: &quot;auditoria&quot;,
+      &quot;accion&quot;: &quot;alta&quot;,
+      &quot;descripcion&quot;: &quot;asignada_en = 2026-11-26T15:21:59.730963-06:00; cambio_entregado = None; capturado_en = None; cerrada_por_usuario_id = None&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 59,
+        &quot;nombre&quot;: &quot;Operador E0FDE&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;entrega&quot;,
+        &quot;id&quot;: &quot;300&quot;
+      },
+      &quot;cambios&quot;: [
+        {
+          &quot;campo&quot;: &quot;asignada_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:21:59.730963-06:00&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;cambio_entregado&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;capturado_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;cerrada_por_usuario_id&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_latitud&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_longitud&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_precision_m&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;confirmacion_recepcion&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;false&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;costo_entrega_estimado&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;distancia_km&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;evidencia_ids&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        }
+      ]
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:59-06:00&quot;,
+      &quot;origen&quot;: &quot;auditoria&quot;,
+      &quot;accion&quot;: &quot;cambio_estado&quot;,
+      &quot;descripcion&quot;: &quot;actualizado_en: 2026-11-26T15:21:59.33476-06:00 → 2026-11-26T15:21:59.730963-06:00; estado: en_preparacion → en_ruta&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 59,
+        &quot;nombre&quot;: &quot;Operador E0FDE&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;586&quot;
+      },
+      &quot;cambios&quot;: [
+        {
+          &quot;campo&quot;: &quot;actualizado_en&quot;,
+          &quot;anterior&quot;: &quot;2026-11-26T15:21:59.33476-06:00&quot;,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:21:59.730963-06:00&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;estado&quot;,
+          &quot;anterior&quot;: &quot;en_preparacion&quot;,
+          &quot;nuevo&quot;: &quot;en_ruta&quot;
+        }
+      ]
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:59-06:00&quot;,
+      &quot;origen&quot;: &quot;estados&quot;,
+      &quot;accion&quot;: &quot;cambio_estado&quot;,
+      &quot;descripcion&quot;: &quot;en_preparacion → en_ruta&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 59,
+        &quot;nombre&quot;: &quot;Operador E0FDE&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;586&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:22:00-06:00&quot;,
+      &quot;origen&quot;: &quot;auditoria&quot;,
+      &quot;accion&quot;: &quot;modificacion&quot;,
+      &quot;descripcion&quot;: &quot;cambio_entregado = 0.0; capturado_en = 2026-11-26T15:22:00.2…(145 caracteres)&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 7,
+        &quot;nombre&quot;: &quot;Ramiro Alanís Lozano&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;entrega&quot;,
+        &quot;id&quot;: &quot;300&quot;
+      },
+      &quot;cambios&quot;: [
+        {
+          &quot;campo&quot;: &quot;cambio_entregado&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;0.0&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;capturado_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:22:00.297425-06:00&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;cerrada_por_usuario_id&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;7&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:22:00.366559-06:00&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_latitud&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;25.759995&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_longitud&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;-100.371091&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;confirmacion_recepcion&quot;,
+          &quot;anterior&quot;: &quot;false&quot;,
+          &quot;nuevo&quot;: &quot;true&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;evidencia_ids&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;[\&quot;6b08a2f75ea8dba9ecdb0af4\&quot;]&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;evidencia_url&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;/api/v1/documentos/6b08a2f75ea8dba9ecdb0af4&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;id_cliente_local&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;3770c331-e223-41d2-9c27-b032c20304d0&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;monto_cobrado&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;336.0&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;resultado&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;entregado&quot;
+        }
+      ]
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:22:00-06:00&quot;,
+      &quot;origen&quot;: &quot;auditoria&quot;,
+      &quot;accion&quot;: &quot;cambio_estado&quot;,
+      &quot;descripcion&quot;: &quot;actualizado_en: 2026-11-26T15:21:59.730963-06:00 → 2026-11-2…(159 caracteres)&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 7,
+        &quot;nombre&quot;: &quot;Ramiro Alanís Lozano&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;586&quot;
+      },
+      &quot;cambios&quot;: [
+        {
+          &quot;campo&quot;: &quot;actualizado_en&quot;,
+          &quot;anterior&quot;: &quot;2026-11-26T15:21:59.730963-06:00&quot;,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:22:00.366559-06:00&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;cerrado_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:22:00.366559-06:00&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;estado&quot;,
+          &quot;anterior&quot;: &quot;en_ruta&quot;,
+          &quot;nuevo&quot;: &quot;entregado&quot;
+        }
+      ]
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:22:00-06:00&quot;,
+      &quot;origen&quot;: &quot;estados&quot;,
+      &quot;accion&quot;: &quot;cambio_estado&quot;,
+      &quot;descripcion&quot;: &quot;en_ruta → entregado&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 7,
+        &quot;nombre&quot;: &quot;Ramiro Alanís Lozano&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;586&quot;
+      },
+      &quot;cambios&quot;: []
+    }
+  ]
+}</pre></div></div>
+</section><section id="F1-20"><h3><span class="id">F1-20</span> Visualización: el microhub nuevo ya aparece en la comparación
+<span class="e ok">PASA</span></h3>
+<p class="obj">Datos listos para Highcharts.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://reportes:5123/api/v1/reportes/comparacion_microhubs/grafica?microhub_id=9</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 9c72667a-4601-47a0-a39b-746fcc3b7198
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 140 ms · traza 9c72667a-4601-47a0-a39b-746fcc3b7198</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 9c72667a-4601-47a0-a39b-746fcc3b7198</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;reporte&quot;: &quot;comparacion_microhubs&quot;,
+  &quot;titulo&quot;: &quot;Comparación entre microhubs&quot;,
+  &quot;tipo&quot;: &quot;column&quot;,
+  &quot;unidad&quot;: &quot;pedidos / MXN&quot;,
+  &quot;categorias&quot;: [
+    &quot;Microhub E0FDE&quot;
+  ],
+  &quot;series&quot;: [
+    {
+      &quot;nombre&quot;: &quot;Pedidos&quot;,
+      &quot;datos&quot;: [
+        1.0
+      ]
+    },
+    {
+      &quot;nombre&quot;: &quot;Venta&quot;,
+      &quot;datos&quot;: [
+        336.0
+      ]
+    }
+  ]
+}</pre></div></div>
+</section><section id="F1-21"><h3><span class="id">F1-21</span> Cierre: dar de baja el microhub de la demostración
+<span class="e ok">PASA</span></h3>
+<p class="obj">Baja lógica; conserva su historia.</p>
+<div class="req"><span class="m DELETE">DELETE</span> <code>http://microhubs:5109/api/v1/microhubs/9</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 85f51b67-0f19-406c-9905-b06918c75e0f
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">204</b> · esperado 204 · 70 ms · traza 85f51b67-0f19-406c-9905-b06918c75e0f</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: text/html; charset=utf-8
+X-Traza-Id: 85f51b67-0f19-406c-9905-b06918c75e0f</pre></div><div class="b "><div class="t">Respuesta</div><pre>(sin cuerpo)</pre></div></div>
+</section><section id="F2-01"><h3><span class="id">F2-01</span> Android: un cliente compra y el inventario baja
+<span class="e ok">PASA</span></h3>
+<p class="obj">El motor descuenta inventario en la misma transacción.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://pedidos:5104/api/v1/pedidos</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 0d6308eb-a992-4bde-b7fb-eef1358c5878
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;lineas&quot;: [
+    {
+      &quot;producto_id&quot;: 31,
+      &quot;cantidad&quot;: 10
+    }
+  ],
+  &quot;operacion_uuid&quot;: &quot;c0d46b9d-47dd-4e92-8810-5e9d2d05b7e3&quot;
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 265 ms · traza 0d6308eb-a992-4bde-b7fb-eef1358c5878</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 0d6308eb-a992-4bde-b7fb-eef1358c5878</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 587,
+  &quot;folio&quot;: &quot;PED-20261126-000587&quot;,
+  &quot;estado&quot;: &quot;asignado&quot;,
+  &quot;zona_id&quot;: 3,
+  &quot;microhub_id&quot;: 2,
+  &quot;subtotal&quot;: 580.0,
+  &quot;costo_envio&quot;: 0.0,
+  &quot;total&quot;: 580.0,
+  &quot;asignado&quot;: true,
+  &quot;motivo&quot;: null,
+  &quot;duplicado&quot;: false
+}</pre></div></div>
+<div class="b ev"><div class="t">Evidencia en PostgreSQL · SELECT microhub_id, producto_id, cantidad, existencia_resultante FROM movimiento_inventario WHERE referencia_tipo = &#x27;pedido&#x27; AND referencia_id = %s</div><pre>[
+  {
+    &quot;microhub_id&quot;: 2,
+    &quot;producto_id&quot;: 31,
+    &quot;cantidad&quot;: -10,
+    &quot;existencia_resultante&quot;: 48
+  }
+]</pre></div></section><section id="F2-02"><h3><span class="id">F2-02</span> El operador fija el mínimo y nace la alerta
+<span class="e ok">PASA</span></h3>
+<p class="obj">El trigger avisa del faltante.</p>
+<div class="req"><span class="m PATCH">PATCH</span> <code>http://inventario:5111/api/v1/inventario/1/31/minimo</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 74e9e497-1f57-4d36-b2bd-163a2e97ae99
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;minimo&quot;: 41
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 212 ms · traza 74e9e497-1f57-4d36-b2bd-163a2e97ae99</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 74e9e497-1f57-4d36-b2bd-163a2e97ae99</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;microhub&quot;: {
+    &quot;id&quot;: 1,
+    &quot;nombre&quot;: &quot;Microhub San Bernabé Centro&quot;
+  },
+  &quot;producto&quot;: {
+    &quot;id&quot;: 31,
+    &quot;clave_interna&quot;: &quot;LA-003&quot;,
+    &quot;nombre&quot;: &quot;Queso fresco&quot;
+  },
+  &quot;existencia&quot;: 31,
+  &quot;minimo&quot;: 41,
+  &quot;reservado&quot;: 0,
+  &quot;disponible&quot;: 31,
+  &quot;estado&quot;: &quot;bajo_minimo&quot;,
+  &quot;actualizado_en&quot;: &quot;2026-11-26T15:22:03-06:00&quot;
+}</pre></div></div>
+</section><section id="F2-03"><h3><span class="id">F2-03</span> La alerta de faltante
+<span class="e ok">PASA</span></h3>
+<p class="obj">Qué producto, cuánto falta y qué tan grave es.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://inventario:5111/api/v1/inventario/alertas?microhub_id=1&amp;por_pagina=100</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 88d3151e-16eb-4188-b9ad-d8832f1bb704
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 105 ms · traza 88d3151e-16eb-4188-b9ad-d8832f1bb704</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 88d3151e-16eb-4188-b9ad-d8832f1bb704</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;datos&quot;: [
+    {
+      &quot;microhub&quot;: {
+        &quot;id&quot;: 1,
+        &quot;nombre&quot;: &quot;Microhub San Bernabé Centro&quot;
+      },
+      &quot;producto&quot;: {
+        &quot;id&quot;: 21,
+        &quot;clave_interna&quot;: &quot;BE-001&quot;,
+        &quot;nombre&quot;: &quot;Agua purificada&quot;
+      },
+      &quot;existencia&quot;: 0,
+      &quot;minimo&quot;: 10,
+      &quot;disponible&quot;: 0,
+      &quot;faltante&quot;: 10,
+      &quot;severidad&quot;: &quot;agotado&quot;
+    },
+    {
+      &quot;microhub&quot;: {
+        &quot;id&quot;: 1,
+        &quot;nombre&quot;: &quot;Microhub San Bernabé Centro&quot;
+      },
+      &quot;producto&quot;: {
+        &quot;id&quot;: 31,
+        &quot;clave_interna&quot;: &quot;LA-003&quot;,
+        &quot;nombre&quot;: &quot;Queso fresco&quot;
+      },
+      &quot;existencia&quot;: 31,
+      &quot;minimo&quot;: 41,
+      &quot;disponible&quot;: 31,
+      &quot;faltante&quot;: 10,
+      &quot;severidad&quot;: &quot;baja&quot;
+    }
+  ],
+  &quot;paginacion&quot;: {
+    &quot;pagina&quot;: 1,
+    &quot;por_pagina&quot;: 100,
+    &quot;total&quot;: 2,
+    &quot;paginas&quot;: 1
+  }
+}</pre></div></div>
+</section><section id="F2-04"><h3><span class="id">F2-04</span> El operador pide reposición
+<span class="e ok">PASA</span></h3>
+<p class="obj">Solicitud con sus líneas.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://abastecimiento:5114/api/v1/abastecimiento/solicitudes</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 07fc6db9-3a0f-4fb5-bb27-de8165083a05
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;microhub_id&quot;: 1,
+  &quot;motivo&quot;: &quot;Faltante detectado por el sistema&quot;,
+  &quot;lineas&quot;: [
+    {
+      &quot;producto_id&quot;: 31,
+      &quot;cantidad&quot;: 100
+    }
+  ]
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 350 ms · traza 07fc6db9-3a0f-4fb5-bb27-de8165083a05</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 07fc6db9-3a0f-4fb5-bb27-de8165083a05</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 63,
+  &quot;folio&quot;: &quot;SC-20261126-000063&quot;,
+  &quot;microhub_id&quot;: 1,
+  &quot;estado&quot;: &quot;pendiente&quot;,
+  &quot;motivo&quot;: &quot;Faltante detectado por el sistema&quot;,
+  &quot;solicitada_por&quot;: 2,
+  &quot;decidida_por&quot;: null,
+  &quot;decision_motivo&quot;: null,
+  &quot;decidida_en&quot;: null,
+  &quot;creada_en&quot;: &quot;2026-11-26T15:22:03-06:00&quot;,
+  &quot;lineas&quot;: [
+    {
+      &quot;producto&quot;: {
+        &quot;id&quot;: 31,
+        &quot;nombre&quot;: &quot;Queso fresco&quot;
+      },
+      &quot;cantidad&quot;: 100
+    }
+  ]
+}</pre></div></div>
+</section><section id="F2-05"><h3><span class="id">F2-05</span> El administrador aprueba
+<span class="e ok">PASA</span></h3>
+<p class="obj">Quien pidió recibe el aviso.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/63/decision</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: a3ffb08f-5be1-4fc4-a5f6-f93e1422f013
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;decision&quot;: &quot;aprobada&quot;,
+  &quot;motivo&quot;: &quot;Con presupuesto&quot;
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 132 ms · traza a3ffb08f-5be1-4fc4-a5f6-f93e1422f013</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: a3ffb08f-5be1-4fc4-a5f6-f93e1422f013</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 63,
+  &quot;folio&quot;: &quot;SC-20261126-000063&quot;,
+  &quot;microhub_id&quot;: 1,
+  &quot;estado&quot;: &quot;aprobada&quot;,
+  &quot;motivo&quot;: &quot;Faltante detectado por el sistema&quot;,
+  &quot;solicitada_por&quot;: 2,
+  &quot;decidida_por&quot;: 1,
+  &quot;decision_motivo&quot;: &quot;Con presupuesto&quot;,
+  &quot;decidida_en&quot;: &quot;2026-11-26T15:22:03-06:00&quot;,
+  &quot;creada_en&quot;: &quot;2026-11-26T15:22:03-06:00&quot;,
+  &quot;lineas&quot;: [
+    {
+      &quot;producto&quot;: {
+        &quot;id&quot;: 31,
+        &quot;nombre&quot;: &quot;Queso fresco&quot;
+      },
+      &quot;cantidad&quot;: 100
+    }
+  ]
+}</pre></div></div>
+</section><section id="F2-06"><h3><span class="id">F2-06</span> Se emite la orden de compra
+<span class="e ok">PASA</span></h3>
+<p class="obj">Al proveedor con la mejor oferta.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/63/ordenar</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 18ab5040-272e-479d-bf76-38dc65a12d9d
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 484 ms · traza 18ab5040-272e-479d-bf76-38dc65a12d9d</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 18ab5040-272e-479d-bf76-38dc65a12d9d</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;solicitud_id&quot;: 63,
+  &quot;ordenes&quot;: [
+    {
+      &quot;id&quot;: 38,
+      &quot;folio&quot;: &quot;OC-20261126-000038&quot;,
+      &quot;solicitud_id&quot;: 63,
+      &quot;proveedor&quot;: {
+        &quot;id&quot;: 1,
+        &quot;nombre&quot;: &quot;Abarrotes del Norte&quot;
+      },
+      &quot;microhub_id&quot;: 1,
+      &quot;estado&quot;: &quot;emitida&quot;,
+      &quot;fecha_esperada&quot;: &quot;2026-11-28&quot;,
+      &quot;total&quot;: 4060.0,
+      &quot;creada_en&quot;: &quot;2026-11-26T15:22:04-06:00&quot;,
+      &quot;cerrada_en&quot;: null,
+      &quot;lineas&quot;: [
+        {
+          &quot;producto&quot;: {
+            &quot;id&quot;: 31,
+            &quot;nombre&quot;: &quot;Queso fresco&quot;
+          },
+          &quot;cantidad&quot;: 100,
+          &quot;precio_compra&quot;: 40.6,
+          &quot;cantidad_recibida&quot;: 0,
+          &quot;pendiente_inventario&quot;: 0
+        }
+      ]
+    }
+  ]
+}</pre></div></div>
+</section><section id="F2-07"><h3><span class="id">F2-07</span> Llega la mercancía y se recibe
+<span class="e ok">PASA</span></h3>
+<p class="obj">Sube el inventario una sola vez (idempotente).</p>
+<div class="req"><span class="m POST">POST</span> <code>http://abastecimiento:5114/api/v1/abastecimiento/ordenes/38/recepcion</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 1f946bc1-486a-4ce9-bdde-a5fc26bda07e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;operacion_uuid&quot;: &quot;4191f2f5-31f7-42ec-8f93-136f2a741c84&quot;,
+  &quot;nota&quot;: &quot;Completo&quot;,
+  &quot;lineas&quot;: [
+    {
+      &quot;producto_id&quot;: 31,
+      &quot;cantidad&quot;: 100
+    }
+  ]
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 317 ms · traza 1f946bc1-486a-4ce9-bdde-a5fc26bda07e</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 1f946bc1-486a-4ce9-bdde-a5fc26bda07e</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;orden&quot;: {
+    &quot;id&quot;: 38,
+    &quot;folio&quot;: &quot;OC-20261126-000038&quot;,
+    &quot;solicitud_id&quot;: 63,
+    &quot;proveedor&quot;: {
+      &quot;id&quot;: 1,
+      &quot;nombre&quot;: &quot;Abarrotes del Norte&quot;
+    },
+    &quot;microhub_id&quot;: 1,
+    &quot;estado&quot;: &quot;recibida&quot;,
+    &quot;fecha_esperada&quot;: &quot;2026-11-28&quot;,
+    &quot;total&quot;: 4060.0,
+    &quot;creada_en&quot;: &quot;2026-11-26T15:22:04-06:00&quot;,
+    &quot;cerrada_en&quot;: &quot;2026-11-26T15:22:04-06:00&quot;,
+    &quot;lineas&quot;: [
+      {
+        &quot;producto&quot;: {
+          &quot;id&quot;: 31,
+          &quot;nombre&quot;: &quot;Queso fresco&quot;
+        },
+        &quot;cantidad&quot;: 100,
+        &quot;precio_compra&quot;: 40.6,
+        &quot;cantidad_recibida&quot;: 100,
+        &quot;pendiente_inventario&quot;: 0
+      }
+    ]
+  },
+  &quot;aplicadas&quot;: 1,
+  &quot;pendientes&quot;: 0,
+  &quot;aviso&quot;: null
+}</pre></div></div>
+<div class="b ev"><div class="t">Evidencia en PostgreSQL · SELECT existencia, minimo FROM inventario WHERE microhub_id = %s AND producto_id = %s</div><pre>[
+  {
+    &quot;existencia&quot;: 131,
+    &quot;minimo&quot;: 41
+  }
+]</pre></div></section><section id="F2-08"><h3><span class="id">F2-08</span> La remisión firmada queda en el almacén
+<span class="e ok">PASA</span></h3>
+<p class="obj">Archivo con enlace firmado.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://documentos:5107/api/v1/documentos/6b08a2fcf59f7f9d08b26dca/enlace</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: be27030d-7feb-452f-a9ff-a8dd4411bd45
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 28 ms · traza be27030d-7feb-452f-a9ff-a8dd4411bd45</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: be27030d-7feb-452f-a9ff-a8dd4411bd45</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: &quot;6b08a2fcf59f7f9d08b26dca&quot;,
+  &quot;nombre&quot;: &quot;remision-38.jpg&quot;,
+  &quot;url_firmada&quot;: &quot;http://documentos:5107/api/v1/documentos/descarga?k=document…(197 caracteres)&quot;,
+  &quot;metodo&quot;: &quot;GET&quot;,
+  &quot;segundos&quot;: 300,
+  &quot;expira_en&quot;: &quot;2026-11-26T15:27:04-06:00&quot;
+}</pre></div></div>
+</section><section id="F2-09"><h3><span class="id">F2-09</span> Trazabilidad del producto en el microhub
+<span class="e ok">PASA</span></h3>
+<p class="obj">Salida por pedido y recepción por orden.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://auditoria-monitoreo:5126/api/v1/auditoria/trazabilidad/inventario?microhub_id=1&amp;producto_id=31</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 5d9090c9-3e29-42eb-8c54-07a443abb3f0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 48 ms · traza 5d9090c9-3e29-42eb-8c54-07a443abb3f0</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 5d9090c9-3e29-42eb-8c54-07a443abb3f0</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;objeto&quot;: {
+    &quot;tipo&quot;: &quot;inventario&quot;,
+    &quot;id&quot;: &quot;1-31&quot;
+  },
+  &quot;total&quot;: 9,
+  &quot;eventos&quot;: [
+    {
+      &quot;fecha&quot;: &quot;2026-10-19T19:30:40-06:00&quot;,
+      &quot;origen&quot;: &quot;inventario&quot;,
+      &quot;accion&quot;: &quot;movimiento_inventario&quot;,
+      &quot;descripcion&quot;: &quot;recepcion: +57 de producto 31 en microhub 1 (existencia 57). Carga inicial de semilla&quot;,
+      &quot;usuario&quot;: null,
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;inventario&quot;,
+        &quot;id&quot;: &quot;1-31&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-10-19T19:30:41-06:00&quot;,
+      &quot;origen&quot;: &quot;inventario&quot;,
+      &quot;accion&quot;: &quot;movimiento_inventario&quot;,
+      &quot;descripcion&quot;: &quot;devolucion_cancelacion: +1 de producto 31 en microhub 1 (existencia 57). Cancelación del cliente (RN18).&quot;,
+      &quot;usuario&quot;: null,
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;inventario&quot;,
+        &quot;id&quot;: &quot;1-31&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-10-19T19:30:41-06:00&quot;,
+      &quot;origen&quot;: &quot;inventario&quot;,
+      &quot;accion&quot;: &quot;movimiento_inventario&quot;,
+      &quot;descripcion&quot;: &quot;salida_pedido: -1 de producto 31 en microhub 1 (existencia 56)&quot;,
+      &quot;usuario&quot;: null,
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;inventario&quot;,
+        &quot;id&quot;: &quot;1-31&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-10-20T00:28:51-06:00&quot;,
+      &quot;origen&quot;: &quot;inventario&quot;,
+      &quot;accion&quot;: &quot;movimiento_inventario&quot;,
+      &quot;descripcion&quot;: &quot;salida_pedido: -2 de producto 31 en microhub 1 (existencia 55)&quot;,
+      &quot;usuario&quot;: null,
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;inventario&quot;,
+        &quot;id&quot;: &quot;1-31&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-10-20T00:31:43-06:00&quot;,
+      &quot;origen&quot;: &quot;inventario&quot;,
+      &quot;accion&quot;: &quot;movimiento_inventario&quot;,
+      &quot;descripcion&quot;: &quot;devolucion_cancelacion: +2 de producto 31 en microhub 1 (existencia 57). Reposición del inventario de una prueba&quot;,
+      &quot;usuario&quot;: null,
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;inventario&quot;,
+        &quot;id&quot;: &quot;1-31&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T00:33:03-06:00&quot;,
+      &quot;origen&quot;: &quot;inventario&quot;,
+      &quot;accion&quot;: &quot;movimiento_inventario&quot;,
+      &quot;descripcion&quot;: &quot;salida_pedido: -2 de producto 31 en microhub 1 (existencia 55)&quot;,
+      &quot;usuario&quot;: null,
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;inventario&quot;,
+        &quot;id&quot;: &quot;1-31&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:16-06:00&quot;,
+      &quot;origen&quot;: &quot;inventario&quot;,
+      &quot;accion&quot;: &quot;movimiento_inventario&quot;,
+      &quot;descripcion&quot;: &quot;transferencia_salida: -12 de producto 31 en microhub 1 (existencia 43). Inventario inicial del microhub nuevo&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 1,
+        &quot;nombre&quot;: &quot;Mauro Castillo Peña&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;inventario&quot;,
+        &quot;id&quot;: &quot;1-31&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:21:58-06:00&quot;,
+      &quot;origen&quot;: &quot;inventario&quot;,
+      &quot;accion&quot;: &quot;movimiento_inventario&quot;,
+      &quot;descripcion&quot;: &quot;transferencia_salida: -12 de producto 31 en microhub 1 (existencia 31). Inventario inicial del microhub nuevo&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 1,
+        &quot;nombre&quot;: &quot;Mauro Castillo Peña&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;inventario&quot;,
+        &quot;id&quot;: &quot;1-31&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:22:04-06:00&quot;,
+      &quot;origen&quot;: &quot;inventario&quot;,
+      &quot;accion&quot;: &quot;movimiento_inventario&quot;,
+      &quot;descripcion&quot;: &quot;recepcion: +100 de producto 31 en microhub 1 (existencia 131). Recepción de la orden OC-20261126-000038: Completo&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 2,
+        &quot;nombre&quot;: &quot;Ruth Elizabeth Soriano&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;inventario&quot;,
+        &quot;id&quot;: &quot;1-31&quot;
+      },
+      &quot;cambios&quot;: []
+    }
+  ]
+}</pre></div></div>
+</section><section id="F2-10"><h3><span class="id">F2-10</span> Reporte de alertas en CSV
+<span class="e ok">PASA</span></h3>
+<p class="obj">Visualización y archivo descargable con huella.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://reportes:5123/api/v1/reportes/inventario_alertas/exportar?formato=csv&amp;microhub_id=1</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: e82e7716-1ece-4817-a618-21765f716c54
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 181 ms · traza e82e7716-1ece-4817-a618-21765f716c54</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: text/csv; charset=utf-8
+X-Traza-Id: e82e7716-1ece-4817-a618-21765f716c54</pre></div><div class="b "><div class="t">Respuesta</div><pre>﻿Microhub,Producto,Existencia,Mínimo,Disponible,Faltante,Severidad
+Microhub San Bernabé Centro,Agua purificada,0,10,0,10,agotado
+Total,,,,,10,
+</pre></div></div>
+</section><section id="F3-01"><h3><span class="id">F3-01</span> El cliente hace un pedido
+<span class="e ok">PASA</span></h3>
+<p class="obj">Punto de partida del recorrido.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://pedidos:5104/api/v1/pedidos</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: b786334c-ef2e-4361-b087-9b95850cd106
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;lineas&quot;: [
+    {
+      &quot;producto_id&quot;: 32,
+      &quot;cantidad&quot;: 3
+    },
+    {
+      &quot;producto_id&quot;: 51,
+      &quot;cantidad&quot;: 3
+    }
+  ]
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 221 ms · traza b786334c-ef2e-4361-b087-9b95850cd106</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: b786334c-ef2e-4361-b087-9b95850cd106</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 588,
+  &quot;folio&quot;: &quot;PED-20261126-000588&quot;,
+  &quot;estado&quot;: &quot;asignado&quot;,
+  &quot;zona_id&quot;: 3,
+  &quot;microhub_id&quot;: 2,
+  &quot;subtotal&quot;: 420.0,
+  &quot;costo_envio&quot;: 0.0,
+  &quot;total&quot;: 420.0,
+  &quot;asignado&quot;: true,
+  &quot;motivo&quot;: null,
+  &quot;duplicado&quot;: false
+}</pre></div></div>
+</section><section id="F3-02"><h3><span class="id">F3-02</span> El operador asigna la entrega
+<span class="e ok">PASA</span></h3>
+<p class="obj">El repartidor la descarga antes de salir.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://entregas:5105/api/v1/entregas</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: a7fb69bb-e972-4556-b3c5-391160cb2cb1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(310 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;pedido_id&quot;: 588,
+  &quot;repartidor_id&quot;: 7
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 62 ms · traza a7fb69bb-e972-4556-b3c5-391160cb2cb1</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: a7fb69bb-e972-4556-b3c5-391160cb2cb1</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;entrega_id&quot;: 301,
+  &quot;pedido_id&quot;: 588,
+  &quot;repartidor_id&quot;: 7,
+  &quot;estado_pedido&quot;: &quot;en_ruta&quot;
+}</pre></div></div>
+</section><section id="F3-03"><h3><span class="id">F3-03</span> Android recupera la red y manda lo hecho sin conexión
+<span class="e ok">PASA</span></h3>
+<p class="obj">Se aplica en el orden en que ocurrió.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://sincronizacion:5125/api/v1/sincronizacion/lotes</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 69893af9-1bb9-4483-8f60-ad84c14ca14e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;lote_uuid&quot;: &quot;831ee958-62f8-40f3-9192-86a4d4ec1cce&quot;,
+  &quot;dispositivo&quot;: &quot;android-flujo-0921cf&quot;,
+  &quot;cliente&quot;: &quot;android&quot;,
+  &quot;operaciones&quot;: [
+    {
+      &quot;operacion_uuid&quot;: &quot;9f50942e-22af-4121-ae9c-c2585b24de79&quot;,
+      &quot;tipo&quot;: &quot;ubicaciones&quot;,
+      &quot;creada_en&quot;: &quot;2026-11-26T21:02:07.753786+00:00&quot;,
+      &quot;datos&quot;: {
+        &quot;entrega_id&quot;: 301,
+        &quot;puntos&quot;: [
+          {
+            &quot;latitud&quot;: 25.7488,
+            &quot;longitud&quot;: -100.3608,
+            &quot;capturado_en&quot;: &quot;2026-11-26T21:02:07.753807+00:00&quot;
+          },
+          {
+            &quot;latitud&quot;: 25.7491,
+            &quot;longitud&quot;: -100.3611,
+            &quot;capturado_en&quot;: &quot;2026-11-26T21:07:07.753815+00:00&quot;
+          }
+        ]
+      }
+    },
+    {
+      &quot;operacion_uuid&quot;: &quot;f3705f06-1e80-488f-a0de-ad5009c1ece4&quot;,
+      &quot;tipo&quot;: &quot;entrega_resultado&quot;,
+      &quot;creada_en&quot;: &quot;2026-11-26T21:10:07.753845+00:00&quot;,
+      &quot;datos&quot;: {
+        &quot;entrega_id&quot;: 301,
+        &quot;resultado&quot;: &quot;fallida&quot;,
+        &quot;monto_cobrado&quot;: 0,
+        &quot;cambio_entregado&quot;: 0,
+        &quot;incidencia&quot;: &quot;El cliente no estaba en su domicilio&quot;,
+        &quot;ubicacion&quot;: {
+          &quot;latitud&quot;: 25.7491,
+          &quot;longitud&quot;: -100.3611
+        },
+        &quot;evidencia_ids&quot;: [
+          &quot;6b08a2fff59f7f9d08b26dcf&quot;
+        ],
+        &quot;capturado_en&quot;: &quot;2026-11-26T21:10:07.753854+00:00&quot;
+      }
+    }
+  ]
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">201</b> · esperado 201 · 596 ms · traza 69893af9-1bb9-4483-8f60-ad84c14ca14e</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 69893af9-1bb9-4483-8f60-ad84c14ca14e</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 175,
+  &quot;lote_uuid&quot;: &quot;831ee958-62f8-40f3-9192-86a4d4ec1cce&quot;,
+  &quot;dispositivo&quot;: &quot;android-flujo-0921cf&quot;,
+  &quot;recibido_en&quot;: &quot;2026-11-26T15:22:07-06:00&quot;,
+  &quot;total&quot;: 2,
+  &quot;aplicadas&quot;: 2,
+  &quot;duplicadas&quot;: 0,
+  &quot;conflictos&quot;: 0,
+  &quot;rechazadas&quot;: 0,
+  &quot;pendientes&quot;: 0,
+  &quot;operaciones&quot;: [
+    {
+      &quot;operacion_uuid&quot;: &quot;9f50942e-22af-4121-ae9c-c2585b24de79&quot;,
+      &quot;tipo&quot;: &quot;ubicaciones&quot;,
+      &quot;estado&quot;: &quot;aplicada&quot;,
+      &quot;duplicada&quot;: false,
+      &quot;http_status&quot;: 201,
+      &quot;codigo&quot;: null,
+      &quot;mensaje&quot;: null,
+      &quot;reintentar&quot;: false
+    },
+    {
+      &quot;operacion_uuid&quot;: &quot;f3705f06-1e80-488f-a0de-ad5009c1ece4&quot;,
+      &quot;tipo&quot;: &quot;entrega_resultado&quot;,
+      &quot;estado&quot;: &quot;aplicada&quot;,
+      &quot;duplicada&quot;: false,
+      &quot;http_status&quot;: 201,
+      &quot;codigo&quot;: null,
+      &quot;mensaje&quot;: null,
+      &quot;reintentar&quot;: false
+    }
+  ]
+}</pre></div></div>
+<div class="b ev"><div class="t">Evidencia en PostgreSQL · SELECT tipo, estado, intentos, creada_en FROM sync_operacion WHERE dispositivo = %s ORDER BY creada_en</div><pre>[
+  {
+    &quot;tipo&quot;: &quot;ubicaciones&quot;,
+    &quot;estado&quot;: &quot;aplicada&quot;,
+    &quot;intentos&quot;: 1,
+    &quot;creada_en&quot;: &quot;2026-11-26 15:02:07.753786-06:00&quot;
+  },
+  {
+    &quot;tipo&quot;: &quot;entrega_resultado&quot;,
+    &quot;estado&quot;: &quot;aplicada&quot;,
+    &quot;intentos&quot;: 1,
+    &quot;creada_en&quot;: &quot;2026-11-26 15:10:07.753845-06:00&quot;
+  }
+]</pre></div><div class="b ev"><div class="t">Evidencia en MongoDB · db.ubicaciones_entrega.countDocuments({entrega_id})</div><pre>2</pre></div></section><section id="F3-04"><h3><span class="id">F3-04</span> La respuesta se perdió y reenvía el mismo lote
+<span class="e ok">PASA</span></h3>
+<p class="obj">No se repite nada.</p>
+<div class="req"><span class="m POST">POST</span> <code>http://sincronizacion:5125/api/v1/sincronizacion/lotes</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 312d4c3d-86f7-4c29-b78c-80932ce51c0e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
+Content-Type: application/json</pre></div><div class="b "><div class="t">Cuerpo de la petición</div><pre>{
+  &quot;lote_uuid&quot;: &quot;831ee958-62f8-40f3-9192-86a4d4ec1cce&quot;,
+  &quot;dispositivo&quot;: &quot;android-flujo-0921cf&quot;,
+  &quot;cliente&quot;: &quot;android&quot;,
+  &quot;operaciones&quot;: [
+    {
+      &quot;operacion_uuid&quot;: &quot;9f50942e-22af-4121-ae9c-c2585b24de79&quot;,
+      &quot;tipo&quot;: &quot;ubicaciones&quot;,
+      &quot;creada_en&quot;: &quot;2026-11-26T21:02:07.753786+00:00&quot;,
+      &quot;datos&quot;: {
+        &quot;entrega_id&quot;: 301,
+        &quot;puntos&quot;: [
+          {
+            &quot;latitud&quot;: 25.7488,
+            &quot;longitud&quot;: -100.3608,
+            &quot;capturado_en&quot;: &quot;2026-11-26T21:02:07.753807+00:00&quot;
+          },
+          {
+            &quot;latitud&quot;: 25.7491,
+            &quot;longitud&quot;: -100.3611,
+            &quot;capturado_en&quot;: &quot;2026-11-26T21:07:07.753815+00:00&quot;
+          }
+        ]
+      }
+    },
+    {
+      &quot;operacion_uuid&quot;: &quot;f3705f06-1e80-488f-a0de-ad5009c1ece4&quot;,
+      &quot;tipo&quot;: &quot;entrega_resultado&quot;,
+      &quot;creada_en&quot;: &quot;2026-11-26T21:10:07.753845+00:00&quot;,
+      &quot;datos&quot;: {
+        &quot;entrega_id&quot;: 301,
+        &quot;resultado&quot;: &quot;fallida&quot;,
+        &quot;monto_cobrado&quot;: 0,
+        &quot;cambio_entregado&quot;: 0,
+        &quot;incidencia&quot;: &quot;El cliente no estaba en su domicilio&quot;,
+        &quot;ubicacion&quot;: {
+          &quot;latitud&quot;: 25.7491,
+          &quot;longitud&quot;: -100.3611
+        },
+        &quot;evidencia_ids&quot;: [
+          &quot;6b08a2fff59f7f9d08b26dcf&quot;
+        ],
+        &quot;capturado_en&quot;: &quot;2026-11-26T21:10:07.753854+00:00&quot;
+      }
+    }
+  ]
+}</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 154 ms · traza 312d4c3d-86f7-4c29-b78c-80932ce51c0e</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 312d4c3d-86f7-4c29-b78c-80932ce51c0e</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;id&quot;: 175,
+  &quot;lote_uuid&quot;: &quot;831ee958-62f8-40f3-9192-86a4d4ec1cce&quot;,
+  &quot;dispositivo&quot;: &quot;android-flujo-0921cf&quot;,
+  &quot;recibido_en&quot;: &quot;2026-11-26T15:22:07-06:00&quot;,
+  &quot;total&quot;: 2,
+  &quot;aplicadas&quot;: 2,
+  &quot;duplicadas&quot;: 2,
+  &quot;conflictos&quot;: 0,
+  &quot;rechazadas&quot;: 0,
+  &quot;pendientes&quot;: 0,
+  &quot;operaciones&quot;: [
+    {
+      &quot;operacion_uuid&quot;: &quot;9f50942e-22af-4121-ae9c-c2585b24de79&quot;,
+      &quot;tipo&quot;: &quot;ubicaciones&quot;,
+      &quot;estado&quot;: &quot;aplicada&quot;,
+      &quot;duplicada&quot;: true,
+      &quot;http_status&quot;: 201,
+      &quot;codigo&quot;: null,
+      &quot;mensaje&quot;: null,
+      &quot;reintentar&quot;: false
+    },
+    {
+      &quot;operacion_uuid&quot;: &quot;f3705f06-1e80-488f-a0de-ad5009c1ece4&quot;,
+      &quot;tipo&quot;: &quot;entrega_resultado&quot;,
+      &quot;estado&quot;: &quot;aplicada&quot;,
+      &quot;duplicada&quot;: true,
+      &quot;http_status&quot;: 201,
+      &quot;codigo&quot;: null,
+      &quot;mensaje&quot;: null,
+      &quot;reintentar&quot;: false
+    }
+  ]
+}</pre></div></div>
+</section><section id="F3-05"><h3><span class="id">F3-05</span> El cliente se entera de que la entrega falló
+<span class="e ok">PASA</span></h3>
+<p class="obj">Aviso del motor.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://notificaciones:5124/api/v1/notificaciones?por_pagina=5</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 5c6c58d0-8318-45f3-980f-cb2d6cc436e0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 44 ms · traza 5c6c58d0-8318-45f3-980f-cb2d6cc436e0</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: 5c6c58d0-8318-45f3-980f-cb2d6cc436e0</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;datos&quot;: [
+    {
+      &quot;id&quot;: 857,
+      &quot;tipo&quot;: &quot;pedido&quot;,
+      &quot;titulo&quot;: &quot;Pedido PED-20261126-000588&quot;,
+      &quot;mensaje&quot;: &quot;El pedido cambió a entrega_fallida.&quot;,
+      &quot;leida&quot;: false,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;588&quot;
+      },
+      &quot;creada_en&quot;: &quot;2026-11-26T15:22:08-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 855,
+      &quot;tipo&quot;: &quot;pedido&quot;,
+      &quot;titulo&quot;: &quot;Pedido PED-20261126-000587&quot;,
+      &quot;mensaje&quot;: &quot;El pedido cambió a cancelado.&quot;,
+      &quot;leida&quot;: false,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;587&quot;
+      },
+      &quot;creada_en&quot;: &quot;2026-11-26T15:22:05-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 850,
+      &quot;tipo&quot;: &quot;pedido&quot;,
+      &quot;titulo&quot;: &quot;Pedido PED-20261126-000586&quot;,
+      &quot;mensaje&quot;: &quot;El pedido cambió a entregado.&quot;,
+      &quot;leida&quot;: false,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;586&quot;
+      },
+      &quot;creada_en&quot;: &quot;2026-11-26T15:22:00-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 848,
+      &quot;tipo&quot;: &quot;pedido&quot;,
+      &quot;titulo&quot;: &quot;Pedido PED-20261126-000585&quot;,
+      &quot;mensaje&quot;: &quot;El pedido cambió a entrega_fallida.&quot;,
+      &quot;leida&quot;: false,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;585&quot;
+      },
+      &quot;creada_en&quot;: &quot;2026-11-26T15:21:29-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 846,
+      &quot;tipo&quot;: &quot;pedido&quot;,
+      &quot;titulo&quot;: &quot;Pedido PED-20261126-000584&quot;,
+      &quot;mensaje&quot;: &quot;El pedido cambió a cancelado.&quot;,
+      &quot;leida&quot;: false,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;584&quot;
+      },
+      &quot;creada_en&quot;: &quot;2026-11-26T15:21:26-06:00&quot;
+    }
+  ],
+  &quot;paginacion&quot;: {
+    &quot;pagina&quot;: 1,
+    &quot;por_pagina&quot;: 5,
+    &quot;total&quot;: 18,
+    &quot;paginas&quot;: 4
+  }
+}</pre></div></div>
+</section><section id="F3-06"><h3><span class="id">F3-06</span> El auditor revisa la entrega
+<span class="e ok">PASA</span></h3>
+<p class="obj">Bitácora y archivos de la entrega.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://auditoria-monitoreo:5126/api/v1/auditoria/trazabilidad/entrega/301</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: a50579b6-707a-4872-93b0-8c2a4c944daa
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 51 ms · traza a50579b6-707a-4872-93b0-8c2a4c944daa</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: a50579b6-707a-4872-93b0-8c2a4c944daa</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;objeto&quot;: {
+    &quot;tipo&quot;: &quot;entrega&quot;,
+    &quot;id&quot;: &quot;301&quot;
+  },
+  &quot;total&quot;: 3,
+  &quot;eventos&quot;: [
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:22:07-06:00&quot;,
+      &quot;origen&quot;: &quot;auditoria&quot;,
+      &quot;accion&quot;: &quot;alta&quot;,
+      &quot;descripcion&quot;: &quot;asignada_en = 2026-11-26T15:22:07.656133-06:00; cambio_entregado = None; capturado_en = None; cerrada_por_usuario_id = None&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 3,
+        &quot;nombre&quot;: &quot;María José Cedillo Mata&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;entrega&quot;,
+        &quot;id&quot;: &quot;301&quot;
+      },
+      &quot;cambios&quot;: [
+        {
+          &quot;campo&quot;: &quot;asignada_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:22:07.656133-06:00&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;cambio_entregado&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;capturado_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;cerrada_por_usuario_id&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_latitud&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_longitud&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_precision_m&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;confirmacion_recepcion&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;false&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;costo_entrega_estimado&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;distancia_km&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        },
+        {
+          &quot;campo&quot;: &quot;evidencia_ids&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: null
+        }
+      ]
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:22:07-06:00&quot;,
+      &quot;origen&quot;: &quot;documentos&quot;,
+      &quot;accion&quot;: &quot;documento_subido&quot;,
+      &quot;descripcion&quot;: &quot;evidencia-flujo3-301.jpg (276 bytes, sha256 7f6025cd8a98…)&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 7,
+        &quot;nombre&quot;: null
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;documento&quot;,
+        &quot;id&quot;: &quot;6b08a2fff59f7f9d08b26dcf&quot;
+      },
+      &quot;cambios&quot;: []
+    },
+    {
+      &quot;fecha&quot;: &quot;2026-11-26T15:22:08-06:00&quot;,
+      &quot;origen&quot;: &quot;auditoria&quot;,
+      &quot;accion&quot;: &quot;modificacion&quot;,
+      &quot;descripcion&quot;: &quot;cambio_entregado = 0.0; capturado_en = 2026-11-26T15:10:07.7…(144 caracteres)&quot;,
+      &quot;usuario&quot;: {
+        &quot;id&quot;: 7,
+        &quot;nombre&quot;: &quot;Ramiro Alanís Lozano&quot;
+      },
+      &quot;entidad&quot;: {
+        &quot;tipo&quot;: &quot;entrega&quot;,
+        &quot;id&quot;: &quot;301&quot;
+      },
+      &quot;cambios&quot;: [
+        {
+          &quot;campo&quot;: &quot;cambio_entregado&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;0.0&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;capturado_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:10:07.753854-06:00&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;cerrada_por_usuario_id&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;7&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_en&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;2026-11-26T15:22:08.04177-06:00&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_latitud&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;25.7491&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;cierre_longitud&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;-100.3611&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;evidencia_ids&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;[\&quot;6b08a2fff59f7f9d08b26dcf\&quot;]&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;evidencia_url&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;/api/v1/documentos/6b08a2fff59f7f9d08b26dcf&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;id_cliente_local&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;f3705f06-1e80-488f-a0de-ad5009c1ece4&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;incidencia&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;El cliente no estaba en su domicilio&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;monto_cobrado&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;0.0&quot;
+        },
+        {
+          &quot;campo&quot;: &quot;resultado&quot;,
+          &quot;anterior&quot;: null,
+          &quot;nuevo&quot;: &quot;fallida&quot;
+        }
+      ]
+    }
+  ]
+}</pre></div></div>
+</section><section id="F3-07"><h3><span class="id">F3-07</span> El producto regresó al inventario
+<span class="e ok">PASA</span></h3>
+<p class="obj">La devolución la hizo el motor.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://inventario:5111/api/v1/inventario/movimientos?microhub_id=2&amp;por_pagina=5</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: c8101592-b159-4c38-b1af-f0ed1be2a431
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 46 ms · traza c8101592-b159-4c38-b1af-f0ed1be2a431</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: application/json; charset=utf-8
+X-Traza-Id: c8101592-b159-4c38-b1af-f0ed1be2a431</pre></div><div class="b "><div class="t">Respuesta</div><pre>{
+  &quot;datos&quot;: [
+    {
+      &quot;id&quot;: 2386,
+      &quot;microhub_id&quot;: 2,
+      &quot;producto_id&quot;: 51,
+      &quot;tipo&quot;: &quot;devolucion_cancelacion&quot;,
+      &quot;cantidad&quot;: 3,
+      &quot;existencia_resultante&quot;: 72,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;588&quot;
+      },
+      &quot;motivo&quot;: &quot;Entrega fallida: la mercancía regresa al microhub.&quot;,
+      &quot;usuario_id&quot;: 7,
+      &quot;fecha&quot;: &quot;2026-11-26T15:22:08-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 2385,
+      &quot;microhub_id&quot;: 2,
+      &quot;producto_id&quot;: 32,
+      &quot;tipo&quot;: &quot;devolucion_cancelacion&quot;,
+      &quot;cantidad&quot;: 3,
+      &quot;existencia_resultante&quot;: 27,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;588&quot;
+      },
+      &quot;motivo&quot;: &quot;Entrega fallida: la mercancía regresa al microhub.&quot;,
+      &quot;usuario_id&quot;: 7,
+      &quot;fecha&quot;: &quot;2026-11-26T15:22:08-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 2384,
+      &quot;microhub_id&quot;: 2,
+      &quot;producto_id&quot;: 51,
+      &quot;tipo&quot;: &quot;salida_pedido&quot;,
+      &quot;cantidad&quot;: -3,
+      &quot;existencia_resultante&quot;: 69,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;588&quot;
+      },
+      &quot;motivo&quot;: null,
+      &quot;usuario_id&quot;: 9,
+      &quot;fecha&quot;: &quot;2026-11-26T15:22:07-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 2383,
+      &quot;microhub_id&quot;: 2,
+      &quot;producto_id&quot;: 32,
+      &quot;tipo&quot;: &quot;salida_pedido&quot;,
+      &quot;cantidad&quot;: -3,
+      &quot;existencia_resultante&quot;: 24,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;588&quot;
+      },
+      &quot;motivo&quot;: null,
+      &quot;usuario_id&quot;: 9,
+      &quot;fecha&quot;: &quot;2026-11-26T15:22:07-06:00&quot;
+    },
+    {
+      &quot;id&quot;: 2382,
+      &quot;microhub_id&quot;: 2,
+      &quot;producto_id&quot;: 31,
+      &quot;tipo&quot;: &quot;devolucion_cancelacion&quot;,
+      &quot;cantidad&quot;: 10,
+      &quot;existencia_resultante&quot;: 58,
+      &quot;referencia&quot;: {
+        &quot;tipo&quot;: &quot;pedido&quot;,
+        &quot;id&quot;: &quot;587&quot;
+      },
+      &quot;motivo&quot;: &quot;Cierre del flujo de demostración&quot;,
+      &quot;usuario_id&quot;: 1,
+      &quot;fecha&quot;: &quot;2026-11-26T15:22:05-06:00&quot;
+    }
+  ],
+  &quot;paginacion&quot;: {
+    &quot;pagina&quot;: 1,
+    &quot;por_pagina&quot;: 5,
+    &quot;total&quot;: 815,
+    &quot;paginas&quot;: 163
+  }
+}</pre></div></div>
+<div class="b ev"><div class="t">Evidencia en PostgreSQL · SELECT tipo, producto_id, cantidad, existencia_resultante FROM movimiento_inventario WHERE referencia_id = %s ORDER BY id</div><pre>[
+  {
+    &quot;tipo&quot;: &quot;salida_pedido&quot;,
+    &quot;producto_id&quot;: 32,
+    &quot;cantidad&quot;: -3,
+    &quot;existencia_resultante&quot;: 24
+  },
+  {
+    &quot;tipo&quot;: &quot;salida_pedido&quot;,
+    &quot;producto_id&quot;: 51,
+    &quot;cantidad&quot;: -3,
+    &quot;existencia_resultante&quot;: 69
+  },
+  {
+    &quot;tipo&quot;: &quot;devolucion_cancelacion&quot;,
+    &quot;producto_id&quot;: 32,
+    &quot;cantidad&quot;: 3,
+    &quot;existencia_resultante&quot;: 27
+  },
+  {
+    &quot;tipo&quot;: &quot;devolucion_cancelacion&quot;,
+    &quot;producto_id&quot;: 51,
+    &quot;cantidad&quot;: 3,
+    &quot;existencia_resultante&quot;: 72
+  }
+]</pre></div></section><section id="F3-08"><h3><span class="id">F3-08</span> Reporte del periodo en CSV
+<span class="e ok">PASA</span></h3>
+<p class="obj">La entrega ya cuenta en los reportes.</p>
+<div class="req"><span class="m GET">GET</span> <code>http://reportes:5123/api/v1/reportes/pedidos_por_dia/exportar?formato=csv</code></div>
+<div class="g"><div class="b "><div class="t">Encabezados de la petición</div><pre>Accept: application/json
+X-Traza-Id: 60292c77-57b3-4a9d-a2d9-5ace870411fd
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)</pre></div></div>
+<div class="st">HTTP <b class="ok">200</b> · esperado 200 · 184 ms · traza 60292c77-57b3-4a9d-a2d9-5ace870411fd</div>
+<div class="g"><div class="b "><div class="t">Encabezados de la respuesta</div><pre>Content-Type: text/csv; charset=utf-8
+X-Traza-Id: 60292c77-57b3-4a9d-a2d9-5ace870411fd</pre></div><div class="b "><div class="t">Respuesta</div><pre>﻿Día,Pedidos,Unidades,Venta,Ticket promedio,Demanda no atendida
+2026-11-25,56,282,8032.40,143.44,0
+2026-11-26,143,728,22598.70,158.03,3
+Total,199,1010,30631.10,153.93,3
+</pre></div></div>
+<div class="b ev"><div class="t">Evidencia en PostgreSQL · SELECT reporte, formato, filas, left(sha256, 16) AS sha256 FROM reporte_exportacion ORDER BY id DESC LIMIT 1</div><pre>[
+  {
+    &quot;reporte&quot;: &quot;pedidos_por_dia&quot;,
+    &quot;formato&quot;: &quot;csv&quot;,
+    &quot;filas&quot;: 2,
+    &quot;sha256&quot;: &quot;69fd3140dcb85ebb&quot;
+  }
+]</pre></div></section></body></html>

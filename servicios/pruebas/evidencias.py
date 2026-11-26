@@ -41,6 +41,7 @@ from comun import datos as bd  # noqa: E402
 from pruebas.evidencias_ola1 import ejecutar_ola1  # noqa: E402
 from pruebas.evidencias_ola2 import ejecutar_ola2  # noqa: E402
 from pruebas.evidencias_ola3 import ejecutar_ola3  # noqa: E402
+from pruebas.evidencias_ola4 import ejecutar_ola4  # noqa: E402
 from pruebas.preparar_entregas import preparar  # noqa: E402
 
 PUERTOS = {"auth": 5101, "usuarios": 5102, "productos": 5103, "pedidos": 5104, "entregas": 5105,
@@ -559,6 +560,9 @@ def ejecutar(ev):
 
     # ---------- OLA 3: AUDITORÍA Y MONITOREO, REPORTES Y SINCRONIZACIÓN ----------
     ejecutar_ola3(ev, types.SimpleNamespace(pg=pg, bd=bd, NS=NS, xml=xml))
+
+    # ---------- ENTREGA FINAL: ALTAS, CAMBIOS Y BAJAS; PEDIDOS Y ENTREGAS ----------
+    ejecutar_ola4(ev, types.SimpleNamespace(pg=pg, bd=bd, NS=NS, xml=xml))
 
     # ---------- 13. TRANSVERSALES ----------
     print("13. Transversales")

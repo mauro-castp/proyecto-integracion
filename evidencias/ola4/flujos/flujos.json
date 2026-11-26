@@ -1,0 +1,1421 @@
+[
+  {
+    "id": "F1-01",
+    "servicio": "planeacion",
+    "puerto": 5106,
+    "titulo": "Escritorio (XML): el planeador registra una ubicación candidata",
+    "objetivo": "Planeación de ubicación.",
+    "metodo": "POST",
+    "url": "http://planeacion:5106/api/v1/candidatos",
+    "encabezados": {
+      "Accept": "application/xml",
+      "X-Traza-Id": "97db450c-b0c5-44ec-b195-dfd8d220a9ec",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)",
+      "Content-Type": "application/xml"
+    },
+    "cuerpo": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><candidato_nuevo xmlns=\"urn:microhubs:v1\"><clave>********</clave><nombre>Ubicación del flujo E0FDE</nombre><latitud>25.760195</latitud><longitud>-100.370891</longitud><renta_estimada>15000.00</renta_estimada><nomina_estimada>36000.00</nomina_estimada><servicios_estimados>6000.00</servicios_estimados><otros_costos>4000.00</otros_costos><superficie_m2>100</superficie_m2><capacidad_fisica>120</capacidad_fisica><accesibilidad_vial>8</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km></candidato_nuevo>",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/xml; charset=utf-8",
+      "X-Traza-Id": "97db450c-b0c5-44ec-b195-dfd8d220a9ec"
+    },
+    "respuesta": "<?xml version='1.0' encoding='utf-8'?>\n<candidato xmlns=\"urn:microhubs:v1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1\"><id>161</id><clave>FL-E0FDE</clave><nombre>Ubicación del flujo E0FDE</nombre><latitud>25.760195</latitud><longitud>-100.370891</longitud><renta_estimada>15000.00</renta_estimada><nomina_estimada>36000.00</nomina_estimada><servicios_estimados>6000.00</servicios_estimados><otros_costos>4000.00</otros_costos><costo_fijo>61000.00</costo_fijo><superficie_m2>100</superficie_m2><capacidad_fisica>120</capacidad_fisica><accesibilidad_vial>8</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil=\"true\" /></candidato>",
+    "ms": 86,
+    "traza": "97db450c-b0c5-44ec-b195-dfd8d220a9ec",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": [
+      {
+        "motor": "PostgreSQL",
+        "consulta": "SELECT id, clave, nombre, costo_fijo, decision FROM ubicacion_candidata WHERE clave = %s",
+        "resultado": [
+          {
+            "id": 161,
+            "clave": "FL-E0FDE",
+            "nombre": "Ubicación del flujo E0FDE",
+            "costo_fijo": "61000.00",
+            "decision": "pendiente"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "F1-02",
+    "servicio": "planeacion",
+    "puerto": 5106,
+    "titulo": "El planeador simula la operación de la candidata",
+    "objetivo": "Capacidad, utilización y decisión sugerida (MongoDB).",
+    "metodo": "POST",
+    "url": "http://planeacion:5106/api/v1/candidatos/161/simular",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "8688e33e-12a8-4335-bd5b-b0cd0d227bf8",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"supuestos\": {\n    \"demanda_diaria\": 100,\n    \"operadores\": 3,\n    \"repartidores\": 4,\n    \"ticket\": 180.0,\n    \"costo_entrega\": 22.0,\n    \"margen_bruto\": 0.3,\n    \"renta\": 15000.0,\n    \"nomina\": 36000.0,\n    \"servicios\": 6000.0,\n    \"otros\": 4000.0,\n    \"distancia_km\": 1.2,\n    \"capacidad_fisica\": 120\n  }\n}",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "8688e33e-12a8-4335-bd5b-b0cd0d227bf8"
+    },
+    "respuesta": "{\n  \"atendidos\": 100.0,\n  \"rechazados\": 0.0,\n  \"utilizacion\": 83.3,\n  \"nivel\": \"atencion\",\n  \"tiempo_estimado_min\": 17.2,\n  \"operadores_requeridos\": 3,\n  \"repartidores_requeridos\": 2,\n  \"ingreso_dia\": 18000.0,\n  \"margen_dia\": 1166.67,\n  \"costo_por_pedido\": 42.33,\n  \"equilibrio\": {\n    \"margen_pedido\": 32.0,\n    \"mensual\": 1906.2,\n    \"diario\": 63.5\n  },\n  \"decision\": \"VIABLE\",\n  \"explicacion\": [\n    \"la demanda atendida supera el equilibrio en +36 pedidos/día\",\n    \"la utilización es 83% (atencion)\",\n    \"el espacio físico del local limita la capacidad\"\n  ]\n}",
+    "ms": 345,
+    "traza": "8688e33e-12a8-4335-bd5b-b0cd0d227bf8",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-03",
+    "servicio": "punto-equilibrio",
+    "puerto": 5120,
+    "titulo": "Punto de equilibrio de la candidata",
+    "objetivo": "Viabilidad financiera antes de decidir.",
+    "metodo": "POST",
+    "url": "http://punto-equilibrio:5120/api/v1/punto-equilibrio/calculos",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "eb3157af-ee91-48bd-a6b4-af3c2d61531b",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"candidato_id\": 161,\n  \"pedidos_dia\": 100,\n  \"ticket\": 180,\n  \"margen_bruto\": 0.3,\n  \"costos_fijos\": 61000,\n  \"costo_variable_pedido\": 22\n}",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "eb3157af-ee91-48bd-a6b4-af3c2d61531b"
+    },
+    "respuesta": "{\n  \"id\": null,\n  \"nombre\": null,\n  \"objeto\": {\n    \"tipo\": \"candidato\",\n    \"id\": 161,\n    \"nombre\": null\n  },\n  \"entrada\": {\n    \"costos_fijos_mes\": 61000.0,\n    \"costo_variable_pedido\": 22.0,\n    \"ticket\": 180.0,\n    \"margen_bruto\": 0.3,\n    \"pedidos_dia\": 100.0,\n    \"dias_mes\": 30.0,\n    \"margen_seguridad_minimo_pct\": 15.0,\n    \"origen\": {\n      \"costos_fijos\": \"manual\",\n      \"costo_variable_pedido\": \"manual\",\n      \"ticket\": \"manual\",\n      \"margen_bruto\": \"manual\",\n      \"pedidos_dia\": \"manual\"\n    }\n  },\n  \"margen_pedido\": 32.0,\n  \"equilibrio_mensual\": 1906.25,\n  \"equilibrio_diario\": 63.54,\n  \"ingresos_equilibrio_mes\": 343125.0,\n  \"diferencia_pedidos_dia\": 36.46,\n  \"margen_seguridad_pct\": 57.38,\n  \"utilidad_dia\": 1166.67,\n  \"utilidad_mes\": 35000.0,\n  \"decision\": \"viable\",\n  \"explicacion\": [\n    \"supera el equilibrio por 57.4 % (mínimo 15 %)\"\n  ],\n  \"pasos\": [\n    \"Margen por pedido = ticket × margen bruto − costo de entrega = 180.00 × 30.00% − 22.00 = 32.00\",\n    \"Punto de equilibrio mensual = costos fijos ÷ margen por pedido = 61,000.00 ÷ 32.00 = 1,906 pedidos/mes\",\n    \"Punto de equilibrio diario = 1,906 ÷ 30 días = 63.5 pedidos/día\"\n  ],\n  \"supuestos_usados\": [\n    {\n      \"clave\": \"********\",\n      \"valor\": 15.0,\n      \"modificado\": false\n    },\n    {\n      \"clave\": \"********\",\n      \"valor\": 30.0,\n      \"modificado\": false\n    },\n    {\n      \"clave\": \"********\",\n      \"valor\": 0.28,\n      \"modificado\": false\n    }\n  ]\n}",
+    "ms": 30,
+    "traza": "eb3157af-ee91-48bd-a6b4-af3c2d61531b",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-04",
+    "servicio": "planeacion",
+    "puerto": 5106,
+    "titulo": "El planeador decide",
+    "objetivo": "La decisión queda con motivo y en la bitácora.",
+    "metodo": "POST",
+    "url": "http://planeacion:5106/api/v1/candidatos/161/decision",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "ff71f4f5-2083-4c06-9a4d-601aee961d63",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"decision\": \"aceptado\",\n  \"motivo\": \"Cubre la zona del cliente y la demanda esperada supera el equilibrio.\"\n}",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "ff71f4f5-2083-4c06-9a4d-601aee961d63"
+    },
+    "respuesta": "{\n  \"id\": 161,\n  \"clave\": \"********\",\n  \"nombre\": \"Ubicación del flujo E0FDE\",\n  \"latitud\": 25.760195,\n  \"longitud\": -100.370891,\n  \"renta_estimada\": 15000.0,\n  \"nomina_estimada\": 36000.0,\n  \"servicios_estimados\": 6000.0,\n  \"otros_costos\": 4000.0,\n  \"costo_fijo\": 61000.0,\n  \"superficie_m2\": 100.0,\n  \"capacidad_fisica\": 120,\n  \"accesibilidad_vial\": 8,\n  \"zona_id\": 3,\n  \"poblacion_cubierta\": 5200,\n  \"radio_km\": 1.5,\n  \"decision\": \"aceptado\",\n  \"decision_motivo\": \"Cubre la zona del cliente y la demanda esperada supera el equilibrio.\"\n}",
+    "ms": 60,
+    "traza": "ff71f4f5-2083-4c06-9a4d-601aee961d63",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": [
+      {
+        "motor": "PostgreSQL",
+        "consulta": "SELECT decision, decision_motivo FROM ubicacion_candidata WHERE id = %s",
+        "resultado": [
+          {
+            "decision": "aceptado",
+            "decision_motivo": "Cubre la zona del cliente y la demanda esperada supera el equilibrio."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "F1-05",
+    "servicio": "microhubs",
+    "puerto": 5109,
+    "titulo": "Operación: el administrador abre el microhub",
+    "objetivo": "La candidata viable se vuelve microhub activo.",
+    "metodo": "POST",
+    "url": "http://microhubs:5109/api/v1/microhubs",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "6e2709b0-73e5-4618-a034-540656837874",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"clave\": \"********\",\n  \"nombre\": \"Microhub E0FDE\",\n  \"direccion\": \"Ubicación aprobada en planeación\",\n  \"latitud\": 25.760195,\n  \"longitud\": -100.370891,\n  \"radio_km\": 1.5,\n  \"capacidad_turno\": 120\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "6e2709b0-73e5-4618-a034-540656837874"
+    },
+    "respuesta": "{\n  \"id\": 9,\n  \"clave\": \"********\",\n  \"nombre\": \"Microhub E0FDE\",\n  \"latitud\": 25.760195,\n  \"longitud\": -100.370891,\n  \"radio_km\": 1.5,\n  \"estatus\": \"activo\"\n}",
+    "ms": 58,
+    "traza": "6e2709b0-73e5-4618-a034-540656837874",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-06",
+    "servicio": "capacidad",
+    "puerto": 5117,
+    "titulo": "Asignar personal al microhub",
+    "objetivo": "Operadores, repartidores y capacidad física.",
+    "metodo": "PUT",
+    "url": "http://capacidad:5117/api/v1/capacidad/recursos/9",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "c5456370-317f-4ebf-8d95-012c988bb376",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"operadores\": 2,\n  \"repartidores\": 2,\n  \"capacidad_fisica\": 120\n}",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "c5456370-317f-4ebf-8d95-012c988bb376"
+    },
+    "respuesta": "{\n  \"microhub\": {\n    \"id\": 9,\n    \"nombre\": \"Microhub E0FDE\"\n  },\n  \"operadores\": 2,\n  \"repartidores\": 2,\n  \"capacidad_fisica\": 120,\n  \"actualizado_en\": \"2026-11-26T15:21:58-06:00\"\n}",
+    "ms": 172,
+    "traza": "c5456370-317f-4ebf-8d95-012c988bb376",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-07",
+    "servicio": "usuarios",
+    "puerto": 5102,
+    "titulo": "Crear la cuenta del operador",
+    "objetivo": "Cuenta nueva con su perfil y su microhub.",
+    "metodo": "POST",
+    "url": "http://usuarios:5102/api/v1/usuarios",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "8c3b4728-b8d7-4a6d-98b0-249658980ec2",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"nombre\": \"Operador\",\n  \"apellidos\": \"E0FDE\",\n  \"correo\": \"operador.e0fde@ejemplo.mx\",\n  \"clave\": \"********\",\n  \"rol\": \"operador\",\n  \"microhub_id\": 9\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "8c3b4728-b8d7-4a6d-98b0-249658980ec2"
+    },
+    "respuesta": "{\n  \"id\": 59,\n  \"nombre\": \"Operador\",\n  \"apellidos\": \"E0FDE\",\n  \"correo\": \"operador.e0fde@ejemplo.mx\",\n  \"telefono\": null,\n  \"rol\": \"operador\",\n  \"microhub\": {\n    \"id\": 9,\n    \"clave\": \"********\",\n    \"nombre\": \"Microhub E0FDE\"\n  },\n  \"ultimo_acceso\": null\n}",
+    "ms": 152,
+    "traza": "8c3b4728-b8d7-4a6d-98b0-249658980ec2",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-08a",
+    "servicio": "inventario",
+    "puerto": 5111,
+    "titulo": "Surtir el microhub nuevo",
+    "objetivo": "Transferencia atómica desde MH-01.",
+    "metodo": "POST",
+    "url": "http://inventario:5111/api/v1/inventario/transferencias",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "913cf1be-a8af-4273-be28-605d01e6e464",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"origen_microhub_id\": 1,\n  \"destino_microhub_id\": 9,\n  \"producto_id\": 31,\n  \"cantidad\": 12,\n  \"motivo\": \"Inventario inicial del microhub nuevo\",\n  \"operacion_uuid\": \"c2b42589-113c-4cd7-85a2-c56cbf2a4494\"\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "913cf1be-a8af-4273-be28-605d01e6e464"
+    },
+    "respuesta": "{\n  \"producto_id\": 31,\n  \"cantidad\": 12,\n  \"duplicado\": false,\n  \"origen\": {\n    \"microhub_id\": 1,\n    \"existencia\": 31,\n    \"movimiento_id\": 2374\n  },\n  \"destino\": {\n    \"microhub_id\": 9,\n    \"existencia\": 12,\n    \"movimiento_id\": 2375\n  }\n}",
+    "ms": 121,
+    "traza": "913cf1be-a8af-4273-be28-605d01e6e464",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-08b",
+    "servicio": "inventario",
+    "puerto": 5111,
+    "titulo": "Surtir el microhub nuevo",
+    "objetivo": "Transferencia atómica desde MH-01.",
+    "metodo": "POST",
+    "url": "http://inventario:5111/api/v1/inventario/transferencias",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "3fc8c9ea-4d58-47ac-ba36-2c15a03c997a",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"origen_microhub_id\": 1,\n  \"destino_microhub_id\": 9,\n  \"producto_id\": 47,\n  \"cantidad\": 12,\n  \"motivo\": \"Inventario inicial del microhub nuevo\",\n  \"operacion_uuid\": \"6a1b90c4-a827-4c80-9ddd-1b28f4b0aac5\"\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "3fc8c9ea-4d58-47ac-ba36-2c15a03c997a"
+    },
+    "respuesta": "{\n  \"producto_id\": 47,\n  \"cantidad\": 12,\n  \"duplicado\": false,\n  \"origen\": {\n    \"microhub_id\": 1,\n    \"existencia\": 36,\n    \"movimiento_id\": 2376\n  },\n  \"destino\": {\n    \"microhub_id\": 9,\n    \"existencia\": 12,\n    \"movimiento_id\": 2377\n  }\n}",
+    "ms": 126,
+    "traza": "3fc8c9ea-4d58-47ac-ba36-2c15a03c997a",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-09",
+    "servicio": "pedidos",
+    "puerto": 5104,
+    "titulo": "Android (JSON): el cliente hace su pedido",
+    "objetivo": "El motor lo asigna al microhub más cercano que tiene todo: el nuevo.",
+    "metodo": "POST",
+    "url": "http://pedidos:5104/api/v1/pedidos",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "912d04f0-75c9-470b-99ff-9b4cba7b9613",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"lineas\": [\n    {\n      \"producto_id\": 31,\n      \"cantidad\": 3\n    },\n    {\n      \"producto_id\": 47,\n      \"cantidad\": 3\n    }\n  ],\n  \"operacion_uuid\": \"b8eec5ef-9a9b-412d-9ba8-72d5f6167196\"\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "912d04f0-75c9-470b-99ff-9b4cba7b9613"
+    },
+    "respuesta": "{\n  \"id\": 586,\n  \"folio\": \"PED-20261126-000586\",\n  \"estado\": \"asignado\",\n  \"zona_id\": 3,\n  \"microhub_id\": 9,\n  \"subtotal\": 336.0,\n  \"costo_envio\": 0.0,\n  \"total\": 336.0,\n  \"asignado\": true,\n  \"motivo\": null,\n  \"duplicado\": false\n}",
+    "ms": 248,
+    "traza": "912d04f0-75c9-470b-99ff-9b4cba7b9613",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": [
+      {
+        "motor": "PostgreSQL",
+        "consulta": "SELECT criterio, candidatos_evaluados, microhub_ganador_id, motivo FROM decision_asignacion WHERE pedido_id = %s",
+        "resultado": [
+          {
+            "criterio": "menor_distancia",
+            "candidatos_evaluados": 4,
+            "microhub_ganador_id": 9,
+            "motivo": null
+          }
+        ]
+      },
+      {
+        "motor": "PostgreSQL",
+        "consulta": "SELECT tipo, producto_id, cantidad, existencia_resultante FROM movimiento_inventario WHERE referencia_tipo = 'pedido' AND referencia_id = %s",
+        "resultado": [
+          {
+            "tipo": "salida_pedido",
+            "producto_id": 31,
+            "cantidad": -3,
+            "existencia_resultante": 9
+          },
+          {
+            "tipo": "salida_pedido",
+            "producto_id": 47,
+            "cantidad": -3,
+            "existencia_resultante": 9
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "F1-10",
+    "servicio": "pedidos",
+    "puerto": 5104,
+    "titulo": "El operador prepara el pedido",
+    "objetivo": "La transición la valida el motor.",
+    "metodo": "POST",
+    "url": "http://pedidos:5104/api/v1/pedidos/586/estado",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "4992cb73-4b9e-431b-94da-e461b4e50fc4",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1OSIs…(295 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"estado\": \"en_preparacion\"\n}",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "4992cb73-4b9e-431b-94da-e461b4e50fc4"
+    },
+    "respuesta": "{\n  \"id\": 586,\n  \"folio\": \"PED-20261126-000586\",\n  \"estado\": \"en_preparacion\",\n  \"zona\": {\n    \"id\": 3,\n    \"nombre\": \"Paseo de San Bernabé\"\n  },\n  \"microhub_id\": 9,\n  \"total\": 336.0,\n  \"creado_en\": \"2026-11-26T15:21:59-06:00\"\n}",
+    "ms": 133,
+    "traza": "4992cb73-4b9e-431b-94da-e461b4e50fc4",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-11",
+    "servicio": "pedidos",
+    "puerto": 5104,
+    "titulo": "El operador lo marca listo",
+    "objetivo": "Queda disponible para despacho.",
+    "metodo": "POST",
+    "url": "http://pedidos:5104/api/v1/pedidos/586/listo",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "760fe7f6-48cc-436c-a4cc-6d3b0bbb13a0",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1OSIs…(295 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{}",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "760fe7f6-48cc-436c-a4cc-6d3b0bbb13a0"
+    },
+    "respuesta": "{\n  \"id\": 586,\n  \"estado\": \"en_preparacion\",\n  \"listo_en\": \"2026-11-26T15:21:59-06:00\"\n}",
+    "ms": 67,
+    "traza": "760fe7f6-48cc-436c-a4cc-6d3b0bbb13a0",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-12",
+    "servicio": "rutas",
+    "puerto": 5118,
+    "titulo": "Proponer la ruta de despacho",
+    "objetivo": "Agrupa, asigna repartidor y ordena las paradas (algoritmo de rutas).",
+    "metodo": "POST",
+    "url": "http://rutas:5118/api/v1/rutas/planes",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "3765dd15-57bf-4415-afa1-0bc33d37b24d",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1OSIs…(295 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"microhub_id\": 9,\n  \"pedido_ids\": [\n    586\n  ],\n  \"repartidor_ids\": [\n    7\n  ],\n  \"metodo\": \"automatico\",\n  \"guardar\": true\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "3765dd15-57bf-4415-afa1-0bc33d37b24d"
+    },
+    "respuesta": "{\n  \"id\": 102,\n  \"estado\": \"propuesto\",\n  \"version\": 1,\n  \"microhub\": {\n    \"id\": 9,\n    \"nombre\": \"Microhub E0FDE\"\n  },\n  \"fecha\": \"2026-11-26\",\n  \"metodo_pedido\": \"automatico\",\n  \"rutas\": [\n    {\n      \"repartidor\": {\n        \"id\": 7,\n        \"nombre\": \"Ramiro Alanís Lozano\"\n      },\n      \"metodo\": \"TSP exacto\",\n      \"zonas\": [\n        \"Paseo de San Bernabé\"\n      ],\n      \"paradas\": [\n        {\n          \"orden\": 1,\n          \"pedido\": {\n            \"id\": 586,\n            \"folio\": \"PED-20261126-000586\"\n          },\n          \"zona\": {\n            \"id\": 3,\n            \"nombre\": \"Paseo de San Bernabé\"\n          },\n          \"latitud\": 25.759995,\n          \"longitud\": -100.371091,\n          \"tramo_km\": 0.04,\n          \"minutos_acum\": 4.1\n        }\n      ],\n      \"distancia_km\": 0.04,\n      \"minutos\": 4.1,\n      \"costo\": 18.18\n    }\n  ],\n  \"sin_asignar\": [],\n  \"total\": {\n    \"rutas\": 1,\n    \"paradas\": 1,\n    \"distancia_km\": 0.04,\n    \"minutos_maximo\": 4.1,\n    \"costo\": 18.18\n  },\n  \"cambios\": [],\n  \"supuestos_usados\": [\n    {\n      \"clave\": \"********\",\n      \"valor\": 22.0,\n      \"modificado\": false\n    },\n    {\n      \"clave\": \"********\",\n      \"valor\": 4.0,\n      \"modificado\": false\n    },\n    {\n      \"clave\": \"********\",\n      \"valor\": 4.5,\n      \"modificado\": false\n    },\n    {\n      \"clave\": \"********\",\n      \"valor\": 18.0,\n      \"modificado\": false\n    },\n    {\n      \"clave\": \"********\",\n      \"valor\": 8.0,\n      \"modificado\": false\n    },\n    {\n      \"clave\": \"********\",\n      \"valor\": 1.3,\n      \"modificado\": false\n    }\n  ]\n}",
+    "ms": 205,
+    "traza": "3765dd15-57bf-4415-afa1-0bc33d37b24d",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-13",
+    "servicio": "entregas",
+    "puerto": 5105,
+    "titulo": "El operador asigna la entrega",
+    "objetivo": "El pedido pasa a ruta y el repartidor recibe el aviso.",
+    "metodo": "POST",
+    "url": "http://entregas:5105/api/v1/entregas",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "a694e61a-a155-43a3-9c45-5a98186613f1",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1OSIs…(295 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"pedido_id\": 586,\n  \"repartidor_id\": 7,\n  \"orden_parada\": 1\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "a694e61a-a155-43a3-9c45-5a98186613f1"
+    },
+    "respuesta": "{\n  \"entrega_id\": 300,\n  \"pedido_id\": 586,\n  \"repartidor_id\": 7,\n  \"estado_pedido\": \"en_ruta\"\n}",
+    "ms": 63,
+    "traza": "a694e61a-a155-43a3-9c45-5a98186613f1",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": [
+      {
+        "motor": "PostgreSQL",
+        "consulta": "SELECT titulo, tipo, referencia_id FROM web_notificacion WHERE destinatario_id = %s ORDER BY id DESC LIMIT 1",
+        "resultado": [
+          {
+            "titulo": "Nueva entrega asignada",
+            "tipo": "entrega",
+            "referencia_id": "300"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "F1-14",
+    "servicio": "entregas",
+    "puerto": 5105,
+    "titulo": "Android: el repartidor ve su parada",
+    "objetivo": "Sesión validada en Redis.",
+    "metodo": "GET",
+    "url": "http://entregas:5105/api/v1/entregas/mias?por_pagina=50",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "6e98799c-6e42-47ac-8398-b8f0856903f7",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "6e98799c-6e42-47ac-8398-b8f0856903f7"
+    },
+    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 300,\n      \"pedido_id\": 586,\n      \"folio\": \"PED-20261126-000586\",\n      \"estado_pedido\": \"en_ruta\",\n      \"orden_parada\": 1,\n      \"direccion\": \"Nogal 1440, Paseo de San Bernabé\",\n      \"zona\": \"Paseo de San Bernabé\",\n      \"distancia_km\": null,\n      \"minutos_estimados\": null,\n      \"total\": 336.0\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 50,\n    \"total\": 1,\n    \"paginas\": 1\n  }\n}",
+    "ms": 57,
+    "traza": "6e98799c-6e42-47ac-8398-b8f0856903f7",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": [
+      {
+        "motor": "Redis",
+        "consulta": "SCARD auth:sesion:7",
+        "resultado": [
+          {
+            "comando": "SCARD auth:sesion:7",
+            "valor": 12
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "F1-15",
+    "servicio": "seguimiento",
+    "puerto": 5110,
+    "titulo": "El repartidor envía su recorrido",
+    "objetivo": "Puntos GPS en MongoDB (2dsphere).",
+    "metodo": "POST",
+    "url": "http://seguimiento:5110/api/v1/seguimiento/300/ubicaciones",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "fa649aa5-9e58-4d01-a737-b550bd175f0d",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"puntos\": [\n    {\n      \"latitud\": 25.760195,\n      \"longitud\": -100.370891,\n      \"capturado_en\": \"2026-11-26T21:17:59.855594+00:00\"\n    },\n    {\n      \"latitud\": 25.759995,\n      \"longitud\": -100.371091,\n      \"capturado_en\": \"2026-11-26T21:20:59.855621+00:00\"\n    }\n  ]\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "fa649aa5-9e58-4d01-a737-b550bd175f0d"
+    },
+    "respuesta": "{\n  \"recibidos\": 2\n}",
+    "ms": 34,
+    "traza": "fa649aa5-9e58-4d01-a737-b550bd175f0d",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-16",
+    "servicio": "documentos",
+    "puerto": 5107,
+    "titulo": "La foto de evidencia queda en el almacén",
+    "objetivo": "En la base solo sus datos; se descarga con un enlace firmado.",
+    "metodo": "GET",
+    "url": "http://documentos:5107/api/v1/documentos/6b08a2f75ea8dba9ecdb0af4/enlace",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "595efc3d-9aa8-4065-98c5-3fa5440134cf",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "595efc3d-9aa8-4065-98c5-3fa5440134cf"
+    },
+    "respuesta": "{\n  \"id\": \"6b08a2f75ea8dba9ecdb0af4\",\n  \"nombre\": \"evidencia-flujo1-E0FDE.jpg\",\n  \"url_firmada\": \"http://documentos:5107/api/v1/documentos/descarga?k=document…(208 caracteres)\",\n  \"metodo\": \"GET\",\n  \"segundos\": 300,\n  \"expira_en\": \"2026-11-26T15:26:59-06:00\"\n}",
+    "ms": 36,
+    "traza": "595efc3d-9aa8-4065-98c5-3fa5440134cf",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": [
+      {
+        "motor": "MongoDB",
+        "consulta": "db.documentos.findOne({_id}) sin contenido",
+        "resultado": {
+          "_id": "6b08a2f75ea8dba9ecdb0af4",
+          "nombre": "evidencia-flujo1-E0FDE.jpg",
+          "tipo_mime": "image/jpeg",
+          "tamano_bytes": 276,
+          "sha256": "7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc",
+          "referencia": {
+            "tipo": "entrega",
+            "id": "300"
+          },
+          "subido_por": 7,
+          "creado_en": "2026-11-26 21:21:59.931000+00:00",
+          "ruta": "documentos/2026/11/6b08a2f75ea8dba9ecdb0af4.jpg",
+          "privacidad": "privado",
+          "estado": "activo",
+          "metadatos": {
+            "almacen": "local",
+            "origen": "api"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "F1-17",
+    "servicio": "entregas",
+    "puerto": 5105,
+    "titulo": "El repartidor cierra la entrega",
+    "objetivo": "Cobro, ubicación y evidencia; idempotente.",
+    "metodo": "POST",
+    "url": "http://entregas:5105/api/v1/entregas/300/resultado",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "652412a8-661e-49f8-8ff0-04fb755c096f",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"resultado\": \"entregado\",\n  \"monto_cobrado\": 336.0,\n  \"cambio_entregado\": 0,\n  \"ubicacion\": {\n    \"latitud\": 25.759995,\n    \"longitud\": -100.371091\n  },\n  \"evidencia_ids\": [\n    \"6b08a2f75ea8dba9ecdb0af4\"\n  ],\n  \"capturado_en\": \"2026-11-26T21:22:00.297425+00:00\",\n  \"id_cliente_local\": \"3770c331-e223-41d2-9c27-b032c20304d0\"\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "652412a8-661e-49f8-8ff0-04fb755c096f"
+    },
+    "respuesta": "{\n  \"entrega_id\": 300,\n  \"pedido_id\": 586,\n  \"estado_pedido\": \"entregado\",\n  \"cerrado_en\": \"2026-11-26T15:22:00-06:00\",\n  \"duplicado\": false\n}",
+    "ms": 151,
+    "traza": "652412a8-661e-49f8-8ff0-04fb755c096f",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": [
+      {
+        "motor": "PostgreSQL",
+        "consulta": "SELECT estado_anterior, estado_nuevo, usuario_id, proceso FROM historial_estatus WHERE pedido_id = %s ORDER BY id",
+        "resultado": [
+          {
+            "estado_anterior": null,
+            "estado_nuevo": "creado",
+            "usuario_id": 9,
+            "proceso": null
+          },
+          {
+            "estado_anterior": "creado",
+            "estado_nuevo": "asignado",
+            "usuario_id": 9,
+            "proceso": null
+          },
+          {
+            "estado_anterior": "asignado",
+            "estado_nuevo": "en_preparacion",
+            "usuario_id": 59,
+            "proceso": null
+          },
+          {
+            "estado_anterior": "en_preparacion",
+            "estado_nuevo": "en_ruta",
+            "usuario_id": 59,
+            "proceso": null
+          },
+          {
+            "estado_anterior": "en_ruta",
+            "estado_nuevo": "entregado",
+            "usuario_id": 7,
+            "proceso": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "F1-18",
+    "servicio": "notificaciones",
+    "puerto": 5124,
+    "titulo": "El cliente recibe el aviso del cierre",
+    "objetivo": "Aviso generado por el motor.",
+    "metodo": "GET",
+    "url": "http://notificaciones:5124/api/v1/notificaciones?por_pagina=5",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "99a9d573-7eb3-46e9-b43b-3d0a47fbd1be",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "99a9d573-7eb3-46e9-b43b-3d0a47fbd1be"
+    },
+    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 850,\n      \"tipo\": \"pedido\",\n      \"titulo\": \"Pedido PED-20261126-000586\",\n      \"mensaje\": \"El pedido cambió a entregado.\",\n      \"leida\": false,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"586\"\n      },\n      \"creada_en\": \"2026-11-26T15:22:00-06:00\"\n    },\n    {\n      \"id\": 848,\n      \"tipo\": \"pedido\",\n      \"titulo\": \"Pedido PED-20261126-000585\",\n      \"mensaje\": \"El pedido cambió a entrega_fallida.\",\n      \"leida\": false,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"585\"\n      },\n      \"creada_en\": \"2026-11-26T15:21:29-06:00\"\n    },\n    {\n      \"id\": 846,\n      \"tipo\": \"pedido\",\n      \"titulo\": \"Pedido PED-20261126-000584\",\n      \"mensaje\": \"El pedido cambió a cancelado.\",\n      \"leida\": false,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"584\"\n      },\n      \"creada_en\": \"2026-11-26T15:21:26-06:00\"\n    },\n    {\n      \"id\": 843,\n      \"tipo\": \"pedido\",\n      \"titulo\": \"Pedido PED-20261126-000583\",\n      \"mensaje\": \"El pedido cambió a entregado.\",\n      \"leida\": false,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"583\"\n      },\n      \"creada_en\": \"2026-11-26T15:21:20-06:00\"\n    },\n    {\n      \"id\": 841,\n      \"tipo\": \"pedido\",\n      \"titulo\": \"Pedido PED-20261126-000581\",\n      \"mensaje\": \"El pedido cambió a cancelado.\",\n      \"leida\": false,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"581\"\n      },\n      \"creada_en\": \"2026-11-26T15:17:23-06:00\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 5,\n    \"total\": 16,\n    \"paginas\": 4\n  }\n}",
+    "ms": 415,
+    "traza": "99a9d573-7eb3-46e9-b43b-3d0a47fbd1be",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-19",
+    "servicio": "auditoria-monitoreo",
+    "puerto": 5126,
+    "titulo": "El auditor reconstruye la historia del pedido",
+    "objetivo": "Bitácora, estados, inventario y archivos en una línea de tiempo.",
+    "metodo": "GET",
+    "url": "http://auditoria-monitoreo:5126/api/v1/auditoria/trazabilidad/pedido/586",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "d51e3e0d-7fd2-46ec-8aac-87d79dd55188",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "d51e3e0d-7fd2-46ec-8aac-87d79dd55188"
+    },
+    "respuesta": "{\n  \"objeto\": {\n    \"tipo\": \"pedido\",\n    \"id\": \"586\"\n  },\n  \"total\": 15,\n  \"eventos\": [\n    {\n      \"fecha\": \"2026-11-26T15:21:59-06:00\",\n      \"origen\": \"auditoria\",\n      \"accion\": \"alta\",\n      \"descripcion\": \"actualizado_en = 2026-11-26T15:21:59.1142-06:00; asignado_en = None; cerrado_en = None; cliente_id = 1\",\n      \"usuario\": {\n        \"id\": 9,\n        \"nombre\": \"Juan Chapa Sepúlveda\"\n      },\n      \"entidad\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"586\"\n      },\n      \"cambios\": [\n        {\n          \"campo\": \"actualizado_en\",\n          \"anterior\": null,\n          \"nuevo\": \"2026-11-26T15:21:59.1142-06:00\"\n        },\n        {\n          \"campo\": \"asignado_en\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"cerrado_en\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"cliente_id\",\n          \"anterior\": null,\n          \"nuevo\": \"1\"\n        },\n        {\n          \"campo\": \"costo_envio\",\n          \"anterior\": null,\n          \"nuevo\": \"0.0\"\n        },\n        {\n          \"campo\": \"creado_en\",\n          \"anterior\": null,\n          \"nuevo\": \"2026-11-26T15:21:59.1142-06:00\"\n        },\n        {\n          \"campo\": \"domicilio_id\",\n          \"anterior\": null,\n          \"nuevo\": \"1\"\n        },\n        {\n          \"campo\": \"estado\",\n          \"anterior\": null,\n          \"nuevo\": \"creado\"\n        },\n        {\n          \"campo\": \"folio\",\n          \"anterior\": null,\n          \"nuevo\": \"PED-20261126-000586\"\n        },\n        {\n          \"campo\": \"id\",\n          \"anterior\": null,\n          \"nuevo\": \"586\"\n        },\n        {\n          \"campo\": \"listo_en\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"microhub_id\",\n          \"anterior\": null,\n          \"nuevo\": null\n        }\n      ]\n    },\n    {\n      \"fecha\": \"2026-11-26T15:21:59-06:00\",\n      \"origen\": \"auditoria\",\n      \"accion\": \"cambio_estado\",\n      \"descripcion\": \"asignado_en = 2026-11-26T15:21:59.1142-06:00; estado: creado → asignado; microhub_id = 9\",\n      \"usuario\": {\n        \"id\": 9,\n        \"nombre\": \"Juan Chapa Sepúlveda\"\n      },\n      \"entidad\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"586\"\n      },\n      \"cambios\": [\n        {\n          \"campo\": \"asignado_en\",\n          \"anterior\": null,\n          \"nuevo\": \"2026-11-26T15:21:59.1142-06:00\"\n        },\n        {\n          \"campo\": \"estado\",\n          \"anterior\": \"creado\",\n          \"nuevo\": \"asignado\"\n        },\n        {\n          \"campo\": \"microhub_id\",\n          \"anterior\": null,\n          \"nuevo\": \"9\"\n        }\n      ]\n    },\n    {\n      \"fecha\": \"2026-11-26T15:21:59-06:00\",\n      \"origen\": \"estados\",\n      \"accion\": \"cambio_estado\",\n      \"descripcion\": \"nuevo → creado\",\n      \"usuario\": {\n        \"id\": 9,\n        \"nombre\": \"Juan Chapa Sepúlveda\"\n      },\n      \"entidad\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"586\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-11-26T15:21:59-06:00\",\n      \"origen\": \"estados\",\n      \"accion\": \"cambio_estado\",\n      \"descripcion\": \"creado → asignado\",\n      \"usuario\": {\n        \"id\": 9,\n        \"nombre\": \"Juan Chapa Sepúlveda\"\n      },\n      \"entidad\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"586\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-11-26T15:21:59-06:00\",\n      \"origen\": \"inventario\",\n      \"accion\": \"movimiento_inventario\",\n      \"descripcion\": \"salida_pedido: -3 de producto 31 en microhub 9 (existencia 9)\",\n      \"usuario\": {\n        \"id\": 9,\n        \"nombre\": \"Juan Chapa Sepúlveda\"\n      },\n      \"entidad\": {\n        \"tipo\": \"inventario\",\n        \"id\": \"9-31\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-11-26T15:21:59-06:00\",\n      \"origen\": \"inventario\",\n      \"accion\": \"movimiento_inventario\",\n      \"descripcion\": \"salida_pedido: -3 de producto 47 en microhub 9 (existencia 9)\",\n      \"usuario\": {\n        \"id\": 9,\n        \"nombre\": \"Juan Chapa Sepúlveda\"\n      },\n      \"entidad\": {\n        \"tipo\": \"inventario\",\n        \"id\": \"9-47\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-11-26T15:21:59-06:00\",\n      \"origen\": \"auditoria\",\n      \"accion\": \"cambio_estado\",\n      \"descripcion\": \"actualizado_en: 2026-11-26T15:21:59.1142-06:00 → 2026-11-26T15:21:59.33476-06:00; estado: asignado → en_preparacion\",\n      \"usuario\": {\n        \"id\": 59,\n        \"nombre\": \"Operador E0FDE\"\n      },\n      \"entidad\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"586\"\n      },\n      \"cambios\": [\n        {\n          \"campo\": \"actualizado_en\",\n          \"anterior\": \"2026-11-26T15:21:59.1142-06:00\",\n          \"nuevo\": \"2026-11-26T15:21:59.33476-06:00\"\n        },\n        {\n          \"campo\": \"estado\",\n          \"anterior\": \"asignado\",\n          \"nuevo\": \"en_preparacion\"\n        }\n      ]\n    },\n    {\n      \"fecha\": \"2026-11-26T15:21:59-06:00\",\n      \"origen\": \"estados\",\n      \"accion\": \"cambio_estado\",\n      \"descripcion\": \"asignado → en_preparacion\",\n      \"usuario\": {\n        \"id\": 59,\n        \"nombre\": \"Operador E0FDE\"\n      },\n      \"entidad\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"586\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-11-26T15:21:59-06:00\",\n      \"origen\": \"auditoria\",\n      \"accion\": \"modificacion\",\n      \"descripcion\": \"listo_en = 2026-11-26T15:21:59.465661-06:00\",\n      \"usuario\": {\n        \"id\": 59,\n        \"nombre\": \"Operador E0FDE\"\n      },\n      \"entidad\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"586\"\n      },\n      \"cambios\": [\n        {\n          \"campo\": \"listo_en\",\n          \"anterior\": null,\n          \"nuevo\": \"2026-11-26T15:21:59.465661-06:00\"\n        }\n      ]\n    },\n    {\n      \"fecha\": \"2026-11-26T15:21:59-06:00\",\n      \"origen\": \"auditoria\",\n      \"accion\": \"alta\",\n      \"descripcion\": \"asignada_en = 2026-11-26T15:21:59.730963-06:00; cambio_entregado = None; capturado_en = None; cerrada_por_usuario_id = None\",\n      \"usuario\": {\n        \"id\": 59,\n        \"nombre\": \"Operador E0FDE\"\n      },\n      \"entidad\": {\n        \"tipo\": \"entrega\",\n        \"id\": \"300\"\n      },\n      \"cambios\": [\n        {\n          \"campo\": \"asignada_en\",\n          \"anterior\": null,\n          \"nuevo\": \"2026-11-26T15:21:59.730963-06:00\"\n        },\n        {\n          \"campo\": \"cambio_entregado\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"capturado_en\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"cerrada_por_usuario_id\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"cierre_en\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"cierre_latitud\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"cierre_longitud\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"cierre_precision_m\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"confirmacion_recepcion\",\n          \"anterior\": null,\n          \"nuevo\": \"false\"\n        },\n        {\n          \"campo\": \"costo_entrega_estimado\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"distancia_km\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"evidencia_ids\",\n          \"anterior\": null,\n          \"nuevo\": null\n        }\n      ]\n    },\n    {\n      \"fecha\": \"2026-11-26T15:21:59-06:00\",\n      \"origen\": \"auditoria\",\n      \"accion\": \"cambio_estado\",\n      \"descripcion\": \"actualizado_en: 2026-11-26T15:21:59.33476-06:00 → 2026-11-26T15:21:59.730963-06:00; estado: en_preparacion → en_ruta\",\n      \"usuario\": {\n        \"id\": 59,\n        \"nombre\": \"Operador E0FDE\"\n      },\n      \"entidad\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"586\"\n      },\n      \"cambios\": [\n        {\n          \"campo\": \"actualizado_en\",\n          \"anterior\": \"2026-11-26T15:21:59.33476-06:00\",\n          \"nuevo\": \"2026-11-26T15:21:59.730963-06:00\"\n        },\n        {\n          \"campo\": \"estado\",\n          \"anterior\": \"en_preparacion\",\n          \"nuevo\": \"en_ruta\"\n        }\n      ]\n    },\n    {\n      \"fecha\": \"2026-11-26T15:21:59-06:00\",\n      \"origen\": \"estados\",\n      \"accion\": \"cambio_estado\",\n      \"descripcion\": \"en_preparacion → en_ruta\",\n      \"usuario\": {\n        \"id\": 59,\n        \"nombre\": \"Operador E0FDE\"\n      },\n      \"entidad\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"586\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-11-26T15:22:00-06:00\",\n      \"origen\": \"auditoria\",\n      \"accion\": \"modificacion\",\n      \"descripcion\": \"cambio_entregado = 0.0; capturado_en = 2026-11-26T15:22:00.2…(145 caracteres)\",\n      \"usuario\": {\n        \"id\": 7,\n        \"nombre\": \"Ramiro Alanís Lozano\"\n      },\n      \"entidad\": {\n        \"tipo\": \"entrega\",\n        \"id\": \"300\"\n      },\n      \"cambios\": [\n        {\n          \"campo\": \"cambio_entregado\",\n          \"anterior\": null,\n          \"nuevo\": \"0.0\"\n        },\n        {\n          \"campo\": \"capturado_en\",\n          \"anterior\": null,\n          \"nuevo\": \"2026-11-26T15:22:00.297425-06:00\"\n        },\n        {\n          \"campo\": \"cerrada_por_usuario_id\",\n          \"anterior\": null,\n          \"nuevo\": \"7\"\n        },\n        {\n          \"campo\": \"cierre_en\",\n          \"anterior\": null,\n          \"nuevo\": \"2026-11-26T15:22:00.366559-06:00\"\n        },\n        {\n          \"campo\": \"cierre_latitud\",\n          \"anterior\": null,\n          \"nuevo\": \"25.759995\"\n        },\n        {\n          \"campo\": \"cierre_longitud\",\n          \"anterior\": null,\n          \"nuevo\": \"-100.371091\"\n        },\n        {\n          \"campo\": \"confirmacion_recepcion\",\n          \"anterior\": \"false\",\n          \"nuevo\": \"true\"\n        },\n        {\n          \"campo\": \"evidencia_ids\",\n          \"anterior\": null,\n          \"nuevo\": \"[\\\"6b08a2f75ea8dba9ecdb0af4\\\"]\"\n        },\n        {\n          \"campo\": \"evidencia_url\",\n          \"anterior\": null,\n          \"nuevo\": \"/api/v1/documentos/6b08a2f75ea8dba9ecdb0af4\"\n        },\n        {\n          \"campo\": \"id_cliente_local\",\n          \"anterior\": null,\n          \"nuevo\": \"3770c331-e223-41d2-9c27-b032c20304d0\"\n        },\n        {\n          \"campo\": \"monto_cobrado\",\n          \"anterior\": null,\n          \"nuevo\": \"336.0\"\n        },\n        {\n          \"campo\": \"resultado\",\n          \"anterior\": null,\n          \"nuevo\": \"entregado\"\n        }\n      ]\n    },\n    {\n      \"fecha\": \"2026-11-26T15:22:00-06:00\",\n      \"origen\": \"auditoria\",\n      \"accion\": \"cambio_estado\",\n      \"descripcion\": \"actualizado_en: 2026-11-26T15:21:59.730963-06:00 → 2026-11-2…(159 caracteres)\",\n      \"usuario\": {\n        \"id\": 7,\n        \"nombre\": \"Ramiro Alanís Lozano\"\n      },\n      \"entidad\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"586\"\n      },\n      \"cambios\": [\n        {\n          \"campo\": \"actualizado_en\",\n          \"anterior\": \"2026-11-26T15:21:59.730963-06:00\",\n          \"nuevo\": \"2026-11-26T15:22:00.366559-06:00\"\n        },\n        {\n          \"campo\": \"cerrado_en\",\n          \"anterior\": null,\n          \"nuevo\": \"2026-11-26T15:22:00.366559-06:00\"\n        },\n        {\n          \"campo\": \"estado\",\n          \"anterior\": \"en_ruta\",\n          \"nuevo\": \"entregado\"\n        }\n      ]\n    },\n    {\n      \"fecha\": \"2026-11-26T15:22:00-06:00\",\n      \"origen\": \"estados\",\n      \"accion\": \"cambio_estado\",\n      \"descripcion\": \"en_ruta → entregado\",\n      \"usuario\": {\n        \"id\": 7,\n        \"nombre\": \"Ramiro Alanís Lozano\"\n      },\n      \"entidad\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"586\"\n      },\n      \"cambios\": []\n    }\n  ]\n}",
+    "ms": 116,
+    "traza": "d51e3e0d-7fd2-46ec-8aac-87d79dd55188",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-20",
+    "servicio": "reportes",
+    "puerto": 5123,
+    "titulo": "Visualización: el microhub nuevo ya aparece en la comparación",
+    "objetivo": "Datos listos para Highcharts.",
+    "metodo": "GET",
+    "url": "http://reportes:5123/api/v1/reportes/comparacion_microhubs/grafica?microhub_id=9",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "9c72667a-4601-47a0-a39b-746fcc3b7198",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "9c72667a-4601-47a0-a39b-746fcc3b7198"
+    },
+    "respuesta": "{\n  \"reporte\": \"comparacion_microhubs\",\n  \"titulo\": \"Comparación entre microhubs\",\n  \"tipo\": \"column\",\n  \"unidad\": \"pedidos / MXN\",\n  \"categorias\": [\n    \"Microhub E0FDE\"\n  ],\n  \"series\": [\n    {\n      \"nombre\": \"Pedidos\",\n      \"datos\": [\n        1.0\n      ]\n    },\n    {\n      \"nombre\": \"Venta\",\n      \"datos\": [\n        336.0\n      ]\n    }\n  ]\n}",
+    "ms": 140,
+    "traza": "9c72667a-4601-47a0-a39b-746fcc3b7198",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F1-21",
+    "servicio": "microhubs",
+    "puerto": 5109,
+    "titulo": "Cierre: dar de baja el microhub de la demostración",
+    "objetivo": "Baja lógica; conserva su historia.",
+    "metodo": "DELETE",
+    "url": "http://microhubs:5109/api/v1/microhubs/9",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "85f51b67-0f19-406c-9905-b06918c75e0f",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 204,
+    "encabezados_respuesta": {
+      "Content-Type": "text/html; charset=utf-8",
+      "X-Traza-Id": "85f51b67-0f19-406c-9905-b06918c75e0f"
+    },
+    "respuesta": "(sin cuerpo)",
+    "ms": 70,
+    "traza": "85f51b67-0f19-406c-9905-b06918c75e0f",
+    "esperado": 204,
+    "obtenido": 204,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F2-01",
+    "servicio": "pedidos",
+    "puerto": 5104,
+    "titulo": "Android: un cliente compra y el inventario baja",
+    "objetivo": "El motor descuenta inventario en la misma transacción.",
+    "metodo": "POST",
+    "url": "http://pedidos:5104/api/v1/pedidos",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "0d6308eb-a992-4bde-b7fb-eef1358c5878",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"lineas\": [\n    {\n      \"producto_id\": 31,\n      \"cantidad\": 10\n    }\n  ],\n  \"operacion_uuid\": \"c0d46b9d-47dd-4e92-8810-5e9d2d05b7e3\"\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "0d6308eb-a992-4bde-b7fb-eef1358c5878"
+    },
+    "respuesta": "{\n  \"id\": 587,\n  \"folio\": \"PED-20261126-000587\",\n  \"estado\": \"asignado\",\n  \"zona_id\": 3,\n  \"microhub_id\": 2,\n  \"subtotal\": 580.0,\n  \"costo_envio\": 0.0,\n  \"total\": 580.0,\n  \"asignado\": true,\n  \"motivo\": null,\n  \"duplicado\": false\n}",
+    "ms": 265,
+    "traza": "0d6308eb-a992-4bde-b7fb-eef1358c5878",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": [
+      {
+        "motor": "PostgreSQL",
+        "consulta": "SELECT microhub_id, producto_id, cantidad, existencia_resultante FROM movimiento_inventario WHERE referencia_tipo = 'pedido' AND referencia_id = %s",
+        "resultado": [
+          {
+            "microhub_id": 2,
+            "producto_id": 31,
+            "cantidad": -10,
+            "existencia_resultante": 48
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "F2-02",
+    "servicio": "inventario",
+    "puerto": 5111,
+    "titulo": "El operador fija el mínimo y nace la alerta",
+    "objetivo": "El trigger avisa del faltante.",
+    "metodo": "PATCH",
+    "url": "http://inventario:5111/api/v1/inventario/1/31/minimo",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "74e9e497-1f57-4d36-b2bd-163a2e97ae99",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"minimo\": 41\n}",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "74e9e497-1f57-4d36-b2bd-163a2e97ae99"
+    },
+    "respuesta": "{\n  \"microhub\": {\n    \"id\": 1,\n    \"nombre\": \"Microhub San Bernabé Centro\"\n  },\n  \"producto\": {\n    \"id\": 31,\n    \"clave_interna\": \"LA-003\",\n    \"nombre\": \"Queso fresco\"\n  },\n  \"existencia\": 31,\n  \"minimo\": 41,\n  \"reservado\": 0,\n  \"disponible\": 31,\n  \"estado\": \"bajo_minimo\",\n  \"actualizado_en\": \"2026-11-26T15:22:03-06:00\"\n}",
+    "ms": 212,
+    "traza": "74e9e497-1f57-4d36-b2bd-163a2e97ae99",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F2-03",
+    "servicio": "inventario",
+    "puerto": 5111,
+    "titulo": "La alerta de faltante",
+    "objetivo": "Qué producto, cuánto falta y qué tan grave es.",
+    "metodo": "GET",
+    "url": "http://inventario:5111/api/v1/inventario/alertas?microhub_id=1&por_pagina=100",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "88d3151e-16eb-4188-b9ad-d8832f1bb704",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "88d3151e-16eb-4188-b9ad-d8832f1bb704"
+    },
+    "respuesta": "{\n  \"datos\": [\n    {\n      \"microhub\": {\n        \"id\": 1,\n        \"nombre\": \"Microhub San Bernabé Centro\"\n      },\n      \"producto\": {\n        \"id\": 21,\n        \"clave_interna\": \"BE-001\",\n        \"nombre\": \"Agua purificada\"\n      },\n      \"existencia\": 0,\n      \"minimo\": 10,\n      \"disponible\": 0,\n      \"faltante\": 10,\n      \"severidad\": \"agotado\"\n    },\n    {\n      \"microhub\": {\n        \"id\": 1,\n        \"nombre\": \"Microhub San Bernabé Centro\"\n      },\n      \"producto\": {\n        \"id\": 31,\n        \"clave_interna\": \"LA-003\",\n        \"nombre\": \"Queso fresco\"\n      },\n      \"existencia\": 31,\n      \"minimo\": 41,\n      \"disponible\": 31,\n      \"faltante\": 10,\n      \"severidad\": \"baja\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 100,\n    \"total\": 2,\n    \"paginas\": 1\n  }\n}",
+    "ms": 105,
+    "traza": "88d3151e-16eb-4188-b9ad-d8832f1bb704",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F2-04",
+    "servicio": "abastecimiento",
+    "puerto": 5114,
+    "titulo": "El operador pide reposición",
+    "objetivo": "Solicitud con sus líneas.",
+    "metodo": "POST",
+    "url": "http://abastecimiento:5114/api/v1/abastecimiento/solicitudes",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "07fc6db9-3a0f-4fb5-bb27-de8165083a05",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"microhub_id\": 1,\n  \"motivo\": \"Faltante detectado por el sistema\",\n  \"lineas\": [\n    {\n      \"producto_id\": 31,\n      \"cantidad\": 100\n    }\n  ]\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "07fc6db9-3a0f-4fb5-bb27-de8165083a05"
+    },
+    "respuesta": "{\n  \"id\": 63,\n  \"folio\": \"SC-20261126-000063\",\n  \"microhub_id\": 1,\n  \"estado\": \"pendiente\",\n  \"motivo\": \"Faltante detectado por el sistema\",\n  \"solicitada_por\": 2,\n  \"decidida_por\": null,\n  \"decision_motivo\": null,\n  \"decidida_en\": null,\n  \"creada_en\": \"2026-11-26T15:22:03-06:00\",\n  \"lineas\": [\n    {\n      \"producto\": {\n        \"id\": 31,\n        \"nombre\": \"Queso fresco\"\n      },\n      \"cantidad\": 100\n    }\n  ]\n}",
+    "ms": 350,
+    "traza": "07fc6db9-3a0f-4fb5-bb27-de8165083a05",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F2-05",
+    "servicio": "abastecimiento",
+    "puerto": 5114,
+    "titulo": "El administrador aprueba",
+    "objetivo": "Quien pidió recibe el aviso.",
+    "metodo": "POST",
+    "url": "http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/63/decision",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "a3ffb08f-5be1-4fc4-a5f6-f93e1422f013",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"decision\": \"aprobada\",\n  \"motivo\": \"Con presupuesto\"\n}",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "a3ffb08f-5be1-4fc4-a5f6-f93e1422f013"
+    },
+    "respuesta": "{\n  \"id\": 63,\n  \"folio\": \"SC-20261126-000063\",\n  \"microhub_id\": 1,\n  \"estado\": \"aprobada\",\n  \"motivo\": \"Faltante detectado por el sistema\",\n  \"solicitada_por\": 2,\n  \"decidida_por\": 1,\n  \"decision_motivo\": \"Con presupuesto\",\n  \"decidida_en\": \"2026-11-26T15:22:03-06:00\",\n  \"creada_en\": \"2026-11-26T15:22:03-06:00\",\n  \"lineas\": [\n    {\n      \"producto\": {\n        \"id\": 31,\n        \"nombre\": \"Queso fresco\"\n      },\n      \"cantidad\": 100\n    }\n  ]\n}",
+    "ms": 132,
+    "traza": "a3ffb08f-5be1-4fc4-a5f6-f93e1422f013",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F2-06",
+    "servicio": "abastecimiento",
+    "puerto": 5114,
+    "titulo": "Se emite la orden de compra",
+    "objetivo": "Al proveedor con la mejor oferta.",
+    "metodo": "POST",
+    "url": "http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/63/ordenar",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "18ab5040-272e-479d-bf76-38dc65a12d9d",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "18ab5040-272e-479d-bf76-38dc65a12d9d"
+    },
+    "respuesta": "{\n  \"solicitud_id\": 63,\n  \"ordenes\": [\n    {\n      \"id\": 38,\n      \"folio\": \"OC-20261126-000038\",\n      \"solicitud_id\": 63,\n      \"proveedor\": {\n        \"id\": 1,\n        \"nombre\": \"Abarrotes del Norte\"\n      },\n      \"microhub_id\": 1,\n      \"estado\": \"emitida\",\n      \"fecha_esperada\": \"2026-11-28\",\n      \"total\": 4060.0,\n      \"creada_en\": \"2026-11-26T15:22:04-06:00\",\n      \"cerrada_en\": null,\n      \"lineas\": [\n        {\n          \"producto\": {\n            \"id\": 31,\n            \"nombre\": \"Queso fresco\"\n          },\n          \"cantidad\": 100,\n          \"precio_compra\": 40.6,\n          \"cantidad_recibida\": 0,\n          \"pendiente_inventario\": 0\n        }\n      ]\n    }\n  ]\n}",
+    "ms": 484,
+    "traza": "18ab5040-272e-479d-bf76-38dc65a12d9d",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F2-07",
+    "servicio": "abastecimiento",
+    "puerto": 5114,
+    "titulo": "Llega la mercancía y se recibe",
+    "objetivo": "Sube el inventario una sola vez (idempotente).",
+    "metodo": "POST",
+    "url": "http://abastecimiento:5114/api/v1/abastecimiento/ordenes/38/recepcion",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "1f946bc1-486a-4ce9-bdde-a5fc26bda07e",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"operacion_uuid\": \"4191f2f5-31f7-42ec-8f93-136f2a741c84\",\n  \"nota\": \"Completo\",\n  \"lineas\": [\n    {\n      \"producto_id\": 31,\n      \"cantidad\": 100\n    }\n  ]\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "1f946bc1-486a-4ce9-bdde-a5fc26bda07e"
+    },
+    "respuesta": "{\n  \"orden\": {\n    \"id\": 38,\n    \"folio\": \"OC-20261126-000038\",\n    \"solicitud_id\": 63,\n    \"proveedor\": {\n      \"id\": 1,\n      \"nombre\": \"Abarrotes del Norte\"\n    },\n    \"microhub_id\": 1,\n    \"estado\": \"recibida\",\n    \"fecha_esperada\": \"2026-11-28\",\n    \"total\": 4060.0,\n    \"creada_en\": \"2026-11-26T15:22:04-06:00\",\n    \"cerrada_en\": \"2026-11-26T15:22:04-06:00\",\n    \"lineas\": [\n      {\n        \"producto\": {\n          \"id\": 31,\n          \"nombre\": \"Queso fresco\"\n        },\n        \"cantidad\": 100,\n        \"precio_compra\": 40.6,\n        \"cantidad_recibida\": 100,\n        \"pendiente_inventario\": 0\n      }\n    ]\n  },\n  \"aplicadas\": 1,\n  \"pendientes\": 0,\n  \"aviso\": null\n}",
+    "ms": 317,
+    "traza": "1f946bc1-486a-4ce9-bdde-a5fc26bda07e",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": [
+      {
+        "motor": "PostgreSQL",
+        "consulta": "SELECT existencia, minimo FROM inventario WHERE microhub_id = %s AND producto_id = %s",
+        "resultado": [
+          {
+            "existencia": 131,
+            "minimo": 41
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "F2-08",
+    "servicio": "documentos",
+    "puerto": 5107,
+    "titulo": "La remisión firmada queda en el almacén",
+    "objetivo": "Archivo con enlace firmado.",
+    "metodo": "GET",
+    "url": "http://documentos:5107/api/v1/documentos/6b08a2fcf59f7f9d08b26dca/enlace",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "be27030d-7feb-452f-a9ff-a8dd4411bd45",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "be27030d-7feb-452f-a9ff-a8dd4411bd45"
+    },
+    "respuesta": "{\n  \"id\": \"6b08a2fcf59f7f9d08b26dca\",\n  \"nombre\": \"remision-38.jpg\",\n  \"url_firmada\": \"http://documentos:5107/api/v1/documentos/descarga?k=document…(197 caracteres)\",\n  \"metodo\": \"GET\",\n  \"segundos\": 300,\n  \"expira_en\": \"2026-11-26T15:27:04-06:00\"\n}",
+    "ms": 28,
+    "traza": "be27030d-7feb-452f-a9ff-a8dd4411bd45",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F2-09",
+    "servicio": "auditoria-monitoreo",
+    "puerto": 5126,
+    "titulo": "Trazabilidad del producto en el microhub",
+    "objetivo": "Salida por pedido y recepción por orden.",
+    "metodo": "GET",
+    "url": "http://auditoria-monitoreo:5126/api/v1/auditoria/trazabilidad/inventario?microhub_id=1&producto_id=31",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "5d9090c9-3e29-42eb-8c54-07a443abb3f0",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "5d9090c9-3e29-42eb-8c54-07a443abb3f0"
+    },
+    "respuesta": "{\n  \"objeto\": {\n    \"tipo\": \"inventario\",\n    \"id\": \"1-31\"\n  },\n  \"total\": 9,\n  \"eventos\": [\n    {\n      \"fecha\": \"2026-10-19T19:30:40-06:00\",\n      \"origen\": \"inventario\",\n      \"accion\": \"movimiento_inventario\",\n      \"descripcion\": \"recepcion: +57 de producto 31 en microhub 1 (existencia 57). Carga inicial de semilla\",\n      \"usuario\": null,\n      \"entidad\": {\n        \"tipo\": \"inventario\",\n        \"id\": \"1-31\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-10-19T19:30:41-06:00\",\n      \"origen\": \"inventario\",\n      \"accion\": \"movimiento_inventario\",\n      \"descripcion\": \"devolucion_cancelacion: +1 de producto 31 en microhub 1 (existencia 57). Cancelación del cliente (RN18).\",\n      \"usuario\": null,\n      \"entidad\": {\n        \"tipo\": \"inventario\",\n        \"id\": \"1-31\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-10-19T19:30:41-06:00\",\n      \"origen\": \"inventario\",\n      \"accion\": \"movimiento_inventario\",\n      \"descripcion\": \"salida_pedido: -1 de producto 31 en microhub 1 (existencia 56)\",\n      \"usuario\": null,\n      \"entidad\": {\n        \"tipo\": \"inventario\",\n        \"id\": \"1-31\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-10-20T00:28:51-06:00\",\n      \"origen\": \"inventario\",\n      \"accion\": \"movimiento_inventario\",\n      \"descripcion\": \"salida_pedido: -2 de producto 31 en microhub 1 (existencia 55)\",\n      \"usuario\": null,\n      \"entidad\": {\n        \"tipo\": \"inventario\",\n        \"id\": \"1-31\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-10-20T00:31:43-06:00\",\n      \"origen\": \"inventario\",\n      \"accion\": \"movimiento_inventario\",\n      \"descripcion\": \"devolucion_cancelacion: +2 de producto 31 en microhub 1 (existencia 57). Reposición del inventario de una prueba\",\n      \"usuario\": null,\n      \"entidad\": {\n        \"tipo\": \"inventario\",\n        \"id\": \"1-31\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-11-26T00:33:03-06:00\",\n      \"origen\": \"inventario\",\n      \"accion\": \"movimiento_inventario\",\n      \"descripcion\": \"salida_pedido: -2 de producto 31 en microhub 1 (existencia 55)\",\n      \"usuario\": null,\n      \"entidad\": {\n        \"tipo\": \"inventario\",\n        \"id\": \"1-31\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-11-26T15:21:16-06:00\",\n      \"origen\": \"inventario\",\n      \"accion\": \"movimiento_inventario\",\n      \"descripcion\": \"transferencia_salida: -12 de producto 31 en microhub 1 (existencia 43). Inventario inicial del microhub nuevo\",\n      \"usuario\": {\n        \"id\": 1,\n        \"nombre\": \"Mauro Castillo Peña\"\n      },\n      \"entidad\": {\n        \"tipo\": \"inventario\",\n        \"id\": \"1-31\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-11-26T15:21:58-06:00\",\n      \"origen\": \"inventario\",\n      \"accion\": \"movimiento_inventario\",\n      \"descripcion\": \"transferencia_salida: -12 de producto 31 en microhub 1 (existencia 31). Inventario inicial del microhub nuevo\",\n      \"usuario\": {\n        \"id\": 1,\n        \"nombre\": \"Mauro Castillo Peña\"\n      },\n      \"entidad\": {\n        \"tipo\": \"inventario\",\n        \"id\": \"1-31\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-11-26T15:22:04-06:00\",\n      \"origen\": \"inventario\",\n      \"accion\": \"movimiento_inventario\",\n      \"descripcion\": \"recepcion: +100 de producto 31 en microhub 1 (existencia 131). Recepción de la orden OC-20261126-000038: Completo\",\n      \"usuario\": {\n        \"id\": 2,\n        \"nombre\": \"Ruth Elizabeth Soriano\"\n      },\n      \"entidad\": {\n        \"tipo\": \"inventario\",\n        \"id\": \"1-31\"\n      },\n      \"cambios\": []\n    }\n  ]\n}",
+    "ms": 48,
+    "traza": "5d9090c9-3e29-42eb-8c54-07a443abb3f0",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F2-10",
+    "servicio": "reportes",
+    "puerto": 5123,
+    "titulo": "Reporte de alertas en CSV",
+    "objetivo": "Visualización y archivo descargable con huella.",
+    "metodo": "GET",
+    "url": "http://reportes:5123/api/v1/reportes/inventario_alertas/exportar?formato=csv&microhub_id=1",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "e82e7716-1ece-4817-a618-21765f716c54",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "text/csv; charset=utf-8",
+      "X-Traza-Id": "e82e7716-1ece-4817-a618-21765f716c54"
+    },
+    "respuesta": "﻿Microhub,Producto,Existencia,Mínimo,Disponible,Faltante,Severidad\r\nMicrohub San Bernabé Centro,Agua purificada,0,10,0,10,agotado\r\nTotal,,,,,10,\r\n",
+    "ms": 181,
+    "traza": "e82e7716-1ece-4817-a618-21765f716c54",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F3-01",
+    "servicio": "pedidos",
+    "puerto": 5104,
+    "titulo": "El cliente hace un pedido",
+    "objetivo": "Punto de partida del recorrido.",
+    "metodo": "POST",
+    "url": "http://pedidos:5104/api/v1/pedidos",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "b786334c-ef2e-4361-b087-9b95850cd106",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"lineas\": [\n    {\n      \"producto_id\": 32,\n      \"cantidad\": 3\n    },\n    {\n      \"producto_id\": 51,\n      \"cantidad\": 3\n    }\n  ]\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "b786334c-ef2e-4361-b087-9b95850cd106"
+    },
+    "respuesta": "{\n  \"id\": 588,\n  \"folio\": \"PED-20261126-000588\",\n  \"estado\": \"asignado\",\n  \"zona_id\": 3,\n  \"microhub_id\": 2,\n  \"subtotal\": 420.0,\n  \"costo_envio\": 0.0,\n  \"total\": 420.0,\n  \"asignado\": true,\n  \"motivo\": null,\n  \"duplicado\": false\n}",
+    "ms": 221,
+    "traza": "b786334c-ef2e-4361-b087-9b95850cd106",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F3-02",
+    "servicio": "entregas",
+    "puerto": 5105,
+    "titulo": "El operador asigna la entrega",
+    "objetivo": "El repartidor la descarga antes de salir.",
+    "metodo": "POST",
+    "url": "http://entregas:5105/api/v1/entregas",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "a7fb69bb-e972-4556-b3c5-391160cb2cb1",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(310 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"pedido_id\": 588,\n  \"repartidor_id\": 7\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "a7fb69bb-e972-4556-b3c5-391160cb2cb1"
+    },
+    "respuesta": "{\n  \"entrega_id\": 301,\n  \"pedido_id\": 588,\n  \"repartidor_id\": 7,\n  \"estado_pedido\": \"en_ruta\"\n}",
+    "ms": 62,
+    "traza": "a7fb69bb-e972-4556-b3c5-391160cb2cb1",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F3-03",
+    "servicio": "sincronizacion",
+    "puerto": 5125,
+    "titulo": "Android recupera la red y manda lo hecho sin conexión",
+    "objetivo": "Se aplica en el orden en que ocurrió.",
+    "metodo": "POST",
+    "url": "http://sincronizacion:5125/api/v1/sincronizacion/lotes",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "69893af9-1bb9-4483-8f60-ad84c14ca14e",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"lote_uuid\": \"831ee958-62f8-40f3-9192-86a4d4ec1cce\",\n  \"dispositivo\": \"android-flujo-0921cf\",\n  \"cliente\": \"android\",\n  \"operaciones\": [\n    {\n      \"operacion_uuid\": \"9f50942e-22af-4121-ae9c-c2585b24de79\",\n      \"tipo\": \"ubicaciones\",\n      \"creada_en\": \"2026-11-26T21:02:07.753786+00:00\",\n      \"datos\": {\n        \"entrega_id\": 301,\n        \"puntos\": [\n          {\n            \"latitud\": 25.7488,\n            \"longitud\": -100.3608,\n            \"capturado_en\": \"2026-11-26T21:02:07.753807+00:00\"\n          },\n          {\n            \"latitud\": 25.7491,\n            \"longitud\": -100.3611,\n            \"capturado_en\": \"2026-11-26T21:07:07.753815+00:00\"\n          }\n        ]\n      }\n    },\n    {\n      \"operacion_uuid\": \"f3705f06-1e80-488f-a0de-ad5009c1ece4\",\n      \"tipo\": \"entrega_resultado\",\n      \"creada_en\": \"2026-11-26T21:10:07.753845+00:00\",\n      \"datos\": {\n        \"entrega_id\": 301,\n        \"resultado\": \"fallida\",\n        \"monto_cobrado\": 0,\n        \"cambio_entregado\": 0,\n        \"incidencia\": \"El cliente no estaba en su domicilio\",\n        \"ubicacion\": {\n          \"latitud\": 25.7491,\n          \"longitud\": -100.3611\n        },\n        \"evidencia_ids\": [\n          \"6b08a2fff59f7f9d08b26dcf\"\n        ],\n        \"capturado_en\": \"2026-11-26T21:10:07.753854+00:00\"\n      }\n    }\n  ]\n}",
+    "status": 201,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "69893af9-1bb9-4483-8f60-ad84c14ca14e"
+    },
+    "respuesta": "{\n  \"id\": 175,\n  \"lote_uuid\": \"831ee958-62f8-40f3-9192-86a4d4ec1cce\",\n  \"dispositivo\": \"android-flujo-0921cf\",\n  \"recibido_en\": \"2026-11-26T15:22:07-06:00\",\n  \"total\": 2,\n  \"aplicadas\": 2,\n  \"duplicadas\": 0,\n  \"conflictos\": 0,\n  \"rechazadas\": 0,\n  \"pendientes\": 0,\n  \"operaciones\": [\n    {\n      \"operacion_uuid\": \"9f50942e-22af-4121-ae9c-c2585b24de79\",\n      \"tipo\": \"ubicaciones\",\n      \"estado\": \"aplicada\",\n      \"duplicada\": false,\n      \"http_status\": 201,\n      \"codigo\": null,\n      \"mensaje\": null,\n      \"reintentar\": false\n    },\n    {\n      \"operacion_uuid\": \"f3705f06-1e80-488f-a0de-ad5009c1ece4\",\n      \"tipo\": \"entrega_resultado\",\n      \"estado\": \"aplicada\",\n      \"duplicada\": false,\n      \"http_status\": 201,\n      \"codigo\": null,\n      \"mensaje\": null,\n      \"reintentar\": false\n    }\n  ]\n}",
+    "ms": 596,
+    "traza": "69893af9-1bb9-4483-8f60-ad84c14ca14e",
+    "esperado": 201,
+    "obtenido": 201,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": [
+      {
+        "motor": "PostgreSQL",
+        "consulta": "SELECT tipo, estado, intentos, creada_en FROM sync_operacion WHERE dispositivo = %s ORDER BY creada_en",
+        "resultado": [
+          {
+            "tipo": "ubicaciones",
+            "estado": "aplicada",
+            "intentos": 1,
+            "creada_en": "2026-11-26 15:02:07.753786-06:00"
+          },
+          {
+            "tipo": "entrega_resultado",
+            "estado": "aplicada",
+            "intentos": 1,
+            "creada_en": "2026-11-26 15:10:07.753845-06:00"
+          }
+        ]
+      },
+      {
+        "motor": "MongoDB",
+        "consulta": "db.ubicaciones_entrega.countDocuments({entrega_id})",
+        "resultado": 2
+      }
+    ]
+  },
+  {
+    "id": "F3-04",
+    "servicio": "sincronizacion",
+    "puerto": 5125,
+    "titulo": "La respuesta se perdió y reenvía el mismo lote",
+    "objetivo": "No se repite nada.",
+    "metodo": "POST",
+    "url": "http://sincronizacion:5125/api/v1/sincronizacion/lotes",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "312d4c3d-86f7-4c29-b78c-80932ce51c0e",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": "{\n  \"lote_uuid\": \"831ee958-62f8-40f3-9192-86a4d4ec1cce\",\n  \"dispositivo\": \"android-flujo-0921cf\",\n  \"cliente\": \"android\",\n  \"operaciones\": [\n    {\n      \"operacion_uuid\": \"9f50942e-22af-4121-ae9c-c2585b24de79\",\n      \"tipo\": \"ubicaciones\",\n      \"creada_en\": \"2026-11-26T21:02:07.753786+00:00\",\n      \"datos\": {\n        \"entrega_id\": 301,\n        \"puntos\": [\n          {\n            \"latitud\": 25.7488,\n            \"longitud\": -100.3608,\n            \"capturado_en\": \"2026-11-26T21:02:07.753807+00:00\"\n          },\n          {\n            \"latitud\": 25.7491,\n            \"longitud\": -100.3611,\n            \"capturado_en\": \"2026-11-26T21:07:07.753815+00:00\"\n          }\n        ]\n      }\n    },\n    {\n      \"operacion_uuid\": \"f3705f06-1e80-488f-a0de-ad5009c1ece4\",\n      \"tipo\": \"entrega_resultado\",\n      \"creada_en\": \"2026-11-26T21:10:07.753845+00:00\",\n      \"datos\": {\n        \"entrega_id\": 301,\n        \"resultado\": \"fallida\",\n        \"monto_cobrado\": 0,\n        \"cambio_entregado\": 0,\n        \"incidencia\": \"El cliente no estaba en su domicilio\",\n        \"ubicacion\": {\n          \"latitud\": 25.7491,\n          \"longitud\": -100.3611\n        },\n        \"evidencia_ids\": [\n          \"6b08a2fff59f7f9d08b26dcf\"\n        ],\n        \"capturado_en\": \"2026-11-26T21:10:07.753854+00:00\"\n      }\n    }\n  ]\n}",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "312d4c3d-86f7-4c29-b78c-80932ce51c0e"
+    },
+    "respuesta": "{\n  \"id\": 175,\n  \"lote_uuid\": \"831ee958-62f8-40f3-9192-86a4d4ec1cce\",\n  \"dispositivo\": \"android-flujo-0921cf\",\n  \"recibido_en\": \"2026-11-26T15:22:07-06:00\",\n  \"total\": 2,\n  \"aplicadas\": 2,\n  \"duplicadas\": 2,\n  \"conflictos\": 0,\n  \"rechazadas\": 0,\n  \"pendientes\": 0,\n  \"operaciones\": [\n    {\n      \"operacion_uuid\": \"9f50942e-22af-4121-ae9c-c2585b24de79\",\n      \"tipo\": \"ubicaciones\",\n      \"estado\": \"aplicada\",\n      \"duplicada\": true,\n      \"http_status\": 201,\n      \"codigo\": null,\n      \"mensaje\": null,\n      \"reintentar\": false\n    },\n    {\n      \"operacion_uuid\": \"f3705f06-1e80-488f-a0de-ad5009c1ece4\",\n      \"tipo\": \"entrega_resultado\",\n      \"estado\": \"aplicada\",\n      \"duplicada\": true,\n      \"http_status\": 201,\n      \"codigo\": null,\n      \"mensaje\": null,\n      \"reintentar\": false\n    }\n  ]\n}",
+    "ms": 154,
+    "traza": "312d4c3d-86f7-4c29-b78c-80932ce51c0e",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F3-05",
+    "servicio": "notificaciones",
+    "puerto": 5124,
+    "titulo": "El cliente se entera de que la entrega falló",
+    "objetivo": "Aviso del motor.",
+    "metodo": "GET",
+    "url": "http://notificaciones:5124/api/v1/notificaciones?por_pagina=5",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "5c6c58d0-8318-45f3-980f-cb2d6cc436e0",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "5c6c58d0-8318-45f3-980f-cb2d6cc436e0"
+    },
+    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 857,\n      \"tipo\": \"pedido\",\n      \"titulo\": \"Pedido PED-20261126-000588\",\n      \"mensaje\": \"El pedido cambió a entrega_fallida.\",\n      \"leida\": false,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"588\"\n      },\n      \"creada_en\": \"2026-11-26T15:22:08-06:00\"\n    },\n    {\n      \"id\": 855,\n      \"tipo\": \"pedido\",\n      \"titulo\": \"Pedido PED-20261126-000587\",\n      \"mensaje\": \"El pedido cambió a cancelado.\",\n      \"leida\": false,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"587\"\n      },\n      \"creada_en\": \"2026-11-26T15:22:05-06:00\"\n    },\n    {\n      \"id\": 850,\n      \"tipo\": \"pedido\",\n      \"titulo\": \"Pedido PED-20261126-000586\",\n      \"mensaje\": \"El pedido cambió a entregado.\",\n      \"leida\": false,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"586\"\n      },\n      \"creada_en\": \"2026-11-26T15:22:00-06:00\"\n    },\n    {\n      \"id\": 848,\n      \"tipo\": \"pedido\",\n      \"titulo\": \"Pedido PED-20261126-000585\",\n      \"mensaje\": \"El pedido cambió a entrega_fallida.\",\n      \"leida\": false,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"585\"\n      },\n      \"creada_en\": \"2026-11-26T15:21:29-06:00\"\n    },\n    {\n      \"id\": 846,\n      \"tipo\": \"pedido\",\n      \"titulo\": \"Pedido PED-20261126-000584\",\n      \"mensaje\": \"El pedido cambió a cancelado.\",\n      \"leida\": false,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"584\"\n      },\n      \"creada_en\": \"2026-11-26T15:21:26-06:00\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 5,\n    \"total\": 18,\n    \"paginas\": 4\n  }\n}",
+    "ms": 44,
+    "traza": "5c6c58d0-8318-45f3-980f-cb2d6cc436e0",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F3-06",
+    "servicio": "auditoria-monitoreo",
+    "puerto": 5126,
+    "titulo": "El auditor revisa la entrega",
+    "objetivo": "Bitácora y archivos de la entrega.",
+    "metodo": "GET",
+    "url": "http://auditoria-monitoreo:5126/api/v1/auditoria/trazabilidad/entrega/301",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "a50579b6-707a-4872-93b0-8c2a4c944daa",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "a50579b6-707a-4872-93b0-8c2a4c944daa"
+    },
+    "respuesta": "{\n  \"objeto\": {\n    \"tipo\": \"entrega\",\n    \"id\": \"301\"\n  },\n  \"total\": 3,\n  \"eventos\": [\n    {\n      \"fecha\": \"2026-11-26T15:22:07-06:00\",\n      \"origen\": \"auditoria\",\n      \"accion\": \"alta\",\n      \"descripcion\": \"asignada_en = 2026-11-26T15:22:07.656133-06:00; cambio_entregado = None; capturado_en = None; cerrada_por_usuario_id = None\",\n      \"usuario\": {\n        \"id\": 3,\n        \"nombre\": \"María José Cedillo Mata\"\n      },\n      \"entidad\": {\n        \"tipo\": \"entrega\",\n        \"id\": \"301\"\n      },\n      \"cambios\": [\n        {\n          \"campo\": \"asignada_en\",\n          \"anterior\": null,\n          \"nuevo\": \"2026-11-26T15:22:07.656133-06:00\"\n        },\n        {\n          \"campo\": \"cambio_entregado\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"capturado_en\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"cerrada_por_usuario_id\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"cierre_en\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"cierre_latitud\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"cierre_longitud\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"cierre_precision_m\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"confirmacion_recepcion\",\n          \"anterior\": null,\n          \"nuevo\": \"false\"\n        },\n        {\n          \"campo\": \"costo_entrega_estimado\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"distancia_km\",\n          \"anterior\": null,\n          \"nuevo\": null\n        },\n        {\n          \"campo\": \"evidencia_ids\",\n          \"anterior\": null,\n          \"nuevo\": null\n        }\n      ]\n    },\n    {\n      \"fecha\": \"2026-11-26T15:22:07-06:00\",\n      \"origen\": \"documentos\",\n      \"accion\": \"documento_subido\",\n      \"descripcion\": \"evidencia-flujo3-301.jpg (276 bytes, sha256 7f6025cd8a98…)\",\n      \"usuario\": {\n        \"id\": 7,\n        \"nombre\": null\n      },\n      \"entidad\": {\n        \"tipo\": \"documento\",\n        \"id\": \"6b08a2fff59f7f9d08b26dcf\"\n      },\n      \"cambios\": []\n    },\n    {\n      \"fecha\": \"2026-11-26T15:22:08-06:00\",\n      \"origen\": \"auditoria\",\n      \"accion\": \"modificacion\",\n      \"descripcion\": \"cambio_entregado = 0.0; capturado_en = 2026-11-26T15:10:07.7…(144 caracteres)\",\n      \"usuario\": {\n        \"id\": 7,\n        \"nombre\": \"Ramiro Alanís Lozano\"\n      },\n      \"entidad\": {\n        \"tipo\": \"entrega\",\n        \"id\": \"301\"\n      },\n      \"cambios\": [\n        {\n          \"campo\": \"cambio_entregado\",\n          \"anterior\": null,\n          \"nuevo\": \"0.0\"\n        },\n        {\n          \"campo\": \"capturado_en\",\n          \"anterior\": null,\n          \"nuevo\": \"2026-11-26T15:10:07.753854-06:00\"\n        },\n        {\n          \"campo\": \"cerrada_por_usuario_id\",\n          \"anterior\": null,\n          \"nuevo\": \"7\"\n        },\n        {\n          \"campo\": \"cierre_en\",\n          \"anterior\": null,\n          \"nuevo\": \"2026-11-26T15:22:08.04177-06:00\"\n        },\n        {\n          \"campo\": \"cierre_latitud\",\n          \"anterior\": null,\n          \"nuevo\": \"25.7491\"\n        },\n        {\n          \"campo\": \"cierre_longitud\",\n          \"anterior\": null,\n          \"nuevo\": \"-100.3611\"\n        },\n        {\n          \"campo\": \"evidencia_ids\",\n          \"anterior\": null,\n          \"nuevo\": \"[\\\"6b08a2fff59f7f9d08b26dcf\\\"]\"\n        },\n        {\n          \"campo\": \"evidencia_url\",\n          \"anterior\": null,\n          \"nuevo\": \"/api/v1/documentos/6b08a2fff59f7f9d08b26dcf\"\n        },\n        {\n          \"campo\": \"id_cliente_local\",\n          \"anterior\": null,\n          \"nuevo\": \"f3705f06-1e80-488f-a0de-ad5009c1ece4\"\n        },\n        {\n          \"campo\": \"incidencia\",\n          \"anterior\": null,\n          \"nuevo\": \"El cliente no estaba en su domicilio\"\n        },\n        {\n          \"campo\": \"monto_cobrado\",\n          \"anterior\": null,\n          \"nuevo\": \"0.0\"\n        },\n        {\n          \"campo\": \"resultado\",\n          \"anterior\": null,\n          \"nuevo\": \"fallida\"\n        }\n      ]\n    }\n  ]\n}",
+    "ms": 51,
+    "traza": "a50579b6-707a-4872-93b0-8c2a4c944daa",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": []
+  },
+  {
+    "id": "F3-07",
+    "servicio": "inventario",
+    "puerto": 5111,
+    "titulo": "El producto regresó al inventario",
+    "objetivo": "La devolución la hizo el motor.",
+    "metodo": "GET",
+    "url": "http://inventario:5111/api/v1/inventario/movimientos?microhub_id=2&por_pagina=5",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "c8101592-b159-4c38-b1af-f0ed1be2a431",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "application/json; charset=utf-8",
+      "X-Traza-Id": "c8101592-b159-4c38-b1af-f0ed1be2a431"
+    },
+    "respuesta": "{\n  \"datos\": [\n    {\n      \"id\": 2386,\n      \"microhub_id\": 2,\n      \"producto_id\": 51,\n      \"tipo\": \"devolucion_cancelacion\",\n      \"cantidad\": 3,\n      \"existencia_resultante\": 72,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"588\"\n      },\n      \"motivo\": \"Entrega fallida: la mercancía regresa al microhub.\",\n      \"usuario_id\": 7,\n      \"fecha\": \"2026-11-26T15:22:08-06:00\"\n    },\n    {\n      \"id\": 2385,\n      \"microhub_id\": 2,\n      \"producto_id\": 32,\n      \"tipo\": \"devolucion_cancelacion\",\n      \"cantidad\": 3,\n      \"existencia_resultante\": 27,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"588\"\n      },\n      \"motivo\": \"Entrega fallida: la mercancía regresa al microhub.\",\n      \"usuario_id\": 7,\n      \"fecha\": \"2026-11-26T15:22:08-06:00\"\n    },\n    {\n      \"id\": 2384,\n      \"microhub_id\": 2,\n      \"producto_id\": 51,\n      \"tipo\": \"salida_pedido\",\n      \"cantidad\": -3,\n      \"existencia_resultante\": 69,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"588\"\n      },\n      \"motivo\": null,\n      \"usuario_id\": 9,\n      \"fecha\": \"2026-11-26T15:22:07-06:00\"\n    },\n    {\n      \"id\": 2383,\n      \"microhub_id\": 2,\n      \"producto_id\": 32,\n      \"tipo\": \"salida_pedido\",\n      \"cantidad\": -3,\n      \"existencia_resultante\": 24,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"588\"\n      },\n      \"motivo\": null,\n      \"usuario_id\": 9,\n      \"fecha\": \"2026-11-26T15:22:07-06:00\"\n    },\n    {\n      \"id\": 2382,\n      \"microhub_id\": 2,\n      \"producto_id\": 31,\n      \"tipo\": \"devolucion_cancelacion\",\n      \"cantidad\": 10,\n      \"existencia_resultante\": 58,\n      \"referencia\": {\n        \"tipo\": \"pedido\",\n        \"id\": \"587\"\n      },\n      \"motivo\": \"Cierre del flujo de demostración\",\n      \"usuario_id\": 1,\n      \"fecha\": \"2026-11-26T15:22:05-06:00\"\n    }\n  ],\n  \"paginacion\": {\n    \"pagina\": 1,\n    \"por_pagina\": 5,\n    \"total\": 815,\n    \"paginas\": 163\n  }\n}",
+    "ms": 46,
+    "traza": "c8101592-b159-4c38-b1af-f0ed1be2a431",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": [
+      {
+        "motor": "PostgreSQL",
+        "consulta": "SELECT tipo, producto_id, cantidad, existencia_resultante FROM movimiento_inventario WHERE referencia_id = %s ORDER BY id",
+        "resultado": [
+          {
+            "tipo": "salida_pedido",
+            "producto_id": 32,
+            "cantidad": -3,
+            "existencia_resultante": 24
+          },
+          {
+            "tipo": "salida_pedido",
+            "producto_id": 51,
+            "cantidad": -3,
+            "existencia_resultante": 69
+          },
+          {
+            "tipo": "devolucion_cancelacion",
+            "producto_id": 32,
+            "cantidad": 3,
+            "existencia_resultante": 27
+          },
+          {
+            "tipo": "devolucion_cancelacion",
+            "producto_id": 51,
+            "cantidad": 3,
+            "existencia_resultante": 72
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "F3-08",
+    "servicio": "reportes",
+    "puerto": 5123,
+    "titulo": "Reporte del periodo en CSV",
+    "objetivo": "La entrega ya cuenta en los reportes.",
+    "metodo": "GET",
+    "url": "http://reportes:5123/api/v1/reportes/pedidos_por_dia/exportar?formato=csv",
+    "encabezados": {
+      "Accept": "application/json",
+      "X-Traza-Id": "60292c77-57b3-4a9d-a2d9-5ace870411fd",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)"
+    },
+    "cuerpo": "",
+    "status": 200,
+    "encabezados_respuesta": {
+      "Content-Type": "text/csv; charset=utf-8",
+      "X-Traza-Id": "60292c77-57b3-4a9d-a2d9-5ace870411fd"
+    },
+    "respuesta": "﻿Día,Pedidos,Unidades,Venta,Ticket promedio,Demanda no atendida\r\n2026-11-25,56,282,8032.40,143.44,0\r\n2026-11-26,143,728,22598.70,158.03,3\r\nTotal,199,1010,30631.10,153.93,3\r\n",
+    "ms": 184,
+    "traza": "60292c77-57b3-4a9d-a2d9-5ace870411fd",
+    "esperado": 200,
+    "obtenido": 200,
+    "estado": "PASA",
+    "nota": "",
+    "explicacion": "",
+    "evidencia": [
+      {
+        "motor": "PostgreSQL",
+        "consulta": "SELECT reporte, formato, filas, left(sha256, 16) AS sha256 FROM reporte_exportacion ORDER BY id DESC LIMIT 1",
+        "resultado": [
+          {
+            "reporte": "pedidos_por_dia",
+            "formato": "csv",
+            "filas": 2,
+            "sha256": "69fd3140dcb85ebb"
+          }
+        ]
+      }
+    ]
+  }
+]

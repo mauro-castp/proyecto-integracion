@@ -8,6 +8,7 @@
 #   servicios/pruebas/correr.sh test pruebas.test_ola2              un módulo de unittest (agregar -v para ver cada prueba)
 #   servicios/pruebas/correr.sh evidencias ola3                      corrida completa de evidencias (Olas 1 a 3) en evidencias/ola3
 #   servicios/pruebas/correr.sh evidencias ola2/complementarias --complementarias
+#   servicios/pruebas/correr.sh flujos ola4/flujos                   tres procesos de principio a fin
 #   servicios/pruebas/correr.sh escenarios ola2                      qué cambia cuando cambia un supuesto (evidencias/ola2/escenarios.md)
 #   servicios/pruebas/correr.sh modulo pruebas.generar_supuestos     cualquier módulo de Python (python -m ...)
 #
@@ -56,6 +57,7 @@ limpiar_limites
 case "$orden" in
   test)        correr "" python -m unittest "$@" ;;
   evidencias)  carpeta="${1:?falta la carpeta de salida}"; shift; correr "$carpeta" python pruebas/evidencias.py --salida /salida "$@" ;;
+  flujos)      carpeta="${1:?falta la carpeta de salida}"; correr "$carpeta" python pruebas/flujos_integrales.py --salida /salida ;;
   escenarios)  carpeta="${1:?falta la carpeta de salida}"; correr "$carpeta" python pruebas/escenarios_ola2.py --salida /salida ;;
   modulo)      correr "" python -m "$@" ;;
   *)           echo "Orden desconocida: $orden" >&2; exit 2 ;;

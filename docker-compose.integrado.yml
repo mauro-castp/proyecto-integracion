@@ -146,7 +146,11 @@ services:
   documentos:
     <<: *servicio
     build: {context: ., dockerfile: servicios/documentos/Dockerfile}
-    environment: *entorno
+    environment:
+      <<: *entorno
+      ALMACEN_DIR: /app/almacen              # con ALMACEN=local, los archivos viven en un volumen y sobreviven a recrear el contenedor
+    volumes:
+      - datos_archivos:/app/almacen
     ports: ["5107:5107"]
 
   zonas:
@@ -271,3 +275,4 @@ networks:
 volumes:
   datos_pg:
   datos_mongo:
+  datos_archivos:
