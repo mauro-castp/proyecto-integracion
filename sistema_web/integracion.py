@@ -176,6 +176,23 @@ def monitoreo():
                            host=request.host.split(":")[0])
 
 
+@servicios_bp.get("/monitoreo/<nombre>")
+def monitoreo_historial(nombre):
+    """Historial de disponibilidad de un servicio."""
+    if (r := _requiere_sesion()):
+        return r
+    from web_ampliado import permisos_usuario
+    if "monitoreo.ver" not in permisos_usuario():
+        abort(403)
+    if nombre not in PUERTOS:
+        abort(404)
+    horas = 6
+    historial = llamar("auditoria-monitoreo", "GET", f"monitoreo/servicios/{nombre}/historial?horas={horas}&por_pagina=200")
+    disponibilidad = llamar("auditoria-monitoreo", "GET", f"monitoreo/disponibilidad?horas={horas}")
+    resumen = next((s for s in (disponibilidad.datos or {}).get("servicios", []) if s["servicio"] == nombre), None) if disponibilidad.ok else None
+    return render_template("web_monitoreo_historial.html", nombre=nombre, horas=horas, historial=historial, resumen=resumen)
+
+
 @servicios_bp.route("/pedido/<int:pid>", methods=["GET", "POST"])
 def pedido(pid):
     """El pedido visto a través de los servicios de pedidos, entregas y documentos."""

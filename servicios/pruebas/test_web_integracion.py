@@ -181,6 +181,18 @@ class WebConMicroservicios(unittest.TestCase):
         self.assertEqual(c.post("/web/servicios/monitoreo", data={"csrf": "otro", "accion": "verificar"}).status_code, 400)
         self.assertEqual(self.web.test_client().get("/web/servicios/monitoreo").status_code, 302, "sin sesión manda al login")
 
+    def test_6b_historial_de_disponibilidad_de_un_servicio(self):
+        c = self.cliente()
+        c.post("/web/servicios/monitoreo", data={"csrf": "csrf-de-prueba", "accion": "verificar"})
+        r = c.get("/web/servicios/monitoreo/pedidos")
+        self.assertEqual(r.status_code, 200)
+        html = r.get_data(as_text=True)
+        self.assertIn("Historial de disponibilidad", html)
+        self.assertIn("Línea de tiempo", html)
+        self.assertIn('<span class="pill verde">ok</span>', html)
+        self.assertEqual(c.get("/web/servicios/monitoreo/no-existe").status_code, 404)
+        self.assertIn("/web/servicios/monitoreo/pedidos", c.get("/web/servicios/monitoreo").get_data(as_text=True))
+
     def test_7_el_panel_es_solo_para_quien_tiene_permiso(self):
         import nucleo
         op = datos.consultar("SELECT id, microhub_id FROM usuario WHERE correo = 'operador.mh01@codex.mx'", una=True)
