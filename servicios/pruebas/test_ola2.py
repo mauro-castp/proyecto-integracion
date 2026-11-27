@@ -834,9 +834,10 @@ class T7Surtido(Base):
             ejecutar("UPDATE surtido_restriccion SET espacio_total = 100000, presupuesto = 100000000 WHERE microhub_id = %s", (self.HUB1,))
             _, holgado = self.adm.llamar("surtido", "GET", f"surtido/analisis?microhub_id={self.HUB1}", estado=200)
             self.assertGreater(holgado["resumen"]["unidades_a_comprar"], 0)
-            ejecutar("UPDATE surtido_restriccion SET presupuesto = 50 WHERE microhub_id = %s", (self.HUB1,))
+            limite = round(holgado["resumen"]["presupuesto"]["requerido"] / 2, 2)      # la mitad de lo que pide sin límite
+            ejecutar("UPDATE surtido_restriccion SET presupuesto = %s WHERE microhub_id = %s", (limite, self.HUB1))
             _, justo = self.adm.llamar("surtido", "GET", f"surtido/analisis?microhub_id={self.HUB1}", estado=200)
-            self.assertLessEqual(justo["resumen"]["presupuesto"]["requerido"], 50)
+            self.assertLessEqual(justo["resumen"]["presupuesto"]["requerido"], limite)
             self.assertLess(justo["resumen"]["unidades_a_comprar"], holgado["resumen"]["unidades_a_comprar"])
             self.assertTrue(any(f["limitado_por"] == "presupuesto" for f in justo["filas"]))
             self.assertTrue(any(f["recomendacion"] == "Excluir" for f in justo["filas"]) or justo["resumen"]["unidades_a_comprar"] > 0)
@@ -923,7 +924,9 @@ class T8Rutas(Base):
 
     @classmethod
     def tearDownClass(cls):
-        planes = [f["id"] for f in todos("SELECT id FROM plan_despacho WHERE microhub_id = %s", (microhub("MH-01"),))]
+        planes = [f["id"] for f in todos(
+            "SELECT pd.id FROM plan_despacho pd WHERE pd.microhub_id = %s AND NOT EXISTS "
+            "(SELECT 1 FROM plan_ruta pr JOIN entrega e ON e.plan_ruta_id = pr.id WHERE pr.plan_despacho_id = pd.id)", (microhub("MH-01"),))]
         ejecutar("DELETE FROM plan_ruta_parada WHERE plan_ruta_id IN (SELECT id FROM plan_ruta WHERE plan_despacho_id = ANY(%s))", (planes,))
         ejecutar("DELETE FROM plan_ruta WHERE plan_despacho_id = ANY(%s)", (planes,))
         ejecutar("DELETE FROM plan_despacho WHERE id = ANY(%s)", (planes,))
