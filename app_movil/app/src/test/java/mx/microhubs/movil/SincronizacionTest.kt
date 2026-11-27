@@ -144,12 +144,12 @@ class SincronizacionTest {
         val s = servidor(); piezas(s, x0.cola).sync.sincronizar()
         val enviado = s.peticiones.last().json
         val oficial = Ejemplos.json("SyncLoteNuevo.ok")
-        assertEquals(oficial.keySet(), enviado.keySet())
+        assertEquals(llaves(oficial), llaves(enviado))
         fun op(o: JSONObject, tipo: String) = o.getJSONArray("operaciones").let { a -> (0 until a.length()).map { a.getJSONObject(it) }.single { it.getString("tipo") == tipo } }
         for (tipo in listOf("ubicaciones", "entrega_resultado")) {
-            assertEquals(tipo, op(oficial, tipo).keySet(), op(enviado, tipo).keySet())
+            assertEquals(tipo, llaves(op(oficial, tipo)), llaves(op(enviado, tipo)))
             // el ejemplo oficial no trae precision_m; además de sus claves solo se agregan opcionales del contrato del servicio dueño
-            assertTrue(tipo, op(enviado, tipo).getJSONObject("datos").keySet().containsAll(op(oficial, tipo).getJSONObject("datos").keySet()))
+            assertTrue(tipo, llaves(op(enviado, tipo).getJSONObject("datos")).containsAll(llaves(op(oficial, tipo).getJSONObject("datos"))))
         }
     }
 
@@ -177,7 +177,7 @@ class SincronizacionTest {
         assertEquals(listOf("POST /api/v1/sincronizacion/lotes"), s.rutas())
         val reenvio = s.ultima().json.getJSONArray("operaciones")
         assertEquals(1, reenvio.length())
-        assertTrue("el reenvío no cambia el contenido", primerEnvio.similar(reenvio.getJSONObject(0)))
+        assertEquals("el reenvío no cambia el contenido", canonico(primerEnvio), canonico(reenvio.getJSONObject(0)))
         assertEquals(2, c.todas().single { it.entregaId == 64 }.intentos)
 
         // conflicto y rechazo no se reintentan; se pueden descartar una vez vistos. Lo que aún se va a enviar, no.
@@ -288,4 +288,13 @@ class SincronizacionTest {
         assertEquals(Informe(aplicadas = 1), Sincronizador(api, c).sincronizar())
         assertTrue(c.todas().isEmpty())
     }
+}
+
+/** El org.json que ve Gradle al compilar es el de Android: no tiene keySet() ni similar(). */
+private fun llaves(o: JSONObject): Set<String> = o.keys().asSequence().toSet()
+
+private fun canonico(v: Any?): String = when (v) {
+    is JSONObject -> llaves(v).sorted().joinToString(",", "{", "}") { "$it:" + canonico(v.get(it)) }
+    is org.json.JSONArray -> (0 until v.length()).joinToString(",", "[", "]") { canonico(v.get(it)) }
+    else -> v.toString()
 }
