@@ -43,9 +43,9 @@ Estado al 27 de noviembre (detalle y resultados en `entrega/PRUEBAS_APPS_ENTREGA
 - [x] **Apps contra la nube:** el teléfono (en el emulador) inició sesión, vio entregas, tomó foto y GPS; el lector de QR cerraba la app y se
       arregló. El escritorio, ver la sección 7.2.
 - [x] **Capturas:** las de escritorio y `movil_avisos`. Faltan las cuatro del ensayo sin red (no hay teléfono).
-- [ ] **Instaladores:** APK y ZIP generados y medidos; hay que regenerarlos desde `main` cuando se una este PR y publicarlos como *Release*.
+- [x] **Instaladores:** publicados desde `main` en el *Release* `v1.0-entrega-final`.
 - [x] **Pruebas de usabilidad:** 3 personas, una tarea cada una (27-nov); resultados al final de `entrega/FORMATO_USABILIDAD.md`. Hallazgo: en el escritorio cuesta llegar al PDF del reporte.
-- [ ] **Video** (`docs/GUION_VIDEO_Y_PRESENTACION.md`, parte A, y `entrega/GUION_VIDEO.md`).
+- [x] **Video:** <https://youtu.be/Q1Rm-Kr09Vw> (guion en `docs/GUION_VIDEO_Y_PRESENTACION.md`, parte A, y `entrega/GUION_VIDEO.md`).
 
 **Revisión contra el enunciado del Proyecto 11 (27-nov, rama `mauro-faltantes`).** Faltaban funciones que pide el enunciado; se agregaron:
 
@@ -58,7 +58,7 @@ Estado al 27 de noviembre (detalle y resultados en `entrega/PRUEBAS_APPS_ENTREGA
 - [x] **Servicios independientes del portal**, **monitor** con tiempo promedio y último error, prueba de **token vencido** y
       Locust sobre los 26 servicios.
 - [x] **Probado en la PC de Mauro:** Docker con `16_apps_cliente.sql`, Android 8/8 en el emulador, escritorio 218/218 y prueba a mano.
-- [ ] **Después de unir:** volver a desplegar en la nube, regenerar los instaladores desde `main` (Release v1.1) y el Word del expediente.
+- [x] **Después de unir:** nube desplegada de nuevo, instaladores publicados desde `main` y Word del expediente regenerado.
 
 ## Parte de Ruth · entrega
 
