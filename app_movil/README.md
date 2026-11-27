@@ -98,8 +98,8 @@ cerrar sesión se revocan acceso y renovación en el servidor y se borran las cr
 
 | Qué | Cómo | Resultado verificado |
 |---|---|---|
-| Unitarias (JVM): protocolo, contrato, entregas, idempotencia, perfil (incluye PATCH→PUT) | `./build.ps1` o `gradle testDebugUnitTest` | 46 aprobadas |
-| Contra los **servicios reales** (login, entregas, foto en MongoDB, GPS en el servicio de seguimiento, cierre, duplicado, revocación) | `MICROHUBS_BACKEND_HOST=127.0.0.1 MICROHUBS_CLAVE=… gradle testDebugUnitTest --tests "*BackendRealTest*"` (necesita 2 entregas en ruta: `preparar_entregas.py`; la de perfil edita el teléfono y lo restaura) | 3 aprobadas |
+| Unitarias (JVM): protocolo, contrato, entregas, idempotencia, perfil (incluye PATCH→PUT), **cola sin red y sincronización** (orden foto → lote, los cuatro estados, reenvío idéntico, lotes de 200, solo lo de la sesión, copias para trabajar sin red) y **avisos** | `./build.ps1` o `gradle testDebugUnitTest` | 67 (46 + 21 nuevas) |
+| Contra los **servicios reales** (login, entregas, foto en MongoDB, GPS en el servicio de seguimiento, cierre, duplicado, revocación; **cierre sin red enviado por sincronización, reenvío duplicado, uuid reutilizado rechazado, conflicto** y **avisos**) | `MICROHUBS_BACKEND_HOST=127.0.0.1 MICROHUBS_CLAVE=… gradle testDebugUnitTest --tests "*BackendRealTest*"` (necesita 3 entregas en ruta: `preparar_entregas.py --cantidad 3`; la de perfil edita el teléfono y lo restaura) | 5 |
 | En emulador Android 14 (Keystore, borradores, redimensión de foto, recorrido de todas las pantallas con ejemplos —incluida la edición del perfil— y contra el backend real; guarda las capturas) | `gradle connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.clave=…` | 7 aprobadas |
 | Lint | `./build.ps1` | 0 errores, 17 advertencias (versiones de dependencias, `commit()` de preferencias, recursos sin usar, `ExifInterface`; `InsecureBaseConfiguration` es el HTTP permitido solo en debug) |
 
