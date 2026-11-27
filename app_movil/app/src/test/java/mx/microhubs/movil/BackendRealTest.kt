@@ -66,6 +66,40 @@ class BackendRealTest {
     }
 
     /**
+     * El cliente: catálogo completo (y su copia ligera), pedido con red, pedido sin red que llega por la sincronización, estatus con su
+     * seguimiento y cancelación. Los dos pedidos se cancelan al final (el cliente puede mientras nadie los prepara).
+     * Cuenta: MICROHUBS_CORREO_CLIENTE (por omisión juan.chapa1@correo.mx).
+     */
+    @Test fun flujoDelCliente() {
+        assumeTrue("Define MICROHUBS_BACKEND_HOST y MICROHUBS_CLAVE para probar contra el backend real", !backend.isNullOrBlank() && !clave.isNullOrBlank())
+        val api = Api(Memoria(), httpHost = backend!!).apply { this.host = servidor }
+        api.login(System.getenv("MICROHUBS_CORREO_CLIENTE") ?: "juan.chapa1@correo.mx", clave!!)
+        assertEquals("cliente", api.session!!.getJSONObject("usuario").getString("rol"))
+        val cola = ColaEnArchivos(java.nio.file.Files.createTempDirectory("cola_cliente").toFile())
+        val tienda = Tienda(api, cola)
+        val catalogo = tienda.catalogo()
+        assertTrue("el catálogo trae los productos activos", catalogo.productos.size >= 10)
+        assertEquals(catalogo.productos, tienda.guardado()!!.productos)
+        val barato = catalogo.productos.minByOrNull { it.precio }!!
+        fun carrito() = Carrito().apply { agregar(barato.id, maxOf(1, Math.ceil(120.0 / barato.precio).toInt())) }   // pasa el pedido mínimo de la zona
+
+        val hecho = tienda.pedir(carrito())
+        assertFalse(hecho.enCola); assertNotNull(hecho.folio)
+        val sinRed = tienda.pedir(carrito(), conRed = false)
+        assertTrue(sinRed.enCola)
+        val informe = Sincronizador(api, cola).sincronizar()
+        assertEquals("el pedido hecho sin red se aplicó al volver la red", 1, informe.aplicadas)
+        val mios = tienda.misPedidos(1).items
+        assertTrue(mios.any { it.id == hecho.id })
+        val detalle = tienda.detalle(hecho.id!!)
+        assertTrue(detalle.eventos.isNotEmpty()); assertTrue(detalle.lineas.isNotEmpty())
+        // el de la sincronización es el más reciente que no es el primero
+        val delLote = mios.filter { it.id != hecho.id && it.estado in setOf("creado", "asignado") }.maxByOrNull { it.id }
+        for (id in listOfNotNull(hecho.id, delLote?.id)) if (tienda.detalle(id).cancelable) assertEquals("cancelado", tienda.cancelar(id, "Prueba automática de la app").estado)
+        try { tienda.confirmarRecepcion(hecho.id, true); fail("un pedido cancelado no se confirma") } catch (e: ApiError) { assertEquals(409, e.status) }
+    }
+
+    /**
      * Sin red y de vuelta: el cierre y el recorrido se guardan en la cola, y la sincronización sube la foto (documentos) y manda el lote
      * (sincronizacion → entregas y seguimiento). Reenviar la misma operación es «duplicada»; otro cierre de la misma entrega, «conflicto».
      */

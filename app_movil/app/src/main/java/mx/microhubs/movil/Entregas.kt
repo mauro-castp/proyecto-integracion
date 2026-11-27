@@ -20,8 +20,12 @@ data class Parada(
 data class Linea(val pedidoDetalleId: Int, val nombre: String, val cantidad: Int)
 data class Detalle(
     val id: Int, val pedidoId: Int, val folio: String, val estado: String, val cliente: String, val telefono: String,
-    val direccion: String, val total: Double, val lineas: List<Linea>
-)
+    val direccion: String, val total: Double, val lineas: List<Linea>, val latitud: Double? = null, val longitud: Double? = null
+) {
+    /** Para «Navegar»: abre la app de mapas del teléfono en el domicilio (geo: lo entiende cualquier app de mapas). */
+    val destinoMapa: String? get() = if (latitud == null || longitud == null) null
+        else "geo:$latitud,$longitud?q=$latitud,$longitud(" + java.net.URLEncoder.encode(folio, "UTF-8") + ")"
+}
 
 /** Posición GPS capturada en el teléfono. `tiempoMs` es la hora del fix (época), no la del envío. */
 data class Fix(val latitud: Double, val longitud: Double, val precisionM: Double?, val tiempoMs: Long)
@@ -67,7 +71,8 @@ object Contrato {
         return Detalle(
             o.getInt("id"), o.getInt("pedido_id"), o.getString("folio"), o.getString("estado_pedido"), c.getString("nombre"),
             c.optString("telefono"), "${d.getString("calle")} ${d.getString("numero_ext")}, ${d.getString("colonia")}", o.getDouble("total"),
-            (0 until ls.length()).map { ls.getJSONObject(it).let { l -> Linea(l.getInt("pedido_detalle_id"), l.getString("nombre"), l.getInt("cantidad")) } }
+            (0 until ls.length()).map { ls.getJSONObject(it).let { l -> Linea(l.getInt("pedido_detalle_id"), l.getString("nombre"), l.getInt("cantidad")) } },
+            d.optDouble("latitud").takeUnless { it.isNaN() }, d.optDouble("longitud").takeUnless { it.isNaN() }
         )
     }
 

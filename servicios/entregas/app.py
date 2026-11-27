@@ -7,6 +7,7 @@ Servicio de entregas · puerto 5105 · contrato v1
   GET  /api/v1/entregas/{id}                detalle con cliente, domicilio y líneas (RN26)
   POST /api/v1/entregas/{id}/resultado      registra y cierra la entrega (solo JSON, idempotente)
   POST /api/v1/entregas/asignaciones        crea las entregas de una ruta confirmada y las asigna (entregas.asignar; lo llama rutas)
+  POST /api/v1/entregas/recepciones         el cliente confirma (o no) que recibió su pedido (solo el cliente dueño del pedido)
 
 Responsabilidad única: la ejecución de la entrega (consulta de paradas y cierre con sus reglas).
 El rastro GPS es del servicio de seguimiento; los archivos de evidencia, del servicio de
@@ -329,6 +330,28 @@ def asignar():
     return responder({"asignadas": len(hechas), "entregas": hechas}, 201, raiz="asignacion", items={"entregas": "entrega"})
 
 
+@app.post(f"{P}/entregas/recepciones")
+@requiere("pedidos.ver")
+def confirmar_recepcion():
+    """El cliente confirma desde la app que recibió su pedido (o que no está conforme). Solo el dueño del pedido y solo ya cerrada la
+    entrega; repetirlo deja el último valor. El cambio queda en la auditoría de la tabla entrega."""
+    if g.usuario["rol"] != "cliente":
+        raise ErrorApi(403, "PROHIBIDO", "Solo el cliente que hizo el pedido confirma la recepción.")
+    d = validar(leer_cuerpo("recepcion_cliente_nueva"), [Campo("pedido_id", "int", minimo=1), Campo("conforme", "bool")])
+    with conexion() as con, con.cursor() as cur:
+        cur.execute("SELECT e.id AS entrega_id, p.folio, p.estado::text AS estado, e.resultado::text AS resultado, e.cierre_en "
+                    "FROM pedido p JOIN cliente c ON c.id = p.cliente_id LEFT JOIN entrega e ON e.pedido_id = p.id "
+                    "WHERE p.id = %s AND c.usuario_id = %s FOR UPDATE OF p", (d["pedido_id"], g.usuario["id"]))
+        f = cur.fetchone()
+        if not f:
+            raise no_encontrado("No tienes un pedido con ese número.")
+        if f["entrega_id"] is None or f["cierre_en"] is None or f["estado"] not in ("entregado", "entrega_parcial"):
+            raise conflicto(f"Tu pedido todavía no se entrega (está {f['estado']}).")
+        cur.execute("UPDATE entrega SET confirmacion_recepcion = %s WHERE id = %s", (d["conforme"], f["entrega_id"]))
+    return responder({"pedido_id": d["pedido_id"], "folio": f["folio"], "entrega_id": f["entrega_id"], "resultado": f["resultado"],
+                      "conforme": d["conforme"], "estado_pedido": f["estado"]}, raiz="recepcion_cliente")
+
+
 @app.post(f"{P}/entregas/<int:eid>/resultado")
 @requiere("entregas.cerrar")
 def resultado(eid):
@@ -425,6 +448,10 @@ documentar(app, "GET", f"{P}/entregas/repartidores", "Repartidores disponibles",
 documentar(app, "POST", f"{P}/entregas", "Asignar una entrega", permisos=["entregas.asignar"], cuerpo="EntregaNueva.ok",
            descripcion="El pedido debe estar en preparación y listo; queda en ruta y el repartidor recibe el aviso. Un operador solo asigna los de su microhub.",
            respuestas={201: ("Entrega creada", "EntregaCreada.ok")}, errores=[400, 403, 404, 409, 422])
+documentar(app, "POST", f"{P}/entregas/recepciones", "El cliente confirma que recibió su pedido", permisos=["pedidos.ver"],
+           cuerpo="RecepcionClienteNueva.ok", descripcion="Perfil cliente. Solo el dueño del pedido y solo con la entrega cerrada (entregado o parcial). "
+                                                       "`conforme=false` deja constancia de que no está conforme. Repetirlo deja el último valor.",
+           respuestas={200: ("Recepción registrada", "RecepcionCliente.ok")}, errores=[403, 404, 409, 422])
 documentar(app, "POST", f"{P}/entregas/asignaciones", "Despachar las paradas de una ruta", permisos=["entregas.asignar"], solo_json=True,
            descripcion="Crea o reasigna la entrega de cada parada y pasa el pedido a en_ruta en una sola transacción (todas o ninguna). "
                        "Cada repartidor recibe el aviso por trigger. Lo llama el servicio de rutas al confirmar un plan con despachar=true.",
