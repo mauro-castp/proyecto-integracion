@@ -21,6 +21,8 @@ android {
 }
 dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    // zxing-android-embedded 4.x usa ContextCompat pero no trae androidx.core: sin esto el lector de QR se cierra al abrirse
+    implementation("androidx.core:core:1.13.1")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.json:json:20240303")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")

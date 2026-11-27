@@ -93,6 +93,13 @@ static class Pruebas
         try { await real.Call("planeacion", "candidatos", HttpMethod.Post, Api.Example("CandidatoNuevo.ok.xml")); throw new Exception("se esperaba un error"); }
         catch (ApiError e) { Check(e.Status == 422 && e.Fields["cantidad"] == "Debe ser mayor a 0." && e.Trace.StartsWith("9f2c"), "Un error XML del servicio llega con estado, campos y traza"); }
 
+        var repetido = XDocument.Parse(Ex("Error.validacion.xml")); var detalle = repetido.Descendants(Api.Ns + "detalle").Single();
+        detalle.Element(Api.Ns + "campo")!.Value = "pedido_ids"; detalle.Element(Api.Ns + "mensaje")!.Value = "El pedido 163 no está listo o no es de ese microhub.";
+        var segundo = new XElement(detalle); segundo.Element(Api.Ns + "mensaje")!.Value = "El pedido 176 no está listo o no es de ese microhub."; detalle.AddAfterSelf(segundo);
+        handler.Next = (HttpStatusCode.UnprocessableEntity, repetido.ToString());
+        try { await real.Call("rutas", "rutas/comparaciones", HttpMethod.Post, Api.Example("RutaComparacionNueva.ok.xml")); throw new Exception("se esperaba un error"); }
+        catch (ApiError e) { Check(e.Status == 422 && e.Fields.Count == 1 && e.Fields["pedido_ids"].Contains("163") && e.Fields["pedido_ids"].Contains("176"), "Varios detalles del mismo campo (un pedido no listo por renglón) se juntan en uno sin tronar"); }
+
         handler.Next = ((HttpStatusCode)429, Ex("Error.validacion.xml")); handler.RetryAfter = 30;
         await RejectAsync(() => real.Call("pedidos", "pedidos"), "429 se informa como error");
         var llamadas = handler.Calls;
@@ -136,6 +143,11 @@ static class Pruebas
         Check(Tablas.Principal(await demo.Call("capacidad", "capacidad/microhubs", root: "capacidad_microhubs")).Columns.Contains("microhub/id"), "Capacidad: la tabla trae la columna microhub/id que usa «Detalle»");
         var plan = Tablas.Principal(Api.Example("RutaPlan.ok.xml").Document!);
         Check(plan.Rows.Count > 0 && Tablas.Resumen(Api.Example("RutaPlan.ok.xml").Document!).Rows.Count > 0, "Un plan de rutas se ve como tabla (sus rutas) más un resumen campo → valor");
+        var comparacion = new XDocument(Api.Example("RutaComparacion.ok.xml")); var sup = comparacion.Root!.Element(Api.Ns + "supuestos_usados")!;
+        for (var i = 0; i < 4; i++) sup.Add(new XElement(sup.Elements().First()));                     // como en el servidor: 6 supuestos y menos métodos
+        Check(Tablas.Principal(comparacion).Columns.Contains("metodo") && Tablas.Principal(comparacion).Rows.Count == 2 && Tablas.Resumen(comparacion).Rows.Cast<System.Data.DataRow>().Any(r => (string)r["campo"] == "supuestos_usados/supuesto/clave"),
+              "Comparar métodos: la tabla son los métodos aunque haya más supuestos; los supuestos van al resumen");
+        Check(Tablas.Coleccion(Api.Example("EquilibrioCalculo.ok.xml").Document!)!.Name.LocalName == "supuestos_usados", "Si los supuestos son la única colección, siguen siendo la tabla");
 
         // Plantillas: listas de ids como «1, 2» y campos nulos
         var ruta = Api.Example("RutaPlanNuevo.ok.xml");
@@ -433,7 +445,8 @@ static class Pruebas
         try
         {
             var cmp = await plan.Call("rutas", compR.Armar(), compR.Http, Plantillas.Aplicar(Api.Example(compR.Plantilla!), new Dictionary<string, string> { ["pedido_ids"] = "" }), root: compR.Raiz);
-            Check(Tablas.Principal(cmp).Rows.Count > 0, $"Rutas · Comparar métodos con los pedidos listos: {Tablas.Principal(cmp).Rows.Count} métodos");
+            Check(Tablas.Principal(cmp).Columns.Contains("metodo") && Tablas.Principal(cmp).Rows.Count == cmp.Root!.Element(Api.Ns + "filas")!.Elements().Count(),
+                  $"Rutas · Comparar métodos con los pedidos listos: {Tablas.Principal(cmp).Rows.Count} métodos en la tabla principal");
             var cuerpo = Plantillas.Aplicar(Api.Example(proponer.Plantilla!), new Dictionary<string, string> { ["pedido_ids"] = "", ["repartidor_ids"] = "", ["guardar"] = "true" });
             var pr = (await plan.Call("rutas", proponer.Armar(), proponer.Http, cuerpo, root: proponer.Raiz)).Root!;
             var pid2 = pr.Element(Api.Ns + "id")!.Value;
