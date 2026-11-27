@@ -8,8 +8,8 @@ Servicio de capacidad · puerto 5117 · contrato v1
   GET /api/v1/capacidad/microhubs/{id}             el detalle de uno, con el tiempo de cada etapa
   POST /api/v1/capacidad/simulaciones              qué pasaría con otra carga o con otro personal
   GET /api/v1/capacidad/cargas                     utilización a distintas cargas y el punto de saturación
-  GET /api/v1/capacidad/colas                      teoría de colas M/M/1 y M/M/c: espera, utilización y personal necesario
   GET /api/v1/capacidad/supuestos                  de dónde sale cada valor y cómo se calibra
+  POST /api/v1/capacidad/colas                     teoría de colas M/M/1 y M/M/c: espera en fila y operadores necesarios
 
 Responsabilidad única: cuántos pedidos puede procesar un microhub y qué tan cerca está de saturarse.
 Usa las fórmulas de comun/planeacion_calc.py (pc.capacidad), las mismas del portal y de planeación.
@@ -18,16 +18,20 @@ Modelo: cada operador hace picking, empaque y despacho uno tras otro, así que s
 1 ÷ (1/picking + 1/empaque + 1/despacho). El reparto depende de cuántos repartidores hay, de la distancia y de las
 paradas por viaje. La capacidad del microhub es la menor de las dos, limitada además por el espacio. La hora pico se
 estima como el promedio horario por `cap_factor_pico`.
+
+Colas (comun/colas.py): la preparación también se ve como una fila M/M/c. Llegan λ pedidos por hora en la hora pico, cada operador
+prepara μ por hora (su ritmo combinado de picking, empaque y despacho) y hay c operadores. La utilización por sí sola no dice cuánto
+espera un pedido; Erlang C sí: con 85 % de utilización la espera ya crece de forma no lineal, que es por qué existe el umbral de riesgo.
 """
 import datetime as dt
 import math
 
 from flask import g, request
 
-from comun import colas, config, supuestos as sup
+from comun import colas as mm, config, supuestos as sup
 from comun.base import (crear_app, documentar, filtro_entero, leer_cuerpo, leer_paginacion, limitar_microhub, lista, paginacion, requiere,
                         responder)
-from comun.base_errores import filtro_invalido, no_encontrado
+from comun.base_errores import ErrorApi, filtro_invalido, no_encontrado
 from comun.calculo import pc
 from comun.clientes import exigir, mapa
 from comun.datos import conexion, consultar
@@ -42,6 +46,7 @@ DEFECTOS = {"picking_pedidos_hora": 10.0, "packing_pedidos_hora": 20.0, "despach
             "horas_turno": 10.0, "cap_factor_pico": 1.35, "cap_distancia_entrega_km": 2.4}
 CLAVES_SUPUESTOS = list(DEFECTOS)
 DIAS_CARGA = 7
+ESPERA_OBJETIVO_MIN = 5.0          # espera promedio en fila aceptable si no se indica otra (parámetro de la petición, no supuesto de negocio)
 
 
 # --------------------------------------------------------------------
@@ -284,34 +289,64 @@ def cargas():
                       "supuestos_usados": usados(p, [])}, raiz="capacidad_cargas", items={"filas": "fila", "supuestos_usados": "supuesto"})
 
 
-@app.get(f"{P}/capacidad/colas")
+def nota_colas(r, requeridos, objetivo):
+    c = r["servidores"]
+    quien = "operador" if c == 1 else "operadores"
+    if not r["estable"]:
+        texto = (f"Con {c} {quien} la fila no es estable (utilización {r['utilizacion_pct']:g} %): llegan más pedidos de los que se preparan y "
+                 f"la espera crece sin límite.")
+    else:
+        texto = f"Con {c} {quien} la espera promedio en fila es de {r['wq_min']:.1f} min (probabilidad de esperar {100 * r['prob_esperar']:.0f} %)."
+    if requeridos is None:
+        return texto + f" Ni con {mm.MAX_SERVIDORES} operadores se logra esperar {objetivo:g} min o menos."
+    if requeridos == c:
+        return texto + f" Cumple el objetivo de {objetivo:g} min."
+    w = mm.mmc(r["llegadas_hora"], r["servicio_hora"], requeridos)["wq_min"]
+    return texto + f" Para esperar {objetivo:g} min o menos se necesitan {requeridos} (espera de {w:.1f} min)."
+
+
+def calcular_colas(lam, mu, c, objetivo, microhub, origen):
+    """Cálculo M/M/c más la tabla con más o menos operadores y el mínimo que cumple el objetivo de espera."""
+    r = mm.mmc(lam, mu, c)
+    requeridos = mm.servidores_minimos(lam, mu, objetivo)
+    primero_estable = max(1, math.floor(lam / mu) + 1)
+    filas = mm.tabla(lam, mu, objetivo, desde=max(1, min(c, primero_estable)), filas=max(6, (requeridos or 0) - min(c, primero_estable) + 2))
+    return {"microhub": microhub, **r, "llegadas_hora": round(lam, 4), "servicio_hora": round(mu, 4), "espera_objetivo_min": objetivo,
+            "servidores_requeridos": requeridos, "origen": origen, "filas": filas, "nota": nota_colas(r, requeridos, objetivo)}
+
+
+@app.post(f"{P}/capacidad/colas")
 @requiere("capacidad.ver")
-def cola_preparacion():
-    """Fila de preparación de pedidos como cola M/M/c. Por omisión: la demanda de la hora pico del microhub, el tiempo de
-    picking, empaque y despacho de los supuestos y sus operadores. Todo se puede cambiar en la consulta."""
-    mid = limitar_microhub(filtro_entero("microhub_id"))
-    if not mid:
-        raise filtro_invalido("microhub_id", "microhub_id es obligatorio.")
-    f = _recurso(mid)
-    p = parametros()
-    minutos = 60 / p["picking_pedidos_hora"] + 60 / p["packing_pedidos_hora"] + 60 / p["despacho_pedidos_hora"]
-    llegadas, mod_l = _numero("llegadas_hora", None, 0, 100000)
-    if llegadas is None:
-        llegadas = carga_observada(mid) / p["horas_turno"] * p["cap_factor_pico"]
-    servicio, mod_s = _numero("servicio_min", minutos, 0.1, 600)
-    personas, mod_c = _numero("servidores", f["operadores"], 1, colas.MAX_SERVIDORES)
-    meta, _ = _numero("espera_max_min", 5.0, 0.1, 600)
-    atencion = 60 / servicio
-    actual = colas.mmc(llegadas, atencion, int(personas))
-    necesarios = colas.servidores_necesarios(llegadas, atencion, meta)
-    hubs = mapa("microhubs", "microhubs")
-    modificados = [n for n, m in (("llegadas_hora", mod_l), ("servicio_min", mod_s), ("servidores", mod_c)) if m]
-    return responder({"microhub": {"id": mid, "nombre": (hubs.get(mid) or {}).get("nombre")}, "llegadas_hora": round(llegadas, 3),
-                      "servicio_min": round(servicio, 2), "atencion_hora": round(atencion, 3), "espera_max_min": meta, "actual": actual,
-                      "comparacion": colas.comparar(llegadas, atencion, int(personas), necesarios), "servidores_necesarios": necesarios,
-                      "lectura": colas.lectura(actual, necesarios, meta), "valores_modificados": modificados,
-                      "supuestos_usados": usados(p, [])}, raiz="capacidad_colas",
-                     items={"comparacion": "escenario", "supuestos_usados": "supuesto", "valores_modificados": "clave"})
+def colas():
+    d = validar(leer_cuerpo("cola_calculo_nuevo"), [
+        Campo("microhub_id", "int", req=False, nulo=True, minimo=1), Campo("llegadas_hora", "num", req=False, nulo=True, minimo=0, maximo=100000),
+        Campo("servicio_hora", "num", req=False, nulo=True, minimo=0, maximo=100000),
+        Campo("servidores", "int", req=False, nulo=True, minimo=1, maximo=mm.MAX_SERVIDORES),
+        Campo("espera_objetivo_min", "num", req=False, nulo=True, minimo=0, maximo=600)])
+    objetivo = d.get("espera_objetivo_min")
+    objetivo = ESPERA_OBJETIVO_MIN if objetivo is None else float(objetivo)
+    lam, mu, c, microhub = d.get("llegadas_hora"), d.get("servicio_hora"), d.get("servidores"), None
+    if d.get("microhub_id"):
+        mid = limitar_microhub(d["microhub_id"])
+        f = _recurso(mid)
+        p = parametros()
+        hubs = mapa("microhubs", "microhubs")
+        microhub = {"id": mid, "nombre": (hubs.get(mid) or {}).get("nombre")}
+        horas = p["horas_turno"]
+        if lam is None:
+            lam = carga_observada(mid) / horas * p["cap_factor_pico"]        # pedidos por hora en la hora pico
+        if mu is None:
+            cap = pc.capacidad(f["operadores"], f["repartidores"], p["cap_distancia_entrega_km"], f["capacidad_fisica"] or None, horas, p)
+            mu = 60 / cap["minutos_por_pedido_operacion"]                     # ritmo combinado de un operador
+        if c is None:
+            c = f["operadores"]
+    faltan = [(n, m) for n, v, m in (("llegadas_hora", lam, "Indica las llegadas por hora (o un microhub_id con pedidos recientes)."),
+                                     ("servicio_hora", mu, "Indica cuántos pedidos prepara un operador por hora (o un microhub_id)."),
+                                     ("servidores", c, "Indica cuántos operadores hay (o un microhub_id).")) if v is None or v <= 0]
+    if faltan:
+        raise ErrorApi(422, "VALIDACION", "Faltan datos para el modelo de colas.", [{"campo": n, "mensaje": m} for n, m in faltan])
+    return responder(calcular_colas(float(lam), float(mu), int(c), objetivo, microhub, "microhub" if microhub else "indicado"),
+                     raiz="cola_calculo", items={"filas": "fila"})
 
 
 @app.get(f"{P}/capacidad/supuestos")
@@ -351,14 +386,11 @@ documentar(app, "GET", f"{P}/capacidad/cargas", "Utilización a distintas cargas
                        ("distancia_km", "query", "number", "Distancia de entrega"), ("horas", "query", "number", "Horas de trabajo al día")],
            descripcion="Muestra en qué carga el microhub entra en riesgo y en cuál se satura; lo que pasa de la capacidad se rechaza.",
            respuestas={200: ("Curva de carga", "CapacidadCargas.ok")}, errores=[400, 403, 404])
-documentar(app, "GET", f"{P}/capacidad/colas", "Colas M/M/1 y M/M/c de la preparación", permisos=["capacidad.ver"],
-           parametros=[HUB, ("llegadas_hora", "query", "number", "λ: pedidos por hora; por omisión la hora pico observada"),
-                       ("servicio_min", "query", "number", "Minutos que toma preparar un pedido; por omisión picking + empaque + despacho"),
-                       ("servidores", "query", "integer", "Personas en paralelo (c); por omisión los operadores del microhub"),
-                       ("espera_max_min", "query", "number", "Meta de espera en fila, en minutos (5)")],
-           descripcion="Utilización, probabilidad de esperar (Erlang C), pedidos y minutos en fila y en el sistema, comparación desde una sola "
-                       "persona (M/M/1) y el personal mínimo que cumple la meta. Si λ ≥ c·μ la cola no es estable y esas medidas van vacías.",
-           respuestas={200: ("Análisis de la cola", "CapacidadColas.ok")}, errores=[400, 403, 404, 503])
+documentar(app, "POST", f"{P}/capacidad/colas", "Teoría de colas M/M/1 y M/M/c", permisos=["capacidad.ver"], cuerpo="ColaCalculoNuevo.ok",
+           descripcion="Espera en fila (Wq), tiempo total (W), pedidos esperando (Lq) y probabilidad de esperar (Erlang C) con c operadores, más el "
+                       "mínimo de operadores para esperar `espera_objetivo_min` o menos (5 por omisión). Con `microhub_id` toma λ de la hora pico de los "
+                       "últimos 7 días, μ del ritmo combinado de un operador y c de su personal; lo que se indique en el cuerpo los reemplaza. No guarda nada.",
+           respuestas={200: ("Indicadores de la fila y tabla por número de operadores", "ColaCalculo.ok")}, errores=[400, 403, 404, 422, 503])
 documentar(app, "GET", f"{P}/capacidad/supuestos", "Supuestos del modelo de capacidad", permisos=["capacidad.ver"],
            descripcion="Valor, origen (medido, supuesto o normativo), justificación y cómo calibrarlo con datos reales.",
            respuestas={200: ("Supuestos documentados", "SupuestosCapacidad.ok")}, errores=[403])

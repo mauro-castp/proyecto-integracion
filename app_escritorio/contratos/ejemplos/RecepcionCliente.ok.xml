@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recepcion_cliente xmlns="urn:microhubs:v1" version="1">
+  <pedido_id>901</pedido_id>
+  <folio>PED-20261126-000901</folio>
+  <entrega_id>412</entrega_id>
+  <resultado>entregado</resultado>
+  <conforme>true</conforme>
+  <estado_pedido>entregado</estado_pedido>
+</recepcion_cliente>

@@ -75,20 +75,23 @@ No se pudo porque este entorno no llega a Google Maven, Maven Central, plugins d
    76 sin red y 173 contra los servicios por las dos vías. Contra la nube, el código de ambas apps recibió el 401 del contrato **sin
    credenciales**; falta iniciar sesión de verdad desde un teléfono y una PC.
 
-### Capturas que faltan (guardar en `entrega/capturas/`)
+### Capturas (`entrega/capturas/`)
 
-| Archivo sugerido | Qué debe verse |
-|---|---|
-| `movil_avisos.png` | Bandeja de avisos con «Nueva entrega asignada» (sale sola en `connectedDebugAndroidTest`: `13_avisos_real`) |
-| `movil_sin_red_guardado.png` | Barra «Sin conexión» y el formulario con «Guardar resultado (sin red)» |
-| `movil_sin_enviar.png` | Pantalla «Sin enviar» con la operación «Por enviar» |
-| `movil_sincronizado.png` | De vuelta «En línea» y el aviso «… enviada(s)» |
-| `movil_conflicto.png` (opcional) | Una operación en «Conflicto» con el mensaje del servidor |
-| `escritorio_reportes.png` | Ventana Reportes con «Pedidos por día» y su tabla con totales |
-| `escritorio_pdf.png` | El PDF descargado abierto |
-| `escritorio_equilibrio.png` | Punto de equilibrio · Calcular (tabla de pasos y resumen con la decisión) |
-| `escritorio_simulacion.png` | Simulación · Ver ejecución terminada |
-| `escritorio_rutas.png` | Rutas · Comparar métodos |
+Estado al 27 de noviembre. Todas se tomaron en la PC de Mauro; ninguna muestra claves.
+
+| Archivo | Qué se ve | Estado |
+|---|---|---|
+| `movil_avisos.png` | Bandeja de avisos (emulador API 36 contra los servicios locales, sale de `connectedDebugAndroidTest`) | ✅ |
+| `movil_sin_red_guardado.png`, `movil_sin_enviar.png`, `movil_sincronizado.png`, `movil_conflicto.png` | Ensayo sin red en un teléfono | ❌ **No se hizo:** el equipo no tiene un Android físico (ver 7.3) |
+| `escritorio_reportes.png` | Catálogo de los 8 reportes | ✅ |
+| `escritorio_pdf.png` | El PDF «Pedidos por día» descargado (7 pedidos, 46 unidades, 1,080.80), página convertida a imagen | ✅ |
+| `escritorio_equilibrio.png` | Punto de equilibrio · Calcular: escenario 3 guardado, equilibrio mensual 11,538.46 | ✅ (tomada antes del arreglo 7.4.2: la tabla grande muestra los supuestos) |
+| `escritorio_simulacion.png` | Simulación · una corrida de 200 réplicas y 30 días, aún `en_cola` en ese momento | ✅ (la prueba automática sí la ve terminar) |
+| `escritorio_rutas.png` | Rutas · Comparar métodos: 4 métodos, el mejor «TSP exacto» (2.36 km, 15.7 % de mejora) | ✅ |
+| `escritorio_rutas_aviso_pedidos.png` | El aviso legible cuando la lista trae pedidos que no están listos (antes tronaba, 7.4.1) | ✅ extra |
+| `escritorio_cobertura.png`, `escritorio_costos.png`, `escritorio_capacidad.png` | Zonas (4), conceptos (21) y microhubs (4) | ✅ extra |
+| `nube_escritorio_reportes.png`, `nube_escritorio_pdf.png`, `nube_escritorio_rutas.png` | Las mismas pantallas contra la nube (en la de rutas se ve el servidor `https://34-51-89-253.sslip.io/servicios`) | ✅ |
+| `nube_movil_inicio.png`, `nube_movil_entregas.png`, `nube_movil_entrega_foto_gps.png` | Android en el emulador contra la nube: inicio (54 avisos), 8 paradas y una entrega con la foto ya capturada | ✅ (recortes de capturas de pantalla de la PC) |
 
 ## 5. Problemas encontrados (para la bitácora)
 
@@ -116,3 +119,78 @@ No se pudo porque este entorno no llega a Google Maven, Maven Central, plugins d
   demostrar y probar rutas (aquí se hizo con un script local que importa sus funciones).
 - En la prueba de carga, `GET /reportes/indicadores` y `comparacion_microhubs` son los más lentos (p95 de 43 s y 37 s): la ventana de
   reportes del escritorio los llama solo cuando la persona pulsa el botón.
+
+## 7. Pruebas en la PC de Mauro (Windows, 27 de noviembre de 2026)
+
+Rama `mauro-pendientes` sobre `main` con el PR #21 (las apps ya enrutan hacia la nube). Docker Desktop con `docker-compose.integrado.yml`
+reconstruido después de #21: 26 servicios, portal y las 3 bases sanos. Datos: entregas 141–143 (pedidos 163–165) para `repartidor1` con
+`preparar_entregas.py --cantidad 3` y pedidos listos 166–169 en el microhub 1 con `pruebas.preparar_listos --cantidad 4 --microhub 1`.
+Salidas completas en `entrega/_local/` de la PC (no se suben: traen rutas locales).
+
+### 7.1 Resultados
+
+| Prueba | Resultado |
+|---|---|
+| Android: `build.ps1` (Gradle, lint, APK, unitarias) | ✅ 68 aprobadas, 5 omitidas (las de backend real), lint sin errores |
+| Android: `connectedDebugAndroidTest` en emulador (AVD `Microhubs_API_36`, imagen `android-36` google_apis x86_64, WHPX) | ✅ **7/7** en 24 s, contra los servicios locales en `10.0.2.2` |
+| Escritorio: `dotnet publish` self-contained win-x64 | ✅ |
+| Escritorio: pruebas sin red (multiplataforma) | ✅ 76 (eran 73; +3 de los arreglos de 7.4) |
+| Escritorio: pruebas contra los servicios locales (`MICROHUBS_BACKEND=http://localhost`) | ✅ **176/176** (eran 173) |
+| Escritorio: abrir a mano cada ventana nueva | ✅ reportes, PDF, cobertura, rutas, costos, capacidad, punto de equilibrio y simulación (capturas arriba) |
+| Instaladores: `entrega/instaladores.ps1` | ✅ generados; ver [`instaladores_generados.md`](instaladores_generados.md). **Se regeneran antes del Release** porque 7.4 cambió las apps |
+
+### 7.2 Nube (`https://34-51-89-253.sslip.io/servicios`, certificado de Let's Encrypt, validación de certificados activa)
+
+| App · cuenta | Qué funcionó | Qué no |
+|---|---|---|
+| Android en el emulador · `repartidor1` | Inicio de sesión, inicio con 54 avisos, «Mis entregas» con 8 paradas, foto de evidencia (cámara emulada, 25 KB) y GPS | El lector de QR cerraba la app (7.4.3). Arreglado; no se volvió a probar el cierre completo con QR en el emulador |
+| Escritorio · `planeador` | Inicio de sesión; «Pedidos por día» con 30 días (28-oct a 27-nov); PDF de 2 páginas descargado (generado 02:13:37); Comparar métodos con los 4 pedidos listos de la nube: mejor «Vecino más cercano + 2-opt» y «TSP exacto» empatados (3.09 km, 18 % de mejora) | Nada |
+
+### 7.3 Lo que no se hizo
+
+- **Ensayo sin red en un teléfono real** (modo avión → «Sin enviar» → se envía sola): el equipo no tiene un Android físico. La lógica está
+  cubierta por las pruebas JVM y contra los servicios (sección 3) y, en el emulador, `elCierrePendienteSobreviveAlReinicioDeLaApp`; pero el
+  aviso de conectividad del sistema y la cámara real no se probaron en un dispositivo.
+- **Cierre de una entrega con QR en el emulador:** después del arreglo 7.4.3 no se repitió (habría que poner el QR en la escena virtual de la
+  cámara del emulador). La prueba `elLectorDeQrAbreSinCerrarLaApp` abre el lector en el emulador.
+- **Usabilidad con 3 personas y video:** pendientes (ver `FORMATO_USABILIDAD.md` y `GUION_VIDEO.md`).
+
+### 7.4 Problemas encontrados y arreglados
+
+1. **Escritorio · Comparar métodos tronaba** con «An item with the same key has already been added. Key: pedido_ids». La plantilla trae
+   pedidos de ejemplo (163, 168, 169, 176); el servicio responde 422 con **un `<detalle>` por cada pedido** no listo, todos con el campo
+   `pedido_ids`, y `Api.ToError` los metía en un diccionario. Ahora se juntan por campo («…; …»). Prueba nueva sin red. Captura:
+   `escritorio_rutas_aviso_pedidos.png`.
+2. **Escritorio · la tabla principal mostraba los supuestos** en vez del resultado cuando la respuesta traía más supuestos que filas
+   (Comparar métodos: 6 supuestos y 4 métodos; también en punto de equilibrio y otras). `Tablas.Coleccion` elegía la colección más grande;
+   ahora `supuestos_usados` solo es la tabla si no hay otra. **La prueba contra el servicio contaba los 6 supuestos como «6 métodos»** (falso
+   positivo): ahora exige la columna `metodo`. 2 pruebas nuevas sin red; se comprobó que la nueva falla sin el arreglo.
+3. **Android · el lector de QR cerraba la app** en cualquier dispositivo: `NoClassDefFoundError: androidx/core/content/ContextCompat` en
+   `com.journeyapps.barcodescanner.CaptureManager`. `zxing-android-embedded` 4.3.0 usa `ContextCompat` pero no trae `androidx.core`, y la app
+   no lo tenía. Se agregó `androidx.core:core:1.13.1` y la prueba de emulador `elLectorDeQrAbreSinCerrarLaApp`. Ninguna prueba abría el lector;
+   se encontró al probar a mano contra la nube.
+
+## 8. Lo que faltaba del enunciado (27 de noviembre, rama `mauro-faltantes`)
+
+Al revisar el proyecto contra el enunciado del Proyecto 11 faltaban funciones de las apps y dos algoritmos. Se hicieron en el entorno de
+Claude (Linux, los 26 servicios con la base recreada desde `bloque_c/sql/01…16`) y después se comprobaron en la PC de Mauro (abajo).
+
+| Qué | Dónde | Pruebas (todas aprobadas) |
+|---|---|---|
+| Escritorio para operadores: inventario, preparación, despacho (asignar y **manifiesto**), surtido; cambiar personal | `app_escritorio/Modulos.cs`, `Operacion.cs`, `Ventanas.cs` | sin red **89** (eran 76); contra los servicios **213** (con el operador: preparar, marcar listo, asignar, manifiesto, movimiento de inventario) |
+| Botones según los **permisos** de la sesión (no solo el rol) | `Api.cs`, `Accion.Habilitada` | incluidas arriba |
+| **Colas M/M/1 y M/M/c** (Erlang C) | `servicios/comun/colas.py`, `POST capacidad/colas`, escritorio «Colas M/M/c» | 7 unitarias con valores calculados a mano; 1 de servicio (JSON, XML, permisos) |
+| Contrato XML para cambiar el estado y asignar paradas desde el escritorio | `servicios/contratos/ola5.py` → `operacion.xsd`, `colas.xsd` | los ejemplos validan; validador lxml 10/10 |
+| **Android cliente:** catálogo y catálogo ligero sin red, carrito, pedido (sin red por sincronización), mis pedidos, cancelar, confirmar recepción | `app_movil/.../Cliente.kt`, `MainActivity.kt` | JVM **85** (11 nuevas); `flujoDelCliente` contra los servicios reales |
+| **Navegar** del repartidor (`geo:`) | `Entregas.kt` (`destinoMapa`), `MainActivity.kt` | JVM |
+| Servicios: `POST entregas/recepciones`, tipo `pedido_nuevo` en sincronización, `16_apps_cliente.sql` | `servicios/entregas`, `servicios/sincronizacion`, `bloque_c/sql` | `test_apps_cliente` 4/4; suites completas sin fallas: unitarias 37 + 72, contrato 7, ola1 24, ola2 103, ola3 74, ola4 12 |
+
+**En la PC de Mauro (27-nov, 03:25–03:32, rama `mauro-faltantes`):** Docker reconstruido (aplicó `16_apps_cliente.sql`); Android
+`build.ps1` con lint y unitarias sin fallas (79 aprobadas, 6 omitidas por no tener las variables del backend); `connectedDebugAndroidTest`
+**8/8** en el emulador API 36; escritorio en Windows **218/218** contra los servicios, incluido el recorrido del operador (pedido 29: a
+preparación, listo, asignado al repartidor 7 y manifiesto de 7 paradas). A mano: el cliente compró desde el emulador y vio su pedido en
+«Mis pedidos»; el operador generó el manifiesto y calculó las colas M/M/c en el escritorio. Todo funcionó.
+
+**Qué no se hizo:** perfil **proveedor** con cuenta (sería un portal propio); el ensayo sin red en teléfono real; las pantallas del cliente
+no tienen prueba automática de emulador (las cubren la lógica en JVM, el recorrido real `flujoDelCliente` y la prueba a mano).
+

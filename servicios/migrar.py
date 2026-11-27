@@ -1,5 +1,5 @@
 """
-migrar.py — Aplica 06 a 16 a una base que ya existía.
+migrar.py — Aplica 06 a 17 a una base que ya existía.
 
 PostgreSQL solo ejecuta /docker-entrypoint-initdb.d al crear el volumen. Con
 un volumen existente (por ejemplo, el del Primer Parcial), este paso agrega
@@ -20,7 +20,7 @@ DSN = os.environ.get("PG_DSN", "host=127.0.0.1 port=5432 dbname=microhubs_p1 use
 CARPETA = Path(os.environ.get("SQL_DIR", "/app/sql"))
 SCRIPTS = ["06_planeacion.sql", "07_web_ampliado.sql", "08_microservicios.sql", "09_ola1_flujo_negocio.sql", "10_ola2_analitica.sql",
            "11_ola3_observabilidad.sql", "12_rendimiento.sql", "13_entrega_final.sql", "14_pedidos_api.sql",
-           "15_archivos_bucket.sql", "16_perfil_proveedor.sql"]
+           "15_archivos_bucket.sql", "16_apps_cliente.sql", "17_perfil_proveedor.sql"]
 
 
 def borrar_cache_permisos():

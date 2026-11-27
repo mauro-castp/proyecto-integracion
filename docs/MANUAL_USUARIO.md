@@ -7,16 +7,24 @@ Cada perfil ve solo lo que le corresponde. Se entra en **https://34-51-89-253.ss
 
 | Perfil | Qué hace | Dónde |
 |---|---|---|
-| Cliente | Compra y sigue sus pedidos | Portal web |
-| Operador de microhub | Prepara pedidos, cuida el inventario, repone y despacha | Portal web |
+| Cliente | Compra y sigue sus pedidos | Portal web y app Android |
+| Operador de microhub | Prepara pedidos, cuida el inventario, repone y despacha | Portal web y app de escritorio |
 | Repartidor | Entrega, toma evidencia y cierra | App Android |
 | Planeador | Analiza viabilidad, planea rutas y reportes | Portal web y app de escritorio |
 | Administrador | Usuarios, catálogos, aprobaciones, monitoreo | Portal web |
+| Proveedor | Ve sus órdenes de compra y actualiza su oferta | Portal web |
 | Auditor | Consulta la bitácora y la trazabilidad, sin modificar nada | Portal web y app de escritorio |
 
 **Inicio de sesión.** Correo y clave. Después de 5 intentos fallidos la cuenta se bloquea un rato (RN). Desde una misma conexión se
 permiten hasta 30 inicios de sesión por minuto. La sesión dura 15 minutos y se renueva sola mientras se usa. «Salir» la cierra en
 todos los servicios.
+
+**¿Olvidaste tu contraseña?** (portal web)
+
+1. En la pantalla de entrada pulsa **¿Olvidaste tu contraseña?** y escribe tu correo. La respuesta es la misma exista o no la cuenta.
+2. Recibes un enlace que sirve **una sola vez** y vence en **30 minutos**. Llega por correo si el sistema tiene un servidor de correo
+   configurado; si no, llega como aviso a quien administra, que comprueba tu identidad y te lo hace llegar.
+3. Escribe la contraseña nueva. Se cierran todas tus sesiones abiertas.
 
 ---
 
@@ -28,6 +36,18 @@ todos los servicios.
 4. **Mis pedidos.** Muestra el estado (asignado, en preparación, en ruta, entregado) y su historial. Al entregarse llega un aviso a la
    campana de **Notificaciones**.
 5. **Cancelar.** Solo mientras el pedido no se prepara (RN21).
+
+**En la app Android** (la misma app del repartidor; entra con tu cuenta de cliente):
+
+1. **Catálogo.** Todos los productos activos por categoría, con búsqueda. Al abrirlo con red se guarda una **copia ligera** en el teléfono
+   (sin imágenes): sin red se usa esa copia y lo dice arriba con la hora en que se guardó.
+2. **Mi carrito.** Suma o quita piezas (hasta 50 por producto) y muestra un total estimado; el total final (precio de tu zona y envío) lo
+   calcula el servidor.
+3. **Hacer pedido.** Con red llega al momento con su folio. **Sin red** el botón dice «Guardar pedido (sin red)»: queda en «Sin enviar» y
+   se envía solo al volver la conexión, sin duplicarse aunque se reintente.
+4. **Mis pedidos.** Estatus en palabras (Confirmado, En preparación, En camino, Entregado…) y el seguimiento con la hora de cada cambio.
+   Mientras nadie lo prepara aparece **Cancelar pedido** (con un motivo).
+5. **Confirmar recepción.** Ya entregado, pulsa **Sí, lo recibí** o **No estoy conforme**; queda registrado para el microhub.
 
 ## Operador de microhub
 
@@ -43,10 +63,23 @@ todos los servicios.
 - **Rutas** (`/web/servicios/rutas`). Abre el plan que propuso el planeador y pulsa **Confirmar y despachar a los repartidores**.
   Cada repartidor recibe «Nueva entrega asignada» y ve sus paradas en orden en la app.
 
+**En la app de escritorio** (entra con tu cuenta de operador; los botones que no te tocan aparecen como «(sin permiso)»):
+
+- **Inventario.** Existencias, alertas, movimientos y reservas de tu microhub; **Registrar movimiento** (recepción, merma, ajuste o
+  conteo) y **Transferir** a otro microhub. Cada movimiento lleva su propio identificador: dos clics son dos movimientos, un reintento no.
+- **Preparación.** «Por preparar» → elige el pedido → **Pasar a preparación** → **Marcar listo**.
+- **Despacho.** «Pedidos listos» → selecciona los renglones en el orden de las paradas → **Asignar repartidor** (ve los ids en
+  «Repartidores»). **Manifiesto** pide el repartidor y arma su hoja de salida: paradas en orden, cliente, dirección, productos, piezas y
+  total a cobrar, con espacio para firmas; se guarda como página para imprimir o guardar en PDF.
+- **Surtido.** Clasificación ABC, análisis por producto, recomendaciones y restricciones de espacio y presupuesto.
+- **Capacidad → Colas M/M/c.** Cuánto espera un pedido en la fila con los operadores actuales y cuántos hacen falta para esperar 5 minutos
+  o menos.
+
 ## Repartidor (app Android)
 
 1. **Acceso.** Servidor `https://34-51-89-253.sslip.io/servicios`, tu correo y tu clave.
-2. **Mis entregas.** Las paradas del día en el orden de la ruta, con dirección, distancia y total a cobrar.
+2. **Mis entregas.** Las paradas del día en el orden de la ruta, con dirección, distancia y total a cobrar. En cada entrega,
+   **Navegar al domicilio** abre la app de mapas del teléfono en la dirección del cliente.
 3. **Entrega.** Escanea el QR del pedido, toma la **foto de evidencia** y obtén el **GPS**. Elige el resultado:
    - **Entregado:** se cobra el total exacto (RN27).
    - **Parcial:** por cada línea, cuántas unidades regresan y por qué (RN28).
@@ -85,6 +118,16 @@ todos los servicios.
   última verificación, los ms, los errores 5xx por hora, la disponibilidad de 24 h, el p95, las dependencias caídas y las alertas.
   «Verificar ahora» fuerza una ronda. «Reconocer» marca que ya viste una alerta; la alerta se cierra sola cuando el servicio vuelve.
 - **Microservicios** (`/web/servicios`). Muestra la salud de cada servicio y una respuesta XML real.
+
+## Proveedor
+
+En el portal web, con la cuenta que te dio quien administra (en local: `proveedor@codex.mx`).
+
+- **Mi oferta** (`/proveedor`). Tus datos, tus órdenes abiertas y tu catálogo. Puedes actualizar el **precio de compra** y la
+  **capacidad semanal** de tus productos; el cambio queda en la bitácora.
+- **Mis órdenes** (`/proveedor/ordenes`). Las órdenes de compra que se te han emitido, con el microhub de entrega, la fecha esperada,
+  sus líneas y cuánto se ha recibido.
+- No ves datos de otros proveedores.
 
 ## Auditor
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cola_calculo xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <microhub xsi:nil="true" />
+  <modelo>M/M/c</modelo>
+  <llegadas_hora>10</llegadas_hora>
+  <servicio_hora>4</servicio_hora>
+  <servidores>3</servidores>
+  <carga_ofrecida>2.5</carga_ofrecida>
+  <utilizacion_pct>83.33</utilizacion_pct>
+  <estable>true</estable>
+  <p0>0.044944</p0>
+  <prob_esperar>0.702247</prob_esperar>
+  <lq>3.5112</lq>
+  <l>6.0112</l>
+  <wq_min>21.067</wq_min>
+  <w_min>36.067</w_min>
+  <espera_objetivo_min>5</espera_objetivo_min>
+  <servidores_requeridos>4</servidores_requeridos>
+  <origen>indicado</origen>
+  <filas>
+    <fila>
+      <servidores>3</servidores>
+      <utilizacion_pct>83.33</utilizacion_pct>
+      <prob_esperar>0.702247</prob_esperar>
+      <lq>3.5112</lq>
+      <wq_min>21.067</wq_min>
+      <w_min>36.067</w_min>
+      <cumple>false</cumple>
+    </fila>
+    <fila>
+      <servidores>4</servidores>
+      <utilizacion_pct>62.5</utilizacion_pct>
+      <prob_esperar>0.319857</prob_esperar>
+      <lq>0.5331</lq>
+      <wq_min>3.199</wq_min>
+      <w_min>18.199</w_min>
+      <cumple>true</cumple>
+    </fila>
+  </filas>
+  <nota>Con 3 operadores la espera promedio en fila es de 21.1 min; con 4 baja a 3.2 min.</nota>
+</cola_calculo>

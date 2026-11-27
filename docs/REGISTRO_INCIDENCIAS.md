@@ -42,6 +42,10 @@ la entrega final.
 | I-32 | 27-nov | portal | La pantalla «Archivos» guardaba el archivo dentro de PostgreSQL | Se escribió antes de tener el almacén de objetos y no se migró | Usa el servicio `documentos` (bucket); `15_archivos_bucket.sql` y `migrar_web_archivo.py` | `prueba_e2e_web` 6 de 6 y prueba en la nube | **Alta** |
 | I-33 | 27-nov | salud | Solo 5 servicios informaban MongoDB y 1 el bucket | Cada servicio revisaba únicamente sus dependencias | Los 26 informan las cuatro y publican `/health/*` | `test_almacen` y los 26 en la nube | Media |
 | I-34 | 27-nov | pruebas | Dos pruebas de la Ola 2 fallaban según los datos acumulados | Suponían cantidades y borraban planes con entregas | Pruebas independientes de los datos | `test_ola2` 102 OK | Baja |
+| I-35 | 27-nov | microservicios ↔ portal | Las imágenes de 8 servicios copiaban `sistema_web/` y `planeacion` importaba módulos del portal; el enunciado pide independencia | La planeación se reutilizaba desde el web para no duplicar fórmulas | Fórmulas y consultas en `servicios/comun/`; los Dockerfile ya no copian el portal | `IndependenciaDelPortal` y construcción de las imágenes | **Alta** |
+| I-36 | 27-nov | portal | No había forma de recuperar una contraseña olvidada | Requisito sin implementar | `sistema_web/recuperacion.py`: enlace de un solo uso de 30 minutos, huella en Redis y cierre de sesiones | `prueba_e2e_web`, clase `RecuperacionYProveedor` | Media |
+| I-37 | 27-nov | portal y roles | El proveedor no tenía perfil propio | Solo existía como catálogo | `17_perfil_proveedor.sql`, `proveedor_portal.py` y rol en contratos | `RecuperacionYProveedor`: ve solo lo suyo | Media |
+| I-38 | 27-nov | monitoreo y pruebas | El panel no mostraba tiempo promedio ni último error; faltaba la prueba de token vencido | Requisitos de «Proyectos Finales» | Campos nuevos en `auditoria-monitoreo` y el panel; `T9Expiracion` y casos AUTH-12/13 | `test_ola4` y evidencias | Media |
 
 Plantilla para nuevas incidencias:
 

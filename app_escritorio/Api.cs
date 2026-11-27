@@ -24,8 +24,8 @@ sealed class Api : IDisposable
     /// <summary>Puerto de cada servicio del contrato v1 que usa el escritorio.</summary>
     internal static readonly Dictionary<string,int> Puertos = new()
     {
-        {"auth",5101},{"productos",5103},{"pedidos",5104},{"planeacion",5106},{"zonas",5108},{"microhubs",5109},
-        {"cobertura",5116},{"capacidad",5117},{"rutas",5118},{"costos",5119},{"punto-equilibrio",5120},{"simulacion",5121},{"reportes",5123}
+        {"auth",5101},{"productos",5103},{"pedidos",5104},{"entregas",5105},{"planeacion",5106},{"zonas",5108},{"microhubs",5109},
+        {"inventario",5111},{"cobertura",5116},{"capacidad",5117},{"rutas",5118},{"costos",5119},{"punto-equilibrio",5120},{"simulacion",5121},{"surtido",5122},{"reportes",5123}
     };
     /// <summary>Formatos que entrega GET /reportes/{clave}/exportar y el tipo MIME que debe traer la respuesta.</summary>
     internal static readonly Dictionary<string,string> Formatos = new()
@@ -38,6 +38,8 @@ sealed class Api : IDisposable
     readonly SemaphoreSlim renewal = new(1,1);
     DateTimeOffset retryAt;
     public string Access = "", Refresh = "", Role = "";
+    /// <summary>Permisos del perfil según la sesión (p. ej. inventario.movimiento): habilitan los botones que escriben.</summary>
+    public HashSet<string> Permisos { get; private set; } = new();
     public bool Demo;
     public string Host = "http://localhost";
     public string LastTrace { get; private set; } = "";
@@ -206,7 +208,9 @@ sealed class Api : IDisposable
     ApiError ToError(HttpResponseMessage response,XDocument doc)
     {
         LastTrace=doc.Root!.Element(Ns+"traza_id")?.Value??"";
-        var fields=doc.Descendants(Ns+"detalle").ToDictionary(e=>e.Element(Ns+"campo")!.Value,e=>e.Element(Ns+"mensaje")!.Value);
+        // un campo puede traer varios detalles (p. ej. un mensaje por cada pedido de pedido_ids que no está listo): se unen con «; »
+        var fields=doc.Descendants(Ns+"detalle").GroupBy(e=>e.Element(Ns+"campo")!.Value)
+            .ToDictionary(g=>g.Key,g=>string.Join("; ",g.Select(e=>e.Element(Ns+"mensaje")!.Value)));
         if(response.StatusCode==HttpStatusCode.Unauthorized) Clear();
         return new ApiError((int)response.StatusCode,doc.Root.Element(Ns+"mensaje")!.Value,fields,LastTrace);
     }
@@ -218,7 +222,10 @@ sealed class Api : IDisposable
         var access=root.Element(Ns+"token_acceso")!.Value; var refresh=root.Element(Ns+"token_renovacion")!.Value;
         if(string.IsNullOrWhiteSpace(access)||string.IsNullOrWhiteSpace(refresh)||role=="") { Clear();throw new Exception("Sesión incompleta."); }
         Access=access;Refresh=refresh;Role=role;
+        if(root.Name==Ns+"sesion") Permisos=root.Descendants(Ns+"permiso").Select(p=>p.Value).ToHashSet();   // renovar no los trae: se conservan
     }
-    public void Clear(){Access=Refresh=Role="";}
+    /// <summary>¿Tiene alguno de los permisos (separados por «|»)? El administrador puede todo.</summary>
+    public bool Puede(string permisos)=>Role=="administrador" || permisos.Split('|').Any(Permisos.Contains);
+    public void Clear(){Access=Refresh=Role="";Permisos=new();}
     public void Dispose(){http.Dispose();renewal.Dispose();}
 }

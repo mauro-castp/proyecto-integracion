@@ -193,7 +193,8 @@ class PlaneadorEscritorio(Perfil):
 
     @task(1)
     def colas(self):
-        self.pedir("capacidad", "capacidad/colas?microhub_id=1", "capacidad/colas")
+        self.pedir("capacidad", "capacidad/colas", metodo="POST",
+                   json={"llegadas_hora": 10, "servicio_hora": 4, "servidores": 3, "espera_objetivo_min": 5})
 
     @task(1)
     def costos(self):

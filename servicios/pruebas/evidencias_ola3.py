@@ -175,7 +175,8 @@ def ejecutar_ola3(ev, h):
             verificar=lambda x: x.json["conflictos"] == 1 and x.json["pendientes"] == 0)
     ev.caso("SYN-09", sy, "Límites de la sincronización", "Tamaño de lote, antigüedad y reloj.", "GET", "sincronizacion/supuestos", token=t_rep,
             verificar=lambda x: any(s["clave"] == "sync_lote_max" for s in x.json["datos"]))
-    ev.caso("SYN-10", sy, "El cliente no sincroniza", "Sin sincronizacion.usar.", "POST", "sincronizacion/lotes", cuerpo=lote, token=t_cli, esperado=403)
+    ev.caso("SYN-10", sy, "Sin permiso para sincronizar", "El auditor no tiene sincronizacion.usar.", "POST", "sincronizacion/lotes", cuerpo=lote,
+            token=t_aud, esperado=403)
     ev.caso("SYN-11", sy, "Lote mal formado", "operaciones debe ser una lista.", "POST", "sincronizacion/lotes",
             cuerpo={**lote, "operaciones": "x"}, token=t_rep, esperado=422, verificar=lambda x: x.json["error"]["codigo"] == "VALIDACION")
     # el XML del contrato: las consultas responden en XML

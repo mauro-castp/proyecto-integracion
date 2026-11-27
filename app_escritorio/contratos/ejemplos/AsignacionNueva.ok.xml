@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<asignacion_nueva xmlns="urn:microhubs:v1" version="1">
+  <paradas>
+    <parada>
+      <pedido_id>901</pedido_id>
+      <repartidor_id>7</repartidor_id>
+      <orden_parada>1</orden_parada>
+      <distancia_km>1.2</distancia_km>
+    </parada>
+    <parada>
+      <pedido_id>902</pedido_id>
+      <repartidor_id>7</repartidor_id>
+      <orden_parada>2</orden_parada>
+    </parada>
+  </paradas>
+</asignacion_nueva>

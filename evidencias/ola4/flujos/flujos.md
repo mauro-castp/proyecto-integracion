@@ -1,7 +1,7 @@
 # Procesos integrales de principio a fin
 
 
-Generado el 2026-11-27 08:10 contra los servicios en ejecución. 40 de 40 casos pasan.
+Generado el 2026-11-27 17:38 contra los servicios en ejecución. 40 de 40 casos pasan.
 
 ## Servicio planeacion · puerto 5106
 
@@ -13,20 +13,20 @@ Generado el 2026-11-27 08:10 contra los servicios en ejecución. 40 de 40 casos 
 
 ```http
 Accept: application/xml
-X-Traza-Id: aa9f46e3-2592-4341-be48-07cee420dacb
+X-Traza-Id: 72548496-f8cd-44bd-b061-0bb25462bc1a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/xml
 ```
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?><candidato_nuevo xmlns="urn:microhubs:v1"><clave>********</clave><nombre>Ubicación del flujo EC3AF</nombre><latitud>25.760195</latitud><longitud>-100.370891</longitud><renta_estimada>15000.00</renta_estimada><nomina_estimada>36000.00</nomina_estimada><servicios_estimados>6000.00</servicios_estimados><otros_costos>4000.00</otros_costos><superficie_m2>100</superficie_m2><capacidad_fisica>120</capacidad_fisica><accesibilidad_vial>8</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km></candidato_nuevo>
+<?xml version="1.0" encoding="UTF-8"?><candidato_nuevo xmlns="urn:microhubs:v1"><clave>********</clave><nombre>Ubicación del flujo 7F09B</nombre><latitud>25.760195</latitud><longitud>-100.370891</longitud><renta_estimada>15000.00</renta_estimada><nomina_estimada>36000.00</nomina_estimada><servicios_estimados>6000.00</servicios_estimados><otros_costos>4000.00</otros_costos><superficie_m2>100</superficie_m2><capacidad_fisica>120</capacidad_fisica><accesibilidad_vial>8</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km></candidato_nuevo>
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 172 ms · traza `aa9f46e3-2592-4341-be48-07cee420dacb`
+**Respuesta.** HTTP 201 (esperado 201) · 62 ms · traza `72548496-f8cd-44bd-b061-0bb25462bc1a`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<candidato xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id>335</id><clave>FL-EC3AF</clave><nombre>Ubicación del flujo EC3AF</nombre><latitud>25.760195</latitud><longitud>-100.370891</longitud><renta_estimada>15000.00</renta_estimada><nomina_estimada>36000.00</nomina_estimada><servicios_estimados>6000.00</servicios_estimados><otros_costos>4000.00</otros_costos><costo_fijo>61000.00</costo_fijo><superficie_m2>100</superficie_m2><capacidad_fisica>120</capacidad_fisica><accesibilidad_vial>8</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil="true" /></candidato>
+<candidato xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id>366</id><clave>FL-7F09B</clave><nombre>Ubicación del flujo 7F09B</nombre><latitud>25.760195</latitud><longitud>-100.370891</longitud><renta_estimada>15000.00</renta_estimada><nomina_estimada>36000.00</nomina_estimada><servicios_estimados>6000.00</servicios_estimados><otros_costos>4000.00</otros_costos><costo_fijo>61000.00</costo_fijo><superficie_m2>100</superficie_m2><capacidad_fisica>120</capacidad_fisica><accesibilidad_vial>8</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil="true" /></candidato>
 ```
 
 **Evidencia en PostgreSQL.** `SELECT id, clave, nombre, costo_fijo, decision FROM ubicacion_candidata WHERE clave = %s`
@@ -34,9 +34,9 @@ Content-Type: application/xml
 ```json
 [
   {
-    "id": 335,
-    "clave": "FL-EC3AF",
-    "nombre": "Ubicación del flujo EC3AF",
+    "id": 366,
+    "clave": "FL-7F09B",
+    "nombre": "Ubicación del flujo 7F09B",
     "costo_fijo": "61000.00",
     "decision": "pendiente"
   }
@@ -47,11 +47,11 @@ Content-Type: application/xml
 
 **Objetivo.** Capacidad, utilización y decisión sugerida (MongoDB).
 
-**Petición.** `POST http://planeacion:5106/api/v1/candidatos/335/simular`
+**Petición.** `POST http://planeacion:5106/api/v1/candidatos/366/simular`
 
 ```http
 Accept: application/json
-X-Traza-Id: 0e301026-bc15-408c-8847-f8f78eb12814
+X-Traza-Id: 45523eb6-f632-4e9a-bdda-6d008f78dfed
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -75,7 +75,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 364 ms · traza `0e301026-bc15-408c-8847-f8f78eb12814`
+**Respuesta.** HTTP 200 (esperado 200) · 394 ms · traza `45523eb6-f632-4e9a-bdda-6d008f78dfed`
 
 ```json
 {
@@ -113,14 +113,14 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: bee52777-70ae-44d8-90e5-41c9a8da110f
+X-Traza-Id: 2c191558-06eb-44ff-8795-f2b05603fdc2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "candidato_id": 335,
+  "candidato_id": 366,
   "pedidos_dia": 100,
   "ticket": 180,
   "margen_bruto": 0.3,
@@ -129,7 +129,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 73 ms · traza `bee52777-70ae-44d8-90e5-41c9a8da110f`
+**Respuesta.** HTTP 200 (esperado 200) · 63 ms · traza `2c191558-06eb-44ff-8795-f2b05603fdc2`
 
 ```json
 {
@@ -137,7 +137,7 @@ Content-Type: application/json
   "nombre": null,
   "objeto": {
     "tipo": "candidato",
-    "id": 335,
+    "id": 366,
     "nombre": null
   },
   "entrada": {
@@ -199,11 +199,11 @@ Content-Type: application/json
 
 **Objetivo.** La decisión queda con motivo y en la bitácora.
 
-**Petición.** `POST http://planeacion:5106/api/v1/candidatos/335/decision`
+**Petición.** `POST http://planeacion:5106/api/v1/candidatos/366/decision`
 
 ```http
 Accept: application/json
-X-Traza-Id: 3af14c6a-387b-4f72-aa8c-de687478a8ac
+X-Traza-Id: 8030022e-55a4-48c5-9f27-e723bb40bfef
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -215,13 +215,13 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 87 ms · traza `3af14c6a-387b-4f72-aa8c-de687478a8ac`
+**Respuesta.** HTTP 200 (esperado 200) · 82 ms · traza `8030022e-55a4-48c5-9f27-e723bb40bfef`
 
 ```json
 {
-  "id": 335,
+  "id": 366,
   "clave": "********",
-  "nombre": "Ubicación del flujo EC3AF",
+  "nombre": "Ubicación del flujo 7F09B",
   "latitud": 25.760195,
   "longitud": -100.370891,
   "renta_estimada": 15000.0,
@@ -261,7 +261,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 7e05580d-731c-492f-a89d-776aacb05d46
+X-Traza-Id: 8d9d8af7-c015-49f0-92ec-b304e92c5b07
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -269,7 +269,7 @@ Content-Type: application/json
 ```json
 {
   "clave": "********",
-  "nombre": "Microhub EC3AF",
+  "nombre": "Microhub 7F09B",
   "direccion": "Ubicación aprobada en planeación",
   "latitud": 25.760195,
   "longitud": -100.370891,
@@ -278,13 +278,13 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 88 ms · traza `7e05580d-731c-492f-a89d-776aacb05d46`
+**Respuesta.** HTTP 201 (esperado 201) · 67 ms · traza `8d9d8af7-c015-49f0-92ec-b304e92c5b07`
 
 ```json
 {
-  "id": 20,
+  "id": 27,
   "clave": "********",
-  "nombre": "Microhub EC3AF",
+  "nombre": "Microhub 7F09B",
   "latitud": 25.760195,
   "longitud": -100.370891,
   "radio_km": 1.5,
@@ -298,11 +298,11 @@ Content-Type: application/json
 
 **Objetivo.** Operadores, repartidores y capacidad física.
 
-**Petición.** `PUT http://capacidad:5117/api/v1/capacidad/recursos/20`
+**Petición.** `PUT http://capacidad:5117/api/v1/capacidad/recursos/27`
 
 ```http
 Accept: application/json
-X-Traza-Id: 6c9e0a0d-070c-48e9-be65-5b361eceb368
+X-Traza-Id: a36f0b09-b773-4f49-af44-1c5db2bb5bbf
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -315,18 +315,18 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 220 ms · traza `6c9e0a0d-070c-48e9-be65-5b361eceb368`
+**Respuesta.** HTTP 200 (esperado 200) · 175 ms · traza `a36f0b09-b773-4f49-af44-1c5db2bb5bbf`
 
 ```json
 {
   "microhub": {
-    "id": 20,
-    "nombre": "Microhub EC3AF"
+    "id": 27,
+    "nombre": "Microhub 7F09B"
   },
   "operadores": 2,
   "repartidores": 2,
   "capacidad_fisica": 120,
-  "actualizado_en": "2026-11-27T02:10:15-06:00"
+  "actualizado_en": "2026-11-27T11:38:10-06:00"
 }
 ```
 
@@ -340,7 +340,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 7911c7c8-04df-40ad-b03c-bc5b88ae6e44
+X-Traza-Id: 148ce525-ae55-46e7-8774-6fbdd337e766
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -348,28 +348,28 @@ Content-Type: application/json
 ```json
 {
   "nombre": "Operador",
-  "apellidos": "EC3AF",
-  "correo": "operador.ec3af@ejemplo.mx",
+  "apellidos": "7F09B",
+  "correo": "operador.7f09b@ejemplo.mx",
   "clave": "********",
   "rol": "operador",
-  "microhub_id": 20
+  "microhub_id": 27
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 235 ms · traza `7911c7c8-04df-40ad-b03c-bc5b88ae6e44`
+**Respuesta.** HTTP 201 (esperado 201) · 160 ms · traza `148ce525-ae55-46e7-8774-6fbdd337e766`
 
 ```json
 {
-  "id": 78,
+  "id": 88,
   "nombre": "Operador",
-  "apellidos": "EC3AF",
-  "correo": "operador.ec3af@ejemplo.mx",
+  "apellidos": "7F09B",
+  "correo": "operador.7f09b@ejemplo.mx",
   "telefono": null,
   "rol": "operador",
   "microhub": {
-    "id": 20,
+    "id": 27,
     "clave": "********",
-    "nombre": "Microhub EC3AF"
+    "nombre": "Microhub 7F09B"
   },
   "ultimo_acceso": null
 }
@@ -385,7 +385,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 447a5d85-78af-425f-bad7-4777ad41cffd
+X-Traza-Id: 45879034-f50a-4da9-ac68-8ea7a1990194
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -393,15 +393,15 @@ Content-Type: application/json
 ```json
 {
   "origen_microhub_id": 1,
-  "destino_microhub_id": 20,
+  "destino_microhub_id": 27,
   "producto_id": 31,
   "cantidad": 12,
   "motivo": "Inventario inicial del microhub nuevo",
-  "operacion_uuid": "dd8d3420-9797-4266-8f0e-9f2a5645f8e3"
+  "operacion_uuid": "c46c15d3-af41-431c-8226-4deb7dea3f58"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 146 ms · traza `447a5d85-78af-425f-bad7-4777ad41cffd`
+**Respuesta.** HTTP 201 (esperado 201) · 97 ms · traza `45879034-f50a-4da9-ac68-8ea7a1990194`
 
 ```json
 {
@@ -410,13 +410,13 @@ Content-Type: application/json
   "duplicado": false,
   "origen": {
     "microhub_id": 1,
-    "existencia": 291,
-    "movimiento_id": 3060
+    "existencia": 555,
+    "movimiento_id": 3417
   },
   "destino": {
-    "microhub_id": 20,
+    "microhub_id": 27,
     "existencia": 12,
-    "movimiento_id": 3061
+    "movimiento_id": 3418
   }
 }
 ```
@@ -429,7 +429,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 3464a2d1-10d1-443d-b46c-afb1aef254a9
+X-Traza-Id: e118c4e7-4e8f-43fc-8880-f5e57d33ebd1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -437,30 +437,30 @@ Content-Type: application/json
 ```json
 {
   "origen_microhub_id": 1,
-  "destino_microhub_id": 20,
-  "producto_id": 18,
+  "destino_microhub_id": 27,
+  "producto_id": 1,
   "cantidad": 12,
   "motivo": "Inventario inicial del microhub nuevo",
-  "operacion_uuid": "877076a9-276a-4079-aa7e-1b36f29c4cf9"
+  "operacion_uuid": "4864bce4-1c04-4205-af88-60a83640f20d"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 163 ms · traza `3464a2d1-10d1-443d-b46c-afb1aef254a9`
+**Respuesta.** HTTP 201 (esperado 201) · 99 ms · traza `e118c4e7-4e8f-43fc-8880-f5e57d33ebd1`
 
 ```json
 {
-  "producto_id": 18,
+  "producto_id": 1,
   "cantidad": 12,
   "duplicado": false,
   "origen": {
     "microhub_id": 1,
-    "existencia": 50,
-    "movimiento_id": 3062
+    "existencia": 44,
+    "movimiento_id": 3419
   },
   "destino": {
-    "microhub_id": 20,
+    "microhub_id": 27,
     "existencia": 12,
-    "movimiento_id": 3063
+    "movimiento_id": 3420
   }
 }
 ```
@@ -475,7 +475,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 0469fca4-380d-4f58-8eb1-f096b7783e4b
+X-Traza-Id: b95cbf5f-ce52-4942-bf97-fc0b5d60a3b2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 Content-Type: application/json
 ```
@@ -488,26 +488,26 @@ Content-Type: application/json
       "cantidad": 3
     },
     {
-      "producto_id": 18,
+      "producto_id": 1,
       "cantidad": 3
     }
   ],
-  "operacion_uuid": "6b9f4dd3-a8e1-4b7c-a07e-2f9ec304b738"
+  "operacion_uuid": "9dad87ce-c4c3-44ec-a7c1-cc34b42e6164"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 365 ms · traza `0469fca4-380d-4f58-8eb1-f096b7783e4b`
+**Respuesta.** HTTP 201 (esperado 201) · 274 ms · traza `b95cbf5f-ce52-4942-bf97-fc0b5d60a3b2`
 
 ```json
 {
-  "id": 790,
-  "folio": "PED-20261127-000790",
+  "id": 884,
+  "folio": "PED-20261127-000884",
   "estado": "asignado",
   "zona_id": 3,
-  "microhub_id": 20,
-  "subtotal": 306.0,
+  "microhub_id": 27,
+  "subtotal": 289.5,
   "costo_envio": 0.0,
-  "total": 306.0,
+  "total": 289.5,
   "asignado": true,
   "motivo": null,
   "duplicado": false
@@ -521,7 +521,7 @@ Content-Type: application/json
   {
     "criterio": "menor_distancia",
     "candidatos_evaluados": 4,
-    "microhub_ganador_id": 20,
+    "microhub_ganador_id": 27,
     "motivo": null
   }
 ]
@@ -533,7 +533,7 @@ Content-Type: application/json
 [
   {
     "tipo": "salida_pedido",
-    "producto_id": 18,
+    "producto_id": 1,
     "cantidad": -3,
     "existencia_resultante": 9
   },
@@ -550,12 +550,12 @@ Content-Type: application/json
 
 **Objetivo.** La transición la valida el motor.
 
-**Petición.** `POST http://pedidos:5104/api/v1/pedidos/790/estado`
+**Petición.** `POST http://pedidos:5104/api/v1/pedidos/884/estado`
 
 ```http
 Accept: application/json
-X-Traza-Id: 0729838c-9d28-4a68-9043-d300fa624343
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OCIs…(296 caracteres)
+X-Traza-Id: e92a3d24-c2ca-42c5-b19a-fabc8f63d449
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4OCIs…(296 caracteres)
 Content-Type: application/json
 ```
 
@@ -565,20 +565,20 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 117 ms · traza `0729838c-9d28-4a68-9043-d300fa624343`
+**Respuesta.** HTTP 200 (esperado 200) · 95 ms · traza `e92a3d24-c2ca-42c5-b19a-fabc8f63d449`
 
 ```json
 {
-  "id": 790,
-  "folio": "PED-20261127-000790",
+  "id": 884,
+  "folio": "PED-20261127-000884",
   "estado": "en_preparacion",
   "zona": {
     "id": 3,
     "nombre": "Paseo de San Bernabé"
   },
-  "microhub_id": 20,
-  "total": 306.0,
-  "creado_en": "2026-11-27T02:10:16-06:00"
+  "microhub_id": 27,
+  "total": 289.5,
+  "creado_en": "2026-11-27T11:38:11-06:00"
 }
 ```
 
@@ -586,12 +586,12 @@ Content-Type: application/json
 
 **Objetivo.** Queda disponible para despacho.
 
-**Petición.** `POST http://pedidos:5104/api/v1/pedidos/790/listo`
+**Petición.** `POST http://pedidos:5104/api/v1/pedidos/884/listo`
 
 ```http
 Accept: application/json
-X-Traza-Id: 471a0faa-e5f5-4019-8bd8-c5cb3f59d897
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OCIs…(296 caracteres)
+X-Traza-Id: 2ed7fabf-47dd-494c-997f-a71095adc93c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4OCIs…(296 caracteres)
 Content-Type: application/json
 ```
 
@@ -599,13 +599,13 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 73 ms · traza `471a0faa-e5f5-4019-8bd8-c5cb3f59d897`
+**Respuesta.** HTTP 200 (esperado 200) · 61 ms · traza `2ed7fabf-47dd-494c-997f-a71095adc93c`
 
 ```json
 {
-  "id": 790,
+  "id": 884,
   "estado": "en_preparacion",
-  "listo_en": "2026-11-27T02:10:17-06:00"
+  "listo_en": "2026-11-27T11:38:11-06:00"
 }
 ```
 
@@ -619,16 +619,16 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 10460ba6-5b0f-4fa1-a187-78a511eed11a
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OCIs…(296 caracteres)
+X-Traza-Id: 190011f2-2848-4ba9-b89e-f620a409cc46
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4OCIs…(296 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "microhub_id": 20,
+  "microhub_id": 27,
   "pedido_ids": [
-    790
+    884
   ],
   "repartidor_ids": [
     7
@@ -638,16 +638,16 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 260 ms · traza `10460ba6-5b0f-4fa1-a187-78a511eed11a`
+**Respuesta.** HTTP 201 (esperado 201) · 176 ms · traza `190011f2-2848-4ba9-b89e-f620a409cc46`
 
 ```json
 {
-  "id": 147,
+  "id": 164,
   "estado": "propuesto",
   "version": 1,
   "microhub": {
-    "id": 20,
-    "nombre": "Microhub EC3AF"
+    "id": 27,
+    "nombre": "Microhub 7F09B"
   },
   "fecha": "2026-11-27",
   "metodo_pedido": "automatico",
@@ -665,8 +665,8 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 790,
-            "folio": "PED-20261127-000790"
+            "id": 884,
+            "folio": "PED-20261127-000884"
           },
           "zona": {
             "id": 3,
@@ -737,25 +737,25 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: dfd943a4-f806-41a3-ab19-e515b839d480
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OCIs…(296 caracteres)
+X-Traza-Id: 97d89f41-b1e5-429c-a1fd-d8444716d683
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4OCIs…(296 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "pedido_id": 790,
+  "pedido_id": 884,
   "repartidor_id": 7,
   "orden_parada": 1
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 96 ms · traza `dfd943a4-f806-41a3-ab19-e515b839d480`
+**Respuesta.** HTTP 201 (esperado 201) · 61 ms · traza `97d89f41-b1e5-429c-a1fd-d8444716d683`
 
 ```json
 {
-  "entrega_id": 457,
-  "pedido_id": 790,
+  "entrega_id": 505,
+  "pedido_id": 884,
   "repartidor_id": 7,
   "estado_pedido": "en_ruta"
 }
@@ -768,7 +768,7 @@ Content-Type: application/json
   {
     "titulo": "Nueva entrega asignada",
     "tipo": "entrega",
-    "referencia_id": "457"
+    "referencia_id": "505"
   }
 ]
 ```
@@ -781,38 +781,38 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 5dbcfd2a-f111-41db-906d-7f069ac44a07
+X-Traza-Id: 733c8344-c987-4ef5-925b-27c7a5cffada
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 56 ms · traza `5dbcfd2a-f111-41db-906d-7f069ac44a07`
+**Respuesta.** HTTP 200 (esperado 200) · 66 ms · traza `733c8344-c987-4ef5-925b-27c7a5cffada`
 
 ```json
 {
   "datos": [
     {
-      "id": 439,
-      "pedido_id": 731,
-      "folio": "PED-20261127-000731",
+      "id": 493,
+      "pedido_id": 866,
+      "folio": "PED-20261127-000866",
       "estado_pedido": "en_ruta",
       "orden_parada": 1,
-      "direccion": "Cerro Prieto 4059, Valles de San Bernabé",
-      "zona": "Valles de San Bernabé",
-      "distancia_km": 0.63,
-      "minutos_estimados": 5.7,
-      "total": 180.0
+      "direccion": "Valle de Santiago 416, San Bernabé",
+      "zona": "San Bernabé Centro",
+      "distancia_km": 0.38,
+      "minutos_estimados": 5.0,
+      "total": 123.0
     },
     {
-      "id": 457,
-      "pedido_id": 790,
-      "folio": "PED-20261127-000790",
+      "id": 505,
+      "pedido_id": 884,
+      "folio": "PED-20261127-000884",
       "estado_pedido": "en_ruta",
       "orden_parada": 1,
       "direccion": "Nogal 1440, Paseo de San Bernabé",
       "zona": "Paseo de San Bernabé",
       "distancia_km": null,
       "minutos_estimados": null,
-      "total": 306.0
+      "total": 289.5
     },
     {
       "id": 440,
@@ -827,6 +827,30 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
       "total": 261.0
     },
     {
+      "id": 468,
+      "pedido_id": 808,
+      "folio": "PED-20261127-000808",
+      "estado_pedido": "en_ruta",
+      "orden_parada": 2,
+      "direccion": "Valle Alto 2774, Valles de San Bernabé",
+      "zona": "Valles de San Bernabé",
+      "distancia_km": 0.64,
+      "minutos_estimados": 11.5,
+      "total": 128.0
+    },
+    {
+      "id": 494,
+      "pedido_id": 868,
+      "folio": "PED-20261127-000868",
+      "estado_pedido": "en_ruta",
+      "orden_parada": 2,
+      "direccion": "Valle de Santiago 416, San Bernabé",
+      "zona": "San Bernabé Centro",
+      "distancia_km": 0.0,
+      "minutos_estimados": 9.0,
+      "total": 211.5
+    },
+    {
       "id": 441,
       "pedido_id": 732,
       "folio": "PED-20261127-000732",
@@ -837,6 +861,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
       "distancia_km": 0.29,
       "minutos_estimados": 14.5,
       "total": 167.0
+    },
+    {
+      "id": 495,
+      "pedido_id": 867,
+      "folio": "PED-20261127-000867",
+      "estado_pedido": "en_ruta",
+      "orden_parada": 3,
+      "direccion": "Los Ángeles 2920, San Bernabé",
+      "zona": "San Bernabé Centro",
+      "distancia_km": 0.44,
+      "minutos_estimados": 14.2,
+      "total": 163.0
     },
     {
       "id": 414,
@@ -854,7 +890,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
   "paginacion": {
     "pagina": 1,
     "por_pagina": 50,
-    "total": 5,
+    "total": 8,
     "paginas": 1
   }
 }
@@ -866,7 +902,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 [
   {
     "comando": "SCARD auth:sesion:7",
-    "valor": 20
+    "valor": 36
   }
 ]
 ```
@@ -877,11 +913,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Objetivo.** Puntos GPS en MongoDB (2dsphere).
 
-**Petición.** `POST http://seguimiento:5110/api/v1/seguimiento/457/ubicaciones`
+**Petición.** `POST http://seguimiento:5110/api/v1/seguimiento/505/ubicaciones`
 
 ```http
 Accept: application/json
-X-Traza-Id: 78b99b92-4d51-49f1-a8b8-0b2a68b07156
+X-Traza-Id: ad2fe52a-657e-4b7b-b4fa-0e69d7f76b52
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -892,18 +928,18 @@ Content-Type: application/json
     {
       "latitud": 25.760195,
       "longitud": -100.370891,
-      "capturado_en": "2026-11-27T08:06:17.788249+00:00"
+      "capturado_en": "2026-11-27T17:34:12.036599+00:00"
     },
     {
       "latitud": 25.759995,
       "longitud": -100.371091,
-      "capturado_en": "2026-11-27T08:09:17.788276+00:00"
+      "capturado_en": "2026-11-27T17:37:12.036625+00:00"
     }
   ]
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 42 ms · traza `78b99b92-4d51-49f1-a8b8-0b2a68b07156`
+**Respuesta.** HTTP 201 (esperado 201) · 28 ms · traza `ad2fe52a-657e-4b7b-b4fa-0e69d7f76b52`
 
 ```json
 {
@@ -917,24 +953,24 @@ Content-Type: application/json
 
 **Objetivo.** En la base solo sus datos; se descarga con un enlace firmado.
 
-**Petición.** `GET http://documentos:5107/api/v1/documentos/6b093ae9f68f301419471806/enlace`
+**Petición.** `GET http://documentos:5107/api/v1/documentos/6b09c0041bec79631659468d/enlace`
 
 ```http
 Accept: application/json
-X-Traza-Id: edd4f218-1515-4322-b880-9bd849f5cf9b
+X-Traza-Id: 23fd32d7-7f12-41d5-805b-74e459ace446
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 34 ms · traza `edd4f218-1515-4322-b880-9bd849f5cf9b`
+**Respuesta.** HTTP 200 (esperado 200) · 29 ms · traza `23fd32d7-7f12-41d5-805b-74e459ace446`
 
 ```json
 {
-  "id": "6b093ae9f68f301419471806",
-  "nombre": "evidencia-flujo1-EC3AF.jpg",
+  "id": "6b09c0041bec79631659468d",
+  "nombre": "evidencia-flujo1-7F09B.jpg",
   "url_firmada": "http://documentos:5107/api/v1/documentos/descarga?k=document…(208 caracteres)",
   "metodo": "GET",
   "segundos": 300,
-  "expira_en": "2026-11-27T02:15:17-06:00"
+  "expira_en": "2026-11-27T11:43:12-06:00"
 }
 ```
 
@@ -942,18 +978,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```json
 {
-  "_id": "6b093ae9f68f301419471806",
-  "nombre": "evidencia-flujo1-EC3AF.jpg",
+  "_id": "6b09c0041bec79631659468d",
+  "nombre": "evidencia-flujo1-7F09B.jpg",
   "tipo_mime": "image/jpeg",
   "tamano_bytes": 276,
   "sha256": "7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc",
   "referencia": {
     "tipo": "entrega",
-    "id": "457"
+    "id": "505"
   },
   "subido_por": 7,
-  "creado_en": "2026-11-27 08:10:17.860000+00:00",
-  "ruta": "documentos/2026/11/6b093ae9f68f301419471806.jpg",
+  "creado_en": "2026-11-27 17:38:12.092000+00:00",
+  "ruta": "documentos/2026/11/6b09c0041bec79631659468d.jpg",
   "privacidad": "privado",
   "estado": "activo",
   "metadatos": {
@@ -969,11 +1005,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Cobro, ubicación y evidencia; idempotente.
 
-**Petición.** `POST http://entregas:5105/api/v1/entregas/457/resultado`
+**Petición.** `POST http://entregas:5105/api/v1/entregas/505/resultado`
 
 ```http
 Accept: application/json
-X-Traza-Id: 3014a74e-682a-4b96-b090-c0988ee76f0c
+X-Traza-Id: 750a8a02-5982-409a-b07b-e9329fb66058
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -981,28 +1017,28 @@ Content-Type: application/json
 ```json
 {
   "resultado": "entregado",
-  "monto_cobrado": 306.0,
+  "monto_cobrado": 289.5,
   "cambio_entregado": 0,
   "ubicacion": {
     "latitud": 25.759995,
     "longitud": -100.371091
   },
   "evidencia_ids": [
-    "6b093ae9f68f301419471806"
+    "6b09c0041bec79631659468d"
   ],
-  "capturado_en": "2026-11-27T08:10:18.248638+00:00",
-  "id_cliente_local": "ba55095e-50c1-486a-b0f2-34f8b161e09c"
+  "capturado_en": "2026-11-27T17:38:12.316194+00:00",
+  "id_cliente_local": "a54a1903-7934-4b21-89d2-1cc20d8e5d57"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 134 ms · traza `3014a74e-682a-4b96-b090-c0988ee76f0c`
+**Respuesta.** HTTP 201 (esperado 201) · 98 ms · traza `750a8a02-5982-409a-b07b-e9329fb66058`
 
 ```json
 {
-  "entrega_id": 457,
-  "pedido_id": 790,
+  "entrega_id": 505,
+  "pedido_id": 884,
   "estado_pedido": "entregado",
-  "cerrado_en": "2026-11-27T02:10:18-06:00",
+  "cerrado_en": "2026-11-27T11:38:12-06:00",
   "duplicado": false
 }
 ```
@@ -1026,13 +1062,13 @@ Content-Type: application/json
   {
     "estado_anterior": "asignado",
     "estado_nuevo": "en_preparacion",
-    "usuario_id": 78,
+    "usuario_id": 88,
     "proceso": null
   },
   {
     "estado_anterior": "en_preparacion",
     "estado_nuevo": "en_ruta",
-    "usuario_id": 78,
+    "usuario_id": 88,
     "proceso": null
   },
   {
@@ -1054,81 +1090,81 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: b3e3ff28-6491-4279-b72d-2446f5961f03
+X-Traza-Id: 831ff800-3310-4cf4-adb7-7a265ac11877
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 70 ms · traza `b3e3ff28-6491-4279-b72d-2446f5961f03`
+**Respuesta.** HTTP 200 (esperado 200) · 50 ms · traza `831ff800-3310-4cf4-adb7-7a265ac11877`
 
 ```json
 {
   "datos": [
     {
-      "id": 1352,
+      "id": 1568,
       "tipo": "pedido",
-      "titulo": "Pedido PED-20261127-000790",
+      "titulo": "Pedido PED-20261127-000884",
       "mensaje": "El pedido cambió a entregado.",
       "leida": false,
       "referencia": {
         "tipo": "pedido",
-        "id": "790"
+        "id": "884"
       },
-      "creada_en": "2026-11-27T02:10:18-06:00"
+      "creada_en": "2026-11-27T11:38:12-06:00"
     },
     {
-      "id": 1322,
+      "id": 1566,
       "tipo": "pedido",
-      "titulo": "Pedido PED-20261127-000772",
+      "titulo": "Pedido PED-20261127-000882",
       "mensaje": "El pedido cambió a cancelado.",
       "leida": false,
       "referencia": {
         "tipo": "pedido",
-        "id": "772"
+        "id": "882"
       },
-      "creada_en": "2026-11-27T02:06:41-06:00"
+      "creada_en": "2026-11-27T11:37:28-06:00"
     },
     {
-      "id": 1321,
+      "id": 1561,
       "tipo": "pedido",
-      "titulo": "Pedido PED-20261127-000770",
+      "titulo": "Pedido PED-20261127-000881",
       "mensaje": "El pedido cambió a entregado.",
       "leida": false,
       "referencia": {
         "tipo": "pedido",
-        "id": "770"
+        "id": "881"
       },
-      "creada_en": "2026-11-27T02:06:39-06:00"
+      "creada_en": "2026-11-27T11:37:25-06:00"
     },
     {
-      "id": 1275,
+      "id": 1520,
       "tipo": "pedido",
-      "titulo": "Pedido PED-20261127-000766",
+      "titulo": "Pedido PED-20261127-000862",
+      "mensaje": "El pedido cambió a cancelado.",
+      "leida": false,
+      "referencia": {
+        "tipo": "pedido",
+        "id": "862"
+      },
+      "creada_en": "2026-11-27T11:32:53-06:00"
+    },
+    {
+      "id": 1515,
+      "tipo": "pedido",
+      "titulo": "Pedido PED-20261127-000861",
       "mensaje": "El pedido cambió a entregado.",
       "leida": false,
       "referencia": {
         "tipo": "pedido",
-        "id": "766"
+        "id": "861"
       },
-      "creada_en": "2026-11-27T01:25:21-06:00"
-    },
-    {
-      "id": 1246,
-      "tipo": "pedido",
-      "titulo": "Pedido PED-20261127-000762",
-      "mensaje": "El pedido cambió a entrega_fallida.",
-      "leida": false,
-      "referencia": {
-        "tipo": "pedido",
-        "id": "762"
-      },
-      "creada_en": "2026-11-27T01:24:18-06:00"
+      "creada_en": "2026-11-27T11:32:50-06:00"
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 5,
-    "total": 43,
-    "paginas": 9
+    "total": 55,
+    "paginas": 11
   }
 }
 ```
@@ -1139,42 +1175,42 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(2
 
 **Objetivo.** Bitácora, estados, inventario y archivos en una línea de tiempo.
 
-**Petición.** `GET http://auditoria-monitoreo:5126/api/v1/auditoria/trazabilidad/pedido/790`
+**Petición.** `GET http://auditoria-monitoreo:5126/api/v1/auditoria/trazabilidad/pedido/884`
 
 ```http
 Accept: application/json
-X-Traza-Id: ac14872b-6ddb-4a9a-871b-1db0ccc7c79a
+X-Traza-Id: bc8d1a4f-2e00-4318-a2b0-e0625f39078a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 150 ms · traza `ac14872b-6ddb-4a9a-871b-1db0ccc7c79a`
+**Respuesta.** HTTP 200 (esperado 200) · 106 ms · traza `bc8d1a4f-2e00-4318-a2b0-e0625f39078a`
 
 ```json
 {
   "objeto": {
     "tipo": "pedido",
-    "id": "790"
+    "id": "884"
   },
   "total": 15,
   "eventos": [
     {
-      "fecha": "2026-11-27T02:10:16-06:00",
+      "fecha": "2026-11-27T11:38:11-06:00",
       "origen": "auditoria",
       "accion": "alta",
-      "descripcion": "actualizado_en = 2026-11-27T02:10:16.93061-06:00; asignado_en = None; cerrado_en = None; cliente_id = 1",
+      "descripcion": "actualizado_en = 2026-11-27T11:38:11.391577-06:00; asignado_en = None; cerrado_en = None; cliente_id = 1",
       "usuario": {
         "id": 9,
         "nombre": "Juan Chapa Sepúlveda"
       },
       "entidad": {
         "tipo": "pedido",
-        "id": "790"
+        "id": "884"
       },
       "cambios": [
         {
           "campo": "actualizado_en",
           "anterior": null,
-          "nuevo": "2026-11-27T02:10:16.93061-06:00"
+          "nuevo": "2026-11-27T11:38:11.391577-06:00"
         },
         {
           "campo": "asignado_en",
@@ -1199,7 +1235,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         {
           "campo": "creado_en",
           "anterior": null,
-          "nuevo": "2026-11-27T02:10:16.93061-06:00"
+          "nuevo": "2026-11-27T11:38:11.391577-06:00"
         },
         {
           "campo": "domicilio_id",
@@ -1214,12 +1250,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         {
           "campo": "folio",
           "anterior": null,
-          "nuevo": "PED-20261127-000790"
+          "nuevo": "PED-20261127-000884"
         },
         {
           "campo": "id",
           "anterior": null,
-          "nuevo": "790"
+          "nuevo": "884"
         },
         {
           "campo": "listo_en",
@@ -1234,23 +1270,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
       ]
     },
     {
-      "fecha": "2026-11-27T02:10:16-06:00",
+      "fecha": "2026-11-27T11:38:11-06:00",
       "origen": "auditoria",
       "accion": "cambio_estado",
-      "descripcion": "asignado_en = 2026-11-27T02:10:16.93061-06:00; estado: creado → asignado; microhub_id = 20",
+      "descripcion": "asignado_en = 2026-11-27T11:38:11.391577-06:00; estado: creado → asignado; microhub_id = 27",
       "usuario": {
         "id": 9,
         "nombre": "Juan Chapa Sepúlveda"
       },
       "entidad": {
         "tipo": "pedido",
-        "id": "790"
+        "id": "884"
       },
       "cambios": [
         {
           "campo": "asignado_en",
           "anterior": null,
-          "nuevo": "2026-11-27T02:10:16.93061-06:00"
+          "nuevo": "2026-11-27T11:38:11.391577-06:00"
         },
         {
           "campo": "estado",
@@ -1260,12 +1296,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         {
           "campo": "microhub_id",
           "anterior": null,
-          "nuevo": "20"
+          "nuevo": "27"
         }
       ]
     },
     {
-      "fecha": "2026-11-27T02:10:16-06:00",
+      "fecha": "2026-11-27T11:38:11-06:00",
       "origen": "estados",
       "accion": "cambio_estado",
       "descripcion": "nuevo → creado",
@@ -1275,12 +1311,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
       },
       "entidad": {
         "tipo": "pedido",
-        "id": "790"
+        "id": "884"
       },
       "cambios": []
     },
     {
-      "fecha": "2026-11-27T02:10:16-06:00",
+      "fecha": "2026-11-27T11:38:11-06:00",
       "origen": "estados",
       "accion": "cambio_estado",
       "descripcion": "creado → asignado",
@@ -1290,58 +1326,58 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
       },
       "entidad": {
         "tipo": "pedido",
-        "id": "790"
+        "id": "884"
       },
       "cambios": []
     },
     {
-      "fecha": "2026-11-27T02:10:16-06:00",
+      "fecha": "2026-11-27T11:38:11-06:00",
       "origen": "inventario",
       "accion": "movimiento_inventario",
-      "descripcion": "salida_pedido: -3 de producto 18 en microhub 20 (existencia 9)",
+      "descripcion": "salida_pedido: -3 de producto 1 en microhub 27 (existencia 9)",
       "usuario": {
         "id": 9,
         "nombre": "Juan Chapa Sepúlveda"
       },
       "entidad": {
         "tipo": "inventario",
-        "id": "20-18"
+        "id": "27-1"
       },
       "cambios": []
     },
     {
-      "fecha": "2026-11-27T02:10:16-06:00",
+      "fecha": "2026-11-27T11:38:11-06:00",
       "origen": "inventario",
       "accion": "movimiento_inventario",
-      "descripcion": "salida_pedido: -3 de producto 31 en microhub 20 (existencia 9)",
+      "descripcion": "salida_pedido: -3 de producto 31 en microhub 27 (existencia 9)",
       "usuario": {
         "id": 9,
         "nombre": "Juan Chapa Sepúlveda"
       },
       "entidad": {
         "tipo": "inventario",
-        "id": "20-31"
+        "id": "27-31"
       },
       "cambios": []
     },
     {
-      "fecha": "2026-11-27T02:10:17-06:00",
+      "fecha": "2026-11-27T11:38:11-06:00",
       "origen": "auditoria",
       "accion": "cambio_estado",
-      "descripcion": "actualizado_en: 2026-11-27T02:10:16.93061-06:00 → 2026-11-27T02:10:17.177745-06:00; estado: asignado → en_preparacion",
+      "descripcion": "actualizado_en: 2026-11-27T11:38:11.391577-06:00 → 2026-11-27T11:38:11.576025-06:00; estado: asignado → en_preparacion",
       "usuario": {
-        "id": 78,
-        "nombre": "Operador EC3AF"
+        "id": 88,
+        "nombre": "Operador 7F09B"
       },
       "entidad": {
         "tipo": "pedido",
-        "id": "790"
+        "id": "884"
       },
       "cambios": [
         {
           "campo": "actualizado_en",
-          "anterior": "2026-11-27T02:10:16.93061-06:00",
-          "nuevo": "2026-11-27T02:10:17.177745-06:00"
+          "anterior": "2026-11-27T11:38:11.391577-06:00",
+          "nuevo": "2026-11-27T11:38:11.576025-06:00"
         },
         {
           "campo": "estado",
@@ -1351,59 +1387,59 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
       ]
     },
     {
-      "fecha": "2026-11-27T02:10:17-06:00",
+      "fecha": "2026-11-27T11:38:11-06:00",
       "origen": "estados",
       "accion": "cambio_estado",
       "descripcion": "asignado → en_preparacion",
       "usuario": {
-        "id": 78,
-        "nombre": "Operador EC3AF"
+        "id": 88,
+        "nombre": "Operador 7F09B"
       },
       "entidad": {
         "tipo": "pedido",
-        "id": "790"
+        "id": "884"
       },
       "cambios": []
     },
     {
-      "fecha": "2026-11-27T02:10:17-06:00",
+      "fecha": "2026-11-27T11:38:11-06:00",
       "origen": "auditoria",
       "accion": "modificacion",
-      "descripcion": "listo_en = 2026-11-27T02:10:17.297127-06:00",
+      "descripcion": "listo_en = 2026-11-27T11:38:11.672281-06:00",
       "usuario": {
-        "id": 78,
-        "nombre": "Operador EC3AF"
+        "id": 88,
+        "nombre": "Operador 7F09B"
       },
       "entidad": {
         "tipo": "pedido",
-        "id": "790"
+        "id": "884"
       },
       "cambios": [
         {
           "campo": "listo_en",
           "anterior": null,
-          "nuevo": "2026-11-27T02:10:17.297127-06:00"
+          "nuevo": "2026-11-27T11:38:11.672281-06:00"
         }
       ]
     },
     {
-      "fecha": "2026-11-27T02:10:17-06:00",
+      "fecha": "2026-11-27T11:38:11-06:00",
       "origen": "auditoria",
       "accion": "alta",
-      "descripcion": "asignada_en = 2026-11-27T02:10:17.627116-06:00; cambio_entregado = None; capturado_en = None; cerrada_por_usuario_id = None",
+      "descripcion": "asignada_en = 2026-11-27T11:38:11.90388-06:00; cambio_entregado = None; capturado_en = None; cerrada_por_usuario_id = None",
       "usuario": {
-        "id": 78,
-        "nombre": "Operador EC3AF"
+        "id": 88,
+        "nombre": "Operador 7F09B"
       },
       "entidad": {
         "tipo": "entrega",
-        "id": "457"
+        "id": "505"
       },
       "cambios": [
         {
           "campo": "asignada_en",
           "anterior": null,
-          "nuevo": "2026-11-27T02:10:17.627116-06:00"
+          "nuevo": "2026-11-27T11:38:11.90388-06:00"
         },
         {
           "campo": "cambio_entregado",
@@ -1463,23 +1499,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
       ]
     },
     {
-      "fecha": "2026-11-27T02:10:17-06:00",
+      "fecha": "2026-11-27T11:38:11-06:00",
       "origen": "auditoria",
       "accion": "cambio_estado",
-      "descripcion": "actualizado_en: 2026-11-27T02:10:17.177745-06:00 → 2026-11-27T02:10:17.627116-06:00; estado: en_preparacion → en_ruta",
+      "descripcion": "actualizado_en: 2026-11-27T11:38:11.576025-06:00 → 2026-11-27T11:38:11.90388-06:00; estado: en_preparacion → en_ruta",
       "usuario": {
-        "id": 78,
-        "nombre": "Operador EC3AF"
+        "id": 88,
+        "nombre": "Operador 7F09B"
       },
       "entidad": {
         "tipo": "pedido",
-        "id": "790"
+        "id": "884"
       },
       "cambios": [
         {
           "campo": "actualizado_en",
-          "anterior": "2026-11-27T02:10:17.177745-06:00",
-          "nuevo": "2026-11-27T02:10:17.627116-06:00"
+          "anterior": "2026-11-27T11:38:11.576025-06:00",
+          "nuevo": "2026-11-27T11:38:11.90388-06:00"
         },
         {
           "campo": "estado",
@@ -1489,32 +1525,32 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
       ]
     },
     {
-      "fecha": "2026-11-27T02:10:17-06:00",
+      "fecha": "2026-11-27T11:38:11-06:00",
       "origen": "estados",
       "accion": "cambio_estado",
       "descripcion": "en_preparacion → en_ruta",
       "usuario": {
-        "id": 78,
-        "nombre": "Operador EC3AF"
+        "id": 88,
+        "nombre": "Operador 7F09B"
       },
       "entidad": {
         "tipo": "pedido",
-        "id": "790"
+        "id": "884"
       },
       "cambios": []
     },
     {
-      "fecha": "2026-11-27T02:10:18-06:00",
+      "fecha": "2026-11-27T11:38:12-06:00",
       "origen": "auditoria",
       "accion": "modificacion",
-      "descripcion": "cambio_entregado = 0.0; capturado_en = 2026-11-27T02:10:18.2…(143 caracteres)",
+      "descripcion": "cambio_entregado = 0.0; capturado_en = 2026-11-27T11:38:12.3…(145 caracteres)",
       "usuario": {
         "id": 7,
         "nombre": "Ramiro Alanís Lozano"
       },
       "entidad": {
         "tipo": "entrega",
-        "id": "457"
+        "id": "505"
       },
       "cambios": [
         {
@@ -1525,7 +1561,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         {
           "campo": "capturado_en",
           "anterior": null,
-          "nuevo": "2026-11-27T02:10:18.248638-06:00"
+          "nuevo": "2026-11-27T11:38:12.316194-06:00"
         },
         {
           "campo": "cerrada_por_usuario_id",
@@ -1535,7 +1571,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         {
           "campo": "cierre_en",
           "anterior": null,
-          "nuevo": "2026-11-27T02:10:18.3021-06:00"
+          "nuevo": "2026-11-27T11:38:12.362307-06:00"
         },
         {
           "campo": "cierre_latitud",
@@ -1555,22 +1591,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         {
           "campo": "evidencia_ids",
           "anterior": null,
-          "nuevo": "[\"6b093ae9f68f301419471806\"]"
+          "nuevo": "[\"6b09c0041bec79631659468d\"]"
         },
         {
           "campo": "evidencia_url",
           "anterior": null,
-          "nuevo": "/api/v1/documentos/6b093ae9f68f301419471806"
+          "nuevo": "/api/v1/documentos/6b09c0041bec79631659468d"
         },
         {
           "campo": "id_cliente_local",
           "anterior": null,
-          "nuevo": "ba55095e-50c1-486a-b0f2-34f8b161e09c"
+          "nuevo": "a54a1903-7934-4b21-89d2-1cc20d8e5d57"
         },
         {
           "campo": "monto_cobrado",
           "anterior": null,
-          "nuevo": "306.0"
+          "nuevo": "289.5"
         },
         {
           "campo": "resultado",
@@ -1580,28 +1616,28 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
       ]
     },
     {
-      "fecha": "2026-11-27T02:10:18-06:00",
+      "fecha": "2026-11-27T11:38:12-06:00",
       "origen": "auditoria",
       "accion": "cambio_estado",
-      "descripcion": "actualizado_en: 2026-11-27T02:10:17.627116-06:00 → 2026-11-2…(155 caracteres)",
+      "descripcion": "actualizado_en: 2026-11-27T11:38:11.90388-06:00 → 2026-11-27…(158 caracteres)",
       "usuario": {
         "id": 7,
         "nombre": "Ramiro Alanís Lozano"
       },
       "entidad": {
         "tipo": "pedido",
-        "id": "790"
+        "id": "884"
       },
       "cambios": [
         {
           "campo": "actualizado_en",
-          "anterior": "2026-11-27T02:10:17.627116-06:00",
-          "nuevo": "2026-11-27T02:10:18.3021-06:00"
+          "anterior": "2026-11-27T11:38:11.90388-06:00",
+          "nuevo": "2026-11-27T11:38:12.362307-06:00"
         },
         {
           "campo": "cerrado_en",
           "anterior": null,
-          "nuevo": "2026-11-27T02:10:18.3021-06:00"
+          "nuevo": "2026-11-27T11:38:12.362307-06:00"
         },
         {
           "campo": "estado",
@@ -1611,7 +1647,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
       ]
     },
     {
-      "fecha": "2026-11-27T02:10:18-06:00",
+      "fecha": "2026-11-27T11:38:12-06:00",
       "origen": "estados",
       "accion": "cambio_estado",
       "descripcion": "en_ruta → entregado",
@@ -1621,7 +1657,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
       },
       "entidad": {
         "tipo": "pedido",
-        "id": "790"
+        "id": "884"
       },
       "cambios": []
     }
@@ -1635,15 +1671,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 **Objetivo.** Datos listos para Highcharts.
 
-**Petición.** `GET http://reportes:5123/api/v1/reportes/comparacion_microhubs/grafica?microhub_id=20`
+**Petición.** `GET http://reportes:5123/api/v1/reportes/comparacion_microhubs/grafica?microhub_id=27`
 
 ```http
 Accept: application/json
-X-Traza-Id: ea607dda-d0a2-4f47-b94f-4788dd2e18cc
+X-Traza-Id: ba6badd9-631e-4e8a-911e-870f82150352
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 153 ms · traza `ea607dda-d0a2-4f47-b94f-4788dd2e18cc`
+**Respuesta.** HTTP 200 (esperado 200) · 110 ms · traza `ba6badd9-631e-4e8a-911e-870f82150352`
 
 ```json
 {
@@ -1652,7 +1688,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
   "tipo": "column",
   "unidad": "pedidos / MXN",
   "categorias": [
-    "Microhub EC3AF"
+    "Microhub 7F09B"
   ],
   "series": [
     {
@@ -1664,7 +1700,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
     {
       "nombre": "Venta",
       "datos": [
-        306.0
+        289.5
       ]
     }
   ]
@@ -1677,15 +1713,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 **Objetivo.** Baja lógica; conserva su historia.
 
-**Petición.** `DELETE http://microhubs:5109/api/v1/microhubs/20`
+**Petición.** `DELETE http://microhubs:5109/api/v1/microhubs/27`
 
 ```http
 Accept: application/json
-X-Traza-Id: be2cb53e-4d19-4973-9dff-670da0f98410
+X-Traza-Id: 9538525e-04bc-4f16-90fa-baae74cc1854
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 54 ms · traza `be2cb53e-4d19-4973-9dff-670da0f98410`
+**Respuesta.** HTTP 204 (esperado 204) · 45 ms · traza `9538525e-04bc-4f16-90fa-baae74cc1854`
 
 ```json
 (sin cuerpo)
@@ -1701,7 +1737,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: d522ff9e-55a5-4cfc-96e5-8755a122300c
+X-Traza-Id: a4aff505-96ec-40cd-b5b0-64862242687a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 Content-Type: application/json
 ```
@@ -1714,16 +1750,16 @@ Content-Type: application/json
       "cantidad": 10
     }
   ],
-  "operacion_uuid": "7c870c76-c26b-44ca-8b3b-51cabcdab890"
+  "operacion_uuid": "278eb288-eea9-4a2e-9489-70067626cd71"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 272 ms · traza `d522ff9e-55a5-4cfc-96e5-8755a122300c`
+**Respuesta.** HTTP 201 (esperado 201) · 223 ms · traza `a4aff505-96ec-40cd-b5b0-64862242687a`
 
 ```json
 {
-  "id": 791,
-  "folio": "PED-20261127-000791",
+  "id": 885,
+  "folio": "PED-20261127-000885",
   "estado": "asignado",
   "zona_id": 3,
   "microhub_id": 2,
@@ -1744,7 +1780,7 @@ Content-Type: application/json
     "microhub_id": 2,
     "producto_id": 31,
     "cantidad": -10,
-    "existencia_resultante": 30
+    "existencia_resultante": 24
   }
 ]
 ```
@@ -1759,18 +1795,18 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 96478ee2-67e4-4e6d-b13b-544b6e6eb34a
+X-Traza-Id: 11f96c05-fca1-4cf6-8c07-910fec7bd1ba
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "minimo": 301
+  "minimo": 565
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 192 ms · traza `96478ee2-67e4-4e6d-b13b-544b6e6eb34a`
+**Respuesta.** HTTP 200 (esperado 200) · 157 ms · traza `11f96c05-fca1-4cf6-8c07-910fec7bd1ba`
 
 ```json
 {
@@ -1783,12 +1819,12 @@ Content-Type: application/json
     "clave_interna": "LA-003",
     "nombre": "Queso fresco"
   },
-  "existencia": 291,
-  "minimo": 301,
+  "existencia": 555,
+  "minimo": 565,
   "reservado": 0,
-  "disponible": 291,
+  "disponible": 555,
   "estado": "bajo_minimo",
-  "actualizado_en": "2026-11-27T02:10:20-06:00"
+  "actualizado_en": "2026-11-27T11:38:14-06:00"
 }
 ```
 
@@ -1800,11 +1836,11 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 5c43e215-ffce-4959-b814-1a0063dc9cf1
+X-Traza-Id: 7fb82a2e-6212-486b-8258-f867dacf2eeb
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 113 ms · traza `5c43e215-ffce-4959-b814-1a0063dc9cf1`
+**Respuesta.** HTTP 200 (esperado 200) · 111 ms · traza `7fb82a2e-6212-486b-8258-f867dacf2eeb`
 
 ```json
 {
@@ -1819,33 +1855,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "clave_interna": "LA-003",
         "nombre": "Queso fresco"
       },
-      "existencia": 291,
-      "minimo": 301,
-      "disponible": 291,
+      "existencia": 555,
+      "minimo": 565,
+      "disponible": 555,
       "faltante": 10,
-      "severidad": "baja"
-    },
-    {
-      "microhub": {
-        "id": 1,
-        "nombre": "Microhub San Bernabé Centro"
-      },
-      "producto": {
-        "id": 40,
-        "clave_interna": "LI-004",
-        "nombre": "Limpiador multiusos"
-      },
-      "existencia": 8,
-      "minimo": 8,
-      "disponible": 8,
-      "faltante": 0,
       "severidad": "baja"
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 100,
-    "total": 2,
+    "total": 1,
     "paginas": 1
   }
 }
@@ -1861,7 +1881,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: de64a740-0d97-4799-bd7c-c5e2e95ce14e
+X-Traza-Id: ac51189d-b3ab-46e3-8d03-681e4b6b0816
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -1879,12 +1899,12 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 107 ms · traza `de64a740-0d97-4799-bd7c-c5e2e95ce14e`
+**Respuesta.** HTTP 201 (esperado 201) · 90 ms · traza `ac51189d-b3ab-46e3-8d03-681e4b6b0816`
 
 ```json
 {
-  "id": 101,
-  "folio": "SC-20261127-000101",
+  "id": 119,
+  "folio": "SC-20261127-000119",
   "microhub_id": 1,
   "estado": "pendiente",
   "motivo": "Faltante detectado por el sistema",
@@ -1892,7 +1912,7 @@ Content-Type: application/json
   "decidida_por": null,
   "decision_motivo": null,
   "decidida_en": null,
-  "creada_en": "2026-11-27T02:10:20-06:00",
+  "creada_en": "2026-11-27T11:38:14-06:00",
   "lineas": [
     {
       "producto": {
@@ -1909,11 +1929,11 @@ Content-Type: application/json
 
 **Objetivo.** Quien pidió recibe el aviso.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/101/decision`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/119/decision`
 
 ```http
 Accept: application/json
-X-Traza-Id: 48d04161-7a0e-4e5a-87cf-540927d5330b
+X-Traza-Id: 4ecde880-5159-4eb5-8a28-6f0b36549a7e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -1925,20 +1945,20 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 99 ms · traza `48d04161-7a0e-4e5a-87cf-540927d5330b`
+**Respuesta.** HTTP 200 (esperado 200) · 97 ms · traza `4ecde880-5159-4eb5-8a28-6f0b36549a7e`
 
 ```json
 {
-  "id": 101,
-  "folio": "SC-20261127-000101",
+  "id": 119,
+  "folio": "SC-20261127-000119",
   "microhub_id": 1,
   "estado": "aprobada",
   "motivo": "Faltante detectado por el sistema",
   "solicitada_por": 2,
   "decidida_por": 1,
   "decision_motivo": "Con presupuesto",
-  "decidida_en": "2026-11-27T02:10:20-06:00",
-  "creada_en": "2026-11-27T02:10:20-06:00",
+  "decidida_en": "2026-11-27T11:38:14-06:00",
+  "creada_en": "2026-11-27T11:38:14-06:00",
   "lineas": [
     {
       "producto": {
@@ -1955,11 +1975,11 @@ Content-Type: application/json
 
 **Objetivo.** Al proveedor con la mejor oferta.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/101/ordenar`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/119/ordenar`
 
 ```http
 Accept: application/json
-X-Traza-Id: 383c88fd-39e0-4403-9f7a-202e3255bd79
+X-Traza-Id: 625457cb-0f74-4627-be05-d5d8e54ffae0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -1968,16 +1988,16 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 347 ms · traza `383c88fd-39e0-4403-9f7a-202e3255bd79`
+**Respuesta.** HTTP 201 (esperado 201) · 215 ms · traza `625457cb-0f74-4627-be05-d5d8e54ffae0`
 
 ```json
 {
-  "solicitud_id": 101,
+  "solicitud_id": 119,
   "ordenes": [
     {
-      "id": 64,
-      "folio": "OC-20261127-000064",
-      "solicitud_id": 101,
+      "id": 78,
+      "folio": "OC-20261127-000078",
+      "solicitud_id": 119,
       "proveedor": {
         "id": 1,
         "nombre": "Abarrotes del Norte"
@@ -1986,7 +2006,7 @@ Content-Type: application/json
       "estado": "emitida",
       "fecha_esperada": "2026-11-29",
       "total": 4060.0,
-      "creada_en": "2026-11-27T02:10:21-06:00",
+      "creada_en": "2026-11-27T11:38:14-06:00",
       "cerrada_en": null,
       "lineas": [
         {
@@ -2009,18 +2029,18 @@ Content-Type: application/json
 
 **Objetivo.** Sube el inventario una sola vez (idempotente).
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/64/recepcion`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/78/recepcion`
 
 ```http
 Accept: application/json
-X-Traza-Id: ec6587c3-73c9-4949-927b-3f7f9d41968a
+X-Traza-Id: 1cbdd7ac-82dd-438f-8ee3-b1146b2ecc59
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "operacion_uuid": "59a88f86-f86a-4314-8186-ca512bd4edc6",
+  "operacion_uuid": "7e44279b-9502-4824-8864-e226cb08218d",
   "nota": "Completo",
   "lineas": [
     {
@@ -2031,14 +2051,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 394 ms · traza `ec6587c3-73c9-4949-927b-3f7f9d41968a`
+**Respuesta.** HTTP 201 (esperado 201) · 294 ms · traza `1cbdd7ac-82dd-438f-8ee3-b1146b2ecc59`
 
 ```json
 {
   "orden": {
-    "id": 64,
-    "folio": "OC-20261127-000064",
-    "solicitud_id": 101,
+    "id": 78,
+    "folio": "OC-20261127-000078",
+    "solicitud_id": 119,
     "proveedor": {
       "id": 1,
       "nombre": "Abarrotes del Norte"
@@ -2047,8 +2067,8 @@ Content-Type: application/json
     "estado": "recibida",
     "fecha_esperada": "2026-11-29",
     "total": 4060.0,
-    "creada_en": "2026-11-27T02:10:21-06:00",
-    "cerrada_en": "2026-11-27T02:10:21-06:00",
+    "creada_en": "2026-11-27T11:38:14-06:00",
+    "cerrada_en": "2026-11-27T11:38:15-06:00",
     "lineas": [
       {
         "producto": {
@@ -2073,8 +2093,8 @@ Content-Type: application/json
 ```json
 [
   {
-    "existencia": 391,
-    "minimo": 301
+    "existencia": 655,
+    "minimo": 565
   }
 ]
 ```
@@ -2085,24 +2105,24 @@ Content-Type: application/json
 
 **Objetivo.** Archivo con enlace firmado.
 
-**Petición.** `GET http://documentos:5107/api/v1/documentos/6b093aedf68f30141947180b/enlace`
+**Petición.** `GET http://documentos:5107/api/v1/documentos/6b09c0071bec796316594692/enlace`
 
 ```http
 Accept: application/json
-X-Traza-Id: 3fc2eee6-5791-47ec-bcad-d002f335404a
+X-Traza-Id: ca2348bb-f217-4c54-9dc7-b5f981fd5302
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 35 ms · traza `3fc2eee6-5791-47ec-bcad-d002f335404a`
+**Respuesta.** HTTP 200 (esperado 200) · 28 ms · traza `ca2348bb-f217-4c54-9dc7-b5f981fd5302`
 
 ```json
 {
-  "id": "6b093aedf68f30141947180b",
-  "nombre": "remision-64.jpg",
+  "id": "6b09c0071bec796316594692",
+  "nombre": "remision-78.jpg",
   "url_firmada": "http://documentos:5107/api/v1/documentos/descarga?k=document…(197 caracteres)",
   "metodo": "GET",
   "segundos": 300,
-  "expira_en": "2026-11-27T02:15:21-06:00"
+  "expira_en": "2026-11-27T11:43:15-06:00"
 }
 ```
 
@@ -2116,11 +2136,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: ef5c8940-c146-49b4-b6dc-e219262e39af
+X-Traza-Id: d9018e93-75b2-44cd-857a-aae9380e9aa6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 75 ms · traza `ef5c8940-c146-49b4-b6dc-e219262e39af`
+**Respuesta.** HTTP 200 (esperado 200) · 48 ms · traza `d9018e93-75b2-44cd-857a-aae9380e9aa6`
 
 ```json
 {
@@ -2128,7 +2148,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
     "tipo": "inventario",
     "id": "1-31"
   },
-  "total": 21,
+  "total": 27,
   "eventos": [
     {
       "fecha": "2026-10-19T19:30:40-06:00",
@@ -2414,6 +2434,96 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "id": "1-31"
       },
       "cambios": []
+    },
+    {
+      "fecha": "2026-11-27T11:32:48-06:00",
+      "origen": "inventario",
+      "accion": "movimiento_inventario",
+      "descripcion": "transferencia_salida: -12 de producto 31 en microhub 1 (existencia 379). Inventario inicial del microhub nuevo",
+      "usuario": {
+        "id": 1,
+        "nombre": "Mauro Castillo Peña"
+      },
+      "entidad": {
+        "tipo": "inventario",
+        "id": "1-31"
+      },
+      "cambios": []
+    },
+    {
+      "fecha": "2026-11-27T11:32:52-06:00",
+      "origen": "inventario",
+      "accion": "movimiento_inventario",
+      "descripcion": "recepcion: +100 de producto 31 en microhub 1 (existencia 479). Recepción de la orden OC-20261127-000073: Completo",
+      "usuario": {
+        "id": 2,
+        "nombre": "Ruth Elizabeth Soriano"
+      },
+      "entidad": {
+        "tipo": "inventario",
+        "id": "1-31"
+      },
+      "cambios": []
+    },
+    {
+      "fecha": "2026-11-27T11:37:23-06:00",
+      "origen": "inventario",
+      "accion": "movimiento_inventario",
+      "descripcion": "transferencia_salida: -12 de producto 31 en microhub 1 (existencia 467). Inventario inicial del microhub nuevo",
+      "usuario": {
+        "id": 1,
+        "nombre": "Mauro Castillo Peña"
+      },
+      "entidad": {
+        "tipo": "inventario",
+        "id": "1-31"
+      },
+      "cambios": []
+    },
+    {
+      "fecha": "2026-11-27T11:37:28-06:00",
+      "origen": "inventario",
+      "accion": "movimiento_inventario",
+      "descripcion": "recepcion: +100 de producto 31 en microhub 1 (existencia 567). Recepción de la orden OC-20261127-000077: Completo",
+      "usuario": {
+        "id": 2,
+        "nombre": "Ruth Elizabeth Soriano"
+      },
+      "entidad": {
+        "tipo": "inventario",
+        "id": "1-31"
+      },
+      "cambios": []
+    },
+    {
+      "fecha": "2026-11-27T11:38:10-06:00",
+      "origen": "inventario",
+      "accion": "movimiento_inventario",
+      "descripcion": "transferencia_salida: -12 de producto 31 en microhub 1 (existencia 555). Inventario inicial del microhub nuevo",
+      "usuario": {
+        "id": 1,
+        "nombre": "Mauro Castillo Peña"
+      },
+      "entidad": {
+        "tipo": "inventario",
+        "id": "1-31"
+      },
+      "cambios": []
+    },
+    {
+      "fecha": "2026-11-27T11:38:14-06:00",
+      "origen": "inventario",
+      "accion": "movimiento_inventario",
+      "descripcion": "recepcion: +100 de producto 31 en microhub 1 (existencia 655). Recepción de la orden OC-20261127-000078: Completo",
+      "usuario": {
+        "id": 2,
+        "nombre": "Ruth Elizabeth Soriano"
+      },
+      "entidad": {
+        "tipo": "inventario",
+        "id": "1-31"
+      },
+      "cambios": []
     }
   ]
 }
@@ -2429,16 +2539,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 10aaec60-a5a6-4cc6-b548-c90cd061b91b
+X-Traza-Id: f5db220b-8b18-43af-8a89-073ac5b2f72e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 232 ms · traza `10aaec60-a5a6-4cc6-b548-c90cd061b91b`
+**Respuesta.** HTTP 200 (esperado 200) · 166 ms · traza `f5db220b-8b18-43af-8a89-073ac5b2f72e`
 
 ```json
 ﻿Microhub,Producto,Existencia,Mínimo,Disponible,Faltante,Severidad
-Microhub San Bernabé Centro,Limpiador multiusos,8,8,8,0,baja
-Total,,,,,0,
 
 ```
 
@@ -2452,7 +2560,7 @@ Total,,,,,0,
 
 ```http
 Accept: application/json
-X-Traza-Id: 73f87e5a-6c8a-4784-83e6-ed873cc6e093
+X-Traza-Id: d1e2678c-84ba-44f1-80c1-2c264d9472f6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 Content-Type: application/json
 ```
@@ -2461,29 +2569,29 @@ Content-Type: application/json
 {
   "lineas": [
     {
-      "producto_id": 32,
+      "producto_id": 51,
       "cantidad": 3
     },
     {
-      "producto_id": 51,
+      "producto_id": 31,
       "cantidad": 3
     }
   ]
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 249 ms · traza `73f87e5a-6c8a-4784-83e6-ed873cc6e093`
+**Respuesta.** HTTP 201 (esperado 201) · 209 ms · traza `d1e2678c-84ba-44f1-80c1-2c264d9472f6`
 
 ```json
 {
-  "id": 792,
-  "folio": "PED-20261127-000792",
+  "id": 886,
+  "folio": "PED-20261127-000886",
   "estado": "asignado",
   "zona_id": 3,
   "microhub_id": 2,
-  "subtotal": 420.0,
+  "subtotal": 378.0,
   "costo_envio": 0.0,
-  "total": 420.0,
+  "total": 378.0,
   "asignado": true,
   "motivo": null,
   "duplicado": false
@@ -2500,24 +2608,24 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 30f4ae4a-6f82-4dcf-95bf-ad7baed4915b
+X-Traza-Id: 34b10f45-f738-4cdf-bfab-718c02c0838c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(310 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "pedido_id": 792,
+  "pedido_id": 886,
   "repartidor_id": 7
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 65 ms · traza `30f4ae4a-6f82-4dcf-95bf-ad7baed4915b`
+**Respuesta.** HTTP 201 (esperado 201) · 71 ms · traza `34b10f45-f738-4cdf-bfab-718c02c0838c`
 
 ```json
 {
-  "entrega_id": 458,
-  "pedido_id": 792,
+  "entrega_id": 506,
+  "pedido_id": 886,
   "repartidor_id": 7,
   "estado_pedido": "en_ruta"
 }
@@ -2533,43 +2641,43 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 3104f310-03e9-495b-9abd-cab09c7b007b
+X-Traza-Id: b6a1802a-00d9-4781-8fe7-254070dfa39d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "lote_uuid": "63045dcf-e44b-4305-a244-8447d6e56f3f",
-  "dispositivo": "android-flujo-b2b325",
+  "lote_uuid": "d28bb0b3-62e7-432e-bc97-853030cc52c8",
+  "dispositivo": "android-flujo-e33eb4",
   "cliente": "android",
   "operaciones": [
     {
-      "operacion_uuid": "de7d64ff-6d99-4c6a-ba93-1af819c7b0b2",
+      "operacion_uuid": "1afcebcf-2702-4696-8cf9-78c903ddc7f7",
       "tipo": "ubicaciones",
-      "creada_en": "2026-11-27T07:50:24.653491+00:00",
+      "creada_en": "2026-11-27T17:18:17.472859+00:00",
       "datos": {
-        "entrega_id": 458,
+        "entrega_id": 506,
         "puntos": [
           {
             "latitud": 25.7488,
             "longitud": -100.3608,
-            "capturado_en": "2026-11-27T07:50:24.653565+00:00"
+            "capturado_en": "2026-11-27T17:18:17.472882+00:00"
           },
           {
             "latitud": 25.7491,
             "longitud": -100.3611,
-            "capturado_en": "2026-11-27T07:55:24.653575+00:00"
+            "capturado_en": "2026-11-27T17:23:17.472888+00:00"
           }
         ]
       }
     },
     {
-      "operacion_uuid": "fccb30b4-74a5-4746-9b77-1c1f42d653fb",
+      "operacion_uuid": "603619a8-4f47-4faf-9159-1624205eff15",
       "tipo": "entrega_resultado",
-      "creada_en": "2026-11-27T07:58:24.653596+00:00",
+      "creada_en": "2026-11-27T17:26:17.472906+00:00",
       "datos": {
-        "entrega_id": 458,
+        "entrega_id": 506,
         "resultado": "fallida",
         "monto_cobrado": 0,
         "cambio_entregado": 0,
@@ -2579,23 +2687,23 @@ Content-Type: application/json
           "longitud": -100.3611
         },
         "evidencia_ids": [
-          "6b093af0f68f301419471810"
+          "6b09c0091bec796316594697"
         ],
-        "capturado_en": "2026-11-27T07:58:24.653602+00:00"
+        "capturado_en": "2026-11-27T17:26:17.472911+00:00"
       }
     }
   ]
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 496 ms · traza `3104f310-03e9-495b-9abd-cab09c7b007b`
+**Respuesta.** HTTP 201 (esperado 201) · 423 ms · traza `b6a1802a-00d9-4781-8fe7-254070dfa39d`
 
 ```json
 {
-  "id": 264,
-  "lote_uuid": "63045dcf-e44b-4305-a244-8447d6e56f3f",
-  "dispositivo": "android-flujo-b2b325",
-  "recibido_en": "2026-11-27T02:10:24-06:00",
+  "id": 290,
+  "lote_uuid": "d28bb0b3-62e7-432e-bc97-853030cc52c8",
+  "dispositivo": "android-flujo-e33eb4",
+  "recibido_en": "2026-11-27T11:38:17-06:00",
   "total": 2,
   "aplicadas": 2,
   "duplicadas": 0,
@@ -2604,7 +2712,7 @@ Content-Type: application/json
   "pendientes": 0,
   "operaciones": [
     {
-      "operacion_uuid": "de7d64ff-6d99-4c6a-ba93-1af819c7b0b2",
+      "operacion_uuid": "1afcebcf-2702-4696-8cf9-78c903ddc7f7",
       "tipo": "ubicaciones",
       "estado": "aplicada",
       "duplicada": false,
@@ -2614,7 +2722,7 @@ Content-Type: application/json
       "reintentar": false
     },
     {
-      "operacion_uuid": "fccb30b4-74a5-4746-9b77-1c1f42d653fb",
+      "operacion_uuid": "603619a8-4f47-4faf-9159-1624205eff15",
       "tipo": "entrega_resultado",
       "estado": "aplicada",
       "duplicada": false,
@@ -2635,13 +2743,13 @@ Content-Type: application/json
     "tipo": "ubicaciones",
     "estado": "aplicada",
     "intentos": 1,
-    "creada_en": "2026-11-27 01:50:24.653491-06:00"
+    "creada_en": "2026-11-27 11:18:17.472859-06:00"
   },
   {
     "tipo": "entrega_resultado",
     "estado": "aplicada",
     "intentos": 1,
-    "creada_en": "2026-11-27 01:58:24.653596-06:00"
+    "creada_en": "2026-11-27 11:26:17.472906-06:00"
   }
 ]
 ```
@@ -2660,43 +2768,43 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 2a996c34-312a-4b44-a30e-233082351192
+X-Traza-Id: 40a99feb-de91-4ff2-97a8-38aeeddb7887
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "lote_uuid": "63045dcf-e44b-4305-a244-8447d6e56f3f",
-  "dispositivo": "android-flujo-b2b325",
+  "lote_uuid": "d28bb0b3-62e7-432e-bc97-853030cc52c8",
+  "dispositivo": "android-flujo-e33eb4",
   "cliente": "android",
   "operaciones": [
     {
-      "operacion_uuid": "de7d64ff-6d99-4c6a-ba93-1af819c7b0b2",
+      "operacion_uuid": "1afcebcf-2702-4696-8cf9-78c903ddc7f7",
       "tipo": "ubicaciones",
-      "creada_en": "2026-11-27T07:50:24.653491+00:00",
+      "creada_en": "2026-11-27T17:18:17.472859+00:00",
       "datos": {
-        "entrega_id": 458,
+        "entrega_id": 506,
         "puntos": [
           {
             "latitud": 25.7488,
             "longitud": -100.3608,
-            "capturado_en": "2026-11-27T07:50:24.653565+00:00"
+            "capturado_en": "2026-11-27T17:18:17.472882+00:00"
           },
           {
             "latitud": 25.7491,
             "longitud": -100.3611,
-            "capturado_en": "2026-11-27T07:55:24.653575+00:00"
+            "capturado_en": "2026-11-27T17:23:17.472888+00:00"
           }
         ]
       }
     },
     {
-      "operacion_uuid": "fccb30b4-74a5-4746-9b77-1c1f42d653fb",
+      "operacion_uuid": "603619a8-4f47-4faf-9159-1624205eff15",
       "tipo": "entrega_resultado",
-      "creada_en": "2026-11-27T07:58:24.653596+00:00",
+      "creada_en": "2026-11-27T17:26:17.472906+00:00",
       "datos": {
-        "entrega_id": 458,
+        "entrega_id": 506,
         "resultado": "fallida",
         "monto_cobrado": 0,
         "cambio_entregado": 0,
@@ -2706,23 +2814,23 @@ Content-Type: application/json
           "longitud": -100.3611
         },
         "evidencia_ids": [
-          "6b093af0f68f301419471810"
+          "6b09c0091bec796316594697"
         ],
-        "capturado_en": "2026-11-27T07:58:24.653602+00:00"
+        "capturado_en": "2026-11-27T17:26:17.472911+00:00"
       }
     }
   ]
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 280 ms · traza `2a996c34-312a-4b44-a30e-233082351192`
+**Respuesta.** HTTP 200 (esperado 200) · 168 ms · traza `40a99feb-de91-4ff2-97a8-38aeeddb7887`
 
 ```json
 {
-  "id": 264,
-  "lote_uuid": "63045dcf-e44b-4305-a244-8447d6e56f3f",
-  "dispositivo": "android-flujo-b2b325",
-  "recibido_en": "2026-11-27T02:10:24-06:00",
+  "id": 290,
+  "lote_uuid": "d28bb0b3-62e7-432e-bc97-853030cc52c8",
+  "dispositivo": "android-flujo-e33eb4",
+  "recibido_en": "2026-11-27T11:38:17-06:00",
   "total": 2,
   "aplicadas": 2,
   "duplicadas": 2,
@@ -2731,7 +2839,7 @@ Content-Type: application/json
   "pendientes": 0,
   "operaciones": [
     {
-      "operacion_uuid": "de7d64ff-6d99-4c6a-ba93-1af819c7b0b2",
+      "operacion_uuid": "1afcebcf-2702-4696-8cf9-78c903ddc7f7",
       "tipo": "ubicaciones",
       "estado": "aplicada",
       "duplicada": true,
@@ -2741,7 +2849,7 @@ Content-Type: application/json
       "reintentar": false
     },
     {
-      "operacion_uuid": "fccb30b4-74a5-4746-9b77-1c1f42d653fb",
+      "operacion_uuid": "603619a8-4f47-4faf-9159-1624205eff15",
       "tipo": "entrega_resultado",
       "estado": "aplicada",
       "duplicada": true,
@@ -2764,81 +2872,81 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 05a4ace1-368b-45f8-9567-3d01f24c8b8d
+X-Traza-Id: ee1096a4-7bd1-4f09-ac87-ffd01829c07c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 57 ms · traza `05a4ace1-368b-45f8-9567-3d01f24c8b8d`
+**Respuesta.** HTTP 200 (esperado 200) · 45 ms · traza `ee1096a4-7bd1-4f09-ac87-ffd01829c07c`
 
 ```json
 {
   "datos": [
     {
-      "id": 1359,
+      "id": 1575,
       "tipo": "pedido",
-      "titulo": "Pedido PED-20261127-000792",
+      "titulo": "Pedido PED-20261127-000886",
       "mensaje": "El pedido cambió a entrega_fallida.",
       "leida": false,
       "referencia": {
         "tipo": "pedido",
-        "id": "792"
+        "id": "886"
       },
-      "creada_en": "2026-11-27T02:10:24-06:00"
+      "creada_en": "2026-11-27T11:38:17-06:00"
     },
     {
-      "id": 1357,
+      "id": 1573,
       "tipo": "pedido",
-      "titulo": "Pedido PED-20261127-000791",
+      "titulo": "Pedido PED-20261127-000885",
       "mensaje": "El pedido cambió a cancelado.",
       "leida": false,
       "referencia": {
         "tipo": "pedido",
-        "id": "791"
+        "id": "885"
       },
-      "creada_en": "2026-11-27T02:10:22-06:00"
+      "creada_en": "2026-11-27T11:38:15-06:00"
     },
     {
-      "id": 1352,
+      "id": 1568,
       "tipo": "pedido",
-      "titulo": "Pedido PED-20261127-000790",
+      "titulo": "Pedido PED-20261127-000884",
       "mensaje": "El pedido cambió a entregado.",
       "leida": false,
       "referencia": {
         "tipo": "pedido",
-        "id": "790"
+        "id": "884"
       },
-      "creada_en": "2026-11-27T02:10:18-06:00"
+      "creada_en": "2026-11-27T11:38:12-06:00"
     },
     {
-      "id": 1322,
+      "id": 1566,
       "tipo": "pedido",
-      "titulo": "Pedido PED-20261127-000772",
+      "titulo": "Pedido PED-20261127-000882",
       "mensaje": "El pedido cambió a cancelado.",
       "leida": false,
       "referencia": {
         "tipo": "pedido",
-        "id": "772"
+        "id": "882"
       },
-      "creada_en": "2026-11-27T02:06:41-06:00"
+      "creada_en": "2026-11-27T11:37:28-06:00"
     },
     {
-      "id": 1321,
+      "id": 1561,
       "tipo": "pedido",
-      "titulo": "Pedido PED-20261127-000770",
+      "titulo": "Pedido PED-20261127-000881",
       "mensaje": "El pedido cambió a entregado.",
       "leida": false,
       "referencia": {
         "tipo": "pedido",
-        "id": "770"
+        "id": "881"
       },
-      "creada_en": "2026-11-27T02:06:39-06:00"
+      "creada_en": "2026-11-27T11:37:25-06:00"
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 5,
-    "total": 45,
-    "paginas": 9
+    "total": 57,
+    "paginas": 12
   }
 }
 ```
@@ -2849,42 +2957,42 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(2
 
 **Objetivo.** Bitácora y archivos de la entrega.
 
-**Petición.** `GET http://auditoria-monitoreo:5126/api/v1/auditoria/trazabilidad/entrega/458`
+**Petición.** `GET http://auditoria-monitoreo:5126/api/v1/auditoria/trazabilidad/entrega/506`
 
 ```http
 Accept: application/json
-X-Traza-Id: 9cf2d35e-1b72-4293-839b-11206099c8b6
+X-Traza-Id: a299fd3a-0a09-4b71-8558-2812710e3237
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 53 ms · traza `9cf2d35e-1b72-4293-839b-11206099c8b6`
+**Respuesta.** HTTP 200 (esperado 200) · 52 ms · traza `a299fd3a-0a09-4b71-8558-2812710e3237`
 
 ```json
 {
   "objeto": {
     "tipo": "entrega",
-    "id": "458"
+    "id": "506"
   },
   "total": 3,
   "eventos": [
     {
-      "fecha": "2026-11-27T02:10:24-06:00",
+      "fecha": "2026-11-27T11:38:17-06:00",
       "origen": "auditoria",
       "accion": "alta",
-      "descripcion": "asignada_en = 2026-11-27T02:10:24.543583-06:00; cambio_entregado = None; capturado_en = None; cerrada_por_usuario_id = None",
+      "descripcion": "asignada_en = 2026-11-27T11:38:17.342853-06:00; cambio_entregado = None; capturado_en = None; cerrada_por_usuario_id = None",
       "usuario": {
         "id": 3,
         "nombre": "María José Cedillo Mata"
       },
       "entidad": {
         "tipo": "entrega",
-        "id": "458"
+        "id": "506"
       },
       "cambios": [
         {
           "campo": "asignada_en",
           "anterior": null,
-          "nuevo": "2026-11-27T02:10:24.543583-06:00"
+          "nuevo": "2026-11-27T11:38:17.342853-06:00"
         },
         {
           "campo": "cambio_entregado",
@@ -2944,32 +3052,32 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
       ]
     },
     {
-      "fecha": "2026-11-27T02:10:24-06:00",
+      "fecha": "2026-11-27T11:38:17-06:00",
       "origen": "documentos",
       "accion": "documento_subido",
-      "descripcion": "evidencia-flujo3-458.jpg (276 bytes, sha256 7f6025cd8a98…)",
+      "descripcion": "evidencia-flujo3-506.jpg (276 bytes, sha256 7f6025cd8a98…)",
       "usuario": {
         "id": 7,
         "nombre": null
       },
       "entidad": {
         "tipo": "documento",
-        "id": "6b093af0f68f301419471810"
+        "id": "6b09c0091bec796316594697"
       },
       "cambios": []
     },
     {
-      "fecha": "2026-11-27T02:10:24-06:00",
+      "fecha": "2026-11-27T11:38:17-06:00",
       "origen": "auditoria",
       "accion": "modificacion",
-      "descripcion": "cambio_entregado = 0.0; capturado_en = 2026-11-27T01:58:24.6…(145 caracteres)",
+      "descripcion": "cambio_entregado = 0.0; capturado_en = 2026-11-27T11:26:17.4…(145 caracteres)",
       "usuario": {
         "id": 7,
         "nombre": "Ramiro Alanís Lozano"
       },
       "entidad": {
         "tipo": "entrega",
-        "id": "458"
+        "id": "506"
       },
       "cambios": [
         {
@@ -2980,7 +3088,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         {
           "campo": "capturado_en",
           "anterior": null,
-          "nuevo": "2026-11-27T01:58:24.653602-06:00"
+          "nuevo": "2026-11-27T11:26:17.472911-06:00"
         },
         {
           "campo": "cerrada_por_usuario_id",
@@ -2990,7 +3098,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         {
           "campo": "cierre_en",
           "anterior": null,
-          "nuevo": "2026-11-27T02:10:24.989486-06:00"
+          "nuevo": "2026-11-27T11:38:17.743393-06:00"
         },
         {
           "campo": "cierre_latitud",
@@ -3005,17 +3113,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         {
           "campo": "evidencia_ids",
           "anterior": null,
-          "nuevo": "[\"6b093af0f68f301419471810\"]"
+          "nuevo": "[\"6b09c0091bec796316594697\"]"
         },
         {
           "campo": "evidencia_url",
           "anterior": null,
-          "nuevo": "/api/v1/documentos/6b093af0f68f301419471810"
+          "nuevo": "/api/v1/documentos/6b09c0091bec796316594697"
         },
         {
           "campo": "id_cliente_local",
           "anterior": null,
-          "nuevo": "fccb30b4-74a5-4746-9b77-1c1f42d653fb"
+          "nuevo": "603619a8-4f47-4faf-9159-1624205eff15"
         },
         {
           "campo": "incidencia",
@@ -3048,96 +3156,96 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 09bf6b36-cfab-499d-a9e2-284a4aad5290
+X-Traza-Id: 57aa5b76-f335-475c-86eb-e71ebd556d95
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 56 ms · traza `09bf6b36-cfab-499d-a9e2-284a4aad5290`
+**Respuesta.** HTTP 200 (esperado 200) · 46 ms · traza `57aa5b76-f335-475c-86eb-e71ebd556d95`
 
 ```json
 {
   "datos": [
     {
-      "id": 3072,
+      "id": 3429,
       "microhub_id": 2,
       "producto_id": 51,
       "tipo": "devolucion_cancelacion",
       "cantidad": 3,
-      "existencia_resultante": 55,
-      "referencia": {
-        "tipo": "pedido",
-        "id": "792"
-      },
-      "motivo": "Entrega fallida: la mercancía regresa al microhub.",
-      "usuario_id": 7,
-      "fecha": "2026-11-27T02:10:24-06:00"
-    },
-    {
-      "id": 3071,
-      "microhub_id": 2,
-      "producto_id": 32,
-      "tipo": "devolucion_cancelacion",
-      "cantidad": 3,
-      "existencia_resultante": 5,
-      "referencia": {
-        "tipo": "pedido",
-        "id": "792"
-      },
-      "motivo": "Entrega fallida: la mercancía regresa al microhub.",
-      "usuario_id": 7,
-      "fecha": "2026-11-27T02:10:24-06:00"
-    },
-    {
-      "id": 3070,
-      "microhub_id": 2,
-      "producto_id": 51,
-      "tipo": "salida_pedido",
-      "cantidad": -3,
       "existencia_resultante": 52,
       "referencia": {
         "tipo": "pedido",
-        "id": "792"
+        "id": "886"
       },
-      "motivo": null,
-      "usuario_id": 9,
-      "fecha": "2026-11-27T02:10:23-06:00"
+      "motivo": "Entrega fallida: la mercancía regresa al microhub.",
+      "usuario_id": 7,
+      "fecha": "2026-11-27T11:38:17-06:00"
     },
     {
-      "id": 3069,
+      "id": 3428,
       "microhub_id": 2,
-      "producto_id": 32,
-      "tipo": "salida_pedido",
-      "cantidad": -3,
-      "existencia_resultante": 2,
+      "producto_id": 31,
+      "tipo": "devolucion_cancelacion",
+      "cantidad": 3,
+      "existencia_resultante": 34,
       "referencia": {
         "tipo": "pedido",
-        "id": "792"
+        "id": "886"
+      },
+      "motivo": "Entrega fallida: la mercancía regresa al microhub.",
+      "usuario_id": 7,
+      "fecha": "2026-11-27T11:38:17-06:00"
+    },
+    {
+      "id": 3427,
+      "microhub_id": 2,
+      "producto_id": 51,
+      "tipo": "salida_pedido",
+      "cantidad": -3,
+      "existencia_resultante": 49,
+      "referencia": {
+        "tipo": "pedido",
+        "id": "886"
       },
       "motivo": null,
       "usuario_id": 9,
-      "fecha": "2026-11-27T02:10:23-06:00"
+      "fecha": "2026-11-27T11:38:16-06:00"
     },
     {
-      "id": 3068,
+      "id": 3426,
+      "microhub_id": 2,
+      "producto_id": 31,
+      "tipo": "salida_pedido",
+      "cantidad": -3,
+      "existencia_resultante": 31,
+      "referencia": {
+        "tipo": "pedido",
+        "id": "886"
+      },
+      "motivo": null,
+      "usuario_id": 9,
+      "fecha": "2026-11-27T11:38:16-06:00"
+    },
+    {
+      "id": 3425,
       "microhub_id": 2,
       "producto_id": 31,
       "tipo": "devolucion_cancelacion",
       "cantidad": 10,
-      "existencia_resultante": 40,
+      "existencia_resultante": 34,
       "referencia": {
         "tipo": "pedido",
-        "id": "791"
+        "id": "885"
       },
       "motivo": "Cierre del flujo de demostración",
       "usuario_id": 1,
-      "fecha": "2026-11-27T02:10:22-06:00"
+      "fecha": "2026-11-27T11:38:15-06:00"
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 5,
-    "total": 1045,
-    "paginas": 209
+    "total": 1159,
+    "paginas": 232
   }
 }
 ```
@@ -3148,27 +3256,27 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 [
   {
     "tipo": "salida_pedido",
-    "producto_id": 32,
+    "producto_id": 31,
     "cantidad": -3,
-    "existencia_resultante": 2
+    "existencia_resultante": 31
   },
   {
     "tipo": "salida_pedido",
     "producto_id": 51,
     "cantidad": -3,
-    "existencia_resultante": 52
+    "existencia_resultante": 49
   },
   {
     "tipo": "devolucion_cancelacion",
-    "producto_id": 32,
+    "producto_id": 31,
     "cantidad": 3,
-    "existencia_resultante": 5
+    "existencia_resultante": 34
   },
   {
     "tipo": "devolucion_cancelacion",
     "producto_id": 51,
     "cantidad": 3,
-    "existencia_resultante": 55
+    "existencia_resultante": 52
   }
 ]
 ```
@@ -3183,18 +3291,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 8349f6e1-29cb-449b-8897-f29a2aacab84
+X-Traza-Id: 66b85173-5936-4176-bfec-7cc29c63707c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 222 ms · traza `8349f6e1-29cb-449b-8897-f29a2aacab84`
+**Respuesta.** HTTP 200 (esperado 200) · 173 ms · traza `66b85173-5936-4176-bfec-7cc29c63707c`
 
 ```json
 ﻿Día,Pedidos,Unidades,Venta,Ticket promedio,Demanda no atendida
 2026-11-25,56,282,8032.40,143.44,0
 2026-11-26,212,1096,34991.60,165.05,8
-2026-11-27,52,292,9553.10,183.71,3
-Total,320,1670,52577.10,164.30,11
+2026-11-27,102,563,19241.10,188.64,7
+Total,370,1941,62265.10,168.28,15
 
 ```
 
@@ -3206,7 +3314,7 @@ Total,320,1670,52577.10,164.30,11
     "reporte": "pedidos_por_dia",
     "formato": "csv",
     "filas": 3,
-    "sha256": "be0e1e1dcdb9faa8"
+    "sha256": "fc36a32d86409c30"
   }
 ]
 ```

@@ -1,4 +1,4 @@
--- 16_perfil_proveedor.sql — El perfil «proveedor» entra al portal: ve sus órdenes de compra y mantiene su oferta. Es repetible.
+-- 17_perfil_proveedor.sql — El perfil «proveedor» entra al portal: ve sus órdenes de compra y mantiene su oferta. Es repetible.
 BEGIN;
 SET LOCAL search_path TO microhubs, public;
 

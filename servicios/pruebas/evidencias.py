@@ -503,6 +503,17 @@ def ejecutar(ev):
     ev.caso("ENT-11", "entregas", "Entregas de un pedido (administrador)", "Consulta por pedido para el portal web.", "GET",
             f"entregas?pedido_id={det1['pedido_id']}", token=t_adm, verificar=lambda r: r.json["paginacion"]["total"] == 1)
 
+    dueno = bd.consultar("SELECT u.correo FROM pedido p JOIN cliente c ON c.id = p.cliente_id JOIN usuario u ON u.id = c.usuario_id "
+                         "WHERE p.id = %s", (det1["pedido_id"],), una=True)
+    if dueno:
+        t_dueno = ev.entrar(dueno["correo"])
+        recibido = {"pedido_id": det1["pedido_id"], "conforme": True}
+        ev.caso("ENT-12", "entregas", "El cliente confirma la recepción", "Solo quien hizo el pedido, ya cerrada la entrega.", "POST",
+                "entregas/recepciones", cuerpo=recibido, token=t_dueno, verificar=lambda r: r.json["conforme"] is True,
+                evidencia=lambda r: [pg("SELECT id, resultado, confirmacion_recepcion FROM entrega WHERE pedido_id = %s", (det1["pedido_id"],))])
+        ev.caso("ENT-13", "entregas", "El repartidor no confirma por el cliente", "La confirmación es del cliente.", "POST",
+                "entregas/recepciones", cuerpo=recibido, token=t_rep, esperado=403)
+
     # ---------- 10. PLANEACIÓN ----------
     print("10. Planeación (5106)")
     ev.caso("PLA-01", "planeacion", "Candidatos (XML)", "Lista de ubicaciones candidatas.", "GET",

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<asignacion xmlns="urn:microhubs:v1" version="1">
+  <asignadas>2</asignadas>
+  <entregas>
+    <entrega>
+      <entrega_id>412</entrega_id>
+      <pedido_id>901</pedido_id>
+      <repartidor_id>7</repartidor_id>
+      <orden_parada>1</orden_parada>
+    </entrega>
+    <entrega>
+      <entrega_id>413</entrega_id>
+      <pedido_id>902</pedido_id>
+      <repartidor_id>7</repartidor_id>
+      <orden_parada>2</orden_parada>
+    </entrega>
+  </entregas>
+</asignacion>

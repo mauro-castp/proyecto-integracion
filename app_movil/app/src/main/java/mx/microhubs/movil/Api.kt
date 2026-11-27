@@ -35,7 +35,7 @@ class Api(
     private val renewal = Any()
     private var retryAt = 0L
     private val ports = mapOf(
-        "auth" to 5101, "usuarios" to 5102, "pedidos" to 5104, "entregas" to 5105, "documentos" to 5107, "seguimiento" to 5110,
+        "auth" to 5101, "usuarios" to 5102, "productos" to 5103, "pedidos" to 5104, "entregas" to 5105, "documentos" to 5107, "seguimiento" to 5110,
         "notificaciones" to 5124, "sincronizacion" to 5125
     )
 

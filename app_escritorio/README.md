@@ -1,9 +1,16 @@
 # Microhubs · cliente de escritorio (parte B)
 
-Aplicación C# / Windows Forms para **planeador, administrador y auditor**. Habla **solo XML** (espacio de nombres
-`urn:microhubs:v1`) con los microservicios del contrato v1: auth (5101), productos (5103), pedidos (5104), planeación (5106), zonas (5108),
-microhubs (5109), cobertura (5116), capacidad (5117), rutas (5118), costos (5119), punto de equilibrio (5120), simulación (5121) y
-reportes (5123).
+Aplicación C# / Windows Forms para **operador, planeador, administrador y auditor**. Habla **solo XML** (espacio de nombres
+`urn:microhubs:v1`) con los microservicios del contrato v1: auth (5101), productos (5103), pedidos (5104), entregas (5105), planeación
+(5106), zonas (5108), microhubs (5109), inventario (5111), cobertura (5116), capacidad (5117), rutas (5118), costos (5119), punto de
+equilibrio (5120), simulación (5121), surtido (5122) y reportes (5123).
+
+**Operación del microhub** (entrega final; `Modulos.cs` y `Operacion.cs`): *inventario* (existencias, alertas, movimientos, reservas,
+registrar movimiento con un `operacion_uuid` nuevo cada vez, transferir), *preparación* (por preparar, pasar a preparación, marcar listo),
+*despacho* (pedidos listos, repartidores, **asignar repartidor** y **manifiesto** de salida imprimible por repartidor) y *surtido* (ABC,
+análisis, recomendaciones, restricciones). En capacidad: **cambiar personal** y **colas M/M/c**. El cambio de estado y la asignación usan
+el contrato `operacion.xsd`; las colas, `colas.xsd`. Los botones que escriben se habilitan con los **permisos de la sesión** (p. ej.
+`pedidos.cambiar_estado`, `entregas.asignar`); los que no los declaran siguen siendo de planeación y administración.
 
 - Los **XSD oficiales** (carpeta `contratos/`, uno por servicio más `comun.xsd`) se cargan juntos: **toda petición se valida antes de
   enviarse y toda respuesta antes de usarse**. Se rechazan DTD y entidades externas, respuestas que no sean `application/xml`,

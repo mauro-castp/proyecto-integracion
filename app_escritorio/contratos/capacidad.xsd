@@ -193,60 +193,6 @@
       </xs:element>
     </xs:sequence>
   </xs:complexType>
-  <xs:complexType name="TCapColaEscenario">
-    <xs:sequence>
-      <xs:element name="servidores" type="xs:long"/>
-      <xs:element name="modelo">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="M/M/1"/>
-            <xs:enumeration value="M/M/c"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      <xs:element name="estable" type="xs:boolean"/>
-      <xs:element name="utilizacion_pct" type="xs:decimal"/>
-      <xs:element name="prob_vacio" type="xs:decimal" nillable="true"/>
-      <xs:element name="prob_espera" type="xs:decimal" nillable="true"/>
-      <xs:element name="en_cola" type="xs:decimal" nillable="true"/>
-      <xs:element name="en_sistema" type="xs:decimal" nillable="true"/>
-      <xs:element name="espera_cola_min" type="xs:decimal" nillable="true"/>
-      <xs:element name="tiempo_sistema_min" type="xs:decimal" nillable="true"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="TCapColas">
-    <xs:sequence>
-      <xs:element name="microhub" type="tns:TRefNombre"/>
-      <xs:element name="llegadas_hora" type="xs:decimal"/>
-      <xs:element name="servicio_min" type="xs:decimal"/>
-      <xs:element name="atencion_hora" type="xs:decimal"/>
-      <xs:element name="espera_max_min" type="xs:decimal"/>
-      <xs:element name="actual" type="tns:TCapColaEscenario"/>
-      <xs:element name="comparacion">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="escenario" type="tns:TCapColaEscenario" minOccurs="0" maxOccurs="unbounded"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="servidores_necesarios" type="xs:long" nillable="true"/>
-      <xs:element name="lectura" type="xs:string"/>
-      <xs:element name="valores_modificados">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="clave" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="supuestos_usados">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="supuesto" type="tns:TSupuestoUsado" minOccurs="0" maxOccurs="unbounded"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-    </xs:sequence>
-  </xs:complexType>
   <xs:complexType name="TCapCargaFila">
     <xs:sequence>
       <xs:element name="pedidos_dia" type="xs:decimal"/>
@@ -402,15 +348,6 @@
     <xs:complexType>
       <xs:complexContent>
         <xs:extension base="tns:TCapCargas">
-          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
-        </xs:extension>
-      </xs:complexContent>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="capacidad_colas">
-    <xs:complexType>
-      <xs:complexContent>
-        <xs:extension base="tns:TCapColas">
           <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
         </xs:extension>
       </xs:complexContent>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · operación desde el escritorio (estado de pedidos, asignación de paradas) y recepción del cliente · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+
+  <xs:complexType name="TOpPedidoEstado">
+    <xs:sequence>
+      <xs:element name="estado">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="creado"/>
+            <xs:enumeration value="pendiente_asignacion"/>
+            <xs:enumeration value="asignado"/>
+            <xs:enumeration value="en_preparacion"/>
+            <xs:enumeration value="en_ruta"/>
+            <xs:enumeration value="cancelado"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="motivo" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="300"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TOpParada">
+    <xs:sequence>
+      <xs:element name="pedido_id">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="repartidor_id">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="orden_parada">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="200"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="distancia_km" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="minutos_estimados" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="costo_entrega_estimado" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="plan_ruta_id" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TOpAsignacionNueva">
+    <xs:sequence>
+      <xs:element name="paradas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="parada" type="tns:TOpParada" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TOpAsignada">
+    <xs:sequence>
+      <xs:element name="entrega_id" type="xs:long"/>
+      <xs:element name="pedido_id" type="xs:long"/>
+      <xs:element name="repartidor_id" type="xs:long"/>
+      <xs:element name="orden_parada" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TOpAsignacion">
+    <xs:sequence>
+      <xs:element name="asignadas" type="xs:int"/>
+      <xs:element name="entregas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="entrega" type="tns:TOpAsignada" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TOpRecepcionNueva">
+    <xs:sequence>
+      <xs:element name="pedido_id">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="conforme" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TOpRecepcion">
+    <xs:sequence>
+      <xs:element name="pedido_id" type="xs:long"/>
+      <xs:element name="folio" type="xs:string"/>
+      <xs:element name="entrega_id" type="xs:long"/>
+      <xs:element name="resultado" type="xs:string" nillable="true"/>
+      <xs:element name="conforme" type="xs:boolean"/>
+      <xs:element name="estado_pedido" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="pedido_estado_cambio">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TOpPedidoEstado">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="asignacion_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TOpAsignacionNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="asignacion">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TOpAsignacion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="recepcion_cliente_nueva">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TOpRecepcionNueva">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="recepcion_cliente">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TOpRecepcion">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

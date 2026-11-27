@@ -18,6 +18,7 @@ de cada cosa con el JWT de quien las hizo, de modo que cada servicio sigue aplic
   movimiento_inventario    recepción, merma, ajuste      → inventario POST /inventario/movimientos
   transferencia_inventario traslado entre microhubs      → inventario POST /inventario/transferencias
   notificacion_leida       confirma la lectura           → notificaciones POST /notificaciones/{id}/leer
+  pedido_nuevo             pedido del cliente sin red    → pedidos    POST /pedidos (operacion_uuid = el uuid: reenviar no duplica)
 
 Resultado de cada operación
   aplicada   el servicio dueño la aceptó (2xx).
@@ -78,6 +79,7 @@ OPERACIONES = {
     "movimiento_inventario": ("inventario", [], lambda d, u: "inventario/movimientos", lambda d, u: {**d, "operacion_uuid": u}),
     "transferencia_inventario": ("inventario", [], lambda d, u: "inventario/transferencias", lambda d, u: {**d, "operacion_uuid": u}),
     "notificacion_leida": ("notificaciones", ["id"], lambda d, u: f"notificaciones/{int(d['id'])}/leer", lambda d, u: {}),
+    "pedido_nuevo": ("pedidos", ["lineas"], lambda d, u: "pedidos", lambda d, u: {**d, "operacion_uuid": u}),
 }
 
 
@@ -360,7 +362,7 @@ def supuestos():
 PAG = [("pagina", "query", "integer", "Página"), ("por_pagina", "query", "integer", "1 a 100")]
 documentar(app, "POST", f"{P}/sincronizacion/lotes", "Enviar un lote de operaciones hechas sin conexión", permisos=["sincronizacion.usar"],
            cuerpo="SyncLoteNuevo.ok", solo_json=True,
-           descripcion="Cada operación lleva su `operacion_uuid`, `tipo` (entrega_resultado, ubicaciones, movimiento_inventario, transferencia_inventario, "
+           descripcion="Cada operación lleva su `operacion_uuid`, `tipo` (entrega_resultado, ubicaciones, movimiento_inventario, transferencia_inventario, pedido_nuevo, "
                        "notificacion_leida), `creada_en` y `datos` (el mismo cuerpo que recibiría el servicio dueño). Se aplican en el orden en que ocurrieron. "
                        "Estados: aplicada, conflicto (gana el servidor), rechazada (no reintentar) y pendiente (reenviar). Reenviar lo ya resuelto no repite nada: "
                        "`duplicada` = true. 201 si algo se aplicó, 200 si no.",

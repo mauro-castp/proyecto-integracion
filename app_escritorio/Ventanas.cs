@@ -61,6 +61,20 @@ static class Ui
     }
 
     public static bool PuedeEscribir(Api api) => api.Role is "planeador" or "administrador";
+
+
+    /// <summary>Pide dos textos (p. ej. pedidos y repartidor). Null si se cancela.</summary>
+    public static (string, string)? PreguntarDos(IWin32Window owner, string titulo, string etiqueta1, string valor1, string etiqueta2, string valor2)
+    {
+        using var dialog = new Form { Text = titulo, Width = 560, Height = 230, StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false };
+        var panel = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, Padding = new Padding(8) };
+        var t1 = new TextBox { Text = valor1, Width = 500 }; var t2 = new TextBox { Text = valor2, Width = 500 };
+        panel.Controls.Add(new Label { Text = etiqueta1, AutoSize = true }); panel.Controls.Add(t1);
+        panel.Controls.Add(new Label { Text = etiqueta2, AutoSize = true }); panel.Controls.Add(t2);
+        var ok = new Button { Text = "Aceptar", DialogResult = DialogResult.OK, Dock = DockStyle.Bottom, Height = 36 };
+        dialog.Controls.Add(panel); dialog.Controls.Add(ok); dialog.AcceptButton = ok;
+        return dialog.ShowDialog(owner) == DialogResult.OK ? (t1.Text.Trim(), t2.Text.Trim()) : null;
+    }
 }
 
 /// <summary>
@@ -87,7 +101,7 @@ sealed class VentanaModulo : Form
         foreach (var a in modulo.Acciones)
         {
             var b = Ui.Boton(bar, status, a.Titulo, () => Ejecutar(a));
-            if (a.Escribe && !Ui.PuedeEscribir(api)) { b.Enabled = false; b.Text += " (solo planeación)"; }
+            if (!a.Habilitada(api)) { b.Enabled = false; b.Text += a.Permiso != null ? " (sin permiso)" : " (solo planeación)"; }
         }
         Ui.Boton(bar, status, "Exportar XML", () =>
         {
@@ -101,19 +115,56 @@ sealed class VentanaModulo : Form
     async Task Ejecutar(Accion a)
     {
         string? id = null, consulta = null; XElement? cuerpo = null;
+        if (a.Formulario == "manifiesto") { await Manifiesto(a); return; }
         if (a.PorFila)
         {
-            if (grid.CurrentRow == null || !grid.Columns.Contains(a.Columna)) throw new Exception($"Primero consulta la lista y elige una fila (columna «{a.Columna}»).");
-            id = grid.CurrentRow.Cells[a.Columna].Value?.ToString();
+            // de la fila elegida; si la tabla no tiene esa columna (p. ej. el id de un microhub), se pide
+            if (grid.CurrentRow != null && grid.Columns.Contains(a.Columna)) id = grid.CurrentRow.Cells[a.Columna].Value?.ToString();
+            else if ((id = Ui.Preguntar(this, $"{modulo.Nombre} · {a.Titulo}", $"Id ({a.Columna}):", "")) == null) return;
         }
         if (a.Parametros != null && (consulta = Ui.Preguntar(this, $"{modulo.Nombre} · {a.Titulo}", "Parámetros (clave=valor separados por &):", a.Parametros)) == null) return;
-        if (a.Plantilla != null && (cuerpo = Ui.Editar(this, api, $"{modulo.Nombre} · {a.Titulo}", Api.Example(a.Plantilla))) == null) return;
+        if (a.Formulario == "asignacion")
+        {
+            // si la tabla muestra los pedidos listos, se proponen los renglones elegidos (o el actual)
+            IEnumerable<DataGridViewRow> elegidos = grid.SelectedRows.Count > 0 ? grid.SelectedRows.Cast<DataGridViewRow>().Reverse() : grid.CurrentRow is { } fila ? [fila] : [];
+            var pedidos = latest?.Root?.Name == Api.Ns + "pedidos_listos" && grid.Columns.Contains("id")
+                ? string.Join(", ", elegidos.Select(r => r.Cells["id"].Value?.ToString())) : "";
+            var dos = Ui.PreguntarDos(this, $"{modulo.Nombre} · {a.Titulo}", "Pedidos listos, en orden de parada (ids separados por coma):", pedidos,
+                                      "Repartidor (id; ver «Repartidores»):", "");
+            if (dos == null) return;
+            cuerpo = Operacion.Asignacion(dos.Value.Item1, dos.Value.Item2);
+        }
+        if (a.Plantilla != null && (cuerpo = Ui.Editar(this, api, $"{modulo.Nombre} · {a.Titulo}", Plantillas.ConOperacionNueva(Api.Example(a.Plantilla)))) == null) return;
         if (a.Metodo != "GET" && a.Plantilla == null
             && MessageBox.Show(this, $"{a.Titulo} {id}?", modulo.Nombre, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
         var doc = await api.Call(a.Servicio, a.Armar(id, consulta), a.Http, cuerpo, root: a.Raiz);
         latest = doc;
         grid.DataSource = Tablas.Principal(doc); resumen.DataSource = Tablas.Resumen(doc);
         status.Text = $"{modulo.Nombre} · {a.Titulo} · {grid.Rows.Count} filas · {api.Role}";
+    }
+
+    /// <summary>Manifiesto de salida de un repartidor: sus entregas abiertas, el detalle de cada una y una página imprimible.</summary>
+    async Task Manifiesto(Accion a)
+    {
+        var rep = Ui.Preguntar(this, $"{modulo.Nombre} · {a.Titulo}", "Repartidor (id; ver «Repartidores»):", "");
+        if (rep == null) return;
+        var rid = Operacion.Ids(rep, "Repartidor").Single();
+        var lista = await api.Call(a.Servicio, a.Armar(null, a.Parametros + $"&repartidor_id={rid}"), root: a.Raiz);
+        var ids = lista.Root!.Element(Api.Ns + "datos")!.Elements().Select(e => e.Element(Api.Ns + "id")!.Value).ToList();
+        if (ids.Count == 0) throw new Exception($"El repartidor {rid} no tiene entregas abiertas.");
+        var detalles = new List<XDocument>();
+        foreach (var eid in ids) detalles.Add(await api.Call("entregas", $"entregas/{eid}", root: "entrega_detalle"));
+        var tabla = Operacion.Manifiesto(detalles);
+        latest = lista; grid.DataSource = tabla;
+        resumen.DataSource = Tablas.CampoValor(new Dictionary<string, string> { ["repartidor_id"] = rid.ToString(), ["paradas"] = tabla.Rows.Count.ToString(),
+                                                                                  ["total_a_cobrar"] = Operacion.TotalACobrar(tabla).ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) });
+        status.Text = $"Manifiesto del repartidor {rid} · {tabla.Rows.Count} paradas · {api.Role}";
+        using var d = new SaveFileDialog { Filter = "Página para imprimir|*.html", FileName = $"manifiesto_repartidor_{rid}_{DateTime.Now:yyyyMMdd_HHmm}.html" };
+        if (d.ShowDialog(this) == DialogResult.OK)
+        {
+            File.WriteAllText(d.FileName, Operacion.ManifiestoHtml(tabla, $"#{rid}", DateTime.Now), System.Text.Encoding.UTF8);
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(d.FileName) { UseShellExecute = true });
+        }
     }
 }
 

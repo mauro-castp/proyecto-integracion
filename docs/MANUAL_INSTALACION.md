@@ -41,7 +41,7 @@ docker compose -f docker-compose.integrado.yml ps -a             # todo «health
 | `repartidor1@codex.mx`, `repartidor2@codex.mx` | repartidores |
 
 **La base de datos se crea sola** al primer arranque. PostgreSQL ejecuta `bloque_c/sql/01` a `15` y MongoDB ejecuta `bloque_c/mongo/01` a
-`03`. Si ya existía un volumen de una versión anterior, el contenedor `migraciones` aplica de la 06 a la 15 sin borrar datos. MongoDB no
+`03`. Si ya existía un volumen de una versión anterior, el contenedor `migraciones` aplica de la 06 a la 17 sin borrar datos. MongoDB no
 vuelve a correr sus scripts sobre un volumen existente. Para tomar el nuevo tipo de referencia `orden_compra` hay que correr una vez (en la nube lo hace el instalador):
 
 ```bash

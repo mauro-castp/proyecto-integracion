@@ -87,7 +87,7 @@ uno, con qué personal y con qué surtido.
 **Incluye:**
 
 - 4 colonias y 4 microhubs;
-- 9 perfiles;
+- 10 perfiles;
 - catálogo de 51 productos;
 - pedidos y entregas, inventario, precios, proveedores y abastecimiento;
 - análisis (demanda, cobertura, capacidad, rutas, costos, equilibrio, simulación, surtido);
@@ -102,15 +102,16 @@ línea recta × 1.3), separación física de la base por servicio y alta disponi
 
 | Perfil | Necesidad | Cliente que usa |
 |---|---|---|
-| Cliente | Comprar y seguir su pedido | Web |
-| Operador de microhub | Preparar, mantener el inventario, reponer, despachar | Web |
-| Repartidor | Entregar con evidencia, sin conexión si hace falta | Android |
+| Cliente | Comprar y seguir su pedido, confirmar que lo recibió | Web y Android (también sin red) |
+| Operador de microhub | Preparar, mantener el inventario, reponer, despachar, manifiesto | Web y escritorio |
+| Repartidor | Entregar con evidencia, navegar al domicilio, sin conexión si hace falta | Android |
 | Planeador | Decidir la viabilidad, planear rutas y reportes | Web y escritorio |
 | Administrador | Usuarios, catálogos, aprobaciones, monitoreo | Web |
+| Proveedor | Ver sus órdenes de compra y actualizar su oferta | Web |
 | Auditor | Bitácora y trazabilidad, solo lectura | Web y escritorio |
 | Analista y supervisor | Indicadores de toda la red y de un microhub | Web |
 
-La matriz de permisos completa está en `bloque_a/Matriz_Perfiles_Permisos.pdf`; en la base son 70 permisos.
+La matriz de permisos completa está en `bloque_a/Matriz_Perfiles_Permisos.pdf`; en la base son 71 permisos.
 
 # 7. Requerimientos
 
@@ -173,7 +174,7 @@ Están en `bloque_d/diagramas/`. Las fuentes PlantUML están en `bloque_d/fuente
 
 # 11. Modelo relacional
 
-PostgreSQL 16, esquema `microhubs`, creado por los scripts `bloque_c/sql/01` a `15`. Las áreas son:
+PostgreSQL 16, esquema `microhubs`, creado por los scripts `bloque_c/sql/01` a `17`. Las áreas son:
 
 - seguridad y catálogo: usuario, rol, permiso, producto, zona, microhub;
 - operación: pedido, detalle, historial, entrega, inventario, movimientos;
@@ -190,7 +191,10 @@ Novedades de la entrega final:
 - `12_rendimiento.sql`: `fn_pedidos_visibles` en SQL que el planificador puede integrar, y los índices `ix_pedido_dia_local` e
   `ix_detalle_pedido_cubriente`;
 - `13_entrega_final.sql`: `ruta` y `almacen` de las exportaciones archivadas;
-- `14_pedidos_api.sql`: `pedido.operacion_uuid`, para que reenviar el mismo pedido por la API no lo duplique.
+- `14_pedidos_api.sql`: `pedido.operacion_uuid`, para que reenviar el mismo pedido por la API no lo duplique;
+- `15_archivos_bucket.sql`: los archivos del portal dejan de guardarse en la base y apuntan al almacén de objetos;
+- `16_apps_cliente.sql`: confirmación de recepción del cliente y lo que usan las pantallas nuevas de las apps;
+- `17_perfil_proveedor.sql`: rol y permiso del proveedor, y la liga entre una cuenta y su proveedor.
 
 Los diagramas lógicos están en `bloque_c/diagramas/` y el documento completo en `bloque_c/Modelo_de_Datos.docx`.
 
@@ -245,7 +249,7 @@ Scripts Lua para liberar y extender candados y revocar sesiones: `bloque_c/redis
 
 # 15. Microservicios
 
-Son 26 servicios, en los puertos 5101 a 5126, con **202 operaciones** de negocio. El inventario por método y ruta, con el caso de
+Son 26 servicios, en los puertos 5101 a 5126, con **223 operaciones** de negocio. El inventario por método y ruta, con el caso de
 evidencia de cada operación, está en `servicios/INVENTARIO_ENDPOINTS.md`.
 
 | Grupo | Servicios |
@@ -260,7 +264,14 @@ Operaciones nuevas de la entrega final:
 - `POST entregas/asignaciones`;
 - `rutas/planes/{id}/confirmar` con `despachar`;
 - `GET reportes/exportaciones/{id}/enlace`;
-- el tipo de referencia `orden_compra` en documentos.
+- el tipo de referencia `orden_compra` en documentos;
+- `POST capacidad/colas` (M/M/1 y M/M/c), `POST entregas/recepciones` (el cliente confirma la recepción) y el tipo `pedido_nuevo` en
+  sincronización (pedidos del cliente hechos sin red);
+- la forma XML (contrato `operacion.xsd`) del cambio de estado de un pedido y de la asignación de paradas, para el escritorio.
+
+**Independencia del portal.** Ningún microservicio importa código, vistas, sesiones ni plantillas del sistema web, y sus imágenes se
+construyen sin la carpeta `sistema_web/`. Las fórmulas de planeación viven en `servicios/comun/planeacion_calc.py`; una prueba
+(`IndependenciaDelPortal`) falla si algún servicio vuelve a depender del portal o si las fórmulas de ambos lados dejan de ser iguales.
 
 Detalle en `servicios/README.md`.
 
@@ -295,7 +306,8 @@ Detrás de Nginx: `https://<host>/servicios/<nombre>/api/v1/docs`. El prefijo vi
 | Refresh token | Opaco, de un solo uso, rota y se guarda como hash en Redis |
 | Revocación | `salir` revoca el acceso y el refresh. Cada servicio revisa Redis en cada petición |
 | Expiración | Acceso 15 min. Las apps renuevan una sola vez ante un 401, aunque haya peticiones simultáneas |
-| Roles y permisos por recurso | 9 roles y 70 permisos en `rol_permiso` (caché de 5 min). Ámbito por microhub y por turno (RN22, RN25) |
+| Roles y permisos por recurso | 10 roles y 71 permisos en `rol_permiso` (caché de 5 min). Ámbito por microhub y por turno (RN22, RN25); el proveedor solo ve lo suyo |
+| Recuperación de contraseña | Enlace aleatorio de un solo uso, 30 minutos, en Redis solo su huella SHA-256; respuesta igual exista o no la cuenta; máximo 3 solicitudes cada 15 minutos; cierra las sesiones y queda en la bitácora. Se envía por SMTP si está configurado; si no, avisa a administración |
 | Rate limiting | 240 peticiones/min por IP y servicio, 30 inicios de sesión/min, Nginx 20 r/s. 429 con `Retry-After`. IP real con `DETRAS_DE_PROXY` |
 | Protección de endpoints | Todo es privado salvo login, salud y documentación. Servicios y bases sin puertos públicos |
 | Validación de archivos | Firma real, tamaño, ámbito, SHA-256 |
@@ -314,6 +326,9 @@ hasta 8 paradas: 171 ms) o con vecino más cercano + 2-opt. 2-opt queda entre 1 
 a 40 % más corta que el orden de llegada.
 
 **Segundo algoritmo: simulación Monte Carlo reproducible** (~2.7 µs por réplica-día).
+
+**Tercer algoritmo: teoría de colas M/M/1 y M/M/c (Erlang C)** para la fila de preparación: espera en fila, probabilidad de esperar y
+operadores mínimos para una espera objetivo (~2.5 µs por cálculo). Con 3 operadores al 83 % un pedido espera 21 min; con 4, 3.2 min.
 
 Los 11 elementos que piden los lineamientos (problema, entradas, salidas, variables, restricciones, complejidad, pseudocódigo, casos de
 prueba, métricas, limitaciones y tiempo) están en **`docs/ALGORITMOS.md`**. El benchmark está en `evidencias/algoritmos/benchmark.md`.
@@ -378,7 +393,8 @@ muestra:
 
 - estado actual;
 - última verificación;
-- tiempo de respuesta y p95;
+- tiempo de respuesta, **promedio** y p95;
+- **último error** de cada servicio (qué falló y cuándo);
 - número de errores 5xx por hora;
 - historial y disponibilidad de 24 h;
 - servicios degradados;
@@ -397,8 +413,9 @@ Está en `docs/PLAN_DE_PRUEBAS.md`: objetivo, ambientes, criterios de aceptació
 - usabilidad;
 - contratos, roles, archivos y datos masivos.
 
-En la corrida final, las suites de los servicios, las de las apps en Windows y las corridas en la nube están en verde. Quedan una prueba del
-web que depende de una ruta de Docker, las pruebas instrumentadas en emulador, el ensayo sin red en un teléfono y la usabilidad con personas.
+En la corrida final, las suites de los servicios, las de las apps en Windows y en el emulador y las corridas en la nube están en verde.
+Incluye la **expiración del token** (un token vencido recibe 401 y el de renovación entrega uno nuevo) y una prueba de usabilidad corta
+con 3 personas (`entrega/FORMATO_USABILIDAD.md`: 2 de 3 tareas sin ayuda). Queda el ensayo sin red en un teléfono físico.
 
 # 25. Resultados de Locust
 
@@ -504,12 +521,18 @@ Está en `docs/MANUAL_USUARIO.md`: qué hace cada perfil paso a paso y los mensa
 - Una VM en una zona: no hay alta disponibilidad.
 - Redis sin persistencia: al reiniciarse cierra todas las sesiones.
 - Los **reportes no tienen un plazo total**: con saturación tardan en fallar (I-20).
-- El inicio de sesión de las apps instaladas contra la nube falta ensayarlo en un teléfono y una PC.
-- La usabilidad no se ha medido con usuarios reales.
+- Las apps se probaron contra la nube desde un emulador Android y desde Windows (27-nov). El ensayo **sin red en un teléfono físico** no se
+  hizo: el equipo no tiene un Android.
+- El **portal del proveedor** es solo web: consulta sus órdenes y actualiza su oferta; aceptar o rechazar órdenes lo sigue registrando
+  el personal.
+- La **recuperación de contraseña** manda correo solo si se configura un servidor SMTP; la nube de demostración no lo tiene, así que
+  el enlace llega como aviso a administración.
+- La **usabilidad** se midió con 3 personas y una tarea cada una: es una señal, no una medición (no se aplicó SUS). El hallazgo
+  principal, agrupar los botones del escritorio para llegar a Reportes, quedó pendiente.
 
 # 31. Trabajo futuro
 
-1. Generar el APK release firmado y el ZIP de escritorio, y probarlos con inicio de sesión contra la nube.
+1. Firmar una APK release (hoy se publica la debug, ya probada contra la nube desde un emulador) y probarla en un teléfono físico sin red.
 2. Un esquema o una instancia por servicio, y migrar a Cloud SQL, Memorystore y Atlas.
 3. Un plazo total y un cortacircuitos en `comun/clientes.py`.
 4. Varios workers o réplicas de pedidos, productos y auth detrás de Nginx, o GKE con autoescalado.

@@ -35,16 +35,30 @@ docker compose -f docker-compose.integrado.yml exec -T mongo mongosh --quiet < b
 
 Trabaja en una rama propia a partir de `main` y toca solo `app_movil/`, `app_escritorio/` y `entrega/`.
 
-- [ ] **Ensayo sin red en un teléfono real:** modo avión, cerrar una entrega, ver «Sin enviar», quitar el modo avión y comprobar que se envía sola.
-- [ ] **Emulador:** `connectedDebugAndroidTest`.
-- [ ] **Escritorio:** abrir a mano cada ventana nueva (reportes, cobertura, rutas, costos, capacidad, punto de equilibrio y simulación).
-- [ ] **Apps contra la nube:** iniciar sesión desde el teléfono y desde la app de escritorio con el servidor
-      `https://34-51-89-253.sslip.io/servicios` (la máquina encendida y la clave de la nube, que se pide por un canal privado).
-- [ ] **Capturas** en `entrega/capturas/`: `movil_avisos`, `movil_sin_red_guardado`, `movil_sin_enviar`, `movil_sincronizado`, `movil_conflicto` (opcional),
-      `escritorio_reportes`, `escritorio_pdf`, `escritorio_equilibrio`, `escritorio_simulacion`, `escritorio_rutas` (`.png`).
-- [ ] **Instaladores** (`entrega/INSTALADORES.md`): APK y ZIP del escritorio, publicados como *Release* de GitHub o en ubiquitous. Nunca el keystore ni binarios en el repositorio.
-- [ ] **Pruebas de usabilidad** con personas (`entrega/FORMATO_USABILIDAD.md`).
+Estado al 27 de noviembre (detalle y resultados en `entrega/PRUEBAS_APPS_ENTREGA_FINAL.md`, sección 7):
+
+- [ ] ~~**Ensayo sin red en un teléfono real**~~ **No se hará:** el equipo no tiene un Android físico. Queda documentado como no probado.
+- [x] **Emulador:** `connectedDebugAndroidTest` 7/7 en un emulador API 36 contra los servicios locales.
+- [x] **Escritorio:** las 7 ventanas abiertas a mano; pruebas 176/176 contra los servicios locales. Se arreglaron 2 errores (Comparar métodos).
+- [x] **Apps contra la nube:** el teléfono (en el emulador) inició sesión, vio entregas, tomó foto y GPS; el lector de QR cerraba la app y se
+      arregló. El escritorio, ver la sección 7.2.
+- [x] **Capturas:** las de escritorio y `movil_avisos`. Faltan las cuatro del ensayo sin red (no hay teléfono).
+- [ ] **Instaladores:** APK y ZIP generados y medidos; hay que regenerarlos desde `main` cuando se una este PR y publicarlos como *Release*.
+- [x] **Pruebas de usabilidad:** 3 personas, una tarea cada una (27-nov); resultados al final de `entrega/FORMATO_USABILIDAD.md`. Hallazgo: en el escritorio cuesta llegar al PDF del reporte.
 - [ ] **Video** (`docs/GUION_VIDEO_Y_PRESENTACION.md`, parte A, y `entrega/GUION_VIDEO.md`).
+
+**Revisión contra el enunciado del Proyecto 11 (27-nov, rama `mauro-faltantes`).** Faltaban funciones que pide el enunciado; se agregaron:
+
+- [x] **Android, perfil cliente:** catálogo (y catálogo ligero sin red), pedido (también sin red), estatus y confirmar recepción.
+- [x] **Android, repartidor:** «Navegar al domicilio».
+- [x] **Escritorio para operadores:** inventario, preparar pedidos, asignar repartidores, manifiestos, revisar surtido y configurar capacidad.
+- [x] **Algoritmos M/M/1 y M/M/c** (servicio de capacidad, documentados en `docs/ALGORITMOS.md` §3).
+- [x] **Perfil proveedor con cuenta:** portal web `/proveedor` (órdenes y oferta), rol y permiso en `17_perfil_proveedor.sql`.
+- [x] **Recuperación de contraseña** en el portal (`/recuperar`), enlace de un solo uso de 30 minutos.
+- [x] **Servicios independientes del portal**, **monitor** con tiempo promedio y último error, prueba de **token vencido** y
+      Locust sobre los 26 servicios.
+- [x] **Probado en la PC de Mauro:** Docker con `16_apps_cliente.sql`, Android 8/8 en el emulador, escritorio 218/218 y prueba a mano.
+- [ ] **Después de unir:** volver a desplegar en la nube, regenerar los instaladores desde `main` (Release v1.1) y el Word del expediente.
 
 ## Parte de Ruth · entrega
 

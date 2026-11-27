@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pedido_estado_cambio xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <estado>en_preparacion</estado>
+  <motivo xsi:nil="true" />
+</pedido_estado_cambio>
