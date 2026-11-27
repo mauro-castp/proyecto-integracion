@@ -14,9 +14,10 @@ El script hace lo que haría la persona y después COMPRUEBA en las bases y en e
 
 Uso (plataforma arriba; base de PRUEBAS):
   python servicios/pruebas/procesos_integrales.py
-Variables: WEB_URL (http://localhost:5000), MICROSERVICIOS_URL_DEMO (http://localhost:{puerto}), PG_DSN, MONGO_URL, ALMACEN_DIR
-(almacén local) o GCS_BUCKET (para comprobar el objeto en Cloud Storage), MICROHUBS_CLAVE.
-Escribe evidencias/procesos/procesos_integrales.md y .json.
+Lo más simple es correrlo dentro de la red de Docker:  servicios/pruebas/correr.sh procesos procesos
+Variables: WEB_URL (http://localhost:5000), MICROSERVICIOS_URL_DEMO (http://localhost:{puerto}; admite {servicio}), PG_DSN, MONGO_URL,
+ALMACEN_DIR (almacén local) o GCS_BUCKET (para comprobar el objeto en Cloud Storage), MICROHUBS_CLAVE, SALIDA_PROCESOS.
+Escribe procesos_integrales.md y .json en evidencias/procesos/ (o en SALIDA_PROCESOS).
 """
 import base64
 import datetime as dt
@@ -42,7 +43,7 @@ DSN = os.environ.get("PG_DSN", "host=127.0.0.1 port=5432 dbname=microhubs_p1 use
 MONGO_URL = os.environ.get("MONGO_URL", "mongodb://127.0.0.1:27017/microhubs_eventos")
 PUERTOS = {"inventario": 5111, "auth": 5101, "pedidos": 5104, "entregas": 5105, "documentos": 5107, "seguimiento": 5110, "abastecimiento": 5114, "rutas": 5118,
            "reportes": 5123, "notificaciones": 5124}
-SALIDA = RAIZ / "evidencias" / "procesos"
+SALIDA = Path(os.environ.get("SALIDA_PROCESOS") or RAIZ / "evidencias" / "procesos")
 PNG = base64.b64decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==")
 PDF = b"%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj 2 0 obj<</Type/Pages/Kids[]/Count 0>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF\n"
 
@@ -70,7 +71,7 @@ def objeto_existe(ruta):
 
 
 def api(metodo, servicio, ruta, token=None, cuerpo=None):
-    req = urllib.request.Request(PLANTILLA.format(puerto=PUERTOS[servicio]) + "/api/v1/" + ruta, method=metodo,
+    req = urllib.request.Request(PLANTILLA.format(servicio=servicio, puerto=PUERTOS[servicio]) + "/api/v1/" + ruta, method=metodo,
                                  data=json.dumps(cuerpo).encode() if cuerpo is not None else None,
                                  headers={"Accept": "application/json", "Content-Type": "application/json", "X-Cliente": "movil",
                                           **({"Authorization": f"Bearer {token}"} if token else {})})
