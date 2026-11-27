@@ -76,3 +76,29 @@ Mejoras que se hicieron antes de la entrega a partir de la prueba (con el commit
   se envió sola («Sin enviar» desaparece del menú).
 - T4: ¿encuentra el botón «Reportes» en la barra? ¿Entiende el periodo (casillas «Desde» y «Hasta»)?
 - T5: ¿interpreta los colores del panel sin explicación?
+
+---
+
+## Resultados de la sesión del 27 de noviembre de 2026
+
+**Cómo se hizo (versión corta):** 3 personas y **una tarea por persona**, en la PC de Mauro con la versión de `main` que incluye el PR #23
+(portal en el navegador, app Android en el emulador API 36 y app de escritorio en Windows, todo contra los servicios locales).
+Observó y anotó Mauro. La tarea 3 del formato (cerrar una entrega con QR) se cambió por una compra en el portal, porque el emulador no puede
+escanear un QR real. No se aplicó el cuestionario de 1 a 5.
+
+| Persona | Perfil | Tarea | Tiempo | Resultado | Qué dijo |
+|---|---|---|---|---|---|
+| P1 | Estudiante | «Compra tres productos y confirma tu pedido.» (portal web, cliente) | 3 min | **É** sola | «Todo sencillo, muy intuitivo, solo que al ser una plataforma nueva, la debes conocer un poco primero.» |
+| P2 | Ama de casa | «Entra como repartidor y dime a qué dirección es tu primera entrega.» (app Android) | 30 s | **É** sola | «Muy fácil, unos pocos clicks y ya estaba donde necesitaba estar.» |
+| P3 | Profesional empleado | «Descarga en PDF el reporte de pedidos por día.» (app de escritorio, planeador) | 4 min | **A** con ayuda | «Estuvo medio difícil en una parte porque había muchas opciones, me guiaron y llegué.» |
+
+**Resumen:** 2 de 3 tareas sin ayuda. Cada tarea la hizo una sola persona, así que es una señal, no una medición.
+
+| Tarea | Problema observado | Mejora propuesta | Prioridad |
+|---|---|---|---|
+| Comprar (portal) | Ninguno; P1 comenta que la primera vez hay que conocer la plataforma | — | baja |
+| Entrega (Android) | Ninguno | — | — |
+| Reporte PDF (escritorio) | La ventana principal muestra muchas opciones en una sola barra y cuesta encontrar el camino a «Reportes» → «Descargar PDF» | Agrupar los botones por tarea (catálogos, planeación, análisis, operación) y dejar «Reportes» a la vista; un texto de ayuda en la ventana de reportes | alta |
+
+Mejoras hechas a partir de la prueba: ninguna todavía.
+

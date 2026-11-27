@@ -44,7 +44,7 @@ Estado al 27 de noviembre (detalle y resultados en `entrega/PRUEBAS_APPS_ENTREGA
       arregló. El escritorio, ver la sección 7.2.
 - [x] **Capturas:** las de escritorio y `movil_avisos`. Faltan las cuatro del ensayo sin red (no hay teléfono).
 - [ ] **Instaladores:** APK y ZIP generados y medidos; hay que regenerarlos desde `main` cuando se una este PR y publicarlos como *Release*.
-- [ ] **Pruebas de usabilidad** con personas (`entrega/FORMATO_USABILIDAD.md`).
+- [x] **Pruebas de usabilidad:** 3 personas, una tarea cada una (27-nov); resultados al final de `entrega/FORMATO_USABILIDAD.md`. Hallazgo: en el escritorio cuesta llegar al PDF del reporte.
 - [ ] **Video** (`docs/GUION_VIDEO_Y_PRESENTACION.md`, parte A, y `entrega/GUION_VIDEO.md`).
 
 **Revisión contra el enunciado del Proyecto 11 (27-nov, rama `mauro-faltantes`).** Faltaban funciones que pide el enunciado; se agregaron:
