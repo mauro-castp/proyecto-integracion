@@ -245,6 +245,10 @@ class SaludConBucket(unittest.TestCase):
         cls.app = crear_app("prueba-bucket", "Prueba", "Prueba de salud.", 5999, dependencias=("bucket",))
         cls.app_sin = crear_app("prueba-sin-bucket", "Prueba", "Prueba de salud.", 5998, dependencias=())
 
+    def setUp(self):
+        from comun import base
+        base._secundarias.clear()
+
     def tearDown(self):
         almacen.usar(None)
 
@@ -255,7 +259,9 @@ class SaludConBucket(unittest.TestCase):
         cuerpo = r.get_json()
         self.assertEqual(r.status_code, 200)
         self.assertEqual(cuerpo["estado"], "ok")
-        self.assertEqual(cuerpo["dependencias"], {"postgres": "no_aplica", "redis": "no_aplica", "mongo": "no_aplica", "bucket": "ok"})
+        self.assertEqual(set(cuerpo["dependencias"]), {"postgres", "redis", "mongo", "bucket"})
+        self.assertEqual(cuerpo["dependencias"]["bucket"], "ok")
+        self.assertNotIn("no_aplica", cuerpo["dependencias"].values(), "las cuatro se comprueban")
         self.assertIsInstance(cuerpo["tiempo_ms"], (int, float))
         self.assertGreaterEqual(cuerpo["tiempo_ms"], 0)
         self.assertEqual(cuerpo["version"], config.VERSION)
@@ -275,7 +281,20 @@ class SaludConBucket(unittest.TestCase):
         almacen.usar(AlmacenGcs("mi-bucket", cliente=cli))
         r = self.app_sin.test_client().get("/api/v1/salud")
         self.assertEqual(r.status_code, 200)
-        self.assertEqual(r.get_json()["dependencias"]["bucket"], "no_aplica")
+        self.assertEqual(r.get_json()["estado"], "ok")
+        self.assertEqual(r.get_json()["dependencias"]["bucket"], "error", "se informa aunque no la necesite")
+
+    def test_rutas_health_por_dependencia(self):
+        cli = ClienteFalso()
+        cli.listado_falla = True
+        almacen.usar(AlmacenGcs("mi-bucket", cliente=cli))
+        c = self.app_sin.test_client()
+        vivo = c.get("/health/live")
+        self.assertEqual((vivo.status_code, set(vivo.get_json()["dependencias"].values())), (200, {"no_aplica"}))
+        r = c.get("/health/storage")
+        self.assertEqual((r.status_code, r.get_json()["dependencias"]["bucket"]), (503, "error"))
+        self.assertEqual(c.get("/api/v1/health/ready").status_code, 200)
+        self.assertEqual(c.get("/health/otra-cosa").status_code, 404)
 
     def test_mal_configurado_tambien_es_error_y_no_excepcion(self):
         with mock.patch.object(config, "ALMACEN", "gcs"), mock.patch.object(config, "GCS_BUCKET", ""):

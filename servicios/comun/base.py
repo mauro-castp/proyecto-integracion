@@ -18,6 +18,7 @@ import hashlib
 import json
 import math
 import sys
+import threading
 import time
 import uuid
 from functools import wraps
@@ -261,7 +262,7 @@ def crear_app(servicio, titulo, descripcion, puerto, dependencias=("postgres", "
         g.inicio = time.perf_counter()
         traza = request.headers.get("X-Traza-Id", "")
         g.traza_id = traza if 8 <= len(traza) <= 64 and traza.replace("-", "").isalnum() else str(uuid.uuid4())
-        if not request.path.endswith(("/salud", "/health", "/docs", "/openapi.json")):
+        if not _es_publica_de_estado(request.path):
             _limitar()
 
     @app.after_request
@@ -321,23 +322,35 @@ def crear_app(servicio, titulo, descripcion, puerto, dependencias=("postgres", "
 
     @app.get("/salud")
     @app.get("/health")
+    @app.get("/health/ready")
     @app.get(f"{config.PREFIJO}/salud")
     @app.get(f"{config.PREFIJO}/health")
+    @app.get(f"{config.PREFIJO}/health/ready")
     def salud():
         """Estado del proceso, de PostgreSQL, Redis, MongoDB y del bucket, versión desplegada y tiempo de respuesta.
-        `bucket` solo se comprueba en los servicios que guardan archivos (los demás no dependen de él: si el bucket
-        cae, no deben aparecer degradados)."""
+        Se informan las cuatro dependencias; el servicio queda «degradado» (503) solo si falla una de las que necesita para
+        responder (así, si cae el bucket, quien no guarda archivos lo informa sin declararse enfermo)."""
+        return _salud(DEPENDENCIAS, dependencias)
+
+    @app.get("/health/live")
+    @app.get(f"{config.PREFIJO}/health/live")
+    def vivo():
+        """El proceso responde. No consulta ninguna dependencia."""
+        return _salud((), ())
+
+    @app.get("/health/<any(database, redis, mongodb, storage):parte>")
+    @app.get(f"{config.PREFIJO}/health/<any(database, redis, mongodb, storage):parte>")
+    def salud_de(parte):
+        """Una sola dependencia, comprobada en el momento: 200 si responde, 503 si no."""
+        nombre = {"database": "postgres", "redis": "redis", "mongodb": "mongo", "storage": "bucket"}[parte]
+        return _salud((nombre,), (nombre,))
+
+    def _salud(revisar, requeridas):
         inicio = time.perf_counter()
-        dep = {"postgres": "no_aplica", "redis": "no_aplica", "mongo": "no_aplica", "bucket": "no_aplica"}
-        if "postgres" in dependencias:
-            dep["postgres"] = "ok" if _probar(_pg) else "error"
-        if "redis" in dependencias:
-            dep["redis"] = "ok" if _probar(r_sesion.ping) else "error"
-        if "mongo" in dependencias:
-            dep["mongo"] = "ok" if mongo_disponible() else "error"
-        if "bucket" in dependencias:
-            dep["bucket"] = "ok" if _probar(lambda: _exigir(almacen.obtener().disponible())) else "error"
-        estado = "ok" if "error" not in dep.values() else "degradado"
+        dep = {n: "no_aplica" for n in DEPENDENCIAS}
+        for n in revisar:
+            dep[n] = "ok" if _dependencia(n, n in requeridas) else "error"
+        estado = "degradado" if any(dep[n] == "error" for n in requeridas) else "ok"
         cuerpo = {"servicio": servicio, "version": config.VERSION, "estado": estado, "dependencias": dep,
                   "tiempo_ms": round((time.perf_counter() - inicio) * 1000, 1)}
         return responder(cuerpo, 200 if estado == "ok" else 503, raiz="salud")
@@ -411,12 +424,38 @@ def _registrar(status):
              "excepcion": {"detalle": g.excepcion} if g.get("excepcion") else None}
     if config.LOG_STDOUT:
         print(json.dumps({**linea, "registrado_en": linea["registrado_en"].isoformat()}, ensure_ascii=False), flush=True)
-    if regla.endswith(("/salud", "/health", "/docs", "/openapi.json")):
+    if _es_publica_de_estado(regla):
         return
     mongo_insertar("logs_tecnicos", linea)
     mongo_insertar("metricas_servicio", {"momento": linea["registrado_en"], "duracion_ms": dur,
                                          "etiquetas": {"servicio": g.get("servicio", "?"), "ruta": regla,
                                                        "metodo": request.method, "status": status}})
+
+
+DEPENDENCIAS = ("postgres", "redis", "mongo", "bucket")
+SALUD_COPIA_S = 30                       # las dependencias que un servicio no necesita se vuelven a probar, como mucho, cada 30 s
+_secundarias = {}
+
+
+def _es_publica_de_estado(ruta):
+    """Salud y documentación: no consumen el límite de peticiones ni se registran."""
+    return ruta.endswith(("/salud", "/health", "/docs", "/openapi.json")) or "/health/" in ruta
+
+
+def _dependencia(nombre, requerida):
+    """True si responde. Las requeridas se prueban en cada consulta. Las demás se informan con la última comprobación y se
+    renuevan en segundo plano, para que una caída ajena no vuelva lenta la salud de todos los servicios."""
+    prueba = {"postgres": _pg, "redis": lambda: r_sesion.ping(), "mongo": lambda: _exigir(mongo_disponible()),
+              "bucket": lambda: _exigir(almacen.obtener().disponible())}[nombre]
+    if requerida:
+        return _probar(prueba)
+    copia = _secundarias.get(nombre)
+    if copia is None:
+        _secundarias[nombre] = (time.monotonic(), _probar(prueba))
+    elif time.monotonic() - copia[0] > SALUD_COPIA_S:
+        _secundarias[nombre] = (time.monotonic(), copia[1])          # evita lanzar dos comprobaciones a la vez
+        threading.Thread(target=lambda: _secundarias.__setitem__(nombre, (time.monotonic(), _probar(prueba))), daemon=True).start()
+    return _secundarias[nombre][1]
 
 
 def _probar(fn):
