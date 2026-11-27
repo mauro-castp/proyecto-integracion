@@ -39,16 +39,16 @@ apps, las tres bases de datos, el almacén de objetos y el despliegue en GCP.
 | Tipo | Qué cubre | Cómo se corre | Resultado |
 |---|---|---|---|
 | **Unitarias** | formatos, validación, XSD, OpenAPI, precios, reposición, fórmulas de la Ola 2 (equilibrio, capacidad, cobertura, rutas, simulación, surtido) | `pruebas.test_unitarias`, `pruebas.test_unitarias_ola2` | **37 + 65 OK** |
-| **Almacén de archivos** | URL firmada, caducidad, manipulación, bucket caído, servicios que no usan bucket | `pruebas.test_almacen` | **31 OK** |
+| **Almacén de archivos** | URL firmada, caducidad, manipulación, bucket caído, servicios que no usan bucket | `pruebas.test_almacen` | **32 OK** (4 se omiten) |
 | **Contratos** | los 26 servicios: recorridos de escritorio (XML vs XSD) y de Android (JSON vs ejemplos) | `pruebas.test_contrato` | **7 OK** |
 | **Contratos (validador independiente)** | los XSD y los ejemplos con lxml | `app_escritorio/pruebas/test_contratos.py` | **10 OK** (se corrigió una prueba que seguía esperando los 9 XSD del 2.º parcial) |
 | **Integración por ola** | servicios contra PostgreSQL, Redis y MongoDB reales, con permisos por perfil | `pruebas.test_ola1`, `test_ola2`, `test_ola3`, `test_ola4` | **24 + 102 + 74 + 12 OK** |
 | **Integración web ↔ servicios** | el web llamando por HTTP real, panel de monitoreo, adjuntar documento | `pruebas.test_web_integracion` | **9 OK** |
 | **Reglas en la base** | 26 verificaciones de las RN en triggers y funciones | `bloque_c/sql/05_pruebas_reglas.sql` | **26 de 26 PASA** |
 | **Portal web** | planeación, CRUD, CSRF, exportaciones, ámbito | `sistema_web/test_planeacion`, `test_web_ampliado`, `test_planeacion_local` | **16 + 13 + 6 OK** |
-| **Portal web e2e** | contra PostgreSQL y Redis reales | `sistema_web/prueba_e2e_web.py` | 5 de 6. La sexta busca `/app/07_web_ampliado.sql` (ruta de Docker): es del ambiente |
+| **Portal web e2e** | contra PostgreSQL y Redis reales | `sistema_web/prueba_e2e_web.py` | **6 de 6** en el contenedor `web`, incluido el archivo que va al almacén |
 | **Sistema (procesos integrales)** | P1 cierre de entrega, P2 reabastecimiento, P3 despacho con rutas y reporte archivado, de punta a punta | `correr.sh procesos`, `correr.sh flujos` | En GCP: **32 de 32** por el portal ([`procesos/`](../evidencias/nube/procesos/procesos_integrales.md)) y **40 de 40** por API ([`flujos/`](../evidencias/nube/flujos/flujos.md)) |
-| **Petición y respuesta** | 403 casos (correctos, inválidos, inexistentes, sin permiso, token inválido o revocado, reglas, límite) | `pruebas/evidencias.py` | **439 de 439** en local y **436 de 436** en la nube (versión final) |
+| **Petición y respuesta** | 439 casos (correctos, inválidos, inexistentes, sin permiso, token inválido o revocado, reglas, límite) | `pruebas/evidencias.py` | **439 de 439** en local y **436 de 436** en la nube (versión final) |
 | **Regresión** | todo lo anterior después de cada corrección | mismas órdenes; ver sección 6 | Sin regresiones tras las correcciones de la entrega final |
 | **Seguridad** | ver sección 5 | casos AUTH, USR, DOC, SEG, ENT y PED + pruebas dirigidas | OK (sección 5) |
 | **Carga** | 6 perfiles, 50 y 150 usuarios | Locust ([`pruebas_carga/`](../pruebas_carga/LEEME.md)) | 50 u.: p95 75 ms, 0 % de errores · 150 u.: p95 110 ms, 0 % de errores |

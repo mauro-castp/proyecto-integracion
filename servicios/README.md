@@ -85,6 +85,9 @@ La Ola 3 completa los 26 servicios del plan:
 - **sincronizacion** aplica en el orden en que ocurrieron las operaciones hechas sin conexión llamando al servicio dueño. `(dispositivo, operacion_uuid)` es
   único (reenviar no duplica), un conflicto lo gana el servidor y lo que no se pudo aplicar queda pendiente para reintentar.
 
+**Salud:** los 26 informan PostgreSQL, Redis, MongoDB y bucket, y quedan degradados solo si falla una dependencia que necesitan. Además de
+`/salud` publican `/health/live`, `/health/ready`, `/health/database`, `/health/redis`, `/health/mongodb` y `/health/storage`.
+
 Cada servicio publica `GET /health` (alias de `/salud`, también bajo `/api/v1/`) y su documentación en
 **`http://localhost:51XX/api/v1/docs`** (Swagger UI, ejecutable con «Authorize» + «Try it out») y `/api/v1/openapi.json`.
 Los ejemplos de Swagger son los archivos oficiales del contrato. Métodos usados: GET, POST, PUT (candidatos), PATCH
@@ -124,6 +127,7 @@ Los cálculos de planeación **no se duplican**: el servicio usa `sistema_web/pl
   e `ix_detalle_pedido_cubriente` (ver `evidencias/volumen/LEEME.md`).
 - `bloque_c/sql/13_entrega_final.sql`: ruta del archivo de cada exportación de reportes en el bucket.
 - `bloque_c/sql/14_pedidos_api.sql`: `pedido.operacion_uuid`, para que reenviar el mismo pedido por la API no lo duplique.
+- `bloque_c/sql/15_archivos_bucket.sql`: retira la tabla donde el portal guardaba archivos; ahora van al almacén (servicio `documentos`).
 - `bloque_c/mongo/03_documentos_nube.js`: validador de `documentos` para los archivos en Cloud Storage (en MongoDB quedan solo sus datos).
 - `bloque_c/mongo/02_microservicios.js`: colecciones `documentos` y `ubicaciones_entrega` (índice 2dsphere, TTL de 180 días).
 - MongoDB en uso: `documentos` (insertar, consultar, agregar), `ubicaciones_entrega` (Seguimiento: insertar en lote, agregación del recorrido),
