@@ -37,7 +37,8 @@ cd app_escritorio
 dotnet run
 ```
 
-Host por omisión `http://localhost` (HTTP solo se permite hacia el equipo local; cualquier otro host exige HTTPS). Cuentas de
+Host por omisión `http://localhost` (HTTP solo se permite hacia el equipo local; cualquier otro host exige HTTPS). Para la nube:
+`https://34-51-89-253.sslip.io/servicios` (con ruta en la dirección se llama por nombre de servicio; sin ruta, a cada puerto). Cuentas de
 demostración: `sistema_web/README.md` (planeador: `planeador@codex.mx`, auditor: `auditor@codex.mx`).
 «Ejemplos oficiales» usa las respuestas de `contratos/ejemplos/` sin red (entra como planeador).
 
@@ -51,7 +52,7 @@ dotnet publish Microhubs.csproj -c Release -r win-x64 --self-contained true -o b
 
 ```powershell
 dotnet build Microhubs.csproj
-dotnet run --project pruebas/Microhubs.Pruebas.csproj          # sin red: 71 comprobaciones + 3 que abren las ventanas
+dotnet run --project pruebas/Microhubs.Pruebas.csproj          # sin red: 73 comprobaciones + 3 que abren las ventanas
 python -m pip install lxml; python -m unittest discover -s pruebas -v    # 10 pruebas de los XSD con un validador independiente
 $env:MICROHUBS_BACKEND='http://localhost'; $env:MICROHUBS_CLAVE='<clave de las cuentas de demostración>'
 dotnet run --project pruebas/Microhubs.Pruebas.csproj          # +97 contra los servicios reales
@@ -59,7 +60,7 @@ $env:MICROHUBS_DESCARGAS='C:\temp\reportes'                    # opcional: guard
 ```
 
 Sin Windows (Linux o macOS con el SDK de .NET 8, sin paquetes de NuGet) corren las mismas pruebas salvo abrir las ventanas:
-`dotnet run --project pruebas/multiplataforma/Microhubs.Pruebas.Multiplataforma.csproj` (71 sin red; con las mismas variables, 168).
+`dotnet run --project pruebas/multiplataforma/Microhubs.Pruebas.Multiplataforma.csproj` (73 sin red; con las mismas variables, 170).
 Para «Rutas · proponer» hacen falta al menos dos pedidos listos en el microhub 1; si no los hay, esa parte se omite y lo dice.
 
 Qué comprueba cada bloque:

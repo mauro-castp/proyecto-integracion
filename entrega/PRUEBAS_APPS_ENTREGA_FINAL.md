@@ -70,6 +70,10 @@ No se pudo porque este entorno no llega a Google Maven, Maven Central, plugins d
 5. **Instaladores** y su publicación: [`INSTALADORES.md`](INSTALADORES.md).
 6. **Capturas** (abajo). No se generaron aquí: no hay pantalla de Android ni de Windows en este entorno, y no se inventan.
 7. **Nube:** no se probó contra la VM (certificado autofirmado; la consigna es probar en local y no desactivar la validación).
+   **Actualización del 27 de noviembre:** la nube ya tiene certificado de Let's Encrypt y las apps enrutan por nombre cuando el servidor trae
+   ruta. Verificado en Windows: Android 68 unitarias y 5 contra los servicios por puertos y por una puerta única como la de la nube; escritorio
+   76 sin red y 173 contra los servicios por las dos vías. Contra la nube, el código de ambas apps recibió el 401 del contrato **sin
+   credenciales**; falta iniciar sesión de verdad desde un teléfono y una PC.
 
 ### Capturas que faltan (guardar en `entrega/capturas/`)
 

@@ -1,5 +1,6 @@
-subject=CN = 34-51-89-253.sslip.io
-notBefore=Nov 26 21:39:29 2026 GMT
-notAfter=Nov 26 21:39:29 2027 GMT
+subject=CN=34-51-89-253.sslip.io
+issuer=C=US, O=Let's Encrypt, CN=YE2
+notBefore=Nov 27 04:56:55 2026 GMT
+notAfter=Feb 25 04:56:54 2027 GMT
 X509v3 Subject Alternative Name: 
-    DNS:34-51-89-253.sslip.io, IP Address:34.51.89.253
+    DNS:34-51-89-253.sslip.io

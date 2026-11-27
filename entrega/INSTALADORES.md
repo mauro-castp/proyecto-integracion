@@ -15,7 +15,7 @@ cd app_movil
 
 - Sale en: `app_movil/app/build/outputs/apk/debug/app-debug.apk`
 - Es la variante **debug**, la única que acepta HTTP hacia la PC (`BuildConfig.HTTP_HOST`). La variante release solo acepta HTTPS con un
-  certificado válido; contra la nube, cuyo certificado es autofirmado, no conecta y no se debe desactivar la validación para esquivarlo.
+  certificado válido: la nube ya tiene uno de Let's Encrypt y se usa el servidor `https://34-51-89-253.sslip.io/servicios`.
 - No hay keystore de firma en el repositorio: la APK debug va firmada con la llave de depuración local de Android Studio. Si algún día se
   firma una release, la keystore y su clave se quedan fuera de Git.
 
@@ -44,11 +44,11 @@ Get-FileHash app_escritorio\Microhubs_Escritorio_win-x64.zip -Algorithm SHA256
 
 ## Publicar (GitHub Release)
 
-Después de que Ruth revise la rama `mauro-apps` (y, si ya se unió, desde el commit unido):
+Desde `main`, que ya tiene las apps unidas:
 
 ```powershell
 gh release create v1.0-entrega-final app_movil\app\build\outputs\apk\debug\app-debug.apk app_escritorio\Microhubs_Escritorio_win-x64.zip `
-   --repo mauro-castp/proyecto-integracion --target mauro-apps --title "Entrega final · apps" --notes-file notas_release.md
+   --repo mauro-castp/proyecto-integracion --target main --title "Entrega final · apps" --notes-file notas_release.md
 ```
 
 (o desde la página del repositorio: *Releases → Draft a new release*). En las notas: commit, fecha, SHA-256 de cada archivo, versión de Android
