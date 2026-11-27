@@ -1,0 +1,24 @@
+{% extends 'base.html' %}{% block titulo %}Monitoreo{% endblock %}{% block cuerpo %}
+<meta http-equiv="refresh" content="30">
+<h1>Panel de monitoreo</h1>
+<p class="sub">Salud de los 27 microservicios. El servicio de auditoría y monitoreo los verifica cada 30 s y guarda el resultado en PostgreSQL; este panel solo lee esas tablas. Se actualiza solo.</p>
+<div class="kpis">
+  <div class="kpi"><div class="v">{{ r.total }}</div><div class="l">Servicios vigilados</div></div>
+  <div class="kpi"><div class="v">{{ r.ok }}</div><div class="l">Sanos</div></div>
+  <div class="kpi"><div class="v">{{ r.problemas }}</div><div class="l">Degradados o caídos</div></div>
+  <div class="kpi"><div class="v">{{ r.alertas }}</div><div class="l">Alertas abiertas</div></div>
+</div>
+<p class="ayuda">Última verificación: {{ r.ultima.strftime('%Y-%m-%d %H:%M:%S') if r.ultima else 'ninguna' }}.</p>
+<div class="panel" style="overflow:auto"><h2>Estado por servicio</h2><table><thead><tr><th>Servicio</th><th>Estado</th><th>Hace</th><th class="num">ms</th><th>Versión</th><th class="num">Disponib. 24 h</th><th class="num">Prom. ms</th><th class="num">p95 ms</th><th>Error</th></tr></thead><tbody>
+{% for s in servicios %}{% set d = disp.get(s.servicio, {}) %}<tr><td>{{ s.servicio }}</td>
+<td>{% if s.estado == 'ok' %}<span class="pill verde">ok</span>{% else %}<span class="pill rojo">{{ s.estado }}</span>{% endif %}</td>
+<td>{{ s.antiguedad_seg }} s</td><td class="num">{{ s.tiempo_ms }}</td><td>{{ s.version or '—' }}</td>
+<td class="num">{{ d.pct if d else '—' }} %</td><td class="num">{{ d.prom_ms if d else '—' }}</td><td class="num">{{ d.p95_ms if d else '—' }}</td><td class="ayuda">{{ s.error or '—' }}</td></tr>
+{% else %}<tr><td colspan="9">El verificador aún no ha corrido.</td></tr>{% endfor %}</tbody></table></div>
+<div class="panel" style="overflow:auto"><h2>Alertas abiertas</h2><table><thead><tr><th>Servicio</th><th>Tipo</th><th>Severidad</th><th>Detalle</th><th>Abierta</th><th>Atendida</th></tr></thead><tbody>
+{% for a in abiertas %}<tr><td>{{ a.servicio }}</td><td>{{ a.tipo }}</td><td><span class="pill {{ 'rojo' if a.severidad in ('critica','alta') else '' }}">{{ a.severidad }}</span></td><td>{{ a.detalle }}</td><td>{{ a.abierta_en.strftime('%Y-%m-%d %H:%M') }}</td><td>{{ 'sí' if a.reconocida_en else 'no' }}</td></tr>
+{% else %}<tr><td colspan="6">Sin alertas abiertas.</td></tr>{% endfor %}</tbody></table></div>
+<div class="panel" style="overflow:auto"><h2>Últimas alertas cerradas</h2><table><thead><tr><th>Servicio</th><th>Tipo</th><th>Abierta</th><th>Cerrada</th><th class="num">Duración</th></tr></thead><tbody>
+{% for a in cerradas %}<tr><td>{{ a.servicio }}</td><td>{{ a.tipo }}</td><td>{{ a.abierta_en.strftime('%Y-%m-%d %H:%M') }}</td><td>{{ a.cerrada_en.strftime('%Y-%m-%d %H:%M') }}</td><td class="num">{{ a.minutos }} min</td></tr>
+{% else %}<tr><td colspan="5">Todavía no se ha cerrado ninguna.</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}
