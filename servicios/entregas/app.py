@@ -33,7 +33,7 @@ from flask import g, request
 from pymongo.errors import DuplicateKeyError
 
 from comun import config
-from comun.base import (crear_app, documentar, filtro_entero, filtro_opcion, leer_cuerpo, leer_paginacion, limitar_microhub, lista,
+from comun.base import (ROLES_DE_MICROHUB, crear_app, documentar, filtro_entero, filtro_opcion, leer_cuerpo, leer_paginacion, limitar_microhub, lista,
                         paginacion, requiere, responder)
 from comun.base_errores import ErrorApi, conflicto, invalido, no_encontrado
 from comun.datos import ahora, conexion, consultar, mongo, mongo_disponible
@@ -88,14 +88,19 @@ def _entrega(eid, para_cierre=False):
 @app.get(f"{P}/entregas/repartidores")
 @requiere("entregas.asignar", "rutas.planear")
 def repartidores():
-    """Repartidores activos con las entregas que tienen abiertas hoy; lo consume el servicio de rutas."""
+    """Repartidores activos con las entregas que tienen abiertas hoy; lo consume el servicio de rutas.
+    RN41: cada repartidor pertenece a un microhub. Con microhub_id (o si quien pide es operador) solo salen los de ese microhub."""
     pagina, por, desde = leer_paginacion(defecto=100)
-    total = consultar("SELECT count(*) AS n FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'repartidor' AND u.estatus = 'activo'",
-                      una=True)["n"]
+    mid = filtro_entero("microhub_id")
+    if g.usuario["rol"] in ROLES_DE_MICROHUB:
+        mid = limitar_microhub(mid)
+    cond = "r.clave = 'repartidor' AND u.estatus = 'activo'" + (" AND u.microhub_id = %s" if mid else "")
+    args = (mid,) if mid else ()
+    total = consultar(f"SELECT count(*) AS n FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE {cond}", args, una=True)["n"]
     filas = consultar("SELECT u.id, u.nombre || ' ' || COALESCE(u.apellidos, '') AS nombre, "
                       "(SELECT count(*) FROM entrega e WHERE e.repartidor_id = u.id AND e.cierre_en IS NULL AND e.turno_fecha = fn_hoy()) AS abiertas "
-                      "FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'repartidor' AND u.estatus = 'activo' "
-                      "ORDER BY u.id LIMIT %s OFFSET %s", (por, desde))
+                      f"FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE {cond} "
+                      "ORDER BY u.id LIMIT %s OFFSET %s", args + (por, desde))
     return lista(filas, paginacion(pagina, por, total), "repartidor", "repartidores",
                  lambda f: {"id": f["id"], "nombre": f["nombre"].strip(), "entregas_abiertas": f["abiertas"]})
 
@@ -176,10 +181,13 @@ def crear_entrega():
             raise conflicto("Ese pedido ya tiene una entrega asignada.")
         if p["estado"] != "en_preparacion" or not p["listo_en"]:
             raise conflicto("El pedido debe estar en preparación y marcado como listo.")
-        cur.execute("SELECT 1 AS x FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE u.id = %s AND r.clave = 'repartidor' AND u.estatus = 'activo'",
+        cur.execute("SELECT u.microhub_id FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE u.id = %s AND r.clave = 'repartidor' AND u.estatus = 'activo'",
                     (d["repartidor_id"],))
-        if not cur.fetchone():
+        rep = cur.fetchone()
+        if not rep:
             raise invalido("repartidor_id", "No es un repartidor activo.")
+        if rep["microhub_id"] != p["microhub_id"]:      # RN41 (también la vigila trg_entrega_repartidor_microhub)
+            raise invalido("repartidor_id", "Ese repartidor es de otro microhub; solo recibe pedidos del suyo.")
         cur.execute("INSERT INTO entrega (pedido_id, repartidor_id, turno_fecha, asignada_en, salida_en, orden_parada) "
                     "VALUES (%s, %s, current_date, now(), now(), %s) RETURNING id", (p["id"], d["repartidor_id"], d.get("orden_parada")))
         eid = cur.fetchone()["id"]

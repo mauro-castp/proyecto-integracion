@@ -68,7 +68,7 @@ def preparar(correo, cantidad, dsn=DSN):
     creadas = []
     with psycopg.connect(dsn, row_factory=dict_row) as con, con.cursor() as cur:
         cur.execute("SET search_path TO microhubs, public")
-        cur.execute("SELECT u.id FROM usuario u JOIN rol r ON r.id = u.rol_id "
+        cur.execute("SELECT u.id, u.microhub_id FROM usuario u JOIN rol r ON r.id = u.rol_id "
                     "WHERE lower(u.correo) = %s AND r.clave = 'repartidor' AND u.estatus = 'activo'", (correo.lower(),))
         rep = cur.fetchone()
         if not rep:
@@ -78,16 +78,16 @@ def preparar(correo, cantidad, dsn=DSN):
             intentos += 1
             cur.execute("SAVEPOINT nuevo")
             try:
-                pid = crear_pedido(cur)
+                pid = crear_pedido(cur, rep["microhub_id"])     # RN41: un pedido del microhub del repartidor
                 cur.execute("RELEASE SAVEPOINT nuevo")
             except psycopg.Error:
                 cur.execute("ROLLBACK TO SAVEPOINT nuevo")
                 pid = None
             if not pid:
-                cur.execute("SELECT p.id FROM pedido p WHERE p.estado = 'asignado' AND p.microhub_id IS NOT NULL "
+                cur.execute("SELECT p.id FROM pedido p WHERE p.estado = 'asignado' AND p.microhub_id = %s "
                             "AND NOT EXISTS (SELECT 1 FROM entrega e WHERE e.pedido_id = p.id) "
                             "AND EXISTS (SELECT 1 FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'operador' "
-                            "AND u.microhub_id = p.microhub_id) ORDER BY p.id LIMIT 1")
+                            "AND u.microhub_id = p.microhub_id) ORDER BY p.id LIMIT 1", (rep["microhub_id"],))
                 fila = cur.fetchone()
                 pid = fila["id"] if fila else None
             if not pid:
@@ -96,7 +96,7 @@ def preparar(correo, cantidad, dsn=DSN):
                         "WHERE r.clave = 'operador' AND u.microhub_id = p.microhub_id ORDER BY u.id LIMIT 1) AS operador "
                         "FROM pedido p WHERE p.id = %s", (pid,))
             p = cur.fetchone()
-            if not p["operador"]:
+            if not p["operador"] or p["microhub_id"] != rep["microhub_id"]:
                 continue
             actor(cur, "operador", p["operador"])
             cur.execute("UPDATE pedido SET estado = 'en_preparacion' WHERE id = %s", (pid,))

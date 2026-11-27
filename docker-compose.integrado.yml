@@ -261,6 +261,12 @@ services:
     environment: *entorno
     ports: ["5126:5126"]
 
+  ubicacion:
+    <<: *servicio
+    build: {context: ., dockerfile: servicios/ubicacion/Dockerfile}
+    environment: *entorno
+    ports: ["5127:5127"]
+
   reportes:
     <<: *servicio
     build: {context: ., dockerfile: servicios/reportes/Dockerfile}

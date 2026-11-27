@@ -244,6 +244,21 @@ class MainActivity : Activity() {
     private fun home() {
         val u = api.session!!.getJSONObject("usuario")
         nueva("Hola, ${u.getString("nombre")}", rolLegible(u.getString("rol")))
+        if (role() == "repartidor") {
+            // Cada repartidor pertenece a un microhub fijo y solo recibe entregas de ese microhub (RN41).
+            val sede = ui.texto(if (u.isNull("microhub_id")) "Sin microhub asignado: pide a tu supervisor que te asigne uno" else "Microhub ${u.getInt("microhub_id")}", 16f, ui.tinta, true)
+            val tarjeta = ui.tarjeta()
+            tarjeta.addView(ui.fila(ui.circulo("🏪", ui.primario, 44), LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+                addView(ui.texto("Tu microhub", 13f, ui.tintaSec, true)); addView(sede)
+                addView(ui.texto("Solo recibes entregas de este microhub.", 13f, ui.tintaSec))
+            }))
+            p.agregar(tarjeta)
+            if (!u.isNull("microhub_id") && redActual() != Red.SIN_RED) fondo.execute {
+                val nombre = try { usuarios.yo().microhub } catch (_: Exception) { null }
+                runOnUiThread { if (alive && nombre != null) sede.text = nombre }
+            }
+        }
         p.agregar(ui.titulo("¿Qué quieres hacer?"))
         if (role() in listOf("repartidor", "administrador")) p.agregar(opcion("📦", "Mis entregas", "Paradas asignadas a tu turno") { deliveries(1) })
         if (role() == "cliente") {
