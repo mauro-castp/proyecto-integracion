@@ -1,43 +1,49 @@
 @startuml
 !include tema.iuml
-title Diagrama 2 · Contenedores (actualizado en el Segundo Parcial)
+title Diagrama 2 · Contenedores (entrega final, corregido)
+left to right direction
 
 actor "Visitante /\nCliente" as CLI
-actor "Operador / Planeador /\nAdministrador" as OPE
-actor "Repartidor" as REP
+actor "Operador / Planeador /\nAdministrador / Proveedor" as OPE
+actor "Repartidor / Cliente\n(móvil)" as REP
 
 rectangle "Navegador web" as NAV
-rectangle "**Sistema web empresarial**\nPython · Flask · Jinja2\n//Funciona por sí solo//" as WEB #C9DCF0
-rectangle "**App Android**\nKotlin · consumo JSON\n//Repartidor//" as AND
-rectangle "**App de escritorio**\nC# · Windows Forms · consumo XML\n//Planeación//" as ESC
-rectangle "**10 microservicios**\nPython · Flask · /api/v1\n//auth · usuarios · productos · zonas · microhubs\npedidos · entregas · seguimiento\nplaneación · documentos//" as MS
+rectangle "**App Android**\nKotlin · JSON\n//cliente y repartidor//" as AND
+rectangle "**App de escritorio**\nC# .NET 8 · XML validado con XSD\n//operador y planeador//" as ESC
 
-database "**PostgreSQL**\nTransaccional, reglas y auditoría" as PG
-database "**MongoDB**\nEvidencias, GPS, simulaciones, logs" as MG
-database "**Redis**\nSesión, revocación, caché, límites" as RD
+rectangle "**Firewall de VPC (GCP)**\nsolo TCP 80 y 443" as FW #F5E3C8
+rectangle "**Nginx**\n• Reverse proxy: TLS (HTTPS), X-Forwarded-For\n• API gateway: punto único de entrada, /servicios/<nombre>/ → servicio,\n  límite 20 peticiones/s por IP\n• Balanceo: gunicorn reparte entre los procesos de cada contenedor" as NG #F5E3C8
+
+rectangle "**Portal web (monolito)**\nPython · Flask · Jinja2\n//NO llama a los microservicios//" as WEB #C9DCF0
+rectangle "**27 microservicios**\nPython · Flask · /api/v1 · JWT\n//auth · usuarios · productos · pedidos · inventario · entregas//\n//ubicación (facility location) · demanda · cobertura · capacidad (colas)//\n//rutas · costos · punto de equilibrio · simulación · surtido · reportes …//" as MS
+
+database "**PostgreSQL**\noperación, reglas (triggers),\nauditoría, colonias CONAPO" as PG
+database "**MongoDB**\nGPS, evidencias (metadatos),\nlogs, simulaciones" as MG
+database "**Redis**\nsesiones y revocación JWT,\ncaché, límites" as RD
+storage "**Cloud Storage**\narchivos de las apps\n(URL firmadas)" as GCS
 
 CLI --> NAV
 OPE --> NAV
-NAV --> WEB : HTTP
 OPE --> ESC
 REP --> AND
-CLI --> AND
 
-AND --> MS : JSON + JWT
-ESC --> MS : XML (XSD) + JWT
-WEB --> MS : HTTP + el JWT de la sesión\n//integracion.py//
+NAV --> FW : HTTPS
+AND --> FW : HTTPS · JSON + JWT
+ESC --> FW : HTTPS · XML + JWT
+FW --> NG
+NG --> WEB : / (portal)
+NG --> MS : /servicios/<nombre>/
 
-WEB --> PG : SQL\n//transacciones//
-WEB --> MG : bitácora técnica
+WEB --> PG : SQL
 WEB --> RD : sesión, carrito
-MS --> PG : SQL, actor declarado
-MS --> MG : evidencias, GPS, simulaciones, logs
-MS --> RD : verificación de sesión, caché, límites
+MS --> PG : SQL (cada servicio sus tablas)
+MS --> MG
+MS --> RD
+MS --> GCS
 
-note right of WEB
-  RNF13: la caída de un microservicio
-  no derriba al sistema web. El núcleo
-  conserva todas las funciones de su
-  alcance sin depender de ellos.
+note bottom of WEB
+  El monolito solo apunta a SUS bases de datos.
+  Las apps Android y de escritorio son las que
+  consumen los microservicios (por el gateway).
 end note
 @enduml
