@@ -3,7 +3,8 @@
 > Responsables según lo que cada integrante describe en su reflexión (`docs/reflexiones/`) y el historial de Git (27 de noviembre de 2026).
 > Todos participamos en el proyecto. Las confirmaciones **no miden** el trabajo real: quien sube o une archivos figura como autor, y el
 > análisis, las pruebas con personas, la revisión o la presentación pueden no dejar rastro. Parte del código de las apps lo escribieron María José y
-> Vanessa y lo subió Mauro, por lo que figura a su nombre. Las horas no se registraron. La cuenta
+> Vanessa y lo subió Mauro, y María José trabajó con Mauro en las Olas 1 a 3 desde la computadora de él, por lo que ese trabajo figura a
+> nombre de Mauro. Las horas no se registraron. La cuenta
 > `SrTequila` es la de Jorge.
 
 Integrantes: Ruth Elizabeth Soriano Barrera · Vanessa Morante López · Mauro Castillo Peña · María José Cedillo Mata · Jorge Antonio Arreola Cantú
@@ -17,9 +18,9 @@ Integrantes: Ruth Elizabeth Soriano Barrera · Vanessa Morante López · Mauro C
 | Arquitectura y diagramas (bloque D) | Ruth | Vanessa (documento de arquitectura), Mauro (diagramas del Segundo Parcial) | `bloque_d` · confirmaciones: Ruth 5, Mauro 1 |
 | Portal web | Ruth | Vanessa (altas y cambios de productos y catálogos, módulo de planeación), Mauro (integración con los microservicios) | `sistema_web` · confirmaciones: Ruth 17, Mauro 2, Vanessa 2 |
 | Microservicios: Segundo Parcial (10) | Mauro (contrato v1, compose integrado y pruebas) | Ruth | `servicios/…` · confirmaciones: Ruth 9, Mauro 3 |
-| Microservicios: Ola 1 | Ruth | Mauro | `servicios/…` · confirmaciones: Ruth 3, Mauro 2 |
-| Microservicios: Ola 2 (algoritmos: rutas, simulación, surtido) | Ruth | Mauro (colas M/M/1 y M/M/c en capacidad) | `servicios/…` · confirmaciones: Ruth 3, Mauro 1 |
-| Microservicios: Ola 3 (reportes, sincronización, monitoreo) | Ruth | Mauro | `servicios/…` · confirmaciones: Ruth 7, Mauro 1 |
+| Microservicios: Ola 1 | Ruth | Mauro y María José (trabajando juntos en la computadora de Mauro) | `servicios/…` · confirmaciones: Ruth 3, Mauro 2 |
+| Microservicios: Ola 2 (algoritmos: rutas, simulación, surtido) | Ruth | Mauro y María José (colas M/M/1 y M/M/c en capacidad, trabajando juntos en la computadora de Mauro) | `servicios/…` · confirmaciones: Ruth 3, Mauro 1 |
+| Microservicios: Ola 3 (reportes, sincronización, monitoreo) | Ruth | Mauro y María José (trabajando juntos en la computadora de Mauro) | `servicios/…` · confirmaciones: Ruth 7, Mauro 1 |
 | App Android | Ruth (base y flujo del repartidor) | Mauro (perfil cliente, pruebas en el emulador), María José y Vanessa (archivos para el emulador y corrección de errores, entregados a Mauro) | `app_movil` · confirmaciones: Ruth 16, Mauro 4 |
 | App de escritorio | Ruth (base y módulos de análisis) | Mauro (módulos de operación, manifiesto, permisos, pruebas en Windows), María José y Vanessa (archivos y corrección de errores, entregados a Mauro) | `app_escritorio` · confirmaciones: Ruth 9, Mauro 3 |
 | Despliegue en GCP | Ruth | Mauro (pruebas de las apps contra la nube) | `deploy` · confirmaciones: Ruth 8 |
