@@ -62,3 +62,5 @@ services:
     ports: !override ["127.0.0.1:5125:5125"]
   auditoria-monitoreo:
     ports: !override ["127.0.0.1:5126:5126"]
+  ubicacion:
+    ports: !override ["127.0.0.1:5127:5127"]

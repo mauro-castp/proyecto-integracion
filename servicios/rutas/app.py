@@ -174,8 +174,9 @@ def listos(mid, ids=None):
     return pedidos
 
 
-def repartidores_de(ids=None):
-    filas = traer_todo("entregas", "entregas/repartidores")
+def repartidores_de(ids=None, microhub_id=None):
+    """RN41: solo los repartidores del microhub que despacha."""
+    filas = traer_todo("entregas", "entregas/repartidores", {"microhub_id": microhub_id} if microhub_id else None)
     reps = [{"id": f["id"], "nombre": f["nombre"]} for f in filas]
     if ids:
         faltan = sorted(set(ids) - {r["id"] for r in reps})
@@ -217,9 +218,9 @@ def proponer():
     pedidos = listos(mid, ids)
     if not pedidos:
         raise ErrorApi(422, "VALIDACION", "No hay pedidos listos para despachar en ese microhub.")
-    reps = repartidores_de(rep_ids)
+    reps = repartidores_de(rep_ids, mid)
     if not reps:
-        raise ErrorApi(422, "VALIDACION", "No hay repartidores activos.")
+        raise ErrorApi(422, "VALIDACION", "No hay repartidores activos de ese microhub.")
     metodo = d.get("metodo") or "automatico"
     rutas, sin = armar_plan((mh["lat"], mh["lng"]), pedidos, reps, metodo, p)
     dia = hoy().isoformat()

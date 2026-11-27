@@ -85,8 +85,8 @@ def referencia(con):
                         "FROM zona WHERE estatus = 'activo' ORDER BY id").fetchall()
     hubs = con.execute("SELECT id, latitud::float, longitud::float FROM microhub WHERE estatus = 'activo' ORDER BY id").fetchall()
     productos = con.execute("SELECT id, precio::float FROM producto WHERE estatus = 'activo' ORDER BY id").fetchall()
-    rep = con.execute("SELECT u.id FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'repartidor' "
-                      "AND u.estatus = 'activo' ORDER BY u.id").fetchall()
+    rep = con.execute("SELECT u.id, u.microhub_id FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'repartidor' "
+                      "AND u.estatus = 'activo' AND u.microhub_id IS NOT NULL ORDER BY u.id").fetchall()
     limite = con.execute("SELECT valor::int FROM configuracion WHERE clave = 'limite_unidades_linea'").fetchone()
     rol_cliente = con.execute("SELECT id FROM rol WHERE clave = 'cliente'").fetchone()[0]
     # Cada zona la atiende el microhub más cercano a su centroide.
@@ -94,7 +94,8 @@ def referencia(con):
     for z in zonas:
         hub_de_zona[z[0]] = min(hubs, key=lambda h: (h[1] - z[4]) ** 2 + (h[2] - z[5]) ** 2)
     return {"zonas": zonas, "hubs": hubs, "hub_de_zona": hub_de_zona, "productos": productos,
-            "repartidores": [r[0] for r in rep], "limite_linea": min(limite[0] if limite else 10, 5), "rol_cliente": rol_cliente}
+            "repartidores": [r[0] for r in rep],
+            "repartidores_de": {h[0]: [r[0] for r in rep if r[1] == h[0]] or [r[0] for r in rep] for h in hubs},   # RN41 "limite_linea": min(limite[0] if limite else 10, 5), "rol_cliente": rol_cliente}
 
 
 def copiar(cur, tabla, columnas, filas):
@@ -219,7 +220,7 @@ def insertar_entregas(con, pedidos, ref, rnd):
         r = resultado[p["estado"]]
         dist = math.dist(p["origen"], p["destino"]) * 111
         cobrado = 0 if r == "fallida" else round((p["subtotal"] + p["costo_envio"]) * (rnd.uniform(.5, .9) if r == "parcial" else 1), 2)
-        filas.append((p["id"], rnd.choice(ref["repartidores"]), p["creado_en"].date(), p["asignado_en"], p["listo_en"], p["cerrado_en"], r,
+        filas.append((p["id"], rnd.choice(ref["repartidores_de"].get(p["microhub_id"]) or ref["repartidores"]), p["creado_en"].date(), p["asignado_en"], p["listo_en"], p["cerrado_en"], r,
                       r != "fallida", cobrado, 0, "Cliente ausente (carga sintética)" if r == "fallida" else None,
                       round(dist * 1.3, 2), round(dist * 1.3 / 20 * 60 + 4, 1)))
     t0 = time.perf_counter()
