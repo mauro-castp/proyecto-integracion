@@ -237,6 +237,16 @@ static class Pruebas
             try
             {
                 using var window = new MainWindow(); Check(window.Text.Contains("Planeación") && window.Controls.Count == 3, "Inicializa la ventana de escritorio");
+                using var api = new Api { Demo = true };
+                foreach (var m in Modulos.Todos)
+                {
+                    using var v = new VentanaModulo(api, m);
+                    var botones = v.Controls.OfType<FlowLayoutPanel>().Single().Controls.OfType<Button>().ToList();
+                    if (botones.Count != m.Acciones.Length + 1) throw new Exception($"FALLA: {m.Nombre} tiene {botones.Count} botones");
+                }
+                Check(true, "Inicializa las ventanas de cobertura, rutas, costos, capacidad, equilibrio y simulación con un botón por acción");
+                using var r = new VentanaReportes(api);
+                Check(r.Controls.OfType<FlowLayoutPanel>().Single().Controls.OfType<Button>().Count(b => b.Text.StartsWith("Descargar")) == 3, "Inicializa la ventana de reportes con las tres descargas");
             }
             catch (Exception e) { startupError = e; }
         });
