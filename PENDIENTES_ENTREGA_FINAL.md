@@ -62,14 +62,14 @@ Estado al 27 de noviembre (detalle y resultados en `entrega/PRUEBAS_APPS_ENTREGA
 
 ## Parte de Ruth · entrega
 
-- [ ] **Presentación** con las 16 partes (`docs/GUION_VIDEO_Y_PRESENTACION.md`, parte B).
+- [x] **Presentación** con las 16 partes (`docs/GUION_VIDEO_Y_PRESENTACION.md`, parte B): `presentacion/Microhubs · Presentación final.pptx`.
 - [ ] **Ubiquitous:** subir con Cyberduck la carpeta web (presentación, enlaces, documentos y capturas) y poner el enlace en el README.
-- [ ] **Bitácora de participación** (`docs/BITACORA_PARTICIPACION.md`): la llena el equipo a partir de `git log`.
+- [x] **Bitácora de participación** (`docs/BITACORA_PARTICIPACION.md`): responsables y apoyo por componente, con la evidencia de Git y de las reflexiones.
 
 ## Cada integrante, por su cuenta
 
 - [ ] Su entrega individual.
-- [ ] Reflexión individual con sus palabras (`docs/REFLEXION_INDIVIDUAL_PLANTILLA.md`).
+- [x] Reflexión individual con sus palabras (`docs/REFLEXION_INDIVIDUAL_PLANTILLA.md`): las cinco están en `docs/reflexiones/`.
 - [ ] Estudiar todo el proyecto: `docs/GUIA_ESTUDIO_PREGUNTAS.md` y `docs/RUNBOOK_FALLOS.md`.
 
 ## Opcionales que suman

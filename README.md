@@ -22,6 +22,8 @@ desplegado en Google Compute Engine.
 | El plan de pruebas y sus resultados | [`docs/PLAN_DE_PRUEBAS.md`](docs/PLAN_DE_PRUEBAS.md) |
 | Las incidencias y cómo se resolvieron | [`docs/REGISTRO_INCIDENCIAS.md`](docs/REGISTRO_INCIDENCIAS.md) |
 | La demostración de fallos en vivo | [`docs/RUNBOOK_FALLOS.md`](docs/RUNBOOK_FALLOS.md) |
+| Descargar las apps (APK de Android y escritorio para Windows) | [Release `v1.0-entrega-final`](https://github.com/mauro-castp/proyecto-integracion/releases/tag/v1.0-entrega-final) · cómo instalarlas: [`entrega/INSTALADORES.md`](entrega/INSTALADORES.md) |
+| La presentación final | [`presentacion/Microhubs · Presentación final.pptx`](presentacion/) |
 | Preparar el video y la presentación | [`docs/GUION_VIDEO_Y_PRESENTACION.md`](docs/GUION_VIDEO_Y_PRESENTACION.md) |
 | Prepararse para las preguntas individuales | [`docs/GUIA_ESTUDIO_PREGUNTAS.md`](docs/GUIA_ESTUDIO_PREGUNTAS.md) |
 | Lo que falta antes de entregar | [`PENDIENTES_ENTREGA_FINAL.md`](PENDIENTES_ENTREGA_FINAL.md) |
@@ -36,13 +38,13 @@ desplegado en Google Compute Engine.
 | [`bloque_d/`](bloque_d/) | Arquitectura: diagramas 1 a 21 (18: despliegue real en GCP; 19: los 26 servicios; 20–21: procesos integrales) |
 | [`sistema_web/`](sistema_web/) | Portal Flask; `integracion.py` y `procesos.py` son el web como cliente de los servicios |
 | [`servicios/`](servicios/) | Los 26 microservicios (puertos 5101–5126), su base común, contratos generados y pruebas |
-| [`app_movil/`](app_movil/) | App Android del repartidor (Kotlin, JSON) |
-| [`app_escritorio/`](app_escritorio/) | App de escritorio (C#, XML) y los XSD oficiales del contrato |
+| [`app_movil/`](app_movil/) | App Android del repartidor y del cliente (Kotlin, JSON) |
+| [`app_escritorio/`](app_escritorio/) | App de escritorio para análisis y operadores (C#, XML) y los XSD oficiales del contrato |
 | [`deploy/gcp/`](deploy/gcp/LEEME.md) | Despliegue en Google Cloud: VM, Nginx, bucket con URL firmadas, registros |
 | [`pruebas_carga/`](pruebas_carga/LEEME.md) | Pruebas de carga con Locust (6 perfiles, estrés y recuperación) |
 | [`evidencias/`](evidencias/LEEME.md) | Corridas: Olas 1–3, nube, **volumen, carga, fallos, procesos integrales y algoritmos** |
 | [`docs/`](docs/) | Expediente, manuales, algoritmos, pruebas, incidencias, runbook, guías, bitácora y reflexiones |
-| [`presentacion/`](presentacion/LEEME.txt) | Presentación del Segundo Parcial (la final se arma con `docs/GUION_VIDEO_Y_PRESENTACION.md`) |
+| [`presentacion/`](presentacion/LEEME.txt) | Presentación final (`Microhubs · Presentación final.pptx`) y la del Segundo Parcial |
 | [`reporte_tecnico/`](reporte_tecnico/) | Expediente final en Word y los reportes de parciales anteriores |
 
 ## Arrancar la plataforma completa

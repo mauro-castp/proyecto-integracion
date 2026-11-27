@@ -1,5 +1,6 @@
-NOTA (entrega final): esta carpeta es la presentación del Segundo Parcial (diez microservicios). La presentación final se arma con
-docs/GUION_VIDEO_Y_PRESENTACION.md (16 partes recomendadas y la fuente de cada dato) y las evidencias de la entrega final.
+Presentación final
+
+Microhubs · Presentación final.pptx: la presentación de la entrega final, armada con docs/GUION_VIDEO_Y_PRESENTACION.md (parte B).
 
 Presentación del Segundo Parcial
 
