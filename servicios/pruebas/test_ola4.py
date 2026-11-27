@@ -289,7 +289,13 @@ class T3PedidoYEntrega(Base):
         operador = self.entrar(uno("SELECT u.correo FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'operador' AND u.microhub_id = %s "
                                    "AND u.estatus = 'activo' ORDER BY u.id LIMIT 1", (p["microhub_id"],))["correo"])
         operador.caso = self
-        entrega = {"pedido_id": p["id"], "repartidor_id": self.rep.usuario["id"]}
+        # RN41: el repartidor tiene que ser del microhub del pedido; uno de otro microhub se rechaza con 422
+        propio = uno("SELECT u.id, u.correo FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'repartidor' AND u.microhub_id = %s "
+                     "AND u.estatus = 'activo' ORDER BY u.id LIMIT 1", (p["microhub_id"],))
+        rp = self.entrar(propio["correo"]); rp.caso = self
+        ajeno_rep = uno("SELECT u.id FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'repartidor' AND u.microhub_id <> %s "
+                        "AND u.estatus = 'activo' ORDER BY u.id LIMIT 1", (p["microhub_id"],))
+        entrega = {"pedido_id": p["id"], "repartidor_id": propio["id"]}
         self.error(operador, "entregas", "POST", "entregas", entrega, 409, "CONFLICTO")                       # todavía no está listo
         self.error(operador, "pedidos", "POST", f"pedidos/{p['id']}/listo", None, 409)
         operador.llamar("pedidos", "POST", f"pedidos/{p['id']}/estado", {"estado": "en_preparacion"}, estado=200)
@@ -297,6 +303,8 @@ class T3PedidoYEntrega(Base):
         mismas_llaves(self, l, ejemplo("PedidoListo.ok"))
         self.error(operador, "entregas", "POST", "entregas", {**entrega, "repartidor_id": self.cli.usuario["id"]}, 422)
         self.error(self.rep, "entregas", "POST", "entregas", entrega, 403)
+        if ajeno_rep:
+            self.error(operador, "entregas", "POST", "entregas", {**entrega, "repartidor_id": ajeno_rep["id"]}, 422, "VALIDACION")
         ajeno = uno("SELECT u.correo FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'operador' AND u.microhub_id <> %s AND u.estatus = 'activo' LIMIT 1",
                     (p["microhub_id"],))
         if ajeno:
@@ -305,13 +313,13 @@ class T3PedidoYEntrega(Base):
         _, e = operador.llamar("entregas", "POST", "entregas", entrega, estado=201)
         mismas_llaves(self, e, ejemplo("EntregaCreada.ok"))
         self.error(operador, "entregas", "POST", "entregas", entrega, 409)
-        _, mias = self.rep.llamar("entregas", "GET", "entregas/mias?por_pagina=100", estado=200)
+        _, mias = rp.llamar("entregas", "GET", "entregas/mias?por_pagina=100", estado=200)
         self.assertIn(e["entrega_id"], [x["id"] for x in mias["datos"]])
-        self.assertTrue(uno("SELECT 1 AS x FROM web_notificacion WHERE destinatario_id = %s AND referencia_id = %s", (self.rep.usuario["id"], str(e["entrega_id"]))),
+        self.assertTrue(uno("SELECT 1 AS x FROM web_notificacion WHERE destinatario_id = %s AND referencia_id = %s", (rp.usuario["id"], str(e["entrega_id"]))),
                         "el repartidor recibe el aviso")
-        _, doc = self.rep.llamar("documentos", "POST", "documentos", {"nombre": "flujo_ola4.jpg", "tipo_mime": "image/jpeg",
+        _, doc = rp.llamar("documentos", "POST", "documentos", {"nombre": "flujo_ola4.jpg", "tipo_mime": "image/jpeg",
                                  "contenido_base64": base64.b64encode(JPEG).decode(), "referencia": {"tipo": "entrega", "id": str(e["entrega_id"])}}, estado=201)
-        self.rep.llamar("entregas", "POST", f"entregas/{e['entrega_id']}/resultado", {
+        rp.llamar("entregas", "POST", f"entregas/{e['entrega_id']}/resultado", {
             "resultado": "entregado", "monto_cobrado": p["total"], "cambio_entregado": 0, "ubicacion": {"latitud": 25.7491, "longitud": -100.3611},
             "evidencia_ids": [doc["id"]], "capturado_en": dt.datetime.now(dt.timezone.utc).isoformat(), "id_cliente_local": str(uuid.uuid4())}, estado=201)
         self.assertEqual(uno("SELECT estado::text AS e FROM pedido WHERE id = %s", (p["id"],))["e"], "entregado")
