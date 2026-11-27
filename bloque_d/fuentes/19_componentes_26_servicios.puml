@@ -1,0 +1,76 @@
+@startuml
+!include tema.iuml
+title Diagrama 19 · Los 26 microservicios por dominio y sus almacenes
+
+rectangle "Clientes" {
+  rectangle "Portal web (Flask)" as WEB
+  rectangle "App Android (JSON)" as AND
+  rectangle "App de escritorio (XML + XSD)" as ESC
+  rectangle "Swagger / Locust" as SW
+}
+
+package "Segundo Parcial (10)" {
+  rectangle "auth :5101" as auth
+  rectangle "usuarios :5102" as usuarios
+  rectangle "productos :5103\nzonas :5108\nmicrohubs :5109" as cat
+  rectangle "pedidos :5104" as pedidos
+  rectangle "entregas :5105" as entregas
+  rectangle "planeacion :5106" as planeacion
+  rectangle "documentos :5107" as documentos
+  rectangle "seguimiento :5110" as seguimiento
+}
+package "Ola 1 · flujo de negocio (5)" {
+  rectangle "inventario :5111" as inventario
+  rectangle "precios :5112" as precios
+  rectangle "proveedores :5113" as proveedores
+  rectangle "abastecimiento :5114" as abastecimiento
+  rectangle "notificaciones :5124" as notificaciones
+}
+package "Ola 2 · análisis y viabilidad (8)" {
+  rectangle "demanda :5115\ncobertura :5116\ncapacidad :5117" as analisis
+  rectangle "rutas :5118\n(TSP exacto / vecino + 2-opt)" as rutas
+  rectangle "costos :5119\npunto-equilibrio :5120" as finanzas
+  rectangle "simulacion :5121\n(Monte Carlo asíncrona)" as simulacion
+  rectangle "surtido :5122 (ABC)" as surtido
+}
+package "Ola 3 · observabilidad (3)" {
+  rectangle "reportes :5123" as reportes
+  rectangle "sincronizacion :5125" as sincronizacion
+  rectangle "auditoria-monitoreo :5126" as monitoreo
+}
+
+database "PostgreSQL\n(un esquema; cada servicio dueño de sus tablas)" as PG
+database "MongoDB\n(documentos, GPS, logs, métricas)" as MG
+database "Redis\n(sesiones, revocación, caché, límites)" as RD
+storage "Cloud Storage\n(archivos)" as GCS
+
+WEB --> pedidos
+WEB --> abastecimiento
+WEB --> rutas
+WEB --> reportes
+WEB --> monitoreo
+AND --> entregas
+AND --> seguimiento
+AND --> documentos
+AND --> sincronizacion
+ESC --> planeacion
+ESC --> cat
+abastecimiento --> inventario : alertas / entrada
+abastecimiento --> proveedores : ofertas
+rutas --> pedidos : listos
+rutas --> entregas : asignaciones (saga)
+finanzas --> analisis
+simulacion --> finanzas
+reportes --> pedidos
+reportes --> inventario
+documentos --> abastecimiento : ¿existe la orden?
+sincronizacion --> entregas
+sincronizacion --> seguimiento
+monitoreo ..> auth : /salud de los 26 cada 30 s
+auth --> RD
+pedidos --> PG
+documentos --> MG
+documentos --> GCS
+reportes --> GCS
+seguimiento --> MG
+@enduml

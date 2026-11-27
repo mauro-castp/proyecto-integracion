@@ -1,0 +1,56 @@
+{% extends 'base.html' %}{% block titulo %}Abastecimiento{% endblock %}{% block cuerpo %}
+<h1>Reabastecimiento del microhub {{ mh }}</h1>
+<p class="sub">Proceso integral: alerta de inventario → necesidad con la mejor oferta → solicitud → aprobación → orden de compra → recepción con comprobante en el bucket → avisos. Todo a través de los servicios de inventario (5111), proveedores (5113), abastecimiento (5114), documentos (5107) y notificaciones (5124).</p>
+<form method="get" style="margin:6px 0">Microhub <input name="microhub_id" value="{{ mh }}" size="3"> <button class="btn">Ver</button></form>
+
+{% set seg = seguimiento.datos if seguimiento.ok else None %}
+{% if seg %}<div class="kpis">
+{% for e, n in seg.solicitudes.items() %}<div class="kpi"><div class="v">{{ n }}</div><div class="l">Solicitudes {{ e }}</div></div>{% endfor %}
+{% for e, n in seg.ordenes.items() %}<div class="kpi"><div class="v">{{ n }}</div><div class="l">Órdenes {{ e }}</div></div>{% endfor %}
+<div class="kpi"><div class="v">{{ seg.atrasadas }}</div><div class="l">Órdenes atrasadas</div></div>
+<div class="kpi"><div class="v">{{ seg.pendientes_inventario }}</div><div class="l">Recepciones pendientes de inventario</div></div>
+</div>{% endif %}
+
+<div class="panel" style="overflow:auto"><h2>1 · Alertas de inventario</h2>
+{% if not alertas.ok %}<div class="aviso alto">Inventario: {{ alertas.mensaje or alertas.status }}</div>{% endif %}
+<table><thead><tr><th>Producto</th><th>Existencia</th><th>Mínimo</th><th>Faltante</th><th>Severidad</th></tr></thead><tbody>
+{% for a in datos(alertas) %}<tr><td>{{ a.producto.nombre }}</td><td>{{ a.existencia }}</td><td>{{ a.minimo }}</td><td>{{ a.faltante }}</td><td><span class="pill {{ 'rojo' if a.severidad == 'agotado' else 'ambar' }}">{{ a.severidad }}</span></td></tr>
+{% else %}<tr><td colspan="5" class="ayuda">Sin alertas.</td></tr>{% endfor %}</tbody></table></div>
+
+<div class="panel" style="overflow:auto"><h2>2 · Necesidades y solicitud de compra</h2>
+{% if not necesidades.ok %}<div class="aviso alto">Abastecimiento: {{ necesidades.mensaje or necesidades.status }}</div>{% endif %}
+<form method="post"><input type="hidden" name="csrf" value="{{ web_csrf() }}"><input type="hidden" name="accion" value="solicitar"><input type="hidden" name="microhub_id" value="{{ mh }}">
+<table><thead><tr><th></th><th>Producto</th><th>Disponible</th><th>En camino</th><th>Sugerido</th><th>Mejor oferta</th><th>Costo estimado</th><th>Cantidad</th></tr></thead><tbody>
+{% for n in datos(necesidades) %}<tr><td><input type="checkbox" name="producto" value="{{ n.producto.id }}"></td><td>{{ n.producto.nombre }}</td><td>{{ n.disponible }}</td><td>{{ n.en_camino }}</td><td>{{ n.cantidad_sugerida }}</td>
+<td>{% if n.mejor_oferta %}{{ n.mejor_oferta.proveedor.nombre }} · ${{ n.mejor_oferta.precio_compra }} · {{ n.mejor_oferta.dias_entrega }} d{% else %}—{% endif %}</td>
+<td>{{ '$%.2f'|format(n.costo_estimado) if n.costo_estimado is not none else '—' }}</td><td><input name="cantidad_{{ n.producto.id }}" value="{{ n.cantidad_a_comprar }}" size="4"></td></tr>
+{% else %}<tr><td colspan="8" class="ayuda">No hay nada que reponer.</td></tr>{% endfor %}</tbody></table>
+{% if puede_solicitar and datos(necesidades) %}<p>Motivo <input name="motivo" size="40" placeholder="Reposición semanal"> <button class="btn">Crear solicitud de compra</button></p>{% endif %}
+</form></div>
+
+<div class="panel" style="overflow:auto"><h2>3 · Solicitudes</h2>
+<table><thead><tr><th>Folio</th><th>Estado</th><th>Motivo</th><th>Líneas</th><th>Creada</th><th>Acción</th></tr></thead><tbody>
+{% for s in datos(solicitudes) %}<tr><td>{{ s.folio }}</td><td>{{ s.estado }}</td><td>{{ s.motivo }}</td><td>{% for l in s.lineas %}{{ l.cantidad }} × {{ l.producto.nombre }}{{ '; ' if not loop.last }}{% endfor %}</td><td>{{ s.creada_en[:16] }}</td>
+<td>{% if s.estado == 'pendiente' and puede_aprobar %}
+<form method="post" style="display:inline"><input type="hidden" name="csrf" value="{{ web_csrf() }}"><input type="hidden" name="accion" value="decidir"><input type="hidden" name="microhub_id" value="{{ mh }}"><input type="hidden" name="solicitud" value="{{ s.id }}">
+<input name="motivo" size="14" placeholder="motivo" required minlength="3"> <button class="btn" name="decision" value="aprobada">Aprobar</button> <button class="btn" name="decision" value="rechazada">Rechazar</button></form>
+{% elif s.estado == 'aprobada' and puede_aprobar %}
+<form method="post" style="display:inline"><input type="hidden" name="csrf" value="{{ web_csrf() }}"><input type="hidden" name="accion" value="ordenar"><input type="hidden" name="microhub_id" value="{{ mh }}"><input type="hidden" name="solicitud" value="{{ s.id }}">
+<input name="proveedor_id" size="3" placeholder="prov."> <button class="btn">Emitir orden</button></form>{% else %}—{% endif %}</td></tr>
+{% else %}<tr><td colspan="6" class="ayuda">Sin solicitudes.</td></tr>{% endfor %}</tbody></table></div>
+
+<div class="panel" style="overflow:auto"><h2>4 · Órdenes de compra y recepción</h2>
+<table><thead><tr><th>Folio</th><th>Proveedor</th><th>Estado</th><th>Llega</th><th>Total</th><th>Recibido</th><th>Comprobantes (bucket)</th><th>Acción</th></tr></thead><tbody>
+{% for o in datos(ordenes) %}<tr><td>{{ o.folio }}</td><td>{{ o.proveedor.nombre }}</td><td>{{ o.estado }}</td><td>{{ o.fecha_esperada }}</td><td>${{ '%.2f'|format(o.total) }}</td>
+<td>{% for l in o.lineas %}{{ l.cantidad_recibida }}/{{ l.cantidad }} {{ l.producto.nombre }}{{ '; ' if not loop.last }}{% endfor %}</td>
+<td>{% for d in por_orden.get(o.id|string, []) %}<a href="{{ url_for('servicios.documento_enlace', did=d.id) }}">{{ d.nombre }}</a> <span class="ayuda">{{ d.metadatos.almacen }}</span><br>{% else %}—{% endfor %}</td>
+<td>{% if o.estado in ('emitida', 'parcial') and puede_recibir %}
+<form method="post" enctype="multipart/form-data"><input type="hidden" name="csrf" value="{{ web_csrf() }}"><input type="hidden" name="accion" value="recibir"><input type="hidden" name="microhub_id" value="{{ mh }}"><input type="hidden" name="orden" value="{{ o.id }}">
+<input type="file" name="comprobante" accept="application/pdf,image/jpeg,image/png"> <button class="btn">Recibir todo</button></form>{% else %}—{% endif %}</td></tr>
+{% else %}<tr><td colspan="8" class="ayuda">Sin órdenes.</td></tr>{% endfor %}</tbody></table></div>
+
+<div class="panel"><h2>5 · Tus últimos avisos</h2>
+{% for n in datos(avisos) %}<div class="aviso {{ 'ok' if n.leida_en else 'medio' }}"><b>{{ n.titulo }}</b> · {{ n.mensaje }} <span class="ayuda">{{ n.creada_en[:16] if n.creada_en }}</span></div>{% else %}<p class="ayuda">Sin avisos.</p>{% endfor %}
+</div>
+{% include '_llamadas_proceso.html' %}
+{% endblock %}

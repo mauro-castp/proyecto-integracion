@@ -1,0 +1,303 @@
+{
+  "equipo": "x86_64, Python 3.13.18, 2 CPU",
+  "rutas": [
+    {
+      "paradas": 3,
+      "casos": 20,
+      "vecino_ms": 0.004,
+      "dos_opt_ms": 0.014,
+      "mejora_2opt_sobre_vecino_pct": 2.03,
+      "exacto_ms": 0.01,
+      "brecha_vecino_pct": 2.18,
+      "brecha_vecino_max_pct": 11.16,
+      "brecha_2opt_pct": 0.0,
+      "brecha_2opt_max_pct": 0.0,
+      "2opt_optimo_pct": 100
+    },
+    {
+      "paradas": 4,
+      "casos": 20,
+      "vecino_ms": 0.006,
+      "dos_opt_ms": 0.033,
+      "mejora_2opt_sobre_vecino_pct": 5.46,
+      "exacto_ms": 0.04,
+      "brecha_vecino_pct": 6.3,
+      "brecha_vecino_max_pct": 21.34,
+      "brecha_2opt_pct": 0.0,
+      "brecha_2opt_max_pct": 0.0,
+      "2opt_optimo_pct": 100
+    },
+    {
+      "paradas": 5,
+      "casos": 20,
+      "vecino_ms": 0.009,
+      "dos_opt_ms": 0.062,
+      "mejora_2opt_sobre_vecino_pct": 3.49,
+      "exacto_ms": 0.28,
+      "brecha_vecino_pct": 5.05,
+      "brecha_vecino_max_pct": 26.43,
+      "brecha_2opt_pct": 1.0,
+      "brecha_2opt_max_pct": 4.4,
+      "2opt_optimo_pct": 60
+    },
+    {
+      "paradas": 6,
+      "casos": 20,
+      "vecino_ms": 0.012,
+      "dos_opt_ms": 0.103,
+      "mejora_2opt_sobre_vecino_pct": 5.01,
+      "exacto_ms": 1.99,
+      "brecha_vecino_pct": 7.57,
+      "brecha_vecino_max_pct": 16.45,
+      "brecha_2opt_pct": 1.96,
+      "brecha_2opt_max_pct": 10.46,
+      "2opt_optimo_pct": 60
+    },
+    {
+      "paradas": 7,
+      "casos": 20,
+      "vecino_ms": 0.019,
+      "dos_opt_ms": 0.131,
+      "mejora_2opt_sobre_vecino_pct": 5.06,
+      "exacto_ms": 16.57,
+      "brecha_vecino_pct": 5.9,
+      "brecha_vecino_max_pct": 23.23,
+      "brecha_2opt_pct": 0.07,
+      "brecha_2opt_max_pct": 0.97,
+      "2opt_optimo_pct": 90
+    },
+    {
+      "paradas": 8,
+      "casos": 20,
+      "vecino_ms": 0.028,
+      "dos_opt_ms": 0.259,
+      "mejora_2opt_sobre_vecino_pct": 4.85,
+      "exacto_ms": 154.17,
+      "brecha_vecino_pct": 6.74,
+      "brecha_vecino_max_pct": 28.29,
+      "brecha_2opt_pct": 1.27,
+      "brecha_2opt_max_pct": 9.76,
+      "2opt_optimo_pct": 65
+    },
+    {
+      "paradas": 9,
+      "casos": 5,
+      "vecino_ms": 0.035,
+      "dos_opt_ms": 0.295,
+      "mejora_2opt_sobre_vecino_pct": 5.02,
+      "exacto_ms": 1646.72,
+      "brecha_vecino_pct": 8.19,
+      "brecha_vecino_max_pct": 16.4,
+      "brecha_2opt_pct": 2.51,
+      "brecha_2opt_max_pct": 6.28,
+      "2opt_optimo_pct": 60
+    },
+    {
+      "paradas": 10,
+      "casos": 20,
+      "vecino_ms": 0.029,
+      "dos_opt_ms": 0.538,
+      "mejora_2opt_sobre_vecino_pct": 7.62
+    },
+    {
+      "paradas": 12,
+      "casos": 20,
+      "vecino_ms": 0.04,
+      "dos_opt_ms": 0.859,
+      "mejora_2opt_sobre_vecino_pct": 3.97
+    },
+    {
+      "paradas": 15,
+      "casos": 20,
+      "vecino_ms": 0.06,
+      "dos_opt_ms": 1.699,
+      "mejora_2opt_sobre_vecino_pct": 6.61
+    },
+    {
+      "paradas": 20,
+      "casos": 20,
+      "vecino_ms": 0.102,
+      "dos_opt_ms": 5.853,
+      "mejora_2opt_sobre_vecino_pct": 7.12
+    },
+    {
+      "paradas": 30,
+      "casos": 20,
+      "vecino_ms": 0.229,
+      "dos_opt_ms": 19.95,
+      "mejora_2opt_sobre_vecino_pct": 7.94
+    },
+    {
+      "paradas": 40,
+      "casos": 20,
+      "vecino_ms": 0.367,
+      "dos_opt_ms": 44.227,
+      "mejora_2opt_sobre_vecino_pct": 10.97
+    },
+    {
+      "paradas": 50,
+      "casos": 20,
+      "vecino_ms": 0.552,
+      "dos_opt_ms": 109.378,
+      "mejora_2opt_sobre_vecino_pct": 9.58
+    },
+    {
+      "paradas": 60,
+      "casos": 20,
+      "vecino_ms": 0.848,
+      "dos_opt_ms": 179.149,
+      "mejora_2opt_sobre_vecino_pct": 8.83
+    }
+  ],
+  "monte_carlo": {
+    "tiempos": [
+      {
+        "replicas": 50,
+        "dias": 30,
+        "ms": 3.5,
+        "us_por_replica_dia": 2.35
+      },
+      {
+        "replicas": 50,
+        "dias": 90,
+        "ms": 9.6,
+        "us_por_replica_dia": 2.13
+      },
+      {
+        "replicas": 100,
+        "dias": 30,
+        "ms": 8.2,
+        "us_por_replica_dia": 2.72
+      },
+      {
+        "replicas": 100,
+        "dias": 90,
+        "ms": 22.8,
+        "us_por_replica_dia": 2.54
+      },
+      {
+        "replicas": 200,
+        "dias": 30,
+        "ms": 16.4,
+        "us_por_replica_dia": 2.74
+      },
+      {
+        "replicas": 200,
+        "dias": 90,
+        "ms": 48.9,
+        "us_por_replica_dia": 2.71
+      },
+      {
+        "replicas": 500,
+        "dias": 30,
+        "ms": 43.4,
+        "us_por_replica_dia": 2.89
+      },
+      {
+        "replicas": 500,
+        "dias": 90,
+        "ms": 113.9,
+        "us_por_replica_dia": 2.53
+      },
+      {
+        "replicas": 1000,
+        "dias": 30,
+        "ms": 80.7,
+        "us_por_replica_dia": 2.69
+      },
+      {
+        "replicas": 1000,
+        "dias": 90,
+        "ms": 265.4,
+        "us_por_replica_dia": 2.95
+      },
+      {
+        "replicas": 2000,
+        "dias": 30,
+        "ms": 172.0,
+        "us_por_replica_dia": 2.87
+      },
+      {
+        "replicas": 2000,
+        "dias": 90,
+        "ms": 451.4,
+        "us_por_replica_dia": 2.51
+      }
+    ],
+    "estabilidad": [
+      {
+        "replicas": 50,
+        "semillas": 10,
+        "utilidad_media_promedio": -50716.0,
+        "desviacion_entre_semillas": 41.0,
+        "variacion_pct": 0.08
+      },
+      {
+        "replicas": 200,
+        "semillas": 10,
+        "utilidad_media_promedio": -50715.0,
+        "desviacion_entre_semillas": 22.0,
+        "variacion_pct": 0.04
+      },
+      {
+        "replicas": 1000,
+        "semillas": 10,
+        "utilidad_media_promedio": -50711.0,
+        "desviacion_entre_semillas": 10.0,
+        "variacion_pct": 0.02
+      }
+    ],
+    "reproducibilidad": {
+      "misma_semilla_misma_huella": true,
+      "huella": "c94e5cd8c00a78c1…",
+      "otra_semilla_otra_huella": true
+    },
+    "casos": [
+      {
+        "escenario": "Base del equipo (60 pedidos/día, ticket 135, margen 28 %)",
+        "utilidad_media": -50731.9464,
+        "p10": -51103.32,
+        "p90": -50364.4,
+        "prob_perdida_pct": 100.0,
+        "dias_saturados_pct": 1.0,
+        "capacidad_dia": 163.6
+      },
+      {
+        "escenario": "Demanda en el equilibrio estimado (385 pedidos/día)",
+        "utilidad_media": -36287.9272,
+        "p10": -37058.12,
+        "p90": -35549.6,
+        "prob_perdida_pct": 100.0,
+        "dias_saturados_pct": 100.0,
+        "capacidad_dia": 163.6
+      },
+      {
+        "escenario": "Sin ausentismo ni variación",
+        "utilidad_media": -50715.712,
+        "p10": -50998.8,
+        "p90": -50411.2,
+        "prob_perdida_pct": 100.0,
+        "dias_saturados_pct": 0.0,
+        "capacidad_dia": 163.6
+      },
+      {
+        "escenario": "Ausentismo alto (20 %)",
+        "utilidad_media": -50995.5344,
+        "p10": -51466.8,
+        "p90": -50572.4,
+        "prob_perdida_pct": 100.0,
+        "dias_saturados_pct": 13.5867,
+        "capacidad_dia": 163.6
+      },
+      {
+        "escenario": "Margen bruto 40 % y 150 pedidos/día",
+        "utilidad_media": 27390.8376,
+        "p10": 24442.26,
+        "p90": 30438.54,
+        "prob_perdida_pct": 0.0,
+        "dias_saturados_pct": 67.4467,
+        "capacidad_dia": 163.6
+      }
+    ]
+  }
+}

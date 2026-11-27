@@ -1,0 +1,106 @@
+[2026-11-26 17:25:02,760] vm/INFO/locust.main: Starting Locust 2.47.0
+[2026-11-26 17:25:02,761] vm/INFO/locust.main: Run time limit set to 150 seconds
+[2026-11-26 17:25:02,762] vm/INFO/locust.runners: Ramping to 80 users at a rate of 10.00 per second
+[2026-11-26 17:25:09,776] vm/INFO/locust.runners: All users spawned: {"AdministradorPanel": 8, "ClienteConsultando": 32, "OperadorRegistrando": 12, "PlaneadorEscritorio": 8, "ProcesoAutomatico": 4, "RepartidorAndroid": 16} (80 total users)
+[2026-11-26 17:27:32,762] vm/INFO/locust.main: --run-time limit reached, shutting down
+[2026-11-26 17:27:32,833] vm/INFO/locust.main: Shutting down (exit code 1)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     abastecimiento · POST solicitud                                                   34     0(0.00%) |     33      25      46     34 |    0.23        0.00
+GET      auditoria · GET bitácora                                                          39     0(0.00%) |     50      32      98     44 |    0.26        0.00
+POST     auth · POST login                                                                146   68(46.58%) |    170       4     887    120 |    0.97        0.45
+GET      entregas · GET mias                                                              111     0(0.00%) |     24      17      63     22 |    0.74        0.00
+GET      entregas · GET {id}                                                               42     0(0.00%) |     31      21      48     29 |    0.28        0.00
+GET      inventario · GET alertas                                                          64     0(0.00%) |     31      19      98     28 |    0.43        0.00
+GET      inventario · GET lista                                                           122     0(0.00%) |     24      16      73     21 |    0.81        0.00
+GET      microhubs · GET lista                                                             83     0(0.00%) |      7       4      32      6 |    0.55        0.00
+GET      monitoreo · GET disponibilidad                                                    23     0(0.00%) |     23      19      35     22 |    0.15        0.00
+GET      monitoreo · GET estado                                                            62     0(0.00%) |     82      56     195     76 |    0.41        0.00
+GET      notificaciones · GET conteo                                                       74     0(0.00%) |     14       8      42     13 |    0.49        0.00
+GET      pedidos · GET del microhub                                                        66     3(4.55%) |     25       4      59     22 |    0.44        0.02
+GET      pedidos · GET mis pedidos                                                        187    11(5.88%) |     28       4      63     27 |    1.25        0.07
+GET      pedidos · GET {id}                                                               176     0(0.00%) |     33      22     158     30 |    1.17        0.00
+GET      productos · GET buscar                                                           609  149(24.47%) |      7       3      41      6 |    4.06        0.99
+GET      productos · GET {id}                                                             298   86(28.86%) |      7       3      30      6 |    1.99        0.57
+POST     punto-equilibrio · POST calculo                                                   34     0(0.00%) |     16      10      65     13 |    0.23        0.00
+GET      reportes · GET pedidos_por_dia (XML)                                              44     2(4.55%) |     47      15     317     37 |    0.29        0.01
+GET      reportes · GET ventas_por_producto (XML)                                          37     3(8.11%) |     50      24     177     37 |    0.25        0.02
+POST     seguimiento · POST ubicaciones (10)                                              118     0(0.00%) |     18      10      77     16 |    0.79        0.00
+POST     simulacion · POST ejecucion (202)                                                  7     0(0.00%) |    233     183     282    250 |    0.05        0.00
+POST     sincronizacion · POST lote                                                        23     0(0.00%) |    178     141     285    160 |    0.15        0.00
+POST     sincronizacion · POST lote (reenvío)                                              16     0(0.00%) |     79      60     111     78 |    0.11        0.00
+GET      usuarios · GET yo                                                                 35     0(0.00%) |     14      10      30     13 |    0.23        0.00
+GET      zonas · GET lista                                                                 81     0(0.00%) |      7       4      32      6 |    0.54        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                      2531  322(12.72%) |     31       3     887     17 |   16.88        2.15
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+POST     abastecimiento · POST solicitud                                                        34     36     36     38     40     43     46     46     46     46     46     34
+GET      auditoria · GET bitácora                                                               44     51     57     62     78     97     99     99     99     99     99     39
+POST     auth · POST login                                                                     120    160    220    300    460    680    880    880    890    890    890    146
+GET      entregas · GET mias                                                                    22     24     25     27     34     42     47     55     63     63     63    111
+GET      entregas · GET {id}                                                                    29     32     33     37     41     47     49     49     49     49     49     42
+GET      inventario · GET alertas                                                               28     31     32     34     39     50     75     99     99     99     99     64
+GET      inventario · GET lista                                                                 21     23     26     28     34     38     45     60     74     74     74    122
+GET      microhubs · GET lista                                                                   6      7      8      8     12     14     27     32     32     32     32     83
+GET      monitoreo · GET disponibilidad                                                         22     26     28     29     29     33     36     36     36     36     36     23
+GET      monitoreo · GET estado                                                                 76     81     87     92    110    130    160    200    200    200    200     62
+GET      notificaciones · GET conteo                                                            13     14     15     16     20     26     32     42     42     42     42     74
+GET      pedidos · GET del microhub                                                             22     24     28     29     39     54     54     59     59     59     59     66
+GET      pedidos · GET mis pedidos                                                              27     30     31     33     41     47     56     64     64     64     64    187
+GET      pedidos · GET {id}                                                                     30     33     36     39     47     55     68     93    160    160    160    176
+GET      productos · GET buscar                                                                  6      6      7      8     11     14     24     31     42     42     42    609
+GET      productos · GET {id}                                                                    6      6      7      7     10     17     22     25     30     30     30    298
+POST     punto-equilibrio · POST calculo                                                        13     16     16     17     18     39     66     66     66     66     66     34
+GET      reportes · GET pedidos_por_dia (XML)                                                   37     40     42     43     48    130    320    320    320    320    320     44
+GET      reportes · GET ventas_por_producto (XML)                                               37     44     46     60    130    140    180    180    180    180    180     37
+POST     seguimiento · POST ubicaciones (10)                                                    16     18     19     21     29     35     41     44     77     77     77    118
+POST     simulacion · POST ejecucion (202)                                                     250    260    260    260    280    280    280    280    280    280    280      7
+POST     sincronizacion · POST lote                                                            160    180    190    210    220    270    290    290    290    290    290     23
+POST     sincronizacion · POST lote (reenvío)                                                   78     87     92     92     97    110    110    110    110    110    110     16
+GET      usuarios · GET yo                                                                      13     15     16     17     19     25     30     30     30     30     30     35
+GET      zonas · GET lista                                                                       6      7      8      9     11     13     32     33     33     33     33     81
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                             17     24     29     32     49     98    200    320    880    890    890   2531
+
+Error report
+# occurrences      Error                                                                                               
+------------------|---------------------------------------------------------------------------------------------------------------------------------------------
+1                  POST auth · POST login: login vol.001042@sintetico.microhubs.mx: HTTP 429                           
+10                 POST auth · POST login: login operador.mh01@codex.mx: HTTP 429                                      
+7                  POST auth · POST login: login admin@codex.mx: HTTP 429                                              
+8                  POST auth · POST login: login planeador@codex.mx: HTTP 429                                          
+1                  POST auth · POST login: login vol.003889@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.004783@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.002790@sintetico.microhubs.mx: HTTP 429                           
+7                  POST auth · POST login: login repartidor1@codex.mx: HTTP 429                                        
+14                 POST auth · POST login: login repartidor2@codex.mx: HTTP 429                                        
+1                  POST auth · POST login: login vol.001946@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.002873@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.004134@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.002237@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.002467@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.003504@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.003818@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.004722@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.000655@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.003269@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.000650@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.001975@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.001381@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.001673@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.002743@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.001809@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.002706@sintetico.microhubs.mx: HTTP 429                           
+1                  POST auth · POST login: login vol.004050@sintetico.microhubs.mx: HTTP 429                           
+149                GET productos · GET buscar: HTTP 429                                                                
+86                 GET productos · GET {id}: HTTP 429                                                                  
+3                  GET reportes · GET ventas_por_producto (XML): HTTP 429                                              
+3                  GET pedidos · GET del microhub: HTTP 429                                                            
+11                 GET pedidos · GET mis pedidos: HTTP 429                                                             
+2                  GET reportes · GET pedidos_por_dia (XML): HTTP 429                                                  
+------------------|---------------------------------------------------------------------------------------------------------------------------------------------
+
+exit=1

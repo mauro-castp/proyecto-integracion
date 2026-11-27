@@ -1,0 +1,34 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+POST,auth · POST login,CatchResponseError('login vol.001673@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:09Z,2026-11-26T23:25:09Z
+GET,reportes · GET ventas_por_producto (XML),CatchResponseError('HTTP 429'),3,2026-11-26T23:26:55Z,2026-11-26T23:26:56Z
+POST,auth · POST login,CatchResponseError('login vol.001975@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:08Z,2026-11-26T23:25:08Z
+GET,reportes · GET pedidos_por_dia (XML),CatchResponseError('HTTP 429'),2,2026-11-26T23:26:56Z,2026-11-26T23:26:58Z
+GET,pedidos · GET mis pedidos,CatchResponseError('HTTP 429'),11,2026-11-26T23:26:56Z,2026-11-26T23:26:59Z
+POST,auth · POST login,CatchResponseError('login vol.004050@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:26:11Z,2026-11-26T23:26:11Z
+POST,auth · POST login,CatchResponseError('login vol.000655@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:08Z,2026-11-26T23:25:08Z
+POST,auth · POST login,CatchResponseError('login vol.001809@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:09Z,2026-11-26T23:25:09Z
+POST,auth · POST login,CatchResponseError('login vol.003889@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:05Z,2026-11-26T23:25:05Z
+GET,productos · GET {id},CatchResponseError('HTTP 429'),84,2026-11-26T23:26:34Z,2026-11-26T23:27:32Z
+POST,auth · POST login,CatchResponseError('login vol.004783@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:05Z,2026-11-26T23:25:05Z
+POST,auth · POST login,CatchResponseError('login admin@codex.mx: HTTP 429'),7,2026-11-26T23:25:05Z,2026-11-26T23:26:13Z
+POST,auth · POST login,CatchResponseError('login vol.001381@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:09Z,2026-11-26T23:25:09Z
+POST,auth · POST login,CatchResponseError('login vol.001946@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:06Z,2026-11-26T23:25:06Z
+POST,auth · POST login,CatchResponseError('login vol.003504@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:07Z,2026-11-26T23:25:07Z
+POST,auth · POST login,CatchResponseError('login vol.004722@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:07Z,2026-11-26T23:25:07Z
+GET,productos · GET buscar,CatchResponseError('HTTP 429'),145,2026-11-26T23:26:34Z,2026-11-26T23:27:32Z
+POST,auth · POST login,CatchResponseError('login vol.002873@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:06Z,2026-11-26T23:25:06Z
+POST,auth · POST login,CatchResponseError('login vol.004134@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:06Z,2026-11-26T23:25:06Z
+POST,auth · POST login,CatchResponseError('login vol.003269@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:08Z,2026-11-26T23:25:08Z
+POST,auth · POST login,CatchResponseError('login operador.mh01@codex.mx: HTTP 429'),10,2026-11-26T23:25:05Z,2026-11-26T23:26:13Z
+POST,auth · POST login,CatchResponseError('login vol.002467@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:07Z,2026-11-26T23:25:07Z
+POST,auth · POST login,CatchResponseError('login vol.002743@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:09Z,2026-11-26T23:25:09Z
+POST,auth · POST login,CatchResponseError('login repartidor2@codex.mx: HTTP 429'),14,2026-11-26T23:25:05Z,2026-11-26T23:26:19Z
+POST,auth · POST login,CatchResponseError('login vol.002706@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:26:11Z,2026-11-26T23:26:11Z
+GET,pedidos · GET del microhub,CatchResponseError('HTTP 429'),3,2026-11-26T23:26:56Z,2026-11-26T23:26:59Z
+POST,auth · POST login,CatchResponseError('login vol.002237@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:06Z,2026-11-26T23:25:06Z
+POST,auth · POST login,CatchResponseError('login repartidor1@codex.mx: HTTP 429'),7,2026-11-26T23:25:05Z,2026-11-26T23:26:21Z
+POST,auth · POST login,CatchResponseError('login vol.000650@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:08Z,2026-11-26T23:25:08Z
+POST,auth · POST login,CatchResponseError('login vol.002790@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:05Z,2026-11-26T23:25:05Z
+POST,auth · POST login,CatchResponseError('login vol.003818@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:07Z,2026-11-26T23:25:07Z
+POST,auth · POST login,CatchResponseError('login vol.001042@sintetico.microhubs.mx: HTTP 429'),1,2026-11-26T23:25:05Z,2026-11-26T23:25:05Z
+POST,auth · POST login,CatchResponseError('login planeador@codex.mx: HTTP 429'),8,2026-11-26T23:25:05Z,2026-11-26T23:26:14Z

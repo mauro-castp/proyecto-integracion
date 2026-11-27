@@ -43,11 +43,15 @@ ALMACEN=gcs
 GCS_BUCKET=$GCS_BUCKET
 URL_FIRMADA_SEGUNDOS=300
 VERSION_DESPLEGADA=$VERSION
+DETRAS_DE_PROXY=1
 EOF
   echo "   .env creado"
 else
   sed -i "s/^VERSION_DESPLEGADA=.*/VERSION_DESPLEGADA=$VERSION/" .env
   echo "   .env ya existe: se conserva (solo se actualiza VERSION_DESPLEGADA)"
+fi
+if ! grep -q '^DETRAS_DE_PROXY=' .env; then
+  echo 'DETRAS_DE_PROXY=1' >> .env          # Nginx delante: la IP real del cliente viaja en X-Forwarded-For
 fi
 if ! grep -q '^MICROHUBS_CLAVE=' .env; then
   printf 'MICROHUBS_CLAVE=Mh.%s\n' "$(openssl rand -hex 9)" >> .env

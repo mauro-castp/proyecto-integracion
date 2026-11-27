@@ -2,7 +2,7 @@
 
 Fuente: servicios/*/app.py y docker-compose.integrado.yml.
 
-199 pares método HTTP y ruta de negocio. Excluye salud, OpenAPI, Swagger, HEAD y OPTIONS.
+202 pares método HTTP y ruta de negocio. Excluye salud, OpenAPI, Swagger, HEAD y OPTIONS.
 
 La última columna indica los casos de petición y respuesta que ejercitan cada operación: la corrida principal (`evidencias/ola3/`) y la complementaria (`evidencias/ola3/complementarias/`). Este archivo lo escribe `servicios/pruebas/generar_inventario.py` a partir del código y de esos casos.
 
@@ -84,6 +84,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | entregas | GET | `/api/v1/entregas/mias` | ENT-01 |
 | entregas | GET | `/api/v1/entregas` | ENT-11 |
 | entregas | GET | `/api/v1/entregas/<int:eid>` | ENT-02, ENT-03, ENT-08 |
+| entregas | POST | `/api/v1/entregas/asignaciones` |  |
 | entregas | POST | `/api/v1/entregas/<int:eid>/resultado` | ENT-04, ENT-05, ENT-06, ENT-07, ENT-09 y 1 más |
 | inventario | GET | `/api/v1/inventario` | INV-01, INV-02, INV-03, INV-04, INV-05 |
 | inventario | GET | `/api/v1/inventario/<int:mid>/<int:pid>` | INV-06 |
@@ -165,6 +166,8 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | reportes | GET | `/api/v1/reportes/<clave>` | REP-03, REP-04, REP-08 |
 | reportes | GET | `/api/v1/reportes/<clave>/grafica` | REP-05 |
 | reportes | GET | `/api/v1/reportes/<clave>/exportar` | REP-06 |
+| reportes | GET | `/api/v1/reportes/exportaciones/<int:eid>/enlace` |  |
+| reportes | GET | `/api/v1/reportes/descarga` |  |
 | reportes | GET | `/api/v1/reportes/exportaciones` | REP-07 |
 | reportes | GET | `/api/v1/reportes/indicadores` | REP-02 |
 | rutas | POST | `/api/v1/rutas/planes` | RUT-02, RUT-04, RUT-05, RUT-14, RUT-15 y 3 más |
@@ -213,3 +216,14 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 Productos, Zonas y Microhubs conservan catalogos.xsd. Seguimiento utiliza estructuras de entregas.xsd. Inventario, Precios, Proveedores, Abastecimiento y Notificaciones (Ola 1) y Demanda, Cobertura, Capacidad, Rutas, Costos, Punto de equilibrio, Simulación y Surtido (Ola 2) tienen su propio XSD, generado con `servicios/contratos/generar.py` a partir de `contratos/ola1.py` y `contratos/ola2.py`; las referencias que comparten están en comun_ola1.xsd y comun_ola2.xsd. Lo que pedidos, entregas e inventario ganaron en la Ola 2 (resumen, ventas, listos, repartidores, quiebres) está en pedidos_ola2.xsd, entregas_ola2.xsd e inventario_ola2.xsd. Auditoría y monitoreo, Reportes y Sincronización (Ola 3) tienen auditoria_monitoreo.xsd, reportes.xsd y sincronizacion.xsd (`contratos/ola3.py`). El envío de un lote de sincronización es solo JSON, y la descarga de un reporte devuelve el archivo (CSV, Excel o PDF).
 
 La ruta GPS antigua bajo entregas ya no se ofrece. El puerto 5108 corresponde a Zonas y el 5124 a Notificaciones, que vuelve como servicio de la Ola 1 con su propia bandeja, envío por rol y preferencias.
+
+## Operaciones nuevas de la entrega final
+
+Las ejercita el recorrido de punta a punta `servicios/pruebas/procesos_integrales.py`
+([`evidencias/procesos/procesos_integrales.md`](../evidencias/procesos/procesos_integrales.md)), no la corrida de evidencias de la Ola 3:
+
+| Servicio | Método | Ruta | Evidencia |
+|---|---|---|---|
+| entregas | POST | `/api/v1/entregas/asignaciones` | P3: confirmar y despachar (y la compensación con 403) |
+| reportes | GET | `/api/v1/reportes/exportaciones/<int:eid>/enlace` | P3: descarga del reporte archivado |
+| reportes | GET | `/api/v1/reportes/descarga` | P3: descarga firmada con el almacén local |

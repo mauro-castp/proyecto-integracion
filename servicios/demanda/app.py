@@ -240,12 +240,14 @@ def sincronizar():
     with conexion() as con, con.cursor() as cur:
         cur.execute("DELETE FROM demanda_observacion WHERE fuente = 'sintetica' AND fecha BETWEEN %s AND %s", (d, h))
         reemplazadas = cur.rowcount
-        for f in totales + por_cat:
-            cur.execute("INSERT INTO demanda_observacion (fecha, zona_id, categoria_id, pedidos, unidades, venta, clientes, no_atendidos, fuente) "
+        # Una sola ida y vuelta por lote (executemany en modo pipeline) en lugar de una por fila: con 170 días por zona y categoría
+        # son miles de filas.
+        cur.executemany("INSERT INTO demanda_observacion (fecha, zona_id, categoria_id, pedidos, unidades, venta, clientes, no_atendidos, fuente) "
                         "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,'pedidos') ON CONFLICT (fecha, zona_id, categoria_id) DO UPDATE SET "
                         "pedidos = EXCLUDED.pedidos, unidades = EXCLUDED.unidades, venta = EXCLUDED.venta, clientes = EXCLUDED.clientes, "
                         "no_atendidos = EXCLUDED.no_atendidos, fuente = 'pedidos', actualizado_en = now()",
-                        (f["fecha"], f["zona_id"], f["categoria_id"], f["pedidos"], f["unidades"], f["venta"], f["clientes"], f["no_atendidos"]))
+                        [(f["fecha"], f["zona_id"], f["categoria_id"], f["pedidos"], f["unidades"], f["venta"], f["clientes"], f["no_atendidos"])
+                         for f in totales + por_cat])
     return responder({"desde": d.isoformat(), "hasta": h.isoformat(), "filas_escritas": len(totales) + len(por_cat),
                       "pedidos_leidos": sum(f["pedidos"] for f in totales), "sinteticas_reemplazadas": reemplazadas}, 201, raiz="sincronizacion")
 

@@ -1,0 +1,385 @@
+{
+  "etiqueta": "100k",
+  "fecha": "2026-11-26T22:57:29+00:00",
+  "ids": {
+    "admin": 1,
+    "operador": 2,
+    "cliente": 1526,
+    "pedido": 100152,
+    "entrega": 95074
+  },
+  "tamanos": {
+    "postgres": {
+      "pedido": {
+        "filas": 100148,
+        "mb_total": 32.6,
+        "mb_indices": 18.6
+      },
+      "pedido_detalle": {
+        "filas": 279286,
+        "mb_total": 39.1,
+        "mb_indices": 20.6
+      },
+      "historial_estatus": {
+        "filas": 100683,
+        "mb_total": 11.8,
+        "mb_indices": 5.2
+      },
+      "entrega": {
+        "filas": 95073,
+        "mb_total": 15.8,
+        "mb_indices": 5.0
+      },
+      "auditoria": {
+        "filas": 397283,
+        "mb_total": 182.0,
+        "mb_indices": 42.0
+      },
+      "usuario": {
+        "filas": 5048,
+        "mb_total": 1.5,
+        "mb_indices": 0.5
+      },
+      "cliente": {
+        "filas": 5040,
+        "mb_total": 0.6,
+        "mb_indices": 0.2
+      },
+      "domicilio": {
+        "filas": 5040,
+        "mb_total": 1.1,
+        "mb_indices": 0.3
+      },
+      "_base_mb": 298.5
+    },
+    "mongo": {
+      "ubicaciones_entrega": {
+        "documentos": 1424190,
+        "mb_datos": 278.4,
+        "mb_indices": 90.2
+      },
+      "logs_tecnicos": {
+        "documentos": 201728,
+        "mb_datos": 46.7,
+        "mb_indices": 6.9
+      },
+      "documentos": {
+        "documentos": 0,
+        "mb_datos": 0.0,
+        "mb_indices": 0.0
+      }
+    },
+    "redis_mb": 1.59
+  },
+  "sql": [
+    {
+      "consulta": "Lista de pedidos del administrador (servicio pedidos, fn_pedidos_visibles)",
+      "con_indice_ms": 57.34,
+      "plan": [
+        "Seq Scan on zona",
+        "Function Scan"
+      ]
+    },
+    {
+      "consulta": "Lista de pedidos de un operador (su microhub)",
+      "con_indice_ms": 11.53,
+      "plan": [
+        "Function Scan"
+      ]
+    },
+    {
+      "consulta": "Pedidos de un cliente, más recientes primero",
+      "con_indice_ms": 0.12,
+      "plan": [
+        "Bitmap Heap Scan on pedido",
+        "Bitmap Index Scan (ix_pedido_cliente)"
+      ],
+      "indice": "ix_pedido_cliente",
+      "sin_indice_ms": 6.06,
+      "plan_sin_indice": [
+        "Seq Scan on pedido"
+      ]
+    },
+    {
+      "consulta": "Pedidos de una zona en una semana",
+      "con_indice_ms": 0.21,
+      "plan": [
+        "Index Only Scan (ix_pedido_zona_fecha)"
+      ],
+      "indice": "ix_pedido_zona_fecha",
+      "sin_indice_ms": 2.24,
+      "plan_sin_indice": [
+        "Bitmap Heap Scan on pedido",
+        "Bitmap Index Scan (ix_web_pedido_fecha)"
+      ]
+    },
+    {
+      "consulta": "Historial de estados de un pedido",
+      "con_indice_ms": 0.02,
+      "plan": [
+        "Index Scan (ix_hist_pedido)"
+      ],
+      "indice": "ix_hist_pedido",
+      "sin_indice_ms": 3.6,
+      "plan_sin_indice": [
+        "Seq Scan on historial_estatus"
+      ]
+    },
+    {
+      "consulta": "Líneas de un pedido",
+      "con_indice_ms": 0.02,
+      "plan": [
+        "Index Scan (ix_detalle_pedido)"
+      ],
+      "indice": "ix_detalle_pedido",
+      "sin_indice_ms": 0.02,
+      "plan_sin_indice": [
+        "Index Scan (uq_detalle_producto)"
+      ]
+    },
+    {
+      "consulta": "Auditoría de una entidad (trazabilidad)",
+      "con_indice_ms": 0.03,
+      "plan": [
+        "Index Scan (ix_aud_entidad)"
+      ],
+      "indice": "ix_aud_entidad",
+      "sin_indice_ms": 51.96,
+      "plan_sin_indice": [
+        "Seq Scan on auditoria"
+      ]
+    },
+    {
+      "consulta": "Auditoría por módulo y acción, últimos 7 días",
+      "con_indice_ms": 0.05,
+      "plan": [
+        "Index Scan (ix_aud_fecha)"
+      ],
+      "indice": "ix_aud_modulo_accion, ix_aud_fecha",
+      "sin_indice_ms": 91.43,
+      "plan_sin_indice": [
+        "Seq Scan on auditoria"
+      ]
+    },
+    {
+      "consulta": "Resumen por día y zona, 30 días (servicio pedidos/resumen)",
+      "con_indice_ms": 116.51,
+      "plan": [
+        "Function Scan",
+        "Index Scan (ix_detalle_pedido)"
+      ]
+    },
+    {
+      "consulta": "Ventas por producto, 90 días (servicio pedidos/ventas)",
+      "con_indice_ms": 148.79,
+      "plan": [
+        "Function Scan",
+        "Index Scan (ix_detalle_pedido)"
+      ]
+    }
+  ],
+  "mongo": [
+    {
+      "consulta": "Recorrido GPS de una entrega",
+      "con_indice": {
+        "ms": 0,
+        "docs_examinados": 15,
+        "devueltos": 15
+      },
+      "sin_indice": {
+        "ms": 369,
+        "docs_examinados": 1424190,
+        "devueltos": 15
+      },
+      "indice": "ix_entrega_tiempo"
+    },
+    {
+      "consulta": "Puntos GPS a 300 m del MH-01",
+      "con_indice": {
+        "ms": 566,
+        "docs_examinados": 205738,
+        "devueltos": 185756
+      },
+      "sin_indice": {
+        "ms": 1086,
+        "docs_examinados": 1424190,
+        "devueltos": 185756
+      },
+      "indice": "ix_posicion (2dsphere)"
+    },
+    {
+      "consulta": "Registros técnicos por nivel, 30 días ($group)",
+      "ms": 105.1,
+      "grupos": {
+        "WARN": 2808,
+        "ERROR": 650,
+        "INFO": 32328
+      }
+    }
+  ],
+  "api": [
+    {
+      "endpoint": "GET pedidos (entregados, página 1)",
+      "ruta": "/api/v1/pedidos?estado=entregado&pagina=1&por_pagina=20",
+      "codigos": [
+        200
+      ],
+      "n": 15,
+      "mediana_ms": 128.5,
+      "p95_ms": 146.6,
+      "max_ms": 151.0,
+      "min_ms": 111.0
+    },
+    {
+      "endpoint": "GET pedidos (página 200)",
+      "ruta": "/api/v1/pedidos?pagina=200&por_pagina=20",
+      "codigos": [
+        200
+      ],
+      "n": 15,
+      "mediana_ms": 109.5,
+      "p95_ms": 124.7,
+      "max_ms": 151.9,
+      "min_ms": 91.2
+    },
+    {
+      "endpoint": "GET pedidos/resumen (30 días)",
+      "ruta": "/api/v1/pedidos/resumen?desde=2026-10-27&hasta=2026-11-26&por_pagina=100",
+      "codigos": [
+        200
+      ],
+      "n": 15,
+      "mediana_ms": 196.6,
+      "p95_ms": 219.1,
+      "max_ms": 224.2,
+      "min_ms": 180.5
+    },
+    {
+      "endpoint": "GET pedidos/resumen (170 días)",
+      "ruta": "/api/v1/pedidos/resumen?desde=2026-06-09&hasta=2026-11-26&por_pagina=100",
+      "codigos": [
+        200
+      ],
+      "n": 15,
+      "mediana_ms": 395.0,
+      "p95_ms": 425.6,
+      "max_ms": 526.7,
+      "min_ms": 359.9
+    },
+    {
+      "endpoint": "GET pedidos/ventas (90 días)",
+      "ruta": "/api/v1/pedidos/ventas?desde=2026-08-28&hasta=2026-11-26",
+      "codigos": [
+        200
+      ],
+      "n": 15,
+      "mediana_ms": 398.2,
+      "p95_ms": 417.7,
+      "max_ms": 424.0,
+      "min_ms": 340.0
+    },
+    {
+      "endpoint": "GET reportes/pedidos_por_dia (90 días)",
+      "ruta": "/api/v1/reportes/pedidos_por_dia?desde=2026-08-28&hasta=2026-11-26",
+      "codigos": [
+        200
+      ],
+      "n": 15,
+      "mediana_ms": 1103.1,
+      "p95_ms": 1184.7,
+      "max_ms": 1222.8,
+      "min_ms": 1025.0
+    },
+    {
+      "endpoint": "GET reportes/ventas_por_producto (90 días)",
+      "ruta": "/api/v1/reportes/ventas_por_producto?desde=2026-08-28&hasta=2026-11-26",
+      "codigos": [
+        200
+      ],
+      "n": 15,
+      "mediana_ms": 390.8,
+      "p95_ms": 425.0,
+      "max_ms": 532.1,
+      "min_ms": 340.6
+    },
+    {
+      "endpoint": "GET auditoria (módulo pedidos)",
+      "ruta": "/api/v1/auditoria?modulo=pedidos&por_pagina=50",
+      "codigos": [
+        200
+      ],
+      "n": 15,
+      "mediana_ms": 61.9,
+      "p95_ms": 77.2,
+      "max_ms": 80.3,
+      "min_ms": 53.4
+    },
+    {
+      "endpoint": "GET auditoria/trazabilidad/pedido",
+      "ruta": "/api/v1/auditoria/trazabilidad/pedido/100152",
+      "codigos": [
+        200
+      ],
+      "n": 15,
+      "mediana_ms": 30.6,
+      "p95_ms": 38.3,
+      "max_ms": 45.3,
+      "min_ms": 25.1
+    },
+    {
+      "endpoint": "GET seguimiento/{id}/recorrido",
+      "ruta": "/api/v1/seguimiento/95074/recorrido",
+      "codigos": [
+        200
+      ],
+      "n": 15,
+      "mediana_ms": 8.9,
+      "p95_ms": 12.6,
+      "max_ms": 16.6,
+      "min_ms": 7.8
+    },
+    {
+      "endpoint": "POST demanda/sincronizacion (170 días, por categoría)",
+      "codigos": [
+        201
+      ],
+      "n": 1,
+      "mediana_ms": 37547.9,
+      "p95_ms": 37547.9,
+      "max_ms": 37547.9,
+      "min_ms": 37547.9,
+      "detalle": {
+        "desde": "2026-06-09",
+        "hasta": "2026-11-26",
+        "filas_escritas": 4081,
+        "pedidos_leidos": 95088,
+        "sinteticas_reemplazadas": 0
+      }
+    }
+  ],
+  "cache": {
+    "endpoint": "GET productos?q=a&por_pagina=50",
+    "con_cache": {
+      "n": 200,
+      "mediana_ms": 3.0,
+      "p95_ms": 4.1,
+      "max_ms": 7.3,
+      "min_ms": 2.2
+    },
+    "sin_cache": {
+      "n": 200,
+      "mediana_ms": 19.8,
+      "p95_ms": 25.8,
+      "max_ms": 38.4,
+      "min_ms": 14.8
+    }
+  },
+  "recursos_mb": {
+    "postgres": 447,
+    "mongod": 782,
+    "redis-server": 8,
+    "servicios (gunicorn)": 4801
+  },
+  "cpu_promedio_pct": 54.8,
+  "cpu_nucleos": 2
+}

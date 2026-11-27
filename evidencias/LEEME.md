@@ -1,3 +1,16 @@
+# Evidencias
+
+| Carpeta | Qué contiene |
+|---|---|
+| [`ola3/`](ola3/) (vigente), [`ola1/`](ola1/), [`ola2/`](ola2/) | Petición y respuesta por caso: 403 casos con los 26 servicios |
+| [`nube/`](nube/LEEME.md) | Lo comprobado en Google Cloud: salud de los 26 servicios, contenedores, puertos, bucket, Cloud Logging, 401 casos |
+| [`volumen/`](volumen/LEEME.md) | **Entrega final**: 100 000 pedidos y 1.4 M de puntos GPS; inserción, índices, caché, escalabilidad y recursos |
+| [`carga/`](carga/RESULTADOS.md) | **Entrega final**: Locust (normal, alta, estrés y recuperación, protección), con HTML y CSV |
+| [`fallos/`](fallos/fallos_infraestructura.md) | **Entrega final**: servicio, Redis, MongoDB, PostgreSQL, bucket y tiempo excedido |
+| [`procesos/`](procesos/procesos_integrales.md) | **Entrega final**: los tres procesos integrales de punta a punta |
+| [`algoritmos/`](algoritmos/benchmark.md) | **Entrega final**: calidad y tiempo de rutas y Monte Carlo |
+| esta carpeta (raíz) | La corrida del Segundo Parcial (93 casos), que cita el reporte v4.3 |
+
 # Evidencias de petición y respuesta (anexo E1)
 
 > Esta carpeta es la corrida del 13 de octubre de 2026 (Segundo Parcial, 93 casos); el reporte técnico v4.3 cita sus números. La corrida con los 15 servicios (204 casos) está en [`ola1/`](ola1/), la de la Ola 2 en

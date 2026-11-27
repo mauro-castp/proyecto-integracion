@@ -20,6 +20,18 @@ Los 9 diagramas de arquitectura pedidos en el Primer Parcial: contexto, contened
 | `14` a `16_datos_*` | Modelo de datos de PostgreSQL en tres partes (seguridad y catálogo; pedidos y entregas; planeación y avisos); en color lo creado o ampliado en los scripts 06 a 08 |
 | `17_datos_poliglota` | Qué guarda PostgreSQL, MongoDB y Redis y cómo se relacionan |
 
+**Entrega final.** Se agregaron:
+
+| Diagrama | Contenido |
+|---|---|
+| `18_despliegue_gcp` | Despliegue real: proyecto, región, IP fija, firewall, VM con Nginx y Docker, bucket, cuenta de servicio y Cloud Logging |
+| `19_componentes_26_servicios` | Los 26 servicios por ola y dominio, los clientes y las dependencias principales entre servicios |
+| `20_secuencia_reabastecimiento` | Proceso integral P2: alerta → solicitud → orden → recepción → comprobante en el bucket |
+| `21_secuencia_despacho_rutas` | Proceso integral P3: plan de rutas → confirmar → saga rutas → entregas con compensación |
+
+El diagrama 4 conserva el diseño original de GCP del Primer Parcial (Cloud SQL, Memorystore). Lo que realmente se desplegó, y por qué,
+está en el 18 y en el expediente (§21).
+
 ### `fuentes/`
 
 Los `.puml` de cada diagrama más `tema.iuml`, el tema PlantUML compartido. Cambiar un color en `tema.iuml` afecta los diagramas que lo incluyen — así se mantiene consistente la paleta entre ellos y con el resto del proyecto (modelo de datos, prototipos, sistema web).

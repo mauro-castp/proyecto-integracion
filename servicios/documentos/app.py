@@ -33,6 +33,7 @@ from comun import almacen, config
 from comun.base import (crear_app, documentar, filtro_opcion, leer_cuerpo, leer_paginacion, lista, paginacion,
                         requiere, responder, tiene)
 from comun.base_errores import ErrorApi, invalido, no_encontrado, prohibido
+from comun.clientes import llamar
 from comun.datos import ahora, auditar, consultar, mongo
 from comun.formatos import fecha
 from comun.validar import Campo, validar
@@ -41,7 +42,7 @@ app = crear_app("documentos", "Microhubs · Documentos", "Evidencias y archivos 
                 5107, dependencias=("redis", "mongo", "postgres", "bucket"))
 P = config.PREFIJO
 FIRMAS = {"image/jpeg": b"\xff\xd8\xff", "image/png": b"\x89PNG\r\n\x1a\n", "application/pdf": b"%PDF-"}
-REFERENCIAS = ["entrega", "pedido", "usuario", "candidato"]
+REFERENCIAS = ["entrega", "pedido", "usuario", "candidato", "orden_compra"]   # orden_compra: comprobante de recepción (entrega final)
 PRIVACIDADES = ["privado", "interno"]
 ORIGENES = ["api", "web", "movil", "escritorio"]
 VEN_TODO = ("administrador", "auditor")
@@ -111,6 +112,15 @@ def _verificar_referencia(tipo, rid):
         raise prohibido("Solo puedes adjuntar documentos a tu propio usuario.")
     elif tipo == "candidato" and not tiene("planeacion.editar"):
         raise prohibido("Adjuntar a un candidato requiere planeacion.editar.")
+    elif tipo == "orden_compra":
+        # La orden es de abastecimiento: se le pregunta a él (con el JWT de quien sube), que aplica su propio ámbito por microhub.
+        if not (tiene("abastecimiento.recibir") or tiene("abastecimiento.aprobar")):
+            raise prohibido("Adjuntar el comprobante de una orden de compra requiere abastecimiento.recibir.")
+        status, _ = llamar("abastecimiento", "GET", f"abastecimiento/ordenes/{int(rid)}")
+        if status in (403, 404):
+            raise invalido("referencia.id", "No existe esa orden de compra o no es de tu microhub.")
+        if status != 200:
+            raise ErrorApi(503, "SERVICIO_NO_DISPONIBLE", "El servicio de abastecimiento no responde. Intenta más tarde.")
 
 
 @app.post(f"{P}/documentos")
@@ -259,7 +269,7 @@ documentar(app, "POST", f"{P}/documentos", "Subir documento", permisos=["archivo
            respuestas={201: ("Documento guardado", "Documento.ok")}, errores=[400, 403, 413, 422, 503])
 documentar(app, "GET", f"{P}/documentos", "Mis documentos", permisos=["archivos.ver"],
            parametros=[("pagina", "query", "integer", "Página"), ("por_pagina", "query", "integer", "1 a 100"),
-                       ("referencia_tipo", "query", "string", "entrega|pedido|usuario|candidato"),
+                       ("referencia_tipo", "query", "string", "entrega|pedido|usuario|candidato|orden_compra"),
                        ("referencia_id", "query", "string", "Id del registro")],
            descripcion="Cada persona ve lo que subió y lo marcado como interno; administrador y auditor ven todo. "
            "No se listan los documentos eliminados.",

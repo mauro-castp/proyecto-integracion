@@ -1,0 +1,52 @@
+@startuml
+!include tema.iuml
+title Diagrama 18 · Despliegue real en Google Cloud Platform (entrega final)
+
+actor "Cliente / planeador /\nadministrador (navegador)" as N
+actor "Repartidor\n(app Android)" as A
+actor "Planeador\n(app de escritorio, XML)" as E
+
+cloud "Internet" as I
+
+node "Proyecto integracion-sistemas-637044 · región northamerica-south1 (Querétaro)" as P {
+  rectangle "Firewall «microhubs-web»\nsolo TCP 80 y 443 (y 22 por IAP/SSH)" as FW
+  rectangle "IP externa fija microhubs-ip\n34.51.89.253 · 34-51-89-253.sslip.io" as IP
+  node "Compute Engine · microhubs-vm\ne2-standard-4 (4 vCPU, 16 GB) · Ubuntu 24.04 · disco pd-balanced 80 GB" as VM {
+    rectangle "Nginx (80; 443 con Let's Encrypt al correr instalar_vm.sh --https)\n/ → web · /servicios/<nombre>/ → 26 servicios\nlimit_req 20 r/s por IP · X-Forwarded-For" as NG
+    node "Docker Compose (docker-compose.integrado.yml + gcp.yml)" as DC {
+      rectangle "web Flask :5000\n(publicado solo en 127.0.0.1)" as W
+      rectangle "26 microservicios :5101–5126\n(gunicorn, 1 contenedor c/u,\npublicados solo en 127.0.0.1)" as S
+      database "PostgreSQL 16\n(red interna «datos», volumen datos_pg)" as PG
+      database "MongoDB 7\n(red interna, volumen datos_mongo)" as MG
+      database "Redis 7\n(red interna, sin puerto)" as RD
+      rectangle "migraciones (01–13, una vez)" as MI
+    }
+    rectangle "Ops Agent\n(logs de contenedores y Nginx)" as OA
+    file ".env (permiso 600)\nSECRET_KEY, POSTGRES_PASSWORD,\nMICROHUBS_CLAVE, DETRAS_DE_PROXY=1" as ENV
+  }
+  storage "Cloud Storage\ngs://microhubs-evidencias-637044\nprivado · acceso uniforme · prevención de acceso público\nevidencias, comprobantes, reportes" as GCS
+  rectangle "Cuenta de servicio microhubs-vm@\nobjectAdmin SOLO de su bucket\n+ tokenCreator sobre sí misma (URL firmadas)\nsin llaves descargadas" as SA
+  rectangle "Cloud Logging / Cloud Monitoring" as CL
+}
+
+N --> I : HTTPS
+A --> I : HTTPS (JSON)
+E --> I : HTTPS (XML)
+I --> IP
+IP --> FW
+FW --> NG
+NG --> W
+NG --> S
+W --> S : HTTP + JWT del usuario
+S --> PG
+S --> MG
+S --> RD
+W --> PG
+W --> RD
+MI --> PG
+S --> GCS : subir / leer objetos\n(credenciales de la VM)
+S ..> SA : firma V4 por IAM signBlob
+N ..> GCS : descarga con URL firmada (300 s)
+OA --> CL
+ENV ..> DC : variables de entorno
+@enduml

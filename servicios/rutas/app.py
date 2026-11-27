@@ -3,7 +3,8 @@ Servicio de rutas · puerto 5118 · contrato v1
 
   POST /api/v1/rutas/planes                    propone rutas para los pedidos listos de un microhub (guardar = deja el plan)
   GET  /api/v1/rutas/planes[/{id}]             planes guardados
-  POST /api/v1/rutas/planes/{id}/confirmar     confirma un plan propuesto y deja sus rutas en plan_ruta
+  POST /api/v1/rutas/planes/{id}/confirmar     confirma un plan propuesto y deja sus rutas en plan_ruta; con {"despachar": true} además
+                                               crea las entregas y las asigna a los repartidores (servicio de entregas)
   POST /api/v1/rutas/planes/{id}/cancelar      cancela un plan que no se ha confirmado
   POST /api/v1/rutas/planes/{id}/ajustes       quita o agrega un pedido, o registra un retraso, y recalcula
   POST /api/v1/rutas/comparaciones             el mismo conjunto de paradas con cuatro métodos de recorrido
@@ -319,13 +320,34 @@ def confirmar(pid):
     if ya_no:
         raise ErrorApi(409, "CONFLICTO", "Algunos pedidos del plan ya no están listos para despachar; calcula el plan de nuevo.",
                        [{"campo": "pedido_ids", "mensaje": f"El pedido {i} ya no está listo."} for i in ya_no])
+    despachar = bool(validar(leer_cuerpo("ruta_confirmacion", obligatorio=False) or {}, [Campo("despachar", "bool", req=False)]).get("despachar"))
     with conexion() as con, con.cursor() as cur:
         cur.execute("SELECT estado FROM plan_despacho WHERE id = %s FOR UPDATE", (pid,))
         if cur.fetchone()["estado"] != "propuesto":
             raise conflicto("El plan ya se confirmó o se canceló.")
         cur.execute("UPDATE plan_despacho SET estado = 'confirmado', confirmado_por = %s, confirmado_en = now() WHERE id = %s", (g.usuario["id"], pid))
         _guardar_rutas(cur, f, f["resultado"])
+    if despachar:
+        _despachar(pid, f)
     return responder(_del_plan(_plan(pid)), raiz="ruta_plan", items=ITEMS)
+
+
+def _despachar(pid, f):
+    """Pide al servicio de entregas (dueño de la entrega) que despache las paradas, con el JWT de quien confirma.
+    Es una saga de dos pasos: si entregas rechaza o no responde, el plan vuelve a «propuesto» (compensación) y no queda nada a medias."""
+    p = parametros()
+    rutas_bd = {r["repartidor_id"]: r["id"] for r in consultar("SELECT id, repartidor_id FROM plan_ruta WHERE plan_despacho_id = %s", (pid,))}
+    paradas = [{"pedido_id": x["pedido"]["id"], "repartidor_id": r["repartidor"]["id"], "orden_parada": x["orden"], "distancia_km": x["tramo_km"],
+                "minutos_estimados": x["minutos_acum"], "costo_entrega_estimado": round(x["tramo_km"] * p["costo_km_reparto"] + p["costo_base_entrega"], 2),
+                "plan_ruta_id": rutas_bd.get(r["repartidor"]["id"])}
+               for r in f["resultado"]["rutas"] for x in r["paradas"]]
+    try:
+        exigir("entregas", "POST", "entregas/asignaciones", cuerpo={"paradas": paradas}, ok=(201,))
+    except ErrorApi:
+        with conexion() as con, con.cursor() as cur:
+            cur.execute("DELETE FROM plan_ruta WHERE plan_despacho_id = %s", (pid,))
+            cur.execute("UPDATE plan_despacho SET estado = 'propuesto', confirmado_por = NULL, confirmado_en = NULL WHERE id = %s", (pid,))
+        raise
 
 
 @app.post(f"{P}/rutas/planes/<int:pid>/cancelar")
