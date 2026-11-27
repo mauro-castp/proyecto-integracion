@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<producto_nuevo xmlns="urn:microhubs:v1" version="1">
+  <clave_interna>AB-900</clave_interna>
+  <nombre>Avena en hojuelas 500 g</nombre>
+  <categoria_id>1</categoria_id>
+  <unidad>pieza</unidad>
+  <presentacion>500 g</presentacion>
+  <precio>32.50</precio>
+</producto_nuevo>

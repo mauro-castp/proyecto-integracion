@@ -2,6 +2,7 @@ package mx.microhubs.movil
 
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.IOException
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -10,7 +11,8 @@ import kotlin.math.abs
 import kotlin.math.roundToLong
 
 // Modelos de lo que la app lee del contrato v1 (entregas y perfil). Sin dependencias de Android: se prueban en la JVM.
-data class Pagina<T>(val items: List<T>, val pagina: Int, val paginas: Int, val total: Int)
+/** `guardadaEn` ≠ null: no hubo red y se muestra la última copia guardada en el teléfono (hora en milisegundos). */
+data class Pagina<T>(val items: List<T>, val pagina: Int, val paginas: Int, val total: Int, val guardadaEn: Long? = null)
 data class Parada(
     val id: Int, val pedidoId: Int, val folio: String, val estado: String, val orden: Int, val direccion: String, val zona: String,
     val total: Double, val distanciaKm: Double = 0.0, val minutos: Double = 0.0
@@ -28,7 +30,8 @@ class DatosCierre(
     val resultado: String, val montoCobrado: Double, val cambio: Double, val incidencia: String,
     val lineas: List<LineaCierre>, val fix: Fix
 )
-data class Resultado(val estadoPedido: String, val duplicado: Boolean)
+/** `enCola` = no había red: el cierre quedó guardado en el teléfono y se enviará con la sincronización (estadoPedido es el esperado). */
+data class Resultado(val estadoPedido: String, val duplicado: Boolean, val enCola: Boolean = false)
 
 /** Lo necesario para reintentar un cierre sin duplicarlo: el UUID de la operación y la evidencia ya subida. */
 class Borrador(val idClienteLocal: String, var evidenciaId: String? = null)
@@ -73,22 +76,49 @@ object Contrato {
         DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(Instant.ofEpochMilli(ms).atZone(ZoneId.systemDefault()).withNano(0))
 }
 
-/** Entregas del repartidor: consulta, validación previa al envío y cierre idempotente. */
+/**
+ * Entregas del repartidor: consulta, validación previa al envío y cierre idempotente.
+ * Con `cola` la app también trabaja sin red: muestra la última copia de la lista y del detalle, y un cierre que no puede salir
+ * queda guardado (con su foto y su recorrido GPS) para enviarse con [Sincronizador] al volver la conexión.
+ */
 class Entregas(
     private val api: Api,
     private val borradores: Borradores,
+    private val cola: ColaSinRed? = null,
     private val ahora: () -> Long = { System.currentTimeMillis() }
 ) {
     fun mias(pagina: Int): Pagina<Parada> {
-        val r = api.call("entregas", "entregas/mias?pagina=$pagina&por_pagina=20")
+        val (r, guardada) = conCopia("mias-$pagina") { api.call("entregas", "entregas/mias?pagina=$pagina&por_pagina=20") }
         val datos = r.getJSONArray("datos")
         val (p, paginas, total) = leerPagina(r)
-        return Pagina((0 until datos.length()).map { Contrato.parada(datos.getJSONObject(it)) }, p, paginas, total)
+        return Pagina((0 until datos.length()).map { Contrato.parada(datos.getJSONObject(it)) }, p, paginas, total, guardada)
     }
 
-    fun detalle(id: Int) = Contrato.detalle(api.call("entregas", "entregas/$id"))
+    fun detalle(id: Int) = Contrato.detalle(conCopia("detalle-$id") { api.call("entregas", "entregas/$id") }.first)
+
+    /** Con red guarda la respuesta; sin red (IOException) devuelve la última copia, si la hay. El modo de ejemplos no guarda nada. */
+    private fun conCopia(clave: String, leer: () -> JSONObject): Pair<JSONObject, Long?> = try {
+        leer().also { if (!api.demo) cola?.guardarCopia(clave, it) } to null
+    } catch (e: IOException) {
+        val (json, cuando) = cola?.copia(clave) ?: throw e
+        json to cuando
+    }
+
+    /** Deja en el teléfono el detalle de las paradas en ruta, para poder abrirlas y cerrarlas si después se pierde la señal. */
+    fun guardarParaSinRed(paradas: List<Parada>): Int {
+        if (cola == null || api.demo) return 0
+        var n = 0
+        for (p in paradas.filter { it.estado == "en_ruta" }) {
+            try { detalle(p.id); n++ } catch (_: IOException) { break } catch (_: ApiError) {}
+        }
+        return n
+    }
 
     fun hayCierrePendiente(entregaId: Int) = borradores.cargar(entregaId) != null
+
+    /** Cierre guardado sin red que todavía no se envía (o que el servicio dejó pendiente). */
+    fun cierreEnCola(entregaId: Int): Operacion? =
+        cola?.todas()?.firstOrNull { it.tipo == Operacion.CIERRE && it.entregaId == entregaId && it.porEnviar }
 
     /** La foto de este cierre ya se subió en un intento anterior: no hace falta volver a tomarla ni a enviarla. */
     fun tieneEvidencia(entregaId: Int) = borradores.cargar(entregaId)?.evidenciaId != null
@@ -122,25 +152,43 @@ class Entregas(
      * servidor, un nuevo intento usa el mismo UUID (y la misma evidencia ya subida), así que nunca se aplica dos veces.
      * 201 = aplicada; 200 con `duplicado` = ya estaba aplicada: ambas son éxito.
      */
-    fun cerrar(detalle: Detalle, d: DatosCierre, foto: ByteArray?, recorrido: List<Fix> = emptyList()): Resultado {
+    fun cerrar(detalle: Detalle, d: DatosCierre, foto: ByteArray?, recorrido: List<Fix> = emptyList(), conRed: Boolean = true): Resultado {
         validar(detalle, d)
+        require(cierreEnCola(detalle.id) == null) { "El cierre de esta entrega ya está guardado en el teléfono y se enviará al volver la red." }
         val borrador = borradores.cargar(detalle.id) ?: Borrador(UUID.randomUUID().toString()).also { borradores.guardar(detalle.id, it) }
+        if (cola != null && !conRed) return guardarSinRed(detalle, d, foto, recorrido, borrador)
         if (borrador.evidenciaId == null) {
             require(foto != null && foto.isNotEmpty()) { "Falta la foto de evidencia." }
-            val doc = api.call("documentos", "documentos", "POST", JSONObject()
-                .put("nombre", "evidencia-entrega-${detalle.id}.jpg").put("tipo_mime", "image/jpeg")
-                .put("contenido_base64", android64(foto))
-                .put("referencia", JSONObject().put("tipo", "entrega").put("id", detalle.id.toString())))
+            val doc = try { api.call("documentos", "documentos", "POST", Evidencia.cuerpo(detalle.id, foto)) } catch (e: IOException) {
+                if (cola == null) throw e
+                return guardarSinRed(detalle, d, foto, recorrido, borrador)
+            }
             borrador.evidenciaId = doc.getString("id")
             borradores.guardar(detalle.id, borrador)
         }
-        enviarRecorrido(detalle.id, recorrido)
+        val sinEnviar = enviarRecorrido(detalle.id, recorrido)
+        try {
+            val r = api.call("entregas", "entregas/${detalle.id}/resultado", "POST", cuerpoCierre(d, borrador.evidenciaId!!).put("id_cliente_local", borrador.idClienteLocal))
+            borradores.borrar(detalle.id)
+            if (sinEnviar.isNotEmpty()) cola?.let { encolarRecorrido(detalle.id, sinEnviar) }
+            return Resultado(r.getString("estado_pedido"), r.optBoolean("duplicado"))
+        } catch (e: ApiError) {
+            if (e.status == 409) borradores.borrar(detalle.id)   // otra operación ya cerró la entrega: no hay nada que reintentar
+            throw e
+        } catch (e: IOException) {
+            if (cola == null) throw e
+            // Mismo identificador: si el servidor sí alcanzó a aplicarlo, la sincronización lo verá como duplicado, no como otro cierre.
+            return guardarSinRed(detalle, d, null, sinEnviar, borrador)
+        }
+    }
+
+    /** Cuerpo de `POST /entregas/{id}/resultado` sin `id_cliente_local` (en el lote lo pone el servicio a partir del `operacion_uuid`). */
+    private fun cuerpoCierre(d: DatosCierre, evidenciaId: String?): JSONObject {
         val cuerpo = JSONObject()
             .put("resultado", d.resultado).put("monto_cobrado", dinero(d.montoCobrado)).put("cambio_entregado", dinero(d.cambio))
             .put("ubicacion", JSONObject().put("latitud", d.fix.latitud).put("longitud", d.fix.longitud).apply { d.fix.precisionM?.let { put("precision_m", it) } })
-            .put("evidencia_ids", JSONArray().put(borrador.evidenciaId))
             .put("capturado_en", Contrato.fecha(d.fix.tiempoMs))
-            .put("id_cliente_local", borrador.idClienteLocal)
+        if (evidenciaId != null) cuerpo.put("evidencia_ids", JSONArray().put(evidenciaId))
         if (d.incidencia.isNotBlank()) cuerpo.put("incidencia", d.incidencia.trim())
         if (d.resultado == "parcial") {
             cuerpo.put("lineas", JSONArray(d.lineas.map {
@@ -148,32 +196,65 @@ class Entregas(
                     .put("cantidad_devuelta", it.devueltas).apply { if (it.devueltas > 0) put("motivo", it.motivo.trim()) }
             }))
         }
-        try {
-            val r = api.call("entregas", "entregas/${detalle.id}/resultado", "POST", cuerpo)
-            borradores.borrar(detalle.id)
-            return Resultado(r.getString("estado_pedido"), r.optBoolean("duplicado"))
-        } catch (e: ApiError) {
-            if (e.status == 409) borradores.borrar(detalle.id)   // otra operación ya cerró la entrega: no hay nada que reintentar
-            throw e
+        return cuerpo
+    }
+
+    /**
+     * Guarda el cierre para enviarlo después. El `operacion_uuid` es el mismo `id_cliente_local` del borrador, así que un intento en línea
+     * que sí llegó al servidor y este envío posterior cuentan como una sola operación. La foto se guarda antes que la operación:
+     * nunca queda un cierre en la cola sin su evidencia. Desde aquí la cola es la dueña del identificador y el borrador se borra.
+     */
+    private fun guardarSinRed(detalle: Detalle, d: DatosCierre, foto: ByteArray?, recorrido: List<Fix>, borrador: Borrador): Resultado {
+        val c = cola!!
+        val usuario = usuarioId()
+        if (borrador.evidenciaId == null) {
+            require(foto != null && foto.isNotEmpty()) { "Falta la foto de evidencia." }
+            c.guardarFoto(borrador.idClienteLocal, foto)
+        }
+        encolarRecorrido(detalle.id, recorrido)
+        val datos = cuerpoCierre(d, null).put("entrega_id", detalle.id)
+        c.guardar(Operacion(borrador.idClienteLocal, Operacion.CIERRE, Contrato.fecha(ahora()), datos.toString(), usuario, detalle.id,
+            "Cierre ${d.resultado} · ${detalle.folio}", borrador.evidenciaId))
+        borradores.borrar(detalle.id)
+        return Resultado(ESTADO_ESPERADO.getValue(d.resultado), false, enCola = true)
+    }
+
+    private fun encolarRecorrido(entregaId: Int, puntos: List<Fix>) {
+        val c = cola ?: return
+        puntos.chunked(500).forEach { lote ->
+            c.guardar(Operacion(UUID.randomUUID().toString(), Operacion.UBICACIONES, Contrato.fecha(lote.maxOf { it.tiempoMs }),
+                JSONObject().put("entrega_id", entregaId).put("puntos", puntosJson(lote)).toString(), usuarioId(), entregaId,
+                "${lote.size} punto(s) GPS"))
         }
     }
 
-    /** Puntos GPS de la ruta (lotes de hasta 500). Es un dato accesorio: si falla no impide cerrar la entrega. */
-    private fun enviarRecorrido(entregaId: Int, puntos: List<Fix>) {
-        puntos.chunked(500).forEach { lote ->
+    private fun usuarioId() = api.session?.optJSONObject("usuario")?.optInt("id")?.takeIf { it > 0 } ?: throw IllegalStateException("La sesión terminó; vuelve a entrar")
+
+    private fun puntosJson(lote: List<Fix>) = JSONArray(lote.map {
+        JSONObject().put("latitud", it.latitud).put("longitud", it.longitud).put("capturado_en", Contrato.fecha(it.tiempoMs))
+            .apply { it.precisionM?.let { p -> put("precision_m", p) } }
+    })
+
+    /**
+     * Puntos GPS de la ruta (lotes de hasta 500). Es un dato accesorio: si el servicio lo rechaza no impide cerrar la entrega.
+     * Devuelve los puntos que no salieron por falta de red, para guardarlos en la cola.
+     */
+    private fun enviarRecorrido(entregaId: Int, puntos: List<Fix>): List<Fix> {
+        val lotes = puntos.chunked(500)
+        lotes.forEachIndexed { i, lote ->
             try {
-                api.call("seguimiento", "seguimiento/$entregaId/ubicaciones", "POST", JSONObject().put("puntos", JSONArray(lote.map {
-                    JSONObject().put("latitud", it.latitud).put("longitud", it.longitud).put("capturado_en", Contrato.fecha(it.tiempoMs))
-                        .apply { it.precisionM?.let { p -> put("precision_m", p) } }
-                })))
+                api.call("seguimiento", "seguimiento/$entregaId/ubicaciones", "POST", JSONObject().put("puntos", puntosJson(lote)))
             } catch (_: ApiError) {
-            } catch (_: java.io.IOException) {
+            } catch (_: IOException) {
+                return lotes.drop(i).flatten()
             }
         }
+        return emptyList()
     }
 
-    // Base64 sin saltos de línea. java.util.Base64 existe desde API 26 (minSdk) y también en las pruebas de la JVM.
-    private fun android64(bytes: ByteArray): String = java.util.Base64.getEncoder().encodeToString(bytes)
+    companion object {
+        private val ESTADO_ESPERADO = mapOf("entregado" to "entregado", "parcial" to "entrega_parcial", "fallida" to "entrega_fallida")
+    }
 }
 
 data class Perfil(

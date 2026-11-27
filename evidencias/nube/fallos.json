@@ -1,0 +1,296 @@
+[
+  {
+    "nombre": "1. Un microservicio detenido (inventario)",
+    "que": "Los que dependen de él deben avisar; los demás siguen.",
+    "pasos": [
+      {
+        "momento": "durante",
+        "descripcion": "El servicio no responde",
+        "ok": true,
+        "peticion": "GET inventario /salud",
+        "status": null,
+        "ms": 0,
+        "respuesta": "URLError: <urlopen error [Errno 111] Connection refused>"
+      },
+      {
+        "momento": "durante",
+        "descripcion": "Los indicadores se entregan y nombran al servicio caído",
+        "ok": true,
+        "peticion": "GET reportes /reportes/indicadores",
+        "status": 200,
+        "ms": 656,
+        "respuesta": "{\"desde\": \"2026-10-28\", \"hasta\": \"2026-11-26\", \"indicadores\": [{\"clave\": \"pedidos\", \"titulo\": \"Pedidos del periodo\", \"valor\": 161, \"unidad\": \"pedidos\", \"fuente\": \"pedidos\"}, {\"clave\": \"venta\", \"titulo\": \"Venta del periodo\", \"valor\": 30625.3, \"unidad\": \"MXN\", \""
+      },
+      {
+        "momento": "durante",
+        "descripcion": "El reporte que depende de él responde 503, sin inventar datos",
+        "ok": true,
+        "peticion": "GET reportes /reportes/inventario_alertas",
+        "status": 503,
+        "ms": 57,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"El servicio inventario no responde. Intenta más tarde.\", \"traza_id\": \"9e56936c-f779-4176-b80b-d9516b45eb44\"}}"
+      },
+      {
+        "momento": "durante",
+        "descripcion": "El resto de la plataforma sigue atendiendo",
+        "ok": true,
+        "peticion": "GET productos /productos?por_pagina=1",
+        "status": 200,
+        "ms": 54,
+        "respuesta": "{\"datos\": [{\"id\": 3, \"clave_interna\": \"AB-003\", \"nombre\": \"Aceite vegetal\", \"categoria\": {\"id\": 1, \"nombre\": \"Abarrote básico\"}, \"unidad\": \"botella\", \"presentacion\": \"900 ml\", \"precio\": 42.0, \"imagen_url\": null, \"estatus\": \"activo\"}], \"paginacion\": {\"pagina\": "
+      },
+      {
+        "momento": "durante",
+        "descripcion": "El monitoreo lo marca caído y abre una alerta",
+        "ok": true,
+        "peticion": "POST auditoria-monitoreo /monitoreo/verificaciones",
+        "status": 201,
+        "ms": 70,
+        "respuesta": "{\"verificados\": 1, \"ok\": 0, \"degradados\": 0, \"caidos\": 1, \"servicios\": [{\"servicio\": \"inventario\", \"estado\": \"caido\", \"tiempo_ms\": 10.7, \"error\": \"El servicio inventario no responde. Intenta más tarde.\"}]}"
+      },
+      {
+        "momento": "después",
+        "descripcion": "Vuelve a estar sano en 2.0 s",
+        "ok": true
+      },
+      {
+        "momento": "después",
+        "descripcion": "La alerta se cierra sola",
+        "ok": true,
+        "peticion": "GET auditoria-monitoreo /monitoreo/alertas?estado=abiertas&servicio=inventario",
+        "status": 200,
+        "ms": 43,
+        "respuesta": "{\"datos\": [], \"paginacion\": {\"pagina\": 1, \"por_pagina\": 20, \"total\": 0, \"paginas\": 0}}"
+      }
+    ]
+  },
+  {
+    "nombre": "2. Redis caído",
+    "que": "Redis guarda las sesiones. Sin él no se puede saber si un token fue revocado: el sistema cierra el paso (503) en lugar de confiar.",
+    "pasos": [
+      {
+        "momento": "durante",
+        "descripcion": "No deja pasar sin validar la sesión (503)",
+        "ok": true,
+        "peticion": "GET pedidos /pedidos?por_pagina=1",
+        "status": 503,
+        "ms": 30,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"No se pudo validar la sesión. Intenta más tarde.\", \"traza_id\": \"d9e87e19-df03-49eb-8163-1174af6bf411\"}}"
+      },
+      {
+        "momento": "durante",
+        "descripcion": "/salud informa redis con error",
+        "ok": true,
+        "peticion": "GET pedidos /salud",
+        "status": 503,
+        "ms": 24,
+        "respuesta": "{\"servicio\": \"pedidos\", \"version\": \"fd85013\", \"estado\": \"degradado\", \"dependencias\": {\"postgres\": \"ok\", \"redis\": \"error\", \"mongo\": \"no_aplica\", \"bucket\": \"no_aplica\"}, \"tiempo_ms\": 22.1}"
+      },
+      {
+        "momento": "durante",
+        "descripcion": "Tampoco se emiten sesiones nuevas",
+        "ok": true,
+        "peticion": "POST auth /auth/login",
+        "status": 503,
+        "ms": 53,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"Una base de datos no responde. Intenta más tarde.\", \"traza_id\": \"503ce2fd-7f81-47d0-b279-fa0930d787d7\"}}"
+      },
+      {
+        "momento": "después",
+        "descripcion": "Los servicios vuelven a estar sanos en 0.0 s",
+        "ok": true
+      },
+      {
+        "momento": "después",
+        "descripcion": "Los tokens anteriores ya no sirven (Redis no conserva sesiones): nadie revocado puede volver a entrar",
+        "ok": true,
+        "peticion": "GET pedidos /pedidos?por_pagina=1",
+        "status": 401,
+        "ms": 5,
+        "respuesta": "{\"error\": {\"codigo\": \"TOKEN_INVALIDO\", \"mensaje\": \"La sesión venció o fue cerrada. Inicia sesión de nuevo.\", \"traza_id\": \"7b7e7031-15f7-45f3-9f16-3d1d886a24c9\"}}"
+      },
+      {
+        "momento": "después",
+        "descripcion": "Con un inicio de sesión nuevo todo funciona",
+        "ok": true,
+        "peticion": "GET pedidos /pedidos?por_pagina=1",
+        "status": 200,
+        "ms": 43,
+        "respuesta": "{\"datos\": [{\"id\": 597, \"folio\": \"PED-20261126-000597\", \"estado\": \"cancelado\", \"zona\": {\"id\": 3, \"nombre\": \"Paseo de San Bernabé\"}, \"microhub_id\": 2, \"total\": 288.0, \"creado_en\": \"2026-11-26T23:38:27-06:00\"}], \"paginacion\": {\"pagina\": 1, \"por_pagina\": 1, \"total"
+      }
+    ]
+  },
+  {
+    "nombre": "3. MongoDB caído",
+    "que": "MongoDB guarda archivos (sus datos), GPS y registros. Lo transaccional no depende de él.",
+    "pasos": [
+      {
+        "momento": "durante",
+        "descripcion": "Pedidos sigue funcionando (los registros se omiten)",
+        "ok": true,
+        "peticion": "GET pedidos /pedidos?por_pagina=1",
+        "status": 200,
+        "ms": 2434,
+        "respuesta": "{\"datos\": [{\"id\": 597, \"folio\": \"PED-20261126-000597\", \"estado\": \"cancelado\", \"zona\": {\"id\": 3, \"nombre\": \"Paseo de San Bernabé\"}, \"microhub_id\": 2, \"total\": 288.0, \"creado_en\": \"2026-11-26T23:38:27-06:00\"}], \"paginacion\": {\"pagina\": 1, \"por_pagina\": 1, \"total"
+      },
+      {
+        "momento": "durante",
+        "descripcion": "Subir un archivo responde con error claro",
+        "ok": true,
+        "peticion": "POST documentos /documentos",
+        "status": 503,
+        "ms": 4553,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"MongoDB no responde. Intenta más tarde.\", \"traza_id\": \"1aa766d6-2d98-4b3b-9240-5b50bc78d4a0\"}}"
+      },
+      {
+        "momento": "durante",
+        "descripcion": "/salud de documentos informa mongo con error",
+        "ok": true,
+        "peticion": "GET documentos /salud",
+        "status": 503,
+        "ms": 2061,
+        "respuesta": "{\"servicio\": \"documentos\", \"version\": \"fd85013\", \"estado\": \"degradado\", \"dependencias\": {\"postgres\": \"ok\", \"redis\": \"ok\", \"mongo\": \"error\", \"bucket\": \"ok\"}, \"tiempo_ms\": 2059.4}"
+      },
+      {
+        "momento": "después",
+        "descripcion": "Documentos se recupera en 0.5 s",
+        "ok": true
+      },
+      {
+        "momento": "después",
+        "descripcion": "No quedó ningún registro a medias",
+        "ok": true,
+        "dato": "documentos antes=35 después=35"
+      }
+    ]
+  },
+  {
+    "nombre": "4. PostgreSQL caído",
+    "que": "La base transaccional. Los errores deben ser claros y sin detalles internos.",
+    "pasos": [
+      {
+        "momento": "durante",
+        "descripcion": "Responde 503 con el formato de error del contrato",
+        "ok": true,
+        "peticion": "GET pedidos /pedidos?por_pagina=1",
+        "status": 503,
+        "ms": 17,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"Una base de datos no responde. Intenta más tarde.\", \"traza_id\": \"15c7b786-2649-4a51-bcee-77bb8ca5eb2f\"}}"
+      },
+      {
+        "momento": "durante",
+        "descripcion": "El error no muestra consultas, contraseñas ni trazas del programa",
+        "ok": true,
+        "dato": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"Una base de datos no responde. Intenta más tarde.\", \"traza_id\": \"15c7b786-2649-4a51-bcee-77bb8ca5eb2f\"}}"
+      },
+      {
+        "momento": "durante",
+        "descripcion": "/salud informa postgres con error",
+        "ok": true,
+        "peticion": "GET pedidos /salud",
+        "status": 503,
+        "ms": 13,
+        "respuesta": "{\"servicio\": \"pedidos\", \"version\": \"fd85013\", \"estado\": \"degradado\", \"dependencias\": {\"postgres\": \"error\", \"redis\": \"ok\", \"mongo\": \"no_aplica\", \"bucket\": \"no_aplica\"}, \"tiempo_ms\": 11.6}"
+      },
+      {
+        "momento": "después",
+        "descripcion": "Se reconecta solo en 2.0 s, sin reiniciar los servicios",
+        "ok": true
+      },
+      {
+        "momento": "después",
+        "descripcion": "Vuelve a responder",
+        "ok": true,
+        "peticion": "GET pedidos /pedidos?por_pagina=1",
+        "status": 200,
+        "ms": 50,
+        "respuesta": "{\"datos\": [{\"id\": 597, \"folio\": \"PED-20261126-000597\", \"estado\": \"cancelado\", \"zona\": {\"id\": 3, \"nombre\": \"Paseo de San Bernabé\"}, \"microhub_id\": 2, \"total\": 288.0, \"creado_en\": \"2026-11-26T23:38:27-06:00\"}], \"paginacion\": {\"pagina\": 1, \"por_pagina\": 1, \"total"
+      }
+    ]
+  },
+  {
+    "nombre": "5. Almacén de archivos fuera de servicio",
+    "que": "El bucket (o la carpeta) no acepta archivos. No debe quedar un registro sin archivo.",
+    "pasos": [
+      {
+        "momento": "durante",
+        "descripcion": "/salud informa el almacén con error",
+        "ok": true,
+        "peticion": "GET documentos /salud",
+        "status": 503,
+        "ms": 519,
+        "respuesta": "{\"servicio\": \"documentos\", \"version\": \"fd85013\", \"estado\": \"degradado\", \"dependencias\": {\"postgres\": \"ok\", \"redis\": \"ok\", \"mongo\": \"ok\", \"bucket\": \"error\"}, \"tiempo_ms\": 515.9}"
+      },
+      {
+        "momento": "durante",
+        "descripcion": "Subir responde 503",
+        "ok": true,
+        "peticion": "POST documentos /documentos",
+        "status": 503,
+        "ms": 282,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"El almacén de archivos no responde. Intenta más tarde.\", \"traza_id\": \"74ed2845-edca-4e3c-96f3-722888c00890\"}}"
+      },
+      {
+        "momento": "durante",
+        "descripcion": "No se guardó un registro sin archivo",
+        "ok": true,
+        "dato": "documentos antes=35 después=35"
+      },
+      {
+        "momento": "después",
+        "descripcion": "Documentos vuelve a estar sano en 2.3 s",
+        "ok": true
+      },
+      {
+        "momento": "después",
+        "descripcion": "Se puede subir de nuevo",
+        "ok": true,
+        "peticion": "POST documentos /documentos",
+        "status": 201,
+        "ms": 102,
+        "respuesta": "{\"id\": \"6b09180a8bc191fc4ce98c66\", \"nombre\": \"fallo-almacen.jpg\", \"tipo_mime\": \"image/jpeg\", \"tamano_bytes\": 276, \"sha256\": \"7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc\", \"referencia\": {\"tipo\": \"usuario\", \"id\": \"1\"}, \"subido_por\": 1, \"crea"
+      }
+    ]
+  },
+  {
+    "nombre": "6. Un servicio que no contesta (tiempo de espera)",
+    "que": "El contenedor queda congelado: acepta la conexión pero no responde.",
+    "pasos": [
+      {
+        "momento": "durante",
+        "descripcion": "Quien lo llama no se queda colgado: corta a los pocos segundos con 503",
+        "ok": true,
+        "peticion": "GET reportes /reportes/inventario_alertas",
+        "status": 503,
+        "ms": 4046,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"El servicio inventario no responde. Intenta más tarde.\", \"traza_id\": \"c23662c4-5a2f-4b13-9685-489053471481\"}}"
+      },
+      {
+        "momento": "durante",
+        "descripcion": "El monitoreo lo da por caído tras su tiempo de espera",
+        "ok": true,
+        "peticion": "POST auditoria-monitoreo /monitoreo/verificaciones",
+        "status": 201,
+        "ms": 3065,
+        "respuesta": "{\"verificados\": 1, \"ok\": 0, \"degradados\": 0, \"caidos\": 1, \"servicios\": [{\"servicio\": \"inventario\", \"estado\": \"caido\", \"tiempo_ms\": 3004.0, \"error\": \"El servicio inventario no responde. Intenta más tarde.\"}]}"
+      },
+      {
+        "momento": "después",
+        "descripcion": "Al reanudarse vuelve en 0.0 s",
+        "ok": true
+      }
+    ]
+  },
+  {
+    "nombre": "7. Integridad de los datos",
+    "que": "Pedidos, entregas e inventario antes y después de todas las fallas.",
+    "pasos": [
+      {
+        "momento": "final",
+        "descripcion": "Ninguna falla creó, borró ni alteró datos",
+        "ok": true,
+        "dato": "antes:   pedidos=593 entregas=157 existencia_total=7245\ndespués: pedidos=593 entregas=157 existencia_total=7245"
+      }
+    ]
+  }
+]

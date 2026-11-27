@@ -1,0 +1,25 @@
+{% extends 'base.html' %}{% block titulo %}Historial de {{ nombre }}{% endblock %}{% block cuerpo %}
+<h1>Historial de disponibilidad · {{ nombre }}</h1>
+<p class="sub"><a href="{{ url_for('servicios.monitoreo') }}">← Volver al panel</a> · Verificaciones de las últimas {{ horas }} horas, según el servicio de auditoría y monitoreo.</p>
+{% if not historial.ok %}
+<div class="aviso alto">No se pudo leer el historial: {{ historial.mensaje or historial.status }}</div>
+{% else %}
+{% set filas = historial.datos.datos %}
+<div class="kpis">
+  <div class="kpi"><div class="v">{{ historial.datos.paginacion.total }}</div><div class="l">Verificaciones en el periodo</div></div>
+  <div class="kpi"><div class="v">{{ resumen.disponibilidad_pct if resumen and resumen.disponibilidad_pct is not none else '—' }}{% if resumen and resumen.disponibilidad_pct is not none %} %{% endif %}</div><div class="l">Disponibilidad</div></div>
+  <div class="kpi"><div class="v">{{ resumen.caidas if resumen else '—' }}</div><div class="l">Veces caído</div></div>
+  <div class="kpi"><div class="v">{{ resumen.tiempo_p95_ms if resumen and resumen.tiempo_p95_ms is not none else '—' }}</div><div class="l">p95 de respuesta (ms)</div></div>
+</div>
+<div class="panel"><h2>Línea de tiempo (la más reciente a la derecha)</h2>
+<div style="display:flex;gap:2px;flex-wrap:wrap" role="img" aria-label="Estado de cada verificación">
+{% for v in filas|reverse %}<span title="{{ v.verificado_en }} · {{ v.estado }} · {{ v.tiempo_ms }} ms" style="display:inline-block;width:9px;height:28px;border-radius:2px;background:{{ '#2e7d32' if v.estado == 'ok' else ('#c77700' if v.estado == 'degradado' else '#b3261e') }}"></span>{% endfor %}
+</div><p class="ayuda">Verde: sano · naranja: degradado (una dependencia falla) · rojo: no respondió. Pasa el cursor para ver la hora y el tiempo.</p></div>
+<div class="panel" style="overflow:auto"><h2>Detalle</h2><table><thead><tr><th>Verificado</th><th>Estado</th><th>HTTP</th><th>ms</th><th>Versión</th><th>Dependencias con falla</th><th>Error</th></tr></thead><tbody>
+{% for v in filas %}<tr><td>{{ v.verificado_en }}</td><td>{% if v.estado == 'ok' %}<span class="pill verde">ok</span>{% else %}<span class="pill rojo">{{ v.estado }}</span>{% endif %}</td>
+<td>{{ v.http_status or '—' }}</td><td>{{ v.tiempo_ms }}</td><td>{{ v.version or '—' }}</td>
+<td>{% if v.dependencias %}{% for n, e in v.dependencias.items() if e == 'error' %}{{ n }} {% else %}—{% endfor %}{% else %}—{% endif %}</td><td>{{ v.error or '' }}</td></tr>
+{% else %}<tr><td colspan="7">Sin verificaciones en el periodo.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entrega_nueva xmlns="urn:microhubs:v1" version="1">
+  <pedido_id>901</pedido_id>
+  <repartidor_id>7</repartidor_id>
+  <orden_parada>1</orden_parada>
+</entrega_nueva>

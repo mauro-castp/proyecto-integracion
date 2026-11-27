@@ -1,0 +1,68 @@
+[2026-11-26 17:07:03,243] vm/INFO/locust.main: Starting Locust 2.47.0
+[2026-11-26 17:07:03,244] vm/INFO/locust.main: Run time limit set to 180 seconds
+[2026-11-26 17:07:03,244] vm/INFO/locust.runners: Ramping to 50 users at a rate of 5.00 per second
+[2026-11-26 17:07:12,269] vm/INFO/locust.runners: All users spawned: {"AdministradorPanel": 5, "ClienteConsultando": 20, "OperadorRegistrando": 7, "PlaneadorEscritorio": 5, "ProcesoAutomatico": 3, "RepartidorAndroid": 10} (50 total users)
+[2026-11-26 17:10:03,244] vm/INFO/locust.main: --run-time limit reached, shutting down
+[2026-11-26 17:10:03,300] vm/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+POST     abastecimiento · POST solicitud                                                   30     0(0.00%) |     32      22      61     31 |    0.17        0.00
+GET      auditoria · GET bitácora                                                          52     0(0.00%) |     42      28      79     40 |    0.29        0.00
+POST     auth · POST login                                                                 50     0(0.00%) |    287     110     665    300 |    0.28        0.00
+GET      entregas · GET mias                                                              140     0(0.00%) |     24      14      71     21 |    0.78        0.00
+GET      entregas · GET {id}                                                               96     0(0.00%) |     32      22     129     28 |    0.53        0.00
+GET      inventario · GET alertas                                                          72     0(0.00%) |     28      20      44     27 |    0.40        0.00
+GET      inventario · GET lista                                                           122     0(0.00%) |     24      16     135     21 |    0.68        0.00
+GET      microhubs · GET lista                                                            101     0(0.00%) |      6       4      26      6 |    0.56        0.00
+GET      monitoreo · GET disponibilidad                                                    37     0(0.00%) |     24      17      79     21 |    0.21        0.00
+GET      monitoreo · GET estado                                                            74     0(0.00%) |     41      29      75     38 |    0.41        0.00
+GET      notificaciones · GET conteo                                                       97     0(0.00%) |     13       8      35     13 |    0.54        0.00
+GET      pedidos · GET del microhub                                                        84     0(0.00%) |     24      15      47     22 |    0.47        0.00
+GET      pedidos · GET mis pedidos                                                        208     0(0.00%) |     29      18     127     26 |    1.16        0.00
+GET      pedidos · GET {id}                                                               208     0(0.00%) |     31      19      99     29 |    1.16        0.00
+GET      productos · GET buscar                                                           602     0(0.00%) |      6       3      38      6 |    3.35        0.00
+GET      productos · GET {id}                                                             302     0(0.00%) |      8       3      57      6 |    1.68        0.00
+POST     punto-equilibrio · POST calculo                                                   37     0(0.00%) |     15       9      37     13 |    0.21        0.00
+GET      reportes · GET pedidos_por_dia (XML)                                              50     0(0.00%) |     47      29     177     39 |    0.28        0.00
+GET      reportes · GET ventas_por_producto (XML)                                          46     0(0.00%) |     47      24     289     31 |    0.26        0.00
+POST     seguimiento · POST ubicaciones (10)                                              231     0(0.00%) |     16       9      67     15 |    1.28        0.00
+POST     simulacion · POST ejecucion (202)                                                 25     0(0.00%) |    188     134     364    160 |    0.14        0.00
+POST     sincronizacion · POST lote                                                        33     0(0.00%) |    168     126     273    160 |    0.18        0.00
+POST     sincronizacion · POST lote (reenvío)                                              37     0(0.00%) |     82      58     224     70 |    0.21        0.00
+GET      usuarios · GET yo                                                                 48     0(0.00%) |     13       9      24     14 |    0.27        0.00
+GET      zonas · GET lista                                                                 83     0(0.00%) |      6       3      14      6 |    0.46        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                      2865     0(0.00%) |     27       3     665     17 |   15.92        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+POST     abastecimiento · POST solicitud                                                        31     33     34     34     52     60     61     61     61     61     61     30
+GET      auditoria · GET bitácora                                                               40     42     48     50     56     68     76     80     80     80     80     52
+POST     auth · POST login                                                                     300    340    370    430    480    510    670    670    670    670    670     50
+GET      entregas · GET mias                                                                    21     23     26     28     39     48     61     65     71     71     71    140
+GET      entregas · GET {id}                                                                    28     29     32     34     39     64    130    130    130    130    130     96
+GET      inventario · GET alertas                                                               27     28     32     33     39     43     45     45     45     45     45     72
+GET      inventario · GET lista                                                                 21     23     25     26     35     41     65     86    140    140    140    122
+GET      microhubs · GET lista                                                                   6      6      7      7     10     12     15     16     27     27     27    101
+GET      monitoreo · GET disponibilidad                                                         21     24     27     28     32     44     80     80     80     80     80     37
+GET      monitoreo · GET estado                                                                 38     41     44     51     60     64     69     75     75     75     75     74
+GET      notificaciones · GET conteo                                                            13     13     15     16     19     21     31     35     35     35     35     97
+GET      pedidos · GET del microhub                                                             22     25     27     28     34     39     46     47     47     47     47     84
+GET      pedidos · GET mis pedidos                                                              26     29     30     33     40     55     76     83    130    130    130    208
+GET      pedidos · GET {id}                                                                     29     31     34     38     46     57     72     73     99     99     99    208
+GET      productos · GET buscar                                                                  6      6      7      8      9     11     14     18     39     39     39    602
+GET      productos · GET {id}                                                                    6      6      7      8     16     21     32     42     57     57     57    302
+POST     punto-equilibrio · POST calculo                                                        13     14     14     15     33     36     38     38     38     38     38     37
+GET      reportes · GET pedidos_por_dia (XML)                                                   39     43     48     51     72    140    180    180    180    180    180     50
+GET      reportes · GET ventas_por_producto (XML)                                               31     33     36     37    130    150    290    290    290    290    290     46
+POST     seguimiento · POST ubicaciones (10)                                                    15     16     17     18     21     26     29     38     67     67     67    231
+POST     simulacion · POST ejecucion (202)                                                     160    170    200    220    280    350    360    360    360    360    360     25
+POST     sincronizacion · POST lote                                                            160    170    170    180    200    250    270    270    270    270    270     33
+POST     sincronizacion · POST lote (reenvío)                                                   70     73     76     94    120    200    220    220    220    220    220     37
+GET      usuarios · GET yo                                                                      14     14     15     15     17     18     25     25     25     25     25     48
+GET      zonas · GET lista                                                                       6      6      8      9     12     12     13     14     14     14     14     83
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                             17     24     28     31     42     74    170    290    510    670    670   2865
+
+exit=0

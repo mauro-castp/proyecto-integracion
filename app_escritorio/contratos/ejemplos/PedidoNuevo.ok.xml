@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pedido_nuevo xmlns="urn:microhubs:v1" version="1">
+  <cliente_id>1</cliente_id>
+  <lineas>
+    <linea>
+      <producto_id>3</producto_id>
+      <cantidad>4</cantidad>
+    </linea>
+    <linea>
+      <producto_id>7</producto_id>
+      <cantidad>2</cantidad>
+    </linea>
+  </lineas>
+  <operacion_uuid>7b1e4c2a-3f5d-4a6b-9c8d-0e1f2a3b4c5d</operacion_uuid>
+</pedido_nuevo>

@@ -21,7 +21,7 @@ COPY servicios/migrar.py /app/migrar.py
 COPY servicios/reportes /app/servicio
 
 # Sin privilegios de administrador dentro del contenedor.
-RUN useradd --uid 10001 --no-create-home servicio
+RUN useradd --uid 10001 --no-create-home servicio && mkdir -p /app/almacen && chown servicio /app/almacen
 USER servicio
 
 EXPOSE 5123

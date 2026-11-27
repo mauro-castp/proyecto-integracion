@@ -1,6 +1,6 @@
 # Supuestos de los modelos y umbrales (Olas 2 y 3)
 
-Lo escribe `servicios/pruebas/generar_supuestos.py` a partir de las tablas `configuracion` y `supuesto_documentado`; no se edita a mano. Generado el 2026-11-26.
+Lo escribe `servicios/pruebas/generar_supuestos.py` a partir de las tablas `configuracion` y `supuesto_documentado`; no se edita a mano. Generado el 2026-11-27.
 
 ## Cómo se manejan
 

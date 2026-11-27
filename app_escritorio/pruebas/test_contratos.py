@@ -31,7 +31,13 @@ class Contratos(unittest.TestCase):
         return etree.parse(str(RAIZ / 'ejemplos' / nombre))
 
     def test_hay_un_xsd_por_servicio_mas_comun(self):
-        self.assertEqual(set(self.esq), {'comun', 'auth', 'usuarios', 'catalogos', 'pedidos', 'entregas', 'planeacion', 'documentos', 'notificaciones'})
+        # Segundo Parcial: 8 servicios + comun. Olas 1 a 3: un XSD por servicio nuevo (los complementos *_ola2 amplían a los anteriores).
+        # La versión anterior de esta prueba comparaba contra la lista del Segundo Parcial y fallaba desde la Ola 1 (registro de incidencias).
+        segundo_parcial = {'comun', 'auth', 'usuarios', 'catalogos', 'pedidos', 'entregas', 'planeacion', 'documentos', 'notificaciones'}
+        olas = {'inventario', 'precios', 'proveedores', 'abastecimiento', 'demanda', 'cobertura', 'capacidad', 'rutas', 'costos', 'punto_equilibrio',
+                'simulacion', 'surtido', 'reportes', 'sincronizacion', 'auditoria_monitoreo'}
+        self.assertTrue(segundo_parcial | olas <= set(self.esq), sorted((segundo_parcial | olas) - set(self.esq)))
+        self.assertEqual(len(self.esq), len(list(RAIZ.glob('*.xsd'))), 'todos los de la carpeta cargan')
 
     def test_todos_los_ejemplos_validan(self):
         ejemplos = sorted((RAIZ / 'ejemplos').glob('*.xml'))

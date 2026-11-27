@@ -133,6 +133,12 @@ class DeviceTest {
             s.espera("Mis entregas", exacto = false); captura("02_inicio")
             assertTrue(s.textos(), s.textos().contains("Ejemplos locales"))      // el indicador de conexión lo dice en la barra
 
+            s.pulsa("Avisos", exacto = false)
+            s.espera("Nueva entrega asignada", exacto = false); captura("07_avisos")
+            s.pulsa("Marcar todos como leídos")
+            assertTrue(s.textos(), s.textos().contains("marcado(s) como leído(s)"))
+            s.volver(); s.espera("Mis entregas", exacto = false)
+
             s.pulsa("Mis entregas", exacto = false)
             s.espera("PED-DEMO-000101", exacto = false); captura("03_entregas")
             s.pulsa("PED-DEMO-000101", exacto = false)
@@ -175,6 +181,7 @@ class DeviceTest {
             s.pulsa("Mi perfil", exacto = false); s.espera("Guardar cambios"); captura("11_perfil_real"); s.volver()
             s.pulsa("Mis entregas", exacto = false)
             captura("12_entregas_real"); s.volver()
+            s.pulsa("Avisos", exacto = false); captura("13_avisos_real"); s.volver()
             s.pulsa("Cerrar sesión")
             s.espera("Entrar")
         }

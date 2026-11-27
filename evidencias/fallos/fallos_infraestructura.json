@@ -1,0 +1,552 @@
+{
+  "fecha": "2026-11-26T23:41:46+00:00",
+  "entorno": "entorno local sin Docker: PostgreSQL 16, MongoDB 7, Redis 7 y los 26 servicios con gunicorn",
+  "casos": [
+    {
+      "caso": "Un microservicio se detiene (inventario)",
+      "pasos": [
+        {
+          "paso": "Antes: GET inventario (operador)",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 45,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: GET inventario directo",
+          "http": null,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 0,
+          "error": "sin conexión: [Errno 111] Connection refused"
+        },
+        {
+          "paso": "Durante: GET abastecimiento/necesidades (necesita inventario)",
+          "http": 503,
+          "codigo": "SERVICIO_NO_DISPONIBLE",
+          "mensaje": "El servicio inventario no responde. Intenta más tarde.",
+          "traza_id": "73ea1e0e-a867-4b46-a1e9-ad5c1ab039fa",
+          "ms": 14,
+          "error": null,
+          "esperado": 503,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: GET productos (no depende de inventario)",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 2,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: el monitoreo verifica (POST monitoreo/verificaciones)",
+          "http": 201,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 43,
+          "error": null,
+          "esperado": 201,
+          "cumple": true
+        },
+        {
+          "paso": "Después: GET inventario",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 20,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        }
+      ],
+      "recuperacion_s": 0.0,
+      "monitoreo": {
+        "estado_verificado": "caido",
+        "error": "El servicio inventario no responde. Intenta más tarde.",
+        "alertas_abiertas": [
+          [
+            "servicio_caido",
+            "critica",
+            "inventario no responde. El servicio inventario no responde. Intenta más tarde."
+          ]
+        ],
+        "ultima_alerta_tras_volver": [
+          [
+            "servicio_caido",
+            "2026-11-26 17:41:48.138985-06",
+            "2026-11-26 17:41:52.337247-06"
+          ]
+        ]
+      },
+      "log": {
+        "nivel": "ERROR",
+        "componente": "abastecimiento",
+        "registrado_en": "2026-11-26T23:41:48.098000",
+        "mensaje": "GET /api/v1/abastecimiento/necesidades -> 503",
+        "ruta": "/api/v1/abastecimiento/necesidades",
+        "duracion_ms": 8,
+        "contexto": {
+          "metodo": "GET",
+          "status": 503,
+          "formato": "json",
+          "codigo_error": "SERVICIO_NO_DISPONIBLE"
+        },
+        "excepcion": null
+      }
+    },
+    {
+      "caso": "Redis no responde",
+      "pasos": [
+        {
+          "paso": "Antes: GET productos (con sesión en Redis)",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 3,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: GET productos con un token válido",
+          "http": 503,
+          "codigo": "SERVICIO_NO_DISPONIBLE",
+          "mensaje": "No se pudo validar la sesión. Intenta más tarde.",
+          "traza_id": "953dfa86-6c3c-48b6-a5da-be0df0d83ce1",
+          "ms": 2,
+          "error": null,
+          "esperado": 503,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: POST auth/login",
+          "http": 503,
+          "codigo": "SERVICIO_NO_DISPONIBLE",
+          "mensaje": "Una base de datos no responde. Intenta más tarde.",
+          "traza_id": "a2cfddea-dded-449d-ad42-2054dd493381",
+          "ms": 17,
+          "error": null,
+          "esperado": 503,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: GET /salud de productos",
+          "http": 503,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 5,
+          "error": null,
+          "esperado": 503,
+          "cumple": true
+        },
+        {
+          "paso": "Después: el token anterior",
+          "http": 401,
+          "codigo": "TOKEN_INVALIDO",
+          "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.",
+          "traza_id": "184e73b3-4936-4a99-8d45-0a0fa9a73db3",
+          "ms": 5,
+          "error": null,
+          "esperado": 401,
+          "cumple": true
+        },
+        {
+          "paso": "Después: se vuelve a iniciar sesión y GET productos",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 58,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        }
+      ],
+      "recuperacion_s": 0.0,
+      "salud_durante": {
+        "postgres": "ok",
+        "redis": "error",
+        "mongo": "no_aplica",
+        "bucket": "no_aplica"
+      },
+      "monitoreo": {
+        "verificaciones_guardadas_durante_la_falla": 364,
+        "ultima_de_productos": [
+          [
+            "productos",
+            "degradado",
+            "{\"postgres\": \"ok\", \"redis\": \"error\", \"mongo\": \"no_aplica\", \"bucket\": \"no_aplica\"}"
+          ]
+        ]
+      },
+      "log": null
+    },
+    {
+      "caso": "MongoDB no responde",
+      "pasos": [
+        {
+          "paso": "Antes: GET documentos (resumen en MongoDB)",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 6,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        },
+        {
+          "paso": "Antes: el repartidor sube la foto de evidencia de la entrega 95076",
+          "http": 201,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 28,
+          "error": null,
+          "esperado": 201,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: GET documentos/resumen",
+          "http": 503,
+          "codigo": "SERVICIO_NO_DISPONIBLE",
+          "mensaje": "MongoDB no responde. Intenta más tarde.",
+          "traza_id": "93aea8e8-760a-47d7-ad84-5121ac8e7a55",
+          "ms": 4038,
+          "error": null,
+          "esperado": 503,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: GET seguimiento/95076/recorrido",
+          "http": 503,
+          "codigo": "SERVICIO_NO_DISPONIBLE",
+          "mensaje": "MongoDB no responde. Intenta más tarde.",
+          "traza_id": "d62c6e24-ab77-4453-9f16-955f6d60d370",
+          "ms": 4502,
+          "error": null,
+          "esperado": 503,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: POST entregas/95076/resultado (cierre en PostgreSQL)",
+          "http": 201,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 5008,
+          "error": null,
+          "esperado": 201,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: GET productos (no usa MongoDB) #1",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 2489,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: GET productos (no usa MongoDB) #2",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 3,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: GET productos (no usa MongoDB) #3",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 2,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        },
+        {
+          "paso": "Después: GET documentos/resumen",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 4,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        }
+      ],
+      "recuperacion_s": 0.0,
+      "entrega_cerrada_en_postgres": [
+        [
+          "fallida",
+          "entrega_fallida"
+        ]
+      ],
+      "log": null
+    },
+    {
+      "caso": "PostgreSQL no responde",
+      "pasos": [
+        {
+          "paso": "Antes: GET pedidos",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 37,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: GET pedidos",
+          "http": 503,
+          "codigo": "SERVICIO_NO_DISPONIBLE",
+          "mensaje": "Una base de datos no responde. Intenta más tarde.",
+          "traza_id": "d3f0cd33-6e8c-4eff-9753-b354d94f3953",
+          "ms": 9,
+          "error": null,
+          "esperado": 503,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: POST auth/login",
+          "http": 503,
+          "codigo": "SERVICIO_NO_DISPONIBLE",
+          "mensaje": "Una base de datos no responde. Intenta más tarde.",
+          "traza_id": "64ee9839-119c-49fb-a356-e20404298897",
+          "ms": 14,
+          "error": null,
+          "esperado": 503,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: POST abastecimiento/solicitudes (escritura)",
+          "http": 503,
+          "codigo": "SERVICIO_NO_DISPONIBLE",
+          "mensaje": "Una base de datos no responde. Intenta más tarde.",
+          "traza_id": "7e798c69-e3b7-416f-8081-91800c244333",
+          "ms": 7,
+          "error": null,
+          "esperado": 503,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: GET /salud de pedidos",
+          "http": 503,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 2,
+          "error": null,
+          "esperado": 503,
+          "cumple": true
+        },
+        {
+          "paso": "Después: GET pedidos (sin reiniciar el servicio)",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 21,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        }
+      ],
+      "recuperacion_s": 0.0,
+      "salud_durante": {
+        "postgres": "error",
+        "redis": "ok",
+        "mongo": "no_aplica",
+        "bucket": "no_aplica"
+      },
+      "datos_a_medias": {
+        "solicitudes_guardadas_durante_la_falla": [
+          [
+            0
+          ]
+        ]
+      },
+      "log": {
+        "nivel": "ERROR",
+        "componente": "pedidos",
+        "registrado_en": "2026-11-26T23:43:00.985000",
+        "mensaje": "GET /api/v1/pedidos -> 503",
+        "ruta": "/api/v1/pedidos",
+        "duracion_ms": 2,
+        "contexto": {
+          "metodo": "GET",
+          "status": 503,
+          "formato": "json",
+          "codigo_error": "SERVICIO_NO_DISPONIBLE"
+        },
+        "excepcion": {
+          "detalle": "OperationalError: connection failed: connection to server at \"127.0.0.1\", port 5432 failed: Connection refused\n\tIs the server running on that host and accepting TCP/IP connections?"
+        }
+      }
+    },
+    {
+      "caso": "El servicio de archivos no está disponible",
+      "pasos": [
+        {
+          "paso": "Antes: GET documentos/resumen",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 4,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: GET /salud de documentos",
+          "http": 503,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 22,
+          "error": null,
+          "esperado": 503,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: POST documentos (subir una imagen)",
+          "http": 503,
+          "codigo": "SERVICIO_NO_DISPONIBLE",
+          "mensaje": "El almacén de archivos no responde. Intenta más tarde.",
+          "traza_id": "21772bc2-3749-4ced-ac85-9bba54cd439d",
+          "ms": 14,
+          "error": null,
+          "esperado": 503,
+          "cumple": true
+        },
+        {
+          "paso": "Después: POST documentos",
+          "http": 201,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 25,
+          "error": null,
+          "esperado": 201,
+          "cumple": true
+        }
+      ],
+      "recuperacion_s": 0.0,
+      "datos_a_medias": {
+        "documentos_en_mongo_antes": 4,
+        "documentos_en_mongo_durante": 4,
+        "ok": true
+      },
+      "log": {
+        "nivel": "ERROR",
+        "componente": "documentos",
+        "registrado_en": "2026-11-26T23:43:08.362000",
+        "mensaje": "POST /api/v1/documentos -> 503",
+        "ruta": "/api/v1/documentos",
+        "duracion_ms": 10,
+        "contexto": {
+          "metodo": "POST",
+          "status": 503,
+          "formato": "json",
+          "codigo_error": "SERVICIO_NO_DISPONIBLE"
+        },
+        "excepcion": {
+          "detalle": "ErrorAlmacen: No se pudo escribir en el almacén local: [Errno 2] No such file or directory: '/proc/almacen_no_disponible'"
+        }
+      }
+    },
+    {
+      "caso": "Una petición excede el tiempo máximo (costos congelado)",
+      "pasos": [
+        {
+          "paso": "Antes: POST punto-equilibrio/calculos (pide datos a costos, demanda y cobertura)",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 202,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        },
+        {
+          "paso": "Durante: el mismo cálculo con costos congelado (guardar = true)",
+          "http": 503,
+          "codigo": "SERVICIO_NO_DISPONIBLE",
+          "mensaje": "El servicio costos no responde. Intenta más tarde.",
+          "traza_id": "a8533bf4-eded-4ad4-b928-73d2a127b75c",
+          "ms": 4056,
+          "error": null,
+          "esperado": 503,
+          "cumple": true
+        },
+        {
+          "paso": "Después: el cálculo",
+          "http": 200,
+          "codigo": null,
+          "mensaje": null,
+          "traza_id": null,
+          "ms": 67,
+          "error": null,
+          "esperado": 200,
+          "cumple": true
+        }
+      ],
+      "recuperacion_s": 0.1,
+      "tiempo_maximo_s": 4.0,
+      "respuesta_ms": 4056,
+      "datos_a_medias": {
+        "escenarios_antes": [
+          [
+            0
+          ]
+        ],
+        "escenarios_despues": [
+          [
+            0
+          ]
+        ]
+      },
+      "log": {
+        "nivel": "INFO",
+        "componente": "demanda",
+        "registrado_en": "2026-11-26T23:43:15.766000",
+        "mensaje": "GET /api/v1/demanda/resumen -> 200",
+        "ruta": "/api/v1/demanda/resumen",
+        "duracion_ms": 34,
+        "contexto": {
+          "metodo": "GET",
+          "status": 200,
+          "formato": "json",
+          "codigo_error": null
+        },
+        "excepcion": null
+      }
+    }
+  ]
+}

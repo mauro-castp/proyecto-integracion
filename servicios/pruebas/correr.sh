@@ -8,6 +8,8 @@
 #   servicios/pruebas/correr.sh test pruebas.test_ola2              un módulo de unittest (agregar -v para ver cada prueba)
 #   servicios/pruebas/correr.sh evidencias ola3                      corrida completa de evidencias (Olas 1 a 3) en evidencias/ola3
 #   servicios/pruebas/correr.sh evidencias ola2/complementarias --complementarias
+#   servicios/pruebas/correr.sh flujos ola4/flujos                   tres procesos de principio a fin
+#   servicios/pruebas/correr.sh procesos procesos                    tres procesos usando también el portal web
 #   servicios/pruebas/correr.sh escenarios ola2                      qué cambia cuando cambia un supuesto (evidencias/ola2/escenarios.md)
 #   servicios/pruebas/correr.sh modulo pruebas.generar_supuestos     cualquier módulo de Python (python -m ...)
 #
@@ -34,11 +36,11 @@ correr() {               # correr <carpeta de salida o ""> comando...
     -e SECRET_KEY="${SECRET_KEY:-cambiar-en-produccion}" \
     -e "PG_DSN=host=postgres port=5432 dbname=microhubs_p1 user=microhubs password=${POSTGRES_PASSWORD:-microhubs_dev}" \
     -e REDIS_URL=redis://redis:6379 -e MONGO_URL=mongodb://mongo:27017/microhubs_eventos \
-    -e "ALMACEN=${ALMACEN:-local}" -e "GCS_BUCKET=${GCS_BUCKET:-}" -e "MICROHUBS_CLAVE=${MICROHUBS_CLAVE:-Codex#2026}" \
+    -e "ALMACEN=${ALMACEN:-local}" -e "GCS_BUCKET=${GCS_BUCKET:-}" -e "MICROHUBS_CLAVE=${MICROHUBS_CLAVE:-Codex#2026}" -e "VOLUMEN_PEDIDOS=${VOLUMEN_PEDIDOS:-200000}" \
     -e LOG_STDOUT=0 -e PYTHONPATH=/work -e PYTHONIOENCODING=utf-8 \
     -v "$RAIZ/servicios:/work" -v "$RAIZ/sistema_web:/app/web" -v "$RAIZ/sistema_web:/sistema_web" \
     -v "$RAIZ/app_escritorio/contratos:/app/contratos" -v "$RAIZ/app_movil/app/src/test/resources/contratos:/app/ejemplos_json" \
-    "${montaje[@]}" -w /work "$IMAGEN" "$@")
+    "${montaje[@]}" ${EXTRA[@]+"${EXTRA[@]}"} -w /work "$IMAGEN" "$@")
   if [ -n "${RED_EXTRA:-}" ]; then
     # La red de datos es interna (sin salida a Internet). Para hablar con Google Cloud Storage el contenedor de pruebas tambien
     # se conecta a la red con salida:  RED_EXTRA=microhubs-integrado_publica
@@ -50,12 +52,18 @@ correr() {               # correr <carpeta de salida o ""> comando...
   fi
 }
 
-orden="${1:-}"; [ -n "$orden" ] || { sed -n '2,16p' "${BASH_SOURCE[0]}"; exit 2; }
+orden="${1:-}"; [ -n "$orden" ] || { sed -n '2,17p' "${BASH_SOURCE[0]}"; exit 2; }
 shift
 limpiar_limites
 case "$orden" in
   test)        correr "" python -m unittest "$@" ;;
   evidencias)  carpeta="${1:?falta la carpeta de salida}"; shift; correr "$carpeta" python pruebas/evidencias.py --salida /salida "$@" ;;
+  flujos)      carpeta="${1:?falta la carpeta de salida}"; correr "$carpeta" python pruebas/flujos_integrales.py --salida /salida ;;
+  volumen)     carpeta="${1:?falta la carpeta de salida}"; correr "$carpeta" python pruebas/volumen.py --salida /salida ;;
+  procesos)    carpeta="${1:?falta la carpeta de salida}"
+               EXTRA=(-e WEB_URL=http://web:5000 -e "MICROSERVICIOS_URL_DEMO=http://{servicio}:{puerto}" -e SALIDA_PROCESOS=/salida
+                      -e ALMACEN_DIR=/app/almacen -v "${VOLUMEN_ARCHIVOS:-microhubs-integrado_datos_archivos}:/app/almacen:ro")
+               correr "$carpeta" python pruebas/procesos_integrales.py ;;
   escenarios)  carpeta="${1:?falta la carpeta de salida}"; correr "$carpeta" python pruebas/escenarios_ola2.py --salida /salida ;;
   modulo)      correr "" python -m "$@" ;;
   *)           echo "Orden desconocida: $orden" >&2; exit 2 ;;

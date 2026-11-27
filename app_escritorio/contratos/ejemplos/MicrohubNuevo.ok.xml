@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<microhub_nuevo xmlns="urn:microhubs:v1" version="1">
+  <clave>MH-09</clave>
+  <nombre>Microhub Alianza</nombre>
+  <direccion>Av. Alianza 100, San Bernabé</direccion>
+  <latitud>25.7601</latitud>
+  <longitud>-100.3555</longitud>
+  <radio_km>1.5</radio_km>
+  <capacidad_turno>120</capacidad_turno>
+  <hora_apertura>08:00</hora_apertura>
+  <hora_cierre>20:00</hora_cierre>
+</microhub_nuevo>

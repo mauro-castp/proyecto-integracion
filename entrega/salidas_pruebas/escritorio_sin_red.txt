@@ -1,0 +1,75 @@
+# Escritorio · pruebas SIN red (proyecto multiplataforma net8.0, sin la ventana) · commit 8af74eb · 2026-11-26 21:25 CST
+# dotnet run --project app_escritorio/pruebas/multiplataforma/Microhubs.Pruebas.Multiplataforma.csproj  (SDK 8.0.134 en Linux)
+PASA: Los 209 ejemplos XML oficiales validan contra los XSD
+PASA: XSD rechaza sesión incompleta
+PASA: Rechaza otro espacio de nombres
+PASA: Rechaza accesibilidad fuera de 1 a 10
+PASA: Rechaza motivo de decisión demasiado corto
+PASA: Rechaza correo sin formato
+PASA: Rechaza decisión fuera del catálogo
+PASA: Rechaza DTD y entidades externas
+PASA: Rechaza una raíz que no existe en el contrato
+PASA: Login de ejemplo oficial
+PASA: Ejemplo de catálogo
+PASA: Ejemplo de pedidos
+PASA: Ejemplo de simulación
+PASA: Una petición que incumple el XSD ni se envía
+PASA: Salir borra credenciales
+PASA: Acepta la sesión del servicio
+PASA: Conserva la consulta y la ruta /api/v1
+PASA: Pide XML y usa el puerto del servicio correcto
+PASA: Envía el token en Authorization: Bearer
+PASA: productos → 5103
+PASA: zonas → 5108
+PASA: microhubs → 5109
+PASA: planeacion → 5106
+PASA: 401 renueva una vez, guarda los tokens nuevos y reintenta
+PASA: La renovación conserva el rol de la sesión
+PASA: Dos peticiones con 401 simultáneas renuevan una sola vez (el token de renovación rota)
+PASA: Rechaza respuestas que no son application/xml
+PASA: Un error XML del servicio llega con estado, campos y traza
+PASA: 429 se informa como error
+PASA: Respeta Retry-After: no vuelve a llamar hasta que pase
+PASA: HTTP solo se permite hacia el equipo local
+PASA: HTTPS sí se permite hacia cualquier host
+PASA: Si la renovación falla se rechaza la petición
+PASA: …y la sesión queda vacía
+PASA: Las 42 acciones de cobertura, rutas, costos, capacidad, equilibrio y simulación tienen ejemplo oficial con su raíz, sus plantillas validan y su tabla se arma
+PASA: Cada acción va a un servicio con puerto conocido
+PASA: Capacidad: la tabla trae la columna microhub/id que usa «Detalle»
+PASA: Un plan de rutas se ve como tabla (sus rutas) más un resumen campo → valor
+PASA: Plantilla: la lista de pedidos se edita como «163, 168, 169»
+PASA: Plantilla: la lista se rearma con los ids escritos
+PASA: Plantilla: una lista vacía no se manda (el plan usa todos los pedidos listos) y valida
+PASA: Plantilla: un id que no es número no pasa el XSD
+PASA: Plantilla: un campo nulo que recibe valor deja de ser nulo y valida
+PASA: Plantilla: dejarlo vacío lo vuelve nulo y valida
+PASA: Acción por fila: sustituye el id de la fila
+PASA: Acción por fila: sin fila elegida no se llama
+PASA: Acción por fila: rechaza un id que no es número ni UUID
+PASA: Acción por fila: las simulaciones usan UUID
+PASA: Consulta editable: la persona cambia los parámetros
+PASA: Consulta editable: rechaza rutas dentro de la consulta
+PASA: Reporte: columnas con su título, filas y renglón de totales
+PASA: Gráfica: una fila por categoría y una columna por serie
+PASA: Reporte: consulta con periodo, microhub y formato (sin zona si no se indicó)
+PASA: Reporte: rechaza una clave rara
+PASA: Reporte: solo se mandan los filtros que el catálogo dice que admite (pedidos_por_dia: desde, hasta, zona_id, microhub_id)
+PASA: Reporte: «desde» posterior a «hasta» no se envía
+PASA: Reportes: catálogo de ejemplo
+PASA: Ejemplos: la descarga CSV se arma con el reporte oficial
+PASA: Ejemplos: Excel y PDF solo los genera el servicio
+PASA: Descarga: puerto 5123 y ruta /api/v1 con su consulta
+PASA: Descarga: pide el tipo del archivo (y XML para los errores) con el token
+PASA: Descarga: bytes, SHA-256, nombre y filas que manda el servicio
+PASA: Descarga: un SHA-256 distinto al del servicio se rechaza
+PASA: Descarga: un PDF que no empieza con %PDF- se rechaza
+PASA: Descarga: un tipo distinto al pedido se rechaza
+PASA: Descarga: el nombre sugerido no puede llevar carpetas
+PASA: Descarga: el error XML del servicio llega con estado y traza
+PASA: Descarga: un 401 renueva una vez y repite
+PASA: Descarga: un formato fuera de csv, xlsx y pdf ni se pide
+PASA: Puertos: cobertura 5116, capacidad 5117, rutas 5118, costos 5119, equilibrio 5120, simulación 5121, reportes 5123
+PASA: Una respuesta con otra raíz que la esperada se rechaza
+(Omitidas las pruebas con backend real: define MICROHUBS_BACKEND=http://localhost y MICROHUBS_CLAVE)
+71 comprobaciones aprobadas

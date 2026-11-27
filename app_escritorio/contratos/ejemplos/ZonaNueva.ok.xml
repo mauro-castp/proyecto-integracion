@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zona_nueva xmlns="urn:microhubs:v1" version="1">
+  <clave>ZN-NV01</clave>
+  <nombre>Nueva Esperanza</nombre>
+  <colonia>Nueva Esperanza</colonia>
+  <codigo_postal>64102</codigo_postal>
+  <latitud>25.7605</latitud>
+  <longitud>-100.3702</longitud>
+  <ticket_minimo>80</ticket_minimo>
+  <costo_envio>15</costo_envio>
+</zona_nueva>

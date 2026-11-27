@@ -1,0 +1,179 @@
+{
+  "fecha": "2026-11-26 21:40",
+  "equipo": "x86_64 · 4 CPU",
+  "postgresql": {
+    "pedidos": 1000000,
+    "insercion_masiva_pedidos": {
+      "filas": 1000000,
+      "ms": 4929,
+      "filas_por_segundo": 202876
+    },
+    "insercion_masiva_detalle": {
+      "filas": 3000000,
+      "ms": 8706,
+      "filas_por_segundo": 344597
+    },
+    "insercion_fila_por_fila": {
+      "filas": 2000,
+      "ms": 299,
+      "filas_por_segundo": 6679
+    },
+    "creacion_de_indices": [
+      {
+        "indice": "ix_v_cliente",
+        "ms": 794
+      },
+      {
+        "indice": "ix_v_abiertos",
+        "ms": 459
+      },
+      {
+        "indice": "ix_v_fecha",
+        "ms": 528
+      },
+      {
+        "indice": "ix_v_detalle",
+        "ms": 1601
+      }
+    ],
+    "consultas": [
+      {
+        "consulta": "Pedidos de un cliente",
+        "sin_indice_ms": 105.89,
+        "con_indice_ms": 0.22,
+        "veces_mas_rapida": 481.3,
+        "plan_sin": [
+          "Limit",
+          "Gather Merge",
+          "Sort",
+          "Seq Scan"
+        ],
+        "plan_con": [
+          "Limit",
+          "Index Scan (ix_v_cliente)"
+        ],
+        "sql": "SELECT id, estado, subtotal, creado_en FROM volumen.pedido WHERE cliente_id = 4321 ORDER BY creado_en DESC LIMIT 20"
+      },
+      {
+        "consulta": "Pedidos abiertos de un microhub",
+        "sin_indice_ms": 98.96,
+        "con_indice_ms": 0.26,
+        "veces_mas_rapida": 380.6,
+        "plan_sin": [
+          "Aggregate",
+          "Gather",
+          "Aggregate",
+          "Seq Scan"
+        ],
+        "plan_con": [
+          "Aggregate",
+          "Index Only Scan (ix_v_abiertos)"
+        ],
+        "sql": "SELECT count(*) FROM volumen.pedido WHERE microhub_id = 2 AND estado IN ('asignado','en_preparacion','en_ruta') AND creado_en >= now() - interval '2 days'"
+      },
+      {
+        "consulta": "Venta por día de los últimos 30 días",
+        "sin_indice_ms": 143.14,
+        "con_indice_ms": 78.35,
+        "veces_mas_rapida": 1.8,
+        "plan_sin": [
+          "Aggregate",
+          "Gather Merge",
+          "Aggregate",
+          "Sort",
+          "Seq Scan"
+        ],
+        "plan_con": [
+          "Aggregate",
+          "Sort",
+          "Index Only Scan (ix_v_fecha)"
+        ],
+        "sql": "SELECT creado_en::date, count(*), sum(subtotal) FROM volumen.pedido WHERE creado_en >= now() - interval '30 days' AND estado <> 'cancelado' GROUP BY 1 ORDER BY 1"
+      },
+      {
+        "consulta": "Líneas de un pedido",
+        "sin_indice_ms": 106.34,
+        "con_indice_ms": 0.08,
+        "veces_mas_rapida": 1329.2,
+        "plan_sin": [
+          "Gather",
+          "Seq Scan"
+        ],
+        "plan_con": [
+          "Index Only Scan (ix_v_detalle)"
+        ],
+        "sql": "SELECT producto_id, cantidad, precio_unitario FROM volumen.pedido_detalle WHERE pedido_id = 123456"
+      },
+      {
+        "consulta": "10 productos más vendidos de la semana",
+        "sin_indice_ms": 403.22,
+        "con_indice_ms": 195.56,
+        "veces_mas_rapida": 2.1,
+        "plan_sin": [
+          "Limit",
+          "Sort",
+          "Aggregate",
+          "Gather Merge",
+          "Sort",
+          "Aggregate",
+          "Hash Join",
+          "Seq Scan",
+          "Hash",
+          "Seq Scan"
+        ],
+        "plan_con": [
+          "Limit",
+          "Sort",
+          "Aggregate",
+          "Gather Merge",
+          "Sort",
+          "Aggregate",
+          "Nested Loop",
+          "Bitmap Heap Scan",
+          "Bitmap Index Scan (ix_v_fecha)",
+          "Index Only Scan (ix_v_detalle)"
+        ],
+        "sql": "SELECT d.producto_id, sum(d.cantidad) AS u FROM volumen.pedido p JOIN volumen.pedido_detalle d ON d.pedido_id = p.id WHERE p.creado_en >= now() - interval '7 days' AND p.estado <> 'cancelado' GROUP BY 1 ORDER BY u DESC LIMIT 10"
+      }
+    ],
+    "tamano_en_disco": "535 MB",
+    "cache": {
+      "consulta": "Venta por día de los últimos 30 días",
+      "base_ms": 51.16,
+      "redis_ms": 0.16,
+      "veces_mas_rapida": 319.8
+    }
+  },
+  "mongodb": {
+    "puntos GPS": {
+      "documentos": 2000000,
+      "ms": 24281,
+      "documentos_por_segundo": 82368
+    },
+    "eventos de demanda": {
+      "documentos": 1000000,
+      "ms": 11875,
+      "documentos_por_segundo": 84207
+    },
+    "consultas": [
+      {
+        "consulta": "Recorrido de una entrega",
+        "sin_indice_ms": 769.74,
+        "con_indice_ms": 1.64,
+        "veces_mas_rapida": 469.4
+      },
+      {
+        "consulta": "Puntos a 100 m de un microhub",
+        "sin_indice_ms": 2753.32,
+        "con_indice_ms": 108.09,
+        "veces_mas_rapida": 25.5
+      },
+      {
+        "consulta": "Eventos de una zona en la última hora",
+        "sin_indice_ms": 432.34,
+        "con_indice_ms": 1.85,
+        "veces_mas_rapida": 233.7
+      }
+    ]
+  }
+}

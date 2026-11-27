@@ -1,0 +1,42 @@
+@startuml
+!include tema.iuml
+title Diagrama 20 · Proceso integral P2 · Reabastecimiento (portal web → servicios → bucket → avisos)
+actor "Operador MH-01" as OP
+actor "Administrador" as AD
+participant "Portal web\n/web/servicios/abastecimiento" as W
+participant "abastecimiento :5114" as AB
+participant "inventario :5111" as IN
+participant "proveedores :5113" as PR
+participant "documentos :5107" as DO
+database "Redis" as R
+database "PostgreSQL\n(triggers: auditoría y avisos)" as PG
+database "MongoDB" as M
+collections "Cloud Storage" as B
+
+OP -> W : abre la pantalla
+W -> IN : GET inventario/alertas (JWT del operador)
+IN -> R : sesión y permisos
+W -> AB : GET necesidades
+AB -> IN : GET alertas (mismo JWT y X-Traza-Id)
+AB -> PR : GET ofertas
+OP -> W : marca productos y cantidades
+W -> AB : POST solicitudes
+AB -> PG : INSERT solicitud_compra → trigger: aviso al planeador + auditoría
+AD -> W : Aprobar con motivo
+W -> AB : POST solicitudes/{id}/decision
+AD -> W : Emitir orden
+W -> AB : POST solicitudes/{id}/ordenar (respeta pedido mínimo del proveedor)
+AB -> PG : INSERT orden_compra → aviso
+OP -> W : Recibir todo + comprobante PDF
+W -> AB : POST ordenes/{id}/recepcion (operacion_uuid)
+AB -> PG : guarda la recepción ANTES de avisar
+AB -> IN : POST movimientos (entrada; idempotente)
+IN -> PG : existencia += cantidad · auditoría
+W -> DO : POST documentos {referencia: orden_compra}
+DO -> AB : GET ordenes/{id} (¿existe y es de su microhub?)
+DO -> B : guarda el archivo (documentos/AAAA/MM/<id>.pdf)
+DO -> M : solo metadatos: ruta, tipo, tamaño, SHA-256, dueño, privacidad
+OP -> W : descargar comprobante
+W -> DO : GET documentos/{id}/enlace
+DO --> OP : URL firmada V4 (300 s) → descarga directa de Cloud Storage
+@enduml

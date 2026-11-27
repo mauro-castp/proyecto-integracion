@@ -1,0 +1,12 @@
+# Verificación de TIPOS de las pantallas (no es compilación del producto ni ejecución) · commit 8af74eb · 2026-11-26 21:25 CST
+
+## Android: todo app/src/main (incluidas MainActivity y Ui) con kotlinc 2.1.0 contra android.jar API 35
+## (android.jar del repositorio Sable/android-platforms; zxing con una firma mínima de IntentIntegrator)
+kotlinc terminó con código 0
+
+## Escritorio: *.cs de app_escritorio + pruebas/Pruebas.cs con el compilador de .NET 8 contra el System.Windows.Forms de Mono 6.8
+## El único error esperado es TextBox.PlaceholderText (existe en .NET 8, no en Mono) y ya estaba en Program.cs antes de estos cambios.
+Program.cs(11,195): error CS0117: 'TextBox' does not contain a definition for 'PlaceholderText'
+Program.cs(11,33): error CS0117: 'TextBox' does not contain a definition for 'PlaceholderText'
+Program.cs(11,84): error CS0117: 'TextBox' does not contain a definition for 'PlaceholderText'
+pruebas/Pruebas.cs(253,9): warning CA1416: This call site is reachable on all platforms. 'Thread.SetApartmentState(ApartmentState)' is only supported on: 'windows'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1416)

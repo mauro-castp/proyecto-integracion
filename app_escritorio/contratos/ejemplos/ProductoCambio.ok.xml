@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<producto_cambio xmlns="urn:microhubs:v1" version="1">
+  <precio>34.90</precio>
+  <estatus>activo</estatus>
+</producto_cambio>

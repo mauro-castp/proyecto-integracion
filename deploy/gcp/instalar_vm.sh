@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # instalar_vm.sh — Despliega la plataforma de Microhubs EN la VM de GCP (Ubuntu 24.04 con Docker, Compose y Nginx).
 #
-#   cd ~/microhubs && bash deploy/gcp/instalar_vm.sh [--sin-construir] [--https correo@ejemplo.com]
+#   cd ~/microhubs && bash deploy/gcp/instalar_vm.sh [--sin-construir] [--https correo@ejemplo.com | --https-autofirmado]
 #
 # Que hace (es repetible: correrlo otra vez actualiza):
 #   1. Crea .env (permiso 600) con secretos ALEATORIOS si no existe y verifica que no queden los valores por defecto del repo
@@ -10,16 +10,19 @@
 #      las cuentas de demostracion (la del repositorio es publica) por MICROHUBS_CLAVE, generada en la VM y guardada en .env.
 #   3. Instala la configuracion de Nginx (portal en "/", microservicios en "/servicios/<nombre>/") y recarga.
 #   4. Con --https pide el certificado de Let's Encrypt (acepta sus terminos de servicio y registra el correo): solo si lo pides.
+#      Con --https-autofirmado cifra con un certificado propio (el navegador avisa que no lo conoce); no depende de terceros. Una vez
+#      creado, se conserva en las siguientes instalaciones.
 #
 # Variables opcionales (ya con valor por omision): GCS_BUCKET, HOST_PUBLICO (IP.sslip.io), VERSION_DESPLEGADA.
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 RAIZ="$PWD"
-CONSTRUIR="--build"; HTTPS=""; CORREO=""
+CONSTRUIR="--build"; HTTPS=""; CORREO=""; AUTOFIRMADO=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --sin-construir) CONSTRUIR="";;
     --https) HTTPS=1; CORREO="${2:?--https necesita un correo}"; shift;;
+    --https-autofirmado) AUTOFIRMADO=1;;
     *) echo "Opcion desconocida: $1" >&2; exit 2;;
   esac; shift
 done
@@ -43,11 +46,15 @@ ALMACEN=gcs
 GCS_BUCKET=$GCS_BUCKET
 URL_FIRMADA_SEGUNDOS=300
 VERSION_DESPLEGADA=$VERSION
+DETRAS_DE_PROXY=1
 EOF
   echo "   .env creado"
 else
   sed -i "s/^VERSION_DESPLEGADA=.*/VERSION_DESPLEGADA=$VERSION/" .env
   echo "   .env ya existe: se conserva (solo se actualiza VERSION_DESPLEGADA)"
+fi
+if ! grep -q '^DETRAS_DE_PROXY=' .env; then
+  echo 'DETRAS_DE_PROXY=1' >> .env          # Nginx delante: la IP real del cliente viaja en X-Forwarded-For
 fi
 if ! grep -q '^MICROHUBS_CLAVE=' .env; then
   printf 'MICROHUBS_CLAVE=Mh.%s\n' "$(openssl rand -hex 9)" >> .env
@@ -79,9 +86,25 @@ MICROHUBS_CLAVE="$(grep '^MICROHUBS_CLAVE=' .env | cut -d= -f2-)" docker compose
   -f deploy/gcp/docker-compose.gcp.yml exec -T -e MICROHUBS_CLAVE auth python - < deploy/gcp/cambiar_claves_demo.py \
   || morir "No se pudieron cambiar las claves de demostracion: no se publica el sistema."
 
+docker compose --env-file .env -f docker-compose.integrado.yml -f deploy/gcp/docker-compose.gcp.yml exec -T mongo mongosh --quiet \n  < bloque_c/mongo/03_documentos_nube.js > /dev/null || morir "No se pudo actualizar el esquema de documentos en MongoDB."
+echo "   esquema de documentos en MongoDB al dia"
+
 decir "3) Nginx"
 sudo install -m 644 deploy/gcp/nginx-microhubs.conf /etc/nginx/sites-available/microhubs
 sudo sed -i "s/__SERVER_NAME__/$HOST_PUBLICO/" /etc/nginx/sites-available/microhubs
+if [ -n "$AUTOFIRMADO" ] || sudo test -f /etc/nginx/ssl/microhubs.crt; then
+  if ! sudo test -f /etc/nginx/ssl/microhubs.crt; then
+    sudo mkdir -p /etc/nginx/ssl
+    sudo openssl req -x509 -newkey rsa:2048 -nodes -days 365 -subj "/CN=$HOST_PUBLICO" -addext "subjectAltName=DNS:$HOST_PUBLICO$( [ -n "$IP" ] && echo ",IP:$IP" )"       -keyout /etc/nginx/ssl/microhubs.key -out /etc/nginx/ssl/microhubs.crt 2>/dev/null
+    sudo chmod 600 /etc/nginx/ssl/microhubs.key
+  fi
+  # añade el puerto 443 con el certificado al bloque del sitio, después de la línea «listen [::]:80;»
+  printf '%s\n' '    listen 443 ssl;' '    listen [::]:443 ssl;' '    ssl_certificate /etc/nginx/ssl/microhubs.crt;' \
+    '    ssl_certificate_key /etc/nginx/ssl/microhubs.key;' '    ssl_protocols TLSv1.2 TLSv1.3;' > /tmp/microhubs-ssl.conf
+  sudo sed -i '/^    listen \[::\]:80;/r /tmp/microhubs-ssl.conf' /etc/nginx/sites-available/microhubs
+  rm -f /tmp/microhubs-ssl.conf
+  echo "   HTTPS con certificado autofirmado en el puerto 443"
+fi
 sudo ln -sf /etc/nginx/sites-available/microhubs /etc/nginx/sites-enabled/microhubs
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t && sudo systemctl reload-or-restart nginx

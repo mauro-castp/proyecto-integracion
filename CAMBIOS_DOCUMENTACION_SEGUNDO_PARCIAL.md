@@ -13,7 +13,7 @@
 ## Documentos
 
 - `reporte_tecnico/Reporte_Tecnico_Segundo_Parcial_Equipo04.docx`, versión 4.3: diez fichas completas, requisitos, historias, contratos, despliegue, pruebas y trazabilidad.
-- `Arquitectura_Plataforma_Microhubs (1).docx`: arquitectura de la plataforma con los diez servicios.
+- `Arquitectura_Plataforma_Microhubs_v4.2_Segundo_Parcial.docx`: arquitectura de la plataforma con los diez servicios.
 - `bloque_d/`: diagramas y sus fuentes PlantUML.
 - `presentacion/`: presentación de 31 diapositivas, guion en PDF y el mismo contenido en texto.
 - `servicios/INVENTARIO_ENDPOINTS.md`: las 45 operaciones y los casos de evidencia de cada una.

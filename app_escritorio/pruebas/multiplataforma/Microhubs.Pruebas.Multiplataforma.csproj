@@ -1,0 +1,14 @@
+<!--
+  Las mismas pruebas de pruebas/Pruebas.cs sin la ventana de Windows Forms: corren en Linux o macOS con el SDK de .NET 8
+  (sin paquetes de NuGet). Sirven para revisar el cliente XML (contrato, protocolo, pantallas de análisis, reportes y descargas)
+  fuera de Windows. En Windows se usa pruebas/Microhubs.Pruebas.csproj, que además abre la ventana.
+    Se corre con «dotnet run» desde esta carpeta (ver app_escritorio/README.md).
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><StartupObject>Microhubs.Pruebas</StartupObject><DefineConstants>$(DefineConstants);SIN_VENTANA</DefineConstants></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Pruebas.cs" Link="Pruebas.cs" /><Compile Include="..\..\Api.cs" Link="Api.cs" /><Compile Include="..\..\Tablas.cs" Link="Tablas.cs" />
+    <Compile Include="..\..\Modulos.cs" Link="Modulos.cs" /><Compile Include="..\..\Plantillas.cs" Link="Plantillas.cs" />
+    <Content Include="..\..\contratos\**\*" Link="contratos\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

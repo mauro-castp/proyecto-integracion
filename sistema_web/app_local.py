@@ -7,6 +7,7 @@ from productos_crud import inicializar_local, productos_bp
 from catalogos_crud import catalogos_bp, inicializar_local as inicializar_catalogos
 from planeacion import planeacion_bp
 from integracion import servicios_bp
+import procesos  # noqa: F401  (pantallas de los procesos integrales en servicios_bp)
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "solo-desarrollo-local"

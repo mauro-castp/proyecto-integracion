@@ -1,0 +1,11 @@
+{
+  "clave": "MH-09",
+  "nombre": "Microhub Alianza",
+  "direccion": "Av. Alianza 100, San Bernabé",
+  "latitud": 25.7601,
+  "longitud": -100.3555,
+  "radio_km": 1.5,
+  "capacidad_turno": 120,
+  "hora_apertura": "08:00",
+  "hora_cierre": "20:00"
+}

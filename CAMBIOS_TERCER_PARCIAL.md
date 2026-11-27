@@ -140,3 +140,64 @@ Ola 3 (reportes, sincronización y auditoría-monitoreo), las funciones que falt
 y entregas), seguridad de configuración y comportamiento ante fallos de Redis, el flujo integrado de la planeación a la entrega, las apps Android y de escritorio contra los servicios nuevos, y el
 reporte técnico y la presentación.
 
+
+---
+
+# Tercer Parcial · Ola 3: observabilidad, reportes y sincronización
+
+La Ola 3 completa los 26 servicios con:
+
+- **reportes** (5123): reportes operativos, logísticos, comerciales y financieros armados con los servicios dueños, con exportación a
+  CSV, Excel y PDF;
+- **sincronizacion** (5125): lotes hechos sin conexión, aplicados en orden, idempotentes, con conflictos y reintentos;
+- **auditoria-monitoreo** (5126): bitácora y trazabilidad; salud de los 26 cada 30 s; alertas que se abren y cierran solas; panel
+  central en el web.
+
+Lo acompañan el despliegue en GCP (VM, Nginx, bucket con URL firmadas, Cloud Logging) y `11_ola3_observabilidad.sql`.
+Evidencias: **403 de 403** casos (`evidencias/ola3/`) y **401 de 401** en la nube (`evidencias/nube/`).
+
+Las secciones «Pendiente para cerrar el parcial» de las Olas 1 y 2 son históricas: lo que listaban quedó resuelto en la Ola 3 y en la
+entrega final.
+
+---
+
+# Entrega final · estabilización, volumen, carga, fallos e integración
+
+Se hizo con la plataforma corriendo completa: 26 servicios y web con PostgreSQL 16, MongoDB 7 y Redis 7. Todo lo que sigue tiene un
+script que lo reproduce.
+
+## Qué se agregó
+
+| Tema | Qué | Dónde |
+|---|---|---|
+| Datos de alto volumen | Generador incremental y marcado: 5 000 clientes, 100 000 pedidos, 1.4 M de puntos GPS, 200 000 logs; medición por etapas (inserción, índices, caché, API, recursos) | `bloque_c/scripts/generar_volumen.py`, `servicios/pruebas/medir_volumen.py`, `evidencias/volumen/` |
+| Pruebas de carga | Locust con 6 perfiles (cliente, repartidor Android, operador, planeador XML, administrador, proceso automático); normal, alta, estrés por escalones, recuperación y protección | `pruebas_carga/`, `evidencias/carga/` |
+| Fallos de infraestructura | Servicio detenido, Redis, MongoDB, PostgreSQL, bucket y tiempo excedido, con comprobación de datos a medias, monitoreo y logs | `servicios/pruebas/demo_fallos_infra.py`, `evidencias/fallos/`, `docs/RUNBOOK_FALLOS.md` |
+| Procesos integrales | P2 reabastecimiento y P3 despacho con rutas y reportes en el **portal web** a través de los servicios; recorrido de punta a punta de P1, P2 y P3 | `sistema_web/procesos.py`, `servicios/pruebas/procesos_integrales.py`, `evidencias/procesos/` |
+| Despacho de rutas | `POST entregas/asignaciones` (todo o nada) y `rutas/planes/{id}/confirmar {despachar: true}` como saga con compensación | `servicios/entregas`, `servicios/rutas` |
+| Archivos en el bucket | Comprobante de orden de compra (`orden_compra` en documentos, XSD y validador de MongoDB) y exportaciones de reportes archivadas con URL firmada | `servicios/documentos`, `servicios/reportes`, `bloque_c/sql/13_entrega_final.sql` |
+| Algoritmos | Documento con los 11 elementos y benchmark de calidad y tiempo | `docs/ALGORITMOS.md`, `servicios/pruebas/benchmark_algoritmos.py` |
+| Documentación | Expediente (31 secciones, también en Word), manuales de instalación, técnico y de usuario, plan de pruebas, incidencias, guía de estudio, guion, bitácora y plantilla de reflexión | `docs/`, `reporte_tecnico/Expediente_Tecnico_Final_Equipo04.docx` |
+| Diagramas | 18 (despliegue GCP), 19 (26 servicios), 20 y 21 (procesos integrales) | `bloque_d/` |
+
+## Qué se corrigió (detalle en `docs/REGISTRO_INCIDENCIAS.md`)
+
+- **Rendimiento** (`12_rendimiento.sql`, pedidos, demanda): `fn_pedidos_visibles` en SQL que el planificador puede integrar; resúmenes
+  con índice y un solo cálculo; copia en Redis para las páginas 2 en adelante; inserción por lotes. La sincronización de demanda bajó
+  de 37.5 s a 1.1 s y los reportes de 1.1 s a 0.2 s.
+- **IP real detrás de Nginx** (`DETRAS_DE_PROXY`): en la nube, el límite por IP era global y la bitácora guardaba la IP del proxy.
+- **MongoDB caído**: devolvía 500 y frenaba 4.5 s a todos los servicios. Ahora responde 503 y hay un cortacircuitos de 30 s.
+- **Compose**: `LIMITE_*` y `DETRAS_DE_PROXY` ahora llegan a los contenedores.
+- **Prueba de XSD del escritorio**: seguía esperando los 9 XSD del Segundo Parcial.
+
+## Verificación (26 de noviembre de 2026)
+
+| Suite | Resultado |
+|---|---|
+| Unitarias, almacén, contrato | 37 + 65 + 31 + 7 OK |
+| Olas 1, 2 y 3 contra las bases reales | 24 + 102 + 74 OK |
+| Web ↔ servicios / portal | 8 · 16 + 13 + 6 OK |
+| Reglas SQL | 26 de 26 |
+| XSD (lxml) | 10 OK |
+| Procesos integrales | 32 de 32 pasos |
+| Fallos | 6 de 6 casos y 33 de 33 comprobaciones |

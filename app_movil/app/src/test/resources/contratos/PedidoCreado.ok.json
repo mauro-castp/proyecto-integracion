@@ -1,0 +1,13 @@
+{
+  "id": 901,
+  "folio": "PED-20261126-000901",
+  "estado": "asignado",
+  "zona_id": 1,
+  "microhub_id": 1,
+  "subtotal": 186.0,
+  "costo_envio": 15.0,
+  "total": 201.0,
+  "asignado": true,
+  "motivo": null,
+  "duplicado": false
+}

@@ -41,7 +41,7 @@ db.createCollection("documentos", {
         sha256: { bsonType: "string", minLength: 64, maxLength: 64 },
         referencia: {
           bsonType: "object", required: ["tipo", "id"],
-          properties: { tipo: { enum: ["entrega", "pedido", "usuario", "candidato"] }, id: { bsonType: "string" } }
+          properties: { tipo: { enum: ["entrega", "pedido", "usuario", "candidato", "orden_compra"] }, id: { bsonType: "string" } }
         },
         subido_por: { bsonType: "int" },
         creado_en: { bsonType: "date" },

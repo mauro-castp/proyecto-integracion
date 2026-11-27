@@ -5,6 +5,8 @@ Plataforma de Microhubs · Codex Innovations · Equipo 04
     flask --app app run --debug        (desarrollo)
     gunicorn -b 0.0.0.0:5000 app:app   (contenedor)
 """
+import os
+
 from flask import Flask, g, request, render_template
 
 from nucleo import Config, leer_token, permisos_de
@@ -14,9 +16,14 @@ from catalogos_crud import catalogos_bp
 from planeacion import planeacion_bp
 from web_ampliado import instalar
 from integracion import servicios_bp
+import procesos  # noqa: F401  (registra en servicios_bp las pantallas de los procesos integrales)
 
 app = Flask(__name__)
 app.config.from_object(Config)
+if int(os.environ.get("DETRAS_DE_PROXY", "0")):
+    # En la nube Nginx es la única puerta: la IP real del cliente viaja en X-Forwarded-For (bitácora e intentos de acceso).
+    from werkzeug.middleware.proxy_fix import ProxyFix
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=int(os.environ["DETRAS_DE_PROXY"]), x_proto=int(os.environ["DETRAS_DE_PROXY"]))
 
 app.register_blueprint(publico)
 app.register_blueprint(auth)

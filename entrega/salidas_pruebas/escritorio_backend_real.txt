@@ -1,0 +1,173 @@
+# Escritorio · pruebas CONTRA LOS SERVICIOS REALES (MICROHUBS_BACKEND=http://localhost, MICROHUBS_CLAVE=<clave de demostración>) · commit 8af74eb · 2026-11-26 21:25 CST
+# Mismos servicios nativos que las pruebas de Android; 4 pedidos listos en el microhub 1 para la parte de rutas
+PASA: Los 209 ejemplos XML oficiales validan contra los XSD
+PASA: XSD rechaza sesión incompleta
+PASA: Rechaza otro espacio de nombres
+PASA: Rechaza accesibilidad fuera de 1 a 10
+PASA: Rechaza motivo de decisión demasiado corto
+PASA: Rechaza correo sin formato
+PASA: Rechaza decisión fuera del catálogo
+PASA: Rechaza DTD y entidades externas
+PASA: Rechaza una raíz que no existe en el contrato
+PASA: Login de ejemplo oficial
+PASA: Ejemplo de catálogo
+PASA: Ejemplo de pedidos
+PASA: Ejemplo de simulación
+PASA: Una petición que incumple el XSD ni se envía
+PASA: Salir borra credenciales
+PASA: Acepta la sesión del servicio
+PASA: Conserva la consulta y la ruta /api/v1
+PASA: Pide XML y usa el puerto del servicio correcto
+PASA: Envía el token en Authorization: Bearer
+PASA: productos → 5103
+PASA: zonas → 5108
+PASA: microhubs → 5109
+PASA: planeacion → 5106
+PASA: 401 renueva una vez, guarda los tokens nuevos y reintenta
+PASA: La renovación conserva el rol de la sesión
+PASA: Dos peticiones con 401 simultáneas renuevan una sola vez (el token de renovación rota)
+PASA: Rechaza respuestas que no son application/xml
+PASA: Un error XML del servicio llega con estado, campos y traza
+PASA: 429 se informa como error
+PASA: Respeta Retry-After: no vuelve a llamar hasta que pase
+PASA: HTTP solo se permite hacia el equipo local
+PASA: HTTPS sí se permite hacia cualquier host
+PASA: Si la renovación falla se rechaza la petición
+PASA: …y la sesión queda vacía
+PASA: Las 42 acciones de cobertura, rutas, costos, capacidad, equilibrio y simulación tienen ejemplo oficial con su raíz, sus plantillas validan y su tabla se arma
+PASA: Cada acción va a un servicio con puerto conocido
+PASA: Capacidad: la tabla trae la columna microhub/id que usa «Detalle»
+PASA: Un plan de rutas se ve como tabla (sus rutas) más un resumen campo → valor
+PASA: Plantilla: la lista de pedidos se edita como «163, 168, 169»
+PASA: Plantilla: la lista se rearma con los ids escritos
+PASA: Plantilla: una lista vacía no se manda (el plan usa todos los pedidos listos) y valida
+PASA: Plantilla: un id que no es número no pasa el XSD
+PASA: Plantilla: un campo nulo que recibe valor deja de ser nulo y valida
+PASA: Plantilla: dejarlo vacío lo vuelve nulo y valida
+PASA: Acción por fila: sustituye el id de la fila
+PASA: Acción por fila: sin fila elegida no se llama
+PASA: Acción por fila: rechaza un id que no es número ni UUID
+PASA: Acción por fila: las simulaciones usan UUID
+PASA: Consulta editable: la persona cambia los parámetros
+PASA: Consulta editable: rechaza rutas dentro de la consulta
+PASA: Reporte: columnas con su título, filas y renglón de totales
+PASA: Gráfica: una fila por categoría y una columna por serie
+PASA: Reporte: consulta con periodo, microhub y formato (sin zona si no se indicó)
+PASA: Reporte: rechaza una clave rara
+PASA: Reporte: solo se mandan los filtros que el catálogo dice que admite (pedidos_por_dia: desde, hasta, zona_id, microhub_id)
+PASA: Reporte: «desde» posterior a «hasta» no se envía
+PASA: Reportes: catálogo de ejemplo
+PASA: Ejemplos: la descarga CSV se arma con el reporte oficial
+PASA: Ejemplos: Excel y PDF solo los genera el servicio
+PASA: Descarga: puerto 5123 y ruta /api/v1 con su consulta
+PASA: Descarga: pide el tipo del archivo (y XML para los errores) con el token
+PASA: Descarga: bytes, SHA-256, nombre y filas que manda el servicio
+PASA: Descarga: un SHA-256 distinto al del servicio se rechaza
+PASA: Descarga: un PDF que no empieza con %PDF- se rechaza
+PASA: Descarga: un tipo distinto al pedido se rechaza
+PASA: Descarga: el nombre sugerido no puede llevar carpetas
+PASA: Descarga: el error XML del servicio llega con estado y traza
+PASA: Descarga: un 401 renueva una vez y repite
+PASA: Descarga: un formato fuera de csv, xlsx y pdf ni se pide
+PASA: Puertos: cobertura 5116, capacidad 5117, rutas 5118, costos 5119, equilibrio 5120, simulación 5121, reportes 5123
+PASA: Una respuesta con otra raíz que la esperada se rechaza
+-- Backend real en http://localhost
+PASA: Login real: planeador (la sesión se validó contra el XSD oficial)
+PASA: Clave incorrecta: 401 con mensaje de intentos
+PASA: Catálogo: productos filtrados (XML válido)
+PASA: Catálogo: detalle de producto
+PASA: Catálogo: zonas y microhubs
+PASA: Pedidos: detalle con líneas
+PASA: Pedidos: historial
+PASA: Pedidos: un filtro inválido da error 400
+PASA: Pantalla productos: la tabla tiene columna id y 20 filas (columnas: 10)
+PASA: Pantalla zonas: la tabla tiene columna id y 4 filas (columnas: 7)
+PASA: Pantalla microhubs: la tabla tiene columna id y 4 filas (columnas: 7)
+PASA: Pantalla pedidos: la tabla tiene columna id y 20 filas (columnas: 8)
+PASA: Pantalla candidatos: la tabla tiene columna id y 13 filas (columnas: 18)
+PASA: Pantalla escenarios: la tabla tiene columna id y 8 filas (columnas: 31)
+PASA: Planeación: crear candidato (costo fijo calculado)
+PASA: Planeación: clave duplicada → 409
+PASA: Planeación: modificar candidato recalcula el costo fijo
+PASA: Planeación: la simulación usa los costos fijos del candidato seleccionado (69,000) y explica su decisión
+PASA: Planeación: la decisión sin motivo suficiente no pasa
+PASA: Planeación: decisión humana con motivo
+PASA: Planeación: filtros por decisión y texto
+PASA: Planeación: simulación libre con supuestos
+PASA: Planeación: guardar y abrir un escenario
+PASA: Planeación: lista de escenarios y su tabla (con el que se acaba de guardar)
+PASA: Planeación: resumen por agregación de MongoDB
+PASA: Auditor: puede consultar candidatos
+PASA: Auditor: no puede crear (403)
+PASA: Token de acceso inválido: renueva con el real y reintenta
+PASA: Cerrar sesión revoca el token (401) y la renovación vieja ya no sirve
+-- Pantallas de análisis y reportes contra el backend real
+PASA: Cobertura · Zonas: <cobertura_zonas> válido, tabla de 4 filas × 20 columnas
+PASA: Cobertura · Resumen: <cobertura_resumen> válido, tabla de 6 filas × 3 columnas
+PASA: Cobertura · Punto: <cobertura_punto> válido, tabla de 6 filas × 3 columnas
+PASA: Cobertura · Candidatos: <cobertura_candidatos> válido, tabla de 14 filas × 15 columnas
+PASA: Cobertura · Escenarios de radio: <cobertura_escenarios> válido, tabla de 6 filas × 3 columnas
+PASA: Cobertura · Evaluaciones: <cobertura_evaluaciones> válido, tabla de 0 filas × 0 columnas
+PASA: Cobertura · Supuestos: <supuestos_cobertura> válido, tabla de 9 filas × 6 columnas
+PASA: Rutas · Planes: <ruta_planes> válido, tabla de 2 filas × 12 columnas
+PASA: Rutas · Supuestos: <supuestos_rutas> válido, tabla de 8 filas × 6 columnas
+PASA: Costos · Conceptos: <conceptos_costo> válido, tabla de 20 filas × 13 columnas
+PASA: Costos · Resumen: <resumen_costos> válido, tabla de 4 filas × 2 columnas
+PASA: Costos · Unitarios: <costos_unitarios> válido, tabla de 7 filas × 3 columnas
+PASA: Costos · Rentabilidad: <rentabilidad> válido, tabla de 7 filas × 3 columnas
+PASA: Costos · Sensibilidad: <sensibilidad_costos> válido, tabla de 24 filas × 5 columnas
+PASA: Costos · Supuestos: <supuestos_costos> válido, tabla de 6 filas × 6 columnas
+PASA: Capacidad · Microhubs: <capacidad_microhubs> válido, tabla de 4 filas × 28 columnas
+PASA: Capacidad · Personal: <recursos_capacidad> válido, tabla de 4 filas × 6 columnas
+PASA: Capacidad · Cargas: <capacidad_cargas> válido, tabla de 9 filas × 3 columnas
+PASA: Capacidad · Supuestos: <supuestos_capacidad> válido, tabla de 11 filas × 6 columnas
+PASA: Punto de equilibrio · Microhubs: <equilibrio_microhubs> válido, tabla de 3 filas × 9 columnas
+PASA: Punto de equilibrio · Escenarios: <equilibrio_escenarios> válido, tabla de 12 filas × 10 columnas
+PASA: Punto de equilibrio · Supuestos: <supuestos_equilibrio> válido, tabla de 4 filas × 6 columnas
+PASA: Simulación · Ejecuciones: <simulacion_ejecuciones> válido, tabla de 11 filas × 14 columnas
+PASA: Simulación · Supuestos: <supuestos_simulacion> válido, tabla de 15 filas × 6 columnas
+PASA: Capacidad · Detalle del microhub 1 (columna microhub/id de la lista)
+PASA: Cobertura · Evaluar ubicación: la plantilla oficial se acepta y responde <cobertura_evaluacion>
+PASA: Capacidad · Simular: la plantilla oficial se acepta y responde <capacidad_simulacion>
+PASA: Punto de equilibrio · Sensibilidad: la plantilla oficial se acepta y responde <equilibrio_sensibilidad>
+PASA: Equilibrio · Calcular y guardar dos escenarios (13, 14)
+PASA: Equilibrio · Abrir escenario
+PASA: Equilibrio · Comparar los dos escenarios
+PASA: Simulación · Nueva y Ver ejecución 395fee18-495c-4d0f-b81c-e04684a35a0f: terminó
+PASA: Simulación · Repetir con la misma semilla da la misma huella
+PASA: Simulación · Comparar las dos ejecuciones
+PASA: Rutas · Comparar métodos con los pedidos listos: 6 métodos
+PASA: Rutas · Proponer y guardar el plan 3 (propuesto)
+PASA: Rutas · Abrir plan
+PASA: Rutas · Cancelar plan (POST sin cuerpo)
+PASA: Rutas · Planes: aparece el plan guardado
+PASA: Costos · Nuevo concepto con la plantilla oficial
+PASA: Costos · baja lógica del concepto de prueba
+PASA: Reportes · Catálogo con 8 reportes
+PASA: Reporte pedidos_por_dia: 45 filas (con totales) × 6 columnas
+PASA: Gráfica pedidos_por_dia: 44 categorías × 2 series
+PASA: Reporte pedidos_por_zona: 5 filas (con totales) × 7 columnas
+PASA: Gráfica pedidos_por_zona: 4 categorías × 2 series
+PASA: Reporte inventario_alertas: 8 filas (con totales) × 7 columnas
+PASA: Gráfica inventario_alertas: 3 categorías × 1 series
+PASA: Reporte quiebres_inventario: 7 filas (con totales) × 5 columnas
+PASA: Gráfica quiebres_inventario: 6 categorías × 1 series
+PASA: Reporte carga_repartidores: 3 filas (con totales) × 3 columnas
+PASA: Gráfica carga_repartidores: 2 categorías × 1 series
+PASA: Reporte ventas_por_producto: 52 filas (con totales) × 6 columnas
+PASA: Gráfica ventas_por_producto: 10 categorías × 1 series
+PASA: Reporte comparacion_microhubs: 5 filas (con totales) × 6 columnas
+PASA: Gráfica comparacion_microhubs: 4 categorías × 2 series
+PASA: Reporte equilibrio_microhubs: 4 filas (con totales) × 8 columnas
+PASA: Gráfica equilibrio_microhubs: 3 categorías × 1 series
+PASA: Reportes · Indicadores
+PASA: Descarga CSV: pedidos_por_dia_2026-09-27_2026-11-26.csv, 1544 bytes, 44 filas, SHA-256 verificado
+PASA: Descarga XLSX: pedidos_por_dia_2026-09-27_2026-11-26.xlsx, 6618 bytes, 44 filas, SHA-256 verificado
+PASA: Descarga PDF: pedidos_por_dia_2026-09-27_2026-11-26.pdf, 5621 bytes, 44 filas, SHA-256 verificado
+PASA: Reportes · Exportaciones: la bitácora registra las tres descargas con su SHA-256
+PASA: Descarga de un reporte que no existe: 404 en XML
+PASA: Descarga con un filtro inválido: 400 en XML
+PASA: Auditor: descarga un reporte
+PASA: Auditor: consulta costos
+PASA: Auditor: simulaciones → 403 (sin simulacion.ver)
+168 comprobaciones aprobadas

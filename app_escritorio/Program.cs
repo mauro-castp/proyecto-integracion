@@ -48,16 +48,20 @@ sealed class MainWindow : Form
         Add("Simulación libre",async()=>{var b=Edit("Supuestos",Template("Simulacion.ok.xml"));if(b!=null)ShowResults(await api.Call("planeacion","simulaciones",HttpMethod.Post,b));},true,true);
         Add("Guardar escenario",async()=>{var b=Edit("Escenario",Template("EscenarioNuevo.ok.xml"));if(b!=null){Show(await api.Call("planeacion","escenarios",HttpMethod.Post,b));await LoadList("planeacion","escenarios");}},true,true);
         Add("Resumen",async()=>Show(await api.Call("planeacion","simulaciones/resumen")),true);
+        // Pantallas de análisis y reportes: cada una en su ventana, con la misma sesión
+        Add("Reportes",()=>Open(new VentanaReportes(api)),true);
+        foreach(var m in Modulos.Todos) Add(m.Nombre,()=>Open(new VentanaModulo(api,m)),true);
         Add("Anterior",async()=>{if(page>1){page--;await Reload();}},true);
         Add("Siguiente",async()=>{if(page<pages){page++;await Reload();}},true);
         Add("Buscar / filtrar",async()=>{page=1;await Reload();},true);
         Add("Exportar XML",()=>{if(latest==null)throw new Exception("Consulta primero.");using var d=new SaveFileDialog{Filter="XML|*.xml",FileName="microhubs.xml"};if(d.ShowDialog()==DialogResult.OK)latest.Save(d.FileName);return Task.CompletedTask;},true);
-        Add("Salir",async()=>{try{await api.Call("auth","auth/salir",HttpMethod.Post,Api.Body("salir",("token_renovacion",api.Refresh)));}finally{api.Clear();grid.DataSource=null;latest=null;SetMenu();}},true);
+        Add("Salir",async()=>{try{await api.Call("auth","auth/salir",HttpMethod.Post,Api.Body("salir",("token_renovacion",api.Refresh)));}finally{api.Clear();grid.DataSource=null;latest=null;foreach(var f in OwnedForms)f.Close();SetMenu();}},true);
         FilterOptions();
         bar.Controls.AddRange(new Control[]{search,state,new Label{Text="Desde",AutoSize=true},desde,new Label{Text="Hasta",AutoSize=true},hasta});
         SetMenu();FormClosed+=(_,_)=>api.Dispose();
     }
     static XElement Template(string name)=>Api.Example(name);
+    Task Open(Form window){window.Show(this);return Task.CompletedTask;}
     static readonly string[] OrderStates={"creado","pendiente_asignacion","asignado","en_preparacion","en_ruta","entregado","entrega_parcial","entrega_fallida","cancelado"};
     static readonly string[] Decisions={"pendiente","aceptado","rechazado","condicionado"};
     void FilterOptions()
@@ -76,26 +80,8 @@ sealed class MainWindow : Form
         var result=Edit("Candidato · 14 campos",body);
         if(result!=null){await api.Call("planeacion",path,edit?HttpMethod.Put:HttpMethod.Post,result);await LoadList("planeacion","candidatos");}
     }
-    XElement? Edit(string title,XElement source)
-    {
-        using var dialog=new Form{Text=title,Width=650,Height=680,StartPosition=FormStartPosition.CenterParent};
-        var panel=new TableLayoutPanel{Dock=DockStyle.Fill,AutoScroll=true,ColumnCount=2};
-        var controls=new Dictionary<string,TextBox>();var copy=new XElement(source);
-        var errors=new ErrorProvider{ContainerControl=dialog};
-        foreach(var leaf in copy.Descendants().Where(e=>!e.HasElements))
-        {
-            var key=string.Join(".",leaf.Ancestors().Reverse().Skip(1).Select(e=>e.Name.LocalName).Append(leaf.Name.LocalName));
-            var text=new TextBox{Text=leaf.Value,Width=340};controls[key]=text;panel.Controls.Add(new Label{Text=key,AutoSize=true});panel.Controls.Add(text);
-        }
-        var save=new Button{Text="Validar y guardar",Dock=DockStyle.Bottom,Height=40};
-        dialog.Controls.Add(panel);dialog.Controls.Add(save);
-        save.Click+=(_,_)=>{
-            errors.Clear();foreach(var leaf in copy.Descendants().Where(e=>!e.HasElements)){var key=string.Join(".",leaf.Ancestors().Reverse().Skip(1).Select(e=>e.Name.LocalName).Append(leaf.Name.LocalName));leaf.Value=controls[key].Text.Trim();}
-            try{api.Validate(copy.ToString());dialog.DialogResult=DialogResult.OK;}
-            catch(Exception e){foreach(var c in controls.Values)errors.SetError(c,e.Message);MessageBox.Show(dialog,e.Message,"Revisa los campos");}
-        };
-        return dialog.ShowDialog(this)==DialogResult.OK?copy:null;
-    }
+    /// <summary>Editor de plantillas compartido con las pantallas de análisis (listas de ids separadas por coma, campos nulos).</summary>
+    XElement? Edit(string title,XElement source)=>Ui.Editar(this,api,title,source);
     void Add(string label,Func<Task> action,bool secure=false,bool write=false)
     {
         var b=new Button{Text=label,AutoSize=true};bar.Controls.Add(b);if(secure)secured.Add((b,write));
@@ -110,18 +96,9 @@ sealed class MainWindow : Form
         if(state.Text!="Todos" && resource is "pedidos" or "candidatos")query+=$"&{(resource=="candidatos"?"decision":"estado")}={Uri.EscapeDataString(state.Text)}";
         if(resource=="pedidos"){if(desde.Checked)query+="&desde="+desde.Value.ToString("yyyy-MM-dd");if(hasta.Checked)query+="&hasta="+hasta.Value.ToString("yyyy-MM-dd");}
         latest=await api.Call(service,query);pages=int.Parse(latest.Root!.Element(Api.Ns+"paginacion")!.Element(Api.Ns+"paginas")!.Value);
-        grid.DataSource=ToTable(latest);status.Text=$"{resource} · página {page}/{pages} · {api.Role}";
+        grid.DataSource=Tablas.ToTable(latest);status.Text=$"{resource} · página {page}/{pages} · {api.Role}";
     }
-    /// <summary>Convierte una lista del contrato (datos + paginacion) en la tabla que ve la persona.</summary>
-    internal static DataTable ToTable(XDocument list)
-    {
-        var rows=list.Root!.Element(Api.Ns+"datos")!.Elements().Select(Flatten).ToList();var table=new DataTable();
-        foreach(var col in rows.SelectMany(r=>r.Keys).Distinct())table.Columns.Add(col);
-        foreach(var row in rows){var item=table.NewRow();foreach(var cell in row)item[cell.Key]=cell.Value;table.Rows.Add(item);}
-        return table;
-    }
-    internal static Dictionary<string,string> Flatten(XElement row)=>row.Descendants().Where(e=>!e.HasElements).GroupBy(e=>string.Join("/",e.Ancestors().TakeWhile(a=>a!=row).Reverse().Select(a=>a.Name.LocalName).Append(e.Name.LocalName))).ToDictionary(g=>g.Key,g=>string.Join("; ",g.Select(e=>e.Value)));
     void ShowRow(){var row=grid.CurrentRow??throw new Exception("Selecciona un registro.");MessageBox.Show(string.Join("\n",row.Cells.Cast<DataGridViewCell>().Select(c=>$"{grid.Columns[c.ColumnIndex].HeaderText}: {c.Value}")),"Detalle");}
-    void Show(XDocument doc){latest=doc;MessageBox.Show(string.Join("\n",Flatten(doc.Root!).Select(k=>$"{k.Key}: {k.Value}")),"Detalle");}
+    void Show(XDocument doc){latest=doc;MessageBox.Show(string.Join("\n",Tablas.Flatten(doc.Root!).Select(k=>$"{k.Key}: {k.Value}")),"Detalle");}
     void ShowResults(XDocument doc){latest=doc;var r=doc.Root!;var eq=r.Element(Api.Ns+"equilibrio")!;MessageBox.Show($"{r.Element(Api.Ns+"decision")!.Value}\nUtilización: {r.Element(Api.Ns+"utilizacion")!.Value}% · {r.Element(Api.Ns+"nivel")!.Value}\nEquilibrio mensual: {eq.Element(Api.Ns+"mensual")!.Value}\nDiario: {eq.Element(Api.Ns+"diario")!.Value}\nMargen/pedido: {eq.Element(Api.Ns+"margen_pedido")!.Value}\n"+string.Join("\n",r.Element(Api.Ns+"explicacion")!.Elements().Select(e=>e.Value)),"Viabilidad y explicación");}
 }

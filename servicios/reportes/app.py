@@ -6,7 +6,8 @@ Servicio de reportes · puerto 5123 · contrato v1
   GET  /api/v1/reportes/exportaciones            bitácora de exportaciones (cada persona ve las suyas; el administrador y el auditor, todas)
   GET  /api/v1/reportes/{clave}                  el reporte como tabla (columnas, filas y totales)
   GET  /api/v1/reportes/{clave}/grafica          los mismos datos listos para Highcharts (categorías y series)
-  GET  /api/v1/reportes/{clave}/exportar         descarga en CSV, Excel (xlsx) o PDF (formato=csv|xlsx|pdf)
+  GET  /api/v1/reportes/{clave}/exportar         descarga en CSV, Excel (xlsx) o PDF (formato=csv|xlsx|pdf); queda archivado en el bucket
+  GET  /api/v1/reportes/exportaciones/{id}/enlace  URL firmada y con caducidad del archivo archivado (quien lo exportó, administrador, auditor)
 
 Familias y reportes
   operativo   pedidos_por_dia, pedidos_por_zona
@@ -20,7 +21,9 @@ admite un filtro lo rechaza (400) en lugar de ignorarlo en silencio.
 Responsabilidad única: armar, comparar y entregar reportes. No tiene datos propios de negocio: cada reporte se arma con las respuestas de los
 servicios dueños (pedidos, inventario, entregas, punto-equilibrio, zonas, productos, microhubs) con el MISMO JWT de quien lo pide, así que
 cada servicio aplica el alcance del perfil (un supervisor solo ve su microhub) y los permisos. Su única tabla, reporte_exportacion, guarda
-quién exportó qué, con qué filtros y la huella SHA-256 del archivo; el archivo se genera al momento y no se guarda en ninguna base de datos.
+quién exportó qué, con qué filtros y la huella SHA-256 del archivo. Desde la entrega final el archivo además se archiva en el almacén de objetos
+(Google Cloud Storage en la nube: reportes/AAAA/MM/<id>.<ext>) y la tabla guarda solo su ruta: nunca el archivo. Si el bucket no responde, la
+descarga se entrega igual y la exportación queda sin archivo (X-Reporte-Archivado: no).
 
 Seguridad de las exportaciones: una celda de texto que empieza con = + - @ se neutraliza (inyección de fórmulas en Excel y CSV) y el archivo
 trae el SHA-256 en el encabezado X-Reporte-SHA256.
@@ -32,12 +35,12 @@ import io
 
 from flask import Response, g, request
 
-from comun import config, supuestos as sup
+from comun import almacen, config, supuestos as sup
 from comun.base import (crear_app, documentar, filtro_entero, filtro_fecha, filtro_opcion, leer_paginacion, lista, paginacion, requiere,
                         responder, tiene)
 from comun.base_errores import ErrorApi, filtro_invalido
 from comun.clientes import exigir, mapa
-from comun.datos import ahora, como_json, conexion, consultar
+from comun.datos import ahora, auditar, como_json, conexion, consultar
 from comun.formatos import ZONA, fecha
 
 app = crear_app("reportes", "Microhubs · Reportes",
@@ -444,13 +447,73 @@ def exportar(clave):
         cuerpo = pdf_bytes(titulo, subtitulo, cols, filas, tot)
     huella = hashlib.sha256(cuerpo).hexdigest()
     with conexion() as con, con.cursor() as cur:
-        cur.execute("INSERT INTO reporte_exportacion (reporte, formato, filtros, filas, bytes, sha256, creado_por) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+        cur.execute("INSERT INTO reporte_exportacion (reporte, formato, filtros, filas, bytes, sha256, creado_por) VALUES (%s,%s,%s,%s,%s,%s,%s) RETURNING id",
                     (clave, formato, como_json(_filtros_json(f)), len(filas), len(cuerpo), huella, g.usuario["id"]))
+        eid = cur.fetchone()["id"]
+    archivado = _archivar(eid, formato, cuerpo, huella)
     nombre = f"{clave}_{f['desde']}_{f['hasta']}.{formato}"
     resp = Response(cuerpo, content_type=FORMATOS[formato])
     resp.headers["Content-Disposition"] = f'attachment; filename="{nombre}"'
     resp.headers["X-Reporte-SHA256"] = huella
     resp.headers["X-Reporte-Filas"] = str(len(filas))
+    resp.headers["X-Reporte-Id"] = str(eid)
+    resp.headers["X-Reporte-Archivado"] = "si" if archivado else "no"
+    return resp
+
+
+EXTENSION = {"csv": "csv", "xlsx": "xlsx", "pdf": "pdf"}
+
+
+def _archivar(eid, formato, cuerpo, huella):
+    """Guarda el archivo en el almacén (bucket) y su ruta en reporte_exportacion. Si el almacén falla, la descarga sigue."""
+    t = dt.datetime.now(dt.timezone.utc)
+    ruta = f"reportes/{t:%Y}/{t:%m}/{eid}.{EXTENSION[formato]}"
+    alm = almacen.obtener()
+    try:
+        alm.guardar(ruta, cuerpo, FORMATOS[formato].split(";")[0], huella)
+    except almacen.ErrorAlmacen as e:
+        print(f'{{"nivel": "WARN", "mensaje": "reporte {eid} sin archivar: {e}"}}', flush=True)
+        return False
+    with conexion() as con, con.cursor() as cur:
+        cur.execute("UPDATE reporte_exportacion SET ruta = %s, almacen = %s WHERE id = %s", (ruta, alm.nombre, eid))
+    return True
+
+
+@app.get(f"{P}/reportes/exportaciones/<int:eid>/enlace")
+@requiere("reportes.ver")
+def enlace_exportacion(eid):
+    """URL firmada (GET, caduca en URL_FIRMADA_SEGUNDOS) del archivo de una exportación. Solo quien la hizo, el administrador o el auditor."""
+    f = consultar("SELECT id, reporte, formato, filtros, ruta, creado_por FROM reporte_exportacion WHERE id = %s", (eid,), una=True)
+    if not f or (f["creado_por"] != g.usuario["id"] and not (tiene("auditoria.ver") or g.usuario["rol"] == "administrador")):
+        raise ErrorApi(404, "NO_ENCONTRADO", "No existe esa exportación.")
+    if not f["ruta"]:
+        raise ErrorApi(409, "CONFLICTO", "Esa exportación no se archivó (el almacén no respondía al exportar).")
+    nombre = f"{f['reporte']}_{f['id']}.{f['formato']}"
+    tipo = FORMATOS[f["formato"]].split(";")[0]
+    alm = almacen.obtener()
+    segundos = config.URL_FIRMADA_SEGUNDOS
+    if alm.nombre == "gcs":
+        url, expira = alm.url_firmada(f["ruta"], segundos, nombre, tipo)
+    else:                                                     # almacén local: el propio servicio sirve la descarga firmada
+        expira = int(dt.datetime.now(dt.timezone.utc).timestamp()) + segundos
+        from urllib.parse import quote
+        url = (request.host_url.rstrip("/") + f"{P}/reportes/descarga?k={quote(f['ruta'], safe='')}&e={expira}&n={quote(nombre, safe='')}"
+               f"&t={quote(tipo, safe='')}&s={alm._firma(f['ruta'], expira, nombre, tipo)}")
+    auditar("reportes", "descarga", f"Enlace del reporte {f['reporte']} #{eid} (caduca en {segundos} s).", entidad="reporte_exportacion", entidad_id=str(eid))
+    return responder({"id": eid, "nombre": nombre, "url_firmada": url, "metodo": "GET", "segundos": segundos,
+                      "expira_en": fecha(dt.datetime.fromtimestamp(expira, tz=dt.timezone.utc))}, raiz="exportacion_enlace")
+
+
+@app.get(f"{P}/reportes/descarga")
+def descarga_local():
+    """Solo con el almacén local (desarrollo): descarga con la firma HMAC que dio /enlace. En la nube la URL es de Cloud Storage."""
+    alm = almacen.obtener()
+    a = request.args
+    k = a.get("k", "")
+    if alm.nombre == "gcs" or not k.startswith("reportes/") or not alm.firma_valida(k, a.get("e"), a.get("n", ""), a.get("t", ""), a.get("s")):
+        raise ErrorApi(403, "PROHIBIDO", "El enlace de descarga no es válido o ya caducó.")
+    resp = Response(alm.leer(k), content_type=a.get("t") or "application/octet-stream")
+    resp.headers["Content-Disposition"] = f"attachment; filename=\"{a.get('n', 'reporte')}\""
     return resp
 
 
@@ -534,7 +597,7 @@ documentar(app, "GET", f"{P}/reportes/{{clave}}/grafica", "Datos listos para Hig
 documentar(app, "GET", f"{P}/reportes/{{clave}}/exportar", "Descargar el reporte (CSV, Excel o PDF)", permisos=["reportes.ver"],
            parametros=[RUTA_CLAVE, ("formato", "query", "string", "csv (por omisión) | xlsx | pdf")] + FILTROS,
            descripcion="Devuelve el archivo (no JSON ni XML) con Content-Disposition; el SHA-256 va en X-Reporte-SHA256. Queda registrado en la bitácora de "
-                       "exportaciones. El archivo no se guarda: se genera en cada descarga.",
+                       "exportaciones y el archivo se archiva en el almacén de objetos (se vuelve a descargar con /reportes/exportaciones/{id}/enlace).",
            respuestas={200: ("El archivo", None)}, errores=[400, 403, 404, 422])
 documentar(app, "GET", f"{P}/reportes/exportaciones", "Bitácora de exportaciones", permisos=["reportes.ver"],
            parametros=[("pagina", "query", "integer", "Página"), ("por_pagina", "query", "integer", "1 a 100")],

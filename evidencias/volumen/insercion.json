@@ -1,0 +1,122 @@
+[
+  {
+    "fecha": "2026-11-26T22:52:34+00:00",
+    "pedidos_antes": 0,
+    "pedidos_despues": 10000,
+    "pedidos_agregados": 10000,
+    "lineas_agregadas": 28043,
+    "clientes_agregados": 5000,
+    "clientes_segundos": 0.588,
+    "postgres": {
+      "fila_por_fila": {
+        "pedidos": 5000,
+        "lineas": 14035,
+        "segundos": 3.22
+      },
+      "copy": {
+        "pedidos": 5000,
+        "lineas": 14008,
+        "segundos": 0.951
+      },
+      "entregas_copy_sin_triggers": {
+        "filas": 9463,
+        "segundos": 0.105
+      }
+    },
+    "mongo": {
+      "puntos_gps": 141945,
+      "insert_one": {
+        "docs": 20000,
+        "segundos": 4.477
+      },
+      "insert_many": {
+        "docs": 121945,
+        "segundos": 1.642
+      },
+      "logs_tecnicos": {
+        "docs": 20000,
+        "segundos": 0.36
+      }
+    }
+  },
+  {
+    "fecha": "2026-11-26T22:55:56+00:00",
+    "pedidos_antes": 10000,
+    "pedidos_despues": 50000,
+    "pedidos_agregados": 40000,
+    "lineas_agregadas": 111556,
+    "clientes_agregados": 0,
+    "clientes_segundos": 0.0,
+    "postgres": {
+      "fila_por_fila": {
+        "pedidos": 0,
+        "lineas": 0,
+        "segundos": 0.0
+      },
+      "copy": {
+        "pedidos": 40000,
+        "lineas": 111556,
+        "segundos": 7.67
+      },
+      "entregas_copy_sin_triggers": {
+        "filas": 38000,
+        "segundos": 0.399
+      }
+    },
+    "mongo": {
+      "puntos_gps": 570000,
+      "insert_one": {
+        "docs": 0,
+        "segundos": 0.0
+      },
+      "insert_many": {
+        "docs": 570000,
+        "segundos": 9.636
+      },
+      "logs_tecnicos": {
+        "docs": 80000,
+        "segundos": 1.572
+      }
+    }
+  },
+  {
+    "fecha": "2026-11-26T22:57:28+00:00",
+    "pedidos_antes": 50000,
+    "pedidos_despues": 100000,
+    "pedidos_agregados": 50000,
+    "lineas_agregadas": 139010,
+    "clientes_agregados": 0,
+    "clientes_segundos": 0.0,
+    "postgres": {
+      "fila_por_fila": {
+        "pedidos": 0,
+        "lineas": 0,
+        "segundos": 0.0
+      },
+      "copy": {
+        "pedidos": 50000,
+        "lineas": 139010,
+        "segundos": 10.168
+      },
+      "entregas_copy_sin_triggers": {
+        "filas": 47483,
+        "segundos": 0.587
+      }
+    },
+    "mongo": {
+      "puntos_gps": 712245,
+      "insert_one": {
+        "docs": 0,
+        "segundos": 0.0
+      },
+      "insert_many": {
+        "docs": 712245,
+        "segundos": 13.338
+      },
+      "logs_tecnicos": {
+        "docs": 100000,
+        "segundos": 2.776
+      }
+    }
+  }
+]

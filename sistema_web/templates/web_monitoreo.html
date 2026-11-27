@@ -25,7 +25,7 @@
 
 <div class="panel" style="overflow:auto"><h2>Estado por servicio</h2><table><thead><tr><th>Servicio</th><th>Puerto</th><th>Estado</th><th>Última verificación</th><th>ms</th><th>Versión</th><th>PostgreSQL</th><th>Redis</th><th>MongoDB</th><th>Bucket</th><th>Peticiones/h</th><th>5xx/h</th><th>Disponib. 24 h</th><th>p95 ms</th></tr></thead><tbody>
 {% for s in estado.datos.servicios %}<tr>
-<td>{{ s.servicio }}</td><td>{{ s.puerto }}</td>
+<td><a href="{{ url_for('servicios.monitoreo_historial', nombre=s.servicio) }}" title="Ver historial">{{ s.servicio }}</a></td><td>{{ s.puerto }}</td>
 <td>{% if s.estado == 'ok' %}<span class="pill verde">ok</span>{% elif s.estado == 'sin_datos' %}<span class="pill">sin datos</span>{% else %}<span class="pill rojo">{{ s.estado }}</span>{% endif %}</td>
 <td>{% if s.verificado_en %}hace {{ s.antiguedad_seg }} s{% else %}—{% endif %}</td><td>{{ s.tiempo_ms if s.tiempo_ms is not none else '—' }}</td><td>{{ s.version or '—' }}</td>
 {% for d in ['postgres','redis','mongo','bucket'] %}<td>{% if s.dependencias %}{% set v = s.dependencias[d] %}{% if v == 'error' %}<span class="pill rojo">error</span>{% elif v == 'ok' %}ok{% else %}<span style="opacity:.5">—</span>{% endif %}{% else %}—{% endif %}</td>{% endfor %}

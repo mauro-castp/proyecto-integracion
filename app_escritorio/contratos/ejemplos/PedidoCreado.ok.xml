@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pedido_creado xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <id>901</id>
+  <folio>PED-20261126-000901</folio>
+  <estado>asignado</estado>
+  <zona_id>1</zona_id>
+  <microhub_id>1</microhub_id>
+  <subtotal>186.00</subtotal>
+  <costo_envio>15.00</costo_envio>
+  <total>201.00</total>
+  <asignado>true</asignado>
+  <motivo xsi:nil="true" />
+  <duplicado>false</duplicado>
+</pedido_creado>

@@ -26,16 +26,28 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.zxing.integration.android.IntentIntegrator
 import java.io.File
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicBoolean
 
 class MainActivity : Activity() {
     private lateinit var api: Api
     private lateinit var entregas: Entregas
     private lateinit var usuarios: Usuarios
+    private lateinit var cola: ColaEnArchivos
+    private lateinit var sync: Sincronizador
+    private lateinit var avisos: Avisos
     private lateinit var ui: Estilo
     private lateinit var p: Pantalla
     private var atras: (() -> Unit)? = null
     private val executor = Executors.newSingleThreadExecutor()
+    // Tareas que no bloquean la pantalla: sincronizar, contar avisos y guardar copias para trabajar sin red.
+    private val fondo = Executors.newSingleThreadExecutor()
+    private val sincronizando = AtomicBoolean(false)
+    @Volatile private var ultimoIntento = 0L
+    private var viendoCola = false
     private var busy = false
     private var alive = true
     private var callbackRed: ConnectivityManager.NetworkCallback? = null
@@ -66,8 +78,11 @@ class MainActivity : Activity() {
     override fun onCreate(state: Bundle?) {
         super.onCreate(state)
         api = Api(SessionStore(this))
-        entregas = Entregas(api, PrefsBorradores(this))
+        cola = ColaEnArchivos(File(filesDir, "sin_red"))           // almacenamiento privado de la app; sobrevive a reinicios
+        entregas = Entregas(api, PrefsBorradores(this), cola)
         usuarios = Usuarios(api)
+        sync = Sincronizador(api, cola)
+        avisos = Avisos(api, cola)
         ui = Estilo(this)
         loginScreen()
     }
@@ -75,6 +90,7 @@ class MainActivity : Activity() {
     // ------------------------------------------------------------------------------------------ pantalla y conexión
     private fun nueva(titulo: String, subtitulo: String? = null, volver: (() -> Unit)? = null): Pantalla {
         atras = volver
+        viendoCola = false
         p = Pantalla(ui, this, titulo, subtitulo, volver)
         p.conexion(redActual())
         p.mostrar()
@@ -92,14 +108,53 @@ class MainActivity : Activity() {
         super.onStart()
         val cm = getSystemService(ConnectivityManager::class.java)
         val cb = object : ConnectivityManager.NetworkCallback() {
-            private fun refrescar() = runOnUiThread { if (alive && ::p.isInitialized) p.conexion(redActual()) }
+            private fun refrescar() = runOnUiThread {
+                if (alive && ::p.isInitialized) p.conexion(redActual())
+                if (alive && redActual() == Red.EN_LINEA) sincronizarEnFondo()      // volvió la red: se envía lo hecho sin conexión
+            }
             override fun onAvailable(network: Network) = refrescar()
             override fun onLost(network: Network) = refrescar()
             override fun onCapabilitiesChanged(network: Network, caps: NetworkCapabilities) = refrescar()
         }
         try { cm.registerDefaultNetworkCallback(cb); callbackRed = cb } catch (_: Exception) {}
         if (::p.isInitialized) p.conexion(redActual())
+        sincronizarEnFondo()
     }
+
+    // ------------------------------------------------------------------------------------------ sincronización
+    /**
+     * Envía la cola sin bloquear la pantalla. Automática (al volver la red, al abrir la app o el menú) como mucho cada 30 s;
+     * la del botón «Enviar ahora» va por [work] para mostrar el progreso.
+     */
+    private fun sincronizarEnFondo() {
+        if (api.demo || api.session == null || redActual() != Red.EN_LINEA) return
+        val t = System.currentTimeMillis()
+        if (t - ultimoIntento < 30_000 || sync.porEnviar() == 0) return
+        if (!sincronizando.compareAndSet(false, true)) return
+        ultimoIntento = t
+        fondo.execute {
+            val r = try { Result.success(sync.sincronizar()) } catch (e: Exception) { Result.failure(e) } finally { sincronizando.set(false) }
+            runOnUiThread {
+                if (!alive) return@runOnUiThread
+                r.onSuccess { informe -> if (informe.enviadas > 0) {
+                    Toast.makeText(this, resumen(informe), Toast.LENGTH_LONG).show()
+                    if (viendoCola) colaScreen() else if (::p.isInitialized && (informe.conflictos + informe.rechazadas) > 0) p.aviso(resumen(informe), Mensaje.ERROR)
+                } }
+                r.onFailure { if (api.session == null) { loginScreen(); error("La sesión terminó: entra de nuevo para enviar lo pendiente.") } }
+            }
+        }
+    }
+
+    private fun resumen(i: Informe): String = listOfNotNull(
+        "${i.aplicadas} enviada(s)".takeIf { i.aplicadas > 0 },
+        "${i.conflictos} en conflicto (gana el servidor)".takeIf { i.conflictos > 0 },
+        "${i.rechazadas} rechazada(s)".takeIf { i.rechazadas > 0 },
+        "${i.pendientes} se reintentará(n)".takeIf { i.pendientes > 0 },
+        "${i.esperando} esperando subir su foto".takeIf { i.esperando > 0 }
+    ).joinToString(" · ").ifEmpty { "No había nada por enviar" }
+
+    private fun hora(ms: Long): String = DateTimeFormatter.ofPattern("HH:mm").format(Instant.ofEpochMilli(ms).atZone(ZoneId.systemDefault()))
+    private fun fechaCorta(iso: String) = iso.take(16).replace('T', ' ')
 
     override fun onStop() {
         callbackRed?.let { try { getSystemService(ConnectivityManager::class.java).unregisterNetworkCallback(it) } catch (_: Exception) {} }
@@ -155,7 +210,7 @@ class MainActivity : Activity() {
             val mail = email.text.toString().trim()
             val pass = password.text.toString()
             api.demo = demo.isChecked; api.host = host.text.toString().trim()
-            if (!busy) work({ api.login(mail, pass) }) { password.text.clear(); home() }
+            if (!busy) work({ api.login(mail, pass) }) { password.text.clear(); ultimoIntento = 0; home() }
         })
         acceso.addView(ui.boton("Restaurar sesión segura", Tipo.TEXTO) {
             api.demo = demo.isChecked; api.host = host.text.toString().trim()
@@ -187,9 +242,103 @@ class MainActivity : Activity() {
         nueva("Hola, ${u.getString("nombre")}", rolLegible(u.getString("rol")))
         p.agregar(ui.titulo("¿Qué quieres hacer?"))
         if (role() in listOf("repartidor", "administrador")) p.agregar(opcion("📦", "Mis entregas", "Paradas asignadas a tu turno") { deliveries(1) })
+        val noLeidos = ui.chip("", ui.peligro).apply { visibility = View.GONE }
+        p.agregar(opcion("🔔", "Avisos", "Entregas asignadas y mensajes del equipo", noLeidos) { avisosScreen(1) })
+        val mias = sync.mias()
+        if (mias.isNotEmpty()) {
+            val porEnviar = mias.count { it.porEnviar }; val problemas = mias.size - porEnviar
+            val desc = listOfNotNull("$porEnviar por enviar".takeIf { porEnviar > 0 }, "$problemas para revisar".takeIf { problemas > 0 }).joinToString(" · ")
+            p.agregar(opcion("⇅", "Sin enviar", desc, ui.chip("${mias.size}", if (problemas > 0) ui.peligro else ui.alerta)) { colaScreen() })
+        }
         p.agregar(opcion("👤", "Mi perfil", "Tus datos y teléfono de contacto") { profile() })
         p.conPie(ui.boton("Cerrar sesión", Tipo.PELIGRO) {
-            if (!busy) work({ api.logout() }) { resetEvidence(); detalle = null; loginScreen() }
+            if (busy) return@boton
+            val pendientes = sync.porEnviar()
+            fun salir() = work({ try { api.logout() } finally { cola.borrarCopias() } }) { resetEvidence(); detalle = null; loginScreen() }
+            if (pendientes == 0) salir()
+            else AlertDialog.Builder(this).setTitle("Hay $pendientes operación(es) sin enviar")
+                .setMessage("Se quedan guardadas en el teléfono y se enviarán cuando vuelvas a entrar con esta misma cuenta y haya red.")
+                .setPositiveButton("Salir") { _, _ -> salir() }.setNegativeButton("Cancelar", null).show()
+        })
+        if (redActual() != Red.SIN_RED) fondo.execute {
+            val n = try { avisos.noLeidas() } catch (_: Exception) { 0 }
+            runOnUiThread { if (alive && n > 0) { noLeidos.text = "$n"; noLeidos.visibility = View.VISIBLE } }
+        }
+        sincronizarEnFondo()
+    }
+
+    // ------------------------------------------------------------------------------------------ avisos
+    private fun avisosScreen(pagina: Int) { work({ avisos.bandeja(pagina) }) { pintarAvisos(it) } }
+
+    private fun pintarAvisos(r: Pagina<Aviso>) {
+        val pagina = r.pagina
+        nueva("Avisos", "${r.total} aviso(s) · página $pagina de ${maxOf(1, r.paginas)}") { home() }
+        if (r.items.isEmpty()) p.agregar(ui.tarjeta().apply {
+            addView(ui.texto("No tienes avisos", 16f, ui.tinta, true))
+            addView(ui.texto("Aquí llegan las entregas que te asignan y los mensajes del equipo.", 14f, ui.tintaSec)) })
+        r.items.forEach { a ->
+            val tarjeta = ui.tarjeta(accion { abrirAviso(a, pagina) })
+            val textos = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+                addView(ui.texto(a.titulo, 16f, ui.tinta, !a.leida)); addView(ui.texto(a.mensaje, 14f, ui.tintaSec))
+                addView(ui.texto(fechaCorta(a.creadaEn), 12f, ui.tintaSec))
+            }
+            tarjeta.addView(ui.fila(textos, *listOfNotNull(if (!a.leida) ui.chip("Nuevo", ui.info) else null).toTypedArray()))
+            p.agregar(tarjeta)
+        }
+        paginacion(r.pagina, r.paginas) { avisosScreen(it) }
+        if (r.items.any { !it.leida }) p.conPie(ui.boton("Marcar todos como leídos", Tipo.SECUNDARIO) {
+            if (!busy) work({ avisos.marcarTodos() to avisos.bandeja(pagina) }) { (n, bandeja) ->
+                pintarAvisos(bandeja); p.aviso("$n aviso(s) marcado(s) como leído(s)", Mensaje.EXITO) }
+        })
+    }
+
+    /** Lo marca como leído (sin red queda en la cola) y, si habla de una entrega, la abre. */
+    private fun abrirAviso(a: Aviso, pagina: Int) {
+        work({ avisos.marcarLeido(a) }) {
+            val entrega = a.referenciaId?.toIntOrNull()
+            if (a.referenciaTipo == "entrega" && entrega != null && role() in listOf("repartidor", "administrador")) openDelivery(entrega)
+            else avisosScreen(pagina)
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------ cola sin red
+    private fun colaScreen() {
+        val ops = sync.mias().sortedBy { it.creadaEn }
+        nueva("Sin enviar", "${ops.size} operación(es) en el teléfono") { home() }
+        viendoCola = true
+        if (ops.isEmpty()) {
+            p.agregar(ui.tarjeta().apply {
+                addView(ui.texto("Todo está enviado", 16f, ui.tinta, true))
+                addView(ui.texto("Lo que registres sin conexión aparecerá aquí hasta que vuelva la red.", 14f, ui.tintaSec)) })
+            return
+        }
+        p.agregar(ui.texto("Lo que hiciste sin conexión se envía solo al volver la red. Si el servidor ya tenía otro dato, gana el servidor: " +
+            "esas operaciones se marcan como conflicto y no se vuelven a enviar.", 13f, ui.tintaSec).apply { setPadding(0, 0, 0, ui.dp(8)) })
+        ops.forEach { op ->
+            val (rotulo, color) = when (op.estado) {
+                Operacion.EN_COLA -> (if (op.necesitaFoto) "Por enviar · con foto" else "Por enviar") to ui.alerta
+                Operacion.PENDIENTE -> "Reintentando (${op.intentos})" to ui.alerta
+                Operacion.CONFLICTO -> "Conflicto" to ui.peligro
+                else -> "Rechazada" to ui.peligro
+            }
+            val tarjeta = ui.tarjeta()
+            val textos = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+                addView(ui.texto(op.descripcion.ifBlank { op.tipo }, 15f, ui.tinta, true))
+                addView(ui.texto("Hecha: ${fechaCorta(op.creadaEn)}" + (op.entregaId?.let { " · entrega $it" } ?: ""), 13f, ui.tintaSec))
+            }
+            tarjeta.addView(ui.fila(textos, ui.chip(rotulo, color)))
+            op.mensaje?.let { tarjeta.addView(ui.texto(it, 13f, if (op.porEnviar) ui.tintaSec else ui.peligro)) }
+            if (op.estado == Operacion.CONFLICTO) tarjeta.addView(ui.texto("Se conserva lo que ya estaba en el servidor; esta operación no se volverá a enviar.", 13f, ui.tintaSec))
+            if (op.estado == Operacion.RECHAZADA) tarjeta.addView(ui.texto("No se volverá a enviar. Si hace falta, registra de nuevo la entrega con red.", 13f, ui.tintaSec))
+            if (!op.porEnviar) tarjeta.addView(ui.boton("Entendido, quitar de la lista", Tipo.TEXTO) { sync.descartar(op.uuid); colaScreen() })
+            p.agregar(tarjeta)
+        }
+        if (ops.any { it.porEnviar }) p.conPie(ui.boton("Enviar ahora", Tipo.PRIMARIO) {
+            if (busy) return@boton
+            if (redActual() == Red.SIN_RED) { error("Sin conexión: se enviará solo cuando vuelva la red."); return@boton }
+            work({ sync.sincronizar() }) { i -> colaScreen(); p.aviso(resumen(i), if (i.conflictos + i.rechazadas > 0) Mensaje.ERROR else Mensaje.EXITO) }
         })
     }
 
@@ -236,6 +385,8 @@ class MainActivity : Activity() {
     private fun deliveries(page: Int) {
         work({ entregas.mias(page) }) { r ->
             nueva("Mis entregas", "${r.total} parada(s) · página $page de ${maxOf(1, r.paginas)}") { home() }
+            r.guardadaEn?.let { p.aviso("Sin conexión: lista guardada a las ${hora(it)}. Puedes cerrar entregas; se enviarán al volver la red.", Mensaje.INFO) }
+            if (r.guardadaEn == null && !api.demo) fondo.execute { try { entregas.guardarParaSinRed(r.items) } catch (_: Exception) {} }
             if (r.items.isEmpty()) p.agregar(ui.tarjeta().apply {
                 addView(ui.texto("Sin entregas pendientes", 16f, ui.tinta, true))
                 addView(ui.texto("Cuando el operador te asigne una, aparecerá aquí y recibirás una notificación.", 14f, ui.tintaSec)) })
@@ -247,7 +398,8 @@ class MainActivity : Activity() {
                     if (!parada.direccion.contains(parada.zona)) addView(ui.texto(parada.zona, 13f, ui.tintaSec))
                 }
                 val tarjeta = ui.tarjeta(accion { openDelivery(parada.id) })
-                tarjeta.addView(ui.fila(ui.circulo("${parada.orden}", ui.primario, 38), texto, ui.chip(rotulo, color)))
+                val chip = if (entregas.cierreEnCola(parada.id) != null) ui.chip("Por enviar", ui.alerta) else ui.chip(rotulo, color)
+                tarjeta.addView(ui.fila(ui.circulo("${parada.orden}", ui.primario, 38), texto, chip))
                 tarjeta.addView(ui.espacio(10))
                 tarjeta.addView(ui.fila(ui.flexible(ui.texto("$%.2f".format(parada.total), 20f, ui.tinta, true)),
                     ui.texto("%.1f km · %.0f min".format(parada.distanciaKm, parada.minutos), 13f, ui.tintaSec).apply {
@@ -306,7 +458,9 @@ class MainActivity : Activity() {
         cliente.addView(ui.fila(ui.flexible(ui.texto("Total a cobrar", 14f, ui.tintaSec)), ui.texto("$%.2f".format(d.total), 24f, ui.tinta, true).apply {
             layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT) }))
         p.agregar(cliente)
-        if (entregas.hayCierrePendiente(d.id)) p.aviso("Hay un cierre sin confirmar de esta entrega: se reintentará con el mismo identificador, sin duplicarse.", Mensaje.INFO)
+        val enCola = entregas.cierreEnCola(d.id)
+        if (enCola != null) p.aviso("El cierre de esta entrega ya está guardado en el teléfono (${fechaCorta(enCola.creadaEn)}) y se enviará al volver la red.", Mensaje.INFO)
+        else if (entregas.hayCierrePendiente(d.id)) p.aviso("Hay un cierre sin confirmar de esta entrega: se reintentará con el mismo identificador, sin duplicarse.", Mensaje.INFO)
 
         // Evidencia
         p.agregar(ui.titulo("Evidencia"))
@@ -370,7 +524,7 @@ class MainActivity : Activity() {
             refrescar()
         }
         p.agregar(lineasTarjeta)
-        p.conPie(ui.boton("Registrar resultado", Tipo.PRIMARIO) { if (!busy) register(d) })
+        if (enCola == null) p.conPie(ui.boton(if (redActual() == Red.SIN_RED) "Guardar resultado (sin red)" else "Registrar resultado", Tipo.PRIMARIO) { if (!busy) register(d) })
         val y = scrollY
         p.scroll.post { p.scroll.scrollTo(0, y) }
     }
@@ -388,8 +542,14 @@ class MainActivity : Activity() {
         try { entregas.validar(d, datos) } catch (ex: IllegalArgumentException) { error(ex.message ?: "Revisa los datos"); return }
         val evidence = photo
         val points = route.toList()
-        work({ entregas.cerrar(d, datos, evidence, points) }) { r ->
+        val conRed = redActual() != Red.SIN_RED
+        work({ entregas.cerrar(d, datos, evidence, points, conRed) }) { r ->
             resetEvidence(); detalle = null
+            if (r.enCola) {
+                Toast.makeText(this, "Sin red: el cierre quedó guardado y se enviará solo al volver la conexión", Toast.LENGTH_LONG).show()
+                deliveries(1)
+                return@work
+            }
             Toast.makeText(this, "Entrega ${if (r.duplicado) "ya registrada" else "registrada"}: ${ui.estado(r.estadoPedido).first}", Toast.LENGTH_LONG).show()
             deliveries(1)
             p.aviso("Entrega ${if (r.duplicado) "ya estaba registrada" else "registrada"} · ${ui.estado(r.estadoPedido).first}", Mensaje.EXITO)
@@ -464,5 +624,5 @@ class MainActivity : Activity() {
         fMonto = null; fCambio = null; fNota = null; fMotivos.clear()
     }
 
-    override fun onDestroy() { alive = false; resetEvidence(); executor.shutdownNow(); super.onDestroy() }
+    override fun onDestroy() { alive = false; resetEvidence(); executor.shutdownNow(); fondo.shutdown(); super.onDestroy() }
 }

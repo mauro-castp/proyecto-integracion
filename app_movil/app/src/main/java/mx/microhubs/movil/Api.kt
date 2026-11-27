@@ -33,7 +33,8 @@ class Api(
     private val renewal = Any()
     private var retryAt = 0L
     private val ports = mapOf(
-        "auth" to 5101, "usuarios" to 5102, "pedidos" to 5104, "entregas" to 5105, "documentos" to 5107, "seguimiento" to 5110
+        "auth" to 5101, "usuarios" to 5102, "pedidos" to 5104, "entregas" to 5105, "documentos" to 5107, "seguimiento" to 5110,
+        "notificaciones" to 5124, "sincronizacion" to 5125
     )
 
     fun login(email: String, password: String) {
@@ -145,6 +146,7 @@ class Api(
     companion object { fun parse(text: String) = JSONObject(text) }
 
     // Respuestas de ejemplo con la misma forma que el contrato v1 (modo «ejemplos locales», sin backend).
+    private val demoAviso = """{"id":310,"tipo":"entrega","titulo":"Nueva entrega asignada","mensaje":"Se te asignó el pedido PED-DEMO-000101 (parada 1).","leida":false,"referencia":{"tipo":"entrega","id":"61"},"creada_en":"2026-10-12T17:55:00-06:00"}"""
     private val demoLines = """[{"pedido_detalle_id":51,"nombre":"Arroz","cantidad":2},{"pedido_detalle_id":52,"nombre":"Agua purificada","cantidad":4}]"""
     private fun example(path: String, method: String, body: JSONObject?): JSONObject = when {
         path == "auth/login" || path == "auth/renovar" -> JSONObject("""{"token_acceso":"demo","token_renovacion":"demo","tipo":"Bearer","expira_en":900,"usuario":{"id":7,"nombre":"Ramiro","apellidos":"Alanís Lozano","correo":"repartidor1@codex.mx","rol":"repartidor","microhub_id":null,"permisos":["entregas.ver","entregas.cerrar","pedidos.ver"]}}""")
@@ -158,6 +160,15 @@ class Api(
         path.endsWith("/ubicaciones") -> JSONObject().put("recibidos", body!!.getJSONArray("puntos").length())
         path == "documentos" -> JSONObject("""{"id":"665f1c2e8a3b4d0012a7c9e1","nombre":"evidencia.jpg","tipo_mime":"image/jpeg","tamano_bytes":1024,"sha256":"0","referencia":{"tipo":"entrega","id":"61"},"subido_por":7,"creado_en":"2026-10-12T18:29:00-06:00"}""")
         path.matches(Regex("pedidos/[0-9]+")) -> JSONObject("""{"id":101,"folio":"PED-DEMO-000101","estado":"en_ruta","total":158.0,"lineas":$demoLines}""")
+        path == "notificaciones/conteo" -> JSONObject().put("no_leidas", 1)
+        path == "notificaciones/leer-todas" -> JSONObject().put("marcadas", 1)
+        path.matches(Regex("notificaciones/[0-9]+/leer")) -> JSONObject(demoAviso).put("id", path.split('/')[1].toInt()).put("leida", true)
+        path.startsWith("notificaciones?") || path == "notificaciones" -> JSONObject("""{"datos":[$demoAviso,{"id":305,"tipo":"sistema","titulo":"Bienvenido","mensaje":"Tu cuenta de repartidor está activa.","leida":true,"referencia":null,"creada_en":"2026-10-12T08:00:00-06:00"}],"paginacion":{"pagina":1,"por_pagina":20,"total":2,"paginas":1}}""")
+        path == "sincronizacion/lotes" && method == "POST" -> body!!.getJSONArray("operaciones").let { ops ->
+            val res = (0 until ops.length()).map { JSONObject().put("operacion_uuid", ops.getJSONObject(it).getString("operacion_uuid")).put("tipo", ops.getJSONObject(it).getString("tipo"))
+                .put("estado", "aplicada").put("duplicada", false).put("http_status", 201).put("codigo", JSONObject.NULL).put("mensaje", JSONObject.NULL).put("reintentar", false) }
+            JSONObject().put("id", 1).put("lote_uuid", body.getString("lote_uuid")).put("total", res.size).put("aplicadas", res.size).put("operaciones", JSONArray(res))
+        }
         else -> throw IllegalArgumentException("Ruta de ejemplo no disponible: $method $path")
     }
 }

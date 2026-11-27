@@ -1,0 +1,16 @@
+# Escritorio · XSD con un validador independiente (lxml) · commit 8af74eb · 2026-11-26 21:25 CST
+test_hay_un_xsd_por_servicio_mas_comun (test_contratos.Contratos.test_hay_un_xsd_por_servicio_mas_comun) ... ok
+test_rechaza_accesibilidad_fuera_de_rango (test_contratos.Contratos.test_rechaza_accesibilidad_fuera_de_rango) ... ok
+test_rechaza_elemento_no_definido (test_contratos.Contratos.test_rechaza_elemento_no_definido) ... ok
+test_rechaza_espacio_de_nombres_incorrecto (test_contratos.Contratos.test_rechaza_espacio_de_nombres_incorrecto) ... ok
+test_rechaza_estado_fuera_del_catalogo (test_contratos.Contratos.test_rechaza_estado_fuera_del_catalogo) ... ok
+test_rechaza_id_como_texto (test_contratos.Contratos.test_rechaza_id_como_texto) ... ok
+test_rechaza_motivo_corto_en_la_decision (test_contratos.Contratos.test_rechaza_motivo_corto_en_la_decision) ... ok
+test_rechaza_resultado_con_decision_invalida (test_contratos.Contratos.test_rechaza_resultado_con_decision_invalida) ... ok
+test_rechaza_sesion_incompleta (test_contratos.Contratos.test_rechaza_sesion_incompleta) ... ok
+test_todos_los_ejemplos_validan (test_contratos.Contratos.test_todos_los_ejemplos_validan) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.043s
+
+OK

@@ -12,7 +12,7 @@ sigue funcionando por su cuenta.
 | usuarios | 5102 | Perfil y consulta de usuarios | `usuarios/yo` (GET, PATCH), `usuarios`, `usuarios/{id}` | PostgreSQL |
 | productos | 5103 | Catálogo comercial (solo lectura) | `productos[/{id}]` | PostgreSQL, caché Redis |
 | pedidos | 5104 | Consulta y cambio de estado; alimenta al análisis | `pedidos`, `pedidos/{id}`, `pedidos/{id}/historial`, `pedidos/{id}/estado`, `pedidos/resumen`, `pedidos/ventas`, `pedidos/listos` | PostgreSQL |
-| entregas | 5105 | Reparto: paradas y cierre idempotente | `entregas/mias`, `entregas[/{id}]`, `entregas/{id}/resultado`, `entregas/repartidores` | PostgreSQL, MongoDB |
+| entregas | 5105 | Reparto: paradas y cierre idempotente | `entregas/mias`, `entregas[/{id}]`, `entregas/{id}/resultado`, `entregas/repartidores`, `entregas/asignaciones` | PostgreSQL, MongoDB |
 | planeacion | 5106 | Viabilidad de microhubs | `candidatos[/{id}]`, `candidatos/{id}/decision`, `candidatos/{id}/simular`, `simulaciones`, `simulaciones/resumen`, `escenarios[/{id}]` | PostgreSQL, MongoDB |
 | documentos | 5107 | Evidencias y archivos | `documentos`, `documentos/{id}`, `documentos/{id}/contenido`, `documentos/resumen` | MongoDB |
 | zonas | 5108 | Zonas de cobertura (solo lectura) | `zonas[/{id}]` | PostgreSQL, caché Redis |
@@ -26,12 +26,12 @@ sigue funcionando por su cuenta.
 | demanda | 5115 | Cuánto se pide, dónde y cuándo; patrón semanal, proyección con banda de error y demanda potencial | `demanda/observaciones`, `demanda/resumen`, `demanda/patrones`, `demanda/proyeccion`, `demanda/comparacion`, `demanda/potencial`, `demanda/sincronizacion`, `demanda/supuestos` | PostgreSQL (pedidos desde el servicio de pedidos) |
 | cobertura | 5116 | Qué zonas y hogares cubre la red, evaluación de ubicaciones nuevas y escenarios de radio | `cobertura/zonas`, `cobertura/resumen`, `cobertura/punto`, `cobertura/candidatos`, `cobertura/evaluaciones[/{id}]`, `cobertura/escenarios`, `cobertura/zonas/{id}/poblacion`, `cobertura/supuestos` | PostgreSQL (zonas, microhubs y candidatas desde sus servicios) |
 | capacidad | 5117 | Cuántos pedidos procesa un microhub, utilización y cuello de botella | `capacidad/recursos[/{mh}]`, `capacidad/microhubs[/{mh}]`, `capacidad/simulaciones`, `capacidad/cargas`, `capacidad/supuestos` | PostgreSQL (carga desde pedidos) |
-| rutas | 5118 | Quién entrega qué y en qué orden: agrupar por zona, asignar repartidor, ordenar paradas y ajustar ante incidencias | `rutas/planes[/{id}[/confirmar\|/cancelar\|/ajustes]]`, `rutas/comparaciones`, `rutas/supuestos` | PostgreSQL (pedidos listos, repartidores y microhubs desde sus servicios) |
+| rutas | 5118 | Quién entrega qué y en qué orden: agrupar por zona, asignar repartidor, ordenar paradas y ajustar ante incidencias | `rutas/planes[/{id}[/confirmar\|/cancelar\|/ajustes]]` (confirmar con `despachar` crea las entregas), `rutas/comparaciones`, `rutas/supuestos` | PostgreSQL (pedidos listos, repartidores y microhubs desde sus servicios) |
 | costos | 5119 | Cuánto cuesta operar: conceptos fijos y variables, costo por pedido y por entrega, rentabilidad | `costos/conceptos[/{id}]`, `costos/resumen`, `costos/unitarios`, `costos/rentabilidad`, `costos/sensibilidad`, `costos/supuestos` | PostgreSQL |
 | punto-equilibrio | 5120 | Cuántos pedidos hacen falta para no perder y si la demanda esperada los alcanza, paso a paso | `punto-equilibrio/calculos`, `punto-equilibrio/microhubs`, `punto-equilibrio/sensibilidad`, `punto-equilibrio/escenarios[/{id}]`, `punto-equilibrio/comparacion`, `punto-equilibrio/supuestos` | PostgreSQL (costos, demanda y cobertura desde sus servicios) |
 | simulacion | 5121 | Qué tan estable es la operación cuando la demanda varía y falta personal (Monte Carlo, asíncrona y reproducible) | `simulacion/ejecuciones[/{id}[/cancelar\|/repetir]]`, `simulacion/comparacion`, `simulacion/supuestos` | PostgreSQL (entrada desde punto-equilibrio y capacidad) |
 | surtido | 5122 | Qué productos tener y cuántos: ABC, rotación, margen, quiebres y recomendaciones con espacio y presupuesto | `surtido/abc`, `surtido/analisis`, `surtido/recomendaciones[/{id}]`, `surtido/restricciones/{mh}`, `surtido/supuestos` | PostgreSQL (ventas, existencias, catálogo y costos desde sus servicios) |
-| reportes | 5123 | Reportes operativos, logísticos, comerciales y financieros, indicadores, gráficas y exportación a CSV, Excel y PDF | `reportes`, `reportes/indicadores`, `reportes/{clave}[/grafica\|/exportar]`, `reportes/exportaciones` | PostgreSQL (bitácora de exportaciones); los datos, de sus servicios dueños |
+| reportes | 5123 | Reportes operativos, logísticos, comerciales y financieros, indicadores, gráficas y exportación a CSV, Excel y PDF | `reportes`, `reportes/indicadores`, `reportes/{clave}[/grafica\|/exportar]`, `reportes/exportaciones[/{id}/enlace]` (archivo en el bucket) | PostgreSQL (bitácora de exportaciones); los datos, de sus servicios dueños |
 | sincronizacion | 5125 | Aplica sin duplicar lo que Android y escritorio hicieron sin conexión; conflictos y reintentos | `sincronizacion/lotes[/{id}]`, `sincronizacion/pendientes`, `sincronizacion/conflictos`, `sincronizacion/estado`, `sincronizacion/supuestos` | PostgreSQL |
 | auditoria-monitoreo | 5126 | Bitácora y trazabilidad; salud, disponibilidad, métricas y alertas de todos los servicios | `auditoria[/accesos\|/trazabilidad/…]`, `monitoreo/estado`, `monitoreo/disponibilidad`, `monitoreo/metricas`, `monitoreo/alertas[/{id}/reconocer]`, `monitoreo/verificaciones` | PostgreSQL, MongoDB |
 
@@ -120,6 +120,10 @@ Los cálculos de planeación **no se duplican**: el servicio usa `sistema_web/pl
   planes de despacho, `supuesto_documentado` (de dónde sale y cómo se calibra cada supuesto), parámetros nuevos en `configuracion` y permisos.
 - `bloque_c/sql/11_ola3_observabilidad.sql` (idempotente): verificaciones y alertas del monitoreo, bitácora de exportaciones, lotes y operaciones de sincronización,
   parámetros y permisos nuevos, la acción de bitácora `descarga` y la zona horaria de la base en Monterrey (para que `current_date` sea el día local).
+- `bloque_c/sql/12_rendimiento.sql` (entrega final): `fn_pedidos_visibles` en SQL que el planificador integra a la consulta e índices `ix_pedido_dia_local`
+  e `ix_detalle_pedido_cubriente` (ver `evidencias/volumen/LEEME.md`).
+- `bloque_c/sql/13_entrega_final.sql`: ruta del archivo de cada exportación de reportes en el bucket.
+- `bloque_c/sql/14_pedidos_api.sql`: `pedido.operacion_uuid`, para que reenviar el mismo pedido por la API no lo duplique.
 - `bloque_c/mongo/03_documentos_nube.js`: validador de `documentos` para los archivos en Cloud Storage (en MongoDB quedan solo sus datos).
 - `bloque_c/mongo/02_microservicios.js`: colecciones `documentos` y `ubicaciones_entrega` (índice 2dsphere, TTL de 180 días).
 - MongoDB en uso: `documentos` (insertar, consultar, agregar), `ubicaciones_entrega` (Seguimiento: insertar en lote, agregación del recorrido),
@@ -154,7 +158,7 @@ docker compose -f docker-compose.integrado.yml down -v                # detener 
 
 Web: `http://localhost:5000`. Servicios: puertos 5101 a 5126. Cuentas: `sistema_web/README.md` (clave `Codex#2026`, solo para desarrollo local; el
 despliegue en la nube la cambia, ver [`deploy/gcp/LEEME.md`](../deploy/gcp/LEEME.md)).
-Con un volumen de PostgreSQL ya existente, el contenedor `migraciones` aplica 06 a 11 sin borrar datos. Si el puerto
+Con un volumen de PostgreSQL ya existente, el contenedor `migraciones` aplica 06 a 13 sin borrar datos. Si el puerto
 5000 está ocupado (por ejemplo, por `sistema_web/docker-compose.yml`), detener ese compose o usar `WEB_PORT=5050`.
 
 ### Variables de entorno
@@ -173,6 +177,7 @@ Con un volumen de PostgreSQL ya existente, el contenedor `migraciones` aplica 06
 | `WEB_PORT` | `5000` | Puerto del portal web en el equipo |
 | `LIMITE_POR_MINUTO`, `LIMITE_LOGIN_POR_MINUTO` | 240 y 30 (por omisión) | Límite de consumo por IP |
 | `MICROSERVICIOS_URL` (web y servicios) | `http://{servicio}:{puerto}` | Cómo el web y cada servicio encuentran a los demás en la red de Docker |
+| `DETRAS_DE_PROXY` | `0` (`1` en la nube) | Número de proxies de confianza: con Nginx delante, la IP del cliente sale de `X-Forwarded-For` (límite por IP y bitácora) |
 
 Redes: `datos` (interna: PostgreSQL, Redis y MongoDB sin puertos al equipo) y `publica` (web y servicios). Volúmenes:
 `datos_pg` y `datos_mongo`.
@@ -193,6 +198,15 @@ python -m unittest -v pruebas.test_ola1               # 24 · inventario, precio
 python -m unittest -v pruebas.test_ola2               # 102 · los ocho servicios de la Ola 2
 python -m unittest -v pruebas.test_ola3               # 74 · monitoreo, auditoría, reportes y sincronización: servicio caído, conflictos, idempotencia
 python -m unittest -v pruebas.test_nube               # contra el bucket real, en la VM (ver deploy/gcp/LEEME.md)
+```
+
+Entrega final (contra la plataforma en marcha; cambian datos):
+
+```bash
+python pruebas/procesos_integrales.py      # P1, P2 y P3 de punta a punta → evidencias/procesos/
+python pruebas/demo_fallos_infra.py       # servicio, Redis, MongoDB, PostgreSQL, bucket y tiempo excedido → evidencias/fallos/
+python pruebas/medir_volumen.py --etiqueta 100k  # tras bloque_c/scripts/generar_volumen.py → evidencias/volumen/
+python pruebas/benchmark_algoritmos.py    # rutas y Monte Carlo, sin bases → evidencias/algoritmos/
 ```
 
 Para correr las pruebas sin instalar nada, dentro de la red de Docker del sistema integrado (`servicios/pruebas/correr.sh`).
@@ -242,8 +256,11 @@ La corrida principal se complementa con `pruebas/evidencias.py --complementarias
   regresa a la cola a los 5 minutos y falla tras 3 intentos.
 - **Un servicio de apoyo caído se nota y no deja nada a medias.** Los cálculos que necesitan otro servicio responden 503 con el motivo; los que tienen todos los datos
   escritos siguen funcionando (`pruebas/demo_fallo_ola2.py`, `evidencias/ola2/fallo_servicios.md`).
-- **MongoDB no bloquea la operación de pedidos**: si no responde, el cierre de entrega se aplica en PostgreSQL y solo se pierde
-  el rastro analítico; los servicios cuyo almacén es MongoDB (documentos, recorrido, resumen) responden 503.
+- **MongoDB no bloquea la operación de pedidos**: si no responde, el cierre de entrega se aplica en PostgreSQL (con la foto ya subida) y solo
+  se pierde el rastro analítico; los servicios cuyo almacén es MongoDB (documentos, recorrido, resumen) responden 503. Un cortacircuitos deja de
+  intentar escribir logs y métricas durante 30 s tras una falla, para que el resto de los servicios no espere la selección de servidor en cada petición.
+- **Despacho como saga.** Confirmar un plan de rutas con `despachar: true` deja las rutas y pide a entregas (dueño de la entrega) que cree y asigne
+  las entregas en una sola transacción; si entregas rechaza o no responde, rutas regresa el plan a «propuesto» (compensación).
 
 ## Límites conocidos
 
