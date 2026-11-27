@@ -652,5 +652,26 @@ class Simulacion(unittest.TestCase):
         self.assertAlmostEqual(c["diferencia"], c["utilidad_media"] - c["utilidad_sin_variacion"], places=3)
 
 
+
+class IndependenciaDelPortal(unittest.TestCase):
+    """Los microservicios no dependen del sistema web, y aun así calculan lo mismo."""
+
+    def test_ningun_servicio_importa_ni_copia_codigo_del_portal(self):
+        raiz = Path(__file__).resolve().parents[1]
+        archivos = [f for f in raiz.rglob("*") if (f.suffix == ".py" or f.name == "Dockerfile") and "pruebas" not in f.parts]
+        self.assertGreater(len(archivos), 50)
+        for f in archivos:
+            texto = f.read_text(encoding="utf-8")
+            for prohibido in ("COPY sistema_web", "/app/web", 'parents[2] / "sistema_web"'):
+                self.assertNotIn(prohibido, texto, f"{f} depende del portal")
+
+    def test_las_formulas_son_identicas_a_las_del_portal(self):
+        propia = Path(__file__).resolve().parents[1] / "comun" / "planeacion_calc.py"
+        portal = next((p for p in (Path("/sistema_web/planeacion_calc.py"), Path(__file__).resolve().parents[2] / "sistema_web" / "planeacion_calc.py")
+                       if p.is_file()), None)
+        if portal is None:
+            self.skipTest("el código del portal no está disponible en este contenedor")
+        self.assertEqual(propia.read_text(encoding="utf-8").replace("\r\n", "\n"), portal.read_text(encoding="utf-8").replace("\r\n", "\n"))
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

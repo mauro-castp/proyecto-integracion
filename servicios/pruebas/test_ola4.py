@@ -7,9 +7,11 @@ la bitácora, que es de solo escritura, las referencia).
 """
 import base64
 import datetime as dt
+import hashlib
 import json
 import os
 import sys
+import time
 import unittest
 import uuid
 from pathlib import Path
@@ -323,6 +325,36 @@ class T3PedidoYEntrega(Base):
         _, (raiz, d) = self.adm_xml.llamar("pedidos", "POST", "pedidos", cuerpo, estado=201)
         self.assertEqual(raiz, "pedido_creado")
         self.adm.llamar("pedidos", "POST", f"pedidos/{d['id']}/estado", {"estado": "cancelado", "motivo": "Prueba XML"})
+
+
+class T9Expiracion(unittest.TestCase):
+    """Los tokens vencen: un acceso vencido no entra aunque su sesión siga en Redis, y la renovación tiene plazo."""
+
+    def test_un_acceso_vencido_no_entra_en_ningun_servicio(self):
+        import jwt
+        c = Cliente(self, "json")
+        c.entrar("auditor@codex.mx")
+        bueno = c.token
+        carga = jwt.decode(bueno, config.SECRET_KEY, algorithms=[config.JWT_ALG])
+        self.assertEqual(carga["exp"] - carga["iat"], 15 * 60, "el acceso dura 15 minutos")
+        vencido = jwt.encode({**carga, "iat": int(time.time()) - 900, "exp": int(time.time()) - 5}, config.SECRET_KEY, algorithm=config.JWT_ALG)
+        self.assertTrue(datos.r_sesion.sismember(f"auth:sesion:{carga['sub']}", carga["jti"]), "la sesión sigue viva: solo está vencido")
+        c.token = vencido
+        for servicio, ruta in (("auth", "auth/validar"), ("usuarios", "usuarios/yo"), ("productos", "productos"), ("auditoria-monitoreo", "auditoria")):
+            _, d = c.llamar(servicio, "GET", ruta, estado=401)
+            self.assertEqual(d["error"]["codigo"], "TOKEN_INVALIDO", servicio)
+        c.token = bueno
+        c.llamar("auth", "GET", "auth/validar", estado=200)
+
+    def test_la_renovacion_caduca(self):
+        c = Cliente(self, "json")
+        c.entrar("auditor@codex.mx")
+        llave = "auth:refresh:" + hashlib.sha256(c.renovacion.encode()).hexdigest()
+        ttl = datos.r_sesion.ttl(llave)
+        self.assertTrue(6 * 86400 < ttl <= 7 * 86400, f"la renovación dura 7 días: {ttl}")
+        datos.r_sesion.pexpire(llave, 1)                       # se adelanta su caducidad
+        time.sleep(0.05)
+        c.llamar("auth", "POST", "auth/renovar", {"token_renovacion": c.renovacion}, token=False, estado=401)
 
 
 if __name__ == "__main__":

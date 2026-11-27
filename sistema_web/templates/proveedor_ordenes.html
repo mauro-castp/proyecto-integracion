@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block titulo %}Mis órdenes{% endblock %}
+{% block cuerpo %}
+<h1>Órdenes de compra · {{ p.nombre }}</h1>
+<p class="sub"><a href="{{ url_for('proveedor.inicio') }}">← Mi catálogo</a></p>
+{% for o in ordenes %}
+<div class="panel" style="overflow:auto">
+  <h2>{{ o.folio }} · <span class="pill {{ 'verde' if o.estado == 'recibida' else '' }}">{{ o.estado }}</span></h2>
+  <p class="ayuda">Entregar en {{ o.microhub }} ({{ o.direccion }}) · esperada el {{ o.fecha_esperada.strftime('%d/%m/%Y') }} · total {{ o.total|dinero }}</p>
+  <table><thead><tr><th>Producto</th><th class="num">Pedido</th><th class="num">Recibido</th><th class="num">Precio</th></tr></thead><tbody>
+  {% for l in lineas.get(o.id, []) %}<tr><td>{{ l.nombre }}</td><td class="num">{{ l.cantidad }}</td><td class="num">{{ l.cantidad_recibida }}</td><td class="num">{{ l.precio_compra|dinero }}</td></tr>{% endfor %}
+  </tbody></table>
+</div>
+{% else %}<div class="panel">Todavía no tienes órdenes de compra.</div>{% endfor %}
+{% endblock %}

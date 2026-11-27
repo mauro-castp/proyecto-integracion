@@ -30,7 +30,10 @@
       "peticiones_hora": 340,
       "errores_5xx_hora": 0,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 17.9,
+      "ultimo_error": "degradado: falla redis",
+      "ultimo_error_en": "2026-11-25T10:30:00-06:00"
     }
   ],
   "dependencias_caidas": [

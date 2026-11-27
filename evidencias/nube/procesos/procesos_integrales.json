@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-11-27T07:31:06+00:00",
+  "fecha": "2026-11-27T17:42:44+00:00",
   "procesos": [
     {
       "proceso": "P1 · Cierre de entrega",
@@ -7,16 +7,16 @@
         {
           "quien": "repartidor",
           "cliente": "Android",
-          "accion": "Ve sus paradas (GET entregas/mias) y elige la entrega 180",
+          "accion": "Ve sus paradas (GET entregas/mias) y elige la entrega 181",
           "ok": true,
-          "detalle": "1 paradas"
+          "detalle": "8 paradas"
         },
         {
           "quien": "repartidor",
           "cliente": "Android",
           "accion": "Sube la foto de evidencia (POST documentos)",
           "ok": true,
-          "detalle": "id 6b0931bb5317245e54eaf84f · ruta documentos/2026/11/6b0931bb5317245e54eaf84f.png"
+          "detalle": "id 6b09c114be459ba76063a611 · ruta documentos/2026/11/6b09c114be459ba76063a611.png"
         },
         {
           "quien": "repartidor",
@@ -30,35 +30,35 @@
           "cliente": "Android",
           "accion": "Cierra la entrega cobrando el total (POST entregas/resultado)",
           "ok": true,
-          "detalle": "{'entrega_id': 180, 'pedido_id': 636, 'estado_pedido': 'entregado', 'cerrado_en': '2026-11-27T01:31:08-06:00', 'duplicado': False}"
+          "detalle": "{'entrega_id': 181, 'pedido_id': 638, 'estado_pedido': 'entregado', 'cerrado_en': '2026-11-27T11:42:44-06:00', 'duplicado': False}"
         },
         {
           "quien": "—",
           "cliente": "PostgreSQL",
           "accion": "El pedido quedó entregado",
           "ok": true,
-          "detalle": "PED-20261127-000636: entregado"
+          "detalle": "PED-20261127-000638: entregado"
         },
         {
           "quien": "—",
           "cliente": "PostgreSQL · auditoría",
           "accion": "Los triggers auditaron el cierre",
           "ok": true,
-          "detalle": "8 registros"
+          "detalle": "2 registros"
         },
         {
           "quien": "cliente",
           "cliente": "notificación",
           "accion": "El cliente recibió el aviso",
           "ok": true,
-          "detalle": "Pedido PED-20261127-000636"
+          "detalle": "Pedido PED-20261127-000638"
         },
         {
           "quien": "—",
           "cliente": "MongoDB + bucket",
           "accion": "La foto: metadatos en MongoDB y el archivo en el almacén",
           "ok": true,
-          "detalle": "documentos/2026/11/6b0931bb5317245e54eaf84f.png · gcs · sha256 c414cd0e204d…"
+          "detalle": "documentos/2026/11/6b09c114be459ba76063a611.png · gcs · sha256 c414cd0e204d…"
         },
         {
           "quien": "—",
@@ -76,13 +76,20 @@
         }
       ],
       "ids": {
-        "entrega": 180,
-        "pedido": 636
+        "entrega": 181,
+        "pedido": 638
       }
     },
     {
       "proceso": "P2 · Reabastecimiento",
       "pasos": [
+        {
+          "quien": "operador",
+          "cliente": "API inventario",
+          "accion": "Registra una merma del producto 3: queda agotado",
+          "ok": true,
+          "detalle": "8 u."
+        },
         {
           "quien": "operador",
           "cliente": "web",
@@ -93,9 +100,9 @@
         {
           "quien": "operador",
           "cliente": "web",
-          "accion": "Crea la solicitud de compra (41 u. del producto 16)",
+          "accion": "Crea la solicitud de compra (24 u. del producto 3)",
           "ok": true,
-          "detalle": "SC-20261127-000026"
+          "detalle": "SC-20261127-000028"
         },
         {
           "quien": "administrador",
@@ -109,7 +116,7 @@
           "cliente": "web",
           "accion": "Emite la orden de compra al proveedor (respeta su pedido mínimo)",
           "ok": true,
-          "detalle": "OC-20261127-000022"
+          "detalle": "OC-20261127-000024"
         },
         {
           "quien": "operador",
@@ -123,28 +130,28 @@
           "cliente": "PostgreSQL",
           "accion": "La existencia subió en inventario (entrada por el servicio de inventario)",
           "ok": true,
-          "detalle": "7 → 48"
+          "detalle": "0 → 24"
         },
         {
           "quien": "—",
           "cliente": "MongoDB + bucket",
           "accion": "El comprobante: metadatos en MongoDB y el archivo en el almacén",
           "ok": true,
-          "detalle": "documentos/2026/11/6b0931bf5317245e54eaf858.pdf · gcs"
+          "detalle": "documentos/2026/11/6b09c119be459ba76063a61c.pdf · gcs"
         },
         {
           "quien": "planeador / operador",
           "cliente": "notificación",
           "accion": "Los triggers avisaron la solicitud y la orden",
           "ok": true,
-          "detalle": "Solicitud de compra SC-20261127-000026; Solicitud de compra SC-20261127-000026; Orden de compra OC-20261127-000022"
+          "detalle": "Solicitud de compra SC-20261127-000028; Solicitud de compra SC-20261127-000028; Orden de compra OC-20261127-000024"
         },
         {
           "quien": "—",
           "cliente": "PostgreSQL · auditoría",
           "accion": "Auditoría de solicitud, orden e inventario",
           "ok": true,
-          "detalle": "101 registros"
+          "detalle": "29 registros"
         },
         {
           "quien": "operador",
@@ -162,9 +169,9 @@
         }
       ],
       "ids": {
-        "solicitud": 26,
-        "orden": 22,
-        "producto": 16
+        "solicitud": 28,
+        "orden": 24,
+        "producto": 3
       }
     },
     {
@@ -189,7 +196,7 @@
           "cliente": "web",
           "accion": "Propone el plan de rutas (TSP exacto / 2-opt en el servicio de rutas)",
           "ok": true,
-          "detalle": "plan 25"
+          "detalle": "plan 27"
         },
         {
           "quien": "planeador",
@@ -210,7 +217,7 @@
           "cliente": "notificación",
           "accion": "Cada repartidor recibió «Nueva entrega asignada»",
           "ok": true,
-          "detalle": "13 avisos"
+          "detalle": "6 avisos"
         },
         {
           "quien": "repartidor",
@@ -231,7 +238,7 @@
           "cliente": "PostgreSQL + bucket",
           "accion": "La exportación quedó archivada: ruta y SHA-256 en la base, el archivo en el almacén",
           "ok": true,
-          "detalle": "reportes/2026/11/17.pdf · gcs · 3c346494f130…"
+          "detalle": "reportes/2026/11/21.pdf · gcs · 5fe898c35a8d…"
         },
         {
           "quien": "planeador",
@@ -245,12 +252,12 @@
           "cliente": "PostgreSQL · auditoría",
           "accion": "Auditoría de las entregas asignadas y del enlace de descarga",
           "ok": true,
-          "detalle": "23 registros"
+          "detalle": "10 registros"
         }
       ],
       "ids": {
-        "plan": 25,
-        "exportacion": 17
+        "plan": 27,
+        "exportacion": 21
       }
     }
   ]

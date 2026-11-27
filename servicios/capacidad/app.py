@@ -12,7 +12,7 @@ Servicio de capacidad · puerto 5117 · contrato v1
   POST /api/v1/capacidad/colas                     teoría de colas M/M/1 y M/M/c: espera en fila y operadores necesarios
 
 Responsabilidad única: cuántos pedidos puede procesar un microhub y qué tan cerca está de saturarse.
-Usa las fórmulas de sistema_web/planeacion_calc.py (pc.capacidad), las mismas del portal y de planeación.
+Usa las fórmulas de comun/planeacion_calc.py (pc.capacidad), las mismas del portal y de planeación.
 
 Modelo: cada operador hace picking, empaque y despacho uno tras otro, así que su ritmo combinado es
 1 ÷ (1/picking + 1/empaque + 1/despacho). El reparto depende de cuántos repartidores hay, de la distancia y de las

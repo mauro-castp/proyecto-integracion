@@ -53,7 +53,10 @@ Estado al 27 de noviembre (detalle y resultados en `entrega/PRUEBAS_APPS_ENTREGA
 - [x] **Android, repartidor:** «Navegar al domicilio».
 - [x] **Escritorio para operadores:** inventario, preparar pedidos, asignar repartidores, manifiestos, revisar surtido y configurar capacidad.
 - [x] **Algoritmos M/M/1 y M/M/c** (servicio de capacidad, documentados en `docs/ALGORITMOS.md` §3).
-- [ ] **Perfil proveedor con cuenta:** no se hizo (los proveedores son un catálogo); queda en Limitaciones del expediente.
+- [x] **Perfil proveedor con cuenta:** portal web `/proveedor` (órdenes y oferta), rol y permiso en `17_perfil_proveedor.sql`.
+- [x] **Recuperación de contraseña** en el portal (`/recuperar`), enlace de un solo uso de 30 minutos.
+- [x] **Servicios independientes del portal**, **monitor** con tiempo promedio y último error, prueba de **token vencido** y
+      Locust sobre los 26 servicios.
 - [x] **Probado en la PC de Mauro:** Docker con `16_apps_cliente.sql`, Android 8/8 en el emulador, escritorio 218/218 y prueba a mano.
 - [ ] **Después de unir:** volver a desplegar en la nube, regenerar los instaladores desde `main` (Release v1.1) y el Word del expediente.
 

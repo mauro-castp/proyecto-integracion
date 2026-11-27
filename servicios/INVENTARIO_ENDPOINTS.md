@@ -30,12 +30,12 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | auditoria-monitoreo | GET | `/api/v1/auditoria` | AUD-01, AUD-06 |
 | auditoria-monitoreo | GET | `/api/v1/auditoria/accesos` | AUD-02 |
 | auditoria-monitoreo | GET | `/api/v1/auditoria/trazabilidad/pedido/<int:pid>` | AUD-03, F1-19 |
-| auditoria-monitoreo | GET | `/api/v1/auditoria/trazabilidad/entrega/<int:eid>` | AUD-04, F3-06 |
+| auditoria-monitoreo | GET | `/api/v1/auditoria/trazabilidad/entrega/<int:eid>` | AUD-04 |
 | auditoria-monitoreo | GET | `/api/v1/auditoria/trazabilidad/inventario` | AUD-05, F2-09 |
 | auth | POST | `/api/v1/auth/login` | AUTH-01, AUTH-02, AUTH-03, AUTH-04, AUTH-05 |
 | auth | POST | `/api/v1/auth/renovar` | AUTH-08, AUTH-09 |
 | auth | POST | `/api/v1/auth/salir` | AUTH-10 |
-| auth | GET | `/api/v1/auth/validar` | AUTH-06, AUTH-07, MON-01 |
+| auth | GET | `/api/v1/auth/validar` | AUTH-06, AUTH-07, AUTH-12, MON-01 |
 | capacidad | GET | `/api/v1/capacidad/recursos` | CAP-01 |
 | capacidad | GET | `/api/v1/capacidad/recursos/<int:mid>` | CAP-02 |
 | capacidad | PUT | `/api/v1/capacidad/recursos/<int:mid>` | CAP-09, CAP-10, CAP-11, F1-06 |
@@ -43,7 +43,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | capacidad | GET | `/api/v1/capacidad/microhubs/<int:mid>` | CAP-03, CAP-04, CAP-05, CAP-06 |
 | capacidad | POST | `/api/v1/capacidad/simulaciones` | CAP-07 |
 | capacidad | GET | `/api/v1/capacidad/cargas` | CAP-08 |
-| capacidad | POST | `/api/v1/capacidad/colas` |  |
+| capacidad | POST | `/api/v1/capacidad/colas` | CAP-13, CAP-14, CAP-15, CAP-16 |
 | capacidad | GET | `/api/v1/capacidad/supuestos` | CAP-12 |
 | cobertura | GET | `/api/v1/cobertura/zonas` | COB-01 |
 | cobertura | GET | `/api/v1/cobertura/resumen` | COB-02, COB-03 |
@@ -85,15 +85,15 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | entregas | GET | `/api/v1/entregas/mias` | ENT-01, F1-14 |
 | entregas | GET | `/api/v1/entregas` | ENT-11 |
 | entregas | GET | `/api/v1/entregas/<int:eid>` | ENT-02, ENT-03, ENT-08 |
-| entregas | POST | `/api/v1/entregas` | ENT-A1, ENT-A2, ENT-A3, F1-13, F3-02 |
+| entregas | POST | `/api/v1/entregas` | F1-13 |
 | entregas | POST | `/api/v1/entregas/asignaciones` | ENT-B1, ENT-B2, ENT-B3 |
-| entregas | POST | `/api/v1/entregas/recepciones` |  |
+| entregas | POST | `/api/v1/entregas/recepciones` | ENT-12, ENT-13 |
 | entregas | POST | `/api/v1/entregas/<int:eid>/resultado` | ENT-04, ENT-05, ENT-06, ENT-07, ENT-09 y 4 más |
 | inventario | GET | `/api/v1/inventario` | INV-01, INV-02, INV-03, INV-04, INV-05 |
 | inventario | GET | `/api/v1/inventario/<int:mid>/<int:pid>` | INV-06 |
 | inventario | PATCH | `/api/v1/inventario/<int:mid>/<int:pid>/minimo` | INV-18, INV-19, F2-02 |
 | inventario | PUT | `/api/v1/inventario/<int:mid>/<int:pid>/minimo` | INV-23 |
-| inventario | GET | `/api/v1/inventario/movimientos` | INV-22, F3-07 |
+| inventario | GET | `/api/v1/inventario/movimientos` | INV-22 |
 | inventario | POST | `/api/v1/inventario/movimientos` | INV-07, INV-08, INV-09, INV-10, INV-11 y 1 más |
 | inventario | POST | `/api/v1/inventario/transferencias` | INV-12, INV-13, F1-08a, F1-08b |
 | inventario | GET | `/api/v1/inventario/reservas` | INV-16 |
@@ -107,7 +107,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | microhubs | PATCH | `/api/v1/microhubs/<int:mid>` | MIC-A2 |
 | microhubs | PUT | `/api/v1/microhubs/<int:mid>` | MIC-A3 |
 | microhubs | DELETE | `/api/v1/microhubs/<int:mid>` | MIC-A5, F1-21 |
-| notificaciones | GET | `/api/v1/notificaciones` | NOT-04, NOT-05, F1-18, F3-05 |
+| notificaciones | GET | `/api/v1/notificaciones` | NOT-04, NOT-05, F1-18 |
 | notificaciones | GET | `/api/v1/notificaciones/conteo` | NOT-06 |
 | notificaciones | POST | `/api/v1/notificaciones/<int:nid>/leer` | NOT-07, NOT-08 |
 | notificaciones | POST | `/api/v1/notificaciones/leer-todas` | NOT-09 |
@@ -121,7 +121,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | pedidos | POST | `/api/v1/pedidos/<int:pid>/estado` | PED-07, F1-10 |
 | pedidos | PATCH | `/api/v1/pedidos/<int:pid>/estado` | PED-08 |
 | pedidos | POST | `/api/v1/pedidos` | PED-A1, PED-A2, PED-A3, F1-09, F2-01 y 1 más |
-| pedidos | POST | `/api/v1/pedidos/<int:pid>/listo` | PED-A4, F1-11 |
+| pedidos | POST | `/api/v1/pedidos/<int:pid>/listo` | F1-11 |
 | pedidos | GET | `/api/v1/pedidos/resumen` | ALI-01, ALI-02 |
 | pedidos | GET | `/api/v1/pedidos/ventas` | ALI-03 |
 | pedidos | GET | `/api/v1/pedidos/listos` | ALI-04, ALI-05, RUT-01 |
@@ -178,7 +178,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | reportes | GET | `/api/v1/reportes` | REP-01, REP-09 |
 | reportes | GET | `/api/v1/reportes/<clave>` | REP-03, REP-04, REP-08 |
 | reportes | GET | `/api/v1/reportes/<clave>/grafica` | REP-05, F1-20 |
-| reportes | GET | `/api/v1/reportes/<clave>/exportar` | REP-06, F2-10, F3-08 |
+| reportes | GET | `/api/v1/reportes/<clave>/exportar` | REP-06, F2-10 |
 | reportes | GET | `/api/v1/reportes/exportaciones/<int:eid>/enlace` | REP-A1, REP-A2 |
 | reportes | GET | `/api/v1/reportes/descarga` | REP-A3, REP-A4 |
 | reportes | GET | `/api/v1/reportes/exportaciones` | REP-07 |
@@ -200,7 +200,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | simulacion | POST | `/api/v1/simulacion/ejecuciones/<eid>/repetir` | SIM-03 |
 | simulacion | GET | `/api/v1/simulacion/comparacion` | SIM-06 |
 | simulacion | GET | `/api/v1/simulacion/supuestos` | SIM-18 |
-| sincronizacion | POST | `/api/v1/sincronizacion/lotes` | SYN-01, SYN-02, SYN-03, SYN-10, SYN-11 y 2 más |
+| sincronizacion | POST | `/api/v1/sincronizacion/lotes` | SYN-01, SYN-02, SYN-03, SYN-10, SYN-11 |
 | sincronizacion | GET | `/api/v1/sincronizacion/lotes` | SYN-05 |
 | sincronizacion | GET | `/api/v1/sincronizacion/lotes/<int:lid>` | SYN-06 |
 | sincronizacion | GET | `/api/v1/sincronizacion/pendientes` | SYN-07 |
@@ -216,7 +216,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | surtido | PATCH | `/api/v1/surtido/restricciones/<int:mid>` | SUR-19 |
 | surtido | PUT | `/api/v1/surtido/restricciones/<int:mid>` | SUR-10, SUR-11, SUR-12 |
 | surtido | GET | `/api/v1/surtido/supuestos` | SUR-17 |
-| usuarios | GET | `/api/v1/usuarios/yo` | AUTH-11, USR-01, USR-02 |
+| usuarios | GET | `/api/v1/usuarios/yo` | AUTH-11, AUTH-13, USR-01, USR-02 |
 | usuarios | PATCH | `/api/v1/usuarios/yo` | USR-03, USR-04 |
 | usuarios | PUT | `/api/v1/usuarios/yo` | USR-08 |
 | usuarios | GET | `/api/v1/usuarios` | USR-05, USR-06 |

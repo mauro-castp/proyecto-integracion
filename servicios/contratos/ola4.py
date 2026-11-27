@@ -6,7 +6,7 @@ El orden de los campos es el orden en que el XML de entrada debe traerlos (xs:se
 """
 from generar import F
 
-ROLES = ["administrador", "operador", "planeador", "cliente", "repartidor", "auditor", "analista", "supervisor"]
+ROLES = ["administrador", "operador", "planeador", "cliente", "repartidor", "auditor", "analista", "supervisor", "proveedor"]
 ESTATUS = ["activo", "inactivo"]
 
 

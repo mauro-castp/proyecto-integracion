@@ -12,11 +12,19 @@ Cada perfil ve solo lo que le corresponde. Se entra en **https://34-51-89-253.ss
 | Repartidor | Entrega, toma evidencia y cierra | App Android |
 | Planeador | Analiza viabilidad, planea rutas y reportes | Portal web y app de escritorio |
 | Administrador | Usuarios, catálogos, aprobaciones, monitoreo | Portal web |
+| Proveedor | Ve sus órdenes de compra y actualiza su oferta | Portal web |
 | Auditor | Consulta la bitácora y la trazabilidad, sin modificar nada | Portal web y app de escritorio |
 
 **Inicio de sesión.** Correo y clave. Después de 5 intentos fallidos la cuenta se bloquea un rato (RN). Desde una misma conexión se
 permiten hasta 30 inicios de sesión por minuto. La sesión dura 15 minutos y se renueva sola mientras se usa. «Salir» la cierra en
 todos los servicios.
+
+**¿Olvidaste tu contraseña?** (portal web)
+
+1. En la pantalla de entrada pulsa **¿Olvidaste tu contraseña?** y escribe tu correo. La respuesta es la misma exista o no la cuenta.
+2. Recibes un enlace que sirve **una sola vez** y vence en **30 minutos**. Llega por correo si el sistema tiene un servidor de correo
+   configurado; si no, llega como aviso a quien administra, que comprueba tu identidad y te lo hace llegar.
+3. Escribe la contraseña nueva. Se cierran todas tus sesiones abiertas.
 
 ---
 
@@ -110,6 +118,16 @@ todos los servicios.
   última verificación, los ms, los errores 5xx por hora, la disponibilidad de 24 h, el p95, las dependencias caídas y las alertas.
   «Verificar ahora» fuerza una ronda. «Reconocer» marca que ya viste una alerta; la alerta se cierra sola cuando el servicio vuelve.
 - **Microservicios** (`/web/servicios`). Muestra la salud de cada servicio y una respuesta XML real.
+
+## Proveedor
+
+En el portal web, con la cuenta que te dio quien administra (en local: `proveedor@codex.mx`).
+
+- **Mi oferta** (`/proveedor`). Tus datos, tus órdenes abiertas y tu catálogo. Puedes actualizar el **precio de compra** y la
+  **capacidad semanal** de tus productos; el cambio queda en la bitácora.
+- **Mis órdenes** (`/proveedor/ordenes`). Las órdenes de compra que se te han emitido, con el microhub de entrega, la fecha esperada,
+  sus líneas y cuánto se ha recibido.
+- No ves datos de otros proveedores.
 
 ## Auditor
 

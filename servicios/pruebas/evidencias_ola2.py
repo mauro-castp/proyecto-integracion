@@ -212,6 +212,16 @@ def ejecutar_ola2(ev, h):
             cuerpo={"operadores": 9, "repartidores": 9}, token=t_op1, esperado=403)
     ev.caso("CAP-11", "capacidad", "Personal inválido", "Al menos un operador.", "PUT", f"capacidad/recursos/{hub1}", cuerpo={"operadores": 0, "repartidores": 3},
             token=t_plan, esperado=422)
+    cola = {"llegadas_hora": 10, "servicio_hora": 4, "servidores": 3, "espera_objetivo_min": 5}
+    ev.caso("CAP-13", "capacidad", "Fila M/M/c de un microhub", "Utilización, probabilidad de esperar, espera y operadores necesarios.", "POST",
+            "capacidad/colas", cuerpo=cola, token=t_plan,
+            verificar=lambda r: r.json["modelo"] == "M/M/c" and r.json["estable"] and r.json["servidores_requeridos"] >= 3)
+    ev.caso("CAP-14", "capacidad", "Un solo operador (M/M/1)", "Con más llegadas que servicio la fila no es estable.", "POST", "capacidad/colas",
+            cuerpo={**cola, "servidores": 1}, token=t_plan, verificar=lambda r: r.json["modelo"] == "M/M/1" and not r.json["estable"])
+    ev.caso("CAP-15", "capacidad", "Faltan datos para la fila", "Sin llegadas, servicio, operadores ni microhub.", "POST", "capacidad/colas",
+            cuerpo={}, token=t_plan, esperado=422)
+    ev.caso("CAP-16", "capacidad", "Fila sin permiso", "El cliente no tiene capacidad.ver.", "POST", "capacidad/colas", cuerpo=cola, token=t_cli,
+            esperado=403)
     ev.caso("CAP-12", "capacidad", "Supuestos de la capacidad", "Productividad por etapa, umbrales y horas del turno.", "GET", "capacidad/supuestos", token=t_adm,
             verificar=lambda r: {"picking_pedidos_hora", "umbral_utilizacion_riesgo"} <= {s["clave"] for s in r.json["datos"]})
 

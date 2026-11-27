@@ -5,6 +5,7 @@ docker compose -p microhubs-web-prueba exec -e WEB_PRUEBA_AISLADA=1 web python p
 import io
 import os
 import re
+import uuid
 from pathlib import Path
 import unittest
 
@@ -12,7 +13,7 @@ if os.environ.get('WEB_PRUEBA_AISLADA') != '1':
     raise SystemExit('Usa WEB_PRUEBA_AISLADA=1 exclusivamente con una base de pruebas aislada.')
 
 from app import app
-from nucleo import consultar, con_actual
+from nucleo import consultar, con_actual, hashear
 from flask import g
 
 
@@ -100,6 +101,79 @@ class IntegracionWeb(unittest.TestCase):
                     raise RollbackPrueba()
             except RollbackPrueba:
                 pass
+
+
+class RecuperacionYProveedor(unittest.TestCase):
+    """Recuperación de contraseña y perfil de proveedor, contra PostgreSQL y Redis reales."""
+
+    def csrf(self, cliente, ruta):
+        html = cliente.get(ruta).get_data(as_text=True)
+        return re.search(r'name="csrf" value="([^"]+)"', html).group(1)
+
+    def entrar(self, correo, clave):
+        c = app.test_client()
+        return c, c.post('/entrar', data={'correo': correo, 'clave': clave}).status_code
+
+    def test_07_recuperacion_de_contrasena(self):
+        correo = f'recupera.{uuid.uuid4().hex[:8]}@ejemplo.mx'
+        with app.test_request_context():
+            with con_actual() as con, con.cursor() as cur:
+                cur.execute("INSERT INTO usuario (nombre, apellidos, correo, hash_contrasena, rol_id) SELECT 'Prueba', 'Recuperación', %s, %s, id "
+                            "FROM rol WHERE clave = 'cliente' RETURNING id", (correo, hashear('Anterior123')))
+                uid = cur.fetchone()['id']
+        try:
+            sesion, estado = self.entrar(correo, 'Anterior123')
+            self.assertEqual(estado, 302)
+            self.assertEqual(sesion.get('/mis-pedidos').status_code, 200)
+            c = app.test_client()
+            token_f = self.csrf(c, '/recuperar')
+            self.assertEqual(c.post('/recuperar', data={'correo': correo}).status_code, 400, 'sin CSRF no se acepta')
+            r = c.post('/recuperar', data={'csrf': token_f, 'correo': correo}, follow_redirects=True)
+            self.assertIn('Si la cuenta existe', r.get_data(as_text=True))
+            otra = c.post('/recuperar', data={'csrf': token_f, 'correo': 'nadie@ejemplo.mx'}, follow_redirects=True)
+            self.assertIn('Si la cuenta existe', otra.get_data(as_text=True), 'no revela qué cuentas existen')
+            with app.test_request_context():
+                aviso = consultar("SELECT mensaje FROM web_notificacion WHERE emisor_id = %s ORDER BY id DESC LIMIT 1", (uid,), una=True)
+            ruta = re.search(r'/restablecer/[\w-]+', aviso['mensaje']).group(0)
+            token_f = self.csrf(c, ruta)
+            corta = c.post(ruta, data={'csrf': token_f, 'clave': 'corta1', 'repetida': 'corta1'})
+            self.assertEqual(corta.status_code, 422)
+            r = c.post(ruta, data={'csrf': token_f, 'clave': 'Nueva12345', 'repetida': 'Nueva12345'})
+            self.assertEqual(r.status_code, 302)
+            self.assertEqual(self.entrar(correo, 'Anterior123')[1], 401)
+            self.assertEqual(self.entrar(correo, 'Nueva12345')[1], 302)
+            self.assertNotEqual(sesion.get('/mis-pedidos').status_code, 200, 'la sesión anterior quedó cerrada')
+            self.assertIn('/recuperar', c.get(ruta).headers.get('Location', ''), 'el enlace sirve una sola vez')
+        finally:
+            with app.test_request_context():
+                with con_actual() as con, con.cursor() as cur:
+                    cur.execute("UPDATE usuario SET estatus = 'baja', fecha_baja = now() WHERE id = %s", (uid,))
+
+    def test_08_portal_del_proveedor(self):
+        prov, estado = self.entrar('proveedor@codex.mx', 'Codex#2026')
+        self.assertEqual(estado, 302)
+        html = prov.get('/proveedor').get_data(as_text=True)
+        self.assertIn('Mi catálogo y mi oferta', html)
+        self.assertEqual(prov.get('/proveedor/ordenes').status_code, 200)
+        self.assertEqual(prov.get('/admin/usuarios').status_code, 403)
+        with app.test_request_context():
+            f = consultar("SELECT pp.proveedor_id, pp.producto_id, pp.precio_compra, pp.capacidad_semanal FROM proveedor_producto pp "
+                          "JOIN proveedor p ON p.id = pp.proveedor_id JOIN usuario u ON u.id = p.usuario_id WHERE u.correo = 'proveedor@codex.mx' "
+                          "ORDER BY pp.producto_id LIMIT 1", una=True)
+            ajeno = consultar("SELECT id FROM producto WHERE id NOT IN (SELECT producto_id FROM proveedor_producto WHERE proveedor_id = %s) "
+                              "ORDER BY id LIMIT 1", (f['proveedor_id'],), una=True)
+        token_f = self.csrf(prov, '/proveedor')
+        datos_f = {'csrf': token_f, 'producto_id': f['producto_id'], 'precio_compra': '12.34', 'capacidad_semanal': '77'}
+        self.assertEqual(prov.post('/proveedor', data=datos_f).status_code, 302)
+        leer = "SELECT precio_compra, capacidad_semanal FROM proveedor_producto WHERE proveedor_id = %s AND producto_id = %s"
+        with app.test_request_context():
+            nuevo = consultar(leer, (f['proveedor_id'], f['producto_id']), una=True)
+        self.assertEqual((str(nuevo['precio_compra']), nuevo['capacidad_semanal']), ('12.34', 77))
+        if ajeno:
+            self.assertEqual(prov.post('/proveedor', data={**datos_f, 'producto_id': ajeno['id']}).status_code, 404)
+        prov.post('/proveedor', data={**datos_f, 'precio_compra': str(f['precio_compra']), 'capacidad_semanal': str(f['capacidad_semanal'])})
+        admin, _ = self.entrar('admin@codex.mx', 'Codex#2026')
+        self.assertEqual(admin.get('/proveedor').status_code, 403, 'el portal es del proveedor')
 
 
 if __name__ == '__main__':

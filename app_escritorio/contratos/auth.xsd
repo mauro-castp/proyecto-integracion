@@ -51,6 +51,7 @@
             <xs:enumeration value="planeador"/>
             <xs:enumeration value="cliente"/>
             <xs:enumeration value="repartidor"/>
+            <xs:enumeration value="proveedor"/>
             <xs:enumeration value="auditor"/>
             <xs:enumeration value="analista"/>
             <xs:enumeration value="supervisor"/>
@@ -132,6 +133,7 @@
             <xs:enumeration value="planeador"/>
             <xs:enumeration value="cliente"/>
             <xs:enumeration value="repartidor"/>
+            <xs:enumeration value="proveedor"/>
             <xs:enumeration value="auditor"/>
             <xs:enumeration value="analista"/>
             <xs:enumeration value="supervisor"/>

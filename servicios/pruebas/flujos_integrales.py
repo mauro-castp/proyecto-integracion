@@ -40,6 +40,14 @@ def lineas_con_existencia(hub, n=2, minimo=40):
                         "WHERE i.microhub_id = %s AND i.existencia >= %s ORDER BY p.precio DESC LIMIT %s", (hub, minimo, n))
 
 
+def lineas_en_todos_los_microhubs(n=2, minimo=20):
+    """Productos con existencia en todos los microhubs activos: sirve sea cual sea el que cubra la zona del cliente."""
+    return bd.consultar("SELECT i.producto_id FROM inventario i JOIN producto p ON p.id = i.producto_id AND p.estatus = 'activo' "
+                        "JOIN microhub m ON m.id = i.microhub_id AND m.estatus = 'activo' GROUP BY i.producto_id, p.precio "
+                        "HAVING min(i.existencia) >= %s AND count(*) = (SELECT count(*) FROM microhub WHERE estatus = 'activo') "
+                        "ORDER BY p.precio DESC LIMIT %s", (minimo, n))
+
+
 def evidencia_archivo(ev, token, ref_tipo, ref_id, nombre):
     r = ev.http("documentos", "POST", "documentos", {"nombre": nombre, "tipo_mime": "image/jpeg", "contenido_base64": B64,
                                                      "referencia": {"tipo": ref_tipo, "id": str(ref_id)}}, token=token)[0]
@@ -203,8 +211,7 @@ def flujo3(ev):
     adm, aud, rep = ev.entrar("admin@codex.mx"), ev.entrar("auditor@codex.mx"), ev.entrar("repartidor1@codex.mx")
     cli = ev.entrar("juan.chapa1@correo.mx")
     rid = uno("SELECT id FROM usuario WHERE correo = 'repartidor1@codex.mx'")["id"]
-    hub = uno("SELECT id FROM microhub WHERE clave = 'MH-01'")["id"]
-    productos = lineas_con_existencia(hub, 2, 20)
+    productos = lineas_en_todos_los_microhubs(2, 20)
     r = ev.caso("F3-01", "pedidos", "El cliente hace un pedido", "Punto de partida del recorrido.", "POST", "pedidos",
                 cuerpo={"lineas": [{"producto_id": p["producto_id"], "cantidad": 3} for p in productos]}, token=cli, esperado=201, verificar=lambda x: x.json["asignado"])
     if r is None or r.status != 201 or not r.json["asignado"]:

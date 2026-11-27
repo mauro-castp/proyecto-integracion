@@ -272,6 +272,17 @@ def ejecutar(ev):
                 "usuarios/yo", token=nueva["token_acceso"], esperado=401,
                 explicacion="El servicio de usuarios consulta auth:jti:revocado en Redis: la revocación es común a todos.")
 
+    import jwt as _jwt
+    from comun import config as _cfg
+    t_venc = ev.entrar("repartidor1@codex.mx")
+    _carga = _jwt.decode(t_venc, _cfg.SECRET_KEY, algorithms=[_cfg.JWT_ALG])
+    _vencido = _jwt.encode({**_carga, "iat": int(time.time()) - 900, "exp": int(time.time()) - 5}, _cfg.SECRET_KEY, algorithm=_cfg.JWT_ALG)
+    ev.caso("AUTH-12", "auth", "Token vencido", "Pasada su vigencia no entra, aunque la sesión siga en Redis.", "GET", "auth/validar",
+            token=_vencido, esperado=401, verificar=lambda r: r.json["error"]["codigo"] == "TOKEN_INVALIDO",
+            evidencia=lambda r: [rd((0, "SISMEMBER", f"auth:sesion:{_carga['sub']}", _carga["jti"]))])
+    ev.caso("AUTH-13", "usuarios", "Token vencido en otro servicio", "La expiración se revisa en todos los servicios.", "GET", "usuarios/yo",
+            token=_vencido, esperado=401)
+
     # ---------- 2. USUARIOS ----------
     print("2. Usuarios (5102)")
     t_adm = ev.entrar("admin@codex.mx")
@@ -491,6 +502,17 @@ def ejecutar(ev):
                                         "WHERE referencia_id = %s AND tipo = 'devolucion_parcial'", (det2["pedido_id"],))])
     ev.caso("ENT-11", "entregas", "Entregas de un pedido (administrador)", "Consulta por pedido para el portal web.", "GET",
             f"entregas?pedido_id={det1['pedido_id']}", token=t_adm, verificar=lambda r: r.json["paginacion"]["total"] == 1)
+
+    dueno = bd.consultar("SELECT u.correo FROM pedido p JOIN cliente c ON c.id = p.cliente_id JOIN usuario u ON u.id = c.usuario_id "
+                         "WHERE p.id = %s", (det1["pedido_id"],), una=True)
+    if dueno:
+        t_dueno = ev.entrar(dueno["correo"])
+        recibido = {"pedido_id": det1["pedido_id"], "conforme": True}
+        ev.caso("ENT-12", "entregas", "El cliente confirma la recepción", "Solo quien hizo el pedido, ya cerrada la entrega.", "POST",
+                "entregas/recepciones", cuerpo=recibido, token=t_dueno, verificar=lambda r: r.json["conforme"] is True,
+                evidencia=lambda r: [pg("SELECT id, resultado, confirmacion_recepcion FROM entrega WHERE pedido_id = %s", (det1["pedido_id"],))])
+        ev.caso("ENT-13", "entregas", "El repartidor no confirma por el cliente", "La confirmación es del cliente.", "POST",
+                "entregas/recepciones", cuerpo=recibido, token=t_rep, esperado=403)
 
     # ---------- 10. PLANEACIÓN ----------
     print("10. Planeación (5106)")

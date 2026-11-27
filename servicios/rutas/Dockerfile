@@ -15,7 +15,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Contrato v1: XSD (validación XML) y ejemplos oficiales JSON y XML (Swagger).
 COPY app_escritorio/contratos /app/contratos
 COPY app_movil/app/src/test/resources/contratos /app/ejemplos_json
-COPY sistema_web/planeacion_calc.py /app/web/
 COPY servicios/comun /app/comun
 COPY servicios/pruebas /app/pruebas
 COPY servicios/migrar.py /app/migrar.py

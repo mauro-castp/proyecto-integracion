@@ -109,8 +109,9 @@ Cada servicio tiene **su propio Dockerfile** (`servicios/<servicio>/Dockerfile`)
 | Registro | `base.py` | Cada petición: `logs_tecnicos` y `metricas_servicio` en MongoDB, sin tokens ni contraseñas |
 | Auditoría | PostgreSQL | El servicio declara quién actúa (`app.usuario_id`, `app.rol`); los triggers del motor auditan y validan transiciones |
 
-Los cálculos de planeación **no se duplican**: el servicio usa `sistema_web/planeacion_calc.py` y las consultas de
-`sistema_web/planeacion.py`. Web, servicio y escritorio dan los mismos números.
+Los servicios **no dependen del portal**: usan `comun/planeacion_calc.py` (fórmulas puras) y `comun/consultas_planeacion.py`, y sus
+imágenes se construyen sin `sistema_web/`. El portal conserva su propia copia de las fórmulas; la prueba `IndependenciaDelPortal`
+exige que sean idénticas, así que web, servicio y escritorio dan los mismos números.
 
 ## Datos que agrega este parcial
 
@@ -127,6 +128,9 @@ Los cálculos de planeación **no se duplican**: el servicio usa `sistema_web/pl
   e `ix_detalle_pedido_cubriente` (ver `evidencias/volumen/LEEME.md`).
 - `bloque_c/sql/13_entrega_final.sql`: ruta del archivo de cada exportación de reportes en el bucket.
 - `bloque_c/sql/14_pedidos_api.sql`: `pedido.operacion_uuid`, para que reenviar el mismo pedido por la API no lo duplique.
+- `bloque_c/sql/15_archivos_bucket.sql`: los archivos del portal van al almacén de objetos.
+- `bloque_c/sql/16_apps_cliente.sql`: confirmación de recepción y soporte de las pantallas nuevas de las apps.
+- `bloque_c/sql/17_perfil_proveedor.sql`: rol `proveedor`, permiso `proveedor.portal` y la liga entre cuenta y proveedor.
 - `bloque_c/sql/15_archivos_bucket.sql`: retira la tabla donde el portal guardaba archivos; ahora van al almacén (servicio `documentos`).
 - `bloque_c/sql/16_apps_cliente.sql`: `sincronizacion.usar` para el cliente (pedidos hechos sin red en la app Android). Lo aplica `migrar.py`.
 - Cierre de la entrega final: `POST capacidad/colas` (M/M/1 y M/M/c, `comun/colas.py`), `POST entregas/recepciones` (el cliente confirma

@@ -180,6 +180,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:13px;background:var(-
         <a href="{{ url_for('cliente.mis_pedidos') }}" class="{{ 'sel' if ep in ['cliente.mis_pedidos','cliente.pedido','cliente.cancelar'] }}">Mis pedidos</a>
       {% endif %}
       {% if 'pedidos.cambiar_estado' in permisos %}<a href="{{ url_for('operacion.bandeja') }}" class="{{ 'sel' if ep in ['operacion.bandeja','operacion.detalle','operacion.cambiar_estado','operacion.cerrar'] }}">Bandeja</a>{% endif %}
+      {% if 'proveedor.portal' in permisos %}<a href="{{ url_for('proveedor.inicio') }}" class="{{ 'sel' if ep=='proveedor.inicio' }}">Mi catálogo</a><a href="{{ url_for('proveedor.ordenes') }}" class="{{ 'sel' if ep=='proveedor.ordenes' }}">Mis órdenes</a>{% endif %}
       {% if 'inventario.ver' in permisos %}<a href="{{ url_for('operacion.inventario') }}" class="{{ 'sel' if ep=='operacion.inventario' }}">Inventario</a>{% endif %}
       {% if 'pedidos.reasignar' in permisos %}<a href="{{ url_for('admin.pendientes') }}" class="{{ 'sel' if ep in ['admin.pendientes','admin.reasignar'] }}">Pendientes</a>{% endif %}
       {% if 'indicadores.ver' in permisos %}<a href="{{ url_for('admin.indicadores') }}" class="{{ 'sel' if ep=='admin.indicadores' }}">Indicadores</a>{% endif %}

@@ -20,7 +20,8 @@ from locust import FastHttpUser, LoadTestShape, between, task
 CLAVE = os.environ.get("MICROHUBS_CLAVE", "Codex#2026")
 PUERTOS = {"auth": 5101, "productos": 5103, "pedidos": 5104, "entregas": 5105, "planeacion": 5106, "zonas": 5108, "seguimiento": 5110,
            "inventario": 5111, "demanda": 5115, "cobertura": 5116, "rutas": 5118, "simulacion": 5121, "reportes": 5123, "notificaciones": 5124,
-           "sincronizacion": 5125, "auditoria-monitoreo": 5126}
+           "sincronizacion": 5125, "auditoria-monitoreo": 5126, "usuarios": 5102, "documentos": 5107, "microhubs": 5109, "precios": 5112,
+           "proveedores": 5113, "abastecimiento": 5114, "capacidad": 5117, "costos": 5119, "punto-equilibrio": 5120, "surtido": 5122}
 DURACION = int(os.environ.get("ESCALON_SEGUNDOS", "60"))
 ESCALONES = [int(x) for x in os.environ.get("ESCALONES", "10,25,50,100,150,10").split(",")]
 
@@ -144,6 +145,22 @@ class Operador(Perfil):
     def rutas(self):
         self.pedir("rutas", "rutas/planes")
 
+    @task(2)
+    def abasto(self):
+        self.pedir("abastecimiento", "abastecimiento/necesidades?microhub_id=1", "abastecimiento/necesidades")
+
+    @task(1)
+    def proveedores(self):
+        self.pedir("proveedores", "proveedores")
+
+    @task(1)
+    def archivos(self):
+        self.pedir("documentos", "documentos?por_pagina=10", "documentos")
+
+    @task(1)
+    def perfil(self):
+        self.pedir("usuarios", "usuarios/yo")
+
 
 class PlaneadorEscritorio(Perfil):
     weight = 1
@@ -170,6 +187,31 @@ class PlaneadorEscritorio(Perfil):
     def cobertura(self):
         self.pedir("cobertura", "cobertura/zonas")
 
+    @task(1)
+    def capacidad(self):
+        self.pedir("capacidad", "capacidad/microhubs")
+
+    @task(1)
+    def colas(self):
+        self.pedir("capacidad", "capacidad/colas", metodo="POST",
+                   json={"llegadas_hora": 10, "servicio_hora": 4, "servidores": 3, "espera_objetivo_min": 5})
+
+    @task(1)
+    def costos(self):
+        self.pedir("costos", "costos/resumen")
+
+    @task(1)
+    def equilibrio(self):
+        self.pedir("punto-equilibrio", "punto-equilibrio/microhubs")
+
+    @task(1)
+    def surtido(self):
+        self.pedir("surtido", "surtido/analisis?microhub_id=1", "surtido/analisis")
+
+    @task(1)
+    def precios(self):
+        self.pedir("precios", "precios/listas")
+
 
 class Administrador(Perfil):
     weight = 1
@@ -186,6 +228,10 @@ class Administrador(Perfil):
     @task(2)
     def bitacora(self):
         self.pedir("auditoria-monitoreo", "auditoria?por_pagina=20", "auditoria")
+
+    @task(1)
+    def red(self):
+        self.pedir("microhubs", "microhubs")
 
 
 class ProcesoAutomatico(Perfil):

@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block titulo %}Recuperar contraseña{% endblock %}
+{% block cuerpo %}
+<div style="max-width:420px;margin:0 auto">
+  <h1>¿Olvidaste tu contraseña?</h1>
+  <p class="sub">Escribe tu correo y generamos un enlace para cambiarla. Vence en 30 minutos.</p>
+  <form class="panel" method="post">
+    <input type="hidden" name="csrf" value="{{ token_formulario }}">
+    <div class="campo"><label for="correo">Correo</label><input id="correo" name="correo" type="email" maxlength="160" required autofocus></div>
+    <button class="btn" style="width:100%">Pedir el enlace</button>
+    <p style="margin-top:14px;font-size:13.5px;color:var(--ink2)"><a href="{{ url_for('auth.entrar') }}">Volver a iniciar sesión</a></p>
+  </form>
+</div>
+{% endblock %}

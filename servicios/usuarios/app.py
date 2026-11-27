@@ -25,7 +25,7 @@ from comun.validar import Campo, validar
 
 app = crear_app("usuarios", "Microhubs · Usuarios", "Perfil del usuario autenticado y administración de cuentas.", 5102)
 P = config.PREFIJO
-ROLES = ["administrador", "operador", "planeador", "cliente", "repartidor", "auditor", "analista", "supervisor"]
+ROLES = ["administrador", "operador", "planeador", "cliente", "repartidor", "auditor", "analista", "supervisor", "proveedor"]
 SELECT = ("SELECT u.id, u.nombre, COALESCE(u.apellidos,'') AS apellidos, u.correo, u.telefono, r.clave AS rol, "
           "u.ultimo_acceso, m.id AS mh_id, m.clave AS mh_clave, m.nombre AS mh_nombre "
           "FROM usuario u JOIN rol r ON r.id = u.rol_id LEFT JOIN microhub m ON m.id = u.microhub_id ")

@@ -206,6 +206,9 @@
       <xs:element name="errores_5xx_hora" type="xs:long" nillable="true"/>
       <xs:element name="disponibilidad_24h_pct" type="xs:decimal" nillable="true"/>
       <xs:element name="bajo_objetivo" type="xs:boolean"/>
+      <xs:element name="tiempo_promedio_ms" type="xs:decimal" nillable="true"/>
+      <xs:element name="ultimo_error" type="xs:string" nillable="true"/>
+      <xs:element name="ultimo_error_en" type="xs:dateTime" nillable="true"/>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="TMonDependenciaCaida">
