@@ -1,5 +1,5 @@
 {
-    "generado_en": "2026-11-26T15:54:48-06:00",
+    "generado_en": "2026-11-26T23:42:19-06:00",
     "resumen": {
         "total": 26,
         "ok": 26,
@@ -9,17 +9,17 @@
         "alertas_abiertas": 0,
         "monitor_activo": true,
         "intervalo_seg": 30,
-        "ultima_ronda": "2026-11-26T15:54:48-06:00"
+        "ultima_ronda": "2026-11-26T23:42:18-06:00"
     },
     "servicios": [
         {
             "servicio": "auth",
             "puerto": 5101,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 21.1,
-            "version": "0cab2a9",
+            "tiempo_ms": 54.8,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -27,19 +27,19 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 315,
+            "peticiones_hora": 280,
             "errores_5xx_hora": 1,
-            "disponibilidad_24h_pct": 97.59,
+            "disponibilidad_24h_pct": 96.9,
             "bajo_objetivo": true
         },
         {
             "servicio": "usuarios",
             "puerto": 5102,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 28.4,
-            "version": "0cab2a9",
+            "tiempo_ms": 48.3,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -47,19 +47,19 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 19,
+            "peticiones_hora": 11,
             "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
+            "disponibilidad_24h_pct": 99.22,
+            "bajo_objetivo": false
         },
         {
             "servicio": "productos",
             "puerto": 5103,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 54.9,
-            "version": "0cab2a9",
+            "tiempo_ms": 24.5,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -67,19 +67,19 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 1972,
+            "peticiones_hora": 1940,
             "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
+            "disponibilidad_24h_pct": 99.22,
+            "bajo_objetivo": false
         },
         {
             "servicio": "pedidos",
             "puerto": 5104,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 30.4,
-            "version": "0cab2a9",
+            "tiempo_ms": 25.5,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -87,19 +87,19 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 2744,
-            "errores_5xx_hora": 2,
-            "disponibilidad_24h_pct": 96.39,
+            "peticiones_hora": 2653,
+            "errores_5xx_hora": 1,
+            "disponibilidad_24h_pct": 95.35,
             "bajo_objetivo": true
         },
         {
             "servicio": "entregas",
             "puerto": 5105,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 48.2,
-            "version": "0cab2a9",
+            "tiempo_ms": 29.0,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -107,19 +107,19 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 1620,
+            "peticiones_hora": 1603,
             "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
+            "disponibilidad_24h_pct": 99.22,
+            "bajo_objetivo": false
         },
         {
             "servicio": "planeacion",
             "puerto": 5106,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 42.9,
-            "version": "0cab2a9",
+            "tiempo_ms": 45.2,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -127,19 +127,19 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 178,
+            "peticiones_hora": 155,
             "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
+            "disponibilidad_24h_pct": 99.22,
+            "bajo_objetivo": false
         },
         {
             "servicio": "documentos",
             "puerto": 5107,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 62.2,
-            "version": "0cab2a9",
+            "tiempo_ms": 75.2,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -147,19 +147,19 @@
                 "bucket": "ok"
             },
             "error": null,
-            "peticiones_hora": 59,
+            "peticiones_hora": 54,
             "errores_5xx_hora": 2,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
+            "disponibilidad_24h_pct": 99.22,
+            "bajo_objetivo": false
         },
         {
             "servicio": "zonas",
             "puerto": 5108,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 49.8,
-            "version": "0cab2a9",
+            "tiempo_ms": 34.0,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -167,19 +167,19 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 1025,
+            "peticiones_hora": 796,
             "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.82,
-            "bajo_objetivo": true
+            "disponibilidad_24h_pct": 99.25,
+            "bajo_objetivo": false
         },
         {
             "servicio": "microhubs",
             "puerto": 5109,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 35.5,
-            "version": "0cab2a9",
+            "tiempo_ms": 22.6,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -187,19 +187,19 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 14,
+            "peticiones_hora": 11,
             "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
+            "disponibilidad_24h_pct": 99.22,
+            "bajo_objetivo": false
         },
         {
             "servicio": "seguimiento",
             "puerto": 5110,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 51.6,
-            "version": "0cab2a9",
+            "tiempo_ms": 41.0,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -207,7 +207,7 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 1204,
+            "peticiones_hora": 1180,
             "errores_5xx_hora": 0,
             "disponibilidad_24h_pct": 100.0,
             "bajo_objetivo": false
@@ -216,10 +216,10 @@
             "servicio": "inventario",
             "puerto": 5111,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 66.7,
-            "version": "0cab2a9",
+            "tiempo_ms": 27.7,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -227,19 +227,59 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 1227,
+            "peticiones_hora": 1152,
             "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 96.55,
+            "disponibilidad_24h_pct": 96.35,
             "bajo_objetivo": true
         },
         {
             "servicio": "precios",
             "puerto": 5112,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 52.0,
-            "version": "0cab2a9",
+            "tiempo_ms": 48.2,
+            "version": "fd85013",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 28,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "proveedores",
+            "puerto": 5113,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 47.6,
+            "version": "fd85013",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 32,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 99.22,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "abastecimiento",
+            "puerto": 5114,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 38.5,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -249,17 +289,137 @@
             "error": null,
             "peticiones_hora": 56,
             "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 99.22,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "demanda",
+            "puerto": 5115,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 29.0,
+            "version": "fd85013",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 265,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 99.22,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "cobertura",
+            "puerto": 5116,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 39.2,
+            "version": "fd85013",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 201,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 99.22,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "capacidad",
+            "puerto": 5117,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 45.0,
+            "version": "fd85013",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 19,
+            "errores_5xx_hora": 0,
             "disponibilidad_24h_pct": 100.0,
             "bajo_objetivo": false
         },
         {
-            "servicio": "proveedores",
-            "puerto": 5113,
+            "servicio": "rutas",
+            "puerto": 5118,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 48.7,
-            "version": "0cab2a9",
+            "tiempo_ms": 28.8,
+            "version": "fd85013",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 204,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 99.22,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "costos",
+            "puerto": 5119,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 44.0,
+            "version": "fd85013",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 431,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 99.22,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "punto-equilibrio",
+            "puerto": 5120,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 48.5,
+            "version": "fd85013",
+            "dependencias": {
+                "postgres": "ok",
+                "redis": "ok",
+                "mongo": "no_aplica",
+                "bucket": "no_aplica"
+            },
+            "error": null,
+            "peticiones_hora": 160,
+            "errores_5xx_hora": 0,
+            "disponibilidad_24h_pct": 100.0,
+            "bajo_objetivo": false
+        },
+        {
+            "servicio": "simulacion",
+            "puerto": 5121,
+            "estado": "ok",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
+            "antiguedad_seg": 0,
+            "tiempo_ms": 28.0,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -269,177 +429,17 @@
             "error": null,
             "peticiones_hora": 53,
             "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
-        },
-        {
-            "servicio": "abastecimiento",
-            "puerto": 5114,
-            "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
-            "antiguedad_seg": 0,
-            "tiempo_ms": 57.0,
-            "version": "0cab2a9",
-            "dependencias": {
-                "postgres": "ok",
-                "redis": "ok",
-                "mongo": "no_aplica",
-                "bucket": "no_aplica"
-            },
-            "error": null,
-            "peticiones_hora": 64,
-            "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
-        },
-        {
-            "servicio": "demanda",
-            "puerto": 5115,
-            "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
-            "antiguedad_seg": 0,
-            "tiempo_ms": 23.6,
-            "version": "0cab2a9",
-            "dependencias": {
-                "postgres": "ok",
-                "redis": "ok",
-                "mongo": "no_aplica",
-                "bucket": "no_aplica"
-            },
-            "error": null,
-            "peticiones_hora": 318,
-            "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
-        },
-        {
-            "servicio": "cobertura",
-            "puerto": 5116,
-            "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
-            "antiguedad_seg": 0,
-            "tiempo_ms": 54.6,
-            "version": "0cab2a9",
-            "dependencias": {
-                "postgres": "ok",
-                "redis": "ok",
-                "mongo": "no_aplica",
-                "bucket": "no_aplica"
-            },
-            "error": null,
-            "peticiones_hora": 245,
-            "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
-        },
-        {
-            "servicio": "capacidad",
-            "puerto": 5117,
-            "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
-            "antiguedad_seg": 0,
-            "tiempo_ms": 61.0,
-            "version": "0cab2a9",
-            "dependencias": {
-                "postgres": "ok",
-                "redis": "ok",
-                "mongo": "no_aplica",
-                "bucket": "no_aplica"
-            },
-            "error": null,
-            "peticiones_hora": 37,
-            "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 100.0,
+            "disponibilidad_24h_pct": 99.22,
             "bajo_objetivo": false
-        },
-        {
-            "servicio": "rutas",
-            "puerto": 5118,
-            "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
-            "antiguedad_seg": 0,
-            "tiempo_ms": 18.3,
-            "version": "0cab2a9",
-            "dependencias": {
-                "postgres": "ok",
-                "redis": "ok",
-                "mongo": "no_aplica",
-                "bucket": "no_aplica"
-            },
-            "error": null,
-            "peticiones_hora": 200,
-            "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
-        },
-        {
-            "servicio": "costos",
-            "puerto": 5119,
-            "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
-            "antiguedad_seg": 0,
-            "tiempo_ms": 69.8,
-            "version": "0cab2a9",
-            "dependencias": {
-                "postgres": "ok",
-                "redis": "ok",
-                "mongo": "no_aplica",
-                "bucket": "no_aplica"
-            },
-            "error": null,
-            "peticiones_hora": 496,
-            "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
-        },
-        {
-            "servicio": "punto-equilibrio",
-            "puerto": 5120,
-            "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
-            "antiguedad_seg": 0,
-            "tiempo_ms": 42.1,
-            "version": "0cab2a9",
-            "dependencias": {
-                "postgres": "ok",
-                "redis": "ok",
-                "mongo": "no_aplica",
-                "bucket": "no_aplica"
-            },
-            "error": null,
-            "peticiones_hora": 197,
-            "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 100.0,
-            "bajo_objetivo": false
-        },
-        {
-            "servicio": "simulacion",
-            "puerto": 5121,
-            "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
-            "antiguedad_seg": 0,
-            "tiempo_ms": 39.9,
-            "version": "0cab2a9",
-            "dependencias": {
-                "postgres": "ok",
-                "redis": "ok",
-                "mongo": "no_aplica",
-                "bucket": "no_aplica"
-            },
-            "error": null,
-            "peticiones_hora": 84,
-            "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
         },
         {
             "servicio": "surtido",
             "puerto": 5122,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 63.9,
-            "version": "0cab2a9",
+            "tiempo_ms": 42.8,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -447,19 +447,19 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 38,
+            "peticiones_hora": 19,
             "errores_5xx_hora": 0,
-            "disponibilidad_24h_pct": 98.8,
-            "bajo_objetivo": true
+            "disponibilidad_24h_pct": 99.22,
+            "bajo_objetivo": false
         },
         {
             "servicio": "notificaciones",
             "puerto": 5124,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 23.4,
-            "version": "0cab2a9",
+            "tiempo_ms": 40.8,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -467,7 +467,7 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 800,
+            "peticiones_hora": 782,
             "errores_5xx_hora": 0,
             "disponibilidad_24h_pct": 100.0,
             "bajo_objetivo": false
@@ -476,10 +476,10 @@
             "servicio": "reportes",
             "puerto": 5123,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 58.0,
-            "version": "0cab2a9",
+            "tiempo_ms": 38.8,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -487,19 +487,19 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 399,
-            "errores_5xx_hora": 13,
-            "disponibilidad_24h_pct": 93.98,
+            "peticiones_hora": 359,
+            "errores_5xx_hora": 17,
+            "disponibilidad_24h_pct": 93.02,
             "bajo_objetivo": true
         },
         {
             "servicio": "sincronizacion",
             "puerto": 5125,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 46.3,
-            "version": "0cab2a9",
+            "tiempo_ms": 40.4,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -507,7 +507,7 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 502,
+            "peticiones_hora": 481,
             "errores_5xx_hora": 0,
             "disponibilidad_24h_pct": 100.0,
             "bajo_objetivo": false
@@ -516,10 +516,10 @@
             "servicio": "auditoria-monitoreo",
             "puerto": 5126,
             "estado": "ok",
-            "verificado_en": "2026-11-26T15:54:48-06:00",
+            "verificado_en": "2026-11-26T23:42:18-06:00",
             "antiguedad_seg": 0,
-            "tiempo_ms": 37.4,
-            "version": "0cab2a9",
+            "tiempo_ms": 30.9,
+            "version": "fd85013",
             "dependencias": {
                 "postgres": "ok",
                 "redis": "ok",
@@ -527,7 +527,7 @@
                 "bucket": "no_aplica"
             },
             "error": null,
-            "peticiones_hora": 514,
+            "peticiones_hora": 467,
             "errores_5xx_hora": 0,
             "disponibilidad_24h_pct": 100.0,
             "bajo_objetivo": false

@@ -1,0 +1,257 @@
+{
+  "fecha": "2026-11-27T05:29:47+00:00",
+  "procesos": [
+    {
+      "proceso": "P1 · Cierre de entrega",
+      "pasos": [
+        {
+          "quien": "repartidor",
+          "cliente": "Android",
+          "accion": "Ve sus paradas (GET entregas/mias) y elige la entrega 136",
+          "ok": true,
+          "detalle": "1 paradas"
+        },
+        {
+          "quien": "repartidor",
+          "cliente": "Android",
+          "accion": "Sube la foto de evidencia (POST documentos)",
+          "ok": true,
+          "detalle": "id 6b09154bef30c8ea07f5f6cd · ruta documentos/2026/11/6b09154bef30c8ea07f5f6cd.png"
+        },
+        {
+          "quien": "repartidor",
+          "cliente": "Android",
+          "accion": "Envía su recorrido GPS (POST seguimiento/ubicaciones)",
+          "ok": true,
+          "detalle": "5 puntos"
+        },
+        {
+          "quien": "repartidor",
+          "cliente": "Android",
+          "accion": "Cierra la entrega cobrando el total (POST entregas/resultado)",
+          "ok": true,
+          "detalle": "{'entrega_id': 136, 'pedido_id': 167, 'estado_pedido': 'entregado', 'cerrado_en': '2026-11-26T23:29:47-06:00', 'duplicado': False}"
+        },
+        {
+          "quien": "—",
+          "cliente": "PostgreSQL",
+          "accion": "El pedido quedó entregado",
+          "ok": true,
+          "detalle": "PED-20261126-000167: entregado"
+        },
+        {
+          "quien": "—",
+          "cliente": "PostgreSQL · auditoría",
+          "accion": "Los triggers auditaron el cierre",
+          "ok": true,
+          "detalle": "2 registros"
+        },
+        {
+          "quien": "cliente",
+          "cliente": "notificación",
+          "accion": "El cliente recibió el aviso",
+          "ok": true,
+          "detalle": "Pedido PED-20261126-000167"
+        },
+        {
+          "quien": "—",
+          "cliente": "MongoDB + bucket",
+          "accion": "La foto: metadatos en MongoDB y el archivo en el almacén",
+          "ok": true,
+          "detalle": "documentos/2026/11/6b09154bef30c8ea07f5f6cd.png · gcs · sha256 c414cd0e204d…"
+        },
+        {
+          "quien": "—",
+          "cliente": "MongoDB",
+          "accion": "El recorrido GPS quedó en ubicaciones_entrega",
+          "ok": true,
+          "detalle": "1197 puntos"
+        },
+        {
+          "quien": "administrador",
+          "cliente": "web",
+          "accion": "Ve el pedido entregado con su recorrido y evidencia (/web/servicios/pedido)",
+          "ok": true,
+          "detalle": ""
+        }
+      ],
+      "ids": {
+        "entrega": 136,
+        "pedido": 167
+      }
+    },
+    {
+      "proceso": "P2 · Reabastecimiento",
+      "pasos": [
+        {
+          "quien": "operador",
+          "cliente": "web",
+          "accion": "Ve alertas de inventario y necesidades con la mejor oferta",
+          "ok": true,
+          "detalle": "necesidades con oferta"
+        },
+        {
+          "quien": "operador",
+          "cliente": "web",
+          "accion": "Crea la solicitud de compra (30 u. del producto 21)",
+          "ok": true,
+          "detalle": "SC-20261126-000018"
+        },
+        {
+          "quien": "administrador",
+          "cliente": "web",
+          "accion": "Aprueba la solicitud",
+          "ok": true,
+          "detalle": ""
+        },
+        {
+          "quien": "administrador",
+          "cliente": "web",
+          "accion": "Emite la orden de compra al proveedor (respeta su pedido mínimo)",
+          "ok": true,
+          "detalle": "OC-20261126-000014"
+        },
+        {
+          "quien": "operador",
+          "cliente": "web",
+          "accion": "Recibe la mercancía con el comprobante (PDF)",
+          "ok": true,
+          "detalle": "orden recibida"
+        },
+        {
+          "quien": "—",
+          "cliente": "PostgreSQL",
+          "accion": "La existencia subió en inventario (entrada por el servicio de inventario)",
+          "ok": true,
+          "detalle": "0 → 30"
+        },
+        {
+          "quien": "—",
+          "cliente": "MongoDB + bucket",
+          "accion": "El comprobante: metadatos en MongoDB y el archivo en el almacén",
+          "ok": true,
+          "detalle": "documentos/2026/11/6b09154fef30c8ea07f5f6d8.pdf · gcs"
+        },
+        {
+          "quien": "planeador / operador",
+          "cliente": "notificación",
+          "accion": "Los triggers avisaron la solicitud y la orden",
+          "ok": true,
+          "detalle": "Solicitud de compra SC-20261126-000018; Solicitud de compra SC-20261126-000018; Orden de compra OC-20261126-000014"
+        },
+        {
+          "quien": "—",
+          "cliente": "PostgreSQL · auditoría",
+          "accion": "Auditoría de solicitud, orden e inventario",
+          "ok": true,
+          "detalle": "89 registros"
+        },
+        {
+          "quien": "operador",
+          "cliente": "web",
+          "accion": "Ve la orden recibida y descarga el comprobante con URL firmada",
+          "ok": true,
+          "detalle": ""
+        },
+        {
+          "quien": "operador",
+          "cliente": "web → bucket",
+          "accion": "La descarga firmada devuelve el mismo archivo",
+          "ok": true,
+          "detalle": "HTTP 302"
+        }
+      ],
+      "ids": {
+        "solicitud": 18,
+        "orden": 14,
+        "producto": 21
+      }
+    },
+    {
+      "proceso": "P3 · Despacho con rutas y reporte archivado",
+      "pasos": [
+        {
+          "quien": "operador",
+          "cliente": "web (bandeja)",
+          "accion": "Marca pedidos como listos para despachar (en preparación → listo)",
+          "ok": true,
+          "detalle": "4 pedidos"
+        },
+        {
+          "quien": "planeador",
+          "cliente": "web",
+          "accion": "Ve los pedidos listos (servicio de pedidos)",
+          "ok": true,
+          "detalle": ""
+        },
+        {
+          "quien": "planeador",
+          "cliente": "web",
+          "accion": "Propone el plan de rutas (TSP exacto / 2-opt en el servicio de rutas)",
+          "ok": true,
+          "detalle": "plan 17"
+        },
+        {
+          "quien": "planeador",
+          "cliente": "web",
+          "accion": "Revisa rutas, paradas, minutos y costo",
+          "ok": true,
+          "detalle": ""
+        },
+        {
+          "quien": "operador",
+          "cliente": "web",
+          "accion": "Confirma y despacha: rutas → entregas crea y asigna las entregas (saga entre servicios)",
+          "ok": true,
+          "detalle": "4 entregas"
+        },
+        {
+          "quien": "repartidor",
+          "cliente": "notificación",
+          "accion": "Cada repartidor recibió «Nueva entrega asignada»",
+          "ok": true,
+          "detalle": "9 avisos"
+        },
+        {
+          "quien": "repartidor",
+          "cliente": "Android",
+          "accion": "Ve las nuevas paradas en su app (GET entregas/mias)",
+          "ok": true,
+          "detalle": ""
+        },
+        {
+          "quien": "planeador",
+          "cliente": "web",
+          "accion": "Exporta el reporte de pedidos por día en PDF (servicio de reportes)",
+          "ok": true,
+          "detalle": "4764 bytes"
+        },
+        {
+          "quien": "—",
+          "cliente": "PostgreSQL + bucket",
+          "accion": "La exportación quedó archivada: ruta y SHA-256 en la base, el archivo en el almacén",
+          "ok": true,
+          "detalle": "reportes/2026/11/9.pdf · gcs · 34700c7aee78…"
+        },
+        {
+          "quien": "planeador",
+          "cliente": "web → bucket",
+          "accion": "La descarga con URL firmada trae el mismo archivo",
+          "ok": true,
+          "detalle": "HTTP 302"
+        },
+        {
+          "quien": "—",
+          "cliente": "PostgreSQL · auditoría",
+          "accion": "Auditoría de las entregas asignadas y del enlace de descarga",
+          "ok": true,
+          "detalle": "16 registros"
+        }
+      ],
+      "ids": {
+        "plan": 17,
+        "exportacion": 9
+      }
+    }
+  ]
+}

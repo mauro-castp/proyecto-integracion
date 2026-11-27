@@ -42,13 +42,13 @@ apps, las tres bases de datos, el almacén de objetos y el despliegue en GCP.
 | **Almacén de archivos** | URL firmada, caducidad, manipulación, bucket caído, servicios que no usan bucket | `pruebas.test_almacen` | **31 OK** |
 | **Contratos** | los 26 servicios: recorridos de escritorio (XML vs XSD) y de Android (JSON vs ejemplos) | `pruebas.test_contrato` | **7 OK** |
 | **Contratos (validador independiente)** | los XSD y los ejemplos con lxml | `app_escritorio/pruebas/test_contratos.py` | **10 OK** (se corrigió una prueba que seguía esperando los 9 XSD del 2.º parcial) |
-| **Integración por ola** | servicios contra PostgreSQL, Redis y MongoDB reales, con permisos por perfil | `pruebas.test_ola1`, `test_ola2`, `test_ola3` | **24 + 102 + 74 OK** |
-| **Integración web ↔ servicios** | el web llamando por HTTP real, panel de monitoreo, adjuntar documento | `pruebas.test_web_integracion` | **8 OK** |
+| **Integración por ola** | servicios contra PostgreSQL, Redis y MongoDB reales, con permisos por perfil | `pruebas.test_ola1`, `test_ola2`, `test_ola3`, `test_ola4` | **24 + 102 + 74 + 12 OK** |
+| **Integración web ↔ servicios** | el web llamando por HTTP real, panel de monitoreo, adjuntar documento | `pruebas.test_web_integracion` | **9 OK** |
 | **Reglas en la base** | 26 verificaciones de las RN en triggers y funciones | `bloque_c/sql/05_pruebas_reglas.sql` | **26 de 26 PASA** |
 | **Portal web** | planeación, CRUD, CSRF, exportaciones, ámbito | `sistema_web/test_planeacion`, `test_web_ampliado`, `test_planeacion_local` | **16 + 13 + 6 OK** |
 | **Portal web e2e** | contra PostgreSQL y Redis reales | `sistema_web/prueba_e2e_web.py` | 5 de 6. La sexta busca `/app/07_web_ampliado.sql` (ruta de Docker): es del ambiente |
-| **Sistema (procesos integrales)** | P1 cierre de entrega, P2 reabastecimiento, P3 despacho con rutas y reporte archivado, de punta a punta | `pruebas/procesos_integrales.py` | **32 de 32 pasos** ([`evidencias/procesos/`](../evidencias/procesos/procesos_integrales.md)) |
-| **Petición y respuesta** | 403 casos (correctos, inválidos, inexistentes, sin permiso, token inválido o revocado, reglas, límite) | `pruebas/evidencias.py` | **403 de 403** (corrida de la Ola 3) y **401 de 401** en la nube |
+| **Sistema (procesos integrales)** | P1 cierre de entrega, P2 reabastecimiento, P3 despacho con rutas y reporte archivado, de punta a punta | `correr.sh procesos`, `correr.sh flujos` | En GCP: **32 de 32** por el portal ([`procesos/`](../evidencias/nube/procesos/procesos_integrales.md)) y **40 de 40** por API ([`flujos/`](../evidencias/nube/flujos/flujos.md)) |
+| **Petición y respuesta** | 403 casos (correctos, inválidos, inexistentes, sin permiso, token inválido o revocado, reglas, límite) | `pruebas/evidencias.py` | **439 de 439** en local y **436 de 436** en la nube (versión final) |
 | **Regresión** | todo lo anterior después de cada corrección | mismas órdenes; ver sección 6 | Sin regresiones tras las correcciones de la entrega final |
 | **Seguridad** | ver sección 5 | casos AUTH, USR, DOC, SEG, ENT y PED + pruebas dirigidas | OK (sección 5) |
 | **Carga** | 6 perfiles, 50 y 150 usuarios | Locust ([`pruebas_carga/`](../pruebas_carga/LEEME.md)) | 50 u.: p95 75 ms, 0 % de errores · 150 u.: p95 110 ms, 0 % de errores |
@@ -58,7 +58,7 @@ apps, las tres bases de datos, el almacén de objetos y el despliegue en GCP.
 | **Algoritmos** | calidad y tiempo de rutas y Monte Carlo | `pruebas/benchmark_algoritmos.py` | [`evidencias/algoritmos/benchmark.md`](../evidencias/algoritmos/benchmark.md) |
 | **Roles** | cada perfil contra cada servicio | casos `*-0x` «sin permiso» de las evidencias + `test_ola*` (permisos por perfil) | OK |
 | **Archivos** | firma real del tipo (PDF disfrazado de JPEG), tamaño, ámbito, bucket caído, URL firmada | DOC-01 a DOC-11, `test_almacen`, `test_nube` | OK |
-| **Apps** | Android: 46 unitarias + 3 contra el backend + 7 instrumentadas. Escritorio: 64 comprobaciones | `./build.ps1`, `dotnet run --project pruebas` | Corridas por el equipo en el 2.º parcial (`app_escritorio/PRUEBAS_APPS.md`). **Repetir contra la nube con HTTPS** |
+| **Apps** | Android: pruebas unitarias, 5 contra el backend y las instrumentadas. Escritorio: comprobaciones sin red y contra los servicios | `./build.ps1`, `dotnet run --project pruebas` | Versión final en Windows: Android compila, pasa lint, sus unitarias y las **5** contra el backend; escritorio **74** sin red y **171** con los servicios. Falta repetir las instrumentadas, el ensayo sin red en un teléfono y contra la nube con HTTPS reconocido |
 | **Usabilidad** | 5 personas por perfil, tareas cronometradas, cuestionario SUS | protocolo de la sección 7 | **Pendiente de aplicar** (requiere personas) |
 
 ## 5. Pruebas de seguridad

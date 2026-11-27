@@ -73,11 +73,12 @@ Esa fábrica añade lo mismo a todos:
 ## 4. Datos
 
 - **PostgreSQL** (`microhubs`): operación, catálogo, seguridad, planeación, abastecimiento, análisis y observabilidad.
-  - Scripts 01–13 idempotentes desde la 06.
+  - Scripts 01–14 idempotentes desde la 06.
   - Zona horaria de la base: America/Monterrey (`fn_hoy()`).
   - `12_rendimiento.sql`: `fn_pedidos_visibles` en SQL que el planificador puede integrar, y los índices `ix_pedido_dia_local` e
     `ix_detalle_pedido_cubriente`.
   - `13_entrega_final.sql`: `ruta` y `almacen` en `reporte_exportacion`.
+  - `14_pedidos_api.sql`: `pedido.operacion_uuid`, para que reenviar el mismo pedido por la API no lo duplique.
 - **MongoDB** (`microhubs_eventos`):
   - `documentos`: solo metadatos; el archivo está en el bucket. Tipos de referencia: entrega, pedido, usuario, candidato y
     **orden_compra**.

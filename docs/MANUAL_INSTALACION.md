@@ -40,9 +40,9 @@ docker compose -f docker-compose.integrado.yml ps -a             # todo «health
 | `auditor@codex.mx` | auditor |
 | `repartidor1@codex.mx`, `repartidor2@codex.mx` | repartidores |
 
-**La base de datos se crea sola** al primer arranque. PostgreSQL ejecuta `bloque_c/sql/01` a `13` y MongoDB ejecuta `bloque_c/mongo/01` a
-`03`. Si ya existía un volumen de una versión anterior, el contenedor `migraciones` aplica de la 06 a la 13 sin borrar datos. MongoDB no
-vuelve a correr sus scripts sobre un volumen existente. Para tomar el nuevo tipo de referencia `orden_compra` hay que correr una vez:
+**La base de datos se crea sola** al primer arranque. PostgreSQL ejecuta `bloque_c/sql/01` a `14` y MongoDB ejecuta `bloque_c/mongo/01` a
+`03`. Si ya existía un volumen de una versión anterior, el contenedor `migraciones` aplica de la 06 a la 14 sin borrar datos. MongoDB no
+vuelve a correr sus scripts sobre un volumen existente. Para tomar el nuevo tipo de referencia `orden_compra` hay que correr una vez (en la nube lo hace el instalador):
 
 ```bash
 docker compose -f docker-compose.integrado.yml exec -T mongo mongosh microhubs_eventos < bloque_c/mongo/03_documentos_nube.js
@@ -95,7 +95,7 @@ Lo que ya existe y cómo se creó está en [`deploy/gcp/LEEME.md`](../deploy/gcp
 ```bash
 git -c core.autocrlf=false archive --format=tar.gz -o microhubs.tgz HEAD \
   docker-compose.integrado.yml .dockerignore servicios sistema_web bloque_c app_escritorio/contratos \
-  app_movil/app/src/test/resources/contratos deploy/gcp
+  app_movil/app/src/test/resources/contratos deploy/gcp rendimiento pruebas_carga
 gcloud compute instances start microhubs-vm --zone northamerica-south1-c
 gcloud compute scp microhubs.tgz microhubs-vm:/tmp/ --zone northamerica-south1-c
 gcloud compute ssh microhubs-vm --zone northamerica-south1-c --command \
@@ -107,7 +107,8 @@ El instalador hace lo siguiente y se puede repetir sin riesgo:
 1. Crea el `.env` con secretos aleatorios (permiso 600) e incluye `DETRAS_DE_PROXY=1`.
 2. Levanta los contenedores.
 3. Cambia la clave de las cuentas de demostración (queda en `MICROHUBS_CLAVE` dentro del `.env`).
-4. Configura Nginx.
+4. Pone al día el esquema de `documentos` en MongoDB.
+5. Configura Nginx.
 
 **HTTPS (obligatorio para las apps instalables):**
 

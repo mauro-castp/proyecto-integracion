@@ -51,9 +51,12 @@ todos los servicios.
    - **Entregado:** se cobra el total exacto (RN27).
    - **Parcial:** por cada línea, cuántas unidades regresan y por qué (RN28).
    - **Fallida:** se escribe la incidencia y no se cobra (RN29).
-4. **Registrar resultado.** Si se va la red, vuelve a pulsar: el cierre no se duplica. Si responde «otra operación ya cerró la entrega»,
-   avisa al operador.
-5. Al cerrar, el domicilio del cliente deja de mostrarse (RN26).
+4. **Registrar resultado.** Reintentar no duplica el cierre. Si responde «otra operación ya cerró la entrega», avisa al operador.
+5. **Sin conexión.** El botón cambia a **Guardar resultado (sin red)**: el cierre, la foto y el recorrido quedan en el teléfono y se
+   envían solos al volver la red. En **Sin enviar** se ve cada operación (por enviar, reintentando, conflicto o rechazada) con su
+   motivo, y está el botón **Enviar ahora**. Si hay un conflicto, gana lo que ya tiene el servidor.
+6. **Avisos.** La bandeja muestra las asignaciones y demás avisos; tocar uno lo marca como leído y, si es de una entrega, la abre.
+7. Al cerrar, el domicilio del cliente deja de mostrarse (RN26).
 
 ## Planeador
 
@@ -63,6 +66,8 @@ todos los servicios.
   - escenarios guardados y comparables;
   - simulación Monte Carlo (la respuesta llega en unos segundos, porque corre en segundo plano);
   - decisión humana, siempre con un motivo.
+- **App de escritorio.** Además de candidatos y escenarios, tiene la ventana **Reportes** (indicadores, tabla, gráfica y descarga en
+  CSV, Excel o PDF) y una ventana para cobertura, rutas, costos, capacidad, punto de equilibrio y simulación.
 - **Rutas.** Con los pedidos listos del microhub, pulsa **Proponer plan**. Elige el método: el *automático* usa el recorrido exacto
   hasta 8 paradas. Revisa las rutas, los minutos (en rojo, las paradas que pasan de 30 min) y el costo. El operador o el administrador
   lo despachan.

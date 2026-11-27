@@ -38,14 +38,14 @@ Engine** detrás de Nginx.
 
 Resultados principales:
 
-- **Integración:** tres procesos integrales de punta a punta, con **32 de 32 pasos** comprobados en las bases y en el bucket. Además,
-  403 casos de petición y respuesta en local y 401 en la nube.
+- **Integración:** en la nube, tres procesos integrales de punta a punta con **32 de 32 pasos** por el portal (comprobados en las bases y en
+  el bucket) y **40 de 40** por API. Además, 439 casos de petición y respuesta en local y 436 en la nube, todos aprobados.
 - **Rendimiento:** con **100 000 pedidos y 1.4 millones de lecturas GPS**, las pruebas encontraron cuatro consultas lentas. Al
   corregirlas, la sincronización de demanda bajó de **37.5 s a 1.1 s** y los reportes de **1.1 s a 0.2 s**.
-- **Carga (Locust, 6 perfiles):**
-  - 150 usuarios: p95 de 110 ms y 0 % de errores;
-  - satura desde 350 usuarios en 2 vCPU;
-  - se recupera en 8 s.
+- **Carga (Locust) en la nube, 4 vCPU:**
+  - 100 usuarios: p95 de 1.3 s y 0 % de errores;
+  - satura con 200 usuarios (51 peticiones/s, 0.37 % de errores 503 en reportes);
+  - al bajar la carga la mediana vuelve de inmediato.
 - **Tolerancia a fallos:** con Redis, MongoDB, PostgreSQL, el bucket, un servicio o la red lenta fallando, el sistema responde 503 con
   traza, no deja datos a medias y se recupera sin reiniciar nada más (6 de 6 casos).
 - **Respuesta de negocio:** con los supuestos actuales (ticket de 135, margen del 28 %, costos fijos de 60 000), un microhub necesita
@@ -173,7 +173,7 @@ Están en `bloque_d/diagramas/`. Las fuentes PlantUML están en `bloque_d/fuente
 
 # 11. Modelo relacional
 
-PostgreSQL 16, esquema `microhubs`, creado por los scripts `bloque_c/sql/01` a `13`. Las áreas son:
+PostgreSQL 16, esquema `microhubs`, creado por los scripts `bloque_c/sql/01` a `14`. Las áreas son:
 
 - seguridad y catálogo: usuario, rol, permiso, producto, zona, microhub;
 - operación: pedido, detalle, historial, entrega, inventario, movimientos;
@@ -189,7 +189,8 @@ Novedades de la entrega final:
 
 - `12_rendimiento.sql`: `fn_pedidos_visibles` en SQL que el planificador puede integrar, y los índices `ix_pedido_dia_local` e
   `ix_detalle_pedido_cubriente`;
-- `13_entrega_final.sql`: `ruta` y `almacen` de las exportaciones archivadas.
+- `13_entrega_final.sql`: `ruta` y `almacen` de las exportaciones archivadas;
+- `14_pedidos_api.sql`: `pedido.operacion_uuid`, para que reenviar el mismo pedido por la API no lo duplique.
 
 Los diagramas lógicos están en `bloque_c/diagramas/` y el documento completo en `bloque_c/Modelo_de_Datos.docx`.
 
@@ -326,7 +327,7 @@ prueba, métricas, limitaciones y tiempo) están en **`docs/ALGORITMOS.md`**. El
 | Cloud Storage | Bucket privado (§14) | Archivos fuera de la base |
 | IAM | Cuenta de servicio con permiso mínimo y sin llaves | Sin secretos en disco |
 | Cloud Logging | Ops Agent con los registros de contenedores y Nginx | Trazas buscables |
-| HTTPS | Let's Encrypt con `instalar_vm.sh --https` | **Pendiente de ejecutar** (I-21) |
+| HTTPS | Activo con certificado propio (`--https-autofirmado`); Let's Encrypt con `--https` | El reconocido está **pendiente** (I-21) |
 
 **Bases en contenedores dentro de la VM, y no Cloud SQL ni Memorystore.** El lineamiento lo permite si se justifica. Las razones:
 
@@ -392,10 +393,27 @@ Está en `docs/PLAN_DE_PRUEBAS.md`: objetivo, ambientes, criterios de aceptació
 - usabilidad;
 - contratos, roles, archivos y datos masivos.
 
-En la corrida final, todas las suites automatizadas están en verde. Las únicas excepciones son una prueba del web que depende de una
-ruta de Docker y la usabilidad, que está pendiente de aplicar con personas.
+En la corrida final, las suites de los servicios, las de las apps en Windows y las corridas en la nube están en verde. Quedan una prueba del
+web que depende de una ruta de Docker, las pruebas instrumentadas en emulador, el ensayo sin red en un teléfono y la usabilidad con personas.
 
 # 25. Resultados de Locust
+
+## En Google Cloud (versión final, e2-standard-4; el generador corre en la misma VM)
+
+| Usuarios | Peticiones/s | Mediana | p95 | p99 | Errores |
+|---|---|---|---|---|---|
+| 10 | 4.4 | 46 ms | 500 ms | 1.1 s | 0 % |
+| 25 | 12.0 | 44 ms | 430 ms | 1.4 s | 0 % |
+| 50 | 24.1 | 47 ms | 470 ms | 1.8 s | 0 % |
+| 100 | 41.5 | 58 ms | 1.3 s | 6.8 s | 0 % |
+| 200 | 51.2 | 77 ms | 4.5 s | 12 s | 0.37 % |
+| 10 (recuperación) | 4.7 | 81 ms | 5.7 s | 12 s | 0 % |
+
+Total: 10,412 peticiones y 0.14 % de errores, todos 503 de reportes. Los puntos más lentos son `reportes/indicadores` (p95 42 s), el inicio
+de sesión (29 s, bcrypt) y `comparacion_microhubs` (26 s). El p95 de la recuperación incluye los reportes que quedaron encolados en el pico.
+Análisis: `evidencias/nube/carga/ANALISIS.md`.
+
+## En local (2 vCPU)
 
 | Escenario | Usuarios | RPS | Mediana | p95 | p99 | Errores |
 |---|---|---|---|---|---|---|
@@ -411,6 +429,22 @@ ruta de Docker y la usabilidad, que está pendiente de aplicar con personas.
 Detalle en `pruebas_carga/LEEME.md` y `evidencias/carga/RESULTADOS.md` (con los HTML de Locust).
 
 # 26. Resultados de rendimiento
+
+## En Google Cloud: un millón de pedidos
+
+1 000 000 de pedidos, 3 000 000 de líneas y 3 000 000 de documentos en MongoDB (versión `0cab2a9`; `evidencias/nube/volumen/volumen.md`).
+
+| Consulta | Sin índice | Con índice |
+|---|---|---|
+| Pedidos de un cliente | 105.89 ms | 0.22 ms |
+| Pedidos abiertos de un microhub | 98.96 ms | 0.26 ms |
+| Ventas por día | 143.14 ms | 78.35 ms |
+| Líneas de un pedido | 106.34 ms | 0.08 ms |
+| Diez productos más vendidos | 403.22 ms | 195.56 ms |
+
+Inserción en bloque: 202 876 filas por segundo. Redis contra la base: 0.16 ms contra 51.16 ms.
+
+## En local: cien mil pedidos
 
 Con 100 000 pedidos, 279 000 líneas, 397 000 auditorías, 95 000 entregas, 1.4 M de puntos GPS y 200 000 logs:
 
@@ -466,12 +500,12 @@ Está en `docs/MANUAL_USUARIO.md`: qué hace cada perfil paso a paso y los mensa
 - Una VM en una zona: no hay alta disponibilidad.
 - Redis sin persistencia: al reiniciarse cierra todas las sesiones.
 - Los **reportes no tienen un plazo total**: con saturación tardan en fallar (I-20).
-- Las apps instalables necesitan **HTTPS en la VM**, que aún no se activa (I-21).
+- Las apps instalables necesitan un certificado **reconocido**; la VM usa uno autofirmado (I-21).
 - La usabilidad no se ha medido con usuarios reales.
 
 # 31. Trabajo futuro
 
-1. Activar HTTPS, generar el APK release firmado y el ZIP de escritorio, y repetir Locust en la VM.
+1. Activar HTTPS con certificado reconocido, generar el APK release firmado y el ZIP de escritorio, y probarlos contra la nube.
 2. Un esquema o una instancia por servicio, y migrar a Cloud SQL, Memorystore y Atlas.
 3. Un plazo total y un cortacircuitos en `comun/clientes.py`.
 4. Varios workers o réplicas de pedidos, productos y auth detrás de Nginx, o GKE con autoescalado.

@@ -122,7 +122,11 @@ class Evidencias:
         return Respuesta(status, hdr, texto, int((time.perf_counter() - inicio) * 1000), traza), enc
 
     def entrar(self, correo, formato="json"):
-        r, _ = self.http("auth", "POST", "auth/login", {"correo": correo, "clave": CLAVE, "dispositivo": "evidencias"})
+        for _ in range(3):
+            r, _ = self.http("auth", "POST", "auth/login", {"correo": correo, "clave": CLAVE, "dispositivo": "evidencias"})
+            if r.status != 429:                    # límite de inicios de sesión por minuto: se espera lo que pide el servicio
+                break
+            time.sleep(int({k.lower(): x for k, x in r.encabezados.items()}.get("retry-after", 10)) + 1)
         if r.status != 200:
             raise SystemExit(f"No se pudo iniciar sesión con {correo}: {r.status} {r.texto}")
         self.tokens[correo] = r.json

@@ -65,12 +65,12 @@ Cuentas y clave de demostración: [`docs/MANUAL_INSTALACION.md`](docs/MANUAL_INS
 
 | Qué | Resultado | Evidencia |
 |---|---|---|
-| Procesos integrales de punta a punta (P1 cierre de entrega, P2 reabastecimiento, P3 despacho con rutas y reporte archivado) | 32 de 32 pasos, comprobados en PostgreSQL, MongoDB y el bucket | [`evidencias/procesos/`](evidencias/procesos/procesos_integrales.md) |
-| Datos de alto volumen | 100 000 pedidos y 1.4 M de puntos GPS; 4 consultas lentas corregidas (sincronización de demanda de 37.5 s a 1.1 s) | [`evidencias/volumen/`](evidencias/volumen/LEEME.md) |
-| Pruebas de carga (Locust) | 150 usuarios: p95 de 110 ms y 0 % de errores; saturación desde 350; recuperación en 8 s | [`evidencias/carga/`](evidencias/carga/RESULTADOS.md) |
-| Fallos de infraestructura | Servicio, Redis, MongoDB, PostgreSQL, bucket y tiempo excedido: 6 de 6 casos y 33 de 33 comprobaciones | [`evidencias/fallos/`](evidencias/fallos/fallos_infraestructura.md) |
+| Procesos integrales de punta a punta (P1 cierre de entrega, P2 reabastecimiento, P3 despacho con rutas y reporte archivado) | En GCP: 32 de 32 pasos por el portal, comprobados en PostgreSQL, MongoDB y el bucket, y 40 de 40 por API | [`evidencias/nube/procesos/`](evidencias/nube/procesos/procesos_integrales.md), [`flujos/`](evidencias/nube/flujos/flujos.md) |
+| Datos de alto volumen | En GCP: 1 M de pedidos y 3 M de documentos, con y sin índices y Redis. En local: 4 consultas lentas corregidas (sincronización de demanda de 37.5 s a 1.1 s) | [`evidencias/nube/volumen/`](evidencias/nube/volumen/volumen.md), [`evidencias/volumen/`](evidencias/volumen/LEEME.md) |
+| Pruebas de carga (Locust) | En GCP (4 vCPU): 100 usuarios sin errores y p95 de 1.3 s; se satura con 200 (51 peticiones/s, 0.37 % de 503). En local, 150 usuarios: p95 de 110 ms | [`evidencias/nube/carga/`](evidencias/nube/carga/ANALISIS.md), [`evidencias/carga/`](evidencias/carga/RESULTADOS.md) |
+| Fallos y seguridad | En GCP: 32 de 32 comprobaciones de fallos y 23 de 23 de seguridad. En local: 6 de 6 casos de infraestructura | [`evidencias/nube/`](evidencias/nube/fallos.md), [`evidencias/fallos/`](evidencias/fallos/fallos_infraestructura.md) |
 | Algoritmos | Rutas: 2-opt a 1–2.5 % del óptimo; 24–40 % menos que el orden de llegada | [`evidencias/algoritmos/`](evidencias/algoritmos/benchmark.md) |
-| Petición y respuesta | 403 de 403 en local y 401 de 401 en GCP | [`evidencias/ola3/`](evidencias/ola3/), [`evidencias/nube/`](evidencias/nube/LEEME.md) |
+| Petición y respuesta | 439 de 439 en local y 436 de 436 en GCP | [`evidencias/ola4/`](evidencias/ola4/pruebas.md), [`evidencias/nube/`](evidencias/nube/LEEME.md) |
 
 ## Equipo
 

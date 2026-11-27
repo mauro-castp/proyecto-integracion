@@ -28,7 +28,16 @@ la entrega final.
 | I-18 | 26-nov | `app_escritorio/pruebas/test_contratos.py` | 1 falla desde la Ola 1 | La prueba esperaba exactamente los 9 XSD del Segundo Parcial | Comprueba que existan todos (2.º parcial + olas) | 10 OK | Baja |
 | I-19 | 26-nov | Redis | Al reiniciar Redis se cierran todas las sesiones | Redis sin persistencia + cierre seguro | **Decisión aceptada** y documentada (runbook) | `demo_fallos_infra` | — |
 | I-20 | 26-nov | reportes con saturación | Con 450+ usuarios, una cadena de llamadas puede tardar más de 60 s antes de responder 503 | Cada salto espera hasta 4 s y no hay plazo total | **Pendiente**: plazo total por petición o cortacircuitos en `comun/clientes.py` | Locust, escenario de estrés | Media |
-| I-21 | 26-nov | GCP | Las apps instalables no pueden conectarse a la nube | La VM está en HTTP; las apps exigen HTTPS fuera de localhost | **Pendiente (equipo)**: `instalar_vm.sh --https` | — | **Alta** |
+| I-21 | 26-nov | GCP | Las apps instalables no pueden conectarse a la nube | Las apps exigen HTTPS con certificado reconocido; la VM tiene uno autofirmado | **Pendiente (equipo)**: `instalar_vm.sh --https` (Let's Encrypt) | — | **Alta** |
+| I-22 | 26-nov | archivos | Subir, descargar y borrar archivos no quedaba en la bitácora | Se usaban acciones que no existen en el catálogo | Acciones válidas y la nueva `descarga` | Casos de evidencia DOC | Media |
+| I-23 | 26-nov | GCP | El agente de registros respondía «permiso denegado» | Los roles tardan en propagarse | Esperar y comprobar en Cloud Logging | `evidencias/nube/cloud_logging.txt` | Baja |
+| I-24 | 26-nov | GCP | Las claves de demostración de la nube eran las del repositorio público | El instalador no las cambiaba | `cambiar_claves_demo.py` genera una en la VM | `seguridad.md` | **Alta** |
+| I-25 | 26-nov | `instalar_vm.sh` | Fallaba si Nginx estaba detenido | Se recargaba un servicio apagado | `reload-or-restart` | Reinstalación en la VM | Baja |
+| I-26 | 26-nov | `docker-compose.integrado.yml` | Los archivos locales se perdían al recrear el contenedor (documentos y, después, las exportaciones de reportes) | Sin volumen | Volumen `datos_archivos` en documentos y reportes | `correr.sh procesos`: 32 de 32 | Media |
+| I-27 | 26-nov | MongoDB ya existente | No se podía adjuntar el comprobante de una orden de compra | El validador anterior no conocía `orden_compra` | `instalar_vm.sh` corre `03_documentos_nube.js`; en local se corre una vez | P2 de `procesos_integrales` | Media |
+| I-28 | 26-nov | pruebas | Unas pruebas hacían fallar a otras | Dejaban entregas abiertas y dependían del tráfico previo | Limpieza al terminar y pruebas autónomas | `test_ola3` y `test_ola4` | Baja |
+| I-29 | 26-nov | pruebas en la nube | La corrida de evidencias se detenía con un 429 | Más de 30 inicios de sesión por minuto | La corrida espera lo que pide el servicio | 436 de 436 | Baja |
+| I-30 | 26-nov | app Android | Las pruebas nuevas no compilaban con Gradle | Usaban métodos que el `org.json` de Android no tiene | Funciones propias en la prueba | `build.ps1` y `BackendRealTest` | Baja |
 
 Plantilla para nuevas incidencias:
 

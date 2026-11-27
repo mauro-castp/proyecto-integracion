@@ -123,6 +123,7 @@ Los cálculos de planeación **no se duplican**: el servicio usa `sistema_web/pl
 - `bloque_c/sql/12_rendimiento.sql` (entrega final): `fn_pedidos_visibles` en SQL que el planificador integra a la consulta e índices `ix_pedido_dia_local`
   e `ix_detalle_pedido_cubriente` (ver `evidencias/volumen/LEEME.md`).
 - `bloque_c/sql/13_entrega_final.sql`: ruta del archivo de cada exportación de reportes en el bucket.
+- `bloque_c/sql/14_pedidos_api.sql`: `pedido.operacion_uuid`, para que reenviar el mismo pedido por la API no lo duplique.
 - `bloque_c/mongo/03_documentos_nube.js`: validador de `documentos` para los archivos en Cloud Storage (en MongoDB quedan solo sus datos).
 - `bloque_c/mongo/02_microservicios.js`: colecciones `documentos` y `ubicaciones_entrega` (índice 2dsphere, TTL de 180 días).
 - MongoDB en uso: `documentos` (insertar, consultar, agregar), `ubicaciones_entrega` (Seguimiento: insertar en lote, agregación del recorrido),

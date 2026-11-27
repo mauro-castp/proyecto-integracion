@@ -13,8 +13,8 @@
 | 7 | 4:45–5:45 | **Rutas** (P3): proponer → confirmar y despachar → la app del repartidor muestra las paradas; la tabla de métodos | **Algoritmo**: exacto contra 2-opt, 24–40 % menos que el orden de llegada |
 | 8 | 5:45–6:30 | **Monitoreo**: `docker compose stop inventario` → alerta crítica → `start` → se cierra sola | Tolerancia a fallos y salud de los 26 servicios |
 | 9 | 6:30–7:15 | **La nube**: consola de GCP (VM, firewall, bucket privado con los objetos `documentos/` y `reportes/`), Cloud Logging buscando una traza | Infraestructura y registros |
-| 10 | 7:15–8:15 | `evidencias/carga/estres_recuperacion.html` (gráficas de Locust) y `evidencias/volumen/LEEME.md` | **Carga y volumen**: 150 usuarios con p95 de 110 ms; saturación, recuperación en 8 s; de 37 s a 1.1 s con 100 k pedidos |
-| 11 | 8:15–9:00 | `evidencias/procesos/procesos_integrales.md` | **Integración**: 3 procesos de punta a punta, 32 de 32 pasos comprobados en las bases y en el bucket |
+| 10 | 7:15–8:15 | `evidencias/nube/carga/carga.html` (gráficas de Locust) y `evidencias/nube/volumen/volumen.md` | **Carga y volumen**: en la nube, 100 usuarios sin errores con p95 de 1.3 s y saturación con 200; con un millón de pedidos, una consulta pasa de 106 ms a 0.2 ms con índice |
+| 11 | 8:15–9:00 | `evidencias/nube/procesos/procesos_integrales.md` | **Integración**: 3 procesos de punta a punta en la nube, 32 de 32 pasos comprobados en las bases y en el bucket |
 
 Consejos de grabación:
 
