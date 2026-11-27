@@ -169,3 +169,26 @@ Salidas completas en `entrega/_local/` de la PC (no se suben: traen rutas locale
    `com.journeyapps.barcodescanner.CaptureManager`. `zxing-android-embedded` 4.3.0 usa `ContextCompat` pero no trae `androidx.core`, y la app
    no lo tenía. Se agregó `androidx.core:core:1.13.1` y la prueba de emulador `elLectorDeQrAbreSinCerrarLaApp`. Ninguna prueba abría el lector;
    se encontró al probar a mano contra la nube.
+
+## 8. Lo que faltaba del enunciado (27 de noviembre, rama `mauro-faltantes`)
+
+Al revisar el proyecto contra el enunciado del Proyecto 11 faltaban funciones de las apps y dos algoritmos. Se hicieron en el entorno de
+Claude (Linux, los 26 servicios con la base recreada desde `bloque_c/sql/01…16`) y **falta comprobarlas en Windows y en el emulador**.
+
+| Qué | Dónde | Pruebas (todas aprobadas) |
+|---|---|---|
+| Escritorio para operadores: inventario, preparación, despacho (asignar y **manifiesto**), surtido; cambiar personal | `app_escritorio/Modulos.cs`, `Operacion.cs`, `Ventanas.cs` | sin red **89** (eran 76); contra los servicios **213** (con el operador: preparar, marcar listo, asignar, manifiesto, movimiento de inventario) |
+| Botones según los **permisos** de la sesión (no solo el rol) | `Api.cs`, `Accion.Habilitada` | incluidas arriba |
+| **Colas M/M/1 y M/M/c** (Erlang C) | `servicios/comun/colas.py`, `POST capacidad/colas`, escritorio «Colas M/M/c» | 7 unitarias con valores calculados a mano; 1 de servicio (JSON, XML, permisos) |
+| Contrato XML para cambiar el estado y asignar paradas desde el escritorio | `servicios/contratos/ola5.py` → `operacion.xsd`, `colas.xsd` | los ejemplos validan; validador lxml 10/10 |
+| **Android cliente:** catálogo y catálogo ligero sin red, carrito, pedido (sin red por sincronización), mis pedidos, cancelar, confirmar recepción | `app_movil/.../Cliente.kt`, `MainActivity.kt` | JVM **85** (11 nuevas); `flujoDelCliente` contra los servicios reales |
+| **Navegar** del repartidor (`geo:`) | `Entregas.kt` (`destinoMapa`), `MainActivity.kt` | JVM |
+| Servicios: `POST entregas/recepciones`, tipo `pedido_nuevo` en sincronización, `16_apps_cliente.sql` | `servicios/entregas`, `servicios/sincronizacion`, `bloque_c/sql` | `test_apps_cliente` 4/4; suites completas sin fallas: unitarias 37 + 72, contrato 7, ola1 24, ola2 103, ola3 74, ola4 12 |
+
+Verificación de tipos: las pantallas Android compilan con `kotlinc` contra `android.jar` (API 35); las ventanas de escritorio, contra el
+Windows Forms de Mono (solo el error conocido de `PlaceholderText`). **No** se compiló con Gradle ni se corrió el emulador aquí: hay que
+correr `build.ps1`, `connectedDebugAndroidTest` y las pruebas de Windows en la PC antes de unir.
+
+**Qué no se hizo:** perfil **proveedor** con cuenta (sería un portal propio); el ensayo sin red en teléfono real; las pantallas del cliente
+no tienen prueba de emulador (las cubre la lógica en JVM y el recorrido real `flujoDelCliente`).
+

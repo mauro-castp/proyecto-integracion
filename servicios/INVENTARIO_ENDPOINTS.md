@@ -2,7 +2,7 @@
 
 Fuente: servicios/*/app.py y docker-compose.integrado.yml.
 
-221 pares método HTTP y ruta de negocio. Excluye salud, OpenAPI, Swagger, HEAD y OPTIONS.
+223 pares método HTTP y ruta de negocio. Excluye salud, OpenAPI, Swagger, HEAD y OPTIONS.
 
 La última columna indica los casos de petición y respuesta que ejercitan cada operación: la corrida principal (`evidencias/ola4/`) y la complementaria (`evidencias/ola4/complementarias/`). Este archivo lo escribe `servicios/pruebas/generar_inventario.py` a partir del código y de esos casos.
 
@@ -43,6 +43,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | capacidad | GET | `/api/v1/capacidad/microhubs/<int:mid>` | CAP-03, CAP-04, CAP-05, CAP-06 |
 | capacidad | POST | `/api/v1/capacidad/simulaciones` | CAP-07 |
 | capacidad | GET | `/api/v1/capacidad/cargas` | CAP-08 |
+| capacidad | POST | `/api/v1/capacidad/colas` |  |
 | capacidad | GET | `/api/v1/capacidad/supuestos` | CAP-12 |
 | cobertura | GET | `/api/v1/cobertura/zonas` | COB-01 |
 | cobertura | GET | `/api/v1/cobertura/resumen` | COB-02, COB-03 |
@@ -86,6 +87,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | entregas | GET | `/api/v1/entregas/<int:eid>` | ENT-02, ENT-03, ENT-08 |
 | entregas | POST | `/api/v1/entregas` | ENT-A1, ENT-A2, ENT-A3, F1-13, F3-02 |
 | entregas | POST | `/api/v1/entregas/asignaciones` | ENT-B1, ENT-B2, ENT-B3 |
+| entregas | POST | `/api/v1/entregas/recepciones` |  |
 | entregas | POST | `/api/v1/entregas/<int:eid>/resultado` | ENT-04, ENT-05, ENT-06, ENT-07, ENT-09 y 4 más |
 | inventario | GET | `/api/v1/inventario` | INV-01, INV-02, INV-03, INV-04, INV-05 |
 | inventario | GET | `/api/v1/inventario/<int:mid>/<int:pid>` | INV-06 |

@@ -128,6 +128,10 @@ Los cálculos de planeación **no se duplican**: el servicio usa `sistema_web/pl
 - `bloque_c/sql/13_entrega_final.sql`: ruta del archivo de cada exportación de reportes en el bucket.
 - `bloque_c/sql/14_pedidos_api.sql`: `pedido.operacion_uuid`, para que reenviar el mismo pedido por la API no lo duplique.
 - `bloque_c/sql/15_archivos_bucket.sql`: retira la tabla donde el portal guardaba archivos; ahora van al almacén (servicio `documentos`).
+- `bloque_c/sql/16_apps_cliente.sql`: `sincronizacion.usar` para el cliente (pedidos hechos sin red en la app Android). Lo aplica `migrar.py`.
+- Cierre de la entrega final: `POST capacidad/colas` (M/M/1 y M/M/c, `comun/colas.py`), `POST entregas/recepciones` (el cliente confirma
+  la recepción), el tipo `pedido_nuevo` en sincronización y el contrato XML `operacion.xsd`/`colas.xsd` (`contratos/ola5.py`). Pruebas:
+  `pruebas.test_apps_cliente`, `test_unitarias_ola2.Colas` y `test_ola2.T4Capacidad.test_colas_mm1_y_mmc`.
 - `bloque_c/mongo/03_documentos_nube.js`: validador de `documentos` para los archivos en Cloud Storage (en MongoDB quedan solo sus datos).
 - `bloque_c/mongo/02_microservicios.js`: colecciones `documentos` y `ubicaciones_entrega` (índice 2dsphere, TTL de 180 días).
 - MongoDB en uso: `documentos` (insertar, consultar, agregar), `ubicaciones_entrega` (Seguimiento: insertar en lote, agregación del recorrido),

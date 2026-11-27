@@ -158,7 +158,7 @@ def zona(i, lat, lng, hogares):
 
 
 class Colas(unittest.TestCase):
-    """M/M/1 y M/M/c con valores de libro (Taha / Hillier-Lieberman) que se pueden comprobar a mano."""
+    """M/M/1 y M/M/c con valores que se comprueban a mano con las fórmulas cerradas."""
     def setUp(self):
         from comun import colas
         self.mm = colas
@@ -172,8 +172,8 @@ class Colas(unittest.TestCase):
         self.assertAlmostEqual(r["w_min"], 30.0)
         self.assertAlmostEqual(r["l"], 4.0)          # Little: L = λW
 
-    def test_mmc_erlang_c_de_libro(self):
-        r = self.mm.mmc(10, 4, 3)                   # a = 2.5, ρ = 0.833: P0 = 0.0449, Lq = 3.511, Wq = 0.351 h
+    def test_mmc_erlang_c_calculado_a_mano(self):
+        r = self.mm.mmc(10, 4, 3)                   # a = 2.5, ρ = 0.833: P0 = 1/(1 + 2.5 + 3.125 + 15.625) = 0.0449, Lq = 3.511
         self.assertEqual(r["modelo"], "M/M/c")
         self.assertAlmostEqual(r["p0"], 0.044944, places=5)
         self.assertAlmostEqual(r["lq"], 3.5112, places=3)
