@@ -1,15 +1,19 @@
 # Instaladores generados
 
-> **Ya no vigentes:** estos archivos salieron de `acabf89`, antes de los arreglos del 27 de noviembre (Comparar métodos y lector de QR).
-> Se regeneran con `entrega\instaladores.ps1` desde `main` cuando se una el PR de `mauro-pendientes`, y esta tabla se reemplaza.
-
-Commit `acabf89` · 2026-11-27 01:28 · equipo VTMAU
+Commit `43a45e1` (`main`, PR #23) · 27-nov-2026 · equipo VTMAU
 
 | Archivo | Tamaño | SHA-256 |
 |---|---|---|
-| `app-debug.apk` | 1,391,916 bytes (1.3 MB) | `fb73aa09832dbd24f70d8209fbca6f8fcd8c253789f5f9981cba5e95f3607673` |
-| `Microhubs_Escritorio_win-x64.zip` | 70,148,181 bytes (66.9 MB) | `bd5da801fd787e04fa8dd7016557b41362fdd0ab479492e7b590546a4095c5e8` |
+| `app-debug.apk` | 3,581,313 bytes (3.4 MB) | `dbf7656e201cdc8b538c3723a8123f0db5af19f5d9106dea3e3231920f8ea851` |
+| `Microhubs_Escritorio_win-x64.zip` | 70,148,342 bytes (66.9 MB) | `b62bbad0c5cb539ce9afd6150cdbf3887dd79ab11803a467182992a8f5a79ad5` |
 
-- APK: variante debug (la única que acepta HTTP); host de depuración 10.0.2.2 (emulador); Android 8.0 o superior (API 26).
-- Escritorio: Windows 10/11 x64, autónomo (.NET 8 incluido). Descomprimir completo y abrir `Microhubs.exe`.
-- Comprobar en Windows: `Get-FileHash <archivo> -Algorithm SHA256`.
+Cómo se obtuvieron, en la PC de Mauro: la APK es la que generó `app_movil\build.ps1` después del arreglo del lector de QR (es la que pasó
+`connectedDebugAndroidTest` 8/8); el ZIP comprime la carpeta `app_escritorio\bin\Publicacion` que dejó `dotnet publish -c Release -r win-x64
+--self-contained` después de los arreglos de Comparar métodos (la que pasó 176/176 y se probó contra la nube). Se comprobó que el código de
+`app_movil/` y `app_escritorio/` de esa PC es idéntico al de `main` en `43a45e1` (mismos árboles de Git) y que ningún archivo fuente es
+posterior a los binarios.
+
+Release de GitHub: `v1.0-entrega-final`, con `--target main`. Si se une el PR #24 (cliente en Android, escritorio para operadores), se
+regeneran con `entrega\instaladores.ps1` y se publica otra versión.
+
+Los binarios no van al repositorio: solo esta tabla.
