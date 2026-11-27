@@ -25,7 +25,7 @@ Integrantes: Ruth Elizabeth Soriano Barrera · Vanessa Morante López · Mauro C
 | App de escritorio | Ruth (base y módulos de análisis) | Mauro (módulos de operación, manifiesto, permisos, pruebas en Windows), María José y Vanessa (archivos y corrección de errores, entregados a Mauro) | `app_escritorio` · confirmaciones: Ruth 9, Mauro 3 |
 | Despliegue en GCP | Ruth | Mauro (pruebas de las apps contra la nube) | `deploy` · confirmaciones: Ruth 8 |
 | Pruebas de volumen, carga (Locust) y fallos | Ruth | Mauro (pruebas de las apps) | `rendimiento, pruebas_carga, evidencias` · confirmaciones: Ruth 19 |
-| Prueba de usabilidad con personas | Mauro | — | `entrega/FORMATO_USABILIDAD.md` |
+| Prueba de usabilidad con personas | Mauro | María José (condujo una de las tres sesiones) | `entrega/FORMATO_USABILIDAD.md` |
 | Instaladores y Release v1.0 | Mauro | — | `entrega/INSTALADORES.md`, Release `v1.0-entrega-final` |
 | Reportes técnicos y expediente | Ruth | Mauro (correcciones del Primer Parcial y reporte 4.2), Vanessa (reporte del Segundo Parcial), María José (reporte del Primer Parcial) | `reporte_tecnico, docs` |
 | Presentaciones y videos | María José (presentación final; edición y elaboración del video final) | Vanessa (presentación final; edición y elaboración del video final), Mauro (presentación del Segundo Parcial, grabación de la demostración final), Jorge (video del Segundo Parcial), Ruth (presentación del Primer Parcial) | `presentacion, entrega` · confirmaciones: Ruth 24, Mauro 13, María José 4, Vanessa 2, Jorge 1 |

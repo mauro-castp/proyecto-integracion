@@ -83,7 +83,7 @@ Mejoras que se hicieron antes de la entrega a partir de la prueba (con el commit
 
 **Cómo se hizo (versión corta):** 3 personas y **una tarea por persona**, en la PC de Mauro con la versión de `main` que incluye el PR #23
 (portal en el navegador, app Android en el emulador API 36 y app de escritorio en Windows, todo contra los servicios locales).
-Observó y anotó Mauro. La tarea 3 del formato (cerrar una entrega con QR) se cambió por una compra en el portal, porque el emulador no puede
+Condujeron y anotaron Mauro y María José (ella condujo una de las tres sesiones). La tarea 3 del formato (cerrar una entrega con QR) se cambió por una compra en el portal, porque el emulador no puede
 escanear un QR real. No se aplicó el cuestionario de 1 a 5.
 
 | Persona | Perfil | Tarea | Tiempo | Resultado | Qué dijo |
