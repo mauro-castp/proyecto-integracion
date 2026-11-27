@@ -1,27 +1,27 @@
 # Evidencias de la plataforma en Google Cloud
 
 Corridas del 26 de noviembre de 2026 sobre la VM `microhubs-vm` con los 26 microservicios. La VM se apagó al terminar cada una. La **versión final
-desplegada es `dba94ea`** (27 de noviembre); lo que se midió con una versión anterior lo dice.
+desplegada es `0b6bebd`** (27 de noviembre); lo que se midió con una versión anterior lo dice.
 
-## Versión final (`dba94ea`)
+## Versión final (`0b6bebd`)
 
 | Archivo | Qué demuestra |
 |---|---|
 | `salud_26_servicios.txt` | `/salud` de cada servicio por HTTPS a través de Nginx: versión, tiempo y las cuatro dependencias en `ok` (26 de 26 en HTTP 200) |
 | `health_rutas.txt` | `/health/live`, `ready`, `database`, `redis`, `mongodb` y `storage` de los 26 servicios: 156 de 156 en HTTP 200 |
-| `archivos_portal.txt` | La pantalla «Archivos» del portal sube al bucket y baja con URL firmada; PostgreSQL ya no guarda el archivo (4 de 4) |
-| `procesos/` | Tres procesos por API y portal web, con el archivo comprobado en el bucket: 32 de 32 pasos |
+| `procesos/` | Tres procesos por API y portal web, con el archivo comprobado en el bucket: 33 de 33 pasos |
 | `flujos/` | Tres procesos de principio a fin por API: 40 de 40 pasos |
-| `ola4/pruebas.md` | 436 casos de petición y respuesta, todos aprobados. Solo la tabla: las respuestas completas no se publican porque llevan tokens de esa instalación |
+| `ola4/pruebas.md` | 444 casos de petición y respuesta, todos aprobados. Solo la tabla: las respuestas completas no se publican porque llevan tokens de esa instalación |
 | `pruebas_bucket.txt` | 9 pruebas contra Cloud Storage: URL firmada, caducidad, manipulación, privacidad y bucket caído |
-| `fallos.md` | 32 de 32: servicio detenido, Redis, MongoDB, PostgreSQL, almacén de archivos, tiempo de espera e integridad |
-| `seguridad.md` | 23 de 23: sesiones, permisos, bloqueo, bitácora inmutable, entradas maliciosas, enlaces firmados, límite de consumo, secretos y puertos |
-| `certificado.txt` | Certificado de Let's Encrypt activo desde el 27 de noviembre (las corridas de arriba se hicieron con el autofirmado) |
 
 ## Corridas anteriores
 
 | Archivo | Versión | Qué demuestra |
 |---|---|---|
+| `archivos_portal.txt` | `dba94ea` | La pantalla «Archivos» del portal sube al bucket y baja con URL firmada (4 de 4) |
+| `fallos.md` | `dba94ea` | 32 de 32: servicio detenido, Redis, MongoDB, PostgreSQL, almacén de archivos, tiempo de espera e integridad |
+| `seguridad.md` | `dba94ea` | 23 de 23: sesiones, permisos, bloqueo, bitácora inmutable, entradas maliciosas, enlaces firmados, límite de consumo, secretos y puertos |
+| `certificado.txt` | `dba94ea` | Certificado de Let's Encrypt activo desde el 27 de noviembre |
 | `carga/informe_carga.md` y `carga/ANALISIS.md` | `fd85013` | Locust hasta 200 usuarios: rendimiento, p95/p99, errores, saturación, recuperación, recursos y mejoras |
 | `monitoreo_estado.json` | `fd85013` | Panel central: 26 servicios sanos, sin alertas abiertas y el verificador activo |
 | `volumen/volumen.md` | `0cab2a9` | 1 000 000 de pedidos y 3 000 000 de líneas; 3 000 000 de documentos en MongoDB; con y sin índices y con y sin Redis |

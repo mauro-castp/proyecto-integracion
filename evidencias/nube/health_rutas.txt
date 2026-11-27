@@ -1,4 +1,4 @@
-# Rutas /health/* por servicio, por Nginx con HTTPS (version dba94ea): codigo HTTP de live, ready, database, redis, mongodb y storage
+# Rutas /health/* por servicio (version 0b6bebd): codigo HTTP de live, ready, database, redis, mongodb y storage
 auth                   live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
 usuarios               live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
 productos              live=200 ready=200 database=200 redis=200 mongodb=200 storage=200

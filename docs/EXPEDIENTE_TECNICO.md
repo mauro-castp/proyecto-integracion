@@ -15,7 +15,7 @@ lang: es-MX
 | **Profesor** | Dr. Raúl Morales Saucedo |
 | **Equipo** | Codex Innovations · Equipo 04 |
 | **Integrantes** | Mauro Castillo Peña (613512) · Vanessa Morante López (654008) · María José Cedillo Mata (610256) · Ruth Elizabeth Soriano Barrera (637044) · Jorge Antonio Arreola Cantú (578560) |
-| **Versión** | 5.0 · entrega final · 26 de noviembre de 2026 |
+| **Versión** | 5.0 · entrega final · 27 de noviembre de 2026 |
 | **Despliegue** | https://34-51-89-253.sslip.io (GCP, northamerica-south1) |
 
 Control de versiones: 1.x en el Primer Parcial (análisis, requerimientos, modelo y arquitectura); 4.3 en el Segundo Parcial
@@ -38,8 +38,8 @@ Engine** detrás de Nginx.
 
 Resultados principales:
 
-- **Integración:** en la nube, tres procesos integrales de punta a punta con **32 de 32 pasos** por el portal (comprobados en las bases y en
-  el bucket) y **40 de 40** por API. Además, 439 casos de petición y respuesta en local y 436 en la nube, todos aprobados.
+- **Integración:** en la nube, tres procesos integrales de punta a punta con **33 de 33 pasos** por el portal (comprobados en las bases y en
+  el bucket) y **40 de 40** por API. Además, 443 casos de petición y respuesta en local y 444 en la nube, todos aprobados.
 - **Rendimiento:** con **100 000 pedidos y 1.4 millones de lecturas GPS**, las pruebas encontraron cuatro consultas lentas. Al
   corregirlas, la sincronización de demanda bajó de **37.5 s a 1.1 s** y los reportes de **1.1 s a 0.2 s**.
 - **Carga (Locust) en la nube, 4 vCPU:**

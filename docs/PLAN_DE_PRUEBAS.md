@@ -20,7 +20,7 @@ apps, las tres bases de datos, el almacén de objetos y el despliegue en GCP.
 |---|---|
 | **Local con Docker** (`docker-compose.integrado.yml`) | Desarrollo, unitarias, integración y evidencias de petición y respuesta |
 | **Local sin Docker** (2 vCPU y 7 GB, PostgreSQL 16, MongoDB 7, Redis 7) | Corrida de la entrega final: volumen, carga, fallos, procesos y regresión. Ver [`MANUAL_INSTALACION.md`](MANUAL_INSTALACION.md#anexo--sin-docker-como-se-corrieron-las-pruebas-de-rendimiento) |
-| **GCP** (VM e2-standard-4, Cloud Storage) | Pruebas en la nube: 401 casos, bucket real y URL firmadas (`evidencias/nube/`) |
+| **GCP** (VM e2-standard-4, Cloud Storage) | Pruebas en la nube: 444 casos, bucket real y URL firmadas (`evidencias/nube/`) |
 | **Emulador Android / Windows** | Pruebas de las apps (las corrió el equipo; ver `app_escritorio/PRUEBAS_APPS.md`) |
 
 ## 3. Criterios de aceptación
@@ -34,21 +34,21 @@ apps, las tres bases de datos, el almacén de objetos y el despliegue en GCP.
   - recuperación sin reiniciar otros servicios.
 - Los tres procesos integrales completos, con su comprobación en las bases y en el almacén.
 
-## 4. Matriz de pruebas y resultado de la corrida final (26 de noviembre de 2026)
+## 4. Matriz de pruebas y resultado de la corrida final (27 de noviembre de 2026)
 
 | Tipo | Qué cubre | Cómo se corre | Resultado |
 |---|---|---|---|
-| **Unitarias** | formatos, validación, XSD, OpenAPI, precios, reposición, fórmulas de la Ola 2 (equilibrio, capacidad, cobertura, rutas, simulación, surtido) | `pruebas.test_unitarias`, `pruebas.test_unitarias_ola2` | **37 + 65 OK** |
+| **Unitarias** | formatos, validación, XSD, OpenAPI, precios, reposición, fórmulas de la Ola 2 (equilibrio, capacidad, cobertura, rutas, simulación, surtido) | `pruebas.test_unitarias`, `pruebas.test_unitarias_ola2` | **37 + 74 OK** |
 | **Almacén de archivos** | URL firmada, caducidad, manipulación, bucket caído, servicios que no usan bucket | `pruebas.test_almacen` | **32 OK** (4 se omiten) |
 | **Contratos** | los 26 servicios: recorridos de escritorio (XML vs XSD) y de Android (JSON vs ejemplos) | `pruebas.test_contrato` | **7 OK** |
 | **Contratos (validador independiente)** | los XSD y los ejemplos con lxml | `app_escritorio/pruebas/test_contratos.py` | **10 OK** (se corrigió una prueba que seguía esperando los 9 XSD del 2.º parcial) |
-| **Integración por ola** | servicios contra PostgreSQL, Redis y MongoDB reales, con permisos por perfil | `pruebas.test_ola1`, `test_ola2`, `test_ola3`, `test_ola4` | **24 + 102 + 74 + 12 OK** |
+| **Integración por ola** | servicios contra PostgreSQL, Redis y MongoDB reales, con permisos por perfil | `pruebas.test_ola1`, `test_ola2`, `test_ola3`, `test_ola4` | **24 + 103 + 74 + 14 OK**, y **4 OK** de las funciones nuevas de las apps (`test_apps_cliente`) |
 | **Integración web ↔ servicios** | el web llamando por HTTP real, panel de monitoreo, adjuntar documento | `pruebas.test_web_integracion` | **9 OK** |
 | **Reglas en la base** | 26 verificaciones de las RN en triggers y funciones | `bloque_c/sql/05_pruebas_reglas.sql` | **26 de 26 PASA** |
 | **Portal web** | planeación, CRUD, CSRF, exportaciones, ámbito | `sistema_web/test_planeacion`, `test_web_ampliado`, `test_planeacion_local` | **16 + 13 + 6 OK** |
-| **Portal web e2e** | contra PostgreSQL y Redis reales | `sistema_web/prueba_e2e_web.py` | **6 de 6** en el contenedor `web`, incluido el archivo que va al almacén |
-| **Sistema (procesos integrales)** | P1 cierre de entrega, P2 reabastecimiento, P3 despacho con rutas y reporte archivado, de punta a punta | `correr.sh procesos`, `correr.sh flujos` | En GCP: **32 de 32** por el portal ([`procesos/`](../evidencias/nube/procesos/procesos_integrales.md)) y **40 de 40** por API ([`flujos/`](../evidencias/nube/flujos/flujos.md)) |
-| **Petición y respuesta** | 439 casos (correctos, inválidos, inexistentes, sin permiso, token inválido o revocado, reglas, límite) | `pruebas/evidencias.py` | **439 de 439** en local y **436 de 436** en la nube (versión final) |
+| **Portal web e2e** | contra PostgreSQL y Redis reales | `sistema_web/prueba_e2e_web.py` | **8 de 8** en el contenedor `web`, incluidos el archivo que va al almacén, la recuperación de contraseña y el proveedor |
+| **Sistema (procesos integrales)** | P1 cierre de entrega, P2 reabastecimiento, P3 despacho con rutas y reporte archivado, de punta a punta | `correr.sh procesos`, `correr.sh flujos` | En GCP: **33 de 33** por el portal ([`procesos/`](../evidencias/nube/procesos/procesos_integrales.md)) y **40 de 40** por API ([`flujos/`](../evidencias/nube/flujos/flujos.md)) |
+| **Petición y respuesta** | 439 casos (correctos, inválidos, inexistentes, sin permiso, token inválido o revocado, reglas, límite) | `pruebas/evidencias.py` | **443 de 443** en local y **444 de 444** en la nube (versión final); las 223 operaciones tienen caso |
 | **Regresión** | todo lo anterior después de cada corrección | mismas órdenes; ver sección 6 | Sin regresiones tras las correcciones de la entrega final |
 | **Seguridad** | ver sección 5 | casos AUTH, USR, DOC, SEG, ENT y PED + pruebas dirigidas | OK (sección 5) |
 | **Carga** | 6 perfiles, 50 y 150 usuarios | Locust ([`pruebas_carga/`](../pruebas_carga/LEEME.md)) | 50 u.: p95 75 ms, 0 % de errores · 150 u.: p95 110 ms, 0 % de errores |
@@ -59,7 +59,7 @@ apps, las tres bases de datos, el almacén de objetos y el despliegue en GCP.
 | **Roles** | cada perfil contra cada servicio | casos `*-0x` «sin permiso» de las evidencias + `test_ola*` (permisos por perfil) | OK |
 | **Archivos** | firma real del tipo (PDF disfrazado de JPEG), tamaño, ámbito, bucket caído, URL firmada | DOC-01 a DOC-11, `test_almacen`, `test_nube` | OK |
 | **Apps** | Android: pruebas unitarias, 5 contra el backend y las instrumentadas. Escritorio: comprobaciones sin red y contra los servicios | `./build.ps1`, `dotnet run --project pruebas` | Versión final en Windows: Android compila, pasa lint, **68** unitarias y las **5** contra el backend (por puertos y por una puerta única como la de la nube); escritorio **76** sin red y **173** con los servicios, por las dos vías. Contra la nube, sin credenciales, ambas reciben el 401 del contrato. Falta repetir las instrumentadas, el ensayo sin red en un teléfono e iniciar sesión contra la nube |
-| **Usabilidad** | 5 personas por perfil, tareas cronometradas, cuestionario SUS | protocolo de la sección 7 | **Pendiente de aplicar** (requiere personas) |
+| **Usabilidad** | 5 personas por perfil, tareas cronometradas, cuestionario SUS | protocolo de la sección 7 | Versión corta: 3 personas, una tarea cada una; 2 de 3 sin ayuda ([`FORMATO_USABILIDAD.md`](../entrega/FORMATO_USABILIDAD.md)) |
 
 ## 5. Pruebas de seguridad
 
@@ -91,7 +91,7 @@ python servicios/pruebas/procesos_integrales.py
 (cd app_escritorio && python -m unittest discover -s pruebas)
 ```
 
-## 7. Protocolo de usabilidad (pendiente de aplicar)
+## 7. Protocolo completo de usabilidad (solo se aplicó la versión corta)
 
 - **Participantes:** 5 por perfil principal: cliente, operador y repartidor. No pueden ser del equipo.
 - **Tareas cronometradas:**
