@@ -28,7 +28,7 @@ static class Pruebas
         VentanaDeEscritorio();
 #endif
         var backend = Environment.GetEnvironmentVariable("MICROHUBS_BACKEND");
-        if (!string.IsNullOrEmpty(backend)) { await BackendReal(backend); await AnalisisReal(backend); }
+        if (!string.IsNullOrEmpty(backend)) { await BackendReal(backend); await AnalisisReal(backend); await OperacionReal(backend); }
         else Console.WriteLine("(Omitidas las pruebas con backend real: define MICROHUBS_BACKEND=http://localhost y MICROHUBS_CLAVE)");
         Console.WriteLine($"{total} comprobaciones aprobadas");
     }
@@ -138,7 +138,7 @@ static class Pruebas
                 if (doc.Root!.Name != Api.Ns + a.Raiz) throw new Exception($"FALLA: {m.Nombre} · {a.Titulo} devolvió {doc.Root.Name.LocalName}");
                 Tablas.Principal(doc); Tablas.Resumen(doc);
             }
-        Check(true, $"Las {Modulos.Todos.Sum(m => m.Acciones.Length)} acciones de cobertura, rutas, costos, capacidad, equilibrio y simulación tienen ejemplo oficial con su raíz, sus plantillas validan y su tabla se arma");
+        Check(true, $"Las {Modulos.Todos.Sum(m => m.Acciones.Length)} acciones de inventario, preparación, despacho, surtido, cobertura, rutas, costos, capacidad, equilibrio y simulación tienen ejemplo oficial con su raíz, sus plantillas validan y su tabla se arma");
         Check(Modulos.Todos.SelectMany(m => m.Acciones).All(a => Api.Puertos.ContainsKey(a.Servicio)), "Cada acción va a un servicio con puerto conocido");
         Check(Tablas.Principal(await demo.Call("capacidad", "capacidad/microhubs", root: "capacidad_microhubs")).Columns.Contains("microhub/id"), "Capacidad: la tabla trae la columna microhub/id que usa «Detalle»");
         var plan = Tablas.Principal(Api.Example("RutaPlan.ok.xml").Document!);
@@ -166,6 +166,39 @@ static class Pruebas
         Check(conValor.Element(Api.Ns + "capacidad_fisica")!.Value == "120" && conValor.Element(Api.Ns + "capacidad_fisica")!.Attributes().Single(x => x.Name.LocalName == "nil").Value == "false", "Plantilla: un campo nulo que recibe valor deja de ser nulo y valida");
         demo.Validate(Plantillas.Aplicar(conValor, new Dictionary<string, string> { ["capacidad_fisica"] = "" }).ToString());
         Check(true, "Plantilla: dejarlo vacío lo vuelve nulo y valida");
+
+        // Operación (operador): asignación, manifiesto, uuid nuevo por operación y permisos de la sesión
+        var asig = Operacion.Asignacion("121, 155,7", "8");
+        demo.Validate(asig.ToString());
+        Check(asig.Descendants(Api.Ns + "parada").Select(x => x.Element(Api.Ns + "orden_parada")!.Value + ":" + x.Element(Api.Ns + "pedido_id")!.Value).SequenceEqual(["1:121", "2:155", "3:7"])
+              && asig.Descendants(Api.Ns + "repartidor_id").All(x => x.Value == "8"), "Asignación: los pedidos en el orden escrito, paradas 1, 2, 3, y valida contra el XSD");
+        Reject(() => Operacion.Asignacion("121, dos", "8"), "Asignación: un id que no es número se rechaza antes de enviar");
+        Reject(() => Operacion.Asignacion("121, 121", "8"), "Asignación: un pedido repetido se rechaza");
+        Reject(() => Operacion.Asignacion("121", "7, 8"), "Asignación: un solo repartidor");
+        Reject(() => Operacion.Asignacion("", "8"), "Asignación: sin pedidos no se manda");
+        var d1 = XDocument.Parse(Ex("EntregaDetalle.ok.xml")); var d2 = XDocument.Parse(Ex("EntregaDetalle.ok.xml"));
+        d2.Root!.Element(Api.Ns + "orden_parada")!.Value = "1"; d2.Root.Element(Api.Ns + "folio")!.Value = "PED-PRIMERA"; d2.Root.Element(Api.Ns + "total")!.Value = "41.50";
+        d2.Root.Element(Api.Ns + "cliente")!.Element(Api.Ns + "nombre")!.Value = "<script>alert(1)</script>";
+        var man = Operacion.Manifiesto([d1, d2]);
+        Check(man.Rows.Count == 2 && (string)man.Rows[0]["folio"] == "PED-PRIMERA" && (string)man.Rows[1]["productos"] == "2 × Arroz; 4 × Agua purificada"
+              && (string)man.Rows[1]["piezas"] == "6" && (string)man.Rows[1]["direccion"] == "Av. Rodrigo Gómez 1420, San Bernabé", "Manifiesto: paradas en orden, productos, piezas y dirección");
+        Check(Operacion.TotalACobrar(man) == 199.50m, "Manifiesto: total a cobrar del repartidor (158.00 + 41.50)");
+        var html = Operacion.ManifiestoHtml(man, "#7", new DateTime(2026, 11, 27, 9, 0, 0));
+        Check(!html.Contains("<script>") && html.Contains("&lt;script&gt;") && html.Contains("199.50") && html.Contains("Recibió (repartidor)"), "Manifiesto: página imprimible con el texto escapado y espacio para firmas");
+        var mov = Api.Example("MovimientoNuevo.ok.xml"); var mov1 = Plantillas.ConOperacionNueva(mov); var mov2 = Plantillas.ConOperacionNueva(mov);
+        demo.Validate(mov1.ToString());
+        Check(mov1.Element(Api.Ns + "operacion_uuid")!.Value != mov.Element(Api.Ns + "operacion_uuid")!.Value && mov1.Element(Api.Ns + "operacion_uuid")!.Value != mov2.Element(Api.Ns + "operacion_uuid")!.Value,
+              "Plantilla: cada movimiento lleva un operacion_uuid nuevo (el del ejemplo haría que el servicio lo tomara como duplicado)");
+        using (var conPermisos = new Api()) {
+            conPermisos.SetSession(XDocument.Parse(Ex("Sesion.ok.xml")));
+            Check(conPermisos.Puede("entregas.cerrar") && !conPermisos.Puede("entregas.asignar") && conPermisos.Puede("inventario.ajuste|entregas.ver"), "Sesión: los permisos del perfil habilitan las acciones que escriben");
+            var asignar = Modulos.Despacho.Acciones.Single(a => a.Titulo == "Asignar repartidor");
+            Check(!asignar.Habilitada(conPermisos) && Modulos.Despacho.Acciones[0].Habilitada(conPermisos), "Sesión: un repartidor no puede asignar; consultar sí");
+            conPermisos.Clear();
+            Check(!conPermisos.Puede("entregas.cerrar"), "Sesión: al salir se borran los permisos");
+        }
+        var colas = XDocument.Parse(Ex("ColaCalculo.ok.xml"));
+        Check(Tablas.Principal(colas).Columns.Contains("wq_min") && Tablas.Principal(colas).Rows.Count == 2, "Colas M/M/c: la tabla son los operadores posibles con su espera");
 
         // Rutas armadas a partir de la fila elegida
         var detalle = Modulos.Capacidad.Acciones.Single(a => a.Titulo == "Detalle");
@@ -358,6 +391,89 @@ static class Pruebas
         catch (ApiError e) { Check(e.Status == 401, "Cerrar sesión revoca el token (401) y la renovación vieja ya no sirve"); }
     }
 
+    // ------------------------------------------------------------------------------------------ 3c) operación del microhub contra el backend real
+    static async Task OperacionReal(string host)
+    {
+        var clave = Environment.GetEnvironmentVariable("MICROHUBS_CLAVE")!;
+        async Task<Api> Entrar(string correo)
+        {
+            var a = new Api { Host = host };
+            a.SetSession(await a.Call("auth", "auth/login", HttpMethod.Post, Api.Body("login", ("correo", correo), ("clave", clave))));
+            return a;
+        }
+        Console.WriteLine("-- Operación del microhub (operador) contra el backend real");
+        using var op = await Entrar("operador.mh01@codex.mx");
+        using var plan = await Entrar("planeador@codex.mx");
+        Check(op.Puede("pedidos.cambiar_estado") && op.Puede("entregas.asignar") && !op.Puede("surtido.editar"), "Operador: la sesión trae sus permisos");
+
+        // Consultas de las pantallas de operación, como operador
+        foreach (var m in new[] { Modulos.Inventario, Modulos.Preparacion, Modulos.Despacho, Modulos.Surtido })
+            foreach (var a in m.Acciones.Where(a => a.Metodo == "GET" && !a.PorFila && a.Formulario == null))
+            {
+                var t = Tablas.Principal(await op.Call(a.Servicio, a.Armar(), a.Http, root: a.Raiz));
+                Check(true, $"{m.Nombre} · {a.Titulo}: <{a.Raiz}> válido, {t.Rows.Count} filas");
+            }
+
+        // Inventario: un ajuste con la plantilla oficial y un uuid nuevo (dos envíos = dos movimientos)
+        var reg = Modulos.Inventario.Acciones.Single(a => a.Titulo == "Registrar movimiento");
+        async Task<XElement> Ajuste(int cantidad) => (await op.Call(reg.Servicio, reg.Armar(), reg.Http, Plantillas.Aplicar(Plantillas.ConOperacionNueva(Api.Example(reg.Plantilla!)),
+            new Dictionary<string, string> { ["tipo"] = "ajuste", ["cantidad"] = cantidad.ToString(), ["motivo"] = "Prueba del escritorio", ["referencia.tipo"] = "ajuste", ["referencia.id"] = "1" }),
+            root: reg.Raiz)).Root!;
+        var m1 = await Ajuste(1); var m2 = await Ajuste(-1);
+        Check(m1.Descendants(Api.Ns + "duplicado").First().Value == "false" && m2.Descendants(Api.Ns + "duplicado").First().Value == "false", "Inventario · Registrar movimiento dos veces: dos movimientos (+1 y −1), ninguno duplicado");
+
+        // Preparación → listo → asignación → manifiesto, todo en XML
+        var prep = Modulos.Preparacion.Acciones;
+        var porPreparar = Tablas.Principal(await op.Call("pedidos", prep[0].Armar(), root: prep[0].Raiz));
+        var listos = Tablas.Principal(await op.Call("pedidos", "pedidos/listos?microhub_id=1", root: "pedidos_listos"));
+        string? pid = null;
+        if (porPreparar.Rows.Count > 0)
+        {
+            pid = porPreparar.Rows[0]["id"]!.ToString()!;
+            var pasar = prep.Single(a => a.Titulo == "Pasar a preparación");
+            var p1 = (await op.Call("pedidos", pasar.Armar(pid), pasar.Http, Plantillas.ConOperacionNueva(Api.Example(pasar.Plantilla!)), root: pasar.Raiz)).Root!;
+            Check(p1.Element(Api.Ns + "estado")!.Value == "en_preparacion", $"Preparación · Pasar a preparación el pedido {pid} (XML pedido_estado_cambio)");
+            var listo = prep.Single(a => a.Titulo == "Marcar listo");
+            Check((await op.Call("pedidos", listo.Armar(pid), listo.Http, root: listo.Raiz)).Root!.Element(Api.Ns + "listo_en") != null, $"Preparación · Marcar listo el pedido {pid}");
+        }
+        else if (listos.Rows.Count > 0)
+        {
+            pid = listos.Rows[0]["id"]!.ToString()!;
+            Console.WriteLine($"(Preparación: no hay pedidos asignados en el microhub 1; se despacha el pedido listo {pid})");
+        }
+        if (pid == null) Console.WriteLine("(Operación: no hay pedidos asignados ni listos en el microhub 1; corre preparar_listos)");
+        else
+        {
+            var reps = Tablas.Principal(await op.Call("entregas", "entregas/repartidores", root: "repartidores"));
+            var rid = reps.Rows[0]["id"]!.ToString()!;
+            var asignar = Modulos.Despacho.Acciones.Single(a => a.Titulo == "Asignar repartidor");
+            var asignada = (await op.Call("entregas", asignar.Armar(), asignar.Http, Operacion.Asignacion(pid, rid), root: asignar.Raiz)).Root!;
+            Check(asignada.Element(Api.Ns + "asignadas")!.Value == "1", $"Despacho · Asignar el pedido {pid} al repartidor {rid} (XML asignacion_nueva)");
+            await RejectAsync(() => op.Call("entregas", asignar.Armar(), asignar.Http, Operacion.Asignacion(pid, rid), root: asignar.Raiz), "Despacho · Un pedido que ya salió no se vuelve a despachar (409)");
+            var man = Modulos.Despacho.Acciones.Single(a => a.Formulario == "manifiesto");
+            var lista = await op.Call("entregas", man.Armar(null, man.Parametros + "&repartidor_id=" + rid), root: man.Raiz);
+            var detalles = new List<XDocument>();
+            foreach (var e in lista.Root!.Element(Api.Ns + "datos")!.Elements()) detalles.Add(await op.Call("entregas", "entregas/" + e.Element(Api.Ns + "id")!.Value, root: "entrega_detalle"));
+            var tabla = Operacion.Manifiesto(detalles);
+            Check(tabla.Rows.Cast<System.Data.DataRow>().Any(r => ((string)r["folio"]).EndsWith(pid.PadLeft(6, '0'))) && Operacion.TotalACobrar(tabla) > 0,
+                  $"Despacho · Manifiesto del repartidor {rid}: {tabla.Rows.Count} paradas, incluye el pedido {pid}, total {Operacion.TotalACobrar(tabla):0.00}");
+        }
+
+        // Surtido y capacidad desde el escritorio
+        var restr = Modulos.Surtido.Acciones.Single(a => a.Titulo == "Restricciones");
+        Check((await op.Call("surtido", restr.Armar("1"), root: restr.Raiz)).Root!.Element(Api.Ns + "microhub") != null, "Surtido · Restricciones del microhub 1 (id pedido al no haber columna)");
+        var colas = Modulos.Capacidad.Acciones.Single(a => a.Titulo == "Colas M/M/c");
+        var c = (await op.Call("capacidad", colas.Armar(), colas.Http, Api.Example(colas.Plantilla!), root: colas.Raiz)).Root!;
+        Check(c.Element(Api.Ns + "servidores_requeridos")!.Value == "4" && Tablas.Principal(c.Document!).Rows.Count >= 2, "Capacidad · Colas M/M/c con la plantilla oficial: 4 operadores para esperar ≤ 5 min");
+        var cambiar = Modulos.Capacidad.Acciones.Single(a => a.Titulo == "Cambiar personal");
+        await RejectAsync(() => op.Call("capacidad", cambiar.Armar("1"), cambiar.Http, Api.Example(cambiar.Plantilla!), root: cambiar.Raiz), "Capacidad · Cambiar personal: el operador no puede (403)");
+        var antes = (await plan.Call("capacidad", "capacidad/recursos/1", root: "recurso_capacidad")).Root!;
+        var cuerpo = Plantillas.Aplicar(Api.Example(cambiar.Plantilla!), new Dictionary<string, string> { ["operadores"] = antes.Element(Api.Ns + "operadores")!.Value,
+            ["repartidores"] = antes.Element(Api.Ns + "repartidores")!.Value, ["capacidad_fisica"] = antes.Element(Api.Ns + "capacidad_fisica")!.Value });
+        var despues = (await plan.Call("capacidad", cambiar.Armar("1"), cambiar.Http, cuerpo, root: cambiar.Raiz)).Root!;
+        Check(despues.Element(Api.Ns + "operadores")!.Value == antes.Element(Api.Ns + "operadores")!.Value, "Capacidad · Cambiar personal como planeador (se deja igual que estaba)");
+    }
+
     // ------------------------------------------------------------------------------------------ 3b) análisis y reportes contra el backend real
     static async Task AnalisisReal(string host)
     {
@@ -372,8 +488,9 @@ static class Pruebas
         using var plan = await Entrar("planeador@codex.mx");
 
         // Cada consulta de cada pantalla (las que no dependen de una fila): XML válido con la raíz esperada y su tabla
-        foreach (var m in Modulos.Todos)
-            foreach (var a in m.Acciones.Where(a => a.Metodo == "GET" && !a.PorFila && a.Titulo != "Comparar"))
+        var operacion = new[] { Modulos.Inventario, Modulos.Preparacion, Modulos.Despacho };     // las de operación se prueban como operador (3c)
+        foreach (var m in Modulos.Todos.Except(operacion))
+            foreach (var a in m.Acciones.Where(a => a.Metodo == "GET" && !a.PorFila && a.Titulo != "Comparar" && a.Formulario == null))
             {
                 var doc = await plan.Call(a.Servicio, a.Armar(), a.Http, root: a.Raiz);
                 var t = Tablas.Principal(doc);

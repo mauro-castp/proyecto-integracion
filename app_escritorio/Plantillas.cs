@@ -31,6 +31,17 @@ static class Plantillas
         ? new Campo(Clave(raiz, e), string.Join(", ", e.Elements().Select(h => h.Value)), true)
         : new Campo(Clave(raiz, e), e.Value, false)).ToList();
 
+    /// <summary>
+    /// Copia de la plantilla con un `operacion_uuid` nuevo en cada operación: el del ejemplo oficial es fijo y, como los servicios son
+    /// idempotentes por ese uuid, mandarlo dos veces devolvería el primer movimiento (duplicado) en vez de registrar uno nuevo.
+    /// </summary>
+    public static XElement ConOperacionNueva(XElement plantilla)
+    {
+        var copia = new XElement(plantilla);
+        foreach (var e in copia.Descendants().Where(e => e.Name.LocalName == "operacion_uuid").ToList()) { e.Value = Guid.NewGuid().ToString(); e.Attribute(Xsi + "nil")?.Remove(); }
+        return copia;
+    }
+
     /// <summary>Copia de la plantilla con los valores escritos. No valida: eso lo hace <see cref="Api.Validate"/> antes de enviar.</summary>
     public static XElement Aplicar(XElement plantilla, IReadOnlyDictionary<string, string> valores)
     {

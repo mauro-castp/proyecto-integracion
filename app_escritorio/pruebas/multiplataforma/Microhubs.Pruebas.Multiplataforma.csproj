@@ -8,7 +8,7 @@
   <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><StartupObject>Microhubs.Pruebas</StartupObject><DefineConstants>$(DefineConstants);SIN_VENTANA</DefineConstants></PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Pruebas.cs" Link="Pruebas.cs" /><Compile Include="..\..\Api.cs" Link="Api.cs" /><Compile Include="..\..\Tablas.cs" Link="Tablas.cs" />
-    <Compile Include="..\..\Modulos.cs" Link="Modulos.cs" /><Compile Include="..\..\Plantillas.cs" Link="Plantillas.cs" />
+    <Compile Include="..\..\Modulos.cs" Link="Modulos.cs" /><Compile Include="..\..\Plantillas.cs" Link="Plantillas.cs" /><Compile Include="..\..\Operacion.cs" Link="Operacion.cs" />
     <Content Include="..\..\contratos\**\*" Link="contratos\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,8 @@
+{
+  "pedido_id": 901,
+  "folio": "PED-20261126-000901",
+  "entrega_id": 412,
+  "resultado": "entregado",
+  "conforme": true,
+  "estado_pedido": "entregado"
+}

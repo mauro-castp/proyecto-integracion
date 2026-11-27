@@ -7,11 +7,15 @@ namespace Microhubs;
 /// ejemplo oficial que se edita antes de mandarla. `{id}` en la ruta se sustituye por la columna `Columna` de la fila elegida;
 /// `Parametros` es la consulta que se propone y la persona puede cambiar.
 /// </summary>
+/// <param name="Permiso">Permiso (o varios separados por «|») que habilita el botón cuando la acción escribe; sin él, solo planeación y administración.</param>
+/// <param name="Formulario">Diálogo propio en vez del editor de plantillas: «asignacion» (pedidos y repartidor) o «manifiesto» (repartidor).</param>
 sealed record Accion(string Titulo, string Servicio, string Ruta, string Raiz, string Metodo = "GET", string? Plantilla = null,
-                     string? Parametros = null, bool Escribe = false, string Columna = "id")
+                     string? Parametros = null, bool Escribe = false, string Columna = "id", string? Permiso = null, string? Formulario = null)
 {
     public HttpMethod Http => new(Metodo);
     public bool PorFila => Ruta.Contains("{id}");
+    /// <summary>¿Se habilita el botón? Consultar, siempre; escribir, con el permiso declarado o, si no declara, solo planeación y administración.</summary>
+    public bool Habilitada(Api api) => !Escribe || (Permiso != null ? api.Puede(Permiso) : api.Role is "planeador" or "administrador");
 
     /// <summary>La ruta final con el id de la fila y la consulta. El id y la consulta se revisan para no armar rutas raras.</summary>
     public string Armar(string? id = null, string? consulta = null)
@@ -74,6 +78,9 @@ static class Modulos
         new("Personal", "capacidad", "capacidad/recursos", "recursos_capacidad"),
         new("Cargas", "capacidad", "capacidad/cargas", "capacidad_cargas", Parametros: "microhub_id=1"),
         new("Simular", "capacidad", "capacidad/simulaciones", "capacidad_simulacion", "POST", "CapacidadSimulacionNueva.ok.xml"),
+        new("Cambiar personal", "capacidad", "capacidad/recursos/{id}", "recurso_capacidad", "PUT", "RecursoCapacidadNuevo.ok.xml", Escribe: true,
+            Columna: "microhub/id", Permiso: "capacidad.editar"),
+        new("Colas M/M/c", "capacidad", "capacidad/colas", "cola_calculo", "POST", "ColaCalculoNuevo.ok.xml"),
         new("Supuestos", "capacidad", "capacidad/supuestos", "supuestos_capacidad"),
     ]);
 
@@ -97,7 +104,53 @@ static class Modulos
         new("Supuestos", "simulacion", "simulacion/supuestos", "supuestos_simulacion"),
     ]);
 
-    public static readonly Modulo[] Todos = [Cobertura, Rutas, Costos, Capacidad, Equilibrio, Simulacion];
+    // --------------------------------------------------------------- operación del microhub (perfil operador)
+    public static readonly Modulo Inventario = new("Inventario", "Existencias, faltantes y movimientos de cada microhub (servicio 5111).", [
+        new("Existencias", "inventario", "inventario", "existencias", Parametros: "microhub_id=1&por_pagina=100"),
+        new("Alertas", "inventario", "inventario/alertas", "alertas", Parametros: "microhub_id=1"),
+        new("Movimientos", "inventario", "inventario/movimientos", "movimientos", Parametros: "microhub_id=1"),
+        new("Reservas", "inventario", "inventario/reservas", "reservas", Parametros: "microhub_id=1"),
+        new("Registrar movimiento", "inventario", "inventario/movimientos", "movimiento_registrado", "POST", "MovimientoNuevo.ok.xml", Escribe: true,
+            Permiso: "inventario.movimiento|inventario.ajuste"),
+        new("Transferir", "inventario", "inventario/transferencias", "transferencia", "POST", "TransferenciaNueva.ok.xml", Escribe: true,
+            Permiso: "inventario.movimiento|inventario.ajuste"),
+    ]);
+
+    public static readonly Modulo Preparacion = new("Preparación", "Pedidos del microhub: pasarlos a preparación y marcarlos listos para despacho (servicio 5104).", [
+        new("Por preparar", "pedidos", "pedidos", "pedidos", Parametros: "estado=asignado&microhub_id=1&por_pagina=50"),
+        new("En preparación", "pedidos", "pedidos", "pedidos", Parametros: "estado=en_preparacion&microhub_id=1&por_pagina=50"),
+        new("Detalle", "pedidos", "pedidos/{id}", "pedido_detalle"),
+        new("Historial", "pedidos", "pedidos/{id}/historial", "historial"),
+        new("Pasar a preparación", "pedidos", "pedidos/{id}/estado", "pedido", "POST", "PedidoEstadoCambio.ok.xml", Escribe: true,
+            Permiso: "pedidos.cambiar_estado"),
+        new("Marcar listo", "pedidos", "pedidos/{id}/listo", "pedido_listo", "POST", Escribe: true, Permiso: "pedidos.cambiar_estado"),
+        new("Listos para despachar", "pedidos", "pedidos/listos", "pedidos_listos", Parametros: "microhub_id=1"),
+    ]);
+
+    public static readonly Modulo Despacho = new("Despacho", "Asignar pedidos listos a repartidores y generar el manifiesto de cada uno (servicio 5105).", [
+        new("Pedidos listos", "pedidos", "pedidos/listos", "pedidos_listos", Parametros: "microhub_id=1"),
+        new("Repartidores", "entregas", "entregas/repartidores", "repartidores"),
+        new("Entregas abiertas", "entregas", "entregas", "entregas", Parametros: "abiertas=true&por_pagina=100"),
+        new("Detalle de entrega", "entregas", "entregas/{id}", "entrega_detalle"),
+        new("Asignar repartidor", "entregas", "entregas/asignaciones", "asignacion", "POST", Escribe: true, Permiso: "entregas.asignar",
+            Formulario: "asignacion"),
+        new("Manifiesto", "entregas", "entregas", "entregas", Parametros: "abiertas=true&por_pagina=100", Formulario: "manifiesto"),
+    ]);
+
+    public static readonly Modulo Surtido = new("Surtido", "Qué productos conviene tener en cada microhub: ABC, rotación, margen y recomendación (servicio 5122).", [
+        new("Clasificación ABC", "surtido", "surtido/abc", "surtido_abc", Parametros: "microhub_id=1"),
+        new("Análisis", "surtido", "surtido/analisis", "surtido_analisis", Parametros: "microhub_id=1"),
+        new("Recomendaciones", "surtido", "surtido/recomendaciones", "surtido_recomendaciones"),
+        new("Ver recomendación", "surtido", "surtido/recomendaciones/{id}", "surtido_recomendacion"),
+        new("Calcular recomendación", "surtido", "surtido/recomendaciones", "surtido_recomendacion", "POST", "SurtidoRecomendacionNueva.ok.xml",
+            Escribe: true, Permiso: "surtido.editar"),
+        new("Restricciones", "surtido", "surtido/restricciones/{id}", "surtido_restriccion", Columna: "microhub_id"),
+        new("Cambiar restricciones", "surtido", "surtido/restricciones/{id}", "surtido_restriccion", "PUT", "SurtidoRestriccionCambio.ok.xml",
+            Escribe: true, Columna: "microhub_id", Permiso: "surtido.editar"),
+        new("Supuestos", "surtido", "surtido/supuestos", "supuestos_surtido"),
+    ]);
+
+    public static readonly Modulo[] Todos = [Inventario, Preparacion, Despacho, Surtido, Cobertura, Rutas, Costos, Capacidad, Equilibrio, Simulacion];
 
     /// <summary>Reportes (5123): catálogo, indicadores y bitácora. Ver, graficar y descargar usan la clave de la fila elegida.</summary>
     public static readonly Accion Catalogo = new("Catálogo", "reportes", "reportes", "reportes_catalogo");
