@@ -7,7 +7,7 @@ Sistema para una red de microalmacenes de barrio («microhubs») que surten pedi
 Monterrey, Nuevo León. Opera el día a día (pedidos, inventario, reposición, rutas, entregas con evidencia) y responde con datos si conviene
 abrir o mantener un microhub.
 
-**26 microservicios** · portal web · app Android (JSON) · app de escritorio (XML/XSD) · PostgreSQL, MongoDB y Redis · Google Cloud Storage ·
+**27 microservicios** · portal web · app Android (JSON) · app de escritorio (XML/XSD) · PostgreSQL, MongoDB y Redis · Google Cloud Storage ·
 desplegado en Google Compute Engine.
 
 ## Empieza aquí
@@ -37,7 +37,7 @@ desplegado en Google Compute Engine.
 | [`bloque_c/`](bloque_c/) | Modelo de datos: `sql/01–13`, `mongo/01–03`, claves y scripts de Redis, semilla y **generador de alto volumen** |
 | [`bloque_d/`](bloque_d/) | Arquitectura: diagramas 1 a 21 (18: despliegue real en GCP; 19: los 26 servicios; 20–21: procesos integrales) |
 | [`sistema_web/`](sistema_web/) | Portal Flask; `integracion.py` y `procesos.py` son el web como cliente de los servicios |
-| [`servicios/`](servicios/) | Los 26 microservicios (puertos 5101–5126), su base común, contratos generados y pruebas |
+| [`servicios/`](servicios/) | Los 27 microservicios (puertos 5101–5127), su base común, contratos generados y pruebas |
 | [`app_movil/`](app_movil/) | App Android del repartidor y del cliente (Kotlin, JSON) |
 | [`app_escritorio/`](app_escritorio/) | App de escritorio para análisis y operadores (C#, XML) y los XSD oficiales del contrato |
 | [`deploy/gcp/`](deploy/gcp/LEEME.md) | Despliegue en Google Cloud: VM, Nginx, bucket con URL firmadas, registros |

@@ -33,6 +33,7 @@ sigue funcionando por su cuenta.
 | surtido | 5122 | Qué productos tener y cuántos: ABC, rotación, margen, quiebres y recomendaciones con espacio y presupuesto | `surtido/abc`, `surtido/analisis`, `surtido/recomendaciones[/{id}]`, `surtido/restricciones/{mh}`, `surtido/supuestos` | PostgreSQL (ventas, existencias, catálogo y costos desde sus servicios) |
 | reportes | 5123 | Reportes operativos, logísticos, comerciales y financieros, indicadores, gráficas y exportación a CSV, Excel y PDF | `reportes`, `reportes/indicadores`, `reportes/{clave}[/grafica\|/exportar]`, `reportes/exportaciones[/{id}/enlace]` (archivo en el bucket) | PostgreSQL (bitácora de exportaciones); los datos, de sus servicios dueños |
 | sincronizacion | 5125 | Aplica sin duplicar lo que Android y escritorio hicieron sin conexión; conflictos y reintentos | `sincronizacion/lotes[/{id}]`, `sincronizacion/pendientes`, `sincronizacion/conflictos`, `sincronizacion/estado`, `sincronizacion/supuestos` | PostgreSQL |
+| ubicacion | 5127 | Facility location: colonias de bajos ingresos (CONAPO 2020), demanda simulada, cobertura máxima y punto de equilibrio | `ubicacion/colonias`, `ubicacion/mapa`, `ubicacion/propuestas`, `ubicacion/supuestos` | PostgreSQL |
 | auditoria-monitoreo | 5126 | Bitácora y trazabilidad; salud, disponibilidad, métricas y alertas de todos los servicios | `auditoria[/accesos\|/trazabilidad/…]`, `monitoreo/estado`, `monitoreo/disponibilidad`, `monitoreo/metricas`, `monitoreo/alertas[/{id}/reconocer]`, `monitoreo/verificaciones` | PostgreSQL, MongoDB |
 
 ## Una responsabilidad por servicio
@@ -148,7 +149,7 @@ El portal web consume los servicios por HTTP con el **mismo JWT de la sesión de
 
 | Pantalla del web | Servicios que llama | Qué demuestra |
 |---|---|---|
-| **Monitoreo** (`/web/servicios/monitoreo`) | auditoria-monitoreo | panel central: estado, disponibilidad, tiempos, dependencias caídas y alertas; verificar y reconocer |
+| **Monitoreo** (`/monitoreo`, lee PostgreSQL directo) | auditoria-monitoreo | panel central: estado, disponibilidad, tiempos, dependencias caídas y alertas; verificar y reconocer |
 | **Microservicios** (menú del administrador, `/web/servicios`) | los 26 (`/salud`), documentos y planeación (resúmenes), zonas (XML) | estado de cada servicio, agregaciones de MongoDB y una respuesta XML real |
 | **Pedido → «Entrega, recorrido y evidencias»** (`/web/servicios/pedido/<id>`) | pedidos, entregas, seguimiento, documentos | detalle, historial, recorrido GPS (MongoDB) y fotos de evidencia; adjuntar un archivo que se guarda en MongoDB |
 
@@ -168,7 +169,7 @@ docker compose -f docker-compose.integrado.yml down                   # detener 
 docker compose -f docker-compose.integrado.yml down -v                # detener y borrar volúmenes (base desde cero)
 ```
 
-Web: `http://localhost:5000`. Servicios: puertos 5101 a 5126. Cuentas: `sistema_web/README.md` (clave `Codex#2026`, solo para desarrollo local; el
+Web: `http://localhost:5000`. Servicios: puertos 5101 a 5127. Cuentas: `sistema_web/README.md` (clave `Codex#2026`, solo para desarrollo local; el
 despliegue en la nube la cambia, ver [`deploy/gcp/LEEME.md`](../deploy/gcp/LEEME.md)).
 Con un volumen de PostgreSQL ya existente, el contenedor `migraciones` aplica 06 a 13 sin borrar datos. Si el puerto
 5000 está ocupado (por ejemplo, por `sistema_web/docker-compose.yml`), detener ese compose o usar `WEB_PORT=5050`.
