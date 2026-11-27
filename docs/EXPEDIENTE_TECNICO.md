@@ -327,7 +327,7 @@ prueba, métricas, limitaciones y tiempo) están en **`docs/ALGORITMOS.md`**. El
 | Cloud Storage | Bucket privado (§14) | Archivos fuera de la base |
 | IAM | Cuenta de servicio con permiso mínimo y sin llaves | Sin secretos en disco |
 | Cloud Logging | Ops Agent con los registros de contenedores y Nginx | Trazas buscables |
-| HTTPS | Activo con certificado propio (`--https-autofirmado`); Let's Encrypt con `--https` | El reconocido está **pendiente** (I-21) |
+| HTTPS | Certificado de Let's Encrypt (`instalar_vm.sh --https`), vence el 25-02-2027 | Cifrado que navegadores, Android y Windows aceptan |
 
 **Bases en contenedores dentro de la VM, y no Cloud SQL ni Memorystore.** El lineamiento lo permite si se justifica. Las razones:
 
@@ -500,12 +500,12 @@ Está en `docs/MANUAL_USUARIO.md`: qué hace cada perfil paso a paso y los mensa
 - Una VM en una zona: no hay alta disponibilidad.
 - Redis sin persistencia: al reiniciarse cierra todas las sesiones.
 - Los **reportes no tienen un plazo total**: con saturación tardan en fallar (I-20).
-- Las apps instalables necesitan un certificado **reconocido**; la VM usa uno autofirmado (I-21).
+- El inicio de sesión de las apps instaladas contra la nube falta ensayarlo en un teléfono y una PC.
 - La usabilidad no se ha medido con usuarios reales.
 
 # 31. Trabajo futuro
 
-1. Activar HTTPS con certificado reconocido, generar el APK release firmado y el ZIP de escritorio, y probarlos contra la nube.
+1. Generar el APK release firmado y el ZIP de escritorio, y probarlos con inicio de sesión contra la nube.
 2. Un esquema o una instancia por servicio, y migrar a Cloud SQL, Memorystore y Atlas.
 3. Un plazo total y un cortacircuitos en `comun/clientes.py`.
 4. Varios workers o réplicas de pedidos, productos y auth detrás de Nginx, o GKE con autoescalado.

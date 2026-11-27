@@ -116,7 +116,8 @@ El instalador hace lo siguiente y se puede repetir sin riesgo:
 bash deploy/gcp/instalar_vm.sh --sin-construir --https <correo>
 ```
 
-Pide un certificado de Let's Encrypt para `34-51-89-253.sslip.io` y deja la redirección de 80 a 443.
+Pide un certificado de Let's Encrypt para `34-51-89-253.sslip.io` y deja la redirección de 80 a 443. En la VM del equipo ya está activo; las
+siguientes instalaciones lo conservan.
 
 **Comprobar el despliegue:**
 
@@ -165,6 +166,9 @@ Compress-Archive bin/Publicacion/* Microhubs-Escritorio-win-x64.zip             
 ```
 
 Contra la nube se usa el host `https://34-51-89-253.sslip.io/servicios`. Fuera de `localhost` la app solo acepta HTTPS.
+
+En las dos apps, un servidor **con ruta** (`…/servicios`) llama por nombre de servicio a través de Nginx; **sin ruta** (`http://localhost`,
+`http://10.0.2.2`) llama a cada servicio en su puerto.
 
 ---
 

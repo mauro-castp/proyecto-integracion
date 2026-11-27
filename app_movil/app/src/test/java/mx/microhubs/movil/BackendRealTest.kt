@@ -11,11 +11,13 @@ import org.junit.Test
  *
  *   MICROHUBS_BACKEND_HOST=127.0.0.1   MICROHUBS_CLAVE=<clave de las cuentas de demostración>
  *   MICROHUBS_CORREO=repartidor1@codex.mx (opcional)
+ *   MICROHUBS_BACKEND_RUTA=:8088/servicios (opcional: probar por una puerta que reparte por nombre, como en la nube)
  *
  * Necesita al menos una entrega en ruta asignada a esa cuenta (se cierra como «entregado»; no se puede repetir con la misma).
  */
 class BackendRealTest {
     private val backend = System.getenv("MICROHUBS_BACKEND_HOST")
+    private val servidor get() = "http://$backend" + (System.getenv("MICROHUBS_BACKEND_RUTA") ?: "")
     private val clave = System.getenv("MICROHUBS_CLAVE")
     private val correo = System.getenv("MICROHUBS_CORREO") ?: "repartidor1@codex.mx"
     private val jpeg = byteArrayOf(0xFF.toByte(), 0xD8.toByte(), 0xFF.toByte(), 0xE0.toByte(), 0, 16, 74, 70, 73, 70, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0) + ByteArray(256) { it.toByte() }
@@ -23,7 +25,7 @@ class BackendRealTest {
     @Test fun flujoCompletoDelRepartidor() {
         assumeTrue("Define MICROHUBS_BACKEND_HOST y MICROHUBS_CLAVE para probar contra el backend real", !backend.isNullOrBlank() && !clave.isNullOrBlank())
         val memoria = Memoria()
-        val api = Api(memoria, httpHost = backend!!).apply { this.host = "http://$backend" }
+        val api = Api(memoria, httpHost = backend!!).apply { this.host = servidor }
 
         // sesión
         api.login(correo, clave!!)
@@ -31,7 +33,7 @@ class BackendRealTest {
         assertNotNull(memoria.saved)
         val perfil = api.call("usuarios", "usuarios/yo")
         assertEquals(correo, perfil.getString("correo"))
-        try { Api(Memoria(), httpHost = backend!!).apply { this.host = "http://$backend" }.login(correo, "clave-incorrecta"); fail() } catch (e: ApiError) { assertEquals(401, e.status); assertTrue(e.message!!.contains("Intento")) }
+        try { Api(Memoria(), httpHost = backend!!).apply { this.host = servidor }.login(correo, "clave-incorrecta"); fail() } catch (e: ApiError) { assertEquals(401, e.status); assertTrue(e.message!!.contains("Intento")) }
 
         // entregas
         val borradores = BorradoresEnMemoria()
@@ -59,7 +61,7 @@ class BackendRealTest {
         val viejo = JSONObject(api.session.toString())
         api.logout()
         assertNull(api.session); assertNull(memoria.saved)
-        val intruso = Api(Memoria(), httpHost = backend!!).apply { this.host = "http://$backend"; session = viejo }
+        val intruso = Api(Memoria(), httpHost = backend!!).apply { this.host = servidor; session = viejo }
         try { intruso.call("usuarios", "usuarios/yo"); fail("la sesión cerrada sigue valiendo") } catch (e: ApiError) { assertEquals(401, e.status) }
     }
 
@@ -69,7 +71,7 @@ class BackendRealTest {
      */
     @Test fun elCierreSinRedSeEnviaConLaSincronizacion() {
         assumeTrue("Define MICROHUBS_BACKEND_HOST y MICROHUBS_CLAVE para probar contra el backend real", !backend.isNullOrBlank() && !clave.isNullOrBlank())
-        val api = Api(Memoria(), httpHost = backend!!).apply { this.host = "http://$backend" }
+        val api = Api(Memoria(), httpHost = backend!!).apply { this.host = servidor }
         api.login(correo, clave!!)
         val base = ColaEnArchivos(java.nio.file.Files.createTempDirectory("cola_sin_red").toFile())
         val vistas = mutableListOf<Operacion>()                          // lo que la sincronización fue guardando (para reenviarlo igual)
@@ -113,7 +115,7 @@ class BackendRealTest {
     /** La bandeja de avisos del repartidor: la asignación de la entrega deja un aviso. */
     @Test fun losAvisosSeLeenYSeMarcan() {
         assumeTrue("Define MICROHUBS_BACKEND_HOST y MICROHUBS_CLAVE para probar contra el backend real", !backend.isNullOrBlank() && !clave.isNullOrBlank())
-        val api = Api(Memoria(), httpHost = backend!!).apply { this.host = "http://$backend" }
+        val api = Api(Memoria(), httpHost = backend!!).apply { this.host = servidor }
         api.login(correo, clave!!)
         val avisos = Avisos(api)
         val antes = avisos.noLeidas()
@@ -130,7 +132,7 @@ class BackendRealTest {
     /** Edita el teléfono contra el servicio real y lo deja como estaba. */
     @Test fun elPerfilSeActualizaYSeRestaura() {
         assumeTrue("Define MICROHUBS_BACKEND_HOST y MICROHUBS_CLAVE para probar contra el backend real", !backend.isNullOrBlank() && !clave.isNullOrBlank())
-        val api = Api(Memoria(), httpHost = backend!!).apply { this.host = "http://$backend" }
+        val api = Api(Memoria(), httpHost = backend!!).apply { this.host = servidor }
         api.login(correo, clave!!)
         val usuarios = Usuarios(api)
         val original = usuarios.yo()
@@ -146,7 +148,7 @@ class BackendRealTest {
     /** Idempotencia real: mismo UUID y misma evidencia, aunque el primer intento «se perdió» para el cliente. */
     @Test fun elReintentoConElMismoIdentificadorEsDuplicado() {
         assumeTrue("Define MICROHUBS_BACKEND_HOST y MICROHUBS_CLAVE para probar contra el backend real", !backend.isNullOrBlank() && !clave.isNullOrBlank())
-        val api = Api(Memoria(), httpHost = backend!!).apply { this.host = "http://$backend" }
+        val api = Api(Memoria(), httpHost = backend!!).apply { this.host = servidor }
         api.login(correo, clave!!)
         val b = BorradoresEnMemoria()
         val conservador = object : Borradores by b {                          // simula que la app murió justo antes de borrar el borrador

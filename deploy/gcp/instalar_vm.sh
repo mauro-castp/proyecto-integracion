@@ -10,6 +10,7 @@
 #      las cuentas de demostracion (la del repositorio es publica) por MICROHUBS_CLAVE, generada en la VM y guardada en .env.
 #   3. Instala la configuracion de Nginx (portal en "/", microservicios en "/servicios/<nombre>/") y recarga.
 #   4. Con --https pide el certificado de Let's Encrypt (acepta sus terminos de servicio y registra el correo): solo si lo pides.
+#      El certificado reconocido se conserva en las siguientes instalaciones (se vuelve a instalar sin pedir otro).
 #      Con --https-autofirmado cifra con un certificado propio (el navegador avisa que no lo conoce); no depende de terceros. Una vez
 #      creado, se conserva en las siguientes instalaciones.
 #
@@ -86,35 +87,56 @@ MICROHUBS_CLAVE="$(grep '^MICROHUBS_CLAVE=' .env | cut -d= -f2-)" docker compose
   -f deploy/gcp/docker-compose.gcp.yml exec -T -e MICROHUBS_CLAVE auth python - < deploy/gcp/cambiar_claves_demo.py \
   || morir "No se pudieron cambiar las claves de demostracion: no se publica el sistema."
 
-docker compose --env-file .env -f docker-compose.integrado.yml -f deploy/gcp/docker-compose.gcp.yml exec -T mongo mongosh --quiet \n  < bloque_c/mongo/03_documentos_nube.js > /dev/null || morir "No se pudo actualizar el esquema de documentos en MongoDB."
+docker compose --env-file .env -f docker-compose.integrado.yml -f deploy/gcp/docker-compose.gcp.yml exec -T mongo mongosh --quiet \
+  < bloque_c/mongo/03_documentos_nube.js > /dev/null || morir "No se pudo actualizar el esquema de documentos en MongoDB."
 echo "   esquema de documentos en MongoDB al dia"
 
 decir "3) Nginx"
 sudo install -m 644 deploy/gcp/nginx-microhubs.conf /etc/nginx/sites-available/microhubs
 sudo sed -i "s/__SERVER_NAME__/$HOST_PUBLICO/" /etc/nginx/sites-available/microhubs
-if [ -n "$AUTOFIRMADO" ] || sudo test -f /etc/nginx/ssl/microhubs.crt; then
+CERT_LE="/etc/letsencrypt/live/$HOST_PUBLICO/fullchain.pem"
+
+autofirmado() {          # añade el puerto 443 con un certificado propio al bloque del sitio
   if ! sudo test -f /etc/nginx/ssl/microhubs.crt; then
     sudo mkdir -p /etc/nginx/ssl
-    sudo openssl req -x509 -newkey rsa:2048 -nodes -days 365 -subj "/CN=$HOST_PUBLICO" -addext "subjectAltName=DNS:$HOST_PUBLICO$( [ -n "$IP" ] && echo ",IP:$IP" )"       -keyout /etc/nginx/ssl/microhubs.key -out /etc/nginx/ssl/microhubs.crt 2>/dev/null
+    sudo openssl req -x509 -newkey rsa:2048 -nodes -days 365 -subj "/CN=$HOST_PUBLICO" \
+      -addext "subjectAltName=DNS:$HOST_PUBLICO$( [ -n "$IP" ] && echo ",IP:$IP" )" \
+      -keyout /etc/nginx/ssl/microhubs.key -out /etc/nginx/ssl/microhubs.crt 2>/dev/null
     sudo chmod 600 /etc/nginx/ssl/microhubs.key
   fi
-  # añade el puerto 443 con el certificado al bloque del sitio, después de la línea «listen [::]:80;»
+  # después de la línea «listen [::]:80;»
   printf '%s\n' '    listen 443 ssl;' '    listen [::]:443 ssl;' '    ssl_certificate /etc/nginx/ssl/microhubs.crt;' \
     '    ssl_certificate_key /etc/nginx/ssl/microhubs.key;' '    ssl_protocols TLSv1.2 TLSv1.3;' > /tmp/microhubs-ssl.conf
   sudo sed -i '/^    listen \[::\]:80;/r /tmp/microhubs-ssl.conf' /etc/nginx/sites-available/microhubs
   rm -f /tmp/microhubs-ssl.conf
   echo "   HTTPS con certificado autofirmado en el puerto 443"
+}
+
+# Con certificado reconocido (ya emitido o que se va a pedir) no se agrega el propio: certbot escribe el bloque 443.
+if [ -z "$HTTPS" ] && ! sudo test -f "$CERT_LE" && { [ -n "$AUTOFIRMADO" ] || sudo test -f /etc/nginx/ssl/microhubs.crt; }; then
+  autofirmado
 fi
 sudo ln -sf /etc/nginx/sites-available/microhubs /etc/nginx/sites-enabled/microhubs
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t && sudo systemctl reload-or-restart nginx
 echo "   Nginx sirve $HOST_PUBLICO"
 
+RECONOCIDO=""
 if [ -n "$HTTPS" ]; then
   decir "4) HTTPS con Let's Encrypt (acepta los terminos de servicio y registra $CORREO)"
-  sudo certbot --nginx -d "$HOST_PUBLICO" --non-interactive --agree-tos -m "$CORREO" --redirect
+  command -v certbot >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq certbot python3-certbot-nginx >/dev/null; }
+  if sudo certbot --nginx -d "$HOST_PUBLICO" --non-interactive --agree-tos -m "$CORREO" --redirect --keep-until-expiring; then
+    RECONOCIDO=1
+  else
+    autofirmado; sudo nginx -t && sudo systemctl reload-or-restart nginx
+    morir "Let's Encrypt no entregó el certificado; el sitio sigue con el certificado propio."
+  fi
+elif sudo test -f "$CERT_LE"; then
+  decir "4) HTTPS: se vuelve a instalar el certificado de Let's Encrypt que ya existe"
+  sudo certbot install --nginx --cert-name "$HOST_PUBLICO" --redirect --non-interactive || morir "No se pudo reinstalar el certificado."
+  RECONOCIDO=1
 fi
 
 decir "Listo"
-echo "   Portal:   http${HTTPS:+s}://$HOST_PUBLICO/"
-echo "   Servicios: http${HTTPS:+s}://$HOST_PUBLICO/servicios/<nombre>/api/v1/salud   (Swagger: .../api/v1/docs)"
+echo "   Portal:   http${RECONOCIDO:+s}://$HOST_PUBLICO/"
+echo "   Servicios: http${RECONOCIDO:+s}://$HOST_PUBLICO/servicios/<nombre>/api/v1/salud   (Swagger: .../api/v1/docs)"

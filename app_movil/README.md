@@ -49,8 +49,10 @@ El APK queda en `app/build/outputs/apk/debug/app-debug.apk`.
 ### Conexión con el backend
 
 - **Debug:** HTTP solo hacia un host fijado al compilar, por defecto `10.0.2.2` (el equipo, visto desde el emulador). Para un
-  teléfono físico: `./build.ps1 -DebugHttpHost 192.168.1.20` (la IP de la PC en la red local) y permitir los puertos 5101–5110 en el
+  teléfono físico: `./build.ps1 -DebugHttpHost 192.168.1.20` (la IP de la PC en la red local) y permitir los puertos 5101–5126 en el
   firewall de Windows. Cualquier otro host exige HTTPS.
+- **Nube:** servidor `https://34-51-89-253.sslip.io/servicios`. Con ruta en la dirección la app llama por nombre de servicio
+  (`…/servicios/entregas/api/v1/…`); sin ruta, a cada servicio en su puerto.
 - **Release:** solo HTTPS; no existe la configuración de HTTP. No se desactiva la validación de certificados.
 - En la pantalla de acceso se escribe el servidor (`http://10.0.2.2` por defecto en debug) o se marca «Usar ejemplos locales»
   (respuestas con la misma forma que el contrato, sin red, para ensayar la interfaz).
@@ -98,7 +100,7 @@ cerrar sesión se revocan acceso y renovación en el servidor y se borran las cr
 
 | Qué | Cómo | Resultado verificado |
 |---|---|---|
-| Unitarias (JVM): protocolo, contrato, entregas, idempotencia, perfil (incluye PATCH→PUT), **cola sin red y sincronización** (orden foto → lote, los cuatro estados, reenvío idéntico, lotes de 200, solo lo de la sesión, copias para trabajar sin red) y **avisos** | `./build.ps1` o `gradle testDebugUnitTest` | 67 (46 + 21 nuevas) |
+| Unitarias (JVM): protocolo, contrato, entregas, idempotencia, perfil (incluye PATCH→PUT), **cola sin red y sincronización** (orden foto → lote, los cuatro estados, reenvío idéntico, lotes de 200, solo lo de la sesión, copias para trabajar sin red) y **avisos** | `./build.ps1` o `gradle testDebugUnitTest` | 68 |
 | Contra los **servicios reales** (login, entregas, foto en MongoDB, GPS en el servicio de seguimiento, cierre, duplicado, revocación; **cierre sin red enviado por sincronización, reenvío duplicado, uuid reutilizado rechazado, conflicto** y **avisos**) | `MICROHUBS_BACKEND_HOST=127.0.0.1 MICROHUBS_CLAVE=… gradle testDebugUnitTest --tests "*BackendRealTest*"` (necesita 3 entregas en ruta: `preparar_entregas.py --cantidad 3`; la de perfil edita el teléfono y lo restaura) | 5 |
 | En emulador Android 14 (Keystore, borradores, redimensión de foto, recorrido de todas las pantallas con ejemplos —incluida la edición del perfil— y contra el backend real; guarda las capturas) | `gradle connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.clave=…` | 7 aprobadas |
 | Lint | `./build.ps1` | 0 errores, 17 advertencias (versiones de dependencias, `commit()` de preferencias, recursos sin usar, `ExifInterface`; `InsecureBaseConfiguration` es el HTTP permitido solo en debug) |

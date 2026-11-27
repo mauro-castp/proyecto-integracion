@@ -16,7 +16,7 @@ desplegada es `fd85013`**; lo que se midió con una versión anterior lo dice.
 | `carga/informe_carga.md` y `carga/ANALISIS.md` | Locust hasta 200 usuarios: rendimiento, p95/p99, errores, saturación, recuperación, recursos y mejoras |
 | `fallos.md` | 32 de 32: servicio detenido, Redis, MongoDB, PostgreSQL, almacén de archivos, tiempo de espera e integridad |
 | `seguridad.md` | 23 de 23: sesiones, permisos, bloqueo, bitácora inmutable, entradas maliciosas, enlaces firmados, límite de consumo, secretos y puertos |
-| `certificado.txt` | HTTPS con certificado propio (autofirmado): el navegador avisa que no lo conoce |
+| `certificado.txt` | Certificado de Let's Encrypt activo desde el 27 de noviembre (las corridas de arriba se hicieron con el autofirmado) |
 
 ## Corridas anteriores
 
@@ -28,5 +28,6 @@ desplegada es `fd85013`**; lo que se midió con una versión anterior lo dice.
 | `pruebas_en_la_nube.md` | `56f38c9` | 401 casos de petición y respuesta de la versión de la Ola 3 |
 | `recursos_gcp.txt`, `cloud_logging.txt` | `56f38c9` | VM, IP, firewall, bucket y permisos; registros de los contenedores en Cloud Logging |
 
-Acceso: el portal y las API se publican por HTTP (80) y por HTTPS (443) con un certificado autofirmado; un certificado reconocido (Let's Encrypt) es un
-paso opcional del instalador. La clave de las cuentas de demostración en la nube es distinta de la del repositorio y solo está en el `.env` de la VM.
+Acceso: el portal y las API se publican por HTTPS (443) con un certificado de Let's Encrypt; HTTP (80) redirige. Comprobado el 27 de noviembre: 26 de
+26 servicios sanos con el certificado validado, también después de reiniciar la VM sin correr el instalador. La clave de las cuentas de demostración
+en la nube es distinta de la del repositorio y solo está en el `.env` de la VM.

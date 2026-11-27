@@ -36,10 +36,20 @@ gcloud compute ssh microhubs-vm --zone northamerica-south1-c \
 ```
 
 `instalar_vm.sh` crea el `.env` con secretos aleatorios (permiso 600), verifica que no queden los valores por defecto del repositorio,
-levanta los contenedores, **cambia la clave de las cuentas de demostración** y configura Nginx. Es repetible. HTTPS opcional:
-`bash deploy/gcp/instalar_vm.sh --sin-construir --https-autofirmado` (certificado propio, el
-navegador avisa) o `--https tu@correo` (Let's Encrypt, certificado reconocido; acepta sus términos). `python deploy/gcp/generar.py` regenera `docker-compose.gcp.yml` y
-`nginx-microhubs.conf` cuando cambian los servicios.
+levanta los contenedores, **cambia la clave de las cuentas de demostración** y configura Nginx. Es repetible. `python deploy/gcp/generar.py`
+regenera `docker-compose.gcp.yml` y `nginx-microhubs.conf` cuando cambian los servicios.
+
+### HTTPS
+
+Activo con un certificado de **Let's Encrypt** para `34-51-89-253.sslip.io` (vence el 25 de febrero de 2027); el puerto 80 redirige al 443.
+Se pidió con `bash deploy/gcp/instalar_vm.sh --sin-construir --https tu@correo` (acepta sus términos). Las siguientes instalaciones lo
+conservan sin pedir otro. `--https-autofirmado` (certificado propio, el navegador avisa) solo sirve donde no se pueda pedir uno reconocido.
+La renovación automática la hace `certbot` con la máquina encendida; si estuvo apagada cerca del vencimiento: `sudo certbot renew`.
+
+### Al encender la máquina
+
+Todos los contenedores (también PostgreSQL, Redis y MongoDB) vuelven a encender solos; en un minuto y medio responden los 26 servicios.
+No hace falta correr el instalador.
 
 ### Claves en la nube
 

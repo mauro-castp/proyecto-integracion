@@ -178,7 +178,11 @@ sealed class Api : IDisposable
         if(host.Scheme!="https" && !(host.Scheme=="http" && host.IsLoopback)) throw new Exception("Usa HTTPS; HTTP solo se permite en localhost.");
         if(host.UserInfo!="") throw new Exception("Host inválido.");
         if(!Puertos.TryGetValue(service,out var port)) throw new Exception("Servicio desconocido: "+service);
-        var parts=path.Split('?',2); var uri=new UriBuilder(host){Port=port,Path="/api/v1/"+parts[0],Query=parts.Length==2?parts[1]:""};
+        var parts=path.Split('?',2); var uri=new UriBuilder(host){Query=parts.Length==2?parts[1]:""};
+        // Sin ruta (http://localhost): cada servicio en su puerto. Con ruta (https://servidor/servicios, la nube): una sola puerta que reparte por nombre.
+        var prefix=host.AbsolutePath.Trim('/');
+        if(prefix=="") { uri.Port=port; uri.Path="/api/v1/"+parts[0]; }
+        else uri.Path=$"/{prefix}/{service}/api/v1/{parts[0]}";
         var req=new HttpRequestMessage(method,uri.Uri);
         req.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(accept));
         if(token!="") req.Headers.Authorization=new AuthenticationHeaderValue("Bearer",token);

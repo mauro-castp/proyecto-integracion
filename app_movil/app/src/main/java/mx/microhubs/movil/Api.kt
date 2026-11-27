@@ -20,6 +20,8 @@ class ApiError(
  * Cliente JSON de los microservicios (contrato v1). Siempre `application/json`; solo HTTPS, salvo el host HTTP que se
  * habilita al compilar en modo debug (`httpHost`, por defecto 10.0.2.2 = el equipo desde el emulador).
  * Un 401 renueva la sesión una sola vez (el token de renovación rota) y repite la petición.
+ * Servidor sin ruta (`http://10.0.2.2`): cada servicio en su puerto. Con ruta (`https://servidor/servicios`, la nube): una sola puerta que
+ * reparte por nombre, `…/servicios/<servicio>/api/v1/…`.
  */
 class Api(
     private val store: Sessions,
@@ -77,8 +79,12 @@ class Api(
         require(base.host != null && base.userInfo == null && (base.scheme == "https" || base.scheme == "http" && httpHost.isNotEmpty() && base.host == httpHost)) {
             "Usa HTTPS o el host HTTP habilitado en esta compilación debug: $httpHost"
         }
-        val url = URI(base.scheme, null, base.host, ports.getValue(service), "/api/v1/" + path.substringBefore('?'),
-            path.substringAfter('?', "").ifEmpty { null }, null).toURL()
+        val puerto = ports.getValue(service)
+        val recurso = "/api/v1/" + path.substringBefore('?')
+        val consulta = path.substringAfter('?', "").ifEmpty { null }
+        val prefijo = base.path.orEmpty().trim('/')
+        val url = if (prefijo.isEmpty()) URI(base.scheme, null, base.host, puerto, recurso, consulta, null).toURL()
+            else URI(base.scheme, null, base.host, base.port, "/$prefijo/$service$recurso", consulta, null).toURL()
         val sentToken = session?.optString("token_acceso")
         val connection = open(url)
         try {
