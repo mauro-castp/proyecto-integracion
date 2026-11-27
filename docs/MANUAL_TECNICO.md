@@ -73,7 +73,8 @@ Esa fábrica añade lo mismo a todos:
 ## 4. Datos
 
 - **PostgreSQL** (`microhubs`): operación, catálogo, seguridad, planeación, abastecimiento, análisis y observabilidad.
-  - Scripts 01–14 idempotentes desde la 06.
+  - Scripts 01–15 idempotentes desde la 06.
+  - `15_archivos_bucket.sql`: la base ya no guarda archivos del portal.
   - Zona horaria de la base: America/Monterrey (`fn_hoy()`).
   - `12_rendimiento.sql`: `fn_pedidos_visibles` en SQL que el planificador puede integrar, y los índices `ix_pedido_dia_local` e
     `ix_detalle_pedido_cubriente`.

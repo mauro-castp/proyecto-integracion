@@ -28,7 +28,7 @@ def operaciones(app):
     """[(método, regla)] de negocio, en el orden en que se registraron."""
     vistas = []
     for r in app.url_map.iter_rules():
-        if not r.rule.startswith(config.PREFIJO + "/") or r.rule.endswith(OMITIR):
+        if not r.rule.startswith(config.PREFIJO + "/") or r.rule.endswith(OMITIR) or "/health/" in r.rule:
             continue
         for m in sorted(r.methods - {"HEAD", "OPTIONS"}, key=["GET", "POST", "PATCH", "PUT", "DELETE"].index):
             vistas.append((m, r.rule))

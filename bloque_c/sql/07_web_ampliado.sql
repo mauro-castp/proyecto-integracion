@@ -10,13 +10,7 @@ CREATE TABLE IF NOT EXISTS web_notificacion (
   creado_en timestamptz NOT NULL DEFAULT now(), leido_en timestamptz
 );
 CREATE INDEX IF NOT EXISTS ix_web_notificacion_destino ON web_notificacion(destinatario_id, creado_en DESC);
-CREATE TABLE IF NOT EXISTS web_archivo (
-  id varchar(32) PRIMARY KEY, propietario_id integer NOT NULL REFERENCES usuario(id),
-  nombre varchar(160) NOT NULL, tipo varchar(80) NOT NULL,
-  contenido bytea NOT NULL, tamano integer NOT NULL CHECK(tamano BETWEEN 1 AND 5242880),
-  creado_en timestamptz NOT NULL DEFAULT now()
-);
-CREATE INDEX IF NOT EXISTS ix_web_archivo_propietario ON web_archivo(propietario_id, creado_en DESC);
+-- Los archivos del portal viven en el almacén de objetos (servicio de documentos): la base no guarda su contenido (ver 15).
 INSERT INTO permiso(clave,modulo,accion,descripcion) VALUES
  ('reportes.ver','reportes','ver','Reportes filtrados y gráficas'),
  ('reportes.exportar','reportes','exportar','Exportación CSV de pedidos visibles'),

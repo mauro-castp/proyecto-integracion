@@ -1,0 +1,5 @@
+1. subida desde el portal y listado: ok
+2. descarga con URL firmada de Cloud Storage (mismo contenido): ok
+3. PostgreSQL ya no tiene la tabla con el contenido: ok
+4. otra persona no puede bajarlo (404): ok
+ARCHIVOS EN LA NUBE: 4 de 4

@@ -9,8 +9,8 @@
         "ok": true,
         "peticion": "GET pedidos /pedidos",
         "status": 401,
-        "ms": 28,
-        "respuesta": "{\"error\": {\"codigo\": \"TOKEN_INVALIDO\", \"mensaje\": \"Falta el encabezado Authorization: Bearer <token>.\", \"traza_id\": \"e9de748b-2e8f-4b57-ac33-998f089d9f97\"}}"
+        "ms": 4,
+        "respuesta": "{\"error\": {\"codigo\": \"TOKEN_INVALIDO\", \"mensaje\": \"Falta el encabezado Authorization: Bearer <token>.\", \"traza_id\": \"75094e57-0693-496d-8580-8b87836326be\"}}"
       },
       {
         "momento": "—",
@@ -18,8 +18,8 @@
         "ok": true,
         "peticion": "GET pedidos /pedidos",
         "status": 401,
-        "ms": 46,
-        "respuesta": "{\"error\": {\"codigo\": \"TOKEN_INVALIDO\", \"mensaje\": \"La sesión venció o fue cerrada. Inicia sesión de nuevo.\", \"traza_id\": \"6ff3dd20-5f38-4fdd-891e-f35b0b409195\"}}"
+        "ms": 5,
+        "respuesta": "{\"error\": {\"codigo\": \"TOKEN_INVALIDO\", \"mensaje\": \"La sesión venció o fue cerrada. Inicia sesión de nuevo.\", \"traza_id\": \"837abb00-8e6c-4a7f-bece-f80da498d9da\"}}"
       },
       {
         "momento": "—",
@@ -27,8 +27,8 @@
         "ok": true,
         "peticion": "GET zonas /zonas",
         "status": 401,
-        "ms": 73,
-        "respuesta": "{\"error\": {\"codigo\": \"TOKEN_INVALIDO\", \"mensaje\": \"La sesión venció o fue cerrada. Inicia sesión de nuevo.\", \"traza_id\": \"71c6ce8d-3534-4ae7-abb0-a15c9c2ec3ad\"}}"
+        "ms": 4,
+        "respuesta": "{\"error\": {\"codigo\": \"TOKEN_INVALIDO\", \"mensaje\": \"La sesión venció o fue cerrada. Inicia sesión de nuevo.\", \"traza_id\": \"a13d607c-1b21-42ec-aa4b-15e6cf6ada85\"}}"
       },
       {
         "momento": "—",
@@ -36,8 +36,8 @@
         "ok": true,
         "peticion": "POST auth /auth/login",
         "status": 423,
-        "ms": 181,
-        "respuesta": "{\"error\": {\"codigo\": \"CUENTA_BLOQUEADA\", \"mensaje\": \"Cuenta bloqueada temporalmente. Intenta en 15 minutos.\", \"traza_id\": \"3eeb9e63-2586-4d5f-b0ea-264d5add0d3e\"}}"
+        "ms": 43,
+        "respuesta": "{\"error\": {\"codigo\": \"CUENTA_BLOQUEADA\", \"mensaje\": \"Cuenta bloqueada temporalmente. Intenta en 15 minutos.\", \"traza_id\": \"c5567cb9-e8cc-4fc2-9cb9-f9fe64c37968\"}}"
       }
     ]
   },
@@ -51,8 +51,8 @@
         "ok": true,
         "peticion": "GET auditoria-monitoreo /auditoria",
         "status": 403,
-        "ms": 81,
-        "respuesta": "{\"error\": {\"codigo\": \"PROHIBIDO\", \"mensaje\": \"Tu perfil no tiene permiso para esta operación.\", \"traza_id\": \"6b0f9267-4b59-4027-9cc0-7d2cd6199999\"}}"
+        "ms": 21,
+        "respuesta": "{\"error\": {\"codigo\": \"PROHIBIDO\", \"mensaje\": \"Tu perfil no tiene permiso para esta operación.\", \"traza_id\": \"c9ac92d8-bed4-466f-87c8-756448b71975\"}}"
       },
       {
         "momento": "—",
@@ -60,14 +60,14 @@
         "ok": true,
         "peticion": "POST usuarios /usuarios",
         "status": 403,
-        "ms": 109,
-        "respuesta": "{\"error\": {\"codigo\": \"PROHIBIDO\", \"mensaje\": \"Tu perfil no tiene permiso para esta operación.\", \"traza_id\": \"707b58f6-4cd5-48c2-9b61-a5a115cf0927\"}}"
+        "ms": 24,
+        "respuesta": "{\"error\": {\"codigo\": \"PROHIBIDO\", \"mensaje\": \"Tu perfil no tiene permiso para esta operación.\", \"traza_id\": \"44d531a1-f37e-4cc9-8c2b-cc7f27ad8113\"}}"
       },
       {
         "momento": "—",
         "descripcion": "Los intentos denegados quedan en la bitácora",
         "ok": true,
-        "dato": "accesos denegados registrados en los últimos 2 minutos: 2"
+        "dato": "accesos denegados registrados en los últimos 2 minutos: 36"
       },
       {
         "momento": "—",
@@ -93,8 +93,8 @@
         "ok": true,
         "peticion": "POST auth /auth/login",
         "status": 400,
-        "ms": 15,
-        "respuesta": "{\"error\": {\"codigo\": \"XML_INVALIDO\", \"mensaje\": \"El cuerpo XML no está bien formado o contiene DTD/entidades.\", \"traza_id\": \"fa619818-deb2-4045-b280-533c28b2c4aa\"}}"
+        "ms": 4,
+        "respuesta": "{\"error\": {\"codigo\": \"XML_INVALIDO\", \"mensaje\": \"El cuerpo XML no está bien formado o contiene DTD/entidades.\", \"traza_id\": \"1e02d275-2475-472b-80c9-d2ec0cbcfb85\"}}"
       },
       {
         "momento": "—",
@@ -102,8 +102,8 @@
         "ok": true,
         "peticion": "POST auth /auth/login",
         "status": 400,
-        "ms": 6,
-        "respuesta": "{\"error\": {\"codigo\": \"JSON_INVALIDO\", \"mensaje\": \"El cuerpo JSON no está bien formado.\", \"traza_id\": \"16809368-c3ff-47d2-9c96-95f099e82dad\"}}"
+        "ms": 4,
+        "respuesta": "{\"error\": {\"codigo\": \"JSON_INVALIDO\", \"mensaje\": \"El cuerpo JSON no está bien formado.\", \"traza_id\": \"526d00f1-d1da-455d-a1c0-d9e492a1f55a\"}}"
       },
       {
         "momento": "—",
@@ -111,7 +111,7 @@
         "ok": true,
         "peticion": "GET productos /productos?q=%27%3B%20DROP%20TABLE%20producto%3B--",
         "status": 200,
-        "ms": 81,
+        "ms": 43,
         "respuesta": "{\"datos\": [], \"paginacion\": {\"pagina\": 1, \"por_pagina\": 20, \"total\": 0, \"paginas\": 0}}"
       },
       {
@@ -120,8 +120,8 @@
         "ok": true,
         "peticion": "POST documentos /documentos",
         "status": 422,
-        "ms": 9,
-        "respuesta": "{\"error\": {\"codigo\": \"VALIDACION\", \"mensaje\": \"Revisa los datos enviados.\", \"detalles\": [{\"campo\": \"tipo_mime\", \"mensaje\": \"El contenido no corresponde al tipo declarado.\"}], \"traza_id\": \"9280b479-6c1d-4367-af88-9c602465fc47\"}}"
+        "ms": 5,
+        "respuesta": "{\"error\": {\"codigo\": \"VALIDACION\", \"mensaje\": \"Revisa los datos enviados.\", \"detalles\": [{\"campo\": \"tipo_mime\", \"mensaje\": \"El contenido no corresponde al tipo declarado.\"}], \"traza_id\": \"3e9c7ed8-fa61-4640-b5a2-d6007071a110\"}}"
       },
       {
         "momento": "—",
@@ -129,8 +129,8 @@
         "ok": true,
         "peticion": "POST documentos /documentos",
         "status": 422,
-        "ms": 107,
-        "respuesta": "{\"error\": {\"codigo\": \"VALIDACION\", \"mensaje\": \"Revisa los datos enviados.\", \"detalles\": [{\"campo\": \"contenido_base64\", \"mensaje\": \"El archivo debe pesar entre 1 byte y 5 MB.\"}], \"traza_id\": \"abc77e31-4b5b-4a6a-9f80-e48ae7305d15\"}}"
+        "ms": 93,
+        "respuesta": "{\"error\": {\"codigo\": \"VALIDACION\", \"mensaje\": \"Revisa los datos enviados.\", \"detalles\": [{\"campo\": \"contenido_base64\", \"mensaje\": \"El archivo debe pesar entre 1 byte y 5 MB.\"}], \"traza_id\": \"b10ca6c3-e603-4f86-98b1-221bbb86ad92\"}}"
       },
       {
         "momento": "—",
@@ -138,8 +138,8 @@
         "ok": true,
         "peticion": "GET zonas /zonas/no-existe",
         "status": 404,
-        "ms": 43,
-        "respuesta": "{\"error\": {\"codigo\": \"NO_ENCONTRADO\", \"mensaje\": \"No existe el recurso solicitado.\", \"traza_id\": \"1c9fd6b6-c8ec-42eb-a085-9e6b58e4f1e1\"}}"
+        "ms": 5,
+        "respuesta": "{\"error\": {\"codigo\": \"NO_ENCONTRADO\", \"mensaje\": \"No existe el recurso solicitado.\", \"traza_id\": \"0dc0539b-a2b7-448e-8367-59372d220a2b\"}}"
       }
     ]
   },
@@ -151,16 +151,16 @@
         "momento": "—",
         "descripcion": "El archivo se entrega con un enlace firmado que caduca",
         "ok": true,
-        "dato": "https://storage.googleapis.com/microhubs-evidencias-637044/documentos/2026/11/6b09179d3da0be5c7ecec13f.jpg?…(firma omitida)"
+        "dato": "https://storage.googleapis.com/microhubs-evidencias-637044/documentos/2026/11/6b0931fcd92909927b4fc9b2.jpg?…(firma omitida)"
       },
       {
         "momento": "—",
         "descripcion": "Otra persona no obtiene el enlace de un documento privado",
         "ok": true,
-        "peticion": "GET documentos /documentos/6b09179d3da0be5c7ecec13f/enlace",
+        "peticion": "GET documentos /documentos/6b0931fcd92909927b4fc9b2/enlace",
         "status": 404,
-        "ms": 9,
-        "respuesta": "{\"error\": {\"codigo\": \"NO_ENCONTRADO\", \"mensaje\": \"No existe el recurso solicitado.\", \"traza_id\": \"89366930-f0d3-4b52-8ffb-54b278cd9fe9\"}}"
+        "ms": 5,
+        "respuesta": "{\"error\": {\"codigo\": \"NO_ENCONTRADO\", \"mensaje\": \"No existe el recurso solicitado.\", \"traza_id\": \"c9081cde-4dd6-43e0-a88e-f30c87ef5aac\"}}"
       },
       {
         "momento": "—",
@@ -174,8 +174,8 @@
         "ok": true,
         "peticion": "GET zonas /zonas",
         "status": 200,
-        "ms": 48,
-        "respuesta": "{\"datos\": [{\"id\": 5, \"clave\": \"EVF5B692\", \"nombre\": \"Zona F5B692 renombrada\", \"colonia\": \"Colonia F5B692\", \"codigo_postal\": \"64102\", \"latitud\": 25.77, \"longitud\": -100.37}, {\"id\": 1, \"clave\": \"ZN-SB01\", \"nombre\": \"San Bernabé Centro\", \"colonia\": \"San Bernabé\","
+        "ms": 70,
+        "respuesta": "{\"datos\": [{\"id\": 7, \"clave\": \"EV45B7F5\", \"nombre\": \"Zona 45B7F5 renombrada\", \"colonia\": \"Colonia 45B7F5\", \"codigo_postal\": \"64102\", \"latitud\": 25.77, \"longitud\": -100.37}, {\"id\": 6, \"clave\": \"EV80FD0C\", \"nombre\": \"Zona 80FD0C renombrada\", \"colonia\": \"Colonia "
       }
     ]
   },
@@ -189,8 +189,8 @@
         "ok": true,
         "peticion": "GET zonas /zonas?por_pagina=1",
         "status": 429,
-        "ms": 3,
-        "respuesta": "{\"error\": {\"codigo\": \"LIMITE_EXCEDIDO\", \"mensaje\": \"Máximo 240 solicitudes por minuto. Espera 17 segundos.\", \"traza_id\": \"8d7de846-08e5-4f91-8ddb-ab7d356b3031\"}}"
+        "ms": 2,
+        "respuesta": "{\"error\": {\"codigo\": \"LIMITE_EXCEDIDO\", \"mensaje\": \"Máximo 240 solicitudes por minuto. Espera 46 segundos.\", \"traza_id\": \"564451eb-7a69-4cb0-9f5d-cf3192dad9ae\"}}"
       }
     ]
   },

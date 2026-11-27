@@ -39,6 +39,9 @@ la entrega final.
 | I-29 | 26-nov | pruebas en la nube | La corrida de evidencias se detenía con un 429 | Más de 30 inicios de sesión por minuto | La corrida espera lo que pide el servicio | 436 de 436 | Baja |
 | I-30 | 26-nov | app Android | Las pruebas nuevas no compilaban con Gradle | Usaban métodos que el `org.json` de Android no tiene | Funciones propias en la prueba | `build.ps1` y `BackendRealTest` | Baja |
 | I-31 | 27-nov | GCP | Al encender la máquina los 26 servicios quedaban degradados | PostgreSQL, Redis y MongoDB no tenían política de reinicio; no se notaba porque siempre se corría el instalador | `restart: unless-stopped` en las tres bases | Reinicio de la VM: 26 de 26 sanos sin correr el instalador | **Alta** |
+| I-32 | 27-nov | portal | La pantalla «Archivos» guardaba el archivo dentro de PostgreSQL | Se escribió antes de tener el almacén de objetos y no se migró | Usa el servicio `documentos` (bucket); `15_archivos_bucket.sql` y `migrar_web_archivo.py` | `prueba_e2e_web` 6 de 6 y prueba en la nube | **Alta** |
+| I-33 | 27-nov | salud | Solo 5 servicios informaban MongoDB y 1 el bucket | Cada servicio revisaba únicamente sus dependencias | Los 26 informan las cuatro y publican `/health/*` | `test_almacen` y los 26 en la nube | Media |
+| I-34 | 27-nov | pruebas | Dos pruebas de la Ola 2 fallaban según los datos acumulados | Suponían cantidades y borraban planes con entregas | Pruebas independientes de los datos | `test_ola2` 102 OK | Baja |
 
 Plantilla para nuevas incidencias:
 

@@ -1,0 +1,27 @@
+# Rutas /health/* por servicio, por Nginx con HTTPS (version dba94ea): codigo HTTP de live, ready, database, redis, mongodb y storage
+auth                   live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+usuarios               live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+productos              live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+pedidos                live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+entregas               live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+planeacion             live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+documentos             live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+zonas                  live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+microhubs              live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+seguimiento            live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+inventario             live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+precios                live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+proveedores            live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+abastecimiento         live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+demanda                live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+cobertura              live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+capacidad              live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+rutas                  live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+costos                 live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+punto-equilibrio       live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+simulacion             live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+surtido                live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+reportes               live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+notificaciones         live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+sincronizacion         live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+auditoria-monitoreo    live=200 ready=200 database=200 redis=200 mongodb=200 storage=200

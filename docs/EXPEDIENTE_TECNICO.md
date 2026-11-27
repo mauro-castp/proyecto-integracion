@@ -173,7 +173,7 @@ Están en `bloque_d/diagramas/`. Las fuentes PlantUML están en `bloque_d/fuente
 
 # 11. Modelo relacional
 
-PostgreSQL 16, esquema `microhubs`, creado por los scripts `bloque_c/sql/01` a `14`. Las áreas son:
+PostgreSQL 16, esquema `microhubs`, creado por los scripts `bloque_c/sql/01` a `15`. Las áreas son:
 
 - seguridad y catálogo: usuario, rol, permiso, producto, zona, microhub;
 - operación: pedido, detalle, historial, entrega, inventario, movimientos;
@@ -232,6 +232,7 @@ Scripts Lua para liberar y extender candados y revocar sesiones: `bloque_c/redis
   | `reportes/AAAA/MM/<id>.<csv\|xlsx\|pdf>` | Exportaciones de reportes |
 
   La ruta la genera el servicio y nunca usa el nombre que escribió el usuario.
+- **Portal:** la pantalla «Archivos» usa el mismo servicio `documentos` (referencia: el usuario). **La base de datos no guarda archivos.**
 - **Escritura:**
   1. Se valida la firma real del tipo (JPEG, PNG o PDF) y el tamaño (≤ 5 MB).
   2. Se guarda el objeto.
@@ -365,9 +366,12 @@ Los volúmenes son `datos_pg` y `datos_mongo`. En la nube, `deploy/gcp/docker-co
 Cada servicio tiene `/salud`, que informa:
 
 - estado del proceso;
-- PostgreSQL, Redis, MongoDB y bucket (cuando aplica);
+- PostgreSQL, Redis, MongoDB y bucket (los 26 revisan las cuatro);
 - tiempo de respuesta;
 - versión desplegada.
+
+Un servicio queda degradado solo si falla una dependencia que necesita para responder. También publica `/health/live`, `/health/ready`,
+`/health/database`, `/health/redis`, `/health/mongodb` y `/health/storage`.
 
 El servicio `auditoria-monitoreo` consulta los 26 cada 30 s y guarda el historial. El **panel central** (`/web/servicios/monitoreo`)
 muestra:

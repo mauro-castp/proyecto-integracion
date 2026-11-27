@@ -2,7 +2,7 @@
 
 Cada control se ejercita contra los servicios en marcha.
 
-Ejecutado el 2026-11-27 05:39 en la VM de Google Cloud: **23 de 23 comprobaciones pasan**.
+Ejecutado el 2026-11-27 07:32 en la VM de Google Cloud: **23 de 23 comprobaciones pasan**.
 
 ## Autenticación
 
@@ -10,35 +10,35 @@ JWT firmado y sesión activa en Redis.
 
 | Momento | Comprobación | Resultado | Petición | HTTP | ms |
 |---|---|---|---|---|---|
-| — | Sin token no se entra (401 y WWW-Authenticate) | ✔ | `GET pedidos /pedidos` | 401 | 28 |
-| — | Un token alterado se rechaza | ✔ | `GET pedidos /pedidos` | 401 | 46 |
-| — | Un token revocado al salir ya no sirve en ningún servicio | ✔ | `GET zonas /zonas` | 401 | 73 |
-| — | Cinco intentos fallidos bloquean la cuenta 15 minutos (423) | ✔ | `POST auth /auth/login` | 423 | 181 |
+| — | Sin token no se entra (401 y WWW-Authenticate) | ✔ | `GET pedidos /pedidos` | 401 | 4 |
+| — | Un token alterado se rechaza | ✔ | `GET pedidos /pedidos` | 401 | 5 |
+| — | Un token revocado al salir ya no sirve en ningún servicio | ✔ | `GET zonas /zonas` | 401 | 4 |
+| — | Cinco intentos fallidos bloquean la cuenta 15 minutos (423) | ✔ | `POST auth /auth/login` | 423 | 43 |
 
 <details><summary>Respuestas y datos observados</summary>
 
 **Sin token no se entra (401 y WWW-Authenticate)**
 
 ```
-{"error": {"codigo": "TOKEN_INVALIDO", "mensaje": "Falta el encabezado Authorization: Bearer <token>.", "traza_id": "e9de748b-2e8f-4b57-ac33-998f089d9f97"}}
+{"error": {"codigo": "TOKEN_INVALIDO", "mensaje": "Falta el encabezado Authorization: Bearer <token>.", "traza_id": "75094e57-0693-496d-8580-8b87836326be"}}
 ```
 
 **Un token alterado se rechaza**
 
 ```
-{"error": {"codigo": "TOKEN_INVALIDO", "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.", "traza_id": "6ff3dd20-5f38-4fdd-891e-f35b0b409195"}}
+{"error": {"codigo": "TOKEN_INVALIDO", "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.", "traza_id": "837abb00-8e6c-4a7f-bece-f80da498d9da"}}
 ```
 
 **Un token revocado al salir ya no sirve en ningún servicio**
 
 ```
-{"error": {"codigo": "TOKEN_INVALIDO", "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.", "traza_id": "71c6ce8d-3534-4ae7-abb0-a15c9c2ec3ad"}}
+{"error": {"codigo": "TOKEN_INVALIDO", "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.", "traza_id": "a13d607c-1b21-42ec-aa4b-15e6cf6ada85"}}
 ```
 
 **Cinco intentos fallidos bloquean la cuenta 15 minutos (423)**
 
 ```
-{"error": {"codigo": "CUENTA_BLOQUEADA", "mensaje": "Cuenta bloqueada temporalmente. Intenta en 15 minutos.", "traza_id": "3eeb9e63-2586-4d5f-b0ea-264d5add0d3e"}}
+{"error": {"codigo": "CUENTA_BLOQUEADA", "mensaje": "Cuenta bloqueada temporalmente. Intenta en 15 minutos.", "traza_id": "c5567cb9-e8cc-4fc2-9cb9-f9fe64c37968"}}
 ```
 
 </details>
@@ -49,8 +49,8 @@ Permisos por perfil, comprobados por cada servicio.
 
 | Momento | Comprobación | Resultado | Petición | HTTP | ms |
 |---|---|---|---|---|---|
-| — | El operador no puede ver la bitácora (403) | ✔ | `GET auditoria-monitoreo /auditoria` | 403 | 81 |
-| — | El operador no puede crear un administrador (403) | ✔ | `POST usuarios /usuarios` | 403 | 109 |
+| — | El operador no puede ver la bitácora (403) | ✔ | `GET auditoria-monitoreo /auditoria` | 403 | 21 |
+| — | El operador no puede crear un administrador (403) | ✔ | `POST usuarios /usuarios` | 403 | 24 |
 | — | Los intentos denegados quedan en la bitácora | ✔ | — | — | — |
 | — | La bitácora no se puede modificar, ni siquiera desde la base (RN31) | ✔ | — | — | — |
 | — | Las contraseñas se guardan con bcrypt, nunca en claro | ✔ | — | — | — |
@@ -60,19 +60,19 @@ Permisos por perfil, comprobados por cada servicio.
 **El operador no puede ver la bitácora (403)**
 
 ```
-{"error": {"codigo": "PROHIBIDO", "mensaje": "Tu perfil no tiene permiso para esta operación.", "traza_id": "6b0f9267-4b59-4027-9cc0-7d2cd6199999"}}
+{"error": {"codigo": "PROHIBIDO", "mensaje": "Tu perfil no tiene permiso para esta operación.", "traza_id": "c9ac92d8-bed4-466f-87c8-756448b71975"}}
 ```
 
 **El operador no puede crear un administrador (403)**
 
 ```
-{"error": {"codigo": "PROHIBIDO", "mensaje": "Tu perfil no tiene permiso para esta operación.", "traza_id": "707b58f6-4cd5-48c2-9b61-a5a115cf0927"}}
+{"error": {"codigo": "PROHIBIDO", "mensaje": "Tu perfil no tiene permiso para esta operación.", "traza_id": "44d531a1-f37e-4cc9-8c2b-cc7f27ad8113"}}
 ```
 
 **Los intentos denegados quedan en la bitácora**
 
 ```
-accesos denegados registrados en los últimos 2 minutos: 2
+accesos denegados registrados en los últimos 2 minutos: 36
 ```
 
 **La bitácora no se puede modificar, ni siquiera desde la base (RN31)**
@@ -96,25 +96,25 @@ Validación de JSON y XML, inyección y archivos.
 
 | Momento | Comprobación | Resultado | Petición | HTTP | ms |
 |---|---|---|---|---|---|
-| — | XML con entidad externa (XXE) se rechaza | ✔ | `POST auth /auth/login` | 400 | 15 |
-| — | JSON mal formado: 400 sin detalles internos | ✔ | `POST auth /auth/login` | 400 | 6 |
-| — | Inyección SQL en la búsqueda: se trata como texto | ✔ | `GET productos /productos?q=%27%3B%20DROP%20TABLE%20producto%3B--` | 200 | 81 |
-| — | Un archivo que dice ser imagen pero no lo es se rechaza (se revisa su firma) | ✔ | `POST documentos /documentos` | 422 | 9 |
-| — | Un archivo de más de 5 MB se rechaza con el motivo | ✔ | `POST documentos /documentos` | 422 | 107 |
-| — | Los errores usan el formato del contrato, con traza y sin rutas internas | ✔ | `GET zonas /zonas/no-existe` | 404 | 43 |
+| — | XML con entidad externa (XXE) se rechaza | ✔ | `POST auth /auth/login` | 400 | 4 |
+| — | JSON mal formado: 400 sin detalles internos | ✔ | `POST auth /auth/login` | 400 | 4 |
+| — | Inyección SQL en la búsqueda: se trata como texto | ✔ | `GET productos /productos?q=%27%3B%20DROP%20TABLE%20producto%3B--` | 200 | 43 |
+| — | Un archivo que dice ser imagen pero no lo es se rechaza (se revisa su firma) | ✔ | `POST documentos /documentos` | 422 | 5 |
+| — | Un archivo de más de 5 MB se rechaza con el motivo | ✔ | `POST documentos /documentos` | 422 | 93 |
+| — | Los errores usan el formato del contrato, con traza y sin rutas internas | ✔ | `GET zonas /zonas/no-existe` | 404 | 5 |
 
 <details><summary>Respuestas y datos observados</summary>
 
 **XML con entidad externa (XXE) se rechaza**
 
 ```
-{"error": {"codigo": "XML_INVALIDO", "mensaje": "El cuerpo XML no está bien formado o contiene DTD/entidades.", "traza_id": "fa619818-deb2-4045-b280-533c28b2c4aa"}}
+{"error": {"codigo": "XML_INVALIDO", "mensaje": "El cuerpo XML no está bien formado o contiene DTD/entidades.", "traza_id": "1e02d275-2475-472b-80c9-d2ec0cbcfb85"}}
 ```
 
 **JSON mal formado: 400 sin detalles internos**
 
 ```
-{"error": {"codigo": "JSON_INVALIDO", "mensaje": "El cuerpo JSON no está bien formado.", "traza_id": "16809368-c3ff-47d2-9c96-95f099e82dad"}}
+{"error": {"codigo": "JSON_INVALIDO", "mensaje": "El cuerpo JSON no está bien formado.", "traza_id": "526d00f1-d1da-455d-a1c0-d9e492a1f55a"}}
 ```
 
 **Inyección SQL en la búsqueda: se trata como texto**
@@ -126,19 +126,19 @@ Validación de JSON y XML, inyección y archivos.
 **Un archivo que dice ser imagen pero no lo es se rechaza (se revisa su firma)**
 
 ```
-{"error": {"codigo": "VALIDACION", "mensaje": "Revisa los datos enviados.", "detalles": [{"campo": "tipo_mime", "mensaje": "El contenido no corresponde al tipo declarado."}], "traza_id": "9280b479-6c1d-4367-af88-9c602465fc47"}}
+{"error": {"codigo": "VALIDACION", "mensaje": "Revisa los datos enviados.", "detalles": [{"campo": "tipo_mime", "mensaje": "El contenido no corresponde al tipo declarado."}], "traza_id": "3e9c7ed8-fa61-4640-b5a2-d6007071a110"}}
 ```
 
 **Un archivo de más de 5 MB se rechaza con el motivo**
 
 ```
-{"error": {"codigo": "VALIDACION", "mensaje": "Revisa los datos enviados.", "detalles": [{"campo": "contenido_base64", "mensaje": "El archivo debe pesar entre 1 byte y 5 MB."}], "traza_id": "abc77e31-4b5b-4a6a-9f80-e48ae7305d15"}}
+{"error": {"codigo": "VALIDACION", "mensaje": "Revisa los datos enviados.", "detalles": [{"campo": "contenido_base64", "mensaje": "El archivo debe pesar entre 1 byte y 5 MB."}], "traza_id": "b10ca6c3-e603-4f86-98b1-221bbb86ad92"}}
 ```
 
 **Los errores usan el formato del contrato, con traza y sin rutas internas**
 
 ```
-{"error": {"codigo": "NO_ENCONTRADO", "mensaje": "No existe el recurso solicitado.", "traza_id": "1c9fd6b6-c8ec-42eb-a085-9e6b58e4f1e1"}}
+{"error": {"codigo": "NO_ENCONTRADO", "mensaje": "No existe el recurso solicitado.", "traza_id": "0dc0539b-a2b7-448e-8367-59372d220a2b"}}
 ```
 
 </details>
@@ -150,22 +150,22 @@ Enlaces firmados con caducidad y cabeceras de protección.
 | Momento | Comprobación | Resultado | Petición | HTTP | ms |
 |---|---|---|---|---|---|
 | — | El archivo se entrega con un enlace firmado que caduca | ✔ | — | — | — |
-| — | Otra persona no obtiene el enlace de un documento privado | ✔ | `GET documentos /documentos/6b09179d3da0be5c7ecec13f/enlace` | 404 | 9 |
+| — | Otra persona no obtiene el enlace de un documento privado | ✔ | `GET documentos /documentos/6b0931fcd92909927b4fc9b2/enlace` | 404 | 5 |
 | — | Un enlace alterado no sirve | ✔ | — | — | — |
-| — | Respuestas con X-Content-Type-Options: nosniff y Cache-Control: no-store | ✔ | `GET zonas /zonas` | 200 | 48 |
+| — | Respuestas con X-Content-Type-Options: nosniff y Cache-Control: no-store | ✔ | `GET zonas /zonas` | 200 | 70 |
 
 <details><summary>Respuestas y datos observados</summary>
 
 **El archivo se entrega con un enlace firmado que caduca**
 
 ```
-https://storage.googleapis.com/microhubs-evidencias-637044/documentos/2026/11/6b09179d3da0be5c7ecec13f.jpg?…(firma omitida)
+https://storage.googleapis.com/microhubs-evidencias-637044/documentos/2026/11/6b0931fcd92909927b4fc9b2.jpg?…(firma omitida)
 ```
 
 **Otra persona no obtiene el enlace de un documento privado**
 
 ```
-{"error": {"codigo": "NO_ENCONTRADO", "mensaje": "No existe el recurso solicitado.", "traza_id": "89366930-f0d3-4b52-8ffb-54b278cd9fe9"}}
+{"error": {"codigo": "NO_ENCONTRADO", "mensaje": "No existe el recurso solicitado.", "traza_id": "c9081cde-4dd6-43e0-a88e-f30c87ef5aac"}}
 ```
 
 **Un enlace alterado no sirve**
@@ -177,7 +177,7 @@ HTTP 403
 **Respuestas con X-Content-Type-Options: nosniff y Cache-Control: no-store**
 
 ```
-{"datos": [{"id": 5, "clave": "EVF5B692", "nombre": "Zona F5B692 renombrada", "colonia": "Colonia F5B692", "codigo_postal": "64102", "latitud": 25.77, "longitud": -100.37}, {"id": 1, "clave": "ZN-SB01", "nombre": "San Bernabé Centro", "colonia": "San Bernabé",
+{"datos": [{"id": 7, "clave": "EV45B7F5", "nombre": "Zona 45B7F5 renombrada", "colonia": "Colonia 45B7F5", "codigo_postal": "64102", "latitud": 25.77, "longitud": -100.37}, {"id": 6, "clave": "EV80FD0C", "nombre": "Zona 80FD0C renombrada", "colonia": "Colonia 
 ```
 
 </details>
@@ -188,14 +188,14 @@ HTTP 403
 
 | Momento | Comprobación | Resultado | Petición | HTTP | ms |
 |---|---|---|---|---|---|
-| — | Al pasar el límite responde 429 con Retry-After | ✔ | `GET zonas /zonas?por_pagina=1` | 429 | 3 |
+| — | Al pasar el límite responde 429 con Retry-After | ✔ | `GET zonas /zonas?por_pagina=1` | 429 | 2 |
 
 <details><summary>Respuestas y datos observados</summary>
 
 **Al pasar el límite responde 429 con Retry-After**
 
 ```
-{"error": {"codigo": "LIMITE_EXCEDIDO", "mensaje": "Máximo 240 solicitudes por minuto. Espera 17 segundos.", "traza_id": "8d7de846-08e5-4f91-8ddb-ab7d356b3031"}}
+{"error": {"codigo": "LIMITE_EXCEDIDO", "mensaje": "Máximo 240 solicitudes por minuto. Espera 46 segundos.", "traza_id": "564451eb-7a69-4cb0-9f5d-cf3192dad9ae"}}
 ```
 
 </details>
