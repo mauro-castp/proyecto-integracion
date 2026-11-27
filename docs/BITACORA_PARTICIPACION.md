@@ -1,8 +1,11 @@
 # Bitácora de participación · Equipo 04
 
-> **Borrador con la evidencia del historial de Git (27 de noviembre de 2026); el equipo debe completar las columnas de responsable y apoyo.**
-> Las confirmaciones **no miden** el trabajo real: quien sube o une archivos figura como autor, y el análisis, las pruebas con personas o la
-> presentación pueden no dejar rastro. Las horas no se registraron. La cuenta `SrTequila` se tomó como la de Jorge.
+> Responsables según lo que cada integrante describe en su reflexión (`docs/reflexiones/`) y el historial de Git (27 de noviembre de 2026).
+> Todos participamos en el proyecto. Las confirmaciones **no miden** el trabajo real: quien sube o une archivos figura como autor, y el
+> análisis, las pruebas con personas, la revisión o la presentación pueden no dejar rastro. Parte del código de las apps lo escribieron María José y
+> Vanessa y lo subió Mauro, y María José trabajó con Mauro en las Olas 1 a 3 desde la computadora de él, por lo que ese trabajo figura a
+> nombre de Mauro. Las horas no se registraron. La cuenta
+> `SrTequila` es la de Jorge.
 
 Integrantes: Ruth Elizabeth Soriano Barrera · Vanessa Morante López · Mauro Castillo Peña · María José Cedillo Mata · Jorge Antonio Arreola Cantú
 
@@ -10,19 +13,23 @@ Integrantes: Ruth Elizabeth Soriano Barrera · Vanessa Morante López · Mauro C
 
 | Componente | Responsable principal | Apoyo | Evidencia (archivos, confirmaciones) |
 |---|---|---|---|
-| Análisis, requerimientos y reglas (bloques A y B) |  |  | `bloque_a, bloque_b` · confirmaciones: María José 12, Ruth 3 |
-| Modelo de datos (bloque C: SQL, MongoDB, Redis) |  |  | `bloque_c` · confirmaciones: Ruth 14, Mauro 2 |
-| Arquitectura y diagramas (bloque D) |  |  | `bloque_d` · confirmaciones: Ruth 5, Mauro 1 |
-| Portal web |  |  | `sistema_web` · confirmaciones: Ruth 17, Mauro 2, Vanessa 2 |
-| Microservicios: Segundo Parcial (10) |  |  | `servicios/…` · confirmaciones: Ruth 9, Mauro 3 |
-| Microservicios: Ola 1 |  |  | `servicios/…` · confirmaciones: Ruth 3, Mauro 2 |
-| Microservicios: Ola 2 (algoritmos: rutas, simulación, surtido) |  |  | `servicios/…` · confirmaciones: Ruth 3, Mauro 1 |
-| Microservicios: Ola 3 (reportes, sincronización, monitoreo) |  |  | `servicios/…` · confirmaciones: Ruth 7, Mauro 1 |
-| App Android |  |  | `app_movil` · confirmaciones: Ruth 16, Mauro 4 |
-| App de escritorio |  |  | `app_escritorio` · confirmaciones: Ruth 9, Mauro 3 |
-| Despliegue en GCP |  |  | `deploy` · confirmaciones: Ruth 8 |
-| Pruebas de volumen, carga (Locust) y fallos |  |  | `rendimiento, pruebas_carga, evidencias` · confirmaciones: Ruth 19 |
-| Documentación, video y presentación |  |  | `docs, entrega, presentacion, reporte_tecnico, README.md` · confirmaciones: Ruth 24, Mauro 13, María José 4, Vanessa 2, Jorge 1 |
+| Análisis, requerimientos y reglas (bloques A y B) | María José (análisis del problema, perfiles y permisos, requerimientos, historias de usuario, casos de uso, reglas y trazabilidad) | Ruth | `bloque_a, bloque_b` · confirmaciones: María José 12, Ruth 3 |
+| Modelo de datos (bloque C: SQL, MongoDB, Redis) | Vanessa (modelo entidad-relación, normalización y modelo físico en PostgreSQL) | Ruth (scripts SQL y migraciones), Mauro (claves de Redis) | `bloque_c` · confirmaciones: Ruth 14, Mauro 2 |
+| Arquitectura y diagramas (bloque D) | Ruth | Vanessa (documento de arquitectura), Mauro (diagramas del Segundo Parcial) | `bloque_d` · confirmaciones: Ruth 5, Mauro 1 |
+| Portal web | Ruth | Vanessa (altas y cambios de productos y catálogos, módulo de planeación), Mauro (integración con los microservicios) | `sistema_web` · confirmaciones: Ruth 17, Mauro 2, Vanessa 2 |
+| Microservicios: Segundo Parcial (10) | Mauro (contrato v1, compose integrado y pruebas) | Ruth | `servicios/…` · confirmaciones: Ruth 9, Mauro 3 |
+| Microservicios: Ola 1 | Ruth | Mauro y María José (trabajando juntos en la computadora de Mauro) | `servicios/…` · confirmaciones: Ruth 3, Mauro 2 |
+| Microservicios: Ola 2 (algoritmos: rutas, simulación, surtido) | Ruth | Mauro y María José (colas M/M/1 y M/M/c en capacidad, trabajando juntos en la computadora de Mauro) | `servicios/…` · confirmaciones: Ruth 3, Mauro 1 |
+| Microservicios: Ola 3 (reportes, sincronización, monitoreo) | Ruth | Mauro y María José (trabajando juntos en la computadora de Mauro) | `servicios/…` · confirmaciones: Ruth 7, Mauro 1 |
+| App Android | Ruth (base y flujo del repartidor) | Mauro (perfil cliente, pruebas en el emulador), María José y Vanessa (archivos para el emulador y corrección de errores, entregados a Mauro) | `app_movil` · confirmaciones: Ruth 16, Mauro 4 |
+| App de escritorio | Ruth (base y módulos de análisis) | Mauro (módulos de operación, manifiesto, permisos, pruebas en Windows), María José y Vanessa (archivos y corrección de errores, entregados a Mauro) | `app_escritorio` · confirmaciones: Ruth 9, Mauro 3 |
+| Despliegue en GCP | Ruth | Mauro (pruebas de las apps contra la nube) | `deploy` · confirmaciones: Ruth 8 |
+| Pruebas de volumen, carga (Locust) y fallos | Ruth | Mauro (pruebas de las apps) | `rendimiento, pruebas_carga, evidencias` · confirmaciones: Ruth 19 |
+| Prueba de usabilidad con personas | Mauro | María José (condujo una de las tres sesiones) | `entrega/FORMATO_USABILIDAD.md` |
+| Instaladores y Release v1.0 | Mauro | — | `entrega/INSTALADORES.md`, Release `v1.0-entrega-final` |
+| Reportes técnicos y expediente | Ruth | Mauro (correcciones del Primer Parcial y reporte 4.2), Vanessa (reporte del Segundo Parcial), María José (reporte del Primer Parcial) | `reporte_tecnico, docs` |
+| Presentaciones y videos | María José (presentación final; edición y elaboración del video final) | Vanessa (presentación final; edición y elaboración del video final), Mauro (presentación del Segundo Parcial, grabación de la demostración final), Jorge (video del Segundo Parcial), Ruth (presentación del Primer Parcial) | `presentacion, entrega` · confirmaciones: Ruth 24, Mauro 13, María José 4, Vanessa 2, Jorge 1 |
+| Reflexión individual | Cada integrante | — | `docs/reflexiones/` |
 
 ## Registro de sesiones de trabajo
 
