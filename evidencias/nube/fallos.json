@@ -18,8 +18,8 @@
         "ok": true,
         "peticion": "GET reportes /reportes/indicadores",
         "status": 200,
-        "ms": 656,
-        "respuesta": "{\"desde\": \"2026-10-28\", \"hasta\": \"2026-11-26\", \"indicadores\": [{\"clave\": \"pedidos\", \"titulo\": \"Pedidos del periodo\", \"valor\": 161, \"unidad\": \"pedidos\", \"fuente\": \"pedidos\"}, {\"clave\": \"venta\", \"titulo\": \"Venta del periodo\", \"valor\": 30625.3, \"unidad\": \"MXN\", \""
+        "ms": 430,
+        "respuesta": "{\"desde\": \"2026-10-29\", \"hasta\": \"2026-11-27\", \"indicadores\": [{\"clave\": \"pedidos\", \"titulo\": \"Pedidos del periodo\", \"valor\": 175, \"unidad\": \"pedidos\", \"fuente\": \"pedidos\"}, {\"clave\": \"venta\", \"titulo\": \"Venta del periodo\", \"valor\": 34222.1, \"unidad\": \"MXN\", \""
       },
       {
         "momento": "durante",
@@ -27,8 +27,8 @@
         "ok": true,
         "peticion": "GET reportes /reportes/inventario_alertas",
         "status": 503,
-        "ms": 57,
-        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"El servicio inventario no responde. Intenta más tarde.\", \"traza_id\": \"9e56936c-f779-4176-b80b-d9516b45eb44\"}}"
+        "ms": 54,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"El servicio inventario no responde. Intenta más tarde.\", \"traza_id\": \"953a0e59-7c0e-461c-92f6-53a52733de46\"}}"
       },
       {
         "momento": "durante",
@@ -36,7 +36,7 @@
         "ok": true,
         "peticion": "GET productos /productos?por_pagina=1",
         "status": 200,
-        "ms": 54,
+        "ms": 43,
         "respuesta": "{\"datos\": [{\"id\": 3, \"clave_interna\": \"AB-003\", \"nombre\": \"Aceite vegetal\", \"categoria\": {\"id\": 1, \"nombre\": \"Abarrote básico\"}, \"unidad\": \"botella\", \"presentacion\": \"900 ml\", \"precio\": 42.0, \"imagen_url\": null, \"estatus\": \"activo\"}], \"paginacion\": {\"pagina\": "
       },
       {
@@ -45,12 +45,12 @@
         "ok": true,
         "peticion": "POST auditoria-monitoreo /monitoreo/verificaciones",
         "status": 201,
-        "ms": 70,
-        "respuesta": "{\"verificados\": 1, \"ok\": 0, \"degradados\": 0, \"caidos\": 1, \"servicios\": [{\"servicio\": \"inventario\", \"estado\": \"caido\", \"tiempo_ms\": 10.7, \"error\": \"El servicio inventario no responde. Intenta más tarde.\"}]}"
+        "ms": 57,
+        "respuesta": "{\"verificados\": 1, \"ok\": 0, \"degradados\": 0, \"caidos\": 1, \"servicios\": [{\"servicio\": \"inventario\", \"estado\": \"caido\", \"tiempo_ms\": 11.9, \"error\": \"El servicio inventario no responde. Intenta más tarde.\"}]}"
       },
       {
         "momento": "después",
-        "descripcion": "Vuelve a estar sano en 2.0 s",
+        "descripcion": "Vuelve a estar sano en 2.2 s",
         "ok": true
       },
       {
@@ -59,7 +59,7 @@
         "ok": true,
         "peticion": "GET auditoria-monitoreo /monitoreo/alertas?estado=abiertas&servicio=inventario",
         "status": 200,
-        "ms": 43,
+        "ms": 33,
         "respuesta": "{\"datos\": [], \"paginacion\": {\"pagina\": 1, \"por_pagina\": 20, \"total\": 0, \"paginas\": 0}}"
       }
     ]
@@ -74,8 +74,8 @@
         "ok": true,
         "peticion": "GET pedidos /pedidos?por_pagina=1",
         "status": 503,
-        "ms": 30,
-        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"No se pudo validar la sesión. Intenta más tarde.\", \"traza_id\": \"d9e87e19-df03-49eb-8163-1174af6bf411\"}}"
+        "ms": 36,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"No se pudo validar la sesión. Intenta más tarde.\", \"traza_id\": \"c3a5fa2c-a764-4fb2-b1ce-1dfa4aaa9461\"}}"
       },
       {
         "momento": "durante",
@@ -83,8 +83,8 @@
         "ok": true,
         "peticion": "GET pedidos /salud",
         "status": 503,
-        "ms": 24,
-        "respuesta": "{\"servicio\": \"pedidos\", \"version\": \"fd85013\", \"estado\": \"degradado\", \"dependencias\": {\"postgres\": \"ok\", \"redis\": \"error\", \"mongo\": \"no_aplica\", \"bucket\": \"no_aplica\"}, \"tiempo_ms\": 22.1}"
+        "ms": 49,
+        "respuesta": "{\"servicio\": \"pedidos\", \"version\": \"dba94ea\", \"estado\": \"degradado\", \"dependencias\": {\"postgres\": \"ok\", \"redis\": \"error\", \"mongo\": \"ok\", \"bucket\": \"ok\"}, \"tiempo_ms\": 44.5}"
       },
       {
         "momento": "durante",
@@ -92,8 +92,8 @@
         "ok": true,
         "peticion": "POST auth /auth/login",
         "status": 503,
-        "ms": 53,
-        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"Una base de datos no responde. Intenta más tarde.\", \"traza_id\": \"503ce2fd-7f81-47d0-b279-fa0930d787d7\"}}"
+        "ms": 85,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"Una base de datos no responde. Intenta más tarde.\", \"traza_id\": \"45906b3e-fc38-4447-82e9-b0744aeeb474\"}}"
       },
       {
         "momento": "después",
@@ -107,7 +107,7 @@
         "peticion": "GET pedidos /pedidos?por_pagina=1",
         "status": 401,
         "ms": 5,
-        "respuesta": "{\"error\": {\"codigo\": \"TOKEN_INVALIDO\", \"mensaje\": \"La sesión venció o fue cerrada. Inicia sesión de nuevo.\", \"traza_id\": \"7b7e7031-15f7-45f3-9f16-3d1d886a24c9\"}}"
+        "respuesta": "{\"error\": {\"codigo\": \"TOKEN_INVALIDO\", \"mensaje\": \"La sesión venció o fue cerrada. Inicia sesión de nuevo.\", \"traza_id\": \"1c355de2-bbf0-4880-80fd-46c0a55391c2\"}}"
       },
       {
         "momento": "después",
@@ -115,8 +115,8 @@
         "ok": true,
         "peticion": "GET pedidos /pedidos?por_pagina=1",
         "status": 200,
-        "ms": 43,
-        "respuesta": "{\"datos\": [{\"id\": 597, \"folio\": \"PED-20261126-000597\", \"estado\": \"cancelado\", \"zona\": {\"id\": 3, \"nombre\": \"Paseo de San Bernabé\"}, \"microhub_id\": 2, \"total\": 288.0, \"creado_en\": \"2026-11-26T23:38:27-06:00\"}], \"paginacion\": {\"pagina\": 1, \"por_pagina\": 1, \"total"
+        "ms": 33,
+        "respuesta": "{\"datos\": [{\"id\": 641, \"folio\": \"PED-20261127-000641\", \"estado\": \"en_ruta\", \"zona\": {\"id\": 2, \"nombre\": \"Valles de San Bernabé\"}, \"microhub_id\": 2, \"total\": 155.0, \"creado_en\": \"2026-11-27T01:31:16-06:00\"}], \"paginacion\": {\"pagina\": 1, \"por_pagina\": 1, \"total\""
       }
     ]
   },
@@ -130,8 +130,8 @@
         "ok": true,
         "peticion": "GET pedidos /pedidos?por_pagina=1",
         "status": 200,
-        "ms": 2434,
-        "respuesta": "{\"datos\": [{\"id\": 597, \"folio\": \"PED-20261126-000597\", \"estado\": \"cancelado\", \"zona\": {\"id\": 3, \"nombre\": \"Paseo de San Bernabé\"}, \"microhub_id\": 2, \"total\": 288.0, \"creado_en\": \"2026-11-26T23:38:27-06:00\"}], \"paginacion\": {\"pagina\": 1, \"por_pagina\": 1, \"total"
+        "ms": 2442,
+        "respuesta": "{\"datos\": [{\"id\": 641, \"folio\": \"PED-20261127-000641\", \"estado\": \"en_ruta\", \"zona\": {\"id\": 2, \"nombre\": \"Valles de San Bernabé\"}, \"microhub_id\": 2, \"total\": 155.0, \"creado_en\": \"2026-11-27T01:31:16-06:00\"}], \"paginacion\": {\"pagina\": 1, \"por_pagina\": 1, \"total\""
       },
       {
         "momento": "durante",
@@ -139,8 +139,8 @@
         "ok": true,
         "peticion": "POST documentos /documentos",
         "status": 503,
-        "ms": 4553,
-        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"MongoDB no responde. Intenta más tarde.\", \"traza_id\": \"1aa766d6-2d98-4b3b-9240-5b50bc78d4a0\"}}"
+        "ms": 4548,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"MongoDB no responde. Intenta más tarde.\", \"traza_id\": \"a5415a0b-8c23-409c-b23a-762b4431846b\"}}"
       },
       {
         "momento": "durante",
@@ -148,19 +148,19 @@
         "ok": true,
         "peticion": "GET documentos /salud",
         "status": 503,
-        "ms": 2061,
-        "respuesta": "{\"servicio\": \"documentos\", \"version\": \"fd85013\", \"estado\": \"degradado\", \"dependencias\": {\"postgres\": \"ok\", \"redis\": \"ok\", \"mongo\": \"error\", \"bucket\": \"ok\"}, \"tiempo_ms\": 2059.4}"
+        "ms": 2514,
+        "respuesta": "{\"servicio\": \"documentos\", \"version\": \"dba94ea\", \"estado\": \"degradado\", \"dependencias\": {\"postgres\": \"ok\", \"redis\": \"ok\", \"mongo\": \"error\", \"bucket\": \"ok\"}, \"tiempo_ms\": 2512.7}"
       },
       {
         "momento": "después",
-        "descripcion": "Documentos se recupera en 0.5 s",
+        "descripcion": "Documentos se recupera en 0.4 s",
         "ok": true
       },
       {
         "momento": "después",
         "descripcion": "No quedó ningún registro a medias",
         "ok": true,
-        "dato": "documentos antes=35 después=35"
+        "dato": "documentos antes=64 después=64"
       }
     ]
   },
@@ -174,14 +174,14 @@
         "ok": true,
         "peticion": "GET pedidos /pedidos?por_pagina=1",
         "status": 503,
-        "ms": 17,
-        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"Una base de datos no responde. Intenta más tarde.\", \"traza_id\": \"15c7b786-2649-4a51-bcee-77bb8ca5eb2f\"}}"
+        "ms": 486,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"Una base de datos no responde. Intenta más tarde.\", \"traza_id\": \"0969ad4c-10fe-4da2-b408-5bab50c27089\"}}"
       },
       {
         "momento": "durante",
         "descripcion": "El error no muestra consultas, contraseñas ni trazas del programa",
         "ok": true,
-        "dato": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"Una base de datos no responde. Intenta más tarde.\", \"traza_id\": \"15c7b786-2649-4a51-bcee-77bb8ca5eb2f\"}}"
+        "dato": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"Una base de datos no responde. Intenta más tarde.\", \"traza_id\": \"0969ad4c-10fe-4da2-b408-5bab50c27089\"}}"
       },
       {
         "momento": "durante",
@@ -189,8 +189,8 @@
         "ok": true,
         "peticion": "GET pedidos /salud",
         "status": 503,
-        "ms": 13,
-        "respuesta": "{\"servicio\": \"pedidos\", \"version\": \"fd85013\", \"estado\": \"degradado\", \"dependencias\": {\"postgres\": \"error\", \"redis\": \"ok\", \"mongo\": \"no_aplica\", \"bucket\": \"no_aplica\"}, \"tiempo_ms\": 11.6}"
+        "ms": 11,
+        "respuesta": "{\"servicio\": \"pedidos\", \"version\": \"dba94ea\", \"estado\": \"degradado\", \"dependencias\": {\"postgres\": \"error\", \"redis\": \"ok\", \"mongo\": \"ok\", \"bucket\": \"ok\"}, \"tiempo_ms\": 9.7}"
       },
       {
         "momento": "después",
@@ -203,8 +203,8 @@
         "ok": true,
         "peticion": "GET pedidos /pedidos?por_pagina=1",
         "status": 200,
-        "ms": 50,
-        "respuesta": "{\"datos\": [{\"id\": 597, \"folio\": \"PED-20261126-000597\", \"estado\": \"cancelado\", \"zona\": {\"id\": 3, \"nombre\": \"Paseo de San Bernabé\"}, \"microhub_id\": 2, \"total\": 288.0, \"creado_en\": \"2026-11-26T23:38:27-06:00\"}], \"paginacion\": {\"pagina\": 1, \"por_pagina\": 1, \"total"
+        "ms": 39,
+        "respuesta": "{\"datos\": [{\"id\": 641, \"folio\": \"PED-20261127-000641\", \"estado\": \"en_ruta\", \"zona\": {\"id\": 2, \"nombre\": \"Valles de San Bernabé\"}, \"microhub_id\": 2, \"total\": 155.0, \"creado_en\": \"2026-11-27T01:31:16-06:00\"}], \"paginacion\": {\"pagina\": 1, \"por_pagina\": 1, \"total\""
       }
     ]
   },
@@ -218,8 +218,8 @@
         "ok": true,
         "peticion": "GET documentos /salud",
         "status": 503,
-        "ms": 519,
-        "respuesta": "{\"servicio\": \"documentos\", \"version\": \"fd85013\", \"estado\": \"degradado\", \"dependencias\": {\"postgres\": \"ok\", \"redis\": \"ok\", \"mongo\": \"ok\", \"bucket\": \"error\"}, \"tiempo_ms\": 515.9}"
+        "ms": 90,
+        "respuesta": "{\"servicio\": \"documentos\", \"version\": \"dba94ea\", \"estado\": \"degradado\", \"dependencias\": {\"postgres\": \"ok\", \"redis\": \"ok\", \"mongo\": \"ok\", \"bucket\": \"error\"}, \"tiempo_ms\": 88.4}"
       },
       {
         "momento": "durante",
@@ -227,18 +227,18 @@
         "ok": true,
         "peticion": "POST documentos /documentos",
         "status": 503,
-        "ms": 282,
-        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"El almacén de archivos no responde. Intenta más tarde.\", \"traza_id\": \"74ed2845-edca-4e3c-96f3-722888c00890\"}}"
+        "ms": 264,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"El almacén de archivos no responde. Intenta más tarde.\", \"traza_id\": \"30428287-6787-4b86-94e2-ea1c62d9240c\"}}"
       },
       {
         "momento": "durante",
         "descripcion": "No se guardó un registro sin archivo",
         "ok": true,
-        "dato": "documentos antes=35 después=35"
+        "dato": "documentos antes=64 después=64"
       },
       {
         "momento": "después",
-        "descripcion": "Documentos vuelve a estar sano en 2.3 s",
+        "descripcion": "Documentos vuelve a estar sano en 2.2 s",
         "ok": true
       },
       {
@@ -247,8 +247,8 @@
         "ok": true,
         "peticion": "POST documentos /documentos",
         "status": 201,
-        "ms": 102,
-        "respuesta": "{\"id\": \"6b09180a8bc191fc4ce98c66\", \"nombre\": \"fallo-almacen.jpg\", \"tipo_mime\": \"image/jpeg\", \"tamano_bytes\": 276, \"sha256\": \"7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc\", \"referencia\": {\"tipo\": \"usuario\", \"id\": \"1\"}, \"subido_por\": 1, \"crea"
+        "ms": 92,
+        "respuesta": "{\"id\": \"6b0932698906de78e8c97834\", \"nombre\": \"fallo-almacen.jpg\", \"tipo_mime\": \"image/jpeg\", \"tamano_bytes\": 276, \"sha256\": \"7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc\", \"referencia\": {\"tipo\": \"usuario\", \"id\": \"1\"}, \"subido_por\": 1, \"crea"
       }
     ]
   },
@@ -262,8 +262,8 @@
         "ok": true,
         "peticion": "GET reportes /reportes/inventario_alertas",
         "status": 503,
-        "ms": 4046,
-        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"El servicio inventario no responde. Intenta más tarde.\", \"traza_id\": \"c23662c4-5a2f-4b13-9685-489053471481\"}}"
+        "ms": 4039,
+        "respuesta": "{\"error\": {\"codigo\": \"SERVICIO_NO_DISPONIBLE\", \"mensaje\": \"El servicio inventario no responde. Intenta más tarde.\", \"traza_id\": \"2345569a-0b17-49d1-a00a-599a5715a43f\"}}"
       },
       {
         "momento": "durante",
@@ -271,12 +271,12 @@
         "ok": true,
         "peticion": "POST auditoria-monitoreo /monitoreo/verificaciones",
         "status": 201,
-        "ms": 3065,
-        "respuesta": "{\"verificados\": 1, \"ok\": 0, \"degradados\": 0, \"caidos\": 1, \"servicios\": [{\"servicio\": \"inventario\", \"estado\": \"caido\", \"tiempo_ms\": 3004.0, \"error\": \"El servicio inventario no responde. Intenta más tarde.\"}]}"
+        "ms": 3060,
+        "respuesta": "{\"verificados\": 1, \"ok\": 0, \"degradados\": 0, \"caidos\": 1, \"servicios\": [{\"servicio\": \"inventario\", \"estado\": \"caido\", \"tiempo_ms\": 3004.1, \"error\": \"El servicio inventario no responde. Intenta más tarde.\"}]}"
       },
       {
         "momento": "después",
-        "descripcion": "Al reanudarse vuelve en 0.0 s",
+        "descripcion": "Al reanudarse vuelve en 0.2 s",
         "ok": true
       }
     ]
@@ -289,7 +289,7 @@
         "momento": "final",
         "descripcion": "Ninguna falla creó, borró ni alteró datos",
         "ok": true,
-        "dato": "antes:   pedidos=593 entregas=157 existencia_total=7245\ndespués: pedidos=593 entregas=157 existencia_total=7245"
+        "dato": "antes:   pedidos=637 entregas=180 existencia_total=7452\ndespués: pedidos=637 entregas=180 existencia_total=7452"
       }
     ]
   }

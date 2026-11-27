@@ -78,8 +78,9 @@ Los documentos anteriores (con el archivo dentro de MongoDB) se mueven con `pyth
 ## Salud
 
 `GET /servicios/<nombre>/api/v1/salud` informa servicio, versión desplegada, estado de PostgreSQL, Redis, MongoDB y bucket y el tiempo de
-respuesta (`tiempo_ms`). `bucket` solo se comprueba en los servicios que guardan archivos; en los demás es `no_aplica` para que una falla del
-bucket no los marque como degradados.
+respuesta (`tiempo_ms`). Los 26 servicios revisan las cuatro dependencias; un servicio queda `degradado` (503) solo si falla una de las que
+necesita para responder (el bucket, solo `documentos` y `reportes`). Las demás se informan y se vuelven a probar en segundo plano cada 30 s.
+También por separado: `/health/live`, `/health/ready`, `/health/database`, `/health/redis`, `/health/mongodb` y `/health/storage`.
 
 ## Costo y apagado
 

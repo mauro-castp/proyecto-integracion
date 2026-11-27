@@ -45,7 +45,8 @@ from comun.formatos import ZONA, fecha
 
 app = crear_app("reportes", "Microhubs · Reportes",
                 "Reportes operativos, logísticos, comerciales y financieros con indicadores, gráficas y exportación a CSV, Excel y PDF.",
-                5123)
+                5123,
+                dependencias=("postgres", "redis", "bucket"))
 P = config.PREFIJO
 DEFECTOS = {"rep_filas_max": 50000.0, "rep_periodo_dias": 30.0}
 MAX_DIAS = 366

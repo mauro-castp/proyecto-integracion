@@ -4,12 +4,12 @@ test_el_archivo_va_al_bucket_y_la_base_solo_guarda_sus_datos (pruebas.test_nube.
 test_la_url_firmada_caduca (pruebas.test_nube.ArchivosEnLaNube.test_la_url_firmada_caduca) ... ok
 test_otra_persona_no_obtiene_el_enlace_de_un_documento_privado (pruebas.test_nube.ArchivosEnLaNube.test_otra_persona_no_obtiene_el_enlace_de_un_documento_privado) ... ok
 test_salud_de_documentos_reporta_el_bucket (pruebas.test_nube.ArchivosEnLaNube.test_salud_de_documentos_reporta_el_bucket) ... ok
-test_si_el_bucket_no_responde_hay_503_sin_registros_a_medias (pruebas.test_nube.ArchivosEnLaNube.test_si_el_bucket_no_responde_hay_503_sin_registros_a_medias) ... {"nivel": "ERROR", "traza_id": "c7ea3f4b-baff-48ea-a3f3-a04e5e062c82", "error": "ErrorAlmacen: No se pudo subir al bucket: 404 POST https://storage.googleapis.com/upload/storage/v1/b/microhubs-bucket-que-no-existe-0000000000/o?uploadType=multipart&ifGenerationMatch=0: {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"The specified bucket does not exist.\",\n    \"errors\": [\n      {\n        \"message\": \"The specified bucket does not exist.\",\n        \"domain\": \"global\",\n        \"reason\": \"notFound\"\n      }\n    ]\n  }\n}\n: ('Request failed with status code', 404, 'Expected one of', <HTTPStatus.OK: 200>)"}
+test_si_el_bucket_no_responde_hay_503_sin_registros_a_medias (pruebas.test_nube.ArchivosEnLaNube.test_si_el_bucket_no_responde_hay_503_sin_registros_a_medias) ... {"nivel": "ERROR", "traza_id": "9b7eb37b-56e1-4806-8ba5-ec738fd83f72", "error": "ErrorAlmacen: No se pudo subir al bucket: 404 POST https://storage.googleapis.com/upload/storage/v1/b/microhubs-bucket-que-no-existe-0000000000/o?uploadType=multipart&ifGenerationMatch=0: {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"The specified bucket does not exist.\",\n    \"errors\": [\n      {\n        \"message\": \"The specified bucket does not exist.\",\n        \"domain\": \"global\",\n        \"reason\": \"notFound\"\n      }\n    ]\n  }\n}\n: ('Request failed with status code', 404, 'Expected one of', <HTTPStatus.OK: 200>)"}
 ok
 test_url_alterada_o_sin_firma_no_sirve (pruebas.test_nube.ArchivosEnLaNube.test_url_alterada_o_sin_firma_no_sirve) ... ok
 test_url_firmada_descarga_sin_credenciales (pruebas.test_nube.ArchivosEnLaNube.test_url_firmada_descarga_sin_credenciales) ... ok
 
 ----------------------------------------------------------------------
-Ran 9 tests in 8.528s
+Ran 9 tests in 8.233s
 
 OK
