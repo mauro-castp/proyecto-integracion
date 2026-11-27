@@ -129,6 +129,23 @@ class ApiTest {
         try { release.call("entregas", "salud"); fail() } catch (_: IllegalArgumentException) {}
     }
 
+    @Test fun sinRutaUsaUnPuertoPorServicioYConRutaEnrutaPorNombre() {
+        val direcciones = mutableListOf<String>()
+        val servidor = Servidor { Salida(200) }
+        val api = Api(Memoria(), { u -> direcciones.add(u.toString()); servidor.abrir(u) }, "10.0.2.2")
+        api.host = "http://10.0.2.2"; api.call("documentos", "documentos")
+        api.host = "https://servidor.ejemplo.com"; api.call("entregas", "entregas/mias?pagina=1")
+        api.host = "https://servidor.ejemplo.com/servicios/"; api.call("entregas", "entregas/mias?pagina=1")
+        api.call("sincronizacion", "sincronizacion/lotes")
+        api.host = "servidor.ejemplo.com/servicios"; api.call("auth", "auth/validar")      // sin esquema se asume https
+        assertEquals(listOf(
+            "http://10.0.2.2:5107/api/v1/documentos",
+            "https://servidor.ejemplo.com:5105/api/v1/entregas/mias?pagina=1",
+            "https://servidor.ejemplo.com/servicios/entregas/api/v1/entregas/mias?pagina=1",
+            "https://servidor.ejemplo.com/servicios/sincronizacion/api/v1/sincronizacion/lotes",
+            "https://servidor.ejemplo.com/servicios/auth/api/v1/auth/validar"), direcciones)
+    }
+
     @Test fun rechazaRespuestasQueNoSonJson() {
         val api = clienteDe(Servidor { Salida(200, tipo = "application/xml", cuerpo = "<lista/>") })
         try { api.call("entregas", "entregas/mias"); fail() } catch (e: IllegalArgumentException) { assertTrue(e.message!!.contains("JSON")) }

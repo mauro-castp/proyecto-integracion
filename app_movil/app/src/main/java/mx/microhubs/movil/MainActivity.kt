@@ -194,7 +194,7 @@ class MainActivity : Activity() {
         p.agregar(ui.espacio(8))
         val email = ui.campo("Correo").apply { inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS }
         val password = ui.campo("Clave", secreto = true)
-        val host = ui.campo("Servidor (en debug http://10.0.2.2; en producción https://…)", api.host)
+        val host = ui.campo("Servidor (en debug http://10.0.2.2; en la nube https://…/servicios)", api.host)
         val demo = CheckBox(this).apply { text = "Usar ejemplos locales (sin red)"; isChecked = api.demo; setTextColor(ui.tintaSec) }
         val ajustes = ui.tarjeta().apply { visibility = View.GONE }
         ajustes.addView(ui.etiqueta("Servidor")); ajustes.addView(host); ajustes.addView(demo)

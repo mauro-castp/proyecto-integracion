@@ -101,9 +101,15 @@ static class Pruebas
         using var otro = new Api(new FakeHandler()) { Host = "http://servidor.ejemplo.com" };
         otro.SetSession(otro.Validate(Ex("Sesion.ok.xml")));
         await RejectAsync(() => otro.Call("pedidos", "pedidos"), "HTTP solo se permite hacia el equipo local");
-        using var seguro = new Api(new FakeHandler()) { Host = "https://servidor.ejemplo.com" };
+        var porPuerto = new FakeHandler();
+        using var seguro = new Api(porPuerto) { Host = "https://servidor.ejemplo.com" };
         seguro.SetSession(seguro.Validate(Ex("Sesion.ok.xml"))); await seguro.Call("pedidos", "pedidos");
         Check(true, "HTTPS sí se permite hacia cualquier host");
+        Check(porPuerto.Last!.AbsoluteUri == "https://servidor.ejemplo.com:5104/api/v1/pedidos", "Sin ruta en el servidor: cada servicio va a su puerto");
+        var porRuta = new FakeHandler();
+        using var nube = new Api(porRuta) { Host = "https://servidor.ejemplo.com/servicios/" };
+        nube.SetSession(nube.Validate(Ex("Sesion.ok.xml"))); await nube.Call("pedidos", "pedidos?por_pagina=1");
+        Check(porRuta.Last!.AbsoluteUri == "https://servidor.ejemplo.com/servicios/pedidos/api/v1/pedidos?por_pagina=1", "Con ruta en el servidor (nube): un solo puerto y el nombre del servicio");
 
         var fallida = new FakeHandler { Next = (HttpStatusCode.Unauthorized, Ex("Error.token_invalido.xml")) }; using var sinRenovar = new Api(fallida) { };
         sinRenovar.SetSession(sinRenovar.Validate(Ex("Sesion.ok.xml")));

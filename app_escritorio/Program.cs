@@ -8,7 +8,7 @@ sealed class MainWindow : Form
     readonly Api api=new();
     readonly FlowLayoutPanel bar=new(){Dock=DockStyle.Top,AutoSize=true,WrapContents=true};
     readonly DataGridView grid=new(){Dock=DockStyle.Fill,ReadOnly=true,AutoSizeColumnsMode=DataGridViewAutoSizeColumnsMode.DisplayedCells,AllowUserToAddRows=false};
-    readonly TextBox mail=new(){PlaceholderText="Correo",Width=180},password=new(){PlaceholderText="Clave",UseSystemPasswordChar=true},host=new(){Text="http://localhost",Width=170},search=new(){PlaceholderText="Buscar",Width=130};
+    readonly TextBox mail=new(){PlaceholderText="Correo",Width=180},password=new(){PlaceholderText="Clave",UseSystemPasswordChar=true},host=new(){Text="http://localhost",Width=270},search=new(){PlaceholderText="Buscar",Width=130};
     readonly CheckBox demo=new(){Text="Ejemplos oficiales",Checked=false,AutoSize=true};
     readonly ComboBox state=new(){DropDownStyle=ComboBoxStyle.DropDownList,Width=130};
     readonly DateTimePicker desde=new(){Format=DateTimePickerFormat.Short,ShowCheckBox=true,Checked=false},hasta=new(){Format=DateTimePickerFormat.Short,ShowCheckBox=true,Checked=false};
@@ -20,6 +20,7 @@ sealed class MainWindow : Form
         Text="Microhubs · Planeación XML v1";Width=1250;Height=760;
         Controls.Add(grid);Controls.Add(bar);Controls.Add(status);
         bar.Controls.AddRange(new Control[]{host,demo,mail,password});
+        new ToolTip().SetToolTip(host,"Local: http://localhost  ·  Nube: https://servidor/servicios");
         Add("Entrar",async()=>{
             api.Clear(); api.Demo=demo.Checked;api.Host=host.Text.Trim();
             try { api.SetSession(await api.Call("auth","auth/login",HttpMethod.Post,Api.Body("login",("correo",mail.Text.Trim()),("clave",password.Text)))); }
