@@ -51,15 +51,15 @@ dotnet publish Microhubs.csproj -c Release -r win-x64 --self-contained true -o b
 
 ```powershell
 dotnet build Microhubs.csproj
-dotnet run --project pruebas/Microhubs.Pruebas.csproj          # sin red: 68 comprobaciones + 3 que abren las ventanas
+dotnet run --project pruebas/Microhubs.Pruebas.csproj          # sin red: 71 comprobaciones + 3 que abren las ventanas
 python -m pip install lxml; python -m unittest discover -s pruebas -v    # 10 pruebas de los XSD con un validador independiente
 $env:MICROHUBS_BACKEND='http://localhost'; $env:MICROHUBS_CLAVE='<clave de las cuentas de demostración>'
-dotnet run --project pruebas/Microhubs.Pruebas.csproj          # +100 contra los servicios reales
+dotnet run --project pruebas/Microhubs.Pruebas.csproj          # +97 contra los servicios reales
 $env:MICROHUBS_DESCARGAS='C:\temp\reportes'                    # opcional: guarda ahí el CSV, el Excel y el PDF descargados
 ```
 
 Sin Windows (Linux o macOS con el SDK de .NET 8, sin paquetes de NuGet) corren las mismas pruebas salvo abrir las ventanas:
-`dotnet run --project pruebas/multiplataforma/Microhubs.Pruebas.Multiplataforma.csproj` (68 sin red; con las mismas variables, 168).
+`dotnet run --project pruebas/multiplataforma/Microhubs.Pruebas.Multiplataforma.csproj` (71 sin red; con las mismas variables, 168).
 Para «Rutas · proponer» hacen falta al menos dos pedidos listos en el microhub 1; si no los hay, esa parte se omite y lo dice.
 
 Qué comprueba cada bloque:
