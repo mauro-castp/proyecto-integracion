@@ -16,5 +16,5 @@ Resultado con los supuestos de la pantalla (8 % de hogares que piden, 1.2 pedido
 3 microhubs propuestos (Fomerrey 15, El Ranchito, Fomerrey 105) cubren el **94 %** de la demanda de bajos ingresos; cada uno necesita
 **152 pedidos/día** para el equilibrio y los tres salen **viables ajustados**. La penetración mínima para llegar al equilibrio es de 4.6 a 7.7 % de los hogares.
 
-Pruebas corridas después de los cambios (plataforma local con PostgreSQL, Redis y MongoDB reales): unitarias y de contrato 161/161,
-ola 1, almacén, ola 2, ola 3, ola 4 y apps cliente 354/354, Android (JVM) 85/85 y compilación de todas las pantallas.
+Pruebas corridas después de los cambios (plataforma local con PostgreSQL, Redis y MongoDB reales), todas sin fallas: unitarias (117, incluidas
+las 6 nuevas de ubicación), contrato de los 27 servicios, olas 1 a 4, almacén y apps cliente; Android: 85 pruebas en la JVM y compilación de todas las pantallas.
