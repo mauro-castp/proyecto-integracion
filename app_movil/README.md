@@ -1,12 +1,14 @@
 # Microhubs · Android (parte B)
 
 Cliente Kotlin nativo, **exclusivamente JSON**, para la persona repartidora. Habla con los microservicios del contrato v1:
-auth (5101), usuarios (5102), pedidos (5104), entregas (5105), documentos (5107) y seguimiento (5110, el rastro GPS).
+auth (5101), usuarios (5102), pedidos (5104), entregas (5105), documentos (5107), seguimiento (5110, el rastro GPS),
+notificaciones (5124, los avisos) y sincronización (5125, lo hecho sin red).
 
 Incluye: inicio y cierre de sesión (tokens cifrados con Android Keystore y renovación automática), **perfil editable** (nombre,
 apellidos y teléfono), **mis entregas** con paginación, detalle de la entrega, escaneo del QR del pedido, **foto de evidencia a
 resolución útil** (JPEG ≤ 1600 px, nunca más de 5 MB), GPS con la ruta recorrida, **cierre de entrega idempotente** (entregado,
-parcial por líneas o fallida).
+parcial por líneas o fallida), **trabajo sin red** (el cierre y el recorrido se guardan en el teléfono y se envían solos al volver
+la conexión) y **avisos** (la misma bandeja del portal web).
 
 ## Interfaz
 
@@ -14,7 +16,11 @@ Diseño propio sobre el tema Material del sistema (sin dependencias nuevas), con
 
 - **Barra superior** con título, botón de volver e **indicador de conexión en vivo** (En línea · Sin conexión · Ejemplos locales).
   Una barra de progreso fina avisa que hay una petición en curso y un aviso de color muestra errores, éxitos e información.
-- **Inicio** con tarjetas de acción (entregas y perfil) y «Cerrar sesión» siempre a la mano.
+- **Inicio** con tarjetas de acción (entregas, avisos con el número de no leídos, «Sin enviar» cuando hay algo guardado sin red, y
+  perfil) y «Cerrar sesión» siempre a la mano.
+- **Avisos**: la bandeja del servicio de notificaciones; tocar un aviso lo marca como leído y, si es de una entrega, la abre.
+- **Sin enviar**: lo que se hizo sin red, con su estado (por enviar, reintentando, conflicto, rechazada) y el motivo que dio el
+  servidor; botón «Enviar ahora».
 - **Mis entregas** como tarjetas: número de parada, folio, dirección, estado con color, total, distancia y tiempo.
 - **Entrega** en secciones: cliente y total a cobrar; evidencia (QR, foto y GPS con ✓ / pendiente y su botón); resultado con selector
   *Entregado · Parcial · Fallida*, campos rotulados y, en parcial, pasos − / + por línea con su motivo. El botón «Registrar
@@ -67,6 +73,22 @@ cierra), junto con la evidencia ya subida. Si falla la red o el servidor, «Regi
 servidor responde 201 (aplicada) o 200 con `duplicado: true` (ya estaba aplicada); ambas son éxito. Un 409 indica que otra
 operación ya cerró la entrega. Un 422 (regla de negocio) permite corregir y reintentar con el mismo UUID.
 
+### Sin red (cola y sincronización)
+- **Qué se guarda.** Sin conexión, «Guardar resultado (sin red)» deja en el almacenamiento privado de la app (`filesDir/sin_red`) el
+  cierre, la foto de evidencia y el recorrido GPS. También se guarda la última copia de «Mis entregas» y del detalle de las paradas en
+  ruta, para poder abrirlas sin señal. Si la red se cae a mitad de un registro, lo que falte se guarda igual.
+- **Identidad fija.** Cada operación tiene su `operacion_uuid` y su `creada_en` (ISO 8601 con zona), que se fijan al crearla y no
+  cambian. El uuid del cierre es el mismo `id_cliente_local` del borrador: si un intento en línea sí llegó al servidor, el envío
+  posterior es un duplicado, no otro cierre.
+- **Al volver la red** (aviso del sistema, al abrir la app o el menú, o con «Enviar ahora»): primero se sube cada foto con
+  `POST /documentos` (5107) y su id queda guardado; luego se manda `POST /sincronizacion/lotes` (5125, hasta 200 operaciones) con la
+  foto en `evidencia_ids`. Una operación que aún no tiene foto subida no sale, así que su contenido nunca cambia después de enviarse.
+- **Resultados.** *aplicada*: sale de la cola. *conflicto*: gana el servidor; se muestra el motivo y no se reintenta. *rechazada*: se
+  muestra y no se reintenta. *pendiente*: se reenvía tal cual en la siguiente sincronización.
+- Solo se envía lo de la persona con sesión (el servicio lo aplica con su JWT). Al cerrar sesión con algo sin enviar, la app avisa:
+  se queda guardado hasta que esa cuenta vuelva a entrar. Las copias de consulta se borran al salir.
+- Marcar un aviso como leído sin red también va a la cola (`notificacion_leida`).
+
 ### Sesión
 El token de acceso dura 15 min. Ante un 401 se renueva **una sola vez** (las peticiones simultáneas comparten la renovación; el
 token de renovación rota) y se repite la petición. Si la renovación falla se borran las credenciales y se vuelve al acceso. Al
@@ -86,7 +108,10 @@ Detalles, fechas y límites en [PRUEBAS_APPS.md](../app_escritorio/PRUEBAS_APPS.
 ## Límites conocidos
 - La **captura real de cámara, el escaneo de un QR físico y la precisión del GPS** no se han ensayado en un teléfono: en emulador
   solo se probó el recorrido de pantallas y el procesamiento de la imagen.
-- No hay cola offline: sin red no se puede cerrar la entrega (sí se reintenta sin duplicar cuando vuelve).
+- Sin red solo se puede abrir una parada cuya copia se guardó antes (la lista guarda el detalle de las paradas en ruta al cargarse
+  con red). La cola no está cifrada: vive en el almacenamiento privado de la app, como las preferencias.
+- Si una foto se subió pero la respuesta se perdió, al reintentar se sube otra vez (queda un documento huérfano en MongoDB; el cierre
+  usa solo el último id).
 - El formulario no se conserva si Android destruye el proceso; sí se conservan el UUID y la evidencia ya subida.
 - El emulador con GPU por software (`swiftshader_indirect`) a veces se cae durante las pruebas instrumentadas; es un problema del
   emulador, no de la app: se repite la corrida.
