@@ -206,7 +206,9 @@ sealed class Api : IDisposable
     ApiError ToError(HttpResponseMessage response,XDocument doc)
     {
         LastTrace=doc.Root!.Element(Ns+"traza_id")?.Value??"";
-        var fields=doc.Descendants(Ns+"detalle").ToDictionary(e=>e.Element(Ns+"campo")!.Value,e=>e.Element(Ns+"mensaje")!.Value);
+        // un campo puede traer varios detalles (p. ej. un mensaje por cada pedido de pedido_ids que no está listo): se unen con «; »
+        var fields=doc.Descendants(Ns+"detalle").GroupBy(e=>e.Element(Ns+"campo")!.Value)
+            .ToDictionary(g=>g.Key,g=>string.Join("; ",g.Select(e=>e.Element(Ns+"mensaje")!.Value)));
         if(response.StatusCode==HttpStatusCode.Unauthorized) Clear();
         return new ApiError((int)response.StatusCode,doc.Root.Element(Ns+"mensaje")!.Value,fields,LastTrace);
     }

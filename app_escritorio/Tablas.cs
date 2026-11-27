@@ -30,7 +30,8 @@ static class Tablas
 
     /// <summary>
     /// La colección principal de una respuesta: `datos` si es una lista paginada; si no, el hijo directo con más elementos
-    /// repetidos (p. ej. las rutas de un plan, los pasos de un cálculo, las filas de una sensibilidad). Null si no hay ninguna.
+    /// repetidos (p. ej. las rutas de un plan, los pasos de un cálculo, las filas de una sensibilidad). Los supuestos usados solo son la
+    /// colección principal si no hay otra (una comparación de rutas trae 4 métodos y 6 supuestos: la tabla son los métodos). Null si no hay ninguna.
     /// </summary>
     internal static XElement? Coleccion(XDocument doc)
     {
@@ -38,7 +39,8 @@ static class Tablas
         if (root.Element(Ns + "datos") is { } datos) return datos;
         return root.Elements()
             .Where(e => e.HasElements && e.Elements().All(h => h.Name == e.Elements().First().Name) && e.Elements().First().HasElements)
-            .OrderByDescending(e => e.Elements().Count())
+            .OrderBy(e => e.Name == Ns + "supuestos_usados")           // los supuestos van al resumen salvo que sean lo único que hay
+            .ThenByDescending(e => e.Elements().Count())
             .FirstOrDefault();
     }
 

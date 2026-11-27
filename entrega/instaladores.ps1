@@ -1,4 +1,4 @@
-# Genera los dos instaladores y anota su tamaño y SHA-256. No publica nada y no deja binarios en carpetas que Git suba.
+﻿# Genera los dos instaladores y anota su tamaño y SHA-256. No publica nada y no deja binarios en carpetas que Git suba.
 #
 #   .\entrega\instaladores.ps1                         APK para el emulador (HTTP a 10.0.2.2) y ZIP del escritorio
 #   .\entrega\instaladores.ps1 -DebugHttpHost 192.168.1.50   APK para un teléfono en la misma red que la PC

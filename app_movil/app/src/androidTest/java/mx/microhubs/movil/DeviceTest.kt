@@ -65,6 +65,17 @@ class DeviceTest {
         assertEquals(1600, maxOf(salida.width, salida.height))
     }
 
+    @Test fun elLectorDeQrAbreSinCerrarLaApp() {
+        // El lector (zxing-android-embedded) pide ContextCompat al reanudarse; si androidx.core no va en el APK, la app se cierra.
+        assertNotNull(Class.forName("androidx.core.content.ContextCompat", false, context.classLoader))
+        InstrumentationRegistry.getInstrumentation().uiAutomation.grantRuntimePermission(context.packageName, android.Manifest.permission.CAMERA)
+        val intent = android.content.Intent(context, com.journeyapps.barcodescanner.CaptureActivity::class.java)
+        ActivityScenario.launch<com.journeyapps.barcodescanner.CaptureActivity>(intent).use { s ->
+            InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+            assertEquals(androidx.lifecycle.Lifecycle.State.RESUMED, s.state)
+        }
+    }
+
     @Test fun inicioDeActivity() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             scenario.onActivity { activity -> assertFalse(activity.isFinishing); assertNotNull(activity.findViewById<View>(android.R.id.content)) }
