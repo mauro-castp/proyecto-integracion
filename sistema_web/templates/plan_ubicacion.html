@@ -1,0 +1,90 @@
+{% extends "base.html" %}{% block titulo %}Dónde poner microhubs{% endblock %}
+{% block cuerpo %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% include "_plan_nav.html" %}
+<h1>Dónde poner los microhubs</h1>
+<p class="sub">Colonias de bajos ingresos según CONAPO → demanda simulada → ubicación que cubre más demanda (facility location) → punto de equilibrio de cada microhub propuesto.</p>
+
+<div class="aviso info"><b>¿Qué es una colonia de bajos ingresos?</b>
+<span>Usamos el <strong>índice de marginación urbana por colonia 2020 de CONAPO</strong> (dato oficial, calculado con el Censo 2020 del INEGI: educación, salud, vivienda,
+hacinamiento e internet). Una colonia es de <strong>bajos ingresos</strong> si su grado de marginación es <strong>Medio, Alto o Muy alto</strong>. En la zona de San Bernabé son
+<strong>{{ r.resumen.colonias_bajos_ingresos }} de {{ r.resumen.colonias_zona }}</strong> colonias, con <strong>{{ "{:,}".format(r.resumen.poblacion_bajos_ingresos) }}</strong> habitantes.</span></div>
+
+<form method="get" class="panel formgrid" style="align-items:end">
+  <label>Microhubs a proponer<input name="p" type="number" min="1" max="8" value="{{ params.p }}"></label>
+  <label>Hogares que piden (%)<input name="penetracion" type="number" step="0.5" min="0.5" max="50" value="{{ '%g' % (params.penetracion * 100) }}"></label>
+  <label>Radio de servicio (km)<input name="radio_km" type="number" step="0.1" min="0.5" max="3" value="{{ params.radio_km }}"></label>
+  <label>Capacidad por microhub (pedidos/día)<input name="capacidad" type="number" min="20" max="2000" value="{{ params.capacidad_diaria }}"></label>
+  <button class="btn">Calcular</button>
+</form>
+
+<div class="panel" style="padding:0;overflow:hidden"><div id="mapa" style="height:540px;background:var(--line2)"></div>
+<div class="ayuda" style="padding:10px 16px">
+  Colonias por grado de marginación:
+  <span style="color:#7f0000">■</span> Muy alto · <span style="color:#d7301f">■</span> Alto · <span style="color:#fc8d59">■</span> Medio
+  (estas tres son <b>bajos ingresos</b>) · <span style="color:#bdbdbd">■</span> Bajo · <span style="color:#e0e0e0">■</span> Muy bajo ·
+  <span style="color:#1F4E79">●</span> microhub que ya existe (círculo = radio) ·
+  <span style="color:#0b7a3e">★</span> microhub propuesto (círculo = radio)
+</div></div>
+
+<div class="cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:16px 0">
+  <div class="panel"><div class="ayuda">Demanda de bajos ingresos</div><b style="font-size:22px">{{ r.resumen.demanda_bajos_ingresos_dia }}</b> pedidos/día</div>
+  <div class="panel"><div class="ayuda">Cubierta con {{ params.p }} microhub(s)</div><b style="font-size:22px">{{ r.resumen.cobertura_pct }} %</b> ({{ r.resumen.demanda_cubierta_dia }}/día)</div>
+  <div class="panel"><div class="ayuda">Equilibrio por microhub</div><b style="font-size:22px">{{ r.resumen.equilibrio_diario }}</b> pedidos/día</div>
+  <div class="panel"><div class="ayuda">Propuestas viables</div><b style="font-size:22px">{{ r.resumen.viables }} de {{ r.propuestas|length }}</b></div>
+</div>
+
+<h2>Microhubs propuestos</h2>
+<div class="panel" style="overflow:auto"><table>
+<thead><tr><th>#</th><th>Sede (colonia)</th><th class="num">Colonias atendidas</th><th class="num">Habitantes</th><th class="num">Demanda esperada</th>
+<th class="num">Demanda simulada (p10 · p50 · p90)</th><th class="num">Equilibrio</th><th class="num">Días que lo alcanza</th><th class="num">Penetración mínima</th><th>Veredicto</th><th>Microhub actual más cercano</th></tr></thead>
+<tbody>{% for x in r.propuestas %}<tr>
+<td>{{ x.orden }}</td><td><b>{{ x.colonia_sede }}</b><div class="ayuda">{{ '%.5f' % x.latitud }}, {{ '%.5f' % x.longitud }}</div></td>
+<td class="num">{{ x.colonias_atendidas }}</td><td class="num">{{ "{:,}".format(x.poblacion_atendida) }}</td><td class="num">{{ x.demanda_esperada_dia }}/día</td>
+<td class="num">{{ x.demanda_simulada.p10 }} · {{ x.demanda_simulada.p50 }} · {{ x.demanda_simulada.p90 }}</td>
+<td class="num">{{ x.equilibrio_diario }}/día</td><td class="num">{{ (x.probabilidad_cubrir_equilibrio * 100)|round(0)|int }} %</td>
+<td class="num">{{ '%.1f' % (x.penetracion_minima * 100) if x.penetracion_minima is not none else '—' }} %</td>
+<td><span class="pill {{ 'verde' if x.veredicto == 'VIABLE' else 'ambar' if x.veredicto == 'VIABLE AJUSTADO' else 'rojo' }}">{{ x.veredicto }}</span></td>
+<td>{% if x.microhub_actual_mas_cercano %}{{ x.microhub_actual_mas_cercano.clave }} a {{ x.microhub_actual_mas_cercano.distancia_km }} km{% else %}—{% endif %}</td>
+</tr>{% endfor %}</tbody></table></div>
+
+<div class="aviso info"><b>Cómo se decidió (los 3 algoritmos integrados)</b>
+<ol class="pasos">
+  <li><strong>Simulación de demanda.</strong> Hogares = habitantes ÷ {{ r.parametros.personas_por_hogar }}. Pedidos esperados al día = hogares × {{ '%g' % (r.parametros.penetracion * 100) }} % que piden × {{ r.parametros.pedidos_semana_hogar }} pedidos a la semana ÷ 7.
+      Se simulan {{ r.parametros.dias_simulados }} días (Monte Carlo, Poisson por colonia y por día de la semana); la demanda de cada microhub se topa en su capacidad ({{ r.parametros.capacidad_diaria }}/día).</li>
+  <li><strong>Facility location (cobertura máxima).</strong> Solo las colonias de bajos ingresos son demanda; cada colonia de la zona es un sitio candidato. Una colonia queda cubierta si está a {{ r.parametros.radio_km }} km o menos.
+      Se elige primero el sitio que más demanda cubre, luego el siguiente, y después se intercambian sitios mientras mejore la cobertura (Teitz y Bart).</li>
+  <li><strong>Punto de equilibrio.</strong> Margen por pedido = ticket × margen bruto − costo de entrega; equilibrio = costos fijos del mes ÷ margen ÷ 30 días.
+      VIABLE si la mediana simulada supera el equilibrio con 10 % de margen; VIABLE AJUSTADO si solo lo supera; NO VIABLE si no lo alcanza.</li>
+</ol>
+<details><summary>Ver el cálculo paso a paso</summary><ul class="pasos">{% for s in r.pasos %}<li>{{ s }}</li>{% endfor %}</ul></details></div>
+
+<h2>Colonias más marginadas de la zona</h2>
+<div class="panel" style="overflow:auto"><table><thead><tr><th>Colonia</th><th>CP</th><th>Grado</th><th class="num">Índice 2020</th><th class="num">Habitantes</th><th class="num">Sin servicios de salud</th><th class="num">Hacinamiento</th><th class="num">Sin internet</th></tr></thead>
+<tbody>{% for f in marginadas %}<tr><td>{{ f.colonia }}</td><td>{{ f.codigo_postal }}</td><td>{{ f.grado_2020 }}</td><td class="num">{{ '%.2f' % f.indice }}</td><td class="num">{{ "{:,}".format(f.poblacion) }}</td>
+<td class="num">{{ '%.1f' % f.sin_salud }} %</td><td class="num">{{ '%.1f' % f.hacinamiento }} %</td><td class="num">{{ '%.1f' % f.sin_internet }} %</td></tr>{% endfor %}</tbody></table>
+<p class="ayuda">En el índice de CONAPO un valor menor significa más marginación. Fuente: CONAPO, Índice de marginación urbana por colonia 2020 (gob.mx/conapo).</p></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const D = {{ mapa|safe }};
+const COLOR = {"Muy alto": "#7f0000", "Alto": "#d7301f", "Medio": "#fc8d59", "Bajo": "#bdbdbd", "Muy bajo": "#e0e0e0"};
+const m = L.map('mapa');
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: '© OpenStreetMap · Marginación: CONAPO 2020'}).addTo(m);
+const capa = L.geoJSON({type: "FeatureCollection", features: D.colonias.map(c => ({type: "Feature", geometry: c.geo, properties: {nombre: c.nombre, grado: c.grado, poblacion: c.poblacion}}))}, {
+  style: f => ({color: '#555', weight: .6, fillColor: COLOR[f.properties.grado] || '#ccc', fillOpacity: ['Muy alto', 'Alto', 'Medio'].includes(f.properties.grado) ? .55 : .25}),
+  onEachFeature: (f, l) => l.bindTooltip(f.properties.nombre + ' · marginación ' + f.properties.grado + ' · ' + f.properties.poblacion.toLocaleString('es-MX') + ' hab.')
+}).addTo(m);
+m.fitBounds(capa.getBounds(), {padding: [10, 10]});
+D.hubs.forEach(h => {
+  L.circle([h.lat, h.lng], {radius: h.radio * 1000, color: '#1F4E79', weight: 1.5, fillOpacity: .03}).addTo(m);
+  L.circleMarker([h.lat, h.lng], {radius: 7, color: '#fff', weight: 2, fillColor: '#1F4E79', fillOpacity: 1}).bindTooltip('Existente: ' + h.clave + ' · ' + h.nombre).addTo(m);
+});
+const estrella = (txt, color) => L.divIcon({className: '', html: '<div style="font-size:30px;line-height:30px;color:' + color + ';text-shadow:0 0 3px #fff,0 0 3px #fff">★</div><div style="font:700 12px sans-serif;color:#111;text-shadow:0 0 3px #fff">' + txt + '</div>', iconSize: [30, 44], iconAnchor: [15, 18]});
+D.propuestas.forEach(p => {
+  const color = p.veredicto === 'VIABLE' ? '#0b7a3e' : p.veredicto === 'VIABLE AJUSTADO' ? '#b8860b' : '#b00020';
+  L.circle([p.lat, p.lng], {radius: D.radio * 1000, color: color, weight: 2.5, dashArray: '6', fillOpacity: .04}).addTo(m);
+  L.marker([p.lat, p.lng], {icon: estrella('#' + p.orden, color)}).bindTooltip('Propuesta #' + p.orden + ': ' + p.sede + ' · ' + p.demanda + ' pedidos/día vs equilibrio ' + p.equilibrio + ' · ' + p.veredicto).addTo(m);
+});
+</script>
+{% endblock %}

@@ -15,6 +15,7 @@
 </style>
 <nav class="subnav" aria-label="Planeación">
   <a href="{{ url_for('planeacion.tablero') }}" class="{{ 'sel' if e=='planeacion.tablero' }}">Tablero</a>
+  {% if hay('planeacion.ubicacion') %}<a href="{{ url_for('planeacion.ubicacion') }}" class="{{ 'sel' if e=='planeacion.ubicacion' }}">★ Dónde poner microhubs</a>{% endif %}
   <a href="{{ url_for('planeacion.demanda') }}" class="{{ 'sel' if e=='planeacion.demanda' }}">1 · Demanda</a>
   <a href="{{ url_for('planeacion.candidatos_lista') }}" class="{{ 'sel' if e and e.startswith('planeacion.candidat') }}">2 · Ubicaciones</a>
   <a href="{{ url_for('planeacion.cobertura') }}" class="{{ 'sel' if e=='planeacion.cobertura' }}">Cobertura y mapa</a>

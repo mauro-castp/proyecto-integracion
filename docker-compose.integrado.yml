@@ -99,7 +99,6 @@ services:
     build: ./sistema_web
     environment:
       <<: *entorno
-      MICROSERVICIOS_URL: "http://{servicio}:{puerto}"   # el web consume los servicios por la red interna
     volumes:
       - ./bloque_c/sql/06_planeacion.sql:/app/06_planeacion.sql:ro
       - ./bloque_c/sql/07_web_ampliado.sql:/app/07_web_ampliado.sql:ro

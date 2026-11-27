@@ -382,6 +382,48 @@ def cobertura():
 
 
 # ====================================================================
+# Dónde poner los microhubs: colonias de bajos ingresos (CONAPO 2020) + facility location + simulación de demanda + equilibrio
+# El portal lee sus tablas directamente (no llama al servicio de ubicación); el cálculo es la misma función pura (ubicacion_calc).
+# ====================================================================
+def _num(nombre, defecto, minimo, maximo, entero=False):
+    v = (request.args.get(nombre) or "").strip().replace(",", ".")
+    try:
+        x = int(v) if entero else float(v)
+    except ValueError:
+        return defecto
+    return min(max(x, minimo), maximo)
+
+
+@plan.route("/planeacion/ubicacion")
+@requiere("planeacion.ver")
+def ubicacion():
+    import ubicacion_calc as uc
+    if MODO_LOCAL:
+        abort(404)
+    filas = consultar("SELECT cve_col, colonia, codigo_postal, poblacion, indice_2020::float AS indice, grado_2020, sin_salud_pct::float AS sin_salud, "
+                      "hacinamiento_pct::float AS hacinamiento, sin_internet_pct::float AS sin_internet, latitud::float AS lat, longitud::float AS lng, contorno "
+                      "FROM colonia_marginacion ORDER BY colonia")
+    params = {"p": _num("p", 3, 1, 8, True), "penetracion": _num("penetracion", uc.PARAMS["penetracion"] * 100, 0.5, 50) / 100,
+              "radio_km": _num("radio_km", uc.PARAMS["radio_km"], 0.5, 3), "capacidad_diaria": _num("capacidad", uc.PARAMS["capacidad_diaria"], 20, 2000, True)}
+    cols = [{"cve": f["cve_col"], "nombre": f["colonia"], "lat": f["lat"], "lng": f["lng"], "poblacion": f["poblacion"], "grado": f["grado_2020"]} for f in filas]
+    hubs = microhubs_activos()
+    r = uc.proponer(cols, [{"clave": h["clave"], "lat": h["lat"], "lng": h["lng"]} for h in hubs], params)
+    mapa = {
+        "colonias": [{"nombre": f["colonia"], "grado": f["grado_2020"], "poblacion": f["poblacion"], "indice": round(f["indice"], 2),
+                      "geo": f["contorno"] if isinstance(f["contorno"], dict) else json.loads(f["contorno"])} for f in filas],
+        "hubs": [{"clave": h["clave"], "nombre": h["nombre"], "lat": h["lat"], "lng": h["lng"], "radio": h["radio_km"]} for h in hubs],
+        "propuestas": [{"orden": x["orden"], "sede": x["colonia_sede"], "lat": x["latitud"], "lng": x["longitud"], "veredicto": x["veredicto"],
+                        "demanda": x["demanda_simulada"]["media"], "equilibrio": x["equilibrio_diario"]} for x in r["propuestas"]],
+        "radio": params["radio_km"],
+    }
+    grados = {g: {"colonias": sum(1 for f in filas if f["grado_2020"] == g), "poblacion": sum(f["poblacion"] for f in filas if f["grado_2020"] == g)}
+              for g in ("Muy alto", "Alto", "Medio", "Bajo", "Muy bajo")}
+    return render_template("plan_ubicacion.html", r=r, params=params, mapa=json.dumps(mapa), grados=grados,
+                           # en el índice 2020 de CONAPO (método DP2) un valor MENOR significa MÁS marginación
+                           marginadas=sorted([f for f in filas if f["grado_2020"] in uc.GRADOS_BAJOS_INGRESOS], key=lambda f: f["indice"])[:10])
+
+
+# ====================================================================
 # 3, 4, 7, 8. Simulación, capacidad, equilibrio, sensibilidad, ficha
 # ====================================================================
 def get_escenario(eid):

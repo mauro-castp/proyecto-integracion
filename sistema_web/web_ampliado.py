@@ -1,5 +1,4 @@
 """Reportes, archivos, avisos y perfiles. Solo los archivos usan un microservicio (documentos), porque viven en el bucket."""
-import base64
 import csv
 import datetime as dt
 import io
@@ -289,25 +288,18 @@ def archivos():
             abort(400, 'Selecciona un archivo.')
         contenido = archivo.read(5 * 1024 * 1024 + 1)
         nombre, tipo = validar_archivo(archivo.filename or '', contenido)
-        if local():                                      # demostración sin servicios (SQLite en el equipo)
-            ejecutar('INSERT INTO web_archivo(id,propietario_id,nombre,tipo,contenido,tamano) VALUES(%s,%s,%s,%s,%s,%s)',
-                     (secrets.token_hex(16), g.usuario['id'], nombre, tipo, contenido, len(contenido)))
-            flash('Archivo guardado.', 'ok')
-        else:
-            _subir_al_almacen(nombre, tipo, contenido)
+        # El portal guarda el archivo en su propia base (PostgreSQL en la plataforma, SQLite en la demostración local).
+        ejecutar('INSERT INTO web_archivo(id,propietario_id,nombre,tipo,contenido,tamano) VALUES(%s,%s,%s,%s,%s,%s)',
+                 (secrets.token_hex(16), g.usuario['id'], nombre, tipo, contenido, len(contenido)))
+        flash('Archivo guardado.', 'ok')
         return redirect(url_for('web.archivos'))
-    if local():
-        filas = paginar('SELECT id,nombre,tipo,tamano,creado_en FROM web_archivo WHERE propietario_id=%s ORDER BY creado_en DESC,id DESC', (g.usuario['id'],), consulta, filtrar=False)
-    else:
-        filas = _mis_archivos()
+    filas = paginar('SELECT id,nombre,tipo,tamano,creado_en FROM web_archivo WHERE propietario_id=%s ORDER BY creado_en DESC,id DESC', (g.usuario['id'],), consulta, filtrar=False)
     return render_template('web_archivos.html', filas=filas)
 
 
 @web_bp.get('/archivos/<aid>')
 @protegido('archivos.ver')
 def descargar(aid):
-    if not local():
-        return _bajar_del_almacen(aid)
     archivo = consulta('SELECT nombre,tipo,contenido FROM web_archivo WHERE id=%s AND propietario_id=%s', (aid, g.usuario['id']), una=True)
     if not archivo:
         abort(404)
@@ -315,54 +307,6 @@ def descargar(aid):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['Cache-Control'] = 'private, no-store'
     return response
-
-
-# El archivo vive en el almacén de objetos (Google Cloud Storage en la nube) y lo administra el servicio de documentos, que guarda en
-# MongoDB solo sus datos. La base del portal no guarda contenido. Referencia: el propio usuario; solo su dueño lo ve en esta pantalla.
-def _subir_al_almacen(nombre, tipo, contenido):
-    from integracion import llamar
-    ll = llamar('documentos', 'POST', 'documentos', {
-        'nombre': nombre, 'tipo_mime': tipo, 'contenido_base64': base64.b64encode(contenido).decode(),
-        'referencia': {'tipo': 'usuario', 'id': str(g.usuario['id'])}})
-    if ll.ok:
-        flash('Archivo guardado en el almacén de objetos.', 'ok')
-    else:
-        flash(f'No se guardó el archivo: el servicio de documentos respondió {ll.status or "sin conexión"} (traza {ll.traza[:8]}).', 'alto')
-
-
-def _mis_archivos():
-    from integracion import llamar
-    pagina, por = limites()
-    ruta = f"documentos?referencia_tipo=usuario&referencia_id={g.usuario['id']}&pagina={pagina}&por_pagina={por}"
-    ll = llamar('documentos', 'GET', ruta)
-    datos = ll.datos if ll.ok else {'datos': [], 'paginacion': {}}
-    if not ll.ok:
-        flash(f'El servicio de archivos no está disponible ({ll.status or "sin conexión"}, traza {ll.traza[:8]}). El resto del portal sigue funcionando.', 'alto')
-    p = datos.get('paginacion') or {}
-    g.paginacion = dict(pagina=p.get('pagina', 1), por_pagina=p.get('por_pagina', por), total=p.get('total', 0), paginas=max(1, p.get('paginas', 1)))
-    return [{'id': d['id'], 'nombre': d['nombre'], 'tipo': d['tipo_mime'], 'tamano': d['tamano_bytes'], 'creado_en': d['creado_en']}
-            for d in datos.get('datos', [])]
-
-
-def _bajar_del_almacen(aid):
-    from integracion import llamar
-    from procesos import _ir_a
-    if not (len(aid) == 24 and all(c in '0123456789abcdef' for c in aid)):
-        abort(404)
-    doc = llamar('documentos', 'GET', f'documentos/{aid}')
-    if doc.status in (403, 404):
-        abort(404)
-    if not doc.ok:
-        abort(502, 'El servicio de archivos no está disponible.')
-    # administrador y auditor ven todos los documentos en el servicio; esta pantalla es «mis archivos»
-    if doc.datos['referencia']['tipo'] != 'usuario' or doc.datos['subido_por'] != g.usuario['id']:
-        abort(404)
-    ll = llamar('documentos', 'GET', f'documentos/{aid}/enlace')
-    if not ll.ok:
-        abort(502, 'No se pudo preparar la descarga.')
-    respuesta = _ir_a(ll.datos['url_firmada'])           # en la nube redirige a la URL firmada de Cloud Storage
-    respuesta.headers['X-Content-Type-Options'] = 'nosniff'
-    return respuesta
 
 
 @web_bp.route('/roles', methods=['GET', 'POST'])
