@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contrato XML v1 · teoría de colas M/M/1 y M/M/c (servicio de capacidad) · generado por servicios/contratos/generar.py: no editar a mano -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:microhubs:v1" targetNamespace="urn:microhubs:v1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xs:include schemaLocation="comun.xsd"/>
+
+  <xs:complexType name="TColaCalculoNuevo">
+    <xs:sequence>
+      <xs:element name="microhub_id" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="llegadas_hora" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="servicio_hora" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="servidores" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="50"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="espera_objetivo_min" minOccurs="0" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="600"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TColaMicrohub">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="nombre" type="xs:string" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TColaFila">
+    <xs:sequence>
+      <xs:element name="servidores" type="xs:int"/>
+      <xs:element name="utilizacion_pct" type="xs:decimal"/>
+      <xs:element name="prob_esperar" type="xs:decimal"/>
+      <xs:element name="lq" type="xs:decimal" nillable="true"/>
+      <xs:element name="wq_min" type="xs:decimal" nillable="true"/>
+      <xs:element name="w_min" type="xs:decimal" nillable="true"/>
+      <xs:element name="cumple" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TColaCalculo">
+    <xs:sequence>
+      <xs:element name="microhub" type="tns:TColaMicrohub" nillable="true"/>
+      <xs:element name="modelo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="M/M/1"/>
+            <xs:enumeration value="M/M/c"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="llegadas_hora" type="xs:decimal"/>
+      <xs:element name="servicio_hora" type="xs:decimal"/>
+      <xs:element name="servidores" type="xs:int"/>
+      <xs:element name="carga_ofrecida" type="xs:decimal"/>
+      <xs:element name="utilizacion_pct" type="xs:decimal"/>
+      <xs:element name="estable" type="xs:boolean"/>
+      <xs:element name="p0" type="xs:decimal" nillable="true"/>
+      <xs:element name="prob_esperar" type="xs:decimal"/>
+      <xs:element name="lq" type="xs:decimal" nillable="true"/>
+      <xs:element name="l" type="xs:decimal" nillable="true"/>
+      <xs:element name="wq_min" type="xs:decimal" nillable="true"/>
+      <xs:element name="w_min" type="xs:decimal" nillable="true"/>
+      <xs:element name="espera_objetivo_min" type="xs:decimal"/>
+      <xs:element name="servidores_requeridos" type="xs:int" nillable="true"/>
+      <xs:element name="origen">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="indicado"/>
+            <xs:enumeration value="microhub"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="filas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="fila" type="tns:TColaFila" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="nota" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="cola_calculo_nuevo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TColaCalculoNuevo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cola_calculo">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="tns:TColaCalculo">
+          <xs:attribute name="version" type="xs:string" use="optional" fixed="1"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

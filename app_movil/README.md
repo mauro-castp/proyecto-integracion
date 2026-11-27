@@ -1,8 +1,13 @@
 # Microhubs · Android (parte B)
 
-Cliente Kotlin nativo, **exclusivamente JSON**, para la persona repartidora. Habla con los microservicios del contrato v1:
-auth (5101), usuarios (5102), pedidos (5104), entregas (5105), documentos (5107), seguimiento (5110, el rastro GPS),
-notificaciones (5124, los avisos) y sincronización (5125, lo hecho sin red).
+Cliente Kotlin nativo, **exclusivamente JSON**, para la persona **repartidora** y para el **cliente**. Habla con los microservicios del
+contrato v1: auth (5101), usuarios (5102), productos (5103), pedidos (5104), entregas (5105), documentos (5107), seguimiento (5110, el
+rastro GPS), notificaciones (5124, los avisos) y sincronización (5125, lo hecho sin red).
+
+**Cliente** (desde la entrega final, `Cliente.kt`): catálogo completo con **copia ligera** guardada para elegir sin red, carrito, pedido
+con `operacion_uuid` (sin red queda en «Sin enviar» y lo manda la sincronización como `pedido_nuevo`, sin duplicarse), mis pedidos con su
+seguimiento, cancelar mientras nadie lo prepara y **confirmar la recepción** (`POST /entregas/recepciones`). El repartidor tiene además
+**Navegar al domicilio** (abre la app de mapas con `geo:`).
 
 Incluye: inicio y cierre de sesión (tokens cifrados con Android Keystore y renovación automática), **perfil editable** (nombre,
 apellidos y teléfono), **mis entregas** con paginación, detalle de la entrega, escaneo del QR del pedido, **foto de evidencia a

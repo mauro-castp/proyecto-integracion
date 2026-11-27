@@ -39,6 +39,9 @@ class MainActivity : Activity() {
     private lateinit var cola: ColaEnArchivos
     private lateinit var sync: Sincronizador
     private lateinit var avisos: Avisos
+    private lateinit var tienda: Tienda
+    private val carrito = Carrito()
+    private var catalogo: Catalogo? = null
     private lateinit var ui: Estilo
     private lateinit var p: Pantalla
     private var atras: (() -> Unit)? = null
@@ -83,6 +86,7 @@ class MainActivity : Activity() {
         usuarios = Usuarios(api)
         sync = Sincronizador(api, cola)
         avisos = Avisos(api, cola)
+        tienda = Tienda(api, cola)
         ui = Estilo(this)
         loginScreen()
     }
@@ -201,7 +205,7 @@ class MainActivity : Activity() {
 
         val acceso = ui.tarjeta()
         acceso.addView(ui.texto("Iniciar sesión", 20f, ui.tinta, true))
-        acceso.addView(ui.texto("Entra con tu cuenta de repartidor.", 14f, ui.tintaSec))
+        acceso.addView(ui.texto("Entra con tu cuenta de repartidor o de cliente.", 14f, ui.tintaSec))
         acceso.addView(ui.etiqueta("Correo")); acceso.addView(email)
         acceso.addView(ui.etiqueta("Clave")); acceso.addView(password)
         acceso.addView(ui.espacio(8))
@@ -242,6 +246,12 @@ class MainActivity : Activity() {
         nueva("Hola, ${u.getString("nombre")}", rolLegible(u.getString("rol")))
         p.agregar(ui.titulo("¿Qué quieres hacer?"))
         if (role() in listOf("repartidor", "administrador")) p.agregar(opcion("📦", "Mis entregas", "Paradas asignadas a tu turno") { deliveries(1) })
+        if (role() == "cliente") {
+            p.agregar(opcion("🛒", "Catálogo", "Elige productos; también funciona sin red con el catálogo guardado") { catalogoScreen() })
+            val enCarrito = ui.chip("${carrito.piezas}", ui.primario).apply { visibility = if (carrito.vacio) View.GONE else View.VISIBLE }
+            p.agregar(opcion("🧺", "Mi carrito", "Revisa y haz tu pedido", enCarrito) { carritoScreen() })
+            p.agregar(opcion("🧾", "Mis pedidos", "Estatus de cada pedido y confirmar que lo recibiste") { pedidosScreen(1) })
+        }
         val noLeidos = ui.chip("", ui.peligro).apply { visibility = View.GONE }
         p.agregar(opcion("🔔", "Avisos", "Entregas asignadas y mensajes del equipo", noLeidos) { avisosScreen(1) })
         val mias = sync.mias()
@@ -254,7 +264,7 @@ class MainActivity : Activity() {
         p.conPie(ui.boton("Cerrar sesión", Tipo.PELIGRO) {
             if (busy) return@boton
             val pendientes = sync.porEnviar()
-            fun salir() = work({ try { api.logout() } finally { cola.borrarCopias() } }) { resetEvidence(); detalle = null; loginScreen() }
+            fun salir() = work({ try { api.logout() } finally { cola.borrarCopias() } }) { resetEvidence(); detalle = null; carrito.vaciar(); catalogo = null; loginScreen() }
             if (pendientes == 0) salir()
             else AlertDialog.Builder(this).setTitle("Hay $pendientes operación(es) sin enviar")
                 .setMessage("Se quedan guardadas en el teléfono y se enviarán cuando vuelvas a entrar con esta misma cuenta y haya red.")
@@ -340,6 +350,126 @@ class MainActivity : Activity() {
             if (redActual() == Red.SIN_RED) { error("Sin conexión: se enviará solo cuando vuelva la red."); return@boton }
             work({ sync.sincronizar() }) { i -> colaScreen(); p.aviso(resumen(i), if (i.conflictos + i.rechazadas > 0) Mensaje.ERROR else Mensaje.EXITO) }
         })
+    }
+
+    // ------------------------------------------------------------------------------------------ navegar (repartidor)
+    /** Abre la app de mapas instalada en el domicilio. Sin app de mapas no hay a dónde mandar: se avisa. */
+    private fun navegar(destino: String) {
+        try { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(destino))) }
+        catch (_: android.content.ActivityNotFoundException) { error("No hay una app de mapas en el teléfono para navegar.") }
+    }
+
+    // ------------------------------------------------------------------------------------------ cliente
+    private fun catalogoScreen(categoria: String? = null, texto: String = "") {
+        val actual = catalogo
+        if (actual == null) { work({ tienda.catalogo() }) { catalogo = it; catalogoScreen(categoria, texto) }; return }
+        nueva("Catálogo", "${actual.productos.size} productos" + (categoria?.let { " · $it" } ?: "")) { home() }
+        actual.guardadoEn?.let { p.aviso("Sin conexión: catálogo guardado a las ${hora(it)}. Puedes armar tu pedido; se enviará al volver la red.", Mensaje.INFO) }
+        val buscar = ui.campo("Buscar producto", texto)
+        p.agregar(ui.fila(ui.flexible(buscar), ui.botonCompacto("Buscar", Tipo.SECUNDARIO) { catalogoScreen(categoria, buscar.text.toString()) }))
+        val cats = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        cats.addView(ui.boton(if (categoria == null) "• Todas las categorías" else "Todas las categorías", Tipo.TEXTO) { catalogoScreen(null, buscar.text.toString()) })
+        actual.categorias.forEach { c -> cats.addView(ui.boton(if (c == categoria) "• $c" else c, Tipo.TEXTO) { catalogoScreen(c, buscar.text.toString()) }) }
+        p.agregar(cats)
+        val lista = actual.buscar(texto, categoria)
+        if (lista.isEmpty()) p.agregar(ui.texto("No hay productos con esa búsqueda.", 14f, ui.tintaSec))
+        lista.take(60).forEach { prod ->
+            val tarjeta = ui.tarjeta()
+            val cuenta = ui.texto("${carrito.cantidad(prod.id)}", 18f, ui.tinta, true).apply { gravity = Gravity.CENTER; minWidth = ui.dp(36) }
+            val textos = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+                addView(ui.texto(prod.nombre, 16f, ui.tinta, true)); addView(ui.texto(listOf(prod.presentacion, prod.unidad).filter { it.isNotBlank() }.joinToString(" · "), 13f, ui.tintaSec))
+                addView(ui.texto("$%.2f".format(prod.precio), 15f, ui.tinta))
+            }
+            val menos = ui.botonCompacto("−", Tipo.SECUNDARIO) { carrito.quitar(prod.id); cuenta.text = "${carrito.cantidad(prod.id)}" }
+            val mas = ui.botonCompacto("+", Tipo.SECUNDARIO) { carrito.agregar(prod.id); cuenta.text = "${carrito.cantidad(prod.id)}" }
+            listOf(menos, mas).forEach { it.layoutParams = LinearLayout.LayoutParams(ui.dp(48), ui.dp(48)) }
+            tarjeta.addView(ui.fila(textos, menos, cuenta, mas))
+            p.agregar(tarjeta)
+        }
+        if (lista.size > 60) p.agregar(ui.texto("Se muestran 60 de ${lista.size}; usa la búsqueda o una categoría.", 13f, ui.tintaSec))
+        p.conPie(ui.boton("Ver carrito", Tipo.PRIMARIO) { carritoScreen() })
+    }
+
+    private fun carritoScreen() {
+        val c = catalogo
+        nueva("Mi carrito", "${carrito.piezas} pieza(s)") { home() }
+        if (carrito.vacio || c == null) {
+            p.agregar(ui.tarjeta().apply { addView(ui.texto("Tu carrito está vacío", 16f, ui.tinta, true)); addView(ui.texto("Agrega productos desde el catálogo.", 14f, ui.tintaSec)) })
+            p.conPie(ui.boton("Ir al catálogo", Tipo.PRIMARIO) { catalogoScreen() })
+            return
+        }
+        carrito.items().forEach { (id, n) ->
+            val prod = c.productos.firstOrNull { it.id == id } ?: return@forEach
+            val tarjeta = ui.tarjeta()
+            tarjeta.addView(ui.fila(ui.flexible(ui.texto("$n × ${prod.nombre}", 15f, ui.tinta, true)), ui.texto("$%.2f".format(prod.precio * n), 15f, ui.tinta)))
+            tarjeta.addView(ui.fila(ui.botonCompacto("Quitar uno", Tipo.TEXTO) { carrito.quitar(id); carritoScreen() }, ui.botonCompacto("Agregar uno", Tipo.TEXTO) { carrito.agregar(id); carritoScreen() }))
+            p.agregar(tarjeta)
+        }
+        p.agregar(ui.tarjeta().apply {
+            addView(ui.fila(ui.flexible(ui.texto("Total estimado", 14f, ui.tintaSec)), ui.texto("$%.2f".format(carrito.estimado(c)), 22f, ui.tinta, true)))
+            addView(ui.texto("El total final (precio de tu zona y costo de envío) lo calcula el servidor al recibir el pedido.", 13f, ui.tintaSec))
+        })
+        val sinRed = redActual() == Red.SIN_RED
+        p.conPie(ui.boton(if (sinRed) "Guardar pedido (sin red)" else "Hacer pedido", Tipo.PRIMARIO) {
+            if (busy) return@boton
+            work({ tienda.pedir(carrito, conRed = !sinRed) }) { r ->
+                if (r.enCola) { home(); p.aviso("Sin conexión: tu pedido quedó guardado y se enviará solo al volver la red (lo ves en «Sin enviar»).", Mensaje.INFO) }
+                else { pedidoScreen(r.id!!); p.aviso("Pedido ${r.folio} ${if (r.duplicado) "ya estaba registrado" else "recibido"} · total $%.2f".format(r.total ?: 0.0), Mensaje.EXITO) }
+            }
+        })
+    }
+
+    private fun pedidosScreen(pagina: Int) {
+        work({ tienda.misPedidos(pagina) }) { r ->
+            nueva("Mis pedidos", "${r.total} pedido(s) · página $pagina de ${maxOf(1, r.paginas)}") { home() }
+            r.guardadaEn?.let { p.aviso("Sin conexión: lista guardada a las ${hora(it)}.", Mensaje.INFO) }
+            if (r.items.isEmpty()) p.agregar(ui.tarjeta().apply { addView(ui.texto("Todavía no tienes pedidos", 16f, ui.tinta, true)) })
+            r.items.forEach { ped ->
+                val (_, color) = ui.estado(ped.estado)
+                val tarjeta = ui.tarjeta(accion { pedidoScreen(ped.id) })
+                val textos = LinearLayout(this).apply {
+                    orientation = LinearLayout.VERTICAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+                    addView(ui.texto(ped.folio, 16f, ui.tinta, true)); addView(ui.texto(fechaCorta(ped.creadoEn), 13f, ui.tintaSec))
+                }
+                tarjeta.addView(ui.fila(textos, ui.chip(Tienda.estadoLegible(ped.estado), color)))
+                tarjeta.addView(ui.texto("$%.2f".format(ped.total), 18f, ui.tinta, true))
+                p.agregar(tarjeta)
+            }
+            paginacion(r.pagina, r.paginas) { pedidosScreen(it) }
+        }
+    }
+
+    private fun pedidoScreen(id: Int) {
+        work({ tienda.detalle(id) }) { d ->
+            nueva("Pedido", d.folio) { pedidosScreen(1) }
+            d.guardadoEn?.let { p.aviso("Sin conexión: datos guardados a las ${hora(it)}.", Mensaje.INFO) }
+            val (_, color) = ui.estado(d.estado)
+            p.agregar(ui.tarjeta().apply {
+                addView(ui.fila(ui.flexible(ui.texto("Estatus", 14f, ui.tintaSec)), ui.chip(Tienda.estadoLegible(d.estado), color)))
+                addView(ui.espacio(8))
+                d.lineas.forEach { l -> addView(ui.fila(ui.flexible(ui.texto("${l.cantidad} × ${l.nombre}", 14f, ui.tinta)), ui.texto("$%.2f".format(l.importe), 14f, ui.tinta))) }
+                addView(ui.espacio(6))
+                addView(ui.fila(ui.flexible(ui.texto("Envío", 13f, ui.tintaSec)), ui.texto("$%.2f".format(d.costoEnvio), 13f, ui.tintaSec)))
+                addView(ui.fila(ui.flexible(ui.texto("Total", 15f, ui.tinta, true)), ui.texto("$%.2f".format(d.total), 20f, ui.tinta, true)))
+            })
+            if (d.eventos.isNotEmpty()) {
+                p.agregar(ui.titulo("Seguimiento"))
+                p.agregar(ui.tarjeta().apply { d.eventos.forEach { e ->
+                    addView(ui.texto("${fechaCorta(e.fecha)} · ${Tienda.estadoLegible(e.estado)}" + (e.motivo?.let { " · $it" } ?: ""), 13f, ui.tintaSec)) } })
+            }
+            when {
+                d.confirmable -> p.conPie(
+                    ui.boton("Sí, lo recibí", Tipo.PRIMARIO) { if (!busy) work({ tienda.confirmarRecepcion(d.id, true) }) { p.aviso("Gracias: confirmaste que recibiste tu pedido.", Mensaje.EXITO) } },
+                    ui.boton("No estoy conforme", Tipo.TEXTO) { if (!busy) work({ tienda.confirmarRecepcion(d.id, false) }) { p.aviso("Quedó registrado que no estás conforme; el microhub lo revisará.", Mensaje.INFO) } })
+                d.cancelable -> p.conPie(ui.boton("Cancelar pedido", Tipo.PELIGRO) {
+                    val motivo = ui.campo("Motivo")
+                    AlertDialog.Builder(this).setTitle("¿Cancelar ${d.folio}?").setView(motivo)
+                        .setPositiveButton("Cancelar pedido") { _, _ -> work({ tienda.cancelar(d.id, motivo.text.toString()) }) { pedidoScreen(d.id) } }
+                        .setNegativeButton("Volver", null).show()
+                })
+            }
+        }
     }
 
     // ------------------------------------------------------------------------------------------ perfil
@@ -454,6 +584,7 @@ class MainActivity : Activity() {
             if (d.telefono.isNotBlank()) addView(ui.texto("Tel. ${d.telefono}", 14f, ui.tintaSec))
         }
         cliente.addView(ui.fila(datos, ui.chip(rotulo, colorEstado)))
+        d.destinoMapa?.let { destino -> cliente.addView(ui.botonCompacto("🧭 Navegar al domicilio", Tipo.SECUNDARIO) { navegar(destino) }) }
         cliente.addView(ui.espacio(10))
         cliente.addView(ui.fila(ui.flexible(ui.texto("Total a cobrar", 14f, ui.tintaSec)), ui.texto("$%.2f".format(d.total), 24f, ui.tinta, true).apply {
             layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT) }))

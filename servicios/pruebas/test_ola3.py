@@ -1079,10 +1079,14 @@ class T6Sincronizacion(Base):
 
     def test_permisos_de_la_sincronizacion(self):
         cuerpo = {"lote_uuid": str(uuid.uuid4()), "dispositivo": "android-1", "cliente": "android", "operaciones": [self.op("notificacion_leida", {"id": 1})]}
-        for quien in (self.cli, self.plan, self.aud):
+        for quien in (self.plan, self.aud):
             self.error(quien, SY, "POST", "sincronizacion/lotes", cuerpo, 403, "PROHIBIDO")
-        for quien in (self.cli, self.plan):
-            self.error(quien, SY, "GET", "sincronizacion/lotes", None, 403)
+        self.error(self.plan, SY, "GET", "sincronizacion/lotes", None, 403)
+        # Desde la entrega final el cliente usa la sincronización para los pedidos hechos sin red (16_apps_cliente.sql); cada operación
+        # la sigue validando el servicio dueño con su JWT, así que lo que no le toca queda rechazado, no aplicado.
+        r, d = self.cli.llamar(SY, "POST", "sincronizacion/lotes", {**cuerpo, "lote_uuid": str(uuid.uuid4())})
+        self.assertIn(r.status_code, (200, 201))
+        self.assertNotEqual(d["operaciones"][0]["estado"], "aplicada")
         Cliente(self, "json").llamar(SY, "POST", "sincronizacion/lotes", cuerpo, token=False, estado=401)
 
 

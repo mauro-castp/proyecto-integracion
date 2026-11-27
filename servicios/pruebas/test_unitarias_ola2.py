@@ -157,6 +157,59 @@ def zona(i, lat, lng, hogares):
     return {"id": i, "nombre": f"Zona {i}", "lat": lat, "lng": lng, "poblacion": int(hogares * 3.6), "hogares": hogares}
 
 
+class Colas(unittest.TestCase):
+    """M/M/1 y M/M/c con valores que se comprueban a mano con las fórmulas cerradas."""
+    def setUp(self):
+        from comun import colas
+        self.mm = colas
+
+    def test_mm1_coincide_con_las_formulas_cerradas(self):
+        r = self.mm.mmc(8, 10, 1)                   # ρ = 0.8: Lq = ρ²/(1-ρ) = 3.2, Wq = ρ/(μ-λ) = 0.4 h, W = 1/(μ-λ) = 0.5 h
+        self.assertEqual(r["modelo"], "M/M/1")
+        self.assertAlmostEqual(r["p0"], 0.2)
+        self.assertAlmostEqual(r["lq"], 3.2)
+        self.assertAlmostEqual(r["wq_min"], 24.0)
+        self.assertAlmostEqual(r["w_min"], 30.0)
+        self.assertAlmostEqual(r["l"], 4.0)          # Little: L = λW
+
+    def test_mmc_erlang_c_calculado_a_mano(self):
+        r = self.mm.mmc(10, 4, 3)                   # a = 2.5, ρ = 0.833: P0 = 1/(1 + 2.5 + 3.125 + 15.625) = 0.0449, Lq = 3.511
+        self.assertEqual(r["modelo"], "M/M/c")
+        self.assertAlmostEqual(r["p0"], 0.044944, places=5)
+        self.assertAlmostEqual(r["lq"], 3.5112, places=3)
+        self.assertAlmostEqual(r["wq_min"], 21.067, places=2)
+        self.assertAlmostEqual(r["prob_esperar"], 0.702247, places=5)
+
+    def test_con_un_servidor_mmc_es_mm1(self):
+        a, b = self.mm.mmc(6, 9, 1), self.mm.mmc(6, 9, 1)
+        self.assertAlmostEqual(a["prob_esperar"], 6 / 9, places=5)  # en M/M/1 la probabilidad de esperar es ρ
+        self.assertEqual(a, b)
+
+    def test_saturada_no_es_estable_y_no_inventa_esperas(self):
+        r = self.mm.mmc(12, 10, 1)
+        self.assertFalse(r["estable"])
+        self.assertIsNone(r["wq_min"])
+        self.assertEqual(r["prob_esperar"], 1.0)
+
+    def test_mas_operadores_menos_espera_y_minimo_que_cumple(self):
+        filas = self.mm.tabla(10, 4, 5)
+        esperas = [f["wq_min"] for f in filas]
+        self.assertEqual(esperas, sorted(esperas, reverse=True))
+        self.assertEqual(self.mm.servidores_minimos(10, 4, 5), 4)  # con 3 espera 21 min; con 4, 3.2 min
+        self.assertTrue(next(f for f in filas if f["servidores"] == 4)["cumple"])
+
+    def test_muchos_servidores_sin_desbordar(self):
+        r = self.mm.mmc(400, 10, 50)                # 50! no se calcula directo
+        self.assertTrue(r["estable"])
+        self.assertGreaterEqual(r["wq_min"], 0)
+
+    def test_tasas_invalidas(self):
+        with self.assertRaises(ValueError):
+            self.mm.mmc(0, 10, 1)
+        with self.assertRaises(ValueError):
+            self.mm.mmc(5, 10, 0)
+
+
 class Cobertura(unittest.TestCase):
     ZONAS = [zona(1, 25.6700, -100.3100, 1000), zona(2, 25.6800, -100.3100, 800), zona(3, 25.7500, -100.3100, 500)]   # 1 y 2 cerca; 3 a 8 km
     HUBS = [hub(1, 25.6700, -100.3100)]

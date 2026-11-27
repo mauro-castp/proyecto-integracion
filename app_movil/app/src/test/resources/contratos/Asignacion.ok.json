@@ -1,0 +1,17 @@
+{
+  "asignadas": 2,
+  "entregas": [
+    {
+      "entrega_id": 412,
+      "pedido_id": 901,
+      "repartidor_id": 7,
+      "orden_parada": 1
+    },
+    {
+      "entrega_id": 413,
+      "pedido_id": 902,
+      "repartidor_id": 7,
+      "orden_parada": 2
+    }
+  ]
+}

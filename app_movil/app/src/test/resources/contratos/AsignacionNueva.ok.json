@@ -1,0 +1,15 @@
+{
+  "paradas": [
+    {
+      "pedido_id": 901,
+      "repartidor_id": 7,
+      "orden_parada": 1,
+      "distancia_km": 1.2
+    },
+    {
+      "pedido_id": 902,
+      "repartidor_id": 7,
+      "orden_parada": 2
+    }
+  ]
+}

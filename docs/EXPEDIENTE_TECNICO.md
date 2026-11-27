@@ -102,9 +102,9 @@ línea recta × 1.3), separación física de la base por servicio y alta disponi
 
 | Perfil | Necesidad | Cliente que usa |
 |---|---|---|
-| Cliente | Comprar y seguir su pedido | Web |
-| Operador de microhub | Preparar, mantener el inventario, reponer, despachar | Web |
-| Repartidor | Entregar con evidencia, sin conexión si hace falta | Android |
+| Cliente | Comprar y seguir su pedido, confirmar que lo recibió | Web y Android (también sin red) |
+| Operador de microhub | Preparar, mantener el inventario, reponer, despachar, manifiesto | Web y escritorio |
+| Repartidor | Entregar con evidencia, navegar al domicilio, sin conexión si hace falta | Android |
 | Planeador | Decidir la viabilidad, planear rutas y reportes | Web y escritorio |
 | Administrador | Usuarios, catálogos, aprobaciones, monitoreo | Web |
 | Auditor | Bitácora y trazabilidad, solo lectura | Web y escritorio |
@@ -245,7 +245,7 @@ Scripts Lua para liberar y extender candados y revocar sesiones: `bloque_c/redis
 
 # 15. Microservicios
 
-Son 26 servicios, en los puertos 5101 a 5126, con **202 operaciones** de negocio. El inventario por método y ruta, con el caso de
+Son 26 servicios, en los puertos 5101 a 5126, con **223 operaciones** de negocio. El inventario por método y ruta, con el caso de
 evidencia de cada operación, está en `servicios/INVENTARIO_ENDPOINTS.md`.
 
 | Grupo | Servicios |
@@ -260,7 +260,10 @@ Operaciones nuevas de la entrega final:
 - `POST entregas/asignaciones`;
 - `rutas/planes/{id}/confirmar` con `despachar`;
 - `GET reportes/exportaciones/{id}/enlace`;
-- el tipo de referencia `orden_compra` en documentos.
+- el tipo de referencia `orden_compra` en documentos;
+- `POST capacidad/colas` (M/M/1 y M/M/c), `POST entregas/recepciones` (el cliente confirma la recepción) y el tipo `pedido_nuevo` en
+  sincronización (pedidos del cliente hechos sin red);
+- la forma XML (contrato `operacion.xsd`) del cambio de estado de un pedido y de la asignación de paradas, para el escritorio.
 
 Detalle en `servicios/README.md`.
 
@@ -314,6 +317,9 @@ hasta 8 paradas: 171 ms) o con vecino más cercano + 2-opt. 2-opt queda entre 1 
 a 40 % más corta que el orden de llegada.
 
 **Segundo algoritmo: simulación Monte Carlo reproducible** (~2.7 µs por réplica-día).
+
+**Tercer algoritmo: teoría de colas M/M/1 y M/M/c (Erlang C)** para la fila de preparación: espera en fila, probabilidad de esperar y
+operadores mínimos para una espera objetivo (~2.5 µs por cálculo). Con 3 operadores al 83 % un pedido espera 21 min; con 4, 3.2 min.
 
 Los 11 elementos que piden los lineamientos (problema, entradas, salidas, variables, restricciones, complejidad, pseudocódigo, casos de
 prueba, métricas, limitaciones y tiempo) están en **`docs/ALGORITMOS.md`**. El benchmark está en `evidencias/algoritmos/benchmark.md`.
@@ -504,12 +510,15 @@ Está en `docs/MANUAL_USUARIO.md`: qué hace cada perfil paso a paso y los mensa
 - Una VM en una zona: no hay alta disponibilidad.
 - Redis sin persistencia: al reiniciarse cierra todas las sesiones.
 - Los **reportes no tienen un plazo total**: con saturación tardan en fallar (I-20).
-- El inicio de sesión de las apps instaladas contra la nube falta ensayarlo en un teléfono y una PC.
+- Las apps se probaron contra la nube desde un emulador Android y desde Windows (27-nov). El ensayo **sin red en un teléfono físico** no se
+  hizo: el equipo no tiene un Android.
+- **Proveedor** no es un perfil con cuenta: los proveedores son un catálogo que administran el administrador y el operador (órdenes de
+  compra, recepción). Darles acceso requeriría su propio portal y permisos.
 - La usabilidad no se ha medido con usuarios reales.
 
 # 31. Trabajo futuro
 
-1. Generar el APK release firmado y el ZIP de escritorio, y probarlos con inicio de sesión contra la nube.
+1. Firmar una APK release (hoy se publica la debug, ya probada contra la nube desde un emulador) y probarla en un teléfono físico sin red.
 2. Un esquema o una instancia por servicio, y migrar a Cloud SQL, Memorystore y Atlas.
 3. Un plazo total y un cortacircuitos en `comun/clientes.py`.
 4. Varios workers o réplicas de pedidos, productos y auth detrás de Nginx, o GKE con autoescalado.

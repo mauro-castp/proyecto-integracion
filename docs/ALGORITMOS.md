@@ -1,12 +1,14 @@
 # Algoritmos complejos de la plataforma
 
-El proyecto tiene dos algoritmos principales. Cada uno se documenta con los 11 puntos que piden los lineamientos: problema,
+El proyecto tiene tres algoritmos documentados a fondo. Cada uno se documenta con los 11 puntos que piden los lineamientos: problema,
 entradas, salidas, variables, restricciones, complejidad, pseudocódigo, casos de prueba, métricas, limitaciones y tiempo de ejecución.
 
 1. **Planeación de rutas de reparto** (servicio `rutas`, :5118). Agrupa los pedidos por zona, balancea la carga entre los repartidores
    y ordena las paradas con TSP exacto o con vecino más cercano + 2-opt. Es el principal.
 2. **Simulación Monte Carlo de la operación** (servicio `simulacion`, :5121). Estima la utilidad y el riesgo de un microhub cuando
    varían la demanda y el personal.
+3. **Teoría de colas M/M/1 y M/M/c** (servicio `capacidad`, :5117, `POST /capacidad/colas`). Cuánto espera un pedido en la fila de
+   preparación y cuántos operadores hacen falta para una espera objetivo. Se agregó al cerrar la entrega final.
 
 Además hay otros algoritmos de apoyo que no se documentan aquí con el mismo detalle: clasificación ABC y recomendación de surtido con
 restricciones de espacio y presupuesto (`surtido`), proyección de demanda con banda de error (`demanda`), cuello de botella de
@@ -356,3 +358,111 @@ de cada tres días.
 
 Unos **2.6–2.9 µs por réplica-día**, lineal en réplicas × días, como predice el análisis. Corre en segundo plano, así que no bloquea la
 petición: en la prueba de carga, `POST /simulacion/ejecuciones` responde 202 con una mediana de 160–230 ms.
+
+---
+
+## 3. Teoría de colas M/M/1 y M/M/c (Erlang C)
+
+Código: `servicios/comun/colas.py` (funciones puras) y `POST /api/v1/capacidad/colas`. En el escritorio: Capacidad → «Colas M/M/c».
+
+### 3.1 Problema que resuelve
+
+La capacidad (sección de apoyo del servicio `capacidad`) dice cuántos pedidos al día *caben*, y la utilización dice qué tan lleno está el
+microhub. Pero un microhub al 85 % no «tiene 15 % libre»: los pedidos llegan al azar y se forman en fila. La pregunta del operador y del
+planeador es **cuánto espera un pedido antes de que alguien lo prepare** y **cuántos operadores hacen falta** para que esa espera no pase
+de un objetivo. Es la justificación cuantitativa del umbral `umbral_utilizacion_riesgo` (85 %) que antes solo se citaba.
+
+### 3.2 Entradas
+
+| Variable | Significado | De dónde sale con `microhub_id` |
+|---|---|---|
+| λ `llegadas_hora` | pedidos por hora que llegan | carga observada de 7 días ÷ `horas_turno` × `cap_factor_pico` (hora pico) |
+| μ `servicio_hora` | pedidos que prepara **un** operador por hora | 60 ÷ minutos por pedido (picking + empaque + despacho) |
+| c `servidores` | operadores | `capacidad_recurso.operadores` |
+| `espera_objetivo_min` | espera en fila aceptable | 5 min si no se indica |
+
+Lo que se indique en el cuerpo reemplaza lo que se toma del microhub; sin `microhub_id` hay que indicar λ, μ y c.
+
+### 3.3 Salidas
+
+Modelo (M/M/1 o M/M/c), carga ofrecida a = λ/μ, utilización ρ, estable (ρ < 1), P0, probabilidad de esperar (Erlang C), Lq (pedidos en fila),
+L (en el sistema), Wq y W en minutos, el **mínimo de operadores** que cumple el objetivo, una tabla con más o menos operadores y una nota
+en palabras (por ejemplo: «Con 3 operadores la espera promedio en fila es de 21.1 min… Para esperar 5 min o menos se necesitan 4»).
+
+### 3.4 Variables y supuestos
+
+- Llegadas de Poisson (tiempos entre pedidos exponenciales) y tiempos de preparación exponenciales: las «M» de M/M/c.
+- Una sola fila, se atiende en orden de llegada, c operadores iguales e independientes, sin límite de fila ni abandono.
+- Régimen estacionario: los resultados son promedios a largo plazo de la hora pico, no lo que pasa en los primeros minutos.
+
+### 3.5 Restricciones
+
+- λ > 0, μ > 0, 1 ≤ c ≤ 50, 0 ≤ objetivo ≤ 600 min (422 si no).
+- Si ρ ≥ 1 la fila no es estable: no se inventan esperas (Lq, Wq y W van vacías) y la probabilidad de esperar es 1.
+- El servicio no guarda nada; permiso `capacidad.ver`, y el operador o supervisor solo su microhub (403).
+
+### 3.6 Pseudocódigo
+
+```
+mmc(λ, μ, c):
+    a ← λ/μ ;  ρ ← a/c
+    si ρ ≥ 1: regresar «no estable»
+    término ← 1 ; suma ← 1                       # n = 0
+    para n = 1 … c−1: término ← término·a/n ; suma ← suma + término     # aⁿ/n! sin factoriales grandes
+    cola ← término·a/c / (1−ρ)                   # aᶜ/(c!(1−ρ))
+    P0 ← 1/(suma + cola) ;  C ← cola·P0          # Erlang C
+    Lq ← C·ρ/(1−ρ) ;  Wq ← Lq/λ ;  W ← Wq + 1/μ ;  L ← λ·W   (Little)
+
+servidores_minimos(λ, μ, objetivo):
+    para c desde ⌊λ/μ⌋+1 (el primero estable) hasta 50:
+        si mmc(λ, μ, c).Wq ≤ objetivo: regresar c
+    regresar «ninguno»
+```
+
+Con c = 1 da exactamente M/M/1: P0 = 1−ρ, C = ρ, Lq = ρ²/(1−ρ), Wq = ρ/(μ−λ), W = 1/(μ−λ).
+
+### 3.7 Complejidad
+
+`mmc` es O(c) en tiempo y O(1) en memoria. `servidores_minimos` es O(c²) en el peor caso (c ≤ 50: a lo más 1 275 multiplicaciones). La
+tabla (6 filas por omisión) es O(filas · c).
+
+### 3.8 Casos de prueba
+
+En `servicios/pruebas/test_unitarias_ola2.py` (clase `Colas`, 7 casos) y `test_ola2.py` (`test_colas_mm1_y_mmc`, contra el servicio):
+
+| Caso | Esperado (calculado a mano) | Resultado |
+|---|---|---|
+| M/M/1, λ = 8, μ = 10 | P0 = 0.2, Lq = 3.2, Wq = 24 min, W = 30 min, L = 4 | igual |
+| M/M/3, λ = 10, μ = 4 (calculado a mano con las fórmulas) | P0 = 0.0449, Lq = 3.511, Wq = 21.07 min, C = 0.702 | igual |
+| M/M/c con c = 1 | probabilidad de esperar = ρ | igual |
+| λ = 12, μ = 10, c = 1 | no estable, sin esperas inventadas | igual |
+| Más operadores | la espera nunca sube; mínimo con objetivo 5 min = 4 | igual |
+| c = 50 | sin desbordamiento (no calcula 50!) | igual |
+| Tasas en cero o c = 0 | error de validación | igual |
+| Servicio: con `microhub_id`, otro microhub (403), cliente (403), faltan datos (422), XML | según el contrato | igual |
+
+### 3.9 Métricas
+
+Wq y W (minutos), Lq y L (pedidos), probabilidad de esperar, utilización ρ y operadores mínimos para el objetivo. Ejemplo del contrato:
+con λ = 10, μ = 4 y 3 operadores (ρ = 83 %) un pedido espera **21.1 min** en fila; con 4 (ρ = 62.5 %), **3.2 min**: un operador más
+reduce la espera 85 %. Es la forma no lineal que justifica el umbral de 85 %.
+
+### 3.10 Limitaciones
+
+- Supone llegadas y tiempos **exponenciales**. La preparación real tiene menos variación (M/G/c o M/D/c darían esperas algo menores);
+  M/M/c es una cota conservadora.
+- Supone que los operadores atienden una sola fila y que nadie abandona; no modela prioridades ni pedidos que llegan en grupo.
+- λ viene de la hora pico estimada (promedio × `cap_factor_pico`), no de llegadas medidas minuto a minuto.
+- Solo la preparación: el reparto se modela aparte (capacidad por viajes y simulación Monte Carlo).
+
+### 3.11 Tiempo de ejecución (Python 3.13, 1 núcleo, mediana de 5 × 2 000 llamadas)
+
+| Cálculo | Tiempo |
+|---|---|
+| `mmc` con c = 1, 3 y 10 | 2.5–2.8 µs |
+| `mmc` con c = 50 | 4.4 µs |
+| `servidores_minimos` (λ = 150, μ = 4 → 40 operadores) | 11.7 µs |
+| Tabla de 6 filas | 20 µs |
+
+Lo que domina la petición es leer la carga de 7 días del servicio de pedidos, no el cálculo.
+

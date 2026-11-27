@@ -534,6 +534,29 @@ class T4Capacidad(Base):
         self.assertEqual(self.http(self.adm, "capacidad", "GET", "capacidad/cargas"), 400)
         self.ambos_formatos("capacidad", f"capacidad/cargas?microhub_id={self.HUB1}")
 
+    def test_colas_mm1_y_mmc(self):
+        _, r = self.plan.llamar("capacidad", "POST", "capacidad/colas", {"llegadas_hora": 10, "servicio_hora": 4, "servidores": 3,
+                                                                         "espera_objetivo_min": 5}, estado=200)
+        mismas_llaves(self, r, ejemplo("ColaCalculo.ok"), opcionales=("microhub",))
+        self.assertEqual((r["modelo"], r["servidores_requeridos"], r["origen"]), ("M/M/c", 4, "indicado"))
+        self.assertAlmostEqual(r["wq_min"], 21.067, places=2)
+        _, uno = self.plan.llamar("capacidad", "POST", "capacidad/colas", {"llegadas_hora": 8, "servicio_hora": 10, "servidores": 1}, estado=200)
+        self.assertEqual(uno["modelo"], "M/M/1")
+        self.assertAlmostEqual(uno["wq_min"], 24.0)
+        _, hub = self.op1.llamar("capacidad", "POST", "capacidad/colas", {"microhub_id": self.HUB1, "llegadas_hora": 12}, estado=200)
+        self.assertEqual((hub["origen"], hub["microhub"]["id"]), ("microhub", self.HUB1))
+        self.assertGreater(hub["servicio_hora"], 0)
+        _, lleno = self.plan.llamar("capacidad", "POST", "capacidad/colas", {"llegadas_hora": 30, "servicio_hora": 4, "servidores": 3}, estado=200)
+        self.assertFalse(lleno["estable"])
+        self.assertIsNone(lleno["wq_min"])
+        self.assertGreaterEqual(lleno["servidores_requeridos"], 8)
+        self.assertEqual(self.http(self.plan, "capacidad", "POST", "capacidad/colas", {"llegadas_hora": 5}), 422)
+        self.assertEqual(self.http(self.op2, "capacidad", "POST", "capacidad/colas", {"microhub_id": self.HUB1}), 403)
+        self.assertEqual(self.http(self.cli, "capacidad", "POST", "capacidad/colas", {"llegadas_hora": 5, "servicio_hora": 4, "servidores": 2}), 403)
+        _, (raiz, x) = self.plan_xml.llamar("capacidad", "POST", "capacidad/colas", xml("cola_calculo_nuevo", {"llegadas_hora": 10, "servicio_hora": 4,
+                                                                                                           "servidores": 3}), estado=200)
+        self.assertEqual(raiz, "cola_calculo")
+
     def test_supuestos_documentados(self):
         _, s = self.adm.llamar("capacidad", "GET", "capacidad/supuestos", estado=200)
         mismas_llaves(self, s, ejemplo("SupuestosCapacidad.ok"))
