@@ -2,7 +2,7 @@
 
 Fuente: servicios/*/app.py y docker-compose.integrado.yml.
 
-218 pares método HTTP y ruta de negocio. Excluye salud, OpenAPI, Swagger, HEAD y OPTIONS.
+221 pares método HTTP y ruta de negocio. Excluye salud, OpenAPI, Swagger, HEAD y OPTIONS.
 
 La última columna indica los casos de petición y respuesta que ejercitan cada operación: la corrida principal (`evidencias/ola4/`) y la complementaria (`evidencias/ola4/complementarias/`). Este archivo lo escribe `servicios/pruebas/generar_inventario.py` a partir del código y de esos casos.
 
@@ -85,7 +85,8 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | entregas | GET | `/api/v1/entregas` | ENT-11 |
 | entregas | GET | `/api/v1/entregas/<int:eid>` | ENT-02, ENT-03, ENT-08 |
 | entregas | POST | `/api/v1/entregas` | ENT-A1, ENT-A2, ENT-A3, F1-13, F3-02 |
-| entregas | POST | `/api/v1/entregas/<int:eid>/resultado` | ENT-04, ENT-05, ENT-06, ENT-07, ENT-09 y 2 más |
+| entregas | POST | `/api/v1/entregas/asignaciones` | ENT-B1, ENT-B2, ENT-B3 |
+| entregas | POST | `/api/v1/entregas/<int:eid>/resultado` | ENT-04, ENT-05, ENT-06, ENT-07, ENT-09 y 4 más |
 | inventario | GET | `/api/v1/inventario` | INV-01, INV-02, INV-03, INV-04, INV-05 |
 | inventario | GET | `/api/v1/inventario/<int:mid>/<int:pid>` | INV-06 |
 | inventario | PATCH | `/api/v1/inventario/<int:mid>/<int:pid>/minimo` | INV-18, INV-19, F2-02 |
@@ -176,6 +177,8 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | reportes | GET | `/api/v1/reportes/<clave>` | REP-03, REP-04, REP-08 |
 | reportes | GET | `/api/v1/reportes/<clave>/grafica` | REP-05, F1-20 |
 | reportes | GET | `/api/v1/reportes/<clave>/exportar` | REP-06, F2-10, F3-08 |
+| reportes | GET | `/api/v1/reportes/exportaciones/<int:eid>/enlace` | REP-A1, REP-A2 |
+| reportes | GET | `/api/v1/reportes/descarga` | REP-A3, REP-A4 |
 | reportes | GET | `/api/v1/reportes/exportaciones` | REP-07 |
 | reportes | GET | `/api/v1/reportes/indicadores` | REP-02 |
 | rutas | POST | `/api/v1/rutas/planes` | RUT-02, RUT-04, RUT-05, RUT-14, RUT-15 y 4 más |

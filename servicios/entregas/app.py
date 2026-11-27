@@ -6,6 +6,7 @@ Servicio de entregas · puerto 5105 · contrato v1
   GET  /api/v1/entregas                     entregas en el ámbito del perfil (estado_pedido, abiertas, repartidor_id)
   GET  /api/v1/entregas/{id}                detalle con cliente, domicilio y líneas (RN26)
   POST /api/v1/entregas/{id}/resultado      registra y cierra la entrega (solo JSON, idempotente)
+  POST /api/v1/entregas/asignaciones        crea las entregas de una ruta confirmada y las asigna (entregas.asignar; lo llama rutas)
 
 Responsabilidad única: la ejecución de la entrega (consulta de paradas y cierre con sus reglas).
 El rastro GPS es del servicio de seguimiento; los archivos de evidencia, del servicio de
@@ -159,7 +160,7 @@ def detalle(eid):
 # --------------------------------------------------------------------
 @app.post(f"{P}/entregas")
 @requiere("entregas.asignar")
-def asignar():
+def crear_entrega():
     """Crea la entrega de un pedido listo y lo pone en ruta. El trigger avisa al repartidor."""
     d = validar(leer_cuerpo("entrega_nueva"), [Campo("pedido_id", "int", minimo=1), Campo("repartidor_id", "int", minimo=1),
                                                Campo("orden_parada", "int", req=False, nulo=True, minimo=1, maximo=500)])
@@ -280,6 +281,54 @@ def _registrar_sincronizacion(d, f, estado, conflicto_info=None):
         pass
 
 
+# --------------------------------------------------------------------
+# Asignación (despacho de una ruta confirmada) — entrega final
+# --------------------------------------------------------------------
+CAMPOS_PARADA = [Campo("pedido_id", "int", minimo=1), Campo("repartidor_id", "int", minimo=1), Campo("orden_parada", "int", minimo=1, maximo=200),
+                 Campo("distancia_km", "num", req=False, nulo=True, minimo=0), Campo("minutos_estimados", "num", req=False, nulo=True, minimo=0),
+                 Campo("costo_entrega_estimado", "num", req=False, nulo=True, minimo=0), Campo("plan_ruta_id", "int", req=False, nulo=True, minimo=1)]
+
+
+@app.post(f"{P}/entregas/asignaciones")
+@requiere("entregas.asignar")
+def asignar():
+    """Crea (o reasigna) la entrega de cada parada y pasa el pedido a en_ruta, TODO en una transacción: o se despachan todas las paradas
+    o ninguna. El trigger trg_notificar_asignacion le manda a cada repartidor el aviso «Nueva entrega asignada» y los de auditoría dejan
+    el rastro. El motor valida la transición en_preparacion → en_ruta."""
+    d = validar(leer_cuerpo(), [Campo("paradas", "lista")])
+    if not 1 <= len(d["paradas"]) <= 200:
+        raise invalido("paradas", "Envía entre 1 y 200 paradas.")
+    paradas = unir_errores(*[(lambda p=p, i=i: validar(p if isinstance(p, dict) else {}, CAMPOS_PARADA, prefijo=f"paradas[{i}]."))
+                             for i, p in enumerate(d["paradas"])])
+    if len({p["pedido_id"] for p in paradas}) != len(paradas):
+        raise invalido("paradas", "Un pedido aparece dos veces.")
+    hechas = []
+    with conexion() as con, con.cursor() as cur:
+        reps = {r["id"] for r in consultar("SELECT u.id FROM usuario u JOIN rol r ON r.id = u.rol_id WHERE r.clave = 'repartidor' "
+                                           "AND u.estatus = 'activo' AND u.id = ANY(%s)", ([p["repartidor_id"] for p in paradas],))}
+        for p in paradas:
+            if p["repartidor_id"] not in reps:
+                raise invalido("repartidor_id", f"El usuario {p['repartidor_id']} no es un repartidor activo.")
+            cur.execute("SELECT estado::text AS estado, listo_en, microhub_id FROM pedido WHERE id = %s FOR UPDATE", (p["pedido_id"],))
+            f = cur.fetchone()
+            if not f:
+                raise no_encontrado(f"No existe el pedido {p['pedido_id']}.")
+            limitar_microhub(f["microhub_id"])                                  # el operador solo despacha su microhub (RN22)
+            if f["estado"] != "en_preparacion" or f["listo_en"] is None:
+                raise conflicto(f"El pedido {p['pedido_id']} no está listo para despachar (está {f['estado']}).")
+            cur.execute("INSERT INTO entrega (pedido_id, repartidor_id, turno_fecha, asignada_en, salida_en, plan_ruta_id, orden_parada, distancia_km, "
+                        "minutos_estimados, costo_entrega_estimado) VALUES (%s,%s,(now() AT TIME ZONE %s)::date,now(),now(),%s,%s,%s,%s,%s) "
+                        "ON CONFLICT (pedido_id) DO UPDATE SET repartidor_id = EXCLUDED.repartidor_id, plan_ruta_id = EXCLUDED.plan_ruta_id, "
+                        "orden_parada = EXCLUDED.orden_parada, distancia_km = EXCLUDED.distancia_km, minutos_estimados = EXCLUDED.minutos_estimados, "
+                        "costo_entrega_estimado = EXCLUDED.costo_entrega_estimado, turno_fecha = EXCLUDED.turno_fecha RETURNING id",
+                        (p["pedido_id"], p["repartidor_id"], config.ZONA_HORARIA, p.get("plan_ruta_id"), p["orden_parada"], p.get("distancia_km"),
+                         p.get("minutos_estimados"), p.get("costo_entrega_estimado")))
+            eid = cur.fetchone()["id"]
+            cur.execute("UPDATE pedido SET estado = 'en_ruta' WHERE id = %s", (p["pedido_id"],))
+            hechas.append({"entrega_id": eid, "pedido_id": p["pedido_id"], "repartidor_id": p["repartidor_id"], "orden_parada": p["orden_parada"]})
+    return responder({"asignadas": len(hechas), "entregas": hechas}, 201, raiz="asignacion", items={"entregas": "entrega"})
+
+
 @app.post(f"{P}/entregas/<int:eid>/resultado")
 @requiere("entregas.cerrar")
 def resultado(eid):
@@ -376,3 +425,7 @@ documentar(app, "GET", f"{P}/entregas/repartidores", "Repartidores disponibles",
 documentar(app, "POST", f"{P}/entregas", "Asignar una entrega", permisos=["entregas.asignar"], cuerpo="EntregaNueva.ok",
            descripcion="El pedido debe estar en preparación y listo; queda en ruta y el repartidor recibe el aviso. Un operador solo asigna los de su microhub.",
            respuestas={201: ("Entrega creada", "EntregaCreada.ok")}, errores=[400, 403, 404, 409, 422])
+documentar(app, "POST", f"{P}/entregas/asignaciones", "Despachar las paradas de una ruta", permisos=["entregas.asignar"], solo_json=True,
+           descripcion="Crea o reasigna la entrega de cada parada y pasa el pedido a en_ruta en una sola transacción (todas o ninguna). "
+                       "Cada repartidor recibe el aviso por trigger. Lo llama el servicio de rutas al confirmar un plan con despachar=true.",
+           respuestas={201: ("Paradas despachadas", None)}, errores=[400, 403, 404, 409, 422])

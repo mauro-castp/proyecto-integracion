@@ -444,7 +444,8 @@ class T2Auditoria(Base):
         e = j["datos"][0]
         self.assertEqual((e["accion"], e["correo_intento"], e["usuario"], e["exitoso"]), ("login_fallido", correo, None, False))
         a = self.aud.llamar(AM, "GET", "auditoria/accesos", estado=200)[1]
-        self.assertIn(correo, [c["correo"] for c in a["correos_con_mas_fallos"]])
+        veces = [c["intentos"] for c in a["correos_con_mas_fallos"]]          # son los 5 con más fallos del periodo, no necesariamente este
+        self.assertTrue(veces and veces == sorted(veces, reverse=True) and len(veces) <= 5, veces)
         self.assertGreaterEqual(a["totales"]["login_fallido"], 1)
 
     def test_filtros_por_modulo_entidad_usuario_y_fechas(self):

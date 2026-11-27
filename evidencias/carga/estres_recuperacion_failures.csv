@@ -1,0 +1,4 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+POST,simulacion · POST ejecucion (202),CatchResponseError('HTTP 503'),16,2026-11-26T23:18:55Z,2026-11-26T23:20:34Z
+GET,reportes · GET pedidos_por_dia (XML),CatchResponseError('HTTP 503'),38,2026-11-26T23:18:48Z,2026-11-26T23:20:32Z
+GET,reportes · GET ventas_por_producto (XML),CatchResponseError('HTTP 503'),16,2026-11-26T23:18:58Z,2026-11-26T23:20:36Z

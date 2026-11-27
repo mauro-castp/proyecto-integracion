@@ -1,0 +1,36 @@
+@startuml
+!include tema.iuml
+title Diagrama 21 · Proceso integral P3 · Despacho con rutas (saga rutas → entregas)
+actor "Planeador" as PL
+actor "Operador MH-01" as OP
+participant "Portal web\n/web/servicios/rutas" as W
+participant "rutas :5118" as RU
+participant "pedidos :5104" as PE
+participant "entregas :5105" as EN
+database "PostgreSQL" as PG
+actor "Repartidor\n(app Android)" as RE
+
+PL -> W : ver pedidos listos
+W -> PE : GET pedidos/listos?microhub_id=1
+PL -> W : Proponer plan (automático)
+W -> RU : POST rutas/planes {guardar: true}
+RU -> PE : GET pedidos/listos
+RU -> EN : GET entregas/repartidores
+RU -> RU : agrupar por zona, balancear (tope 8),\nTSP exacto (≤ 8) o vecino + 2-opt
+RU -> PG : plan_despacho «propuesto»
+OP -> W : Confirmar y despachar (entregas.asignar)
+W -> RU : POST planes/{id}/confirmar {despachar: true}
+RU -> PE : ¿siguen listos? (si no: 409, calcular de nuevo)
+RU -> PG : plan «confirmado» + plan_ruta / plan_ruta_parada
+RU -> EN : POST entregas/asignaciones (JWT del operador)
+alt entregas acepta
+  EN -> PG : en UNA transacción: INSERT entrega × n,\npedido → en_ruta (el motor valida la transición)
+  PG -> PG : trigger: aviso «Nueva entrega asignada» + auditoría
+  EN --> RU : 201
+else entregas rechaza o no responde
+  EN --> RU : 4xx / 503
+  RU -> PG : compensación: plan vuelve a «propuesto», se borran plan_ruta
+  RU --> W : el mismo error (no queda nada a medias)
+end
+RE -> EN : GET entregas/mias → sus paradas en orden
+@enduml

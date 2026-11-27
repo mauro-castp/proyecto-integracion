@@ -129,7 +129,7 @@ def ejecutar_ola3(ev, h):
             verificar=lambda r: r.json["series"] and len(r.json["series"][0]["datos"]) == len(r.json["categorias"]))
     ev.caso("REP-06", rp, "Exportar a CSV", "Descarga con SHA-256 y registro en la bitácora de exportaciones.", "GET",
             f"reportes/pedidos_por_zona/exportar?formato=csv&{periodo}", token=t_adm, verificar=lambda r: "Zona" in r.texto,
-            explicacion="Excel (xlsx) y PDF usan la misma ruta con formato=xlsx|pdf. El archivo se genera al momento; no se guarda.",
+            explicacion="Excel (xlsx) y PDF usan la misma ruta con formato=xlsx|pdf. El archivo se genera al momento y queda archivado en el almacén de objetos.",
             evidencia=lambda r: [pg("SELECT reporte, formato, filas, bytes, left(sha256, 16) AS sha256, creado_por FROM reporte_exportacion ORDER BY id DESC LIMIT 1")])
     ev.caso("REP-07", rp, "Bitácora de exportaciones", "Quién exportó qué, con qué filtros.", "GET", "reportes/exportaciones?por_pagina=3", token=t_aud,
             verificar=lambda r: r.json["paginacion"]["total"] >= 1)

@@ -1,24 +1,23 @@
-# Pendientes de la entrega final · dividido en dos partes
+# Pendientes de la entrega final
 
-Estado al 26 de noviembre de 2026. Rama de trabajo: **`ruth-entrega-final`**.
+Estado al 26 de noviembre de 2026. Aquí queda **solo lo que necesita a una persona**: un teléfono, grabar, probar con usuarios, aceptar términos o entregar.
 
-> **La entrega es individual** (quien no entrega por su cuenta tiene cero) y hay tres preguntas individuales sobre **todo** el proyecto. Este reparto
-> es para avanzar el trabajo común; cada integrante entrega lo suyo, escribe su propia reflexión y estudia las dos partes.
+> **La entrega es individual** (quien no entrega por su cuenta tiene cero) y hay tres preguntas individuales sobre **todo** el proyecto. El reparto sirve
+> para avanzar el trabajo común; cada integrante entrega lo suyo, escribe su propia reflexión y estudia las dos partes.
 
 ## Lo que ya está listo (no rehacer)
 
 | Tema | Dónde está |
 |---|---|
-| 26 microservicios, altas y cambios, pedidos y entregas por API | `servicios/README.md`, `servicios/INVENTARIO_ENDPOINTS.md` |
-| Despliegue en GCP, bucket, URL firmadas, HTTPS autofirmado, registros | `deploy/gcp/LEEME.md`, `evidencias/nube/LEEME.md` |
-| Panel de monitoreo con historial por servicio | portal, `/web/servicios/monitoreo` |
-| Tres procesos de principio a fin (40 pasos) | `evidencias/nube/flujos/` |
-| Datos de alto volumen, Locust y análisis | `evidencias/nube/volumen/`, `evidencias/nube/carga/` |
-| Fallos (32/32) y seguridad (23/23) en la nube | `evidencias/nube/fallos.md`, `evidencias/nube/seguridad.md` |
-| Algoritmo documentado con tiempos medidos | `entrega/ALGORITMO_RUTAS.md` |
-| Capturas del panel, historial, microservicios y Swagger | `entrega/capturas/` |
-| App de escritorio: compila, se publica y pasa 64 de 64 contra los servicios locales | `app_escritorio/` |
-| App Android: compila y pasan sus pruebas (las 3 contra el servidor real se omitieron) | `app_movil/` |
+| 26 microservicios, altas y cambios, pedidos, entregas y despacho de rutas por API | `servicios/README.md`, `servicios/INVENTARIO_ENDPOINTS.md` |
+| Despliegue en GCP, bucket, URL firmadas, HTTPS autofirmado y registros | `deploy/gcp/LEEME.md`, `evidencias/nube/LEEME.md` |
+| Panel de monitoreo con historial por servicio y pantallas web de los procesos | portal, `/web/servicios/monitoreo` |
+| Procesos de principio a fin (por API y por el portal web) | `evidencias/nube/flujos/`, `evidencias/nube/procesos/` |
+| Datos de alto volumen, Locust, fallos y seguridad | `evidencias/nube/` (local: `evidencias/volumen/`, `evidencias/carga/`) |
+| Algoritmos documentados con tiempos medidos | `docs/ALGORITMOS.md`, `entrega/ALGORITMO_RUTAS.md` |
+| App Android: avisos y cierre sin red; compila, genera la APK y pasa sus pruebas contra los servicios | `app_movil/`, `entrega/PRUEBAS_APPS_ENTREGA_FINAL.md` |
+| App de escritorio: reportes y pantallas de análisis; compila, se publica y pasa sus pruebas contra los servicios | `app_escritorio/` |
+| Expediente técnico (también en Word), manuales, plan de pruebas, registro de incidencias, runbook de fallos, guía de estudio y guion | `docs/`, `reporte_tecnico/`, `bloque_d/` |
 
 Para levantar todo en local:
 
@@ -26,61 +25,41 @@ Para levantar todo en local:
 docker compose -f docker-compose.integrado.yml up -d --build        # si el puerto 5000 está ocupado: WEB_PORT=5050
 ```
 
-Documentación de cada ruta: `http://localhost:PUERTO/api/v1/docs`.
+Con una base de MongoDB creada antes de la entrega final, una sola vez:
 
----
+```bash
+docker compose -f docker-compose.integrado.yml exec -T mongo mongosh --quiet < bloque_c/mongo/03_documentos_nube.js
+```
 
-## Parte 1 — Aplicaciones, instaladores y demostración (Mauro)
+## Parte de Mauro · aplicaciones, pruebas con personas y video
 
-Tocar solo `app_movil/`, `app_escritorio/` y `entrega/` para no chocar con la parte 2.
+Trabaja en una rama propia a partir de `main` y toca solo `app_movil/`, `app_escritorio/` y `entrega/`.
 
-- [ ] **Android: trabajo sin conexión.** Guardar el cierre de entrega y el GPS sin red y mandarlos con `POST /api/v1/sincronizacion/lotes` (5125) al reconectar;
-      mostrar pendientes y conflictos. Pantalla de avisos (5124).
-- [ ] **Escritorio: reportes** (5123) con descarga CSV, Excel y PDF, y pantallas de cobertura, rutas, costos, capacidad, punto de equilibrio y simulación.
-- [ ] **Instaladores.** APK: `app_movil/build.ps1`. Escritorio: `dotnet publish Microhubs.csproj -c Release -r win-x64 --self-contained true -o bin/Publicacion`
-      y comprimir la carpeta. Los binarios no van al repositorio: súbelos como *Release* de GitHub o a ubiquitous.
-- [ ] **Ejecución real con evidencia** (lo pidió el profesor): Android con `BackendRealTest` contra Docker y capturas en emulador o teléfono; escritorio con
-      `MICROHUBS_BACKEND=http://localhost` y `MICROHUBS_CLAVE`, y capturas.
-- [ ] **Pruebas de usabilidad:** 3 personas, 5 tareas (entrar, ver entregas, cerrar una, consultar un reporte, ver el monitoreo); anotar tiempo, errores y mejoras.
-- [ ] **Video** breve donde se vea: problema, arquitectura, sistema web, app móvil, app de escritorio, microservicios, Swagger, monitoreo, nube, algoritmo,
-      pruebas de carga e integración.
+- [ ] **Ensayo sin red en un teléfono real:** modo avión, cerrar una entrega, ver «Sin enviar», quitar el modo avión y comprobar que se envía sola.
+- [ ] **Emulador:** `connectedDebugAndroidTest`.
+- [ ] **Escritorio:** abrir a mano cada ventana nueva (reportes, cobertura, rutas, costos, capacidad, punto de equilibrio y simulación).
+- [ ] **Capturas** en `entrega/capturas/`: `movil_avisos`, `movil_sin_red_guardado`, `movil_sin_enviar`, `movil_sincronizado`, `movil_conflicto` (opcional),
+      `escritorio_reportes`, `escritorio_pdf`, `escritorio_equilibrio`, `escritorio_simulacion`, `escritorio_rutas` (`.png`).
+- [ ] **Instaladores** (`entrega/INSTALADORES.md`): APK y ZIP del escritorio, publicados como *Release* de GitHub o en ubiquitous. Nunca el keystore ni binarios en el repositorio.
+- [ ] **Pruebas de usabilidad** con personas (`entrega/FORMATO_USABILIDAD.md`).
+- [ ] **Video** (`docs/GUION_VIDEO_Y_PRESENTACION.md`, parte A, y `entrega/GUION_VIDEO.md`).
 
-## Parte 2 — Documentos y entrega (Ruth)
+## Parte de Ruth · entrega
 
-- [ ] **Expediente técnico** (32 puntos): portada, resumen ejecutivo, problema, objetivos, alcance, usuarios, requerimientos, reglas de negocio, arquitectura,
-      diagramas, modelo relacional, MongoDB, Redis, buckets, microservicios, contratos JSON, contratos XML, Swagger, seguridad, algoritmos, infraestructura GCP,
-      contenedores, monitoreo, plan de pruebas, resultados de Locust, resultados de rendimiento, manual de instalación, manual técnico, manual de usuario,
-      limitaciones, trabajo futuro y conclusiones. Fuentes: `bloque_a/` a `bloque_d/`, los README, `deploy/gcp/LEEME.md` y `evidencias/nube/`.
-      Falta actualizar los diagramas de `bloque_d/`, que muestran la versión de 10 servicios.
-- [ ] **Presentación:** problema, usuarios, solución, arquitectura, demostración web, móvil y escritorio, microservicios, seguridad, datos, algoritmo,
-      infraestructura, monitoreo, pruebas, resultados y conclusiones.
-- [ ] **Bitácora de participación** (sale del historial de Git) y **registro de incidencias** (base abajo).
-- [ ] **Ubiquitous:** carpeta web con la presentación del proyecto, enlaces, documentos y capturas; subirla con Cyberduck.
-- [ ] **Ensayo de tolerancia a fallos** para la presentación (detener un servicio, revocar un token, apagar Redis, respuesta inválida, archivo inexistente,
-      sobrecarga, intento sin permisos, explicar un error en los logs): `rendimiento/fallos_y_seguridad.py`.
-- [ ] Opcional: HTTPS con certificado reconocido (Let's Encrypt) y caché de reportes (el cuello de botella medido).
-- [ ] Pull request de `ruth-entrega-final` hacia `main`.
+- [ ] **Presentación** con las 16 partes (`docs/GUION_VIDEO_Y_PRESENTACION.md`, parte B).
+- [ ] **Ubiquitous:** subir con Cyberduck la carpeta web (presentación, enlaces, documentos y capturas) y poner el enlace en el README.
+- [ ] **Bitácora de participación** (`docs/BITACORA_PARTICIPACION.md`): la llena el equipo a partir de `git log`.
+- [ ] **HTTPS con certificado reconocido** (Let's Encrypt: requiere aceptar sus términos y registrar un correo):
+      `bash deploy/gcp/instalar_vm.sh --sin-construir --https <correo>`. Sin esto las apps instalables no se conectan a la nube (el certificado
+      autofirmado cifra, pero Android y Windows no lo aceptan, y la validación no se desactiva).
 
 ## Cada integrante, por su cuenta
 
 - [ ] Su entrega individual.
-- [ ] Reflexión individual, con sus palabras.
-- [ ] Repasar todo el proyecto para las tres preguntas.
+- [ ] Reflexión individual con sus palabras (`docs/REFLEXION_INDIVIDUAL_PLANTILLA.md`).
+- [ ] Estudiar todo el proyecto: `docs/GUIA_ESTUDIO_PREGUNTAS.md` y `docs/RUNBOOK_FALLOS.md`.
 
----
+## Opcionales que suman
 
-## Base para el registro de incidencias (problemas reales ya resueltos, salvo el último)
-
-| Incidencia | Causa | Solución |
-|---|---|---|
-| Las entregas del turno desaparecían a las 18:00 | La base contaba los días en UTC | Zona horaria de la base en Monterrey (`11_ola3_observabilidad.sql`) |
-| Subir, descargar y borrar archivos no quedaba en la bitácora | Se usaban acciones que no existen en el catálogo | Acciones válidas y la nueva `descarga` |
-| Subir un archivo fallaba en una base ya existente | El validador de MongoDB exigía el contenido | `bloque_c/mongo/03_documentos_nube.js` |
-| Las pruebas contra el bucket no tenían Internet | La red de datos es interna | Segunda red con salida en `correr.sh` |
-| El agente de registros negaba permisos | Los roles tardan en propagarse en GCP | Esperar y comprobar en Cloud Logging |
-| Pruebas nuevas hacían fallar a otras | Dejaban entregas abiertas y dependían del tráfico previo | Limpieza al terminar y pruebas autónomas |
-| El instalador fallaba si Nginx estaba detenido | Se recargaba un servicio apagado | `reload-or-restart` |
-| Las claves de demostración eran públicas | El repositorio es público | El instalador las cambia en la nube |
-| Los archivos locales se perdían al recrear el contenedor | No había volumen | Volumen `datos_archivos` |
-| Una corrida de evidencias quedó con sesiones vencidas | La computadora se suspendió a la mitad | Mantenerla activa y repetir |
-| **Abierta:** reportes lentos y algunos 503 con 200 usuarios | Cada reporte encadena muchas llamadas | Propuesta: caché en Redis y resúmenes agregados (`evidencias/nube/carga/ANALISIS.md`) |
+- Plazo total por petición o cortacircuitos en `comun/clientes.py` (incidencia I-20).
+- Más procesos (`-w 4`) en la VM para pedidos, productos y auth, que son los primeros en hacer fila según Locust.

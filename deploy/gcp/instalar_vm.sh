@@ -46,11 +46,15 @@ ALMACEN=gcs
 GCS_BUCKET=$GCS_BUCKET
 URL_FIRMADA_SEGUNDOS=300
 VERSION_DESPLEGADA=$VERSION
+DETRAS_DE_PROXY=1
 EOF
   echo "   .env creado"
 else
   sed -i "s/^VERSION_DESPLEGADA=.*/VERSION_DESPLEGADA=$VERSION/" .env
   echo "   .env ya existe: se conserva (solo se actualiza VERSION_DESPLEGADA)"
+fi
+if ! grep -q '^DETRAS_DE_PROXY=' .env; then
+  echo 'DETRAS_DE_PROXY=1' >> .env          # Nginx delante: la IP real del cliente viaja en X-Forwarded-For
 fi
 if ! grep -q '^MICROHUBS_CLAVE=' .env; then
   printf 'MICROHUBS_CLAVE=Mh.%s\n' "$(openssl rand -hex 9)" >> .env
@@ -81,6 +85,9 @@ done
 MICROHUBS_CLAVE="$(grep '^MICROHUBS_CLAVE=' .env | cut -d= -f2-)" docker compose --env-file .env -f docker-compose.integrado.yml \
   -f deploy/gcp/docker-compose.gcp.yml exec -T -e MICROHUBS_CLAVE auth python - < deploy/gcp/cambiar_claves_demo.py \
   || morir "No se pudieron cambiar las claves de demostracion: no se publica el sistema."
+
+docker compose --env-file .env -f docker-compose.integrado.yml -f deploy/gcp/docker-compose.gcp.yml exec -T mongo mongosh --quiet \n  < bloque_c/mongo/03_documentos_nube.js > /dev/null || morir "No se pudo actualizar el esquema de documentos en MongoDB."
+echo "   esquema de documentos en MongoDB al dia"
 
 decir "3) Nginx"
 sudo install -m 644 deploy/gcp/nginx-microhubs.conf /etc/nginx/sites-available/microhubs

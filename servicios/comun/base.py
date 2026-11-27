@@ -25,6 +25,7 @@ from functools import wraps
 import jwt
 import psycopg
 import redis
+from pymongo.errors import PyMongoError
 from flask import Flask, Response, g, request
 from werkzeug.exceptions import HTTPException
 
@@ -246,6 +247,10 @@ def limitar_microhub(microhub_id):
 # --------------------------------------------------------------------
 def crear_app(servicio, titulo, descripcion, puerto, dependencias=("postgres", "redis")):
     app = Flask(servicio)
+    if config.DETRAS_DE_PROXY:
+        # Solo Nginx llega a los puertos de los servicios (publicados en 127.0.0.1), así que su X-Forwarded-For es confiable.
+        from werkzeug.middleware.proxy_fix import ProxyFix
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=config.DETRAS_DE_PROXY, x_proto=config.DETRAS_DE_PROXY)
     app.config.update(MAX_CONTENT_LENGTH=config.MAX_CUERPO_BYTES, JSON_AS_ASCII=False)
     app.config["SERVICIO"] = servicio
     app.config["DOC"] = {"titulo": titulo, "descripcion": descripcion, "puerto": puerto, "rutas": []}
@@ -294,6 +299,12 @@ def crear_app(servicio, titulo, descripcion, puerto, dependencias=("postgres", "
     def _error_infra(e):
         g.excepcion = f"{type(e).__name__}: {e}"
         return respuesta_error(503, "SERVICIO_NO_DISPONIBLE", "Una base de datos no responde. Intenta más tarde.")
+
+    @app.errorhandler(PyMongoError)
+    def _error_mongo(e):
+        # Antes caía en el manejador genérico: 500 ERROR_INTERNO después de esperar la selección de servidor.
+        g.excepcion = f"{type(e).__name__}: {str(e)[:200]}"
+        return respuesta_error(503, "SERVICIO_NO_DISPONIBLE", "MongoDB no responde. Intenta más tarde.")
 
     @app.errorhandler(almacen.ErrorAlmacen)
     def _error_almacen(e):

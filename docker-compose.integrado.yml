@@ -29,8 +29,9 @@ x-entorno: &entorno
   GCS_BUCKET: ${GCS_BUCKET:-}
   URL_FIRMADA_SEGUNDOS: ${URL_FIRMADA_SEGUNDOS:-300}
   VERSION_DESPLEGADA: ${VERSION_DESPLEGADA:-1.0.0}         # lo que /salud informa como versión
-  LIMITE_POR_MINUTO: ${LIMITE_POR_MINUTO:-240}             # límite de consumo por IP (rendimiento/correr_locust.sh lo sube mientras mide)
-  LIMITE_LOGIN_POR_MINUTO: ${LIMITE_LOGIN_POR_MINUTO:-30}
+  DETRAS_DE_PROXY: ${DETRAS_DE_PROXY:-0}                   # 1 en la nube (Nginx delante): la IP del cliente sale de X-Forwarded-For
+  LIMITE_POR_MINUTO: ${LIMITE_POR_MINUTO:-240}             # límite por IP, servicio y minuto
+  LIMITE_LOGIN_POR_MINUTO: ${LIMITE_LOGIN_POR_MINUTO:-30}   # límite de inicios de sesión por IP y minuto
 
 x-servicio: &servicio
   depends_on:
@@ -260,7 +261,11 @@ services:
   reportes:
     <<: *servicio
     build: {context: ., dockerfile: servicios/reportes/Dockerfile}
-    environment: *entorno
+    environment:
+      <<: *entorno
+      ALMACEN_DIR: /app/almacen              # las exportaciones archivadas sobreviven a recrear el contenedor
+    volumes:
+      - datos_archivos:/app/almacen
     ports: ["5123:5123"]
 
   sincronizacion:

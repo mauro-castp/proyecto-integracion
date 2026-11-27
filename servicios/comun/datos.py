@@ -12,6 +12,7 @@ simulaciones, sincronizaciones móviles y logs técnicos.
 """
 import json
 import sys
+import time
 import datetime as dt
 from contextlib import contextmanager
 
@@ -110,12 +111,30 @@ def permisos_de(rol):
 # --------------------------------------------------------------------
 # MongoDB
 # --------------------------------------------------------------------
+# Cortacircuitos de MongoDB (entrega final, evidencias/fallos): cuando MongoDB no respondía, CADA petición de CADA servicio esperaba
+# los 2 s de selección de servidor dos veces (registro técnico y métrica) y otros 2 s al reintentar los índices: con MongoDB caído
+# hasta el catálogo tardaba 4.5 s. Ahora, tras una falla, durante MONGO_PAUSA_S segundos las escrituras accesorias no lo intentan.
+MONGO_PAUSA_S = 30
+
+
+def mongo_en_pausa():
+    return time.monotonic() < _mongo.get("pausa_hasta", 0.0)
+
+
+def _mongo_fallo():
+    _mongo["pausa_hasta"] = time.monotonic() + MONGO_PAUSA_S
+
+
+def _mongo_ok():
+    _mongo["pausa_hasta"] = 0.0
+
+
 def mongo():
     """Base de eventos, o None si MongoDB no está configurado."""
     if _mongo["db"] is None and config.MONGO_URL:
         from pymongo import MongoClient
         _mongo["db"] = MongoClient(config.MONGO_URL, serverSelectionTimeoutMS=2000, tz_aware=True)[config.MONGO_DB]
-    if _mongo["db"] is not None and not _mongo["indices"]:
+    if _mongo["db"] is not None and not _mongo["indices"] and not mongo_en_pausa():
         _asegurar_indices(_mongo["db"])
     return _mongo["db"]
 
@@ -135,6 +154,7 @@ def _asegurar_indices(db):
         db.sincronizaciones_moviles.create_index("operacion_uuid", name="ix_uuid", unique=True)
         _mongo["indices"] = True
     except Exception as e:
+        _mongo_fallo()
         print(json.dumps({"nivel": "WARN", "mensaje": f"indices mongo: {e}"}), file=sys.stderr)
 
 
@@ -144,19 +164,24 @@ def mongo_disponible():
         return False
     try:
         db.command("ping")
+        _mongo_ok()
         return True
     except Exception:
+        _mongo_fallo()
         return False
 
 
 def mongo_insertar(coleccion, documento):
-    """Inserción accesoria (logs, métricas): si MongoDB falla, la petición sigue."""
+    """Inserción accesoria (logs, métricas): si MongoDB falla, la petición sigue y no se vuelve a intentar en MONGO_PAUSA_S."""
+    if mongo_en_pausa():
+        return None
     try:
         db = mongo()
         if db is None:
             return None
         return db[coleccion].insert_one(documento).inserted_id
     except Exception as e:
+        _mongo_fallo()
         print(json.dumps({"nivel": "WARN", "mensaje": f"mongo {coleccion}: {e}"}), file=sys.stderr)
         return None
 

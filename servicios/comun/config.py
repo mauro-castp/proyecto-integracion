@@ -25,6 +25,11 @@ CONTRATOS = Path(os.environ.get("CONTRATOS_DIR") or
 
 ZONA_HORARIA = os.environ.get("ZONA_HORARIA", "America/Monterrey")
 
+# Cuántos proxies de confianza hay delante (Nginx en la nube = 1). Con 0 se usa la IP de la conexión tal cual. Con 1 la IP del
+# cliente sale del último valor de X-Forwarded-For que agregó Nginx. Sin esto, detrás de Nginx TODAS las peticiones llegaban
+# desde la misma IP: el límite por IP se volvía un límite global y la bitácora guardaba la IP del proxy (ver entrega final).
+DETRAS_DE_PROXY = int(os.environ.get("DETRAS_DE_PROXY", "0"))
+
 # Límite de consumo por IP y minuto (Redis, base 1).
 LIMITE_POR_MINUTO = int(os.environ.get("LIMITE_POR_MINUTO", "240"))
 LIMITE_LOGIN_POR_MINUTO = int(os.environ.get("LIMITE_LOGIN_POR_MINUTO", "30"))

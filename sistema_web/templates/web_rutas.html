@@ -1,0 +1,32 @@
+{% extends 'base.html' %}{% block titulo %}Rutas{% endblock %}{% block cuerpo %}
+<h1>Despacho con rutas · microhub {{ mh }}</h1>
+<p class="sub">Proceso integral: pedidos listos (servicio de pedidos) → plan de rutas (servicio de rutas: agrupa por zona, balancea entre repartidores y ordena las paradas con TSP exacto o vecino más cercano + 2-opt) → confirmar → cada repartidor recibe el aviso y ve sus paradas en la app Android.</p>
+<form method="get" style="margin:6px 0">Microhub <input name="microhub_id" value="{{ mh }}" size="3"> <button class="btn">Ver</button></form>
+
+<div class="panel" style="overflow:auto"><h2>Pedidos listos para despachar ({{ datos(listos)|length }})</h2>
+{% if not listos.ok %}<div class="aviso alto">Pedidos: {{ listos.mensaje or listos.status }}</div>{% endif %}
+<table><thead><tr><th>Folio</th><th>Zona</th><th>Coordenadas</th></tr></thead><tbody>
+{% for p in datos(listos) %}<tr><td>{{ p.folio }}</td><td>{{ p.zona.nombre }}</td><td>{{ p.latitud }}, {{ p.longitud }}</td></tr>{% else %}<tr><td colspan="3" class="ayuda">No hay pedidos listos. El operador los marca como listos en su bandeja.</td></tr>{% endfor %}
+</tbody></table>
+{% if datos(listos) %}<form method="post"><input type="hidden" name="csrf" value="{{ web_csrf() }}"><input type="hidden" name="accion" value="proponer"><input type="hidden" name="microhub_id" value="{{ mh }}">
+Método <select name="metodo"><option value="automatico">Automático (exacto hasta 8 paradas)</option><option value="2opt">Vecino + 2-opt</option><option value="vecino">Vecino más cercano</option><option value="exacto">TSP exacto (≤ 9)</option></select>
+<button class="btn">Proponer plan</button></form>{% endif %}</div>
+
+{% if plan and plan.ok %}{% set pl = plan.datos %}
+<div class="panel" style="overflow:auto"><h2>Plan {{ pl.id }} · {{ pl.estado }}</h2>
+<div class="kpis"><div class="kpi"><div class="v">{{ pl.total.rutas }}</div><div class="l">Rutas</div></div><div class="kpi"><div class="v">{{ pl.total.paradas }}</div><div class="l">Paradas</div></div>
+<div class="kpi"><div class="v">{{ pl.total.distancia_km }} km</div><div class="l">Distancia</div></div><div class="kpi"><div class="v">{{ pl.total.minutos_maximo }} min</div><div class="l">Ruta más larga</div></div>
+<div class="kpi"><div class="v">${{ pl.total.costo }}</div><div class="l">Costo</div></div></div>
+{% for r in pl.rutas %}<h3>{{ r.repartidor.nombre }} · {{ r.metodo }} · {{ r.distancia_km }} km · {{ r.minutos }} min</h3>
+<table><thead><tr><th>#</th><th>Pedido</th><th>Zona</th><th>Tramo</th><th>Minutos acumulados</th></tr></thead><tbody>
+{% for s in r.paradas %}<tr><td>{{ s.orden }}</td><td>{{ s.pedido.folio }}</td><td>{{ s.zona.nombre }}</td><td>{{ s.tramo_km }} km</td><td>{% if s.minutos_acum > 30 %}<span class="pill rojo">{{ s.minutos_acum }}</span>{% else %}{{ s.minutos_acum }}{% endif %}</td></tr>{% endfor %}
+</tbody></table>{% endfor %}
+{% if pl.sin_asignar %}<div class="aviso medio">Sin asignar (no cupieron en los topes): {% for x in pl.sin_asignar %}{{ x.folio }}{{ ', ' if not loop.last }}{% endfor %}</div>{% endif %}
+{% if pl.estado == 'propuesto' %}<form method="post"><input type="hidden" name="csrf" value="{{ web_csrf() }}"><input type="hidden" name="accion" value="confirmar"><input type="hidden" name="microhub_id" value="{{ mh }}"><input type="hidden" name="plan" value="{{ pl.id }}"><button class="btn">{{ 'Confirmar y despachar a los repartidores' if puede_despachar else 'Confirmar plan' }}</button>{% if not puede_despachar %} <span class="ayuda">Tu perfil propone y confirma; el despacho lo hace el operador del microhub o el administrador (entregas.asignar).</span>{% endif %}</form>{% endif %}
+</div>{% endif %}
+
+<div class="panel" style="overflow:auto"><h2>Planes recientes</h2><table><thead><tr><th>Plan</th><th>Fecha</th><th>Estado</th><th>Rutas</th><th>Paradas</th><th>km</th></tr></thead><tbody>
+{% for p in datos(planes) %}<tr><td><a href="{{ url_for('servicios.rutas', microhub_id=mh, plan=p.id) }}">{{ p.id }}</a></td><td>{{ p.fecha }}</td><td>{{ p.estado }}</td><td>{{ p.total.rutas if p.total }}</td><td>{{ p.total.paradas if p.total }}</td><td>{{ p.total.distancia_km if p.total }}</td></tr>{% else %}<tr><td colspan="6" class="ayuda">Sin planes.</td></tr>{% endfor %}
+</tbody></table></div>
+{% include '_llamadas_proceso.html' %}
+{% endblock %}

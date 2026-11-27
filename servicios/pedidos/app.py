@@ -12,16 +12,25 @@ Servicio de pedidos · puerto 5104 · contrato v1
 El ámbito de cada perfil lo decide PostgreSQL con fn_pedidos_visibles
 (RN22: operador solo su microhub; RN25: repartidor solo sus entregas del
 turno; cliente solo los suyos). Analista ve todo; supervisor, su microhub.
+
+Rendimiento (entrega final, evidencias/volumen/RESULTADOS.md): en las listas y resúmenes, los perfiles de ámbito
+total y el operador usan directamente la tabla con la MISMA regla que fn_pedidos_visibles, para que PostgreSQL
+pueda recorrer los índices en orden y cortar en el LIMIT; los resúmenes filtran por rango de creado_en (usa índice)
+y calculan el total de filas en la misma consulta.
 """
 import datetime as dt
+import hashlib
+import json
+from decimal import Decimal
 
+import redis
 from flask import g
 
 from comun import config
 from comun.base import (crear_app, documentar, filtro_entero, filtro_fecha, filtro_opcion, leer_cuerpo,
                         leer_paginacion, limitar_microhub, lista, paginacion, requiere, responder, texto_busqueda, tiene)
 from comun.base_errores import ErrorApi, conflicto, filtro_invalido, invalido, no_encontrado, prohibido
-from comun.datos import conexion, consultar, parametro
+from comun.datos import conexion, consultar, parametro, r_cache
 from comun.formatos import ZONA, dinero, fecha, numero
 from comun.validar import Campo, unir_errores, validar
 
@@ -35,11 +44,58 @@ CIERRES = {"entregado", "entrega_parcial", "entrega_fallida"}
 def fuente():
     """Conjunto de pedidos que el perfil puede ver, como SQL + argumentos."""
     u = g.usuario
-    if u["rol"] == "analista":
+    if u["rol"] in AMBITO_TOTAL:
         return "pedido", []
     if u["rol"] == "supervisor":
         return "(SELECT * FROM pedido WHERE microhub_id = %s)", [u.get("microhub_id")]
+    if u["rol"] == "operador":
+        # RN22, igual que fn_pedidos_visibles: el microhub se lee de la base (no del token) en cada consulta.
+        return "(SELECT * FROM pedido WHERE microhub_id = (SELECT microhub_id FROM usuario WHERE id = %s))", [u["id"]]
     return "fn_pedidos_visibles(%s)", [u["id"]]
+
+
+# Mismos perfiles de ámbito total que fn_pedidos_visibles (administrador, auditor, planeador) más el analista.
+AMBITO_TOTAL = ("administrador", "auditor", "planeador", "analista")
+
+
+def _entre_dias(f_desde, f_hasta):
+    """Rango de creado_en equivalente a «día local entre f_desde y f_hasta», escrito de forma que use los índices."""
+    return [dt.datetime.combine(f_desde, dt.time(), ZONA), dt.datetime.combine(f_hasta + dt.timedelta(days=1), dt.time(), ZONA)]
+
+
+def _agregado(nombre, sql, args, pagina=1):
+    """Resultado completo de un resumen, guardado en Redis unos segundos para que pedir la página 2, 3… no lo recalcule.
+
+    La página 1 SIEMPRE se calcula de nuevo y renueva la copia: una consulta de una sola página está al día y quien recorre todas
+    las páginas las recibe de la misma foto (paginación consistente aunque entren pedidos a la mitad del recorrido).
+
+    Demanda y reportes recorren todas las páginas de pedidos/resumen y pedidos/ventas. Antes cada página volvía a agregar
+    todo el periodo (y dos veces: una para contar y otra para la página): con 100 000 pedidos, sincronizar la demanda de
+    170 días tardaba 37 s. La llave incluye la consulta y sus argumentos (entre ellos el ámbito del perfil), así que cada
+    ámbito tiene su propia copia. Sin Redis simplemente se calcula.
+    """
+    llave = f"cache:pedidos:{nombre}:" + hashlib.sha1(json.dumps([sql, [str(a) for a in args]]).encode()).hexdigest()[:24]
+    if pagina > 1:
+        try:
+            guardado = r_cache.get(llave)
+            if guardado:
+                return [_de_cache(f) for f in json.loads(guardado)]
+        except redis.RedisError:
+            pass
+    filas = consultar(sql, args)
+    try:
+        r_cache.setex(llave, int(parametro("cache_resumen_segundos", 60)), json.dumps(filas, default=str))
+    except redis.RedisError:
+        pass
+    return filas
+
+
+def _de_cache(f):
+    if "fecha" in f:
+        f["fecha"] = dt.date.fromisoformat(f["fecha"])
+    if f.get("venta") is not None:
+        f["venta"] = Decimal(f["venta"])
+    return f
 
 
 def pedido(f):
@@ -268,8 +324,8 @@ def resumen():
     agrupar = filtro_opcion("agrupar", ["dia_zona", "dia_zona_categoria"]) or "dia_zona"
     mh, zona = filtro_entero("microhub_id"), filtro_entero("zona_id")
     src, args = fuente()
-    where = ["p.estado <> 'cancelado'", f"(p.creado_en AT TIME ZONE '{config.ZONA_HORARIA}')::date BETWEEN %s AND %s"]
-    args = [*args, f_desde, f_hasta]
+    where = ["p.estado <> 'cancelado'", "p.creado_en >= %s", "p.creado_en < %s"]
+    args = [*args, *_entre_dias(f_desde, f_hasta)]
     if mh:
         where.append("p.microhub_id = %s"); args.append(mh)
     if zona:
@@ -287,8 +343,8 @@ def resumen():
                 f"sum(d.cantidad)::integer AS unidades, sum(d.importe) AS venta, 0 AS clientes FROM {src} p "
                 f"JOIN pedido_detalle d ON d.pedido_id = p.id JOIN producto pr ON pr.id = d.producto_id "
                 f"WHERE {w} GROUP BY 1, 2, 3")
-    total = consultar(f"SELECT count(*) AS n FROM ({base}) t", args, una=True)["n"]
-    filas = consultar(f"SELECT * FROM ({base}) t ORDER BY fecha, zona_id, categoria_id NULLS FIRST LIMIT %s OFFSET %s", (*args, por, desde))
+    todas = _agregado("resumen", f"{base} ORDER BY fecha, zona_id, categoria_id NULLS FIRST", args, pagina)
+    total, filas = len(todas), todas[desde:desde + por]
     sin_atender = {}
     if agrupar == "dia_zona" and filas and tiene("reportes.ver") and g.usuario["rol"] not in ("operador", "supervisor") and not mh:
         # La demanda que no se pudo atender no pertenece a un microhub: solo se suma en las consultas de toda la red.
@@ -310,15 +366,14 @@ def ventas():
     f_desde, f_hasta = _rango(int(parametro("ventana_analisis_dias", 90)))
     mh = filtro_entero("microhub_id")
     src, args = fuente()
-    where = ["p.estado NOT IN ('cancelado', 'creado', 'pendiente_asignacion')",
-             f"(p.creado_en AT TIME ZONE '{config.ZONA_HORARIA}')::date BETWEEN %s AND %s"]
-    args = [*args, f_desde, f_hasta]
+    where = ["p.estado NOT IN ('cancelado', 'creado', 'pendiente_asignacion')", "p.creado_en >= %s", "p.creado_en < %s"]
+    args = [*args, *_entre_dias(f_desde, f_hasta)]
     if mh:
         where.append("p.microhub_id = %s"); args.append(mh)
     base = (f"SELECT d.producto_id, sum(d.cantidad)::integer AS unidades, sum(d.importe) AS venta, count(DISTINCT p.id) AS pedidos "
             f"FROM {src} p JOIN pedido_detalle d ON d.pedido_id = p.id WHERE {' AND '.join(where)} GROUP BY d.producto_id")
-    total = consultar(f"SELECT count(*) AS n FROM ({base}) t", args, una=True)["n"]
-    filas = consultar(f"SELECT * FROM ({base}) t ORDER BY unidades DESC, producto_id LIMIT %s OFFSET %s", (*args, por, desde))
+    todas = _agregado("ventas", f"{base} ORDER BY unidades DESC, producto_id", args, pagina)
+    total, filas = len(todas), todas[desde:desde + por]
     return lista(filas, paginacion(pagina, por, total), "producto", "ventas_pedidos",
                  lambda f: {"producto_id": f["producto_id"], "unidades": f["unidades"], "venta": dinero(f["venta"]), "pedidos": f["pedidos"]})
 

@@ -4,6 +4,52 @@ Lo que se crea se da de baja (los productos y zonas de prueba quedan inactivos; 
 """
 import datetime as dt
 import uuid
+from urllib.parse import urlsplit
+
+from pruebas.preparar_listos import dejar_listos, retirar
+
+
+def _reporte_archivado(ev, pg, adm, otro):
+    """La exportación queda archivada en el almacén y se descarga con una URL firmada que caduca."""
+    hoy = dt.date.today()
+    x, _ = ev.http("reportes", "GET", f"reportes/pedidos_por_dia/exportar?formato=csv&desde={hoy - dt.timedelta(days=30)}&hasta={hoy}", token=adm)
+    xid = {k.lower(): v for k, v in x.encabezados.items()}["x-reporte-id"]
+    r = ev.caso("REP-A1", "reportes", "Enlace firmado de un reporte archivado", "El archivo vive en el almacén; la base guarda su ruta y su SHA-256.",
+                "GET", f"reportes/exportaciones/{xid}/enlace", token=adm,
+                evidencia=lambda r: [pg("SELECT id, ruta, almacen, left(sha256, 16) AS sha256, bytes FROM reporte_exportacion WHERE id = %s", (xid,))])
+    ev.caso("REP-A2", "reportes", "El enlace de otra persona", "Solo quien exportó, el administrador o el auditor.", "GET",
+            f"reportes/exportaciones/{xid}/enlace", token=otro, esperado=404)
+    if r is not None and r.status == 200 and "/reportes/descarga?" in r.json["url_firmada"]:      # almacén local; en la nube la URL es de Cloud Storage
+        ev.caso("REP-A3", "reportes", "Descargar con la URL firmada", "La firma sustituye al token y caduca.", "GET",
+                "reportes/descarga?" + urlsplit(r.json["url_firmada"]).query, verificar=lambda x: len(x.texto) > 0)
+    ev.caso("REP-A4", "reportes", "Firma alterada", "Sin una firma válida no se entrega el archivo.", "GET",
+            "reportes/descarga?k=reportes/otro.csv&e=1&n=otro.csv&t=text/csv&s=alterada", esperado=403)
+
+
+def _despacho_de_paradas(ev, pg, hub, op, rep, rid):
+    """POST /entregas/asignaciones: las paradas de una ruta se despachan todas o ninguna."""
+    listos = dejar_listos(2, hub)
+    ids = [p["pedido_id"] for p in listos]
+    paradas = [{"pedido_id": p, "repartidor_id": rid, "orden_parada": i} for i, p in enumerate(ids, 1)]
+    ev.caso("ENT-B1", "entregas", "El repartidor no despacha", "Sin entregas.asignar.", "POST", "entregas/asignaciones",
+            cuerpo={"paradas": paradas}, token=rep, esperado=403)
+    ev.caso("ENT-B2", "entregas", "Una parada que no existe anula el despacho", "Todas o ninguna.", "POST", "entregas/asignaciones",
+            cuerpo={"paradas": paradas + [{"pedido_id": 999999999, "repartidor_id": rid, "orden_parada": len(ids) + 1}]}, token=op, esperado=404,
+            evidencia=lambda x: [pg("SELECT id, estado::text AS estado FROM pedido WHERE id = ANY(%s) ORDER BY id", (ids,))])
+    r = ev.caso("ENT-B3", "entregas", "Despachar las paradas de una ruta", "Crea las entregas, pone los pedidos en ruta y avisa al repartidor.", "POST",
+                "entregas/asignaciones", cuerpo={"paradas": paradas}, token=op, esperado=201, verificar=lambda x: x.json["asignadas"] == len(ids),
+                evidencia=lambda x: [pg("SELECT pedido_id, repartidor_id, orden_parada, salida_en FROM entrega WHERE pedido_id = ANY(%s) ORDER BY orden_parada", (ids,))])
+    if r is None or r.status != 201:
+        retirar([p["pedido_id"] for p in listos if p["nuevo"]])
+        return
+    for n, e in enumerate(r.json["entregas"], 4):       # se cierran para no dejar entregas abiertas del repartidor de demostración
+        eid = e["entrega_id"]
+        doc = ev.http("documentos", "POST", "documentos", {"nombre": f"cierre-{eid}.pdf", "tipo_mime": "application/pdf",
+                      "contenido_base64": "JVBERi0xLjQgZXZpZGVuY2lhICUlRU9G", "referencia": {"tipo": "entrega", "id": str(eid)}}, token=rep)[0].json["id"]
+        ev.caso(f"ENT-B{n}", "entregas", "Cerrar una parada despachada", "El cliente no estaba: se registra la incidencia (RN29).", "POST",
+                f"entregas/{eid}/resultado", cuerpo={"resultado": "fallida", "incidencia": "Cliente ausente (corrida de evidencias)", "monto_cobrado": 0,
+                "cambio_entregado": 0, "ubicacion": {"latitud": 25.7491, "longitud": -100.3611}, "evidencia_ids": [doc],
+                "capturado_en": dt.datetime.now(dt.timezone.utc).isoformat(), "id_cliente_local": str(uuid.uuid4())}, token=rep, esperado=201)
 
 
 def ejecutar_ola4(ev, h):
@@ -50,6 +96,8 @@ def ejecutar_ola4(ev, h):
                 evidencia=lambda r: [pg("SELECT id, estatus, fecha_baja IS NOT NULL AS con_fecha FROM usuario WHERE id = %s", (uid,))])
 
     hub = uno("SELECT id FROM microhub WHERE clave = 'MH-01'")["id"]
+    _reporte_archivado(ev, pg, adm, ev.entrar("planeador@codex.mx"))
+    _despacho_de_paradas(ev, pg, hub, op, rep, uno("SELECT id FROM usuario WHERE correo = 'repartidor1@codex.mx'")["id"])
     prods = bd.consultar("SELECT i.producto_id FROM inventario i JOIN producto p ON p.id = i.producto_id AND p.estatus = 'activo' "
                          "WHERE i.existencia >= 20 GROUP BY i.producto_id HAVING count(*) >= 2 ORDER BY max(p.precio) DESC LIMIT 2")
     cuerpo = {"lineas": [{"producto_id": p["producto_id"], "cantidad": 3} for p in prods], "operacion_uuid": str(uuid.uuid4())}
