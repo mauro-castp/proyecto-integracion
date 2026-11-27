@@ -599,5 +599,72 @@ class Simulacion(unittest.TestCase):
         self.assertAlmostEqual(c["diferencia"], c["utilidad_media"] - c["utilidad_sin_variacion"], places=3)
 
 
+
+class Colas(unittest.TestCase):
+    """M/M/1 y M/M/c contra valores calculados a mano."""
+
+    def setUp(self):
+        from comun import colas
+        self.c = colas
+
+    def test_mm1(self):
+        e = self.c.mmc(2, 3, 1)                       # ρ = 2/3 · Lq = ρ²/(1−ρ) = 1.333 · Wq = 40 min · W = 60 min
+        self.assertEqual((e["modelo"], e["estable"], e["utilizacion_pct"]), ("M/M/1", True, 66.7))
+        self.assertAlmostEqual(e["prob_vacio"], 1 / 3, places=3)
+        self.assertAlmostEqual(e["prob_espera"], 2 / 3, places=3)
+        self.assertAlmostEqual(e["en_cola"], 4 / 3, places=2)
+        self.assertAlmostEqual(e["en_sistema"], 2.0, places=2)
+        self.assertAlmostEqual(e["espera_cola_min"], 40.0, places=1)
+        self.assertAlmostEqual(e["tiempo_sistema_min"], 60.0, places=1)
+
+    def test_mmc_erlang_c(self):
+        e = self.c.mmc(10, 6, 2)                      # a = 5/3 · P0 = 1/11 · Pw = 25/33 · Lq = 125/33
+        self.assertEqual(e["modelo"], "M/M/c")
+        self.assertAlmostEqual(e["prob_vacio"], 1 / 11, places=3)
+        self.assertAlmostEqual(e["prob_espera"], 25 / 33, places=3)
+        self.assertAlmostEqual(e["en_cola"], 125 / 33, places=2)
+        self.assertAlmostEqual(e["espera_cola_min"], 60 * (125 / 33) / 10, places=1)
+
+    def test_inestable_y_sin_llegadas(self):
+        e = self.c.mmc(12, 6, 2)
+        self.assertFalse(e["estable"])
+        self.assertIsNone(e["espera_cola_min"])
+        vacio = self.c.mmc(0, 6, 3)
+        self.assertEqual((vacio["prob_vacio"], vacio["espera_cola_min"]), (1.0, 0.0))
+
+    def test_personal_necesario_y_mas_personas_nunca_empeora(self):
+        n = self.c.servidores_necesarios(10, 6, 5)
+        self.assertLessEqual(self.c.mmc(10, 6, n)["espera_cola_min"], 5)
+        anterior = self.c.mmc(10, 6, n - 1)
+        self.assertTrue(not anterior["estable"] or anterior["espera_cola_min"] > 5)
+        esperas = [e["espera_cola_min"] for e in self.c.comparar(10, 6, 2, n) if e["estable"]]
+        self.assertEqual(esperas, sorted(esperas, reverse=True))
+
+    def test_datos_invalidos(self):
+        for malos in ((-1, 6, 1), (1, 0, 1), (1, 6, 0)):
+            with self.assertRaises(ValueError):
+                self.c.mmc(*malos)
+
+
+class IndependenciaDelPortal(unittest.TestCase):
+    """Los microservicios no dependen del sistema web, y aun así calculan lo mismo."""
+
+    def test_ningun_servicio_importa_ni_copia_codigo_del_portal(self):
+        raiz = Path(__file__).resolve().parents[1]
+        archivos = [f for f in raiz.rglob("*") if (f.suffix == ".py" or f.name == "Dockerfile") and "pruebas" not in f.parts]
+        self.assertGreater(len(archivos), 50)
+        for f in archivos:
+            texto = f.read_text(encoding="utf-8")
+            for prohibido in ("COPY sistema_web", "/app/web", 'parents[2] / "sistema_web"'):
+                self.assertNotIn(prohibido, texto, f"{f} depende del portal")
+
+    def test_las_formulas_son_identicas_a_las_del_portal(self):
+        propia = Path(__file__).resolve().parents[1] / "comun" / "planeacion_calc.py"
+        portal = next((p for p in (Path("/sistema_web/planeacion_calc.py"), Path(__file__).resolve().parents[2] / "sistema_web" / "planeacion_calc.py")
+                       if p.is_file()), None)
+        if portal is None:
+            self.skipTest("el código del portal no está disponible en este contenedor")
+        self.assertEqual(propia.read_text(encoding="utf-8").replace("\r\n", "\n"), portal.read_text(encoding="utf-8").replace("\r\n", "\n"))
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

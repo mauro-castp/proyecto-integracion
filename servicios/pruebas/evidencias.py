@@ -272,6 +272,17 @@ def ejecutar(ev):
                 "usuarios/yo", token=nueva["token_acceso"], esperado=401,
                 explicacion="El servicio de usuarios consulta auth:jti:revocado en Redis: la revocación es común a todos.")
 
+    import jwt as _jwt
+    from comun import config as _cfg
+    t_venc = ev.entrar("repartidor1@codex.mx")
+    _carga = _jwt.decode(t_venc, _cfg.SECRET_KEY, algorithms=[_cfg.JWT_ALG])
+    _vencido = _jwt.encode({**_carga, "iat": int(time.time()) - 900, "exp": int(time.time()) - 5}, _cfg.SECRET_KEY, algorithm=_cfg.JWT_ALG)
+    ev.caso("AUTH-12", "auth", "Token vencido", "Pasada su vigencia no entra, aunque la sesión siga en Redis.", "GET", "auth/validar",
+            token=_vencido, esperado=401, verificar=lambda r: r.json["error"]["codigo"] == "TOKEN_INVALIDO",
+            evidencia=lambda r: [rd((0, "SISMEMBER", f"auth:sesion:{_carga['sub']}", _carga["jti"]))])
+    ev.caso("AUTH-13", "usuarios", "Token vencido en otro servicio", "La expiración se revisa en todos los servicios.", "GET", "usuarios/yo",
+            token=_vencido, esperado=401)
+
     # ---------- 2. USUARIOS ----------
     print("2. Usuarios (5102)")
     t_adm = ev.entrar("admin@codex.mx")

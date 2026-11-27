@@ -2,7 +2,7 @@
 
 Fuente: servicios/*/app.py y docker-compose.integrado.yml.
 
-221 pares método HTTP y ruta de negocio. Excluye salud, OpenAPI, Swagger, HEAD y OPTIONS.
+222 pares método HTTP y ruta de negocio. Excluye salud, OpenAPI, Swagger, HEAD y OPTIONS.
 
 La última columna indica los casos de petición y respuesta que ejercitan cada operación: la corrida principal (`evidencias/ola4/`) y la complementaria (`evidencias/ola4/complementarias/`). Este archivo lo escribe `servicios/pruebas/generar_inventario.py` a partir del código y de esos casos.
 
@@ -35,7 +35,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | auth | POST | `/api/v1/auth/login` | AUTH-01, AUTH-02, AUTH-03, AUTH-04, AUTH-05 |
 | auth | POST | `/api/v1/auth/renovar` | AUTH-08, AUTH-09 |
 | auth | POST | `/api/v1/auth/salir` | AUTH-10 |
-| auth | GET | `/api/v1/auth/validar` | AUTH-06, AUTH-07, MON-01 |
+| auth | GET | `/api/v1/auth/validar` | AUTH-06, AUTH-07, AUTH-12, MON-01 |
 | capacidad | GET | `/api/v1/capacidad/recursos` | CAP-01 |
 | capacidad | GET | `/api/v1/capacidad/recursos/<int:mid>` | CAP-02 |
 | capacidad | PUT | `/api/v1/capacidad/recursos/<int:mid>` | CAP-09, CAP-10, CAP-11, F1-06 |
@@ -43,6 +43,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | capacidad | GET | `/api/v1/capacidad/microhubs/<int:mid>` | CAP-03, CAP-04, CAP-05, CAP-06 |
 | capacidad | POST | `/api/v1/capacidad/simulaciones` | CAP-07 |
 | capacidad | GET | `/api/v1/capacidad/cargas` | CAP-08 |
+| capacidad | GET | `/api/v1/capacidad/colas` | CAP-14, CAP-15, CAP-16, CAP-17 |
 | capacidad | GET | `/api/v1/capacidad/supuestos` | CAP-12 |
 | cobertura | GET | `/api/v1/cobertura/zonas` | COB-01 |
 | cobertura | GET | `/api/v1/cobertura/resumen` | COB-02, COB-03 |
@@ -214,7 +215,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | surtido | PATCH | `/api/v1/surtido/restricciones/<int:mid>` | SUR-19 |
 | surtido | PUT | `/api/v1/surtido/restricciones/<int:mid>` | SUR-10, SUR-11, SUR-12 |
 | surtido | GET | `/api/v1/surtido/supuestos` | SUR-17 |
-| usuarios | GET | `/api/v1/usuarios/yo` | AUTH-11, USR-01, USR-02 |
+| usuarios | GET | `/api/v1/usuarios/yo` | AUTH-11, AUTH-13, USR-01, USR-02 |
 | usuarios | PATCH | `/api/v1/usuarios/yo` | USR-03, USR-04 |
 | usuarios | PUT | `/api/v1/usuarios/yo` | USR-08 |
 | usuarios | GET | `/api/v1/usuarios` | USR-05, USR-06 |

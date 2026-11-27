@@ -212,6 +212,16 @@ def ejecutar_ola2(ev, h):
             cuerpo={"operadores": 9, "repartidores": 9}, token=t_op1, esperado=403)
     ev.caso("CAP-11", "capacidad", "Personal inválido", "Al menos un operador.", "PUT", f"capacidad/recursos/{hub1}", cuerpo={"operadores": 0, "repartidores": 3},
             token=t_plan, esperado=422)
+    ev.caso("CAP-14", "capacidad", "Colas M/M/c de la preparación", "Espera, utilización y personal necesario (Erlang C).", "GET",
+            f"capacidad/colas?microhub_id={hub1}&llegadas_hora=10&servicio_min=10&servidores=2", token=t_adm,
+            verificar=lambda r: r.json["actual"]["modelo"] == "M/M/c" and r.json["servidores_necesarios"] >= 2,
+            explicacion="λ = 10 pedidos/h y μ = 6/h por persona: con 2 la utilización es 83 % y la probabilidad de esperar 76 %.")
+    ev.caso("CAP-15", "capacidad", "Colas con una sola persona (M/M/1)", "Si llegan más de los que atiende, la fila no es estable.", "GET",
+            f"capacidad/colas?microhub_id={hub1}&llegadas_hora=10&servicio_min=10&servidores=1", token=t_adm,
+            verificar=lambda r: r.json["actual"]["modelo"] == "M/M/1" and r.json["actual"]["estable"] is False)
+    ev.caso("CAP-16", "capacidad", "Colas (XML) con los datos del microhub", "Por omisión usa la hora pico observada y sus operadores.", "GET",
+            f"capacidad/colas?microhub_id={hub1}", token=t_adm, formato="xml", verificar=lambda r: "<capacidad_colas" in r.texto)
+    ev.caso("CAP-17", "capacidad", "Colas sin microhub", "microhub_id es obligatorio.", "GET", "capacidad/colas", token=t_adm, esperado=400)
     ev.caso("CAP-12", "capacidad", "Supuestos de la capacidad", "Productividad por etapa, umbrales y horas del turno.", "GET", "capacidad/supuestos", token=t_adm,
             verificar=lambda r: {"picking_pedidos_hora", "umbral_utilizacion_riesgo"} <= {s["clave"] for s in r.json["datos"]})
 

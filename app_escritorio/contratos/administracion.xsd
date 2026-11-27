@@ -461,6 +461,7 @@
             <xs:enumeration value="auditor"/>
             <xs:enumeration value="analista"/>
             <xs:enumeration value="supervisor"/>
+            <xs:enumeration value="proveedor"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
@@ -526,6 +527,7 @@
             <xs:enumeration value="auditor"/>
             <xs:enumeration value="analista"/>
             <xs:enumeration value="supervisor"/>
+            <xs:enumeration value="proveedor"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:element>

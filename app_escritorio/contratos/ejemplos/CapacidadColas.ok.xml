@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<capacidad_colas xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1">
+  <microhub>
+    <id>1</id>
+    <nombre>Microhub San Bernabé Centro</nombre>
+  </microhub>
+  <llegadas_hora>10.0</llegadas_hora>
+  <servicio_min>10.0</servicio_min>
+  <atencion_hora>6.0</atencion_hora>
+  <espera_max_min>5.0</espera_max_min>
+  <actual>
+    <servidores>2</servidores>
+    <modelo>M/M/c</modelo>
+    <estable>true</estable>
+    <utilizacion_pct>83.3</utilizacion_pct>
+    <prob_vacio>0.0909</prob_vacio>
+    <prob_espera>0.7576</prob_espera>
+    <en_cola>3.788</en_cola>
+    <en_sistema>5.455</en_sistema>
+    <espera_cola_min>22.73</espera_cola_min>
+    <tiempo_sistema_min>32.73</tiempo_sistema_min>
+  </actual>
+  <comparacion>
+    <escenario>
+      <servidores>1</servidores>
+      <modelo>M/M/1</modelo>
+      <estable>false</estable>
+      <utilizacion_pct>166.7</utilizacion_pct>
+      <prob_vacio xsi:nil="true" />
+      <prob_espera xsi:nil="true" />
+      <en_cola xsi:nil="true" />
+      <en_sistema xsi:nil="true" />
+      <espera_cola_min xsi:nil="true" />
+      <tiempo_sistema_min xsi:nil="true" />
+    </escenario>
+    <escenario>
+      <servidores>2</servidores>
+      <modelo>M/M/c</modelo>
+      <estable>true</estable>
+      <utilizacion_pct>83.3</utilizacion_pct>
+      <prob_vacio>0.0909</prob_vacio>
+      <prob_espera>0.7576</prob_espera>
+      <en_cola>3.788</en_cola>
+      <en_sistema>5.455</en_sistema>
+      <espera_cola_min>22.73</espera_cola_min>
+      <tiempo_sistema_min>32.73</tiempo_sistema_min>
+    </escenario>
+    <escenario>
+      <servidores>3</servidores>
+      <modelo>M/M/c</modelo>
+      <estable>true</estable>
+      <utilizacion_pct>55.6</utilizacion_pct>
+      <prob_vacio>0.1727</prob_vacio>
+      <prob_espera>0.2998</prob_espera>
+      <en_cola>0.375</en_cola>
+      <en_sistema>2.041</en_sistema>
+      <espera_cola_min>2.25</espera_cola_min>
+      <tiempo_sistema_min>12.25</tiempo_sistema_min>
+    </escenario>
+    <escenario>
+      <servidores>4</servidores>
+      <modelo>M/M/c</modelo>
+      <estable>true</estable>
+      <utilizacion_pct>41.7</utilizacion_pct>
+      <prob_vacio>0.1859</prob_vacio>
+      <prob_espera>0.1025</prob_espera>
+      <en_cola>0.073</en_cola>
+      <en_sistema>1.74</en_sistema>
+      <espera_cola_min>0.44</espera_cola_min>
+      <tiempo_sistema_min>10.44</tiempo_sistema_min>
+    </escenario>
+  </comparacion>
+  <servidores_necesarios>3</servidores_necesarios>
+  <lectura>Con 2 persona(s) la utilización es 83 %, se espera en fila 22.7 min y la probabilidad de esperar es 76 %. Para esperar 5 min o menos hacen falta 3 persona(s).</lectura>
+  <valores_modificados>
+    <clave>llegadas_hora</clave>
+    <clave>servicio_min</clave>
+  </valores_modificados>
+  <supuestos_usados>
+    <supuesto>
+      <clave>cap_factor_pico</clave>
+      <valor>1.35</valor>
+      <modificado>false</modificado>
+    </supuesto>
+  </supuestos_usados>
+</capacidad_colas>

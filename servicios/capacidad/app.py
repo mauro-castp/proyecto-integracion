@@ -8,10 +8,11 @@ Servicio de capacidad · puerto 5117 · contrato v1
   GET /api/v1/capacidad/microhubs/{id}             el detalle de uno, con el tiempo de cada etapa
   POST /api/v1/capacidad/simulaciones              qué pasaría con otra carga o con otro personal
   GET /api/v1/capacidad/cargas                     utilización a distintas cargas y el punto de saturación
+  GET /api/v1/capacidad/colas                      teoría de colas M/M/1 y M/M/c: espera, utilización y personal necesario
   GET /api/v1/capacidad/supuestos                  de dónde sale cada valor y cómo se calibra
 
 Responsabilidad única: cuántos pedidos puede procesar un microhub y qué tan cerca está de saturarse.
-Usa las fórmulas de sistema_web/planeacion_calc.py (pc.capacidad), las mismas del portal y de planeación.
+Usa las fórmulas de comun/planeacion_calc.py (pc.capacidad), las mismas del portal y de planeación.
 
 Modelo: cada operador hace picking, empaque y despacho uno tras otro, así que su ritmo combinado es
 1 ÷ (1/picking + 1/empaque + 1/despacho). El reparto depende de cuántos repartidores hay, de la distancia y de las
@@ -23,7 +24,7 @@ import math
 
 from flask import g, request
 
-from comun import config, supuestos as sup
+from comun import colas, config, supuestos as sup
 from comun.base import (crear_app, documentar, filtro_entero, leer_cuerpo, leer_paginacion, limitar_microhub, lista, paginacion, requiere,
                         responder)
 from comun.base_errores import filtro_invalido, no_encontrado
@@ -283,6 +284,36 @@ def cargas():
                       "supuestos_usados": usados(p, [])}, raiz="capacidad_cargas", items={"filas": "fila", "supuestos_usados": "supuesto"})
 
 
+@app.get(f"{P}/capacidad/colas")
+@requiere("capacidad.ver")
+def cola_preparacion():
+    """Fila de preparación de pedidos como cola M/M/c. Por omisión: la demanda de la hora pico del microhub, el tiempo de
+    picking, empaque y despacho de los supuestos y sus operadores. Todo se puede cambiar en la consulta."""
+    mid = limitar_microhub(filtro_entero("microhub_id"))
+    if not mid:
+        raise filtro_invalido("microhub_id", "microhub_id es obligatorio.")
+    f = _recurso(mid)
+    p = parametros()
+    minutos = 60 / p["picking_pedidos_hora"] + 60 / p["packing_pedidos_hora"] + 60 / p["despacho_pedidos_hora"]
+    llegadas, mod_l = _numero("llegadas_hora", None, 0, 100000)
+    if llegadas is None:
+        llegadas = carga_observada(mid) / p["horas_turno"] * p["cap_factor_pico"]
+    servicio, mod_s = _numero("servicio_min", minutos, 0.1, 600)
+    personas, mod_c = _numero("servidores", f["operadores"], 1, colas.MAX_SERVIDORES)
+    meta, _ = _numero("espera_max_min", 5.0, 0.1, 600)
+    atencion = 60 / servicio
+    actual = colas.mmc(llegadas, atencion, int(personas))
+    necesarios = colas.servidores_necesarios(llegadas, atencion, meta)
+    hubs = mapa("microhubs", "microhubs")
+    modificados = [n for n, m in (("llegadas_hora", mod_l), ("servicio_min", mod_s), ("servidores", mod_c)) if m]
+    return responder({"microhub": {"id": mid, "nombre": (hubs.get(mid) or {}).get("nombre")}, "llegadas_hora": round(llegadas, 3),
+                      "servicio_min": round(servicio, 2), "atencion_hora": round(atencion, 3), "espera_max_min": meta, "actual": actual,
+                      "comparacion": colas.comparar(llegadas, atencion, int(personas), necesarios), "servidores_necesarios": necesarios,
+                      "lectura": colas.lectura(actual, necesarios, meta), "valores_modificados": modificados,
+                      "supuestos_usados": usados(p, [])}, raiz="capacidad_colas",
+                     items={"comparacion": "escenario", "supuestos_usados": "supuesto", "valores_modificados": "clave"})
+
+
 @app.get(f"{P}/capacidad/supuestos")
 @requiere("capacidad.ver")
 def supuestos_capacidad():
@@ -320,6 +351,14 @@ documentar(app, "GET", f"{P}/capacidad/cargas", "Utilización a distintas cargas
                        ("distancia_km", "query", "number", "Distancia de entrega"), ("horas", "query", "number", "Horas de trabajo al día")],
            descripcion="Muestra en qué carga el microhub entra en riesgo y en cuál se satura; lo que pasa de la capacidad se rechaza.",
            respuestas={200: ("Curva de carga", "CapacidadCargas.ok")}, errores=[400, 403, 404])
+documentar(app, "GET", f"{P}/capacidad/colas", "Colas M/M/1 y M/M/c de la preparación", permisos=["capacidad.ver"],
+           parametros=[HUB, ("llegadas_hora", "query", "number", "λ: pedidos por hora; por omisión la hora pico observada"),
+                       ("servicio_min", "query", "number", "Minutos que toma preparar un pedido; por omisión picking + empaque + despacho"),
+                       ("servidores", "query", "integer", "Personas en paralelo (c); por omisión los operadores del microhub"),
+                       ("espera_max_min", "query", "number", "Meta de espera en fila, en minutos (5)")],
+           descripcion="Utilización, probabilidad de esperar (Erlang C), pedidos y minutos en fila y en el sistema, comparación desde una sola "
+                       "persona (M/M/1) y el personal mínimo que cumple la meta. Si λ ≥ c·μ la cola no es estable y esas medidas van vacías.",
+           respuestas={200: ("Análisis de la cola", "CapacidadColas.ok")}, errores=[400, 403, 404, 503])
 documentar(app, "GET", f"{P}/capacidad/supuestos", "Supuestos del modelo de capacidad", permisos=["capacidad.ver"],
            descripcion="Valor, origen (medido, supuesto o normativo), justificación y cómo calibrarlo con datos reales.",
            respuestas={200: ("Supuestos documentados", "SupuestosCapacidad.ok")}, errores=[403])

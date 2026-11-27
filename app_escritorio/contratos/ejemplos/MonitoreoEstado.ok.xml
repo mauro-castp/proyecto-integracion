@@ -32,6 +32,9 @@
       <errores_5xx_hora>0</errores_5xx_hora>
       <disponibilidad_24h_pct>100.0</disponibilidad_24h_pct>
       <bajo_objetivo>false</bajo_objetivo>
+      <tiempo_promedio_ms>17.9</tiempo_promedio_ms>
+      <ultimo_error>degradado: falla redis</ultimo_error>
+      <ultimo_error_en>2026-11-25T10:30:00-06:00</ultimo_error_en>
     </servicio>
   </servicios>
   <dependencias_caidas>

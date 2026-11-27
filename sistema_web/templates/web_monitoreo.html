@@ -23,7 +23,7 @@
 </div>
 {% endif %}
 
-<div class="panel" style="overflow:auto"><h2>Estado por servicio</h2><table><thead><tr><th>Servicio</th><th>Puerto</th><th>Estado</th><th>Última verificación</th><th>ms</th><th>Versión</th><th>PostgreSQL</th><th>Redis</th><th>MongoDB</th><th>Bucket</th><th>Peticiones/h</th><th>5xx/h</th><th>Disponib. 24 h</th><th>p95 ms</th></tr></thead><tbody>
+<div class="panel" style="overflow:auto"><h2>Estado por servicio</h2><table><thead><tr><th>Servicio</th><th>Puerto</th><th>Estado</th><th>Última verificación</th><th>ms</th><th>Versión</th><th>PostgreSQL</th><th>Redis</th><th>MongoDB</th><th>Bucket</th><th>Peticiones/h</th><th>5xx/h</th><th>Disponib. 24 h</th><th>Prom. ms</th><th>p95 ms</th><th>Último error (24 h)</th></tr></thead><tbody>
 {% for s in estado.datos.servicios %}<tr>
 <td><a href="{{ url_for('servicios.monitoreo_historial', nombre=s.servicio) }}" title="Ver historial">{{ s.servicio }}</a></td><td>{{ s.puerto }}</td>
 <td>{% if s.estado == 'ok' %}<span class="pill verde">ok</span>{% elif s.estado == 'sin_datos' %}<span class="pill">sin datos</span>{% else %}<span class="pill rojo">{{ s.estado }}</span>{% endif %}</td>
@@ -31,8 +31,8 @@
 {% for d in ['postgres','redis','mongo','bucket'] %}<td>{% if s.dependencias %}{% set v = s.dependencias[d] %}{% if v == 'error' %}<span class="pill rojo">error</span>{% elif v == 'ok' %}ok{% else %}<span style="opacity:.5">—</span>{% endif %}{% else %}—{% endif %}</td>{% endfor %}
 <td>{{ s.peticiones_hora if s.peticiones_hora is not none else '—' }}</td><td>{{ s.errores_5xx_hora if s.errores_5xx_hora is not none else '—' }}</td>
 <td>{% if s.disponibilidad_24h_pct is not none %}{% if s.bajo_objetivo %}<span class="pill rojo">{{ s.disponibilidad_24h_pct }} %</span>{% else %}{{ s.disponibilidad_24h_pct }} %{% endif %}{% else %}—{% endif %}</td>
-<td>{{ disp.get(s.servicio, {}).get('tiempo_p95_ms') if disp.get(s.servicio, {}).get('tiempo_p95_ms') is not none else '—' }}</td></tr>
-{% if s.error %}<tr><td></td><td colspan="13" class="ayuda">{{ s.error }}</td></tr>{% endif %}
+<td>{{ s.tiempo_promedio_ms if s.tiempo_promedio_ms is not none else '—' }}</td><td>{{ disp.get(s.servicio, {}).get('tiempo_p95_ms') if disp.get(s.servicio, {}).get('tiempo_p95_ms') is not none else '—' }}</td><td class="ayuda">{% if s.ultimo_error %}{{ s.ultimo_error }} · {{ s.ultimo_error_en }}{% else %}—{% endif %}</td></tr>
+{% if s.error %}<tr><td></td><td colspan="15" class="ayuda">{{ s.error }}</td></tr>{% endif %}
 {% endfor %}</tbody></table></div>
 {% endif %}
 

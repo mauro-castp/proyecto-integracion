@@ -1,6 +1,6 @@
 # Evidencias de petición y respuesta · microservicios v1
 
-Generado el 2026-11-27 07:25 contra los servicios en ejecución. 439 de 439 casos pasan.
+Generado el 2026-11-27 08:11 contra los servicios en ejecución. 445 de 445 casos pasan.
 
 ## Servicio auth · puerto 5101
 
@@ -12,7 +12,7 @@ Generado el 2026-11-27 07:25 contra los servicios en ejecución. 439 de 439 caso
 
 ```http
 Accept: application/json
-X-Traza-Id: f95fd382-2eb6-495d-a7b2-812c56f54c4a
+X-Traza-Id: db55acc6-0fd0-40c7-9199-a25bbdc3b4de
 Content-Type: application/json
 ```
 
@@ -24,12 +24,12 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 305 ms · traza `f95fd382-2eb6-495d-a7b2-812c56f54c4a`
+**Respuesta.** HTTP 200 (esperado 200) · 283 ms · traza `db55acc6-0fd0-40c7-9199-a25bbdc3b4de`
 
 ```json
 {
   "token_acceso": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwicm9sIjo…(291 caracteres)",
-  "token_renovacion": "rt_9dc0d9f0021455e1850c5fd6b17829af",
+  "token_renovacion": "rt_18d4bfd6cf48003ee079ac1caa28a406",
   "tipo": "Bearer",
   "expira_en": 900,
   "usuario": {
@@ -54,45 +54,35 @@ Content-Type: application/json
 
 **Explicación.** bcrypt valida la clave; el jti del acceso se agrega a la sesión activa en Redis y la renovación se guarda como hash con TTL de 7 días. El login queda en la bitácora.
 
-**Evidencia en Redis.** `SMEMBERS auth:sesion:7; TTL auth:sesion:7; TTL auth:refresh:64283a955263769966448c25c54ab623dcc691ef70d751be31a83653d17ce86b`
+**Evidencia en Redis.** `SMEMBERS auth:sesion:7; TTL auth:sesion:7; TTL auth:refresh:e5df6862b05c8903fc8d0629003d71ea1e28722fd0e2d84d560415412f2d038c`
 
 ```json
 [
   {
     "comando": "SMEMBERS auth:sesion:7",
     "valor": [
-      "02e2a3a8fd3144e58d73fcd409e03e88",
-      "135721b8d66045c8a52fbcaa2acb0270",
-      "21655294820e4f0e8b01a675d8c187d1",
-      "29e2949084e240c8a80af3b3b878e46b",
-      "3ac5c258eb5b4569b67502eb10820790",
-      "4898ea367cc14df6b2277caafdab7a3a",
-      "4916ed15a1c14026addd70542be39d17",
-      "5430025ca1354336a29678ff9f18850c",
-      "57869eab46c54dc9a5d612b6b4e034f5",
-      "67cf749018d846d4a981c5538644cd1e",
-      "69b184d587db4130b411f2cf931ff074",
-      "69ff489ae6b7428eaff23f7fb83a366c",
-      "6c789b215be14f068124410ccd893afd",
-      "6e7d3dc0b9ae44088cce2807f0ae7e75",
-      "7c6d25c50b6540f6bc608e291e9529ea",
-      "8d8e8db3e1cb422fa6cc284e25d4d2ff",
-      "8f69a97c50214270b17a730fbaf20925",
-      "93ccf147b1a0404eb3498a5e597fc1e2",
-      "9bdf8f468fdb42d6ace87212d445e75b",
-      "9c3096d63bc4424f8f3e0a9255bc798a",
-      "a719467ae46b4eb585cd3d673fdff800",
-      "ab712d96c495437cae4d7f12cd12351d",
-      "b16843a7868b44c68ec6e722cbcd727d",
-      "b72d67962b5e4f728775d6513bb644d5",
-      "ba5854294db148639092900bfdf06ca0",
-      "c3b3f1674a0f4c33b30a2d74f626c196",
-      "d5f48716d75d40f58a33045d06f802df",
-      "ecf57ef6554a4f21a3e87f8e848e10cd",
-      "f076686479534756b4bfeb230d5b5ba1",
-      "f13fe15f50a643679ccb0e0c7b910641",
-      "f20c1dcd2c8f4b8181e491fdb230ce56",
-      "f554fb03fed84b379abef9f9db5d7b07"
+      "12be4737668b47a1ae36584c199ebcea",
+      "2e9d8c1ca57747c1b013d5fd82e337b7",
+      "2eb46eceac3140a0a541bd26254aecc9",
+      "420175da85004a4f985b7862ae744bed",
+      "4d114d14aeae49858caee2f1a54b84f5",
+      "56aec816c82d493dba290a663bb54583",
+      "5ecd7c78905141f697735a3a89976166",
+      "64df539e26bb4620984bdd4fe040c2fc",
+      "8904d1bb7a814b43a204400b656942e3",
+      "9a1e9dc482ba468fbd4c753a8e079bcb",
+      "a02391bf704d40dc8e385e25c277fe31",
+      "a7e5db885e754f50ba0a8078fc7faeef",
+      "b183ce7ff3b84a96b2b723c9e1b1ca45",
+      "b21e2cd326ed4719a75b6832fa6b9119",
+      "b3b009a61ffc4dcbba42de894c8a2b25",
+      "b70bc7b2f8e44d09b7ffc5d2d0883ddf",
+      "cde74b59f92648fdb009924902864a82",
+      "da9ae59806824192a45531ab13f1462f",
+      "e0b4363f62564a44854b09bc5fc27ce1",
+      "eaaa5f81044c42018a84c32b3cb86781",
+      "f7c142895aac4bc5a901b3b27f86d995",
+      "fef2600e73ed43e5bfb05a57dac42500"
     ]
   },
   {
@@ -100,7 +90,7 @@ Content-Type: application/json
     "valor": 900
   },
   {
-    "comando": "TTL auth:refresh:64283a955263769966448c25c54ab623dcc691ef70d751be31a83653d17ce86b",
+    "comando": "TTL auth:refresh:e5df6862b05c8903fc8d0629003d71ea1e28722fd0e2d84d560415412f2d038c",
     "valor": 604800
   }
 ]
@@ -111,7 +101,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "fecha": "2026-11-27 01:24:23.781736-06:00",
+    "fecha": "2026-11-27 02:10:31.294738-06:00",
     "modulo": "auth",
     "accion": "login_exitoso",
     "detalle": "Inicio de sesión por API (Pixel 7)."
@@ -127,7 +117,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/xml
-X-Traza-Id: f78b378c-2109-43e3-a82c-0e61b0c8c3a5
+X-Traza-Id: 8145216b-ac7e-4459-886b-c5d651325ae7
 Content-Type: application/xml
 ```
 
@@ -135,11 +125,11 @@ Content-Type: application/xml
 <?xml version="1.0" encoding="UTF-8"?><login xmlns="urn:microhubs:v1"><correo>planeador@codex.mx</correo><clave>********</clave></login>
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 300 ms · traza `f78b378c-2109-43e3-a82c-0e61b0c8c3a5`
+**Respuesta.** HTTP 200 (esperado 200) · 362 ms · traza `8145216b-ac7e-4459-886b-c5d651325ae7`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<sesion xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><token_acceso>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwicm9sIjo…(291 caracteres)</token_acceso><token_renovacion>rt_713fd0fd3c2e979b4af88a856790aad8</token_renovacion><tipo>Bearer</tipo><expira_en>900</expira_en><usuario><id>5</id><nombre>Vanessa</nombre><apellidos>Morante López</apellidos><correo>planeador@codex.mx</correo><rol>planeador</rol><microhub_id xsi:nil="true" /><permisos><permiso>abastecimiento.ver</permiso><permiso>archivos.crear</permiso><permiso>archivos.ver</permiso><permiso>capacidad.editar</permiso><permiso>capacidad.ver</permiso><permiso>catalogo_publico.ver</permiso><permiso>cobertura.ver</permiso><permiso>configuracion.ver</permiso><permiso>costos.editar</permiso><permiso>costos.ver</permiso><permiso>demanda.editar</permiso><permiso>demanda.ver</permiso><permiso>equilibrio.editar</permiso><permiso>equilibrio.ver</permiso><permiso>indicadores.ver</permiso><permiso>inventario.ver</permiso><permiso>microhubs.ver</permiso><permiso>monitoreo.ver</permiso><permiso>notificaciones.ver</permiso><permiso>pedidos.reasignar</permiso><permiso>pedidos.ver</permiso><permiso>planeacion.editar</permiso><permiso>planeacion.ver</permiso><permiso>precios.ver</permiso><permiso>productos.ver</permiso><permiso>proveedores.ver</permiso><permiso>reportes.exportar</permiso><permiso>reportes.ver</permiso><permiso>rutas.planear</permiso><permiso>rutas.ver</permiso><permiso>simulacion.ejecutar</permiso><permiso>simulacion.ver</permiso><permiso>surtido.editar</permiso><permiso>surtido.ver</permiso><permiso>zonas.ver</permiso></permisos></usuario></sesion>
+<sesion xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><token_acceso>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwicm9sIjo…(291 caracteres)</token_acceso><token_renovacion>rt_631e1484143ab650ecb542f65b3bb023</token_renovacion><tipo>Bearer</tipo><expira_en>900</expira_en><usuario><id>5</id><nombre>Vanessa</nombre><apellidos>Morante López</apellidos><correo>planeador@codex.mx</correo><rol>planeador</rol><microhub_id xsi:nil="true" /><permisos><permiso>abastecimiento.ver</permiso><permiso>archivos.crear</permiso><permiso>archivos.ver</permiso><permiso>capacidad.editar</permiso><permiso>capacidad.ver</permiso><permiso>catalogo_publico.ver</permiso><permiso>cobertura.ver</permiso><permiso>configuracion.ver</permiso><permiso>costos.editar</permiso><permiso>costos.ver</permiso><permiso>demanda.editar</permiso><permiso>demanda.ver</permiso><permiso>equilibrio.editar</permiso><permiso>equilibrio.ver</permiso><permiso>indicadores.ver</permiso><permiso>inventario.ver</permiso><permiso>microhubs.ver</permiso><permiso>monitoreo.ver</permiso><permiso>notificaciones.ver</permiso><permiso>pedidos.reasignar</permiso><permiso>pedidos.ver</permiso><permiso>planeacion.editar</permiso><permiso>planeacion.ver</permiso><permiso>precios.ver</permiso><permiso>productos.ver</permiso><permiso>proveedores.ver</permiso><permiso>reportes.exportar</permiso><permiso>reportes.ver</permiso><permiso>rutas.planear</permiso><permiso>rutas.ver</permiso><permiso>simulacion.ejecutar</permiso><permiso>simulacion.ver</permiso><permiso>surtido.editar</permiso><permiso>surtido.ver</permiso><permiso>zonas.ver</permiso></permisos></usuario></sesion>
 ```
 
 **Explicación.** El cuerpo XML se valida contra los XSD antes de procesarse; la respuesta <sesion> también cumple el XSD.
@@ -152,7 +142,7 @@ Content-Type: application/xml
 
 ```http
 Accept: application/json
-X-Traza-Id: 651420bc-6bbf-4cb0-a3c0-7f7f5f21064f
+X-Traza-Id: e3c8856c-6c02-4f7a-aafa-297bb97a6bdb
 Content-Type: application/json
 ```
 
@@ -163,14 +153,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 401 (esperado 401) · 209 ms · traza `651420bc-6bbf-4cb0-a3c0-7f7f5f21064f`
+**Respuesta.** HTTP 401 (esperado 401) · 281 ms · traza `e3c8856c-6c02-4f7a-aafa-297bb97a6bdb`
 
 ```json
 {
   "error": {
     "codigo": "CREDENCIALES_INVALIDAS",
     "mensaje": "Correo o clave incorrectos. Intento 1 de 5.",
-    "traza_id": "651420bc-6bbf-4cb0-a3c0-7f7f5f21064f"
+    "traza_id": "e3c8856c-6c02-4f7a-aafa-297bb97a6bdb"
   }
 }
 ```
@@ -200,7 +190,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 27f7890b-4870-45d4-8da9-550f6f8d2795
+X-Traza-Id: d3d860b4-8a6e-4412-a376-2ed30198a24d
 Content-Type: application/json
 ```
 
@@ -211,7 +201,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 5 ms · traza `27f7890b-4870-45d4-8da9-550f6f8d2795`
+**Respuesta.** HTTP 422 (esperado 422) · 10 ms · traza `d3d860b4-8a6e-4412-a376-2ed30198a24d`
 
 ```json
 {
@@ -228,7 +218,7 @@ Content-Type: application/json
         "mensaje": "Debe tener al menos 1 caracteres."
       }
     ],
-    "traza_id": "27f7890b-4870-45d4-8da9-550f6f8d2795"
+    "traza_id": "d3d860b4-8a6e-4412-a376-2ed30198a24d"
   }
 }
 ```
@@ -241,7 +231,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/xml
-X-Traza-Id: 8fa8e94f-48a3-4047-a916-334f6ccf2f77
+X-Traza-Id: 2fd62ba8-1604-4dc6-9960-d5c6c7ad8db7
 Content-Type: application/xml
 ```
 
@@ -249,11 +239,11 @@ Content-Type: application/xml
 <?xml version="1.0"?><!DOCTYPE x [<!ENTITY e SYSTEM "file:///etc/passwd">]><login xmlns="urn:microhubs:v1"><correo>&e;</correo><clave>********</clave></login>
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 5 ms · traza `8fa8e94f-48a3-4047-a916-334f6ccf2f77`
+**Respuesta.** HTTP 400 (esperado 400) · 15 ms · traza `2fd62ba8-1604-4dc6-9960-d5c6c7ad8db7`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<error xmlns="urn:microhubs:v1" version="1"><codigo>XML_INVALIDO</codigo><mensaje>El cuerpo XML no está bien formado o contiene DTD/entidades.</mensaje><traza_id>8fa8e94f-48a3-4047-a916-334f6ccf2f77</traza_id></error>
+<error xmlns="urn:microhubs:v1" version="1"><codigo>XML_INVALIDO</codigo><mensaje>El cuerpo XML no está bien formado o contiene DTD/entidades.</mensaje><traza_id>2fd62ba8-1604-4dc6-9960-d5c6c7ad8db7</traza_id></error>
 ```
 
 **Explicación.** El lector XML (defusedxml) prohíbe DTD y entidades; el error también llega en XML.
@@ -266,11 +256,11 @@ Content-Type: application/xml
 
 ```http
 Accept: application/json
-X-Traza-Id: d345aa0f-c682-40d9-8adf-d3385cb9e162
+X-Traza-Id: c6d7c10d-9f3d-4bfb-8ce2-8f0db8f13272
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 7 ms · traza `d345aa0f-c682-40d9-8adf-d3385cb9e162`
+**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `c6d7c10d-9f3d-4bfb-8ce2-8f0db8f13272`
 
 ```json
 {
@@ -292,18 +282,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 1903e805-68b6-4919-a320-fa38abe158ce
+X-Traza-Id: d7dc08a8-13d8-4c9a-be9d-6cee8d710fd0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 401 (esperado 401) · 5 ms · traza `1903e805-68b6-4919-a320-fa38abe158ce`
+**Respuesta.** HTTP 401 (esperado 401) · 32 ms · traza `d7dc08a8-13d8-4c9a-be9d-6cee8d710fd0`
 
 ```json
 {
   "error": {
     "codigo": "TOKEN_INVALIDO",
     "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.",
-    "traza_id": "1903e805-68b6-4919-a320-fa38abe158ce"
+    "traza_id": "d7dc08a8-13d8-4c9a-be9d-6cee8d710fd0"
   }
 }
 ```
@@ -316,22 +306,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 48ad2dd4-cc16-48f0-b1fd-3a4747d2b61b
+X-Traza-Id: 3b2dc490-d19e-498b-872c-d2797066769d
 Content-Type: application/json
 ```
 
 ```json
 {
-  "token_renovacion": "rt_20a61f20dec48734d1e9fa061f6da6dc"
+  "token_renovacion": "rt_66efacd9b2f69e3ff5527416dec438c2"
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 70 ms · traza `48ad2dd4-cc16-48f0-b1fd-3a4747d2b61b`
+**Respuesta.** HTTP 200 (esperado 200) · 89 ms · traza `3b2dc490-d19e-498b-872c-d2797066769d`
 
 ```json
 {
   "token_acceso": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwicm9sIjo…(291 caracteres)",
-  "token_renovacion": "rt_20bbad8fa9a29a9312c17aa5180c4431",
+  "token_renovacion": "rt_bbf4f2481fe1adee6649659693a2d45d",
   "tipo": "Bearer",
   "expira_en": 900
 }
@@ -339,12 +329,12 @@ Content-Type: application/json
 
 **Explicación.** El token de renovación usado se borra de Redis y su acceso anterior queda revocado.
 
-**Evidencia en Redis.** `EXISTS auth:refresh:51119cf58d29c3adb67984ec37cf1eb3abd4a776a1bb1d7a2736c58409ff898f`
+**Evidencia en Redis.** `EXISTS auth:refresh:1c80365e04e65fecec9f938899be304e5d0bb2af277dde5689347a32980efab8`
 
 ```json
 [
   {
-    "comando": "EXISTS auth:refresh:51119cf58d29c3adb67984ec37cf1eb3abd4a776a1bb1d7a2736c58409ff898f",
+    "comando": "EXISTS auth:refresh:1c80365e04e65fecec9f938899be304e5d0bb2af277dde5689347a32980efab8",
     "valor": 0
   }
 ]
@@ -358,24 +348,24 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: d6f64220-0c30-46ca-9b7d-30f7cdde7f9e
+X-Traza-Id: c3d080d4-6c83-41d4-9c1e-3a6b5c9582ba
 Content-Type: application/json
 ```
 
 ```json
 {
-  "token_renovacion": "rt_20a61f20dec48734d1e9fa061f6da6dc"
+  "token_renovacion": "rt_66efacd9b2f69e3ff5527416dec438c2"
 }
 ```
 
-**Respuesta.** HTTP 401 (esperado 401) · 5 ms · traza `d6f64220-0c30-46ca-9b7d-30f7cdde7f9e`
+**Respuesta.** HTTP 401 (esperado 401) · 7 ms · traza `c3d080d4-6c83-41d4-9c1e-3a6b5c9582ba`
 
 ```json
 {
   "error": {
     "codigo": "TOKEN_INVALIDO",
     "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.",
-    "traza_id": "d6f64220-0c30-46ca-9b7d-30f7cdde7f9e"
+    "traza_id": "c3d080d4-6c83-41d4-9c1e-3a6b5c9582ba"
   }
 }
 ```
@@ -388,18 +378,18 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: b9cfde1e-08ce-4bdf-be51-43e23875a61f
+X-Traza-Id: 60440859-95f0-4eae-94c2-73c41a84fe79
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "token_renovacion": "rt_20bbad8fa9a29a9312c17aa5180c4431"
+  "token_renovacion": "rt_bbf4f2481fe1adee6649659693a2d45d"
 }
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 27 ms · traza `b9cfde1e-08ce-4bdf-be51-43e23875a61f`
+**Respuesta.** HTTP 204 (esperado 204) · 34 ms · traza `60440859-95f0-4eae-94c2-73c41a84fe79`
 
 ```json
 (sin cuerpo)
@@ -407,16 +397,16 @@ Content-Type: application/json
 
 **Explicación.** El jti se agrega a la lista de revocados con TTL igual a su vida restante y sale del conjunto de sesión.
 
-**Evidencia en Redis.** `TTL auth:jti:revocado:285389a0d85b4ee7a129e05aa1797f47; SISMEMBER auth:sesion:7 285389a0d85b4ee7a129e05aa1797f47`
+**Evidencia en Redis.** `TTL auth:jti:revocado:4c881d8329f947bc924b9c320e085640; SISMEMBER auth:sesion:7 4c881d8329f947bc924b9c320e085640`
 
 ```json
 [
   {
-    "comando": "TTL auth:jti:revocado:285389a0d85b4ee7a129e05aa1797f47",
+    "comando": "TTL auth:jti:revocado:4c881d8329f947bc924b9c320e085640",
     "valor": 899
   },
   {
-    "comando": "SISMEMBER auth:sesion:7 285389a0d85b4ee7a129e05aa1797f47",
+    "comando": "SISMEMBER auth:sesion:7 4c881d8329f947bc924b9c320e085640",
     "valor": 0
   }
 ]
@@ -432,23 +422,86 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 9638637c-2dc9-4663-8a73-4d68225d1b12
+X-Traza-Id: bf285e6d-94c7-47b0-b215-ca24b6879beb
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 401 (esperado 401) · 6 ms · traza `9638637c-2dc9-4663-8a73-4d68225d1b12`
+**Respuesta.** HTTP 401 (esperado 401) · 9 ms · traza `bf285e6d-94c7-47b0-b215-ca24b6879beb`
 
 ```json
 {
   "error": {
     "codigo": "TOKEN_INVALIDO",
     "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.",
-    "traza_id": "9638637c-2dc9-4663-8a73-4d68225d1b12"
+    "traza_id": "bf285e6d-94c7-47b0-b215-ca24b6879beb"
   }
 }
 ```
 
 **Explicación.** El servicio de usuarios consulta auth:jti:revocado en Redis: la revocación es común a todos.
+
+## Servicio auth · puerto 5101
+
+### AUTH-12 · Token vencido · PASA
+
+**Objetivo.** Pasada su vigencia no entra, aunque la sesión siga en Redis.
+
+**Petición.** `GET http://auth:5101/api/v1/auth/validar`
+
+```http
+Accept: application/json
+X-Traza-Id: a2b4a3a0-f2dd-4d14-9d03-d6f5deabb4a2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
+```
+
+**Respuesta.** HTTP 401 (esperado 401) · 7 ms · traza `a2b4a3a0-f2dd-4d14-9d03-d6f5deabb4a2`
+
+```json
+{
+  "error": {
+    "codigo": "TOKEN_INVALIDO",
+    "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.",
+    "traza_id": "a2b4a3a0-f2dd-4d14-9d03-d6f5deabb4a2"
+  }
+}
+```
+
+**Evidencia en Redis.** `SISMEMBER auth:sesion:7 5c745186004646ce9018911ea1437e2c`
+
+```json
+[
+  {
+    "comando": "SISMEMBER auth:sesion:7 5c745186004646ce9018911ea1437e2c",
+    "valor": 1
+  }
+]
+```
+
+## Servicio usuarios · puerto 5102
+
+### AUTH-13 · Token vencido en otro servicio · PASA
+
+**Objetivo.** La expiración se revisa en todos los servicios.
+
+**Petición.** `GET http://usuarios:5102/api/v1/usuarios/yo`
+
+```http
+Accept: application/json
+X-Traza-Id: 7b715a9c-e423-4c0b-9675-43a0278a0828
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
+```
+
+**Respuesta.** HTTP 401 (esperado 401) · 6 ms · traza `7b715a9c-e423-4c0b-9675-43a0278a0828`
+
+```json
+{
+  "error": {
+    "codigo": "TOKEN_INVALIDO",
+    "mensaje": "La sesión venció o fue cerrada. Inicia sesión de nuevo.",
+    "traza_id": "7b715a9c-e423-4c0b-9675-43a0278a0828"
+  }
+}
+```
 
 ### USR-01 · Mi perfil (JSON) · PASA
 
@@ -458,11 +511,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 0ad479b0-6d47-45f3-a0d8-8523a9966ee6
+X-Traza-Id: 3729853f-d95b-473c-8a70-6fb56e718f0c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 29 ms · traza `0ad479b0-6d47-45f3-a0d8-8523a9966ee6`
+**Respuesta.** HTTP 200 (esperado 200) · 28 ms · traza `3729853f-d95b-473c-8a70-6fb56e718f0c`
 
 ```json
 {
@@ -473,7 +526,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
   "telefono": "8112345678",
   "rol": "repartidor",
   "microhub": null,
-  "ultimo_acceso": "2026-11-27T01:24:24-06:00"
+  "ultimo_acceso": "2026-11-27T02:10:32-06:00"
 }
 ```
 
@@ -485,15 +538,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/xml
-X-Traza-Id: d937c645-2ae6-4c65-8d1a-7689fd8d736b
+X-Traza-Id: dac0cc1f-7dc7-4c34-99eb-653641773027
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 27 ms · traza `d937c645-2ae6-4c65-8d1a-7689fd8d736b`
+**Respuesta.** HTTP 200 (esperado 200) · 29 ms · traza `dac0cc1f-7dc7-4c34-99eb-653641773027`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<usuario xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id>5</id><nombre>Vanessa</nombre><apellidos>Morante López</apellidos><correo>planeador@codex.mx</correo><telefono>8178109897</telefono><rol>planeador</rol><microhub xsi:nil="true" /><ultimo_acceso>2026-11-27T01:24:25-06:00</ultimo_acceso></usuario>
+<usuario xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id>5</id><nombre>Vanessa</nombre><apellidos>Morante López</apellidos><correo>planeador@codex.mx</correo><telefono>8178109897</telefono><rol>planeador</rol><microhub xsi:nil="true" /><ultimo_acceso>2026-11-27T02:10:33-06:00</ultimo_acceso></usuario>
 ```
 
 ### USR-03 · Actualizar mi teléfono (PATCH) · PASA
@@ -504,7 +557,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 5af350cc-e7cb-4611-8625-ba29fc14cc6e
+X-Traza-Id: b594a178-7048-4e15-a677-113540bbc173
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -515,7 +568,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 61 ms · traza `5af350cc-e7cb-4611-8625-ba29fc14cc6e`
+**Respuesta.** HTTP 200 (esperado 200) · 64 ms · traza `b594a178-7048-4e15-a677-113540bbc173`
 
 ```json
 {
@@ -526,7 +579,7 @@ Content-Type: application/json
   "telefono": "8112345678",
   "rol": "repartidor",
   "microhub": null,
-  "ultimo_acceso": "2026-11-27T01:24:24-06:00"
+  "ultimo_acceso": "2026-11-27T02:10:32-06:00"
 }
 ```
 
@@ -539,7 +592,7 @@ Content-Type: application/json
   {
     "id": 7,
     "telefono": "8112345678",
-    "actualizado_en": "2026-11-27 01:24:25.605805-06:00"
+    "actualizado_en": "2026-11-27 02:10:34.091590-06:00"
   }
 ]
 ```
@@ -549,7 +602,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "fecha": "2026-11-27 01:24:25.605805-06:00",
+    "fecha": "2026-11-27 02:10:34.091590-06:00",
     "accion": "modificacion",
     "entidad": "usuario",
     "detalle": null
@@ -565,7 +618,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 85388cea-cb69-47fa-a8be-cbe436ceeea6
+X-Traza-Id: a73e7d50-2110-4594-a07e-1803db1c42b8
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -576,7 +629,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 28 ms · traza `85388cea-cb69-47fa-a8be-cbe436ceeea6`
+**Respuesta.** HTTP 422 (esperado 422) · 6 ms · traza `a73e7d50-2110-4594-a07e-1803db1c42b8`
 
 ```json
 {
@@ -589,7 +642,7 @@ Content-Type: application/json
         "mensaje": "Debe tener 10 dígitos."
       }
     ],
-    "traza_id": "85388cea-cb69-47fa-a8be-cbe436ceeea6"
+    "traza_id": "a73e7d50-2110-4594-a07e-1803db1c42b8"
   }
 }
 ```
@@ -602,11 +655,11 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 85a5efd2-191e-4417-80be-3ab5b2b0a999
+X-Traza-Id: 32dafd0d-4c7e-465a-90ef-df1e15e4654c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 74 ms · traza `85a5efd2-191e-4417-80be-3ab5b2b0a999`
+**Respuesta.** HTTP 200 (esperado 200) · 61 ms · traza `32dafd0d-4c7e-465a-90ef-df1e15e4654c`
 
 ```json
 {
@@ -623,7 +676,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "clave": "********",
         "nombre": "Microhub San Bernabé Centro"
       },
-      "ultimo_acceso": "2026-11-27T01:24:12-06:00"
+      "ultimo_acceso": "2026-11-27T02:10:19-06:00"
     },
     {
       "id": 3,
@@ -637,7 +690,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "clave": "********",
         "nombre": "Microhub Valles"
       },
-      "ultimo_acceso": "2026-11-27T01:24:17-06:00"
+      "ultimo_acceso": "2026-11-27T02:10:24-06:00"
     },
     {
       "id": 4,
@@ -651,7 +704,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "clave": "********",
         "nombre": "Microhub Poniente F-113"
       },
-      "ultimo_acceso": "2026-11-26T23:20:27-06:00"
+      "ultimo_acceso": "2026-11-27T01:24:27-06:00"
     }
   ],
   "paginacion": {
@@ -671,18 +724,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: f6c3f4a4-8d31-4c09-8456-5bfe9fa527a0
+X-Traza-Id: 925427bc-ba44-434e-9591-c1a90472f346
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 27 ms · traza `f6c3f4a4-8d31-4c09-8456-5bfe9fa527a0`
+**Respuesta.** HTTP 403 (esperado 403) · 27 ms · traza `925427bc-ba44-434e-9591-c1a90472f346`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "f6c3f4a4-8d31-4c09-8456-5bfe9fa527a0"
+    "traza_id": "925427bc-ba44-434e-9591-c1a90472f346"
   }
 }
 ```
@@ -692,7 +745,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 ```json
 [
   {
-    "fecha": "2026-11-27 01:24:25.841795-06:00",
+    "fecha": "2026-11-27 02:10:34.265561-06:00",
     "modulo": "usuarios",
     "accion": "acceso_denegado",
     "detalle": "GET /api/v1/usuarios sin usuarios.ver",
@@ -709,18 +762,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 0c35a8e0-cf76-47b9-af69-3ce846b7a4e9
+X-Traza-Id: bef77296-5de5-44e9-ba14-40c3fd80361e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 32 ms · traza `0c35a8e0-cf76-47b9-af69-3ce846b7a4e9`
+**Respuesta.** HTTP 404 (esperado 404) · 28 ms · traza `bef77296-5de5-44e9-ba14-40c3fd80361e`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe el recurso solicitado.",
-    "traza_id": "0c35a8e0-cf76-47b9-af69-3ce846b7a4e9"
+    "traza_id": "bef77296-5de5-44e9-ba14-40c3fd80361e"
   }
 }
 ```
@@ -735,11 +788,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 004443a9-9f4d-49e6-8b2a-2fc10f2fd818
+X-Traza-Id: e3efc6eb-b54f-4e69-8533-bad8525ee841
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 81 ms · traza `004443a9-9f4d-49e6-8b2a-2fc10f2fd818`
+**Respuesta.** HTTP 200 (esperado 200) · 79 ms · traza `e3efc6eb-b54f-4e69-8533-bad8525ee841`
 
 ```json
 {
@@ -776,7 +829,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 [
   {
     "comando": "db1 TTL cache:catalogo:productos:538d03b535d84110",
-    "valor": 288
+    "valor": 119
   },
   {
     "comando": "db1 TTL cache:catalogo:productos:04d4a6a9d27021cf",
@@ -793,11 +846,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 0ede083e-adf7-44e9-b75a-e81b5ea9216a
+X-Traza-Id: 6e8491bd-43f2-4973-9a70-9d0b86a3b009
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 6 ms · traza `0ede083e-adf7-44e9-b75a-e81b5ea9216a`
+**Respuesta.** HTTP 200 (esperado 200) · 6 ms · traza `6e8491bd-43f2-4973-9a70-9d0b86a3b009`
 
 ```json
 {
@@ -834,15 +887,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/xml
-X-Traza-Id: ba6e6374-e647-4029-a6ae-546d1d51178c
+X-Traza-Id: 0e9a321b-c8e5-4508-92a6-8966dcb97f12
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 71 ms · traza `ba6e6374-e647-4029-a6ae-546d1d51178c`
+**Respuesta.** HTTP 200 (esperado 200) · 115 ms · traza `0e9a321b-c8e5-4508-92a6-8966dcb97f12`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<productos xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><datos><producto><id>3</id><clave_interna>AB-003</clave_interna><nombre>Aceite vegetal</nombre><categoria><id>1</id><nombre>Abarrote básico</nombre></categoria><unidad>botella</unidad><presentacion>900 ml</presentacion><precio>42.00</precio><imagen_url xsi:nil="true" /><estatus>activo</estatus></producto><producto><id>2</id><clave_interna>AB-002</clave_interna><nombre>Arroz superextra</nombre><categoria><id>1</id><nombre>Abarrote básico</nombre></categoria><unidad>kg</unidad><presentacion>1 kg</presentacion><precio>29.90</precio><imagen_url xsi:nil="true" /><estatus>activo</estatus></producto></datos><paginacion><pagina>1</pagina><por_pagina>2</por_pagina><total>55</total><paginas>28</paginas></paginacion></productos>
+<productos xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><datos><producto><id>3</id><clave_interna>AB-003</clave_interna><nombre>Aceite vegetal</nombre><categoria><id>1</id><nombre>Abarrote básico</nombre></categoria><unidad>botella</unidad><presentacion>900 ml</presentacion><precio>42.00</precio><imagen_url xsi:nil="true" /><estatus>activo</estatus></producto><producto><id>2</id><clave_interna>AB-002</clave_interna><nombre>Arroz superextra</nombre><categoria><id>1</id><nombre>Abarrote básico</nombre></categoria><unidad>kg</unidad><presentacion>1 kg</presentacion><precio>29.90</precio><imagen_url xsi:nil="true" /><estatus>activo</estatus></producto></datos><paginacion><pagina>1</pagina><por_pagina>2</por_pagina><total>56</total><paginas>28</paginas></paginacion></productos>
 ```
 
 ### PRO-04 · Un producto · PASA
@@ -853,11 +906,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 1918d6c8-967a-4b0f-acc9-0a318b288189
+X-Traza-Id: 5dc80b6a-77b8-488d-ba59-81bd7ff37ec0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 47 ms · traza `1918d6c8-967a-4b0f-acc9-0a318b288189`
+**Respuesta.** HTTP 200 (esperado 200) · 68 ms · traza `5dc80b6a-77b8-488d-ba59-81bd7ff37ec0`
 
 ```json
 {
@@ -884,18 +937,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 3d751bcb-ade2-49e4-84e5-2dee78111df6
+X-Traza-Id: 6a81d81b-27df-4459-b5cf-1becd253b176
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 47 ms · traza `3d751bcb-ade2-49e4-84e5-2dee78111df6`
+**Respuesta.** HTTP 404 (esperado 404) · 46 ms · traza `6a81d81b-27df-4459-b5cf-1becd253b176`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe el recurso solicitado.",
-    "traza_id": "3d751bcb-ade2-49e4-84e5-2dee78111df6"
+    "traza_id": "6a81d81b-27df-4459-b5cf-1becd253b176"
   }
 }
 ```
@@ -908,11 +961,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: d4243046-51bc-4baa-a224-ef094db95bd2
+X-Traza-Id: 7d469267-c066-4b62-8918-f0edd2553703
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 6 ms · traza `d4243046-51bc-4baa-a224-ef094db95bd2`
+**Respuesta.** HTTP 400 (esperado 400) · 5 ms · traza `7d469267-c066-4b62-8918-f0edd2553703`
 
 ```json
 {
@@ -925,7 +978,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
         "mensaje": "por_pagina debe estar entre 1 y 100."
       }
     ],
-    "traza_id": "d4243046-51bc-4baa-a224-ef094db95bd2"
+    "traza_id": "7d469267-c066-4b62-8918-f0edd2553703"
   }
 }
 ```
@@ -938,17 +991,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: b3055abc-0576-4284-a5da-977f8be999ec
+X-Traza-Id: 88701741-17e9-4712-a543-756ac4c35586
 ```
 
-**Respuesta.** HTTP 401 (esperado 401) · 5 ms · traza `b3055abc-0576-4284-a5da-977f8be999ec`
+**Respuesta.** HTTP 401 (esperado 401) · 4 ms · traza `88701741-17e9-4712-a543-756ac4c35586`
 
 ```json
 {
   "error": {
     "codigo": "TOKEN_INVALIDO",
     "mensaje": "Falta el encabezado Authorization: Bearer <token>.",
-    "traza_id": "b3055abc-0576-4284-a5da-977f8be999ec"
+    "traza_id": "88701741-17e9-4712-a543-756ac4c35586"
   }
 }
 ```
@@ -963,15 +1016,15 @@ X-Traza-Id: b3055abc-0576-4284-a5da-977f8be999ec
 
 ```http
 Accept: application/xml
-X-Traza-Id: 0e2461a2-5ecc-41a2-ae5c-025930fe7e8b
+X-Traza-Id: a6275f9c-19e7-4694-a5c9-0c0b64502d7e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 72 ms · traza `0e2461a2-5ecc-41a2-ae5c-025930fe7e8b`
+**Respuesta.** HTTP 200 (esperado 200) · 12 ms · traza `a6275f9c-19e7-4694-a5c9-0c0b64502d7e`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<zonas xmlns="urn:microhubs:v1" version="1"><datos><zona><id>16</id><clave>EV184C3B</clave><nombre>Zona 184C3B renombrada</nombre><colonia>Colonia 184C3B</colonia><codigo_postal>64102</codigo_postal><latitud>25.77</latitud><longitud>-100.37</longitud></zona><zona><id>15</id><clave>EV1FF3C5</clave><nombre>Zona 1FF3C5 renombrada</nombre><colonia>Colonia 1FF3C5</colonia><codigo_postal>64102</codigo_postal><latitud>25.77</latitud><longitud>-100.37</longitud></zona><zona><id>14</id><clave>EV97A5B6</clave><nombre>Zona 97A5B6 renombrada</nombre><colonia>Colonia 97A5B6</colonia><codigo_postal>64102</codigo_postal><latitud>25.77</latitud><longitud>-100.37</longitud></zona><zona><id>11</id><clave>EVD5F75A</clave><nombre>Zona D5F75A renombrada</nombre><colonia>Colonia D5F75A</colonia><codigo_postal>64102</codigo_postal><latitud>25.77</latitud><longitud>-100.37</longitud></zona><zona><id>1</id><clave>ZN-SB01</clave><nombre>San Bernabé Centro</nombre><colonia>San Bernabé</colonia><codigo_postal>64100</codigo_postal><latitud>25.7455</latitud><longitud>-100.3585</longitud></zona><zona><id>2</id><clave>ZN-SB02</clave><nombre>Valles de San Bernabé</nombre><colonia>Valles de San Bernabé</colonia><codigo_postal>64103</codigo_postal><latitud>25.753</latitud><longitud>-100.369</longitud></zona><zona><id>3</id><clave>ZN-SB03</clave><nombre>Paseo de San Bernabé</nombre><colonia>Paseo de San Bernabé</colonia><codigo_postal>64103</codigo_postal><latitud>25.758</latitud><longitud>-100.3745</longitud></zona><zona><id>4</id><clave>ZN-SB04</clave><nombre>San Bernabé X (F-113)</nombre><colonia>San Bernabé X (F-113)</colonia><codigo_postal>64105</codigo_postal><latitud>25.7495</latitud><longitud>-100.38</longitud></zona></datos><paginacion><pagina>1</pagina><por_pagina>20</por_pagina><total>8</total><paginas>1</paginas></paginacion></zonas>
+<zonas xmlns="urn:microhubs:v1" version="1"><datos><zona><id>16</id><clave>EV184C3B</clave><nombre>Zona 184C3B renombrada</nombre><colonia>Colonia 184C3B</colonia><codigo_postal>64102</codigo_postal><latitud>25.77</latitud><longitud>-100.37</longitud></zona><zona><id>15</id><clave>EV1FF3C5</clave><nombre>Zona 1FF3C5 renombrada</nombre><colonia>Colonia 1FF3C5</colonia><codigo_postal>64102</codigo_postal><latitud>25.77</latitud><longitud>-100.37</longitud></zona><zona><id>19</id><clave>EV48BE4A</clave><nombre>Zona 48BE4A renombrada</nombre><colonia>Colonia 48BE4A</colonia><codigo_postal>64102</codigo_postal><latitud>25.77</latitud><longitud>-100.37</longitud></zona><zona><id>14</id><clave>EV97A5B6</clave><nombre>Zona 97A5B6 renombrada</nombre><colonia>Colonia 97A5B6</colonia><codigo_postal>64102</codigo_postal><latitud>25.77</latitud><longitud>-100.37</longitud></zona><zona><id>11</id><clave>EVD5F75A</clave><nombre>Zona D5F75A renombrada</nombre><colonia>Colonia D5F75A</colonia><codigo_postal>64102</codigo_postal><latitud>25.77</latitud><longitud>-100.37</longitud></zona><zona><id>1</id><clave>ZN-SB01</clave><nombre>San Bernabé Centro</nombre><colonia>San Bernabé</colonia><codigo_postal>64100</codigo_postal><latitud>25.7455</latitud><longitud>-100.3585</longitud></zona><zona><id>2</id><clave>ZN-SB02</clave><nombre>Valles de San Bernabé</nombre><colonia>Valles de San Bernabé</colonia><codigo_postal>64103</codigo_postal><latitud>25.753</latitud><longitud>-100.369</longitud></zona><zona><id>3</id><clave>ZN-SB03</clave><nombre>Paseo de San Bernabé</nombre><colonia>Paseo de San Bernabé</colonia><codigo_postal>64103</codigo_postal><latitud>25.758</latitud><longitud>-100.3745</longitud></zona><zona><id>4</id><clave>ZN-SB04</clave><nombre>San Bernabé X (F-113)</nombre><colonia>San Bernabé X (F-113)</colonia><codigo_postal>64105</codigo_postal><latitud>25.7495</latitud><longitud>-100.38</longitud></zona></datos><paginacion><pagina>1</pagina><por_pagina>20</por_pagina><total>9</total><paginas>1</paginas></paginacion></zonas>
 ```
 
 ### ZON-02 · Una zona · PASA
@@ -982,11 +1035,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: b05972a8-055f-4406-8276-b92134be0419
+X-Traza-Id: 3b4b2f11-e450-491d-a950-d7de02a5fded
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 24 ms · traza `b05972a8-055f-4406-8276-b92134be0419`
+**Respuesta.** HTTP 200 (esperado 200) · 26 ms · traza `3b4b2f11-e450-491d-a950-d7de02a5fded`
 
 ```json
 {
@@ -1008,18 +1061,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 4fe17d02-1898-48af-91da-ea4cd52e07a2
+X-Traza-Id: 77fc296a-1e5a-4032-8340-f9545f040479
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 24 ms · traza `4fe17d02-1898-48af-91da-ea4cd52e07a2`
+**Respuesta.** HTTP 404 (esperado 404) · 22 ms · traza `77fc296a-1e5a-4032-8340-f9545f040479`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe el recurso solicitado.",
-    "traza_id": "4fe17d02-1898-48af-91da-ea4cd52e07a2"
+    "traza_id": "77fc296a-1e5a-4032-8340-f9545f040479"
   }
 }
 ```
@@ -1032,17 +1085,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 642cc1a4-3c27-4482-b3f5-4ea73322c02f
+X-Traza-Id: d97e1861-5e5b-40ca-b88b-dd2f3d556cc8
 ```
 
-**Respuesta.** HTTP 401 (esperado 401) · 5 ms · traza `642cc1a4-3c27-4482-b3f5-4ea73322c02f`
+**Respuesta.** HTTP 401 (esperado 401) · 4 ms · traza `d97e1861-5e5b-40ca-b88b-dd2f3d556cc8`
 
 ```json
 {
   "error": {
     "codigo": "TOKEN_INVALIDO",
     "mensaje": "Falta el encabezado Authorization: Bearer <token>.",
-    "traza_id": "642cc1a4-3c27-4482-b3f5-4ea73322c02f"
+    "traza_id": "d97e1861-5e5b-40ca-b88b-dd2f3d556cc8"
   }
 }
 ```
@@ -1057,11 +1110,11 @@ X-Traza-Id: 642cc1a4-3c27-4482-b3f5-4ea73322c02f
 
 ```http
 Accept: application/json
-X-Traza-Id: e008ec94-27d1-41b7-a692-bd25b7c4eca6
+X-Traza-Id: 2945febf-03e2-4799-9a64-36affbadfc12
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 69 ms · traza `e008ec94-27d1-41b7-a692-bd25b7c4eca6`
+**Respuesta.** HTTP 200 (esperado 200) · 74 ms · traza `2945febf-03e2-4799-9a64-36affbadfc12`
 
 ```json
 {
@@ -1111,18 +1164,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 0408640d-b283-40e8-8370-5f3e6fdf0175
+X-Traza-Id: a6920280-4705-427a-b470-b973a3f984ef
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 28 ms · traza `0408640d-b283-40e8-8370-5f3e6fdf0175`
+**Respuesta.** HTTP 404 (esperado 404) · 24 ms · traza `a6920280-4705-427a-b470-b973a3f984ef`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe el recurso solicitado.",
-    "traza_id": "0408640d-b283-40e8-8370-5f3e6fdf0175"
+    "traza_id": "a6920280-4705-427a-b470-b973a3f984ef"
   }
 }
 ```
@@ -1135,17 +1188,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: ef288a66-461f-4f41-895f-2691cf57ae5f
+X-Traza-Id: 77bf11f2-3a0f-4280-ae20-3f5f15e09011
 ```
 
-**Respuesta.** HTTP 401 (esperado 401) · 6 ms · traza `ef288a66-461f-4f41-895f-2691cf57ae5f`
+**Respuesta.** HTTP 401 (esperado 401) · 4 ms · traza `77bf11f2-3a0f-4280-ae20-3f5f15e09011`
 
 ```json
 {
   "error": {
     "codigo": "TOKEN_INVALIDO",
     "mensaje": "Falta el encabezado Authorization: Bearer <token>.",
-    "traza_id": "ef288a66-461f-4f41-895f-2691cf57ae5f"
+    "traza_id": "77bf11f2-3a0f-4280-ae20-3f5f15e09011"
   }
 }
 ```
@@ -1160,42 +1213,42 @@ X-Traza-Id: ef288a66-461f-4f41-895f-2691cf57ae5f
 
 ```http
 Accept: application/json
-X-Traza-Id: 731f232b-c2eb-45e3-9b51-1bd508160508
+X-Traza-Id: 87d4a5c2-6de3-485e-b1b2-cb0508485747
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 78 ms · traza `731f232b-c2eb-45e3-9b51-1bd508160508`
+**Respuesta.** HTTP 200 (esperado 200) · 62 ms · traza `87d4a5c2-6de3-485e-b1b2-cb0508485747`
 
 ```json
 {
   "datos": [
     {
-      "id": 760,
-      "folio": "PED-20261127-000760",
+      "id": 790,
+      "folio": "PED-20261127-000790",
       "estado": "entregado",
       "zona": {
         "id": 3,
         "nombre": "Paseo de San Bernabé"
       },
-      "microhub_id": 17,
+      "microhub_id": 20,
       "total": 306.0,
-      "creado_en": "2026-11-27T01:24:10-06:00"
+      "creado_en": "2026-11-27T02:10:16-06:00"
     },
     {
-      "id": 757,
-      "folio": "PED-20261127-000757",
+      "id": 787,
+      "folio": "PED-20261127-000787",
       "estado": "entregado",
       "zona": {
-        "id": 1,
-        "nombre": "San Bernabé Centro"
+        "id": 2,
+        "nombre": "Valles de San Bernabé"
       },
-      "microhub_id": 1,
-      "total": 155.0,
-      "creado_en": "2026-11-27T01:19:59-06:00"
+      "microhub_id": 2,
+      "total": 142.0,
+      "creado_en": "2026-11-27T02:08:59-06:00"
     },
     {
-      "id": 744,
-      "folio": "PED-20261127-000744",
+      "id": 770,
+      "folio": "PED-20261127-000770",
       "estado": "entregado",
       "zona": {
         "id": 3,
@@ -1203,38 +1256,38 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
       },
       "microhub_id": 2,
       "total": 289.5,
-      "creado_en": "2026-11-27T01:17:23-06:00"
+      "creado_en": "2026-11-27T02:06:38-06:00"
     },
     {
-      "id": 743,
-      "folio": "PED-20261127-000743",
+      "id": 769,
+      "folio": "PED-20261127-000769",
       "estado": "entregado",
       "zona": {
         "id": 1,
         "nombre": "San Bernabé Centro"
       },
       "microhub_id": 1,
-      "total": 131.0,
-      "creado_en": "2026-11-27T01:16:18-06:00"
+      "total": 192.5,
+      "creado_en": "2026-11-27T02:05:34-06:00"
     },
     {
-      "id": 741,
-      "folio": "PED-20261127-000741",
+      "id": 767,
+      "folio": "PED-20261127-000767",
       "estado": "entregado",
       "zona": {
-        "id": 3,
-        "nombre": "Paseo de San Bernabé"
+        "id": 4,
+        "nombre": "San Bernabé X (F-113)"
       },
-      "microhub_id": 2,
-      "total": 147.0,
-      "creado_en": "2026-11-27T01:16:02-06:00"
+      "microhub_id": 3,
+      "total": 150.0,
+      "creado_en": "2026-11-27T02:05:20-06:00"
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 5,
-    "total": 192,
-    "paginas": 39
+    "total": 200,
+    "paginas": 40
   }
 }
 ```
@@ -1247,35 +1300,35 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/xml
-X-Traza-Id: f6f9106f-3aba-4f89-8838-213446ad8be5
+X-Traza-Id: 6df1c2cc-b418-494e-b7c7-631f288bcb85
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 57 ms · traza `f6f9106f-3aba-4f89-8838-213446ad8be5`
+**Respuesta.** HTTP 200 (esperado 200) · 65 ms · traza `6df1c2cc-b418-494e-b7c7-631f288bcb85`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<pedidos xmlns="urn:microhubs:v1" version="1"><datos><pedido><id>760</id><folio>PED-20261127-000760</folio><estado>entregado</estado><zona><id>3</id><nombre>Paseo de San Bernabé</nombre></zona><microhub_id>17</microhub_id><total>306.00</total><creado_en>2026-11-27T01:24:10-06:00</creado_en></pedido><pedido><id>757</id><folio>PED-20261127-000757</folio><estado>entregado</estado><zona><id>1</id><nombre>San Bernabé Centro</nombre></zona><microhub_id>1</microhub_id><total>155.00</total><creado_en>2026-11-27T01:19:59-06:00</creado_en></pedido></datos><paginacion><pagina>1</pagina><por_pagina>2</por_pagina><total>192</total><paginas>96</paginas></paginacion></pedidos>
+<pedidos xmlns="urn:microhubs:v1" version="1"><datos><pedido><id>790</id><folio>PED-20261127-000790</folio><estado>entregado</estado><zona><id>3</id><nombre>Paseo de San Bernabé</nombre></zona><microhub_id>20</microhub_id><total>306.00</total><creado_en>2026-11-27T02:10:16-06:00</creado_en></pedido><pedido><id>787</id><folio>PED-20261127-000787</folio><estado>entregado</estado><zona><id>2</id><nombre>Valles de San Bernabé</nombre></zona><microhub_id>2</microhub_id><total>142.00</total><creado_en>2026-11-27T02:08:59-06:00</creado_en></pedido></datos><paginacion><pagina>1</pagina><por_pagina>2</por_pagina><total>200</total><paginas>100</paginas></paginacion></pedidos>
 ```
 
 ### PED-03 · Detalle con líneas · PASA
 
 **Objetivo.** Cliente, domicilio y líneas del pedido.
 
-**Petición.** `GET http://pedidos:5104/api/v1/pedidos/760`
+**Petición.** `GET http://pedidos:5104/api/v1/pedidos/790`
 
 ```http
 Accept: application/json
-X-Traza-Id: 62ae28d0-05e0-4644-a764-cb43d8fb0ea8
+X-Traza-Id: 45f22e75-3b4e-467e-866e-7bedfe83e424
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 79 ms · traza `62ae28d0-05e0-4644-a764-cb43d8fb0ea8`
+**Respuesta.** HTTP 200 (esperado 200) · 87 ms · traza `45f22e75-3b4e-467e-866e-7bedfe83e424`
 
 ```json
 {
-  "id": 760,
-  "folio": "PED-20261127-000760",
+  "id": 790,
+  "folio": "PED-20261127-000790",
   "estado": "entregado",
   "cliente": {
     "nombre": "Juan Chapa Sepúlveda",
@@ -1292,14 +1345,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
     "id": 3,
     "nombre": "Paseo de San Bernabé"
   },
-  "microhub_id": 17,
+  "microhub_id": 20,
   "subtotal": 306.0,
   "costo_envio": 0.0,
   "total": 306.0,
-  "creado_en": "2026-11-27T01:24:10-06:00",
+  "creado_en": "2026-11-27T02:10:16-06:00",
   "lineas": [
     {
-      "id": 1838,
+      "id": 1896,
       "producto_id": 31,
       "nombre": "Queso fresco",
       "cantidad": 3,
@@ -1307,7 +1360,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
       "importe": 174.0
     },
     {
-      "id": 1839,
+      "id": 1897,
       "producto_id": 18,
       "nombre": "Pan de caja blanco",
       "cantidad": 3,
@@ -1322,54 +1375,54 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 **Objetivo.** Cambios de estado con usuario y fecha.
 
-**Petición.** `GET http://pedidos:5104/api/v1/pedidos/760/historial`
+**Petición.** `GET http://pedidos:5104/api/v1/pedidos/790/historial`
 
 ```http
 Accept: application/json
-X-Traza-Id: e1ec5696-bc2c-46c8-8011-515924e611ea
+X-Traza-Id: d4535b32-ba3b-499b-863f-84a9bb853043
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 52 ms · traza `e1ec5696-bc2c-46c8-8011-515924e611ea`
+**Respuesta.** HTTP 200 (esperado 200) · 56 ms · traza `d4535b32-ba3b-499b-863f-84a9bb853043`
 
 ```json
 {
-  "pedido_id": 760,
+  "pedido_id": 790,
   "eventos": [
     {
       "estado_anterior": null,
       "estado_nuevo": "creado",
       "usuario": "juan.chapa1@correo.mx",
       "motivo": null,
-      "fecha": "2026-11-27T01:24:10-06:00"
+      "fecha": "2026-11-27T02:10:16-06:00"
     },
     {
       "estado_anterior": "creado",
       "estado_nuevo": "asignado",
       "usuario": "juan.chapa1@correo.mx",
       "motivo": null,
-      "fecha": "2026-11-27T01:24:10-06:00"
+      "fecha": "2026-11-27T02:10:16-06:00"
     },
     {
       "estado_anterior": "asignado",
       "estado_nuevo": "en_preparacion",
-      "usuario": "operador.e83ef@ejemplo.mx",
+      "usuario": "operador.ec3af@ejemplo.mx",
       "motivo": null,
-      "fecha": "2026-11-27T01:24:10-06:00"
+      "fecha": "2026-11-27T02:10:17-06:00"
     },
     {
       "estado_anterior": "en_preparacion",
       "estado_nuevo": "en_ruta",
-      "usuario": "operador.e83ef@ejemplo.mx",
+      "usuario": "operador.ec3af@ejemplo.mx",
       "motivo": null,
-      "fecha": "2026-11-27T01:24:10-06:00"
+      "fecha": "2026-11-27T02:10:17-06:00"
     },
     {
       "estado_anterior": "en_ruta",
       "estado_nuevo": "entregado",
       "usuario": "repartidor1@codex.mx",
       "motivo": null,
-      "fecha": "2026-11-27T01:24:11-06:00"
+      "fecha": "2026-11-27T02:10:18-06:00"
     }
   ]
 }
@@ -1380,31 +1433,31 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 ```json
 [
   {
-    "fecha": "2026-11-27 01:24:10.316870-06:00",
+    "fecha": "2026-11-27 02:10:16.930610-06:00",
     "estado_anterior": null,
     "estado_nuevo": "creado",
     "usuario_id": 9
   },
   {
-    "fecha": "2026-11-27 01:24:10.316870-06:00",
+    "fecha": "2026-11-27 02:10:16.930610-06:00",
     "estado_anterior": "creado",
     "estado_nuevo": "asignado",
     "usuario_id": 9
   },
   {
-    "fecha": "2026-11-27 01:24:10.531697-06:00",
+    "fecha": "2026-11-27 02:10:17.177745-06:00",
     "estado_anterior": "asignado",
     "estado_nuevo": "en_preparacion",
-    "usuario_id": 71
+    "usuario_id": 78
   },
   {
-    "fecha": "2026-11-27 01:24:10.916668-06:00",
+    "fecha": "2026-11-27 02:10:17.627116-06:00",
     "estado_anterior": "en_preparacion",
     "estado_nuevo": "en_ruta",
-    "usuario_id": 71
+    "usuario_id": 78
   },
   {
-    "fecha": "2026-11-27 01:24:11.674131-06:00",
+    "fecha": "2026-11-27 02:10:18.302100-06:00",
     "estado_anterior": "en_ruta",
     "estado_nuevo": "entregado",
     "usuario_id": 7
@@ -1420,11 +1473,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 871e448f-e7ff-47b4-a34e-dba4e8fbe83d
+X-Traza-Id: 949a8243-073e-4bbe-a1c4-e8d4f4a37f42
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 6 ms · traza `871e448f-e7ff-47b4-a34e-dba4e8fbe83d`
+**Respuesta.** HTTP 400 (esperado 400) · 9 ms · traza `949a8243-073e-4bbe-a1c4-e8d4f4a37f42`
 
 ```json
 {
@@ -1437,7 +1490,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
         "mensaje": "Valor no permitido para estado: inventado."
       }
     ],
-    "traza_id": "871e448f-e7ff-47b4-a34e-dba4e8fbe83d"
+    "traza_id": "949a8243-073e-4bbe-a1c4-e8d4f4a37f42"
   }
 }
 ```
@@ -1450,18 +1503,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: f041c534-40aa-443f-9036-a8179fdb0d9b
+X-Traza-Id: b751b2c5-9559-4240-af92-b9949e592f67
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 33 ms · traza `f041c534-40aa-443f-9036-a8179fdb0d9b`
+**Respuesta.** HTTP 404 (esperado 404) · 35 ms · traza `b751b2c5-9559-4240-af92-b9949e592f67`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe el pedido o no está en tu ámbito.",
-    "traza_id": "f041c534-40aa-443f-9036-a8179fdb0d9b"
+    "traza_id": "b751b2c5-9559-4240-af92-b9949e592f67"
   }
 }
 ```
@@ -1472,11 +1525,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 **Objetivo.** Los cierres de entrega solo se registran en el servicio de entregas.
 
-**Petición.** `POST http://pedidos:5104/api/v1/pedidos/760/estado`
+**Petición.** `POST http://pedidos:5104/api/v1/pedidos/790/estado`
 
 ```http
 Accept: application/json
-X-Traza-Id: c7e798d0-52a0-4bc8-b01a-87d3e7df90ba
+X-Traza-Id: 1d6848f4-fa75-4564-aba7-92f53fecc40c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -1487,14 +1540,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 6 ms · traza `c7e798d0-52a0-4bc8-b01a-87d3e7df90ba`
+**Respuesta.** HTTP 409 (esperado 409) · 7 ms · traza `1d6848f4-fa75-4564-aba7-92f53fecc40c`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "El cierre de una entrega se registra con POST /api/v1/entregas/{id}/resultado.",
-    "traza_id": "c7e798d0-52a0-4bc8-b01a-87d3e7df90ba"
+    "traza_id": "1d6848f4-fa75-4564-aba7-92f53fecc40c"
   }
 }
 ```
@@ -1507,7 +1560,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 225b0d92-8f76-4c3f-aa6a-d802d620ac28
+X-Traza-Id: 3e6c624c-f6ef-4953-b8cd-23fadc3a1334
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0Iiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -1518,14 +1571,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 71 ms · traza `225b0d92-8f76-4c3f-aa6a-d802d620ac28`
+**Respuesta.** HTTP 422 (esperado 422) · 95 ms · traza `3e6c624c-f6ef-4953-b8cd-23fadc3a1334`
 
 ```json
 {
   "error": {
     "codigo": "REGLA_NEGOCIO",
     "mensaje": "RN20: transición ilegal entregado -> en_preparacion para el rol operador. El pedido PED-20261020-000002 conserva su estado.",
-    "traza_id": "225b0d92-8f76-4c3f-aa6a-d802d620ac28"
+    "traza_id": "3e6c624c-f6ef-4953-b8cd-23fadc3a1334"
   }
 }
 ```
@@ -1554,39 +1607,39 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 2c716bb2-2a37-4f6e-ba93-5396afa70cc2
+X-Traza-Id: 964d62b5-9627-4d23-96f3-5a4afe16d054
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "nombre": "evidencia-entrega-431.jpg",
+  "nombre": "evidencia-entrega-459.jpg",
   "tipo_mime": "image/jpeg",
   "contenido_base64": "/9j/4AAQSkZJRgABAQAAAQABAAAAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcY…(368 caracteres)",
   "referencia": {
     "tipo": "entrega",
-    "id": "431"
+    "id": "459"
   }
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 53 ms · traza `2c716bb2-2a37-4f6e-ba93-5396afa70cc2`
+**Respuesta.** HTTP 201 (esperado 201) · 64 ms · traza `964d62b5-9627-4d23-96f3-5a4afe16d054`
 
 ```json
 {
-  "id": "6b09302b7d5722bf71504808",
-  "nombre": "evidencia-entrega-431.jpg",
+  "id": "6b093afcf68f301419471813",
+  "nombre": "evidencia-entrega-459.jpg",
   "tipo_mime": "image/jpeg",
   "tamano_bytes": 276,
   "sha256": "7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc",
   "referencia": {
     "tipo": "entrega",
-    "id": "431"
+    "id": "459"
   },
   "subido_por": 7,
-  "creado_en": "2026-11-27T01:24:27-06:00",
-  "ruta": "documentos/2026/11/6b09302b7d5722bf71504808.jpg",
+  "creado_en": "2026-11-27T02:10:36-06:00",
+  "ruta": "documentos/2026/11/6b093afcf68f301419471813.jpg",
   "privacidad": "privado",
   "estado": "activo",
   "metadatos": {
@@ -1598,22 +1651,22 @@ Content-Type: application/json
 
 **Explicación.** Se valida que el contenido sea JPEG real, se calcula su SHA-256 y que la entrega sea del repartidor.
 
-**Evidencia en MongoDB.** `db.documentos.findOne({_id: ObjectId('6b09302b7d5722bf71504808')}, {contenido: 0})`
+**Evidencia en MongoDB.** `db.documentos.findOne({_id: ObjectId('6b093afcf68f301419471813')}, {contenido: 0})`
 
 ```json
 {
-  "_id": "6b09302b7d5722bf71504808",
-  "nombre": "evidencia-entrega-431.jpg",
+  "_id": "6b093afcf68f301419471813",
+  "nombre": "evidencia-entrega-459.jpg",
   "tipo_mime": "image/jpeg",
   "tamano_bytes": 276,
   "sha256": "7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc",
   "referencia": {
     "tipo": "entrega",
-    "id": "431"
+    "id": "459"
   },
   "subido_por": 7,
-  "creado_en": "2026-11-27 07:24:27.430000+00:00",
-  "ruta": "documentos/2026/11/6b09302b7d5722bf71504808.jpg",
+  "creado_en": "2026-11-27 08:10:36.079000+00:00",
+  "ruta": "documentos/2026/11/6b093afcf68f301419471813.jpg",
   "privacidad": "privado",
   "estado": "activo",
   "metadatos": {
@@ -1631,39 +1684,39 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: b159c0f9-94dc-4d88-9af3-d8ef67ef7258
+X-Traza-Id: 53e79172-90d4-4cb3-b0d3-0db45570723c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "nombre": "evidencia-entrega-432.jpg",
+  "nombre": "evidencia-entrega-460.jpg",
   "tipo_mime": "image/jpeg",
   "contenido_base64": "/9j/4AAQSkZJRgABAQAAAQABAAAAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcY…(368 caracteres)",
   "referencia": {
     "tipo": "entrega",
-    "id": "432"
+    "id": "460"
   }
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 55 ms · traza `b159c0f9-94dc-4d88-9af3-d8ef67ef7258`
+**Respuesta.** HTTP 201 (esperado 201) · 109 ms · traza `53e79172-90d4-4cb3-b0d3-0db45570723c`
 
 ```json
 {
-  "id": "6b09302b7d5722bf7150480b",
-  "nombre": "evidencia-entrega-432.jpg",
+  "id": "6b093afcf6e2f9fdd510ee41",
+  "nombre": "evidencia-entrega-460.jpg",
   "tipo_mime": "image/jpeg",
   "tamano_bytes": 276,
   "sha256": "7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc",
   "referencia": {
     "tipo": "entrega",
-    "id": "432"
+    "id": "460"
   },
   "subido_por": 7,
-  "creado_en": "2026-11-27T01:24:27-06:00",
-  "ruta": "documentos/2026/11/6b09302b7d5722bf7150480b.jpg",
+  "creado_en": "2026-11-27T02:10:36-06:00",
+  "ruta": "documentos/2026/11/6b093afcf6e2f9fdd510ee41.jpg",
   "privacidad": "privado",
   "estado": "activo",
   "metadatos": {
@@ -1681,7 +1734,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: d9b9521b-b43b-44be-85c6-dd8a1adc76c0
+X-Traza-Id: e8215b99-4bf6-455e-992b-b4dd87edd793
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -1693,12 +1746,12 @@ Content-Type: application/json
   "contenido_base64": "JVBERi0xLjQgZmFsc28=",
   "referencia": {
     "tipo": "entrega",
-    "id": "431"
+    "id": "459"
   }
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 6 ms · traza `d9b9521b-b43b-44be-85c6-dd8a1adc76c0`
+**Respuesta.** HTTP 422 (esperado 422) · 7 ms · traza `e8215b99-4bf6-455e-992b-b4dd87edd793`
 
 ```json
 {
@@ -1711,7 +1764,7 @@ Content-Type: application/json
         "mensaje": "El contenido no corresponde al tipo declarado."
       }
     ],
-    "traza_id": "d9b9521b-b43b-44be-85c6-dd8a1adc76c0"
+    "traza_id": "e8215b99-4bf6-455e-992b-b4dd87edd793"
   }
 }
 ```
@@ -1724,7 +1777,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: d94e7b6f-b1eb-415f-8783-e4a5c036cf18
+X-Traza-Id: 164e48b1-dad0-467a-bbe9-de959606fb1d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(296 caracteres)
 Content-Type: application/json
 ```
@@ -1736,19 +1789,19 @@ Content-Type: application/json
   "contenido_base64": "/9j/4AAQSkZJRgABAQAAAQABAAAAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcY…(368 caracteres)",
   "referencia": {
     "tipo": "entrega",
-    "id": "431"
+    "id": "459"
   }
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 31 ms · traza `d94e7b6f-b1eb-415f-8783-e4a5c036cf18`
+**Respuesta.** HTTP 403 (esperado 403) · 29 ms · traza `164e48b1-dad0-467a-bbe9-de959606fb1d`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Solo puedes adjuntar evidencia a tus entregas.",
-    "traza_id": "d94e7b6f-b1eb-415f-8783-e4a5c036cf18"
+    "traza_id": "164e48b1-dad0-467a-bbe9-de959606fb1d"
   }
 }
 ```
@@ -1761,7 +1814,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 940762c6-e335-4d12-97c2-8096e02daea2
+X-Traza-Id: 44dc1eef-4b40-471d-b63d-ca6d5200d441
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -1778,11 +1831,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 33 ms · traza `940762c6-e335-4d12-97c2-8096e02daea2`
+**Respuesta.** HTTP 201 (esperado 201) · 33 ms · traza `44dc1eef-4b40-471d-b63d-ca6d5200d441`
 
 ```json
 {
-  "id": "6b09302c7d5722bf71504812",
+  "id": "6b093afcf6e2f9fdd510ee48",
   "nombre": "borrador.jpg",
   "tipo_mime": "image/jpeg",
   "tamano_bytes": 276,
@@ -1792,8 +1845,8 @@ Content-Type: application/json
     "id": "7"
   },
   "subido_por": 7,
-  "creado_en": "2026-11-27T01:24:28-06:00",
-  "ruta": "documentos/2026/11/6b09302c7d5722bf71504812.jpg",
+  "creado_en": "2026-11-27T02:10:36-06:00",
+  "ruta": "documentos/2026/11/6b093afcf6e2f9fdd510ee48.jpg",
   "privacidad": "privado",
   "estado": "activo",
   "metadatos": {
@@ -1807,32 +1860,32 @@ Content-Type: application/json
 
 **Objetivo.** Filtro por referencia.
 
-**Petición.** `GET http://documentos:5107/api/v1/documentos?referencia_tipo=entrega&referencia_id=431`
+**Petición.** `GET http://documentos:5107/api/v1/documentos?referencia_tipo=entrega&referencia_id=459`
 
 ```http
 Accept: application/json
-X-Traza-Id: e5310ec4-0646-4d17-aa48-4457913e9035
+X-Traza-Id: 9f994532-6b36-4461-b65e-4e11691ca790
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 15 ms · traza `e5310ec4-0646-4d17-aa48-4457913e9035`
+**Respuesta.** HTTP 200 (esperado 200) · 18 ms · traza `9f994532-6b36-4461-b65e-4e11691ca790`
 
 ```json
 {
   "datos": [
     {
-      "id": "6b09302b7d5722bf71504808",
-      "nombre": "evidencia-entrega-431.jpg",
+      "id": "6b093afcf68f301419471813",
+      "nombre": "evidencia-entrega-459.jpg",
       "tipo_mime": "image/jpeg",
       "tamano_bytes": 276,
       "sha256": "7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc",
       "referencia": {
         "tipo": "entrega",
-        "id": "431"
+        "id": "459"
       },
       "subido_por": 7,
-      "creado_en": "2026-11-27T01:24:27-06:00",
-      "ruta": "documentos/2026/11/6b09302b7d5722bf71504808.jpg",
+      "creado_en": "2026-11-27T02:10:36-06:00",
+      "ruta": "documentos/2026/11/6b093afcf68f301419471813.jpg",
       "privacidad": "privado",
       "estado": "activo",
       "metadatos": {
@@ -1854,49 +1907,49 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Objetivo.** Documento en XML, sin contenido.
 
-**Petición.** `GET http://documentos:5107/api/v1/documentos/6b09302b7d5722bf71504808`
+**Petición.** `GET http://documentos:5107/api/v1/documentos/6b093afcf68f301419471813`
 
 ```http
 Accept: application/xml
-X-Traza-Id: 8d1a6607-d903-4220-9716-9fc2b2edbd67
+X-Traza-Id: b6ab8cc2-6f0c-4043-acdd-487986829a0a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 8 ms · traza `8d1a6607-d903-4220-9716-9fc2b2edbd67`
+**Respuesta.** HTTP 200 (esperado 200) · 10 ms · traza `b6ab8cc2-6f0c-4043-acdd-487986829a0a`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<documento xmlns="urn:microhubs:v1" version="1"><id>6b09302b7d5722bf71504808</id><nombre>evidencia-entrega-431.jpg</nombre><tipo_mime>image/jpeg</tipo_mime><tamano_bytes>276</tamano_bytes><sha256>7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc</sha256><referencia><tipo>entrega</tipo><id>431</id></referencia><subido_por>7</subido_por><creado_en>2026-11-27T01:24:27-06:00</creado_en><ruta>documentos/2026/11/6b09302b7d5722bf71504808.jpg</ruta><privacidad>privado</privacidad><estado>activo</estado><metadatos><almacen>local</almacen><origen>api</origen></metadatos></documento>
+<documento xmlns="urn:microhubs:v1" version="1"><id>6b093afcf68f301419471813</id><nombre>evidencia-entrega-459.jpg</nombre><tipo_mime>image/jpeg</tipo_mime><tamano_bytes>276</tamano_bytes><sha256>7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc</sha256><referencia><tipo>entrega</tipo><id>459</id></referencia><subido_por>7</subido_por><creado_en>2026-11-27T02:10:36-06:00</creado_en><ruta>documentos/2026/11/6b093afcf68f301419471813.jpg</ruta><privacidad>privado</privacidad><estado>activo</estado><metadatos><almacen>local</almacen><origen>api</origen></metadatos></documento>
 ```
 
 ### DOC-08 · Contenido en Base64 · PASA
 
 **Objetivo.** Recuperar el archivo.
 
-**Petición.** `GET http://documentos:5107/api/v1/documentos/6b09302b7d5722bf71504808/contenido`
+**Petición.** `GET http://documentos:5107/api/v1/documentos/6b093afcf68f301419471813/contenido`
 
 ```http
 Accept: application/json
-X-Traza-Id: 82dc537b-0856-443f-9698-0fb078e12cb3
+X-Traza-Id: c319af8e-3f00-451a-9fcb-3742b0b1fafd
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 12 ms · traza `82dc537b-0856-443f-9698-0fb078e12cb3`
+**Respuesta.** HTTP 200 (esperado 200) · 11 ms · traza `c319af8e-3f00-451a-9fcb-3742b0b1fafd`
 
 ```json
 {
-  "id": "6b09302b7d5722bf71504808",
-  "nombre": "evidencia-entrega-431.jpg",
+  "id": "6b093afcf68f301419471813",
+  "nombre": "evidencia-entrega-459.jpg",
   "tipo_mime": "image/jpeg",
   "tamano_bytes": 276,
   "sha256": "7f6025cd8a98db24ba552ff186d6bc3a48fde11ea90962d085b2426c327299dc",
   "referencia": {
     "tipo": "entrega",
-    "id": "431"
+    "id": "459"
   },
   "subido_por": 7,
-  "creado_en": "2026-11-27T01:24:27-06:00",
-  "ruta": "documentos/2026/11/6b09302b7d5722bf71504808.jpg",
+  "creado_en": "2026-11-27T02:10:36-06:00",
+  "ruta": "documentos/2026/11/6b093afcf68f301419471813.jpg",
   "privacidad": "privado",
   "estado": "activo",
   "metadatos": {
@@ -1911,21 +1964,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Objetivo.** Borrar un documento propio.
 
-**Petición.** `DELETE http://documentos:5107/api/v1/documentos/6b09302c7d5722bf71504812`
+**Petición.** `DELETE http://documentos:5107/api/v1/documentos/6b093afcf6e2f9fdd510ee48`
 
 ```http
 Accept: application/json
-X-Traza-Id: 0d7a938a-49d1-4224-beef-dd3dd68045ae
+X-Traza-Id: 13370840-c762-4d1f-a0e8-b20d200efaa5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 52 ms · traza `0d7a938a-49d1-4224-beef-dd3dd68045ae`
+**Respuesta.** HTTP 204 (esperado 204) · 63 ms · traza `13370840-c762-4d1f-a0e8-b20d200efaa5`
 
 ```json
 (sin cuerpo)
 ```
 
-**Evidencia en MongoDB.** `db.documentos.countDocuments({_id: ObjectId('6b09302c7d5722bf71504812')})`
+**Evidencia en MongoDB.** `db.documentos.countDocuments({_id: ObjectId('6b093afcf6e2f9fdd510ee48')})`
 
 ```json
 1
@@ -1939,18 +1992,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 08d8408a-5d20-4704-b79d-6b860b615f1d
+X-Traza-Id: cfb9f485-bfb9-4a35-8550-1a20408e61fc
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 7 ms · traza `08d8408a-5d20-4704-b79d-6b860b615f1d`
+**Respuesta.** HTTP 404 (esperado 404) · 7 ms · traza `cfb9f485-bfb9-4a35-8550-1a20408e61fc`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe el recurso solicitado.",
-    "traza_id": "08d8408a-5d20-4704-b79d-6b860b615f1d"
+    "traza_id": "cfb9f485-bfb9-4a35-8550-1a20408e61fc"
   }
 }
 ```
@@ -1961,11 +2014,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Objetivo.** Guardar el recorrido del repartidor en MongoDB.
 
-**Petición.** `POST http://seguimiento:5110/api/v1/seguimiento/431/ubicaciones`
+**Petición.** `POST http://seguimiento:5110/api/v1/seguimiento/459/ubicaciones`
 
 ```http
 Accept: application/json
-X-Traza-Id: 6f7b1970-3513-477c-aaa2-dd2a50b1fb50
+X-Traza-Id: 5e43dd13-a800-4616-8e45-5c946e47337c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -1977,25 +2030,25 @@ Content-Type: application/json
       "latitud": 25.748,
       "longitud": -100.36,
       "precision_m": 9.0,
-      "capturado_en": "2026-11-27T07:18:28+00:00"
+      "capturado_en": "2026-11-27T08:04:36+00:00"
     },
     {
       "latitud": 25.7486,
       "longitud": -100.3606,
       "precision_m": 8.0,
-      "capturado_en": "2026-11-27T07:20:28+00:00"
+      "capturado_en": "2026-11-27T08:06:36+00:00"
     },
     {
       "latitud": 25.7491,
       "longitud": -100.3611,
       "precision_m": 8.5,
-      "capturado_en": "2026-11-27T07:22:28+00:00"
+      "capturado_en": "2026-11-27T08:08:36+00:00"
     }
   ]
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 57 ms · traza `6f7b1970-3513-477c-aaa2-dd2a50b1fb50`
+**Respuesta.** HTTP 201 (esperado 201) · 34 ms · traza `5e43dd13-a800-4616-8e45-5c946e47337c`
 
 ```json
 {
@@ -2003,12 +2056,12 @@ Content-Type: application/json
 }
 ```
 
-**Evidencia en MongoDB.** `db.ubicaciones_entrega.find({entrega_id: NumberLong(431)}).sort({capturado_en: 1})`
+**Evidencia en MongoDB.** `db.ubicaciones_entrega.find({entrega_id: NumberLong(459)}).sort({capturado_en: 1})`
 
 ```json
 [
   {
-    "entrega_id": 431,
+    "entrega_id": 459,
     "usuario_id": 7,
     "posicion": {
       "type": "Point",
@@ -2018,11 +2071,11 @@ Content-Type: application/json
       ]
     },
     "precision_m": 9.0,
-    "capturado_en": "2026-11-27 07:18:28+00:00",
-    "recibido_en": "2026-11-27 07:24:28.241000+00:00"
+    "capturado_en": "2026-11-27 08:04:36+00:00",
+    "recibido_en": "2026-11-27 08:10:36.909000+00:00"
   },
   {
-    "entrega_id": 431,
+    "entrega_id": 459,
     "usuario_id": 7,
     "posicion": {
       "type": "Point",
@@ -2032,11 +2085,11 @@ Content-Type: application/json
       ]
     },
     "precision_m": 8.0,
-    "capturado_en": "2026-11-27 07:20:28+00:00",
-    "recibido_en": "2026-11-27 07:24:28.241000+00:00"
+    "capturado_en": "2026-11-27 08:06:36+00:00",
+    "recibido_en": "2026-11-27 08:10:36.909000+00:00"
   },
   {
-    "entrega_id": 431,
+    "entrega_id": 459,
     "usuario_id": 7,
     "posicion": {
       "type": "Point",
@@ -2046,8 +2099,8 @@ Content-Type: application/json
       ]
     },
     "precision_m": 8.5,
-    "capturado_en": "2026-11-27 07:22:28+00:00",
-    "recibido_en": "2026-11-27 07:24:28.241000+00:00"
+    "capturado_en": "2026-11-27 08:08:36+00:00",
+    "recibido_en": "2026-11-27 08:10:36.909000+00:00"
   }
 ]
 ```
@@ -2067,23 +2120,23 @@ Content-Type: application/json
 
 **Objetivo.** Agregación en MongoDB sobre los puntos GPS.
 
-**Petición.** `GET http://seguimiento:5110/api/v1/seguimiento/431/recorrido`
+**Petición.** `GET http://seguimiento:5110/api/v1/seguimiento/459/recorrido`
 
 ```http
 Accept: application/json
-X-Traza-Id: 03d691fa-91bc-4125-8712-717240e79a2a
+X-Traza-Id: cb5eeef7-2d26-4e6e-bfe4-69cd3e1427f0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 39 ms · traza `03d691fa-91bc-4125-8712-717240e79a2a`
+**Respuesta.** HTTP 200 (esperado 200) · 35 ms · traza `cb5eeef7-2d26-4e6e-bfe4-69cd3e1427f0`
 
 ```json
 {
-  "entrega_id": 431,
+  "entrega_id": 459,
   "puntos": 3,
   "distancia_km": 0.16,
-  "inicio": "2026-11-27T01:18:28-06:00",
-  "fin": "2026-11-27T01:22:28-06:00",
+  "inicio": "2026-11-27T02:04:36-06:00",
+  "fin": "2026-11-27T02:08:36-06:00",
   "precision_promedio_m": 8.5,
   "ultimo_punto": {
     "latitud": 25.7491,
@@ -2099,22 +2152,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Objetivo.** El repartidor 2 no ve el rastro de la entrega del repartidor 1.
 
-**Petición.** `GET http://seguimiento:5110/api/v1/seguimiento/431/recorrido`
+**Petición.** `GET http://seguimiento:5110/api/v1/seguimiento/459/recorrido`
 
 ```http
 Accept: application/json
-X-Traza-Id: 704dbaa5-7556-45d2-90b1-94b3852b9e42
+X-Traza-Id: 32ddcdde-f0b2-4afe-91fa-12d3cb003f4a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(296 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 31 ms · traza `704dbaa5-7556-45d2-90b1-94b3852b9e42`
+**Respuesta.** HTTP 404 (esperado 404) · 29 ms · traza `32ddcdde-f0b2-4afe-91fa-12d3cb003f4a`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe la entrega o no está asignada a ti.",
-    "traza_id": "704dbaa5-7556-45d2-90b1-94b3852b9e42"
+    "traza_id": "32ddcdde-f0b2-4afe-91fa-12d3cb003f4a"
   }
 }
 ```
@@ -2123,21 +2176,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(2
 
 **Objetivo.** Todo endpoint protegido exige Authorization: Bearer.
 
-**Petición.** `GET http://seguimiento:5110/api/v1/seguimiento/431/recorrido`
+**Petición.** `GET http://seguimiento:5110/api/v1/seguimiento/459/recorrido`
 
 ```http
 Accept: application/json
-X-Traza-Id: c28c5cd2-8ccf-4cc6-ad7d-43b82054276e
+X-Traza-Id: a283204d-5d0e-42ad-922b-f60c8ca6c67f
 ```
 
-**Respuesta.** HTTP 401 (esperado 401) · 5 ms · traza `c28c5cd2-8ccf-4cc6-ad7d-43b82054276e`
+**Respuesta.** HTTP 401 (esperado 401) · 6 ms · traza `a283204d-5d0e-42ad-922b-f60c8ca6c67f`
 
 ```json
 {
   "error": {
     "codigo": "TOKEN_INVALIDO",
     "mensaje": "Falta el encabezado Authorization: Bearer <token>.",
-    "traza_id": "c28c5cd2-8ccf-4cc6-ad7d-43b82054276e"
+    "traza_id": "a283204d-5d0e-42ad-922b-f60c8ca6c67f"
   }
 }
 ```
@@ -2152,50 +2205,74 @@ X-Traza-Id: c28c5cd2-8ccf-4cc6-ad7d-43b82054276e
 
 ```http
 Accept: application/json
-X-Traza-Id: 36da97dd-24b6-4525-857f-b2fafc35b566
+X-Traza-Id: 4967c13b-40df-42ad-9c8f-cf167db41364
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 54 ms · traza `36da97dd-24b6-4525-857f-b2fafc35b566`
+**Respuesta.** HTTP 200 (esperado 200) · 56 ms · traza `4967c13b-40df-42ad-9c8f-cf167db41364`
 
 ```json
 {
   "datos": [
     {
-      "id": 431,
-      "pedido_id": 763,
-      "folio": "PED-20261127-000763",
+      "id": 439,
+      "pedido_id": 731,
+      "folio": "PED-20261127-000731",
       "estado_pedido": "en_ruta",
       "orden_parada": 1,
-      "direccion": "Cerro Prieto 3501, Valles de San Bernabé",
+      "direccion": "Cerro Prieto 4059, Valles de San Bernabé",
       "zona": "Valles de San Bernabé",
-      "distancia_km": 1.22,
-      "minutos_estimados": 10.0,
-      "total": 267.0
+      "distancia_km": 0.63,
+      "minutos_estimados": 5.7,
+      "total": 180.0
     },
     {
-      "id": 432,
-      "pedido_id": 764,
-      "folio": "PED-20261127-000764",
+      "id": 459,
+      "pedido_id": 793,
+      "folio": "PED-20261127-000793",
+      "estado_pedido": "en_ruta",
+      "orden_parada": 1,
+      "direccion": "Emiliano Zapata 1761, San Bernabé X (F-113)",
+      "zona": "San Bernabé X (F-113)",
+      "distancia_km": 1.0,
+      "minutos_estimados": 10.0,
+      "total": 121.0
+    },
+    {
+      "id": 440,
+      "pedido_id": 748,
+      "folio": "PED-20261127-000748",
       "estado_pedido": "en_ruta",
       "orden_parada": 2,
-      "direccion": "Fidel Velázquez 2715, Paseo de San Bernabé",
-      "zona": "Paseo de San Bernabé",
-      "distancia_km": 1.47,
-      "minutos_estimados": 16.0,
-      "total": 210.0
+      "direccion": "Cerro Prieto 4059, Valles de San Bernabé",
+      "zona": "Valles de San Bernabé",
+      "distancia_km": 0.0,
+      "minutos_estimados": 9.7,
+      "total": 261.0
     },
     {
-      "id": 410,
-      "pedido_id": 736,
-      "folio": "PED-20261127-000736",
+      "id": 460,
+      "pedido_id": 794,
+      "folio": "PED-20261127-000794",
       "estado_pedido": "en_ruta",
-      "orden_parada": 4,
-      "direccion": "Nogal 1469, Paseo de San Bernabé",
-      "zona": "Paseo de San Bernabé",
-      "distancia_km": 1.37,
-      "minutos_estimados": 28.0,
-      "total": 208.0
+      "orden_parada": 2,
+      "direccion": "Valle Alto 3509, Valles de San Bernabé",
+      "zona": "Valles de San Bernabé",
+      "distancia_km": 0.36,
+      "minutos_estimados": 16.0,
+      "total": 156.0
+    },
+    {
+      "id": 441,
+      "pedido_id": 732,
+      "folio": "PED-20261127-000732",
+      "estado_pedido": "en_ruta",
+      "orden_parada": 3,
+      "direccion": "Emiliano Zapata 4397, Valles de San Bernabé",
+      "zona": "Valles de San Bernabé",
+      "distancia_km": 0.29,
+      "minutos_estimados": 14.5,
+      "total": 167.0
     },
     {
       "id": 414,
@@ -2213,7 +2290,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
   "paginacion": {
     "pagina": 1,
     "por_pagina": 20,
-    "total": 4,
+    "total": 6,
     "paginas": 1
   }
 }
@@ -2223,47 +2300,47 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Objetivo.** Cliente, domicilio y líneas.
 
-**Petición.** `GET http://entregas:5105/api/v1/entregas/431`
+**Petición.** `GET http://entregas:5105/api/v1/entregas/459`
 
 ```http
 Accept: application/json
-X-Traza-Id: 61b22138-21ea-4683-ae89-46c7add48815
+X-Traza-Id: 1836a459-4bd0-4cdf-97fc-580da8d7b178
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 85 ms · traza `61b22138-21ea-4683-ae89-46c7add48815`
+**Respuesta.** HTTP 200 (esperado 200) · 87 ms · traza `1836a459-4bd0-4cdf-97fc-580da8d7b178`
 
 ```json
 {
-  "id": 431,
-  "pedido_id": 763,
-  "folio": "PED-20261127-000763",
+  "id": 459,
+  "pedido_id": 793,
+  "folio": "PED-20261127-000793",
   "estado_pedido": "en_ruta",
   "cliente": {
-    "nombre": "María Guerrero Guerrero",
-    "telefono": "8198145598"
+    "nombre": "Alejandro Alanís González",
+    "telefono": "8171493899"
   },
   "domicilio": {
-    "calle": "Cerro Prieto",
-    "numero_ext": "3501",
-    "colonia": "Valles de San Bernabé",
-    "latitud": 25.757088,
-    "longitud": -100.367771
+    "calle": "Emiliano Zapata",
+    "numero_ext": "1761",
+    "colonia": "San Bernabé X (F-113)",
+    "latitud": 25.749051,
+    "longitud": -100.385889
   },
   "orden_parada": 1,
-  "distancia_km": 1.22,
+  "distancia_km": 1.0,
   "minutos_estimados": 10.0,
-  "total": 267.0,
+  "total": 121.0,
   "lineas": [
     {
-      "pedido_detalle_id": 1843,
-      "nombre": "Té helado de limón",
-      "cantidad": 3
+      "pedido_detalle_id": 1901,
+      "nombre": "Papel higiénico",
+      "cantidad": 1
     },
     {
-      "pedido_detalle_id": 1844,
-      "nombre": "Queso Oaxaca",
-      "cantidad": 3
+      "pedido_detalle_id": 1902,
+      "nombre": "Pañal etapa 3",
+      "cantidad": 1
     }
   ]
 }
@@ -2273,22 +2350,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Objetivo.** El repartidor 2 no ve la entrega del repartidor 1.
 
-**Petición.** `GET http://entregas:5105/api/v1/entregas/431`
+**Petición.** `GET http://entregas:5105/api/v1/entregas/459`
 
 ```http
 Accept: application/json
-X-Traza-Id: 57475408-06a3-4e73-8e4a-31944ad05f5d
+X-Traza-Id: 0ca0188b-3255-430f-8587-f61ea5c660fc
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(296 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 33 ms · traza `57475408-06a3-4e73-8e4a-31944ad05f5d`
+**Respuesta.** HTTP 404 (esperado 404) · 36 ms · traza `0ca0188b-3255-430f-8587-f61ea5c660fc`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe la entrega o no está asignada a ti.",
-    "traza_id": "57475408-06a3-4e73-8e4a-31944ad05f5d"
+    "traza_id": "0ca0188b-3255-430f-8587-f61ea5c660fc"
   }
 }
 ```
@@ -2297,11 +2374,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4Iiwi…(2
 
 **Objetivo.** Una entrega completa cobra el total (RN27).
 
-**Petición.** `POST http://entregas:5105/api/v1/entregas/431/resultado`
+**Petición.** `POST http://entregas:5105/api/v1/entregas/459/resultado`
 
 ```http
 Accept: application/json
-X-Traza-Id: 0d7a7e63-1149-4f48-89c0-b24f2422cd6a
+X-Traza-Id: e461288a-3c09-4d61-9a27-44f4a1175e42
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2317,14 +2394,14 @@ Content-Type: application/json
     "precision_m": 8.5
   },
   "evidencia_ids": [
-    "6b09302b7d5722bf71504808"
+    "6b093afcf68f301419471813"
   ],
-  "capturado_en": "2026-11-27T07:24:28+00:00",
-  "id_cliente_local": "352af3d8-8de4-459c-85bb-f50ca619f8d9"
+  "capturado_en": "2026-11-27T08:10:36+00:00",
+  "id_cliente_local": "12437502-2c05-4eb5-adc0-3335ab29f0fa"
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 73 ms · traza `0d7a7e63-1149-4f48-89c0-b24f2422cd6a`
+**Respuesta.** HTTP 422 (esperado 422) · 69 ms · traza `e461288a-3c09-4d61-9a27-44f4a1175e42`
 
 ```json
 {
@@ -2334,10 +2411,10 @@ Content-Type: application/json
     "detalles": [
       {
         "campo": "monto_cobrado",
-        "mensaje": "Una entrega completa cobra el total del pedido (267.00)."
+        "mensaje": "Una entrega completa cobra el total del pedido (121.00)."
       }
     ],
-    "traza_id": "0d7a7e63-1149-4f48-89c0-b24f2422cd6a"
+    "traza_id": "e461288a-3c09-4d61-9a27-44f4a1175e42"
   }
 }
 ```
@@ -2346,11 +2423,11 @@ Content-Type: application/json
 
 **Objetivo.** Registrar el resultado con evidencia y ubicación.
 
-**Petición.** `POST http://entregas:5105/api/v1/entregas/431/resultado`
+**Petición.** `POST http://entregas:5105/api/v1/entregas/459/resultado`
 
 ```http
 Accept: application/json
-X-Traza-Id: bec53b39-b11a-41e6-a1fb-8fdaab1b9b3e
+X-Traza-Id: 69257467-0575-48d1-8bc8-e2551d21e69a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2358,7 +2435,7 @@ Content-Type: application/json
 ```json
 {
   "resultado": "entregado",
-  "monto_cobrado": 267.0,
+  "monto_cobrado": 121.0,
   "cambio_entregado": 0.0,
   "ubicacion": {
     "latitud": 25.7491,
@@ -2366,21 +2443,21 @@ Content-Type: application/json
     "precision_m": 8.5
   },
   "evidencia_ids": [
-    "6b09302b7d5722bf71504808"
+    "6b093afcf68f301419471813"
   ],
-  "capturado_en": "2026-11-27T07:24:28+00:00",
-  "id_cliente_local": "352af3d8-8de4-459c-85bb-f50ca619f8d9"
+  "capturado_en": "2026-11-27T08:10:36+00:00",
+  "id_cliente_local": "12437502-2c05-4eb5-adc0-3335ab29f0fa"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 130 ms · traza `bec53b39-b11a-41e6-a1fb-8fdaab1b9b3e`
+**Respuesta.** HTTP 201 (esperado 201) · 97 ms · traza `69257467-0575-48d1-8bc8-e2551d21e69a`
 
 ```json
 {
-  "entrega_id": 431,
-  "pedido_id": 763,
+  "entrega_id": 459,
+  "pedido_id": 793,
   "estado_pedido": "entregado",
-  "cerrado_en": "2026-11-27T01:24:28-06:00",
+  "cerrado_en": "2026-11-27T02:10:37-06:00",
   "duplicado": false
 }
 ```
@@ -2392,13 +2469,13 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 431,
-    "cierre_en": "2026-11-27 01:24:28.707937-06:00",
+    "id": 459,
+    "cierre_en": "2026-11-27 02:10:37.370705-06:00",
     "resultado": "entregado",
-    "monto_cobrado": "267.00",
-    "id_cliente_local": "352af3d8-8de4-459c-85bb-f50ca619f8d9",
+    "monto_cobrado": "121.00",
+    "id_cliente_local": "12437502-2c05-4eb5-adc0-3335ab29f0fa",
     "evidencia_ids": [
-      "6b09302b7d5722bf71504808"
+      "6b093afcf68f301419471813"
     ],
     "cierre_latitud": "25.749100",
     "cierre_longitud": "-100.361100"
@@ -2414,7 +2491,7 @@ Content-Type: application/json
     "estado_anterior": "en_ruta",
     "estado_nuevo": "entregado",
     "usuario_id": 7,
-    "fecha": "2026-11-27 01:24:28.707937-06:00"
+    "fecha": "2026-11-27 02:10:37.370705-06:00"
   }
 ]
 ```
@@ -2424,28 +2501,28 @@ Content-Type: application/json
 ```json
 [
   {
-    "destinatario_id": 17,
+    "destinatario_id": 11,
     "tipo": "pedido",
-    "titulo": "Pedido PED-20261127-000763",
+    "titulo": "Pedido PED-20261127-000793",
     "mensaje": "El pedido cambió a entregado.",
     "referencia_tipo": "pedido",
-    "referencia_id": "763"
+    "referencia_id": "793"
   }
 ]
 ```
 
-**Evidencia en MongoDB.** `db.sincronizaciones_moviles.findOne({operacion_uuid: '352af3d8-8de4-459c-85bb-f50ca619f8d9'})`
+**Evidencia en MongoDB.** `db.sincronizaciones_moviles.findOne({operacion_uuid: '12437502-2c05-4eb5-adc0-3335ab29f0fa'})`
 
 ```json
 {
-  "operacion_uuid": "352af3d8-8de4-459c-85bb-f50ca619f8d9",
-  "capturado_en": "2026-11-27 07:24:28+00:00",
+  "operacion_uuid": "12437502-2c05-4eb5-adc0-3335ab29f0fa",
+  "capturado_en": "2026-11-27 08:10:36+00:00",
   "carga": {
-    "entrega_id": 431,
+    "entrega_id": 459,
     "resultado": "entregado",
-    "monto_cobrado": 267.0,
+    "monto_cobrado": 121.0,
     "evidencia_ids": [
-      "6b09302b7d5722bf71504808"
+      "6b093afcf68f301419471813"
     ],
     "ubicacion": {
       "latitud": 25.7491,
@@ -2457,8 +2534,8 @@ Content-Type: application/json
   "dispositivo_id": "app-movil",
   "estado": "aplicada",
   "intentos": 1,
-  "pedido_id": 763,
-  "sincronizado_en": "2026-11-27 07:24:28.772000+00:00",
+  "pedido_id": 793,
+  "sincronizado_en": "2026-11-27 08:10:37.418000+00:00",
   "tipo_operacion": "cierre_entrega",
   "usuario_id": 7
 }
@@ -2468,11 +2545,11 @@ Content-Type: application/json
 
 **Objetivo.** Idempotencia: el cierre no se aplica dos veces.
 
-**Petición.** `POST http://entregas:5105/api/v1/entregas/431/resultado`
+**Petición.** `POST http://entregas:5105/api/v1/entregas/459/resultado`
 
 ```http
 Accept: application/json
-X-Traza-Id: 6ad169f6-6b96-4fb6-a117-33649132b708
+X-Traza-Id: 2fbfcafd-c4c7-487e-a99c-f9402eb0a88b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2480,7 +2557,7 @@ Content-Type: application/json
 ```json
 {
   "resultado": "entregado",
-  "monto_cobrado": 267.0,
+  "monto_cobrado": 121.0,
   "cambio_entregado": 0.0,
   "ubicacion": {
     "latitud": 25.7491,
@@ -2488,34 +2565,34 @@ Content-Type: application/json
     "precision_m": 8.5
   },
   "evidencia_ids": [
-    "6b09302b7d5722bf71504808"
+    "6b093afcf68f301419471813"
   ],
-  "capturado_en": "2026-11-27T07:24:28+00:00",
-  "id_cliente_local": "352af3d8-8de4-459c-85bb-f50ca619f8d9"
+  "capturado_en": "2026-11-27T08:10:36+00:00",
+  "id_cliente_local": "12437502-2c05-4eb5-adc0-3335ab29f0fa"
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 75 ms · traza `6ad169f6-6b96-4fb6-a117-33649132b708`
+**Respuesta.** HTTP 200 (esperado 200) · 71 ms · traza `2fbfcafd-c4c7-487e-a99c-f9402eb0a88b`
 
 ```json
 {
-  "entrega_id": 431,
-  "pedido_id": 763,
+  "entrega_id": 459,
+  "pedido_id": 793,
   "estado_pedido": "entregado",
-  "cerrado_en": "2026-11-27T01:24:28-06:00",
+  "cerrado_en": "2026-11-27T02:10:37-06:00",
   "duplicado": true
 }
 ```
 
 **Explicación.** La respuesta es la misma con duplicado=true. MongoDB actualiza el documento de la operación (intentos = 2).
 
-**Evidencia en MongoDB.** `db.sincronizaciones_moviles.findOne({operacion_uuid: '352af3d8-8de4-459c-85bb-f50ca619f8d9'}, {estado: 1, intentos: 1})`
+**Evidencia en MongoDB.** `db.sincronizaciones_moviles.findOne({operacion_uuid: '12437502-2c05-4eb5-adc0-3335ab29f0fa'}, {estado: 1, intentos: 1})`
 
 ```json
 {
   "estado": "aplicada",
   "intentos": 2,
-  "sincronizado_en": "2026-11-27 07:24:28.923000+00:00"
+  "sincronizado_en": "2026-11-27 08:10:37.553000+00:00"
 }
 ```
 
@@ -2523,11 +2600,11 @@ Content-Type: application/json
 
 **Objetivo.** Conflicto: ya estaba cerrada con otra operación.
 
-**Petición.** `POST http://entregas:5105/api/v1/entregas/431/resultado`
+**Petición.** `POST http://entregas:5105/api/v1/entregas/459/resultado`
 
 ```http
 Accept: application/json
-X-Traza-Id: 94b43ca3-bd8d-4bf1-99f1-eaa560129b5d
+X-Traza-Id: e86e49cb-4013-4c6b-8f67-fea9d8f9ff62
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2535,7 +2612,7 @@ Content-Type: application/json
 ```json
 {
   "resultado": "entregado",
-  "monto_cobrado": 267.0,
+  "monto_cobrado": 121.0,
   "cambio_entregado": 0.0,
   "ubicacion": {
     "latitud": 25.7491,
@@ -2543,21 +2620,21 @@ Content-Type: application/json
     "precision_m": 8.5
   },
   "evidencia_ids": [
-    "6b09302b7d5722bf71504808"
+    "6b093afcf68f301419471813"
   ],
-  "capturado_en": "2026-11-27T07:24:28+00:00",
-  "id_cliente_local": "ba8db76d-cd75-4246-b127-04996de3ee35"
+  "capturado_en": "2026-11-27T08:10:36+00:00",
+  "id_cliente_local": "69da1cb8-b57f-48be-9702-e2c2c9007892"
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 74 ms · traza `94b43ca3-bd8d-4bf1-99f1-eaa560129b5d`
+**Respuesta.** HTTP 409 (esperado 409) · 81 ms · traza `e86e49cb-4013-4c6b-8f67-fea9d8f9ff62`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "La entrega ya se cerró con otra operación.",
-    "traza_id": "94b43ca3-bd8d-4bf1-99f1-eaa560129b5d"
+    "traza_id": "e86e49cb-4013-4c6b-8f67-fea9d8f9ff62"
   }
 }
 ```
@@ -2566,22 +2643,22 @@ Content-Type: application/json
 
 **Objetivo.** El repartidor deja de ver el domicilio (RN26).
 
-**Petición.** `GET http://entregas:5105/api/v1/entregas/431`
+**Petición.** `GET http://entregas:5105/api/v1/entregas/459`
 
 ```http
 Accept: application/json
-X-Traza-Id: e92f98ba-7965-470a-b466-a270da0d1301
+X-Traza-Id: b3a3158f-25b1-4616-813f-4666d097ff41
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 37 ms · traza `e92f98ba-7965-470a-b466-a270da0d1301`
+**Respuesta.** HTTP 404 (esperado 404) · 40 ms · traza `b3a3158f-25b1-4616-813f-4666d097ff41`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "La entrega ya se cerró; su información ya no está disponible.",
-    "traza_id": "e92f98ba-7965-470a-b466-a270da0d1301"
+    "traza_id": "b3a3158f-25b1-4616-813f-4666d097ff41"
   }
 }
 ```
@@ -2590,11 +2667,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Objetivo.** Cada línea devuelta necesita motivo (RN28).
 
-**Petición.** `POST http://entregas:5105/api/v1/entregas/432/resultado`
+**Petición.** `POST http://entregas:5105/api/v1/entregas/460/resultado`
 
 ```http
 Accept: application/json
-X-Traza-Id: 7351674a-5a90-4157-bcd4-529cf71987b0
+X-Traza-Id: 7251b997-7443-422d-8c73-ae9c3ddb915f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2607,12 +2684,12 @@ Content-Type: application/json
   "incidencia": "El cliente rechazó una línea.",
   "lineas": [
     {
-      "pedido_detalle_id": 1845,
+      "pedido_detalle_id": 1903,
       "cantidad_entregada": 2,
       "cantidad_devuelta": 0
     },
     {
-      "pedido_detalle_id": 1846,
+      "pedido_detalle_id": 1904,
       "cantidad_entregada": 0,
       "cantidad_devuelta": 2
     }
@@ -2622,14 +2699,14 @@ Content-Type: application/json
     "longitud": -100.3611
   },
   "evidencia_ids": [
-    "6b09302b7d5722bf7150480b"
+    "6b093afcf6e2f9fdd510ee41"
   ],
-  "capturado_en": "2026-11-27T07:24:28+00:00",
-  "id_cliente_local": "2f654741-d030-4249-b313-003e2becd568"
+  "capturado_en": "2026-11-27T08:10:36+00:00",
+  "id_cliente_local": "adb26280-89ff-46be-b6c4-0b3c66af9274"
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 80 ms · traza `7351674a-5a90-4157-bcd4-529cf71987b0`
+**Respuesta.** HTTP 422 (esperado 422) · 83 ms · traza `7251b997-7443-422d-8c73-ae9c3ddb915f`
 
 ```json
 {
@@ -2642,7 +2719,7 @@ Content-Type: application/json
         "mensaje": "Explica por qué regresan unidades."
       }
     ],
-    "traza_id": "7351674a-5a90-4157-bcd4-529cf71987b0"
+    "traza_id": "7251b997-7443-422d-8c73-ae9c3ddb915f"
   }
 }
 ```
@@ -2651,11 +2728,11 @@ Content-Type: application/json
 
 **Objetivo.** Devolver al inventario lo que no se entregó.
 
-**Petición.** `POST http://entregas:5105/api/v1/entregas/432/resultado`
+**Petición.** `POST http://entregas:5105/api/v1/entregas/460/resultado`
 
 ```http
 Accept: application/json
-X-Traza-Id: 7183b116-0ae2-4a32-9e6e-4f4f2ec3f411
+X-Traza-Id: 939b1a0b-f47f-4038-bad3-f44c4dafbbab
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2668,12 +2745,12 @@ Content-Type: application/json
   "incidencia": "El cliente rechazó una línea.",
   "lineas": [
     {
-      "pedido_detalle_id": 1845,
+      "pedido_detalle_id": 1903,
       "cantidad_entregada": 2,
       "cantidad_devuelta": 0
     },
     {
-      "pedido_detalle_id": 1846,
+      "pedido_detalle_id": 1904,
       "cantidad_entregada": 0,
       "cantidad_devuelta": 2,
       "motivo": "El cliente la rechazó."
@@ -2684,21 +2761,21 @@ Content-Type: application/json
     "longitud": -100.3611
   },
   "evidencia_ids": [
-    "6b09302b7d5722bf7150480b"
+    "6b093afcf6e2f9fdd510ee41"
   ],
-  "capturado_en": "2026-11-27T07:24:28+00:00",
-  "id_cliente_local": "2f654741-d030-4249-b313-003e2becd568"
+  "capturado_en": "2026-11-27T08:10:36+00:00",
+  "id_cliente_local": "adb26280-89ff-46be-b6c4-0b3c66af9274"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 109 ms · traza `7183b116-0ae2-4a32-9e6e-4f4f2ec3f411`
+**Respuesta.** HTTP 201 (esperado 201) · 119 ms · traza `939b1a0b-f47f-4038-bad3-f44c4dafbbab`
 
 ```json
 {
-  "entrega_id": 432,
-  "pedido_id": 764,
+  "entrega_id": 460,
+  "pedido_id": 794,
   "estado_pedido": "entrega_parcial",
-  "cerrado_en": "2026-11-27T01:24:29-06:00",
+  "cerrado_en": "2026-11-27T02:10:37-06:00",
   "duplicado": false
 }
 ```
@@ -2710,15 +2787,15 @@ Content-Type: application/json
 ```json
 [
   {
-    "entrega_id": 432,
-    "pedido_detalle_id": 1845,
+    "entrega_id": 460,
+    "pedido_detalle_id": 1903,
     "cantidad_entregada": 2,
     "cantidad_devuelta": 0,
     "motivo": null
   },
   {
-    "entrega_id": 432,
-    "pedido_detalle_id": 1846,
+    "entrega_id": 460,
+    "pedido_detalle_id": 1904,
     "cantidad_entregada": 0,
     "cantidad_devuelta": 2,
     "motivo": "El cliente la rechazó."
@@ -2732,9 +2809,9 @@ Content-Type: application/json
 [
   {
     "tipo": "devolucion_parcial",
-    "producto_id": 47,
+    "producto_id": 34,
     "cantidad": 2,
-    "existencia_resultante": 13,
+    "existencia_resultante": 73,
     "motivo": "Entrega parcial: regresan las unidades devueltas (RN28)."
   }
 ]
@@ -2744,30 +2821,30 @@ Content-Type: application/json
 
 **Objetivo.** Consulta por pedido para el portal web.
 
-**Petición.** `GET http://entregas:5105/api/v1/entregas?pedido_id=763`
+**Petición.** `GET http://entregas:5105/api/v1/entregas?pedido_id=793`
 
 ```http
 Accept: application/json
-X-Traza-Id: 676394fe-f0ee-40a0-87e3-53f2c09b1528
+X-Traza-Id: c1828e96-85b8-4ef0-98fd-e9b823f8fef8
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 70 ms · traza `676394fe-f0ee-40a0-87e3-53f2c09b1528`
+**Respuesta.** HTTP 200 (esperado 200) · 57 ms · traza `c1828e96-85b8-4ef0-98fd-e9b823f8fef8`
 
 ```json
 {
   "datos": [
     {
-      "id": 431,
-      "pedido_id": 763,
-      "folio": "PED-20261127-000763",
+      "id": 459,
+      "pedido_id": 793,
+      "folio": "PED-20261127-000793",
       "estado_pedido": "entregado",
       "orden_parada": 1,
-      "direccion": "Cerro Prieto 3501, Valles de San Bernabé",
-      "zona": "Valles de San Bernabé",
-      "distancia_km": 1.22,
+      "direccion": "Emiliano Zapata 1761, San Bernabé X (F-113)",
+      "zona": "San Bernabé X (F-113)",
+      "distancia_km": 1.0,
       "minutos_estimados": 10.0,
-      "total": 267.0
+      "total": 121.0
     }
   ],
   "paginacion": {
@@ -2789,15 +2866,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/xml
-X-Traza-Id: 04a41a1a-5d3f-45ca-891b-95968a4852ae
+X-Traza-Id: 60b987a5-0233-4c15-948e-aa3fdc47938e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 57 ms · traza `04a41a1a-5d3f-45ca-891b-95968a4852ae`
+**Respuesta.** HTTP 200 (esperado 200) · 51 ms · traza `60b987a5-0233-4c15-948e-aa3fdc47938e`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<candidatos xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><datos><candidato><id>1</id><clave>CAND-01</clave><nombre>San Bernabé Norte</nombre><latitud>25.752</latitud><longitud>-100.361</longitud><renta_estimada>18000.00</renta_estimada><nomina_estimada>42000.00</nomina_estimada><servicios_estimados>7000.00</servicios_estimados><otros_costos>5000.00</otros_costos><costo_fijo>72000.00</costo_fijo><superficie_m2>130</superficie_m2><capacidad_fisica>150</capacidad_fisica><accesibilidad_vial>9</accesibilidad_vial><zona_id>1</zona_id><poblacion_cubierta>8420</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil="true" /></candidato><candidato><id>2</id><clave>CAND-02</clave><nombre>Valles Poniente</nombre><latitud>25.7555</latitud><longitud>-100.376</longitud><renta_estimada>15500.00</renta_estimada><nomina_estimada>42000.00</nomina_estimada><servicios_estimados>6500.00</servicios_estimados><otros_costos>4500.00</otros_costos><costo_fijo>68500.00</costo_fijo><superficie_m2>105</superficie_m2><capacidad_fisica>120</capacidad_fisica><accesibilidad_vial>7</accesibilidad_vial><zona_id>2</zona_id><poblacion_cubierta>6180</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil="true" /></candidato><candidato><id>3</id><clave>CAND-05</clave><nombre>Alianza Real</nombre><latitud>25.7625</latitud><longitud>-100.353</longitud><renta_estimada>21000.00</renta_estimada><nomina_estimada>46000.00</nomina_estimada><servicios_estimados>8000.00</servicios_estimados><otros_costos>6000.00</otros_costos><costo_fijo>81000.00</costo_fijo><superficie_m2>150</superficie_m2><capacidad_fisica>180</capacidad_fisica><accesibilidad_vial>8</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>3900</poblacion_cubierta><radio_km>1.6</radio_km><decision>pendiente</decision><decision_motivo xsi:nil="true" /></candidato></datos><paginacion><pagina>1</pagina><por_pagina>3</por_pagina><total>30</total><paginas>10</paginas></paginacion></candidatos>
+<candidatos xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><datos><candidato><id>1</id><clave>CAND-01</clave><nombre>San Bernabé Norte</nombre><latitud>25.752</latitud><longitud>-100.361</longitud><renta_estimada>18000.00</renta_estimada><nomina_estimada>42000.00</nomina_estimada><servicios_estimados>7000.00</servicios_estimados><otros_costos>5000.00</otros_costos><costo_fijo>72000.00</costo_fijo><superficie_m2>130</superficie_m2><capacidad_fisica>150</capacidad_fisica><accesibilidad_vial>9</accesibilidad_vial><zona_id>1</zona_id><poblacion_cubierta>8420</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil="true" /></candidato><candidato><id>2</id><clave>CAND-02</clave><nombre>Valles Poniente</nombre><latitud>25.7555</latitud><longitud>-100.376</longitud><renta_estimada>15500.00</renta_estimada><nomina_estimada>42000.00</nomina_estimada><servicios_estimados>6500.00</servicios_estimados><otros_costos>4500.00</otros_costos><costo_fijo>68500.00</costo_fijo><superficie_m2>105</superficie_m2><capacidad_fisica>120</capacidad_fisica><accesibilidad_vial>7</accesibilidad_vial><zona_id>2</zona_id><poblacion_cubierta>6180</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil="true" /></candidato><candidato><id>3</id><clave>CAND-05</clave><nombre>Alianza Real</nombre><latitud>25.7625</latitud><longitud>-100.353</longitud><renta_estimada>21000.00</renta_estimada><nomina_estimada>46000.00</nomina_estimada><servicios_estimados>8000.00</servicios_estimados><otros_costos>6000.00</otros_costos><costo_fijo>81000.00</costo_fijo><superficie_m2>150</superficie_m2><capacidad_fisica>180</capacidad_fisica><accesibilidad_vial>8</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>3900</poblacion_cubierta><radio_km>1.6</radio_km><decision>pendiente</decision><decision_motivo xsi:nil="true" /></candidato></datos><paginacion><pagina>1</pagina><por_pagina>3</por_pagina><total>32</total><paginas>11</paginas></paginacion></candidatos>
 ```
 
 ### PLA-02 · Registrar candidato (XML) · PASA
@@ -2808,7 +2885,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/xml
-X-Traza-Id: 296e79c6-95a8-434d-bc7f-fb0b1a7fe250
+X-Traza-Id: 978a2573-d615-41ad-ba06-c84e65d093ff
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/xml
 ```
@@ -2817,11 +2894,11 @@ Content-Type: application/xml
 <?xml version="1.0" encoding="UTF-8"?><candidato_nuevo xmlns="urn:microhubs:v1"><clave>********</clave><nombre>Alianza Norte</nombre><latitud>25.7601</latitud><longitud>-100.3555</longitud><renta_estimada>16000.00</renta_estimada><nomina_estimada>40000.00</nomina_estimada><servicios_estimados>6500.00</servicios_estimados><otros_costos>4500.00</otros_costos><superficie_m2>110</superficie_m2><capacidad_fisica>130</capacidad_fisica><accesibilidad_vial>7</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km></candidato_nuevo>
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 69 ms · traza `296e79c6-95a8-434d-bc7f-fb0b1a7fe250`
+**Respuesta.** HTTP 201 (esperado 201) · 55 ms · traza `978a2573-d615-41ad-ba06-c84e65d093ff`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<candidato xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id>311</id><clave>EV-515F83</clave><nombre>Alianza Norte</nombre><latitud>25.7601</latitud><longitud>-100.3555</longitud><renta_estimada>16000.00</renta_estimada><nomina_estimada>40000.00</nomina_estimada><servicios_estimados>6500.00</servicios_estimados><otros_costos>4500.00</otros_costos><costo_fijo>67000.00</costo_fijo><superficie_m2>110</superficie_m2><capacidad_fisica>130</capacidad_fisica><accesibilidad_vial>7</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil="true" /></candidato>
+<candidato xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id>336</id><clave>EV-9A4D67</clave><nombre>Alianza Norte</nombre><latitud>25.7601</latitud><longitud>-100.3555</longitud><renta_estimada>16000.00</renta_estimada><nomina_estimada>40000.00</nomina_estimada><servicios_estimados>6500.00</servicios_estimados><otros_costos>4500.00</otros_costos><costo_fijo>67000.00</costo_fijo><superficie_m2>110</superficie_m2><capacidad_fisica>130</capacidad_fisica><accesibilidad_vial>7</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km><decision>pendiente</decision><decision_motivo xsi:nil="true" /></candidato>
 ```
 
 **Evidencia en PostgreSQL.** `SELECT id, clave, nombre, renta_estimada, costo_fijo, decision FROM ubicacion_candidata WHERE clave = %s`
@@ -2829,8 +2906,8 @@ Content-Type: application/xml
 ```json
 [
   {
-    "id": 311,
-    "clave": "EV-515F83",
+    "id": 336,
+    "clave": "EV-9A4D67",
     "nombre": "Alianza Norte",
     "renta_estimada": "16000.00",
     "costo_fijo": "67000.00",
@@ -2847,7 +2924,7 @@ Content-Type: application/xml
 
 ```http
 Accept: application/xml
-X-Traza-Id: 6b093d8a-8659-4077-b79f-bfce656d5d2a
+X-Traza-Id: daff0c8c-6897-4476-bca1-f72b7a9ed6e7
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/xml
 ```
@@ -2856,22 +2933,22 @@ Content-Type: application/xml
 <?xml version="1.0" encoding="UTF-8"?><candidato_nuevo xmlns="urn:microhubs:v1"><clave>********</clave><nombre>Alianza Norte</nombre><latitud>25.7601</latitud><longitud>-100.3555</longitud><renta_estimada>16000.00</renta_estimada><nomina_estimada>40000.00</nomina_estimada><servicios_estimados>6500.00</servicios_estimados><otros_costos>4500.00</otros_costos><superficie_m2>110</superficie_m2><capacidad_fisica>130</capacidad_fisica><accesibilidad_vial>7</accesibilidad_vial><zona_id>3</zona_id><poblacion_cubierta>5200</poblacion_cubierta><radio_km>1.5</radio_km></candidato_nuevo>
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 45 ms · traza `6b093d8a-8659-4077-b79f-bfce656d5d2a`
+**Respuesta.** HTTP 409 (esperado 409) · 44 ms · traza `daff0c8c-6897-4476-bca1-f72b7a9ed6e7`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<error xmlns="urn:microhubs:v1" version="1"><codigo>CONFLICTO</codigo><mensaje>Ya existe un registro con esos datos.</mensaje><traza_id>6b093d8a-8659-4077-b79f-bfce656d5d2a</traza_id></error>
+<error xmlns="urn:microhubs:v1" version="1"><codigo>CONFLICTO</codigo><mensaje>Ya existe un registro con esos datos.</mensaje><traza_id>daff0c8c-6897-4476-bca1-f72b7a9ed6e7</traza_id></error>
 ```
 
 ### PLA-04 · Modificar candidato (PUT) · PASA
 
 **Objetivo.** Cambiar la renta recalcula el costo fijo.
 
-**Petición.** `PUT http://planeacion:5106/api/v1/candidatos/311`
+**Petición.** `PUT http://planeacion:5106/api/v1/candidatos/336`
 
 ```http
 Accept: application/json
-X-Traza-Id: 03861b39-34f7-42fa-b79c-802a4f6697b4
+X-Traza-Id: 008b7f0c-ad6f-41a5-b9b1-cb35972d5480
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -2895,11 +2972,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 73 ms · traza `03861b39-34f7-42fa-b79c-802a4f6697b4`
+**Respuesta.** HTTP 200 (esperado 200) · 72 ms · traza `008b7f0c-ad6f-41a5-b9b1-cb35972d5480`
 
 ```json
 {
-  "id": 311,
+  "id": 336,
   "clave": "********",
   "nombre": "Alianza Norte (editado)",
   "latitud": 25.7601,
@@ -2924,11 +3001,11 @@ Content-Type: application/json
 
 **Objetivo.** Viabilidad con los costos del candidato.
 
-**Petición.** `POST http://planeacion:5106/api/v1/candidatos/311/simular`
+**Petición.** `POST http://planeacion:5106/api/v1/candidatos/336/simular`
 
 ```http
 Accept: application/xml
-X-Traza-Id: 645dfdb9-e0bf-46bb-b936-64e29a0ef27f
+X-Traza-Id: fc6be152-eb45-465a-befc-6ad0b683dcf5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/xml
 ```
@@ -2937,11 +3014,11 @@ Content-Type: application/xml
 <simular xmlns="urn:microhubs:v1"/>
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 275 ms · traza `645dfdb9-e0bf-46bb-b936-64e29a0ef27f`
+**Respuesta.** HTTP 200 (esperado 200) · 276 ms · traza `fc6be152-eb45-465a-befc-6ad0b683dcf5`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<resultados xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><atendidos>0</atendidos><rechazados>0</rechazados><utilizacion>0</utilizacion><nivel>estable</nivel><tiempo_estimado_min>18.6</tiempo_estimado_min><operadores_requeridos>0</operadores_requeridos><repartidores_requeridos>0</repartidores_requeridos><ingreso_dia>0.00</ingreso_dia><margen_dia>-2300.00</margen_dia><costo_por_pedido xsi:nil="true" /><equilibrio><margen_pedido>26.18</margen_pedido><mensual>2636</mensual><diario>87.9</diario></equilibrio><decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision><explicacion><motivo>la demanda atendida (0/día) no alcanza el equilibrio (88/día)</motivo><motivo>reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda</motivo></explicacion></resultados>
+<resultados xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><atendidos>0</atendidos><rechazados>0</rechazados><utilizacion>0</utilizacion><nivel>estable</nivel><tiempo_estimado_min>18.6</tiempo_estimado_min><operadores_requeridos>0</operadores_requeridos><repartidores_requeridos>0</repartidores_requeridos><ingreso_dia>0.00</ingreso_dia><margen_dia>-2300.00</margen_dia><costo_por_pedido xsi:nil="true" /><equilibrio><margen_pedido>26.70</margen_pedido><mensual>2583.8</mensual><diario>86.1</diario></equilibrio><decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision><explicacion><motivo>la demanda atendida (0/día) no alcanza el equilibrio (86/día)</motivo><motivo>reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda</motivo></explicacion></resultados>
 ```
 
 **Explicación.** Usa planeacion_calc.py (las mismas fórmulas del web) y guarda la ejecución en MongoDB.
@@ -2950,17 +3027,17 @@ Content-Type: application/xml
 
 ```json
 {
-  "escenario_id": "candidato-311",
-  "nombre_escenario": "Candidato 311",
+  "escenario_id": "candidato-336",
+  "nombre_escenario": "Candidato 336",
   "tipo_analisis": "punto_equilibrio",
-  "ejecutado_en": "2026-11-27 07:24:29.880000+00:00",
+  "ejecutado_en": "2026-11-27 08:10:38.500000+00:00",
   "usuario_id": 5,
   "version_modelo": "planeacion_calc 2.1",
   "parametros_entrada": {
     "demanda_diaria": 0.0,
     "operadores": 3.0,
     "repartidores": 3.0,
-    "ticket": 157.77,
+    "ticket": 159.66,
     "costo_entrega": 18.0,
     "margen_bruto": 0.28,
     "renta": 18000.0,
@@ -2974,7 +3051,7 @@ Content-Type: application/xml
     "demanda_diaria = 0.0",
     "operadores = 3",
     "repartidores = 3",
-    "ticket = 157.77",
+    "ticket = 159.66",
     "costo_entrega = 18.00",
     "margen_bruto = 0.28",
     "renta = 18000.00",
@@ -2988,12 +3065,12 @@ Content-Type: application/xml
     "decision": "NO VIABLE CON LOS SUPUESTOS ACTUALES",
     "utilizacion": 0.0,
     "atendidos": 0.0,
-    "equilibrio_diario": 87.9,
+    "equilibrio_diario": 86.1,
     "costo_por_pedido": null
   },
   "recomendacion": "NO VIABLE CON LOS SUPUESTOS ACTUALES",
   "datos_suficientes": true,
-  "duracion_ms": 0,
+  "duracion_ms": 5,
   "aplicado_por": null
 }
 ```
@@ -3002,11 +3079,11 @@ Content-Type: application/xml
 
 **Objetivo.** La decisión humana exige motivo.
 
-**Petición.** `POST http://planeacion:5106/api/v1/candidatos/311/decision`
+**Petición.** `POST http://planeacion:5106/api/v1/candidatos/336/decision`
 
 ```http
 Accept: application/json
-X-Traza-Id: 8cc4bc4f-b8c5-4291-b014-12b6b74e4e37
+X-Traza-Id: c4d2b20b-e082-49f0-9a5d-3f03f81292f6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -3018,7 +3095,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 26 ms · traza `8cc4bc4f-b8c5-4291-b014-12b6b74e4e37`
+**Respuesta.** HTTP 422 (esperado 422) · 23 ms · traza `c4d2b20b-e082-49f0-9a5d-3f03f81292f6`
 
 ```json
 {
@@ -3031,7 +3108,7 @@ Content-Type: application/json
         "mensaje": "Debe tener al menos 3 caracteres."
       }
     ],
-    "traza_id": "8cc4bc4f-b8c5-4291-b014-12b6b74e4e37"
+    "traza_id": "c4d2b20b-e082-49f0-9a5d-3f03f81292f6"
   }
 }
 ```
@@ -3040,11 +3117,11 @@ Content-Type: application/json
 
 **Objetivo.** Registrar la decisión con motivo.
 
-**Petición.** `POST http://planeacion:5106/api/v1/candidatos/311/decision`
+**Petición.** `POST http://planeacion:5106/api/v1/candidatos/336/decision`
 
 ```http
 Accept: application/json
-X-Traza-Id: 7b6a671c-ea84-4eca-8571-4f3e35b1aa13
+X-Traza-Id: 2daffe1f-836d-48f0-b866-d546cbdf8270
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -3056,11 +3133,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 91 ms · traza `7b6a671c-ea84-4eca-8571-4f3e35b1aa13`
+**Respuesta.** HTTP 200 (esperado 200) · 54 ms · traza `2daffe1f-836d-48f0-b866-d546cbdf8270`
 
 ```json
 {
-  "id": 311,
+  "id": 336,
   "clave": "********",
   "nombre": "Alianza Norte (editado)",
   "latitud": 25.7601,
@@ -3086,11 +3163,11 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 311,
+    "id": 336,
     "decision": "condicionado",
     "decision_motivo": "Renegociar la renta antes de firmar.",
     "decision_por": 5,
-    "decision_en": "2026-11-27 01:24:29.965252-06:00"
+    "decision_en": "2026-11-27 02:10:38.564061-06:00"
   }
 ]
 ```
@@ -3103,7 +3180,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 1223d9ba-eff9-41e0-ad79-2920bb60bc18
+X-Traza-Id: c631735a-23f7-4aad-b651-401afff3b9c0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -3127,7 +3204,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 46 ms · traza `1223d9ba-eff9-41e0-ad79-2920bb60bc18`
+**Respuesta.** HTTP 200 (esperado 200) · 31 ms · traza `c631735a-23f7-4aad-b651-401afff3b9c0`
 
 ```json
 {
@@ -3165,7 +3242,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 636e47a1-f531-41a7-a466-6f857b48f542
+X-Traza-Id: 94302b2a-f1f6-4e21-a967-7683c083d1f4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -3173,7 +3250,7 @@ Content-Type: application/json
 ```json
 {
   "nombre": "Escenario A - evidencias",
-  "candidato_id": 311,
+  "candidato_id": 336,
   "supuestos": {
     "demanda_diaria": 120,
     "operadores": 3,
@@ -3191,13 +3268,13 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 104 ms · traza `636e47a1-f531-41a7-a466-6f857b48f542`
+**Respuesta.** HTTP 201 (esperado 201) · 97 ms · traza `94302b2a-f1f6-4e21-a967-7683c083d1f4`
 
 ```json
 {
-  "id": 41,
+  "id": 43,
   "nombre": "Escenario A - evidencias",
-  "candidato_id": 311,
+  "candidato_id": 336,
   "supuestos": {
     "demanda_diaria": 120.0,
     "operadores": 3,
@@ -3235,7 +3312,7 @@ Content-Type: application/json
       "reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda"
     ]
   },
-  "creado_en": "2026-11-27T01:24:30-06:00"
+  "creado_en": "2026-11-27T02:10:38-06:00"
 }
 ```
 
@@ -3243,19 +3320,19 @@ Content-Type: application/json
 
 **Objetivo.** Escenario con supuestos y resultados.
 
-**Petición.** `GET http://planeacion:5106/api/v1/escenarios/41`
+**Petición.** `GET http://planeacion:5106/api/v1/escenarios/43`
 
 ```http
 Accept: application/xml
-X-Traza-Id: 273a45da-dea7-4ae4-bc7c-1c1005a71b69
+X-Traza-Id: a2e4ead5-ddb0-4f35-ab33-22ddce84a06e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 31 ms · traza `273a45da-dea7-4ae4-bc7c-1c1005a71b69`
+**Respuesta.** HTTP 200 (esperado 200) · 32 ms · traza `a2e4ead5-ddb0-4f35-ab33-22ddce84a06e`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<escenario xmlns="urn:microhubs:v1" version="1"><id>41</id><nombre>Escenario A - evidencias</nombre><candidato_id>311</candidato_id><supuestos><demanda_diaria>120</demanda_diaria><operadores>3</operadores><repartidores>4</repartidores><ticket>135.00</ticket><costo_entrega>22.00</costo_entrega><margen_bruto>0.28</margen_bruto><renta>18000.00</renta><nomina>42000.00</nomina><servicios>7000.00</servicios><otros>5000.00</otros><distancia_km>2.4</distancia_km><capacidad_fisica>150</capacidad_fisica></supuestos><resultados><atendidos>120</atendidos><rechazados>0</rechazados><utilizacion>80</utilizacion><nivel>atencion</nivel><tiempo_estimado_min>19.4</tiempo_estimado_min><operadores_requeridos>3</operadores_requeridos><repartidores_requeridos>2</repartidores_requeridos><ingreso_dia>16200.00</ingreso_dia><margen_dia>-504.00</margen_dia><costo_por_pedido>42.00</costo_por_pedido><equilibrio><margen_pedido>15.80</margen_pedido><mensual>4557</mensual><diario>151.9</diario></equilibrio><decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision><explicacion><motivo>la demanda atendida (120/día) no alcanza el equilibrio (152/día)</motivo><motivo>el espacio físico del local limita la capacidad</motivo><motivo>reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda</motivo></explicacion></resultados><creado_en>2026-11-27T01:24:30-06:00</creado_en></escenario>
+<escenario xmlns="urn:microhubs:v1" version="1"><id>43</id><nombre>Escenario A - evidencias</nombre><candidato_id>336</candidato_id><supuestos><demanda_diaria>120</demanda_diaria><operadores>3</operadores><repartidores>4</repartidores><ticket>135.00</ticket><costo_entrega>22.00</costo_entrega><margen_bruto>0.28</margen_bruto><renta>18000.00</renta><nomina>42000.00</nomina><servicios>7000.00</servicios><otros>5000.00</otros><distancia_km>2.4</distancia_km><capacidad_fisica>150</capacidad_fisica></supuestos><resultados><atendidos>120</atendidos><rechazados>0</rechazados><utilizacion>80</utilizacion><nivel>atencion</nivel><tiempo_estimado_min>19.4</tiempo_estimado_min><operadores_requeridos>3</operadores_requeridos><repartidores_requeridos>2</repartidores_requeridos><ingreso_dia>16200.00</ingreso_dia><margen_dia>-504.00</margen_dia><costo_por_pedido>42.00</costo_por_pedido><equilibrio><margen_pedido>15.80</margen_pedido><mensual>4557</mensual><diario>151.9</diario></equilibrio><decision>NO VIABLE CON LOS SUPUESTOS ACTUALES</decision><explicacion><motivo>la demanda atendida (120/día) no alcanza el equilibrio (152/día)</motivo><motivo>el espacio físico del local limita la capacidad</motivo><motivo>reducir costos fijos, aumentar ticket o buscar una ubicación con más demanda</motivo></explicacion></resultados><creado_en>2026-11-27T02:10:38-06:00</creado_en></escenario>
 ```
 
 ### PLA-11 · Resumen de simulaciones · PASA
@@ -3266,24 +3343,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: f9dc1099-9207-4bfd-abfe-44425d5a090c
+X-Traza-Id: cb2f06a5-ae57-46f6-939a-ff2fdcd2072d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `f9dc1099-9207-4bfd-abfe-44425d5a090c`
+**Respuesta.** HTTP 200 (esperado 200) · 22 ms · traza `cb2f06a5-ae57-46f6-939a-ff2fdcd2072d`
 
 ```json
 {
-  "total": 115,
+  "total": 122,
   "por_decision": [
     {
       "decision": "NO VIABLE CON LOS SUPUESTOS ACTUALES",
-      "cantidad": 112,
+      "cantidad": 118,
       "utilizacion_promedio": 54.3
     },
     {
       "decision": "VIABLE",
-      "cantidad": 3,
+      "cantidad": 4,
       "utilizacion_promedio": 83.3
     }
   ]
@@ -3296,12 +3373,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 [
   {
     "_id": "NO VIABLE CON LOS SUPUESTOS ACTUALES",
-    "cantidad": 112,
-    "utilizacion_promedio": 54.316964285714285
+    "cantidad": 118,
+    "utilizacion_promedio": 54.266949152542374
   },
   {
     "_id": "VIABLE",
-    "cantidad": 3,
+    "cantidad": 4,
     "utilizacion_promedio": 83.3
   }
 ]
@@ -3315,7 +3392,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 621176dd-9543-4cff-835b-084a5013db6f
+X-Traza-Id: 5e48a437-5b82-4da4-813d-2ed70142e2f6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 Content-Type: application/json
 ```
@@ -3339,14 +3416,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 32 ms · traza `621176dd-9543-4cff-835b-084a5013db6f`
+**Respuesta.** HTTP 403 (esperado 403) · 39 ms · traza `5e48a437-5b82-4da4-813d-2ed70142e2f6`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "621176dd-9543-4cff-835b-084a5013db6f"
+    "traza_id": "5e48a437-5b82-4da4-813d-2ed70142e2f6"
   }
 }
 ```
@@ -3355,11 +3432,11 @@ Content-Type: application/json
 
 **Objetivo.** Sin simulacion.ejecutar.
 
-**Petición.** `POST http://planeacion:5106/api/v1/candidatos/311/simular`
+**Petición.** `POST http://planeacion:5106/api/v1/candidatos/336/simular`
 
 ```http
 Accept: application/json
-X-Traza-Id: a614ba46-9764-4aa7-bb37-b94bb4cc61a0
+X-Traza-Id: 930dd789-9dba-4a1e-88d6-39ed8fe6bbaf
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 Content-Type: application/json
 ```
@@ -3368,14 +3445,14 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 30 ms · traza `a614ba46-9764-4aa7-bb37-b94bb4cc61a0`
+**Respuesta.** HTTP 403 (esperado 403) · 32 ms · traza `930dd789-9dba-4a1e-88d6-39ed8fe6bbaf`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "a614ba46-9764-4aa7-bb37-b94bb4cc61a0"
+    "traza_id": "930dd789-9dba-4a1e-88d6-39ed8fe6bbaf"
   }
 }
 ```
@@ -3384,15 +3461,15 @@ Content-Type: application/json
 
 **Objetivo.** Borrar un escenario.
 
-**Petición.** `DELETE http://planeacion:5106/api/v1/escenarios/41`
+**Petición.** `DELETE http://planeacion:5106/api/v1/escenarios/43`
 
 ```http
 Accept: application/json
-X-Traza-Id: 1d162121-195e-447d-bd73-455c4b93632f
+X-Traza-Id: 1344538a-8b81-4d02-abb6-f83622951ad8
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 34 ms · traza `1d162121-195e-447d-bd73-455c4b93632f`
+**Respuesta.** HTTP 204 (esperado 204) · 37 ms · traza `1344538a-8b81-4d02-abb6-f83622951ad8`
 
 ```json
 (sin cuerpo)
@@ -3402,15 +3479,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 **Objetivo.** Baja lógica: se conserva su historia.
 
-**Petición.** `DELETE http://planeacion:5106/api/v1/candidatos/311`
+**Petición.** `DELETE http://planeacion:5106/api/v1/candidatos/336`
 
 ```http
 Accept: application/json
-X-Traza-Id: 90b84049-fb2b-4f23-ad73-78758c966fd1
+X-Traza-Id: bb5dd284-bdf6-48eb-b8c1-830354f9126d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 49 ms · traza `90b84049-fb2b-4f23-ad73-78758c966fd1`
+**Respuesta.** HTTP 204 (esperado 204) · 53 ms · traza `bb5dd284-bdf6-48eb-b8c1-830354f9126d`
 
 ```json
 (sin cuerpo)
@@ -3421,8 +3498,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 ```json
 [
   {
-    "id": 311,
-    "clave": "EV-515F83",
+    "id": 336,
+    "clave": "EV-9A4D67",
     "estatus": "inactivo",
     "decision": "condicionado"
   }
@@ -3437,18 +3514,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: d10fa603-eb8f-4bae-a964-69b78a0ca2fa
+X-Traza-Id: 86bbe489-f331-45bc-961a-7968843f6b01
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 23 ms · traza `d10fa603-eb8f-4bae-a964-69b78a0ca2fa`
+**Respuesta.** HTTP 404 (esperado 404) · 24 ms · traza `86bbe489-f331-45bc-961a-7968843f6b01`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe el candidato.",
-    "traza_id": "d10fa603-eb8f-4bae-a964-69b78a0ca2fa"
+    "traza_id": "86bbe489-f331-45bc-961a-7968843f6b01"
   }
 }
 ```
@@ -3463,11 +3540,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 21c8fc9d-c880-46a4-91b5-b3cc6d97310c
+X-Traza-Id: 822821b5-95a5-487b-9372-4cc5a4471e0b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 67 ms · traza `21c8fc9d-c880-46a4-91b5-b3cc6d97310c`
+**Respuesta.** HTTP 200 (esperado 200) · 55 ms · traza `822821b5-95a5-487b-9372-4cc5a4471e0b`
 
 ```json
 {
@@ -3504,7 +3581,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "reservado": 0,
       "disponible": 36,
       "estado": "normal",
-      "actualizado_en": "2026-11-26T14:26:53-06:00"
+      "actualizado_en": "2026-11-27T02:09:02-06:00"
     },
     {
       "microhub": {
@@ -3561,7 +3638,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "paginacion": {
     "pagina": 1,
     "por_pagina": 5,
-    "total": 161,
+    "total": 163,
     "paginas": 33
   }
 }
@@ -3574,8 +3651,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 ```json
 [
   {
-    "filas": 161,
-    "unidades": 8105,
+    "filas": 163,
+    "unidades": 8399,
     "reservado": 0
   }
 ]
@@ -3589,15 +3666,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/xml
-X-Traza-Id: e3b1ae5e-25f6-4f61-bf25-75c9261bdf82
+X-Traza-Id: bd3f86a3-3b44-4b53-a74b-4b1ca047bed6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 47 ms · traza `e3b1ae5e-25f6-4f61-bf25-75c9261bdf82`
+**Respuesta.** HTTP 200 (esperado 200) · 50 ms · traza `bd3f86a3-3b44-4b53-a74b-4b1ca047bed6`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<existencias xmlns="urn:microhubs:v1" version="1"><datos><existencia><microhub><id>1</id><nombre>Microhub San Bernabé Centro</nombre></microhub><producto><id>1</id><clave_interna>AB-001</clave_interna><nombre>Frijol negro a granel</nombre></producto><existencia>58</existencia><minimo>10</minimo><reservado>0</reservado><disponible>58</disponible><estado>normal</estado><actualizado_en>2026-11-26T23:21:21-06:00</actualizado_en></existencia><existencia><microhub><id>1</id><nombre>Microhub San Bernabé Centro</nombre></microhub><producto><id>2</id><clave_interna>AB-002</clave_interna><nombre>Arroz superextra</nombre></producto><existencia>36</existencia><minimo>10</minimo><reservado>0</reservado><disponible>36</disponible><estado>normal</estado><actualizado_en>2026-11-26T14:26:53-06:00</actualizado_en></existencia><existencia><microhub><id>1</id><nombre>Microhub San Bernabé Centro</nombre></microhub><producto><id>3</id><clave_interna>AB-003</clave_interna><nombre>Aceite vegetal</nombre></producto><existencia>22</existencia><minimo>5</minimo><reservado>0</reservado><disponible>22</disponible><estado>normal</estado><actualizado_en>2026-11-27T01:19:59-06:00</actualizado_en></existencia></datos><paginacion><pagina>1</pagina><por_pagina>3</por_pagina><total>161</total><paginas>54</paginas></paginacion></existencias>
+<existencias xmlns="urn:microhubs:v1" version="1"><datos><existencia><microhub><id>1</id><nombre>Microhub San Bernabé Centro</nombre></microhub><producto><id>1</id><clave_interna>AB-001</clave_interna><nombre>Frijol negro a granel</nombre></producto><existencia>58</existencia><minimo>10</minimo><reservado>0</reservado><disponible>58</disponible><estado>normal</estado><actualizado_en>2026-11-26T23:21:21-06:00</actualizado_en></existencia><existencia><microhub><id>1</id><nombre>Microhub San Bernabé Centro</nombre></microhub><producto><id>2</id><clave_interna>AB-002</clave_interna><nombre>Arroz superextra</nombre></producto><existencia>36</existencia><minimo>10</minimo><reservado>0</reservado><disponible>36</disponible><estado>normal</estado><actualizado_en>2026-11-27T02:09:02-06:00</actualizado_en></existencia><existencia><microhub><id>1</id><nombre>Microhub San Bernabé Centro</nombre></microhub><producto><id>3</id><clave_interna>AB-003</clave_interna><nombre>Aceite vegetal</nombre></producto><existencia>22</existencia><minimo>5</minimo><reservado>0</reservado><disponible>22</disponible><estado>normal</estado><actualizado_en>2026-11-27T01:19:59-06:00</actualizado_en></existencia></datos><paginacion><pagina>1</pagina><por_pagina>3</por_pagina><total>163</total><paginas>55</paginas></paginacion></existencias>
 ```
 
 ### INV-03 · Filtro de estado inválido · PASA
@@ -3608,11 +3685,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 786cd101-f8f5-43a0-9f25-24b15c125d20
+X-Traza-Id: dd2ed9c8-49b8-4ae7-9837-36927b7a5795
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 5 ms · traza `786cd101-f8f5-43a0-9f25-24b15c125d20`
+**Respuesta.** HTTP 400 (esperado 400) · 8 ms · traza `dd2ed9c8-49b8-4ae7-9837-36927b7a5795`
 
 ```json
 {
@@ -3625,7 +3702,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "mensaje": "Valor no permitido para estado: inventado."
       }
     ],
-    "traza_id": "786cd101-f8f5-43a0-9f25-24b15c125d20"
+    "traza_id": "dd2ed9c8-49b8-4ae7-9837-36927b7a5795"
   }
 }
 ```
@@ -3638,11 +3715,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: b0c7822a-2c7d-4dd4-b8f3-42bcb475661c
+X-Traza-Id: 911b39c1-605e-47f6-a2c2-76868f060eb5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 65 ms · traza `b0c7822a-2c7d-4dd4-b8f3-42bcb475661c`
+**Respuesta.** HTTP 200 (esperado 200) · 56 ms · traza `911b39c1-605e-47f6-a2c2-76868f060eb5`
 
 ```json
 {
@@ -3679,7 +3756,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       "reservado": 0,
       "disponible": 36,
       "estado": "normal",
-      "actualizado_en": "2026-11-26T14:26:53-06:00"
+      "actualizado_en": "2026-11-27T02:09:02-06:00"
     },
     {
       "microhub": {
@@ -3742,12 +3819,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "clave_interna": "AB-006",
         "nombre": "Harina de maíz nixtamalizado"
       },
-      "existencia": 93,
+      "existencia": 98,
       "minimo": 10,
       "reservado": 0,
-      "disponible": 93,
+      "disponible": 98,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T01:16:36-06:00"
+      "actualizado_en": "2026-11-27T02:05:54-06:00"
     },
     {
       "microhub": {
@@ -3764,7 +3841,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       "reservado": 0,
       "disponible": 12,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T01:16:37-06:00"
+      "actualizado_en": "2026-11-27T02:05:55-06:00"
     },
     {
       "microhub": {
@@ -3776,12 +3853,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "clave_interna": "AB-008",
         "nombre": "Pasta para sopa surtida"
       },
-      "existencia": 6,
+      "existencia": 73,
       "minimo": 10,
       "reservado": 0,
-      "disponible": 6,
-      "estado": "bajo_minimo",
-      "actualizado_en": "2026-11-27T01:18:40-06:00"
+      "disponible": 73,
+      "estado": "normal",
+      "actualizado_en": "2026-11-27T02:07:48-06:00"
     },
     {
       "microhub": {
@@ -3798,7 +3875,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       "reservado": 0,
       "disponible": 42,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T01:16:35-06:00"
+      "actualizado_en": "2026-11-27T02:05:53-06:00"
     },
     {
       "microhub": {
@@ -3810,12 +3887,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "clave_interna": "AB-010",
         "nombre": "Sardina en salsa de tomate"
       },
-      "existencia": 1012,
+      "existencia": 1104,
       "minimo": 10,
       "reservado": 0,
-      "disponible": 1012,
+      "disponible": 1104,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T01:17:02-06:00"
+      "actualizado_en": "2026-11-27T02:06:18-06:00"
     },
     {
       "microhub": {
@@ -3827,12 +3904,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "clave_interna": "AB-011",
         "nombre": "Frijoles refritos"
       },
-      "existencia": 22,
+      "existencia": 25,
       "minimo": 10,
       "reservado": 0,
-      "disponible": 22,
+      "disponible": 25,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T00:14:44-06:00"
+      "actualizado_en": "2026-11-27T01:25:19-06:00"
     },
     {
       "microhub": {
@@ -3844,12 +3921,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "clave_interna": "AB-012",
         "nombre": "Chiles jalapeños en escabeche"
       },
-      "existencia": 575,
+      "existencia": 638,
       "minimo": 8,
       "reservado": 0,
-      "disponible": 575,
+      "disponible": 638,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T01:17:05-06:00"
+      "actualizado_en": "2026-11-27T02:06:21-06:00"
     },
     {
       "microhub": {
@@ -3866,7 +3943,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       "reservado": 0,
       "disponible": 56,
       "estado": "normal",
-      "actualizado_en": "2026-11-26T23:09:37-06:00"
+      "actualizado_en": "2026-11-27T02:07:48-06:00"
     },
     {
       "microhub": {
@@ -3900,7 +3977,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       "reservado": 0,
       "disponible": 52,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T01:17:04-06:00"
+      "actualizado_en": "2026-11-27T02:06:20-06:00"
     },
     {
       "microhub": {
@@ -3946,12 +4023,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "clave_interna": "AB-018",
         "nombre": "Pan de caja blanco"
       },
-      "existencia": 62,
+      "existencia": 50,
       "minimo": 8,
       "reservado": 0,
-      "disponible": 62,
+      "disponible": 50,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T01:24:09-06:00"
+      "actualizado_en": "2026-11-27T02:10:16-06:00"
     },
     {
       "microhub": {
@@ -4036,7 +4113,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       "reservado": 0,
       "disponible": 52,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T01:19:53-06:00"
+      "actualizado_en": "2026-11-27T02:07:48-06:00"
     },
     {
       "microhub": {
@@ -4087,7 +4164,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       "reservado": 0,
       "disponible": 13,
       "estado": "normal",
-      "actualizado_en": "2026-11-26T23:21:47-06:00"
+      "actualizado_en": "2026-11-27T02:07:48-06:00"
     },
     {
       "microhub": {
@@ -4138,7 +4215,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       "reservado": 0,
       "disponible": 45,
       "estado": "normal",
-      "actualizado_en": "2026-11-26T23:17:17-06:00"
+      "actualizado_en": "2026-11-27T02:05:22-06:00"
     },
     {
       "microhub": {
@@ -4150,12 +4227,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "clave_interna": "LA-002",
         "nombre": "Leche deslactosada"
       },
-      "existencia": 10,
+      "existencia": 12,
       "minimo": 5,
       "reservado": 0,
-      "disponible": 10,
+      "disponible": 12,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T00:14:44-06:00"
+      "actualizado_en": "2026-11-27T01:25:19-06:00"
     },
     {
       "microhub": {
@@ -4167,12 +4244,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "clave_interna": "LA-003",
         "nombre": "Queso fresco"
       },
-      "existencia": 301,
+      "existencia": 391,
       "minimo": 5,
       "reservado": 0,
-      "disponible": 301,
+      "disponible": 391,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T01:24:15-06:00"
+      "actualizado_en": "2026-11-27T02:10:22-06:00"
     },
     {
       "microhub": {
@@ -4206,7 +4283,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       "reservado": 0,
       "disponible": 78,
       "estado": "normal",
-      "actualizado_en": "2026-11-26T23:09:37-06:00"
+      "actualizado_en": "2026-11-27T02:07:48-06:00"
     },
     {
       "microhub": {
@@ -4286,12 +4363,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "clave_interna": "LI-002",
         "nombre": "Jabón para trastes"
       },
-      "existencia": 42,
+      "existencia": 37,
       "minimo": 5,
       "reservado": 0,
-      "disponible": 42,
+      "disponible": 37,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T01:20:02-06:00"
+      "actualizado_en": "2026-11-27T02:05:34-06:00"
     },
     {
       "microhub": {
@@ -4376,7 +4453,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       "reservado": 0,
       "disponible": 65,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T01:20:01-06:00"
+      "actualizado_en": "2026-11-27T02:07:48-06:00"
     },
     {
       "microhub": {
@@ -4405,12 +4482,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "clave_interna": "LI-009",
         "nombre": "Fibra para trastes"
       },
-      "existencia": 43,
+      "existencia": 40,
       "minimo": 10,
       "reservado": 0,
-      "disponible": 43,
+      "disponible": 40,
       "estado": "normal",
-      "actualizado_en": "2026-11-26T23:20:05-06:00"
+      "actualizado_en": "2026-11-27T02:07:48-06:00"
     },
     {
       "microhub": {
@@ -4422,12 +4499,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "clave_interna": "HI-001",
         "nombre": "Jabón de tocador"
       },
-      "existencia": 60,
+      "existencia": 63,
       "minimo": 5,
       "reservado": 0,
-      "disponible": 60,
+      "disponible": 63,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T00:14:44-06:00"
+      "actualizado_en": "2026-11-27T01:25:19-06:00"
     },
     {
       "microhub": {
@@ -4444,7 +4521,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       "reservado": 0,
       "disponible": 34,
       "estado": "normal",
-      "actualizado_en": "2026-11-27T00:14:44-06:00"
+      "actualizado_en": "2026-11-27T02:07:48-06:00"
     },
     {
       "microhub": {
@@ -4478,7 +4555,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       "reservado": 0,
       "disponible": 36,
       "estado": "normal",
-      "actualizado_en": "2026-11-26T15:23:37-06:00"
+      "actualizado_en": "2026-11-27T02:09:02-06:00"
     },
     {
       "microhub": {
@@ -4532,18 +4609,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 66bfc2f4-b1b0-437f-9a63-2deb34017c62
+X-Traza-Id: a5ea3a77-7529-4ed8-a097-8779ee50f11f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 7 ms · traza `66bfc2f4-b1b0-437f-9a63-2deb34017c62`
+**Respuesta.** HTTP 403 (esperado 403) · 6 ms · traza `a5ea3a77-7529-4ed8-a097-8779ee50f11f`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil solo puede trabajar con su propio microhub.",
-    "traza_id": "66bfc2f4-b1b0-437f-9a63-2deb34017c62"
+    "traza_id": "a5ea3a77-7529-4ed8-a097-8779ee50f11f"
   }
 }
 ```
@@ -4556,11 +4633,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 6674e38b-5f71-4332-b306-c0115fd577f5
+X-Traza-Id: a3c972c4-8640-4095-9fc6-7dfd91416157
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 29 ms · traza `6674e38b-5f71-4332-b306-c0115fd577f5`
+**Respuesta.** HTTP 200 (esperado 200) · 34 ms · traza `a3c972c4-8640-4095-9fc6-7dfd91416157`
 
 ```json
 {
@@ -4573,12 +4650,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
     "clave_interna": "AB-006",
     "nombre": "Harina de maíz nixtamalizado"
   },
-  "existencia": 93,
+  "existencia": 98,
   "minimo": 10,
   "reservado": 0,
-  "disponible": 93,
+  "disponible": 98,
   "estado": "normal",
-  "actualizado_en": "2026-11-27T01:16:36-06:00"
+  "actualizado_en": "2026-11-27T02:05:54-06:00"
 }
 ```
 
@@ -4590,7 +4667,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 3036baf9-9e40-4503-a4a4-ed8667a1d228
+X-Traza-Id: 7e5b9872-9ec5-4796-a80e-787d2e15abf7
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -4602,7 +4679,7 @@ Content-Type: application/json
   "tipo": "recepcion",
   "cantidad": 5,
   "motivo": "Llegada de mercancía",
-  "operacion_uuid": "e0d8fe82-47aa-4955-9976-bdf4ab9d3188",
+  "operacion_uuid": "0005f3ec-ad64-48da-ae69-eeb343589c8e",
   "referencia": {
     "tipo": "orden_compra",
     "id": "1"
@@ -4610,24 +4687,24 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 96 ms · traza `3036baf9-9e40-4503-a4a4-ed8667a1d228`
+**Respuesta.** HTTP 201 (esperado 201) · 94 ms · traza `7e5b9872-9ec5-4796-a80e-787d2e15abf7`
 
 ```json
 {
   "movimiento": {
-    "id": 2944,
+    "id": 3078,
     "microhub_id": 1,
     "producto_id": 6,
     "tipo": "recepcion",
     "cantidad": 5,
-    "existencia_resultante": 98,
+    "existencia_resultante": 103,
     "referencia": {
       "tipo": "orden_compra",
       "id": "1"
     },
     "motivo": "Llegada de mercancía",
     "usuario_id": 2,
-    "fecha": "2026-11-27T01:24:32-06:00"
+    "fecha": "2026-11-27T02:10:41-06:00"
   },
   "duplicado": false
 }
@@ -4640,13 +4717,13 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 2944,
+    "id": 3078,
     "tipo": "recepcion",
     "cantidad": 5,
-    "existencia_resultante": 98,
+    "existencia_resultante": 103,
     "referencia_tipo": "orden_compra",
     "referencia_id": 1,
-    "operacion_uuid": "e0d8fe82-47aa-4955-9976-bdf4ab9d3188"
+    "operacion_uuid": "0005f3ec-ad64-48da-ae69-eeb343589c8e"
   }
 ]
 ```
@@ -4656,7 +4733,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "existencia": 98
+    "existencia": 103
   }
 ]
 ```
@@ -4669,7 +4746,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 37c8640e-4b49-4402-9ebf-264600b8df27
+X-Traza-Id: 2c4994fe-7bba-4cfc-be32-97974b4c4317
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -4681,7 +4758,7 @@ Content-Type: application/json
   "tipo": "recepcion",
   "cantidad": 5,
   "motivo": "Llegada de mercancía",
-  "operacion_uuid": "e0d8fe82-47aa-4955-9976-bdf4ab9d3188",
+  "operacion_uuid": "0005f3ec-ad64-48da-ae69-eeb343589c8e",
   "referencia": {
     "tipo": "orden_compra",
     "id": "1"
@@ -4689,24 +4766,24 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 25 ms · traza `37c8640e-4b49-4402-9ebf-264600b8df27`
+**Respuesta.** HTTP 200 (esperado 200) · 29 ms · traza `2c4994fe-7bba-4cfc-be32-97974b4c4317`
 
 ```json
 {
   "movimiento": {
-    "id": 2944,
+    "id": 3078,
     "microhub_id": 1,
     "producto_id": 6,
     "tipo": "recepcion",
     "cantidad": 5,
-    "existencia_resultante": 98,
+    "existencia_resultante": 103,
     "referencia": {
       "tipo": "orden_compra",
       "id": "1"
     },
     "motivo": "Llegada de mercancía",
     "usuario_id": 2,
-    "fecha": "2026-11-27T01:24:32-06:00"
+    "fecha": "2026-11-27T02:10:41-06:00"
   },
   "duplicado": true
 }
@@ -4727,7 +4804,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "existencia": 98
+    "existencia": 103
   }
 ]
 ```
@@ -4740,7 +4817,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: b8502908-a680-4b83-8645-88c6e873204d
+X-Traza-Id: 90fb5b9b-9f61-4f41-9681-1f99cb077f6d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -4754,7 +4831,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 8 ms · traza `b8502908-a680-4b83-8645-88c6e873204d`
+**Respuesta.** HTTP 422 (esperado 422) · 7 ms · traza `90fb5b9b-9f61-4f41-9681-1f99cb077f6d`
 
 ```json
 {
@@ -4767,7 +4844,7 @@ Content-Type: application/json
         "mensaje": "Una ajuste necesita el motivo."
       }
     ],
-    "traza_id": "b8502908-a680-4b83-8645-88c6e873204d"
+    "traza_id": "90fb5b9b-9f61-4f41-9681-1f99cb077f6d"
   }
 }
 ```
@@ -4780,7 +4857,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 04d27940-5cc3-4a38-932b-c87d362c0419
+X-Traza-Id: c4256ff3-1a3e-41b3-9cec-c8347759d3bd
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -4795,14 +4872,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 50 ms · traza `04d27940-5cc3-4a38-932b-c87d362c0419`
+**Respuesta.** HTTP 403 (esperado 403) · 48 ms · traza `c4256ff3-1a3e-41b3-9cec-c8347759d3bd`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Un movimiento de más de 25 unidades lo autoriza un administrador.",
-    "traza_id": "04d27940-5cc3-4a38-932b-c87d362c0419"
+    "traza_id": "c4256ff3-1a3e-41b3-9cec-c8347759d3bd"
   }
 }
 ```
@@ -4817,7 +4894,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: c4f8e433-8e4f-453d-a116-b1a08b58ee09
+X-Traza-Id: b24470d3-dcd8-45ed-9574-500050a5b2c0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -4832,21 +4909,21 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 67 ms · traza `c4f8e433-8e4f-453d-a116-b1a08b58ee09`
+**Respuesta.** HTTP 201 (esperado 201) · 83 ms · traza `b24470d3-dcd8-45ed-9574-500050a5b2c0`
 
 ```json
 {
   "movimiento": {
-    "id": 2945,
+    "id": 3079,
     "microhub_id": 1,
     "producto_id": 6,
     "tipo": "ajuste",
     "cantidad": 30,
-    "existencia_resultante": 128,
+    "existencia_resultante": 133,
     "referencia": null,
     "motivo": "Ajuste grande de prueba",
     "usuario_id": 1,
-    "fecha": "2026-11-27T01:24:32-06:00"
+    "fecha": "2026-11-27T02:10:41-06:00"
   },
   "duplicado": false
 }
@@ -4859,7 +4936,7 @@ Content-Type: application/json
   {
     "tipo": "ajuste",
     "cantidad": 30,
-    "existencia_resultante": 128,
+    "existencia_resultante": 133,
     "motivo": "Ajuste grande de prueba",
     "usuario_id": 1
   }
@@ -4874,7 +4951,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 87921df4-f8d4-45c0-a96f-36e379a2df63
+X-Traza-Id: 7c8e43b7-1a40-4bfe-9f7d-b47f77d09a65
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -4886,11 +4963,11 @@ Content-Type: application/json
   "producto_id": 7,
   "cantidad": 2,
   "motivo": "El microhub 2 se quedó sin producto",
-  "operacion_uuid": "5d18493f-7c85-4748-bda3-79ad009d6d0a"
+  "operacion_uuid": "990075ad-0440-46b7-891e-f3dcb2453769"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 105 ms · traza `87921df4-f8d4-45c0-a96f-36e379a2df63`
+**Respuesta.** HTTP 201 (esperado 201) · 160 ms · traza `7c8e43b7-1a40-4bfe-9f7d-b47f77d09a65`
 
 ```json
 {
@@ -4900,12 +4977,12 @@ Content-Type: application/json
   "origen": {
     "microhub_id": 1,
     "existencia": 10,
-    "movimiento_id": 2948
+    "movimiento_id": 3082
   },
   "destino": {
     "microhub_id": 2,
     "existencia": 76,
-    "movimiento_id": 2949
+    "movimiento_id": 3083
   }
 }
 ```
@@ -4943,7 +5020,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 8c11317a-29f9-46d2-a9d0-317c34d9b510
+X-Traza-Id: c5205d1b-16e7-4660-981e-8442201de94f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -4955,18 +5032,18 @@ Content-Type: application/json
   "producto_id": 7,
   "cantidad": 1012,
   "motivo": "El microhub 2 se quedó sin producto",
-  "operacion_uuid": "13f17d18-40ac-45fc-a996-2d297864ac99"
+  "operacion_uuid": "6e0173b8-3194-45a5-a9bc-ce14b92e9bd5"
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 78 ms · traza `8c11317a-29f9-46d2-a9d0-317c34d9b510`
+**Respuesta.** HTTP 409 (esperado 409) · 109 ms · traza `c5205d1b-16e7-4660-981e-8442201de94f`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "En el microhub de origen hay 10 disponibles y se piden 1012.",
-    "traza_id": "8c11317a-29f9-46d2-a9d0-317c34d9b510"
+    "traza_id": "c5205d1b-16e7-4660-981e-8442201de94f"
   }
 }
 ```
@@ -4979,7 +5056,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 7e34ba70-a3e7-434a-abcc-c82a97ea5b82
+X-Traza-Id: 63d0780c-d782-473a-89f0-8be7d8e43b78
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -4991,16 +5068,16 @@ Content-Type: application/json
   "cantidad": 3,
   "referencia": {
     "tipo": "manual",
-    "id": "evidencia-e01487"
+    "id": "evidencia-daf24e"
   }
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 75 ms · traza `7e34ba70-a3e7-434a-abcc-c82a97ea5b82`
+**Respuesta.** HTTP 201 (esperado 201) · 78 ms · traza `63d0780c-d782-473a-89f0-8be7d8e43b78`
 
 ```json
 {
-  "id": 29,
+  "id": 32,
   "microhub_id": 1,
   "producto_id": 8,
   "cantidad": 3,
@@ -5008,10 +5085,10 @@ Content-Type: application/json
   "vigente": true,
   "referencia": {
     "tipo": "manual",
-    "id": "evidencia-e01487"
+    "id": "evidencia-daf24e"
   },
-  "creada_en": "2026-11-27T01:24:33-06:00",
-  "vence_en": "2026-11-27T01:54:33-06:00",
+  "creada_en": "2026-11-27T02:10:42-06:00",
+  "vence_en": "2026-11-27T02:40:42-06:00",
   "cerrada_en": null
 }
 ```
@@ -5021,9 +5098,9 @@ Content-Type: application/json
 ```json
 [
   {
-    "existencia": 6,
+    "existencia": 73,
     "reservado": 3,
-    "disponible": 3
+    "disponible": 70
   }
 ]
 ```
@@ -5036,7 +5113,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 85ed22e9-3253-4b6c-9e70-e7d00459bcc6
+X-Traza-Id: 4bdfc2a7-885a-4277-949a-18bf19b646ed
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -5045,22 +5122,22 @@ Content-Type: application/json
 {
   "microhub_id": 1,
   "producto_id": 8,
-  "cantidad": 106,
+  "cantidad": 173,
   "referencia": {
     "tipo": "manual",
-    "id": "evidencia-e01487"
+    "id": "evidencia-daf24e"
   }
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 69 ms · traza `85ed22e9-3253-4b6c-9e70-e7d00459bcc6`
+**Respuesta.** HTTP 409 (esperado 409) · 51 ms · traza `4bdfc2a7-885a-4277-949a-18bf19b646ed`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
-    "mensaje": "No hay existencia disponible: hay 3 sin apartar y se piden 106.",
-    "traza_id": "85ed22e9-3253-4b6c-9e70-e7d00459bcc6"
+    "mensaje": "No hay existencia disponible: hay 70 sin apartar y se piden 173.",
+    "traza_id": "4bdfc2a7-885a-4277-949a-18bf19b646ed"
   }
 }
 ```
@@ -5069,21 +5146,21 @@ Content-Type: application/json
 
 **Objetivo.** Filtro por producto, estado y referencia.
 
-**Petición.** `GET http://inventario:5111/api/v1/inventario/reservas?producto_id=8&estado=activa&referencia_id=evidencia-e01487`
+**Petición.** `GET http://inventario:5111/api/v1/inventario/reservas?producto_id=8&estado=activa&referencia_id=evidencia-daf24e`
 
 ```http
 Accept: application/json
-X-Traza-Id: 42d96c9c-1ced-497c-882d-fc11dcab7973
+X-Traza-Id: 3e70c37d-902c-4da3-9c76-0b8f6305bdae
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 60 ms · traza `42d96c9c-1ced-497c-882d-fc11dcab7973`
+**Respuesta.** HTTP 200 (esperado 200) · 52 ms · traza `3e70c37d-902c-4da3-9c76-0b8f6305bdae`
 
 ```json
 {
   "datos": [
     {
-      "id": 29,
+      "id": 32,
       "microhub_id": 1,
       "producto_id": 8,
       "cantidad": 3,
@@ -5091,10 +5168,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "vigente": true,
       "referencia": {
         "tipo": "manual",
-        "id": "evidencia-e01487"
+        "id": "evidencia-daf24e"
       },
-      "creada_en": "2026-11-27T01:24:33-06:00",
-      "vence_en": "2026-11-27T01:54:33-06:00",
+      "creada_en": "2026-11-27T02:10:42-06:00",
+      "vence_en": "2026-11-27T02:40:42-06:00",
       "cerrada_en": null
     }
   ],
@@ -5111,19 +5188,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Lo apartado vuelve a estar disponible.
 
-**Petición.** `POST http://inventario:5111/api/v1/inventario/reservas/29/liberar`
+**Petición.** `POST http://inventario:5111/api/v1/inventario/reservas/32/liberar`
 
 ```http
 Accept: application/json
-X-Traza-Id: 47c841c2-8553-4bc2-bc6e-bc9760eb15d6
+X-Traza-Id: 7cf798dd-262a-4baa-81f9-1f5232dd3e5f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 54 ms · traza `47c841c2-8553-4bc2-bc6e-bc9760eb15d6`
+**Respuesta.** HTTP 200 (esperado 200) · 67 ms · traza `7cf798dd-262a-4baa-81f9-1f5232dd3e5f`
 
 ```json
 {
-  "id": 29,
+  "id": 32,
   "microhub_id": 1,
   "producto_id": 8,
   "cantidad": 3,
@@ -5131,11 +5208,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
   "vigente": false,
   "referencia": {
     "tipo": "manual",
-    "id": "evidencia-e01487"
+    "id": "evidencia-daf24e"
   },
-  "creada_en": "2026-11-27T01:24:33-06:00",
-  "vence_en": "2026-11-27T01:54:33-06:00",
-  "cerrada_en": "2026-11-27T01:24:33-06:00"
+  "creada_en": "2026-11-27T02:10:42-06:00",
+  "vence_en": "2026-11-27T02:40:42-06:00",
+  "cerrada_en": "2026-11-27T02:10:42-06:00"
 }
 ```
 
@@ -5155,9 +5232,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 ```json
 [
   {
-    "existencia": 6,
+    "existencia": 73,
     "reservado": 0,
-    "disponible": 6
+    "disponible": 73
   }
 ]
 ```
@@ -5170,7 +5247,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 54d5a398-dbda-43de-8565-ff666642f3ee
+X-Traza-Id: aba16b02-f04c-4855-9120-258ac65b08d9
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -5181,7 +5258,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 80 ms · traza `54d5a398-dbda-43de-8565-ff666642f3ee`
+**Respuesta.** HTTP 200 (esperado 200) · 61 ms · traza `aba16b02-f04c-4855-9120-258ac65b08d9`
 
 ```json
 {
@@ -5199,7 +5276,7 @@ Content-Type: application/json
   "reservado": 0,
   "disponible": 42,
   "estado": "normal",
-  "actualizado_en": "2026-11-27T01:24:34-06:00"
+  "actualizado_en": "2026-11-27T02:10:42-06:00"
 }
 ```
 
@@ -5222,7 +5299,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: e2da6fd3-6a64-45b4-a81d-5161e454b9aa
+X-Traza-Id: 9458a110-a918-4801-b7dd-7fb56a97e636
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -5233,7 +5310,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 66 ms · traza `e2da6fd3-6a64-45b4-a81d-5161e454b9aa`
+**Respuesta.** HTTP 200 (esperado 200) · 60 ms · traza `9458a110-a918-4801-b7dd-7fb56a97e636`
 
 ```json
 {
@@ -5251,7 +5328,7 @@ Content-Type: application/json
   "reservado": 0,
   "disponible": 42,
   "estado": "normal",
-  "actualizado_en": "2026-11-27T01:24:34-06:00"
+  "actualizado_en": "2026-11-27T02:10:42-06:00"
 }
 ```
 
@@ -5266,7 +5343,7 @@ Content-Type: application/json
     "accion": "modificacion",
     "entidad": "inventario",
     "valores_nuevos": {
-      "actualizado_en": "2026-11-27T01:24:34.180849-06:00"
+      "actualizado_en": "2026-11-27T02:10:42.645073-06:00"
     }
   }
 ]
@@ -5280,7 +5357,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 7fc92f69-33f9-4dbb-95f0-1d2343dc45c7
+X-Traza-Id: 14ab1349-a4d9-435e-a173-7c6e686d00f6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -5291,14 +5368,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 25 ms · traza `7fc92f69-33f9-4dbb-95f0-1d2343dc45c7`
+**Respuesta.** HTTP 403 (esperado 403) · 31 ms · traza `14ab1349-a4d9-435e-a173-7c6e686d00f6`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "7fc92f69-33f9-4dbb-95f0-1d2343dc45c7"
+    "traza_id": "14ab1349-a4d9-435e-a173-7c6e686d00f6"
   }
 }
 ```
@@ -5311,7 +5388,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 19b02e96-1e32-40f9-96dc-02dcc1415627
+X-Traza-Id: 87edbfb9-4e91-4575-820e-552c6ec1bff2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -5326,12 +5403,12 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 71 ms · traza `19b02e96-1e32-40f9-96dc-02dcc1415627`
+**Respuesta.** HTTP 201 (esperado 201) · 88 ms · traza `87edbfb9-4e91-4575-820e-552c6ec1bff2`
 
 ```json
 {
   "movimiento": {
-    "id": 2952,
+    "id": 3086,
     "microhub_id": 1,
     "producto_id": 9,
     "tipo": "merma",
@@ -5340,7 +5417,7 @@ Content-Type: application/json
     "referencia": null,
     "motivo": "Se rompieron dos",
     "usuario_id": 1,
-    "fecha": "2026-11-27T01:24:34-06:00"
+    "fecha": "2026-11-27T02:10:42-06:00"
   },
   "duplicado": false
 }
@@ -5379,31 +5456,15 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 93717007-b031-4466-9c78-a8fa07eb2ba3
+X-Traza-Id: d9148e6d-744e-4a1a-911b-1cd8dacd712e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 79 ms · traza `93717007-b031-4466-9c78-a8fa07eb2ba3`
+**Respuesta.** HTTP 200 (esperado 200) · 85 ms · traza `d9148e6d-744e-4a1a-911b-1cd8dacd712e`
 
 ```json
 {
   "datos": [
-    {
-      "microhub": {
-        "id": 1,
-        "nombre": "Microhub San Bernabé Centro"
-      },
-      "producto": {
-        "id": 8,
-        "clave_interna": "AB-008",
-        "nombre": "Pasta para sopa surtida"
-      },
-      "existencia": 6,
-      "minimo": 10,
-      "disponible": 6,
-      "faltante": 4,
-      "severidad": "baja"
-    },
     {
       "microhub": {
         "id": 1,
@@ -5440,7 +5501,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "paginacion": {
     "pagina": 1,
     "por_pagina": 100,
-    "total": 3,
+    "total": 2,
     "paginas": 1
   }
 }
@@ -5454,15 +5515,57 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: ecb0f938-bae5-4d7a-86ce-14989f27c3ae
+X-Traza-Id: a197bb19-ccf1-40c7-8ea7-816b546de67f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 51 ms · traza `ecb0f938-bae5-4d7a-86ce-14989f27c3ae`
+**Respuesta.** HTTP 200 (esperado 200) · 72 ms · traza `a197bb19-ccf1-40c7-8ea7-816b546de67f`
 
 ```json
 {
   "datos": [
+    {
+      "id": 3078,
+      "microhub_id": 1,
+      "producto_id": 6,
+      "tipo": "recepcion",
+      "cantidad": 5,
+      "existencia_resultante": 103,
+      "referencia": {
+        "tipo": "orden_compra",
+        "id": "1"
+      },
+      "motivo": "Llegada de mercancía",
+      "usuario_id": 2,
+      "fecha": "2026-11-27T02:10:41-06:00"
+    },
+    {
+      "id": 2978,
+      "microhub_id": 1,
+      "producto_id": 6,
+      "tipo": "recepcion",
+      "cantidad": 5,
+      "existencia_resultante": 98,
+      "referencia": {
+        "tipo": "orden_compra",
+        "id": "1"
+      },
+      "motivo": "Prueba de recepción",
+      "usuario_id": 2,
+      "fecha": "2026-11-27T02:05:53-06:00"
+    },
+    {
+      "id": 2976,
+      "microhub_id": 1,
+      "producto_id": 6,
+      "tipo": "recepcion",
+      "cantidad": 3,
+      "existencia_resultante": 96,
+      "referencia": null,
+      "motivo": "Prueba XML",
+      "usuario_id": 2,
+      "fecha": "2026-11-27T02:05:53-06:00"
+    },
     {
       "id": 2944,
       "microhub_id": 1,
@@ -5705,51 +5808,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "motivo": "Prueba de recepción",
       "usuario_id": 2,
       "fecha": "2026-10-20T08:13:27-06:00"
-    },
-    {
-      "id": 1653,
-      "microhub_id": 1,
-      "producto_id": 6,
-      "tipo": "recepcion",
-      "cantidad": 3,
-      "existencia_resultante": 74,
-      "referencia": null,
-      "motivo": "Prueba XML",
-      "usuario_id": 2,
-      "fecha": "2026-10-20T08:13:27-06:00"
-    },
-    {
-      "id": 1514,
-      "microhub_id": 1,
-      "producto_id": 6,
-      "tipo": "recepcion",
-      "cantidad": 5,
-      "existencia_resultante": 71,
-      "referencia": {
-        "tipo": "orden_compra",
-        "id": "1"
-      },
-      "motivo": "Prueba de recepción",
-      "usuario_id": 2,
-      "fecha": "2026-10-20T00:49:55-06:00"
-    },
-    {
-      "id": 1512,
-      "microhub_id": 1,
-      "producto_id": 6,
-      "tipo": "recepcion",
-      "cantidad": 3,
-      "existencia_resultante": 69,
-      "referencia": null,
-      "motivo": "Prueba XML",
-      "usuario_id": 2,
-      "fecha": "2026-10-20T00:49:55-06:00"
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 20,
-    "total": 31,
+    "total": 34,
     "paginas": 2
   }
 }
@@ -5765,7 +5829,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 370c150e-4d86-4ae6-8e7d-f4632582e287
+X-Traza-Id: b6cbb0b9-bca4-4511-b16e-24c097221a6a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -5775,7 +5839,7 @@ Content-Type: application/json
   "rol": "operador",
   "microhub_id": 1,
   "tipo": "sistema",
-  "titulo": "Evidencia d7a383",
+  "titulo": "Evidencia 2846cf",
   "mensaje": "Aviso de prueba para el microhub 1",
   "referencia": {
     "tipo": "sistema",
@@ -5784,14 +5848,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 63 ms · traza `370c150e-4d86-4ae6-8e7d-f4632582e287`
+**Respuesta.** HTTP 201 (esperado 201) · 78 ms · traza `b6cbb0b9-bca4-4511-b16e-24c097221a6a`
 
 ```json
 {
   "enviadas": 1,
   "omitidas": 0,
   "ids": [
-    1257
+    1368
   ]
 }
 ```
@@ -5804,7 +5868,7 @@ Content-Type: application/json
     "destinatario_id": 2,
     "emisor_id": 1,
     "tipo": "sistema",
-    "titulo": "Evidencia d7a383",
+    "titulo": "Evidencia 2846cf",
     "referencia_tipo": "sistema",
     "referencia_id": "evidencia"
   }
@@ -5819,7 +5883,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: e8888734-cc94-4ed8-a1e8-9add88e65bd3
+X-Traza-Id: ccba5427-09f5-4c84-b5c5-0c89e9b1fb4a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -5833,14 +5897,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 29 ms · traza `e8888734-cc94-4ed8-a1e8-9add88e65bd3`
+**Respuesta.** HTTP 403 (esperado 403) · 49 ms · traza `ccba5427-09f5-4c84-b5c5-0c89e9b1fb4a`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "e8888734-cc94-4ed8-a1e8-9add88e65bd3"
+    "traza_id": "ccba5427-09f5-4c84-b5c5-0c89e9b1fb4a"
   }
 }
 ```
@@ -5853,7 +5917,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: e1dc5f45-6ae5-45dc-8a0c-bb662afb3aa9
+X-Traza-Id: cf33cb39-0ce7-43ee-9479-53dd0958e0c2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -5867,7 +5931,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 30 ms · traza `e1dc5f45-6ae5-45dc-8a0c-bb662afb3aa9`
+**Respuesta.** HTTP 422 (esperado 422) · 60 ms · traza `cf33cb39-0ce7-43ee-9479-53dd0958e0c2`
 
 ```json
 {
@@ -5880,7 +5944,7 @@ Content-Type: application/json
         "mensaje": "No hay personas activas con ese destino."
       }
     ],
-    "traza_id": "e1dc5f45-6ae5-45dc-8a0c-bb662afb3aa9"
+    "traza_id": "cf33cb39-0ce7-43ee-9479-53dd0958e0c2"
   }
 }
 ```
@@ -5893,29 +5957,29 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: e6e4497c-f02a-4312-a531-1dc21f11c6c0
+X-Traza-Id: a3960785-0dbe-4a51-839b-3d02807c935f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 45 ms · traza `e6e4497c-f02a-4312-a531-1dc21f11c6c0`
+**Respuesta.** HTTP 200 (esperado 200) · 77 ms · traza `a3960785-0dbe-4a51-839b-3d02807c935f`
 
 ```json
 {
   "datos": [
     {
-      "id": 1257,
+      "id": 1368,
       "tipo": "sistema",
-      "titulo": "Evidencia d7a383",
+      "titulo": "Evidencia 2846cf",
       "mensaje": "Aviso de prueba para el microhub 1",
       "leida": false,
       "referencia": {
         "tipo": "sistema",
         "id": "evidencia"
       },
-      "creada_en": "2026-11-27T01:24:34-06:00"
+      "creada_en": "2026-11-27T02:10:43-06:00"
     },
     {
-      "id": 1255,
+      "id": 1366,
       "tipo": "inventario",
       "titulo": "Faltante en Microhub San Bernabé Centro",
       "mensaje": "Atún en agua: quedan 40 (mínimo 41).",
@@ -5924,10 +5988,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "tipo": "producto",
         "id": "9"
       },
-      "creada_en": "2026-11-27T01:24:34-06:00"
+      "creada_en": "2026-11-27T02:10:42-06:00"
     },
     {
-      "id": 1253,
+      "id": 1364,
       "tipo": "inventario",
       "titulo": "Faltante en Microhub San Bernabé Centro",
       "mensaje": "Harina de trigo: quedan 10 (mínimo 10).",
@@ -5936,43 +6000,34 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "tipo": "producto",
         "id": "7"
       },
-      "creada_en": "2026-11-27T01:24:33-06:00"
+      "creada_en": "2026-11-27T02:10:41-06:00"
     },
     {
-      "id": 1240,
+      "id": 1355,
       "tipo": "abastecimiento",
-      "titulo": "Orden de compra OC-20261127-000057",
+      "titulo": "Orden de compra OC-20261127-000064",
       "mensaje": "La orden quedó recibida.",
       "leida": false,
       "referencia": {
         "tipo": "orden",
-        "id": "57"
+        "id": "64"
       },
-      "creada_en": "2026-11-27T01:24:14-06:00"
+      "creada_en": "2026-11-27T02:10:21-06:00"
     },
     {
-      "id": 1239,
+      "id": 1354,
       "tipo": "abastecimiento",
-      "titulo": "Solicitud de compra SC-20261127-000090",
+      "titulo": "Solicitud de compra SC-20261127-000101",
       "mensaje": "Tu solicitud fue aprobada.",
       "leida": false,
       "referencia": {
         "tipo": "solicitud",
-        "id": "90"
+        "id": "101"
       },
-      "creada_en": "2026-11-27T01:24:14-06:00"
+      "creada_en": "2026-11-27T02:10:20-06:00"
     },
     {
-      "id": 1234,
-      "tipo": "sistema",
-      "titulo": "Aviso E2E",
-      "mensaje": "Solo para operador E2E",
-      "leida": false,
-      "referencia": null,
-      "creada_en": "2026-11-27T01:23:25-06:00"
-    },
-    {
-      "id": 1232,
+      "id": 1323,
       "tipo": "inventario",
       "titulo": "Faltante en Microhub San Bernabé Centro",
       "mensaje": "Frijol negro a granel: quedan 0 (mínimo 10).",
@@ -5981,166 +6036,130 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "tipo": "producto",
         "id": "1"
       },
-      "creada_en": "2026-11-27T01:21:28-06:00"
+      "creada_en": "2026-11-27T02:07:35-06:00"
     },
     {
-      "id": 1224,
-      "tipo": "inventario",
-      "titulo": "Faltante en Microhub San Bernabé Centro",
-      "mensaje": "Limpiador multiusos: quedan 8 (mínimo 8).",
-      "leida": false,
-      "referencia": {
-        "tipo": "producto",
-        "id": "40"
-      },
-      "creada_en": "2026-11-27T01:19:59-06:00"
-    },
-    {
-      "id": 1208,
-      "tipo": "inventario",
-      "titulo": "Faltante en Microhub San Bernabé Centro",
-      "mensaje": "Pasta para sopa surtida: quedan 6 (mínimo 10).",
-      "leida": false,
-      "referencia": {
-        "tipo": "producto",
-        "id": "8"
-      },
-      "creada_en": "2026-11-27T01:18:40-06:00"
-    },
-    {
-      "id": 1206,
-      "tipo": "inventario",
-      "titulo": "Faltante en Microhub San Bernabé Centro",
-      "mensaje": "Frijol negro a granel: quedan 0 (mínimo 10).",
-      "leida": false,
-      "referencia": {
-        "tipo": "producto",
-        "id": "1"
-      },
-      "creada_en": "2026-11-27T01:18:32-06:00"
-    },
-    {
-      "id": 1202,
+      "id": 1319,
       "tipo": "abastecimiento",
-      "titulo": "Solicitud de compra SC-20261127-000089",
+      "titulo": "Solicitud de compra SC-20261127-000100",
       "mensaje": "Tu solicitud fue rechazada.",
       "leida": false,
       "referencia": {
         "tipo": "solicitud",
-        "id": "89"
+        "id": "100"
       },
-      "creada_en": "2026-11-27T01:17:05-06:00"
+      "creada_en": "2026-11-27T02:06:21-06:00"
     },
     {
-      "id": 1199,
+      "id": 1316,
       "tipo": "abastecimiento",
-      "titulo": "Orden de compra OC-20261127-000056",
+      "titulo": "Orden de compra OC-20261127-000063",
       "mensaje": "La orden quedó recibida.",
       "leida": false,
       "referencia": {
         "tipo": "orden",
-        "id": "56"
+        "id": "63"
       },
-      "creada_en": "2026-11-27T01:17:05-06:00"
+      "creada_en": "2026-11-27T02:06:21-06:00"
     },
     {
-      "id": 1198,
+      "id": 1315,
       "tipo": "abastecimiento",
-      "titulo": "Solicitud de compra SC-20261127-000088",
+      "titulo": "Solicitud de compra SC-20261127-000099",
       "mensaje": "Tu solicitud fue aprobada.",
       "leida": false,
       "referencia": {
         "tipo": "solicitud",
-        "id": "88"
+        "id": "99"
       },
-      "creada_en": "2026-11-27T01:17:04-06:00"
+      "creada_en": "2026-11-27T02:06:20-06:00"
     },
     {
-      "id": 1196,
+      "id": 1313,
       "tipo": "abastecimiento",
-      "titulo": "Solicitud de compra SC-20261127-000087",
+      "titulo": "Solicitud de compra SC-20261127-000098",
       "mensaje": "Tu solicitud fue rechazada.",
       "leida": false,
       "referencia": {
         "tipo": "solicitud",
-        "id": "87"
+        "id": "98"
       },
-      "creada_en": "2026-11-27T01:17:04-06:00"
+      "creada_en": "2026-11-27T02:06:20-06:00"
     },
     {
-      "id": 1193,
+      "id": 1310,
       "tipo": "abastecimiento",
-      "titulo": "Orden de compra OC-20261127-000055",
+      "titulo": "Orden de compra OC-20261127-000062",
       "mensaje": "La orden quedó recibida.",
       "leida": false,
       "referencia": {
         "tipo": "orden",
-        "id": "55"
+        "id": "62"
       },
-      "creada_en": "2026-11-27T01:17:02-06:00"
+      "creada_en": "2026-11-27T02:06:18-06:00"
     },
     {
-      "id": 1192,
+      "id": 1309,
       "tipo": "abastecimiento",
-      "titulo": "Solicitud de compra SC-20261127-000086",
+      "titulo": "Solicitud de compra SC-20261127-000097",
       "mensaje": "Tu solicitud fue aprobada.",
       "leida": false,
       "referencia": {
         "tipo": "solicitud",
-        "id": "86"
+        "id": "97"
       },
-      "creada_en": "2026-11-27T01:17:01-06:00"
+      "creada_en": "2026-11-27T02:06:16-06:00"
     },
     {
-      "id": 1189,
+      "id": 1306,
       "tipo": "abastecimiento",
-      "titulo": "Solicitud de compra SC-20261127-000084",
+      "titulo": "Solicitud de compra SC-20261127-000095",
       "mensaje": "Tu solicitud fue rechazada.",
       "leida": false,
       "referencia": {
         "tipo": "solicitud",
-        "id": "84"
+        "id": "95"
       },
-      "creada_en": "2026-11-27T01:16:59-06:00"
+      "creada_en": "2026-11-27T02:06:15-06:00"
     },
     {
-      "id": 1186,
+      "id": 1303,
       "tipo": "abastecimiento",
-      "titulo": "Orden de compra OC-20261127-000054",
+      "titulo": "Orden de compra OC-20261127-000061",
       "mensaje": "La orden quedó cancelada.",
       "leida": false,
       "referencia": {
         "tipo": "orden",
-        "id": "54"
+        "id": "61"
       },
-      "creada_en": "2026-11-27T01:16:59-06:00"
+      "creada_en": "2026-11-27T02:06:15-06:00"
     },
     {
-      "id": 1185,
+      "id": 1302,
       "tipo": "abastecimiento",
-      "titulo": "Solicitud de compra SC-20261127-000083",
+      "titulo": "Solicitud de compra SC-20261127-000094",
       "mensaje": "Tu solicitud fue aprobada.",
       "leida": false,
       "referencia": {
         "tipo": "solicitud",
-        "id": "83"
+        "id": "94"
       },
-      "creada_en": "2026-11-27T01:16:58-06:00"
+      "creada_en": "2026-11-27T02:06:14-06:00"
     },
     {
-      "id": 1183,
+      "id": 1300,
       "tipo": "sistema",
-      "titulo": "Prueba dd546d71",
+      "titulo": "Prueba 23a72f54",
       "mensaje": "Sistema",
       "leida": false,
       "referencia": null,
-      "creada_en": "2026-11-27T01:16:41-06:00"
+      "creada_en": "2026-11-27T02:05:58-06:00"
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 20,
-    "total": 20,
+    "total": 16,
     "paginas": 1
   }
 }
@@ -6154,15 +6173,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/xml
-X-Traza-Id: 4d58b71a-24b7-4966-8964-fd0e4285a6a6
+X-Traza-Id: 3c1b061f-33d1-4724-bfc1-39b9662ced99
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 48 ms · traza `4d58b71a-24b7-4966-8964-fd0e4285a6a6`
+**Respuesta.** HTTP 200 (esperado 200) · 63 ms · traza `3c1b061f-33d1-4724-bfc1-39b9662ced99`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<notificaciones xmlns="urn:microhubs:v1" version="1"><datos><notificacion><id>1257</id><tipo>sistema</tipo><titulo>Evidencia d7a383</titulo><mensaje>Aviso de prueba para el microhub 1</mensaje><leida>false</leida><referencia><tipo>sistema</tipo><id>evidencia</id></referencia><creada_en>2026-11-27T01:24:34-06:00</creada_en></notificacion><notificacion><id>1255</id><tipo>inventario</tipo><titulo>Faltante en Microhub San Bernabé Centro</titulo><mensaje>Atún en agua: quedan 40 (mínimo 41).</mensaje><leida>false</leida><referencia><tipo>producto</tipo><id>9</id></referencia><creada_en>2026-11-27T01:24:34-06:00</creada_en></notificacion><notificacion><id>1253</id><tipo>inventario</tipo><titulo>Faltante en Microhub San Bernabé Centro</titulo><mensaje>Harina de trigo: quedan 10 (mínimo 10).</mensaje><leida>false</leida><referencia><tipo>producto</tipo><id>7</id></referencia><creada_en>2026-11-27T01:24:33-06:00</creada_en></notificacion></datos><paginacion><pagina>1</pagina><por_pagina>3</por_pagina><total>208</total><paginas>70</paginas></paginacion></notificaciones>
+<notificaciones xmlns="urn:microhubs:v1" version="1"><datos><notificacion><id>1368</id><tipo>sistema</tipo><titulo>Evidencia 2846cf</titulo><mensaje>Aviso de prueba para el microhub 1</mensaje><leida>false</leida><referencia><tipo>sistema</tipo><id>evidencia</id></referencia><creada_en>2026-11-27T02:10:43-06:00</creada_en></notificacion><notificacion><id>1366</id><tipo>inventario</tipo><titulo>Faltante en Microhub San Bernabé Centro</titulo><mensaje>Atún en agua: quedan 40 (mínimo 41).</mensaje><leida>false</leida><referencia><tipo>producto</tipo><id>9</id></referencia><creada_en>2026-11-27T02:10:42-06:00</creada_en></notificacion><notificacion><id>1364</id><tipo>inventario</tipo><titulo>Faltante en Microhub San Bernabé Centro</titulo><mensaje>Harina de trigo: quedan 10 (mínimo 10).</mensaje><leida>false</leida><referencia><tipo>producto</tipo><id>7</id></referencia><creada_en>2026-11-27T02:10:41-06:00</creada_en></notificacion></datos><paginacion><pagina>1</pagina><por_pagina>3</por_pagina><total>232</total><paginas>78</paginas></paginacion></notificaciones>
 ```
 
 ### NOT-06 · Avisos sin leer · PASA
@@ -6173,15 +6192,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: c2499606-4843-42be-957f-52526f3da80c
+X-Traza-Id: 0d52d124-f8bf-4abe-857d-e017110ff7cf
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 22 ms · traza `c2499606-4843-42be-957f-52526f3da80c`
+**Respuesta.** HTTP 200 (esperado 200) · 37 ms · traza `0d52d124-f8bf-4abe-857d-e017110ff7cf`
 
 ```json
 {
-  "no_leidas": 20
+  "no_leidas": 16
 }
 ```
 
@@ -6189,28 +6208,28 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 **Objetivo.** El aviso queda leído.
 
-**Petición.** `POST http://notificaciones:5124/api/v1/notificaciones/1257/leer`
+**Petición.** `POST http://notificaciones:5124/api/v1/notificaciones/1368/leer`
 
 ```http
 Accept: application/json
-X-Traza-Id: 37e05376-bb17-4348-93e4-7adfa3f70590
+X-Traza-Id: 92ca4302-7d1b-466d-a7a1-7942067e5a2e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 27 ms · traza `37e05376-bb17-4348-93e4-7adfa3f70590`
+**Respuesta.** HTTP 200 (esperado 200) · 29 ms · traza `92ca4302-7d1b-466d-a7a1-7942067e5a2e`
 
 ```json
 {
-  "id": 1257,
+  "id": 1368,
   "tipo": "sistema",
-  "titulo": "Evidencia d7a383",
+  "titulo": "Evidencia 2846cf",
   "mensaje": "Aviso de prueba para el microhub 1",
   "leida": true,
   "referencia": {
     "tipo": "sistema",
     "id": "evidencia"
   },
-  "creada_en": "2026-11-27T01:24:34-06:00"
+  "creada_en": "2026-11-27T02:10:43-06:00"
 }
 ```
 
@@ -6219,7 +6238,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 ```json
 [
   {
-    "id": 1257,
+    "id": 1368,
     "leido": true
   }
 ]
@@ -6229,22 +6248,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 **Objetivo.** Un aviso ajeno no se puede marcar.
 
-**Petición.** `POST http://notificaciones:5124/api/v1/notificaciones/1257/leer`
+**Petición.** `POST http://notificaciones:5124/api/v1/notificaciones/1368/leer`
 
 ```http
 Accept: application/json
-X-Traza-Id: 16207075-89fe-4ab0-a20f-56a0a3670d6f
+X-Traza-Id: 6bc71f4a-65cb-4061-96c7-cd312a6f3da9
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(310 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 24 ms · traza `16207075-89fe-4ab0-a20f-56a0a3670d6f`
+**Respuesta.** HTTP 404 (esperado 404) · 27 ms · traza `6bc71f4a-65cb-4061-96c7-cd312a6f3da9`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe ese aviso en tu bandeja.",
-    "traza_id": "16207075-89fe-4ab0-a20f-56a0a3670d6f"
+    "traza_id": "6bc71f4a-65cb-4061-96c7-cd312a6f3da9"
   }
 }
 ```
@@ -6257,15 +6276,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: cce9c0dd-c909-465b-bfc5-1528dff8bf28
+X-Traza-Id: 9128277d-ac62-4f5d-b115-bc87b586731d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 25 ms · traza `cce9c0dd-c909-465b-bfc5-1528dff8bf28`
+**Respuesta.** HTTP 200 (esperado 200) · 32 ms · traza `9128277d-ac62-4f5d-b115-bc87b586731d`
 
 ```json
 {
-  "marcadas": 19
+  "marcadas": 15
 }
 ```
 
@@ -6277,11 +6296,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 592ee9d5-29ab-4eaf-a1ca-c690d706c444
+X-Traza-Id: e3bf0076-2f1f-415f-8941-ff783b39829e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 23 ms · traza `592ee9d5-29ab-4eaf-a1ca-c690d706c444`
+**Respuesta.** HTTP 200 (esperado 200) · 27 ms · traza `e3bf0076-2f1f-415f-8941-ff783b39829e`
 
 ```json
 {
@@ -6318,7 +6337,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: d1001b85-064e-4fd0-b247-a80744c3fc31
+X-Traza-Id: 7076eef0-bfec-4f12-ab34-2814ffcdbfef
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -6329,7 +6348,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 34 ms · traza `d1001b85-064e-4fd0-b247-a80744c3fc31`
+**Respuesta.** HTTP 200 (esperado 200) · 42 ms · traza `7076eef0-bfec-4f12-ab34-2814ffcdbfef`
 
 ```json
 {
@@ -6358,7 +6377,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 6651db12-89c2-4e3d-a12a-0b31e4b9058c
+X-Traza-Id: 2add8ddd-3a67-4ff3-8014-e179eb432407
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -6368,12 +6387,12 @@ Content-Type: application/json
   "rol": "operador",
   "microhub_id": 1,
   "tipo": "inventario",
-  "titulo": "Evidencia d7a383",
+  "titulo": "Evidencia 2846cf",
   "mensaje": "Faltante de prueba"
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 32 ms · traza `6651db12-89c2-4e3d-a12a-0b31e4b9058c`
+**Respuesta.** HTTP 200 (esperado 200) · 38 ms · traza `2add8ddd-3a67-4ff3-8014-e179eb432407`
 
 ```json
 {
@@ -6391,7 +6410,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 1a54eb00-766a-4183-9529-f207c507adfa
+X-Traza-Id: 5556a272-5439-49c7-b6da-48ed44701328
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -6402,14 +6421,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 6 ms · traza `1a54eb00-766a-4183-9529-f207c507adfa`
+**Respuesta.** HTTP 409 (esperado 409) · 7 ms · traza `5556a272-5439-49c7-b6da-48ed44701328`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "Los avisos del sistema no se pueden apagar.",
-    "traza_id": "1a54eb00-766a-4183-9529-f207c507adfa"
+    "traza_id": "5556a272-5439-49c7-b6da-48ed44701328"
   }
 }
 ```
@@ -6418,15 +6437,15 @@ Content-Type: application/json
 
 **Objetivo.** Quita el aviso de la bandeja propia.
 
-**Petición.** `DELETE http://notificaciones:5124/api/v1/notificaciones/1257`
+**Petición.** `DELETE http://notificaciones:5124/api/v1/notificaciones/1368`
 
 ```http
 Accept: application/json
-X-Traza-Id: 0fa22a6a-07c8-4ebd-98a6-e825dba7135d
+X-Traza-Id: 94017509-13a7-4c1f-b3e5-cebb4b99d9b0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 23 ms · traza `0fa22a6a-07c8-4ebd-98a6-e825dba7135d`
+**Respuesta.** HTTP 204 (esperado 204) · 28 ms · traza `94017509-13a7-4c1f-b3e5-cebb4b99d9b0`
 
 ```json
 (sin cuerpo)
@@ -6442,11 +6461,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: e518d08e-8abe-497c-9c26-ee0597326a15
+X-Traza-Id: 992ca6a6-3e34-4972-ae64-bab41649c911
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 49 ms · traza `e518d08e-8abe-497c-9c26-ee0597326a15`
+**Respuesta.** HTTP 200 (esperado 200) · 51 ms · traza `992ca6a6-3e34-4972-ae64-bab41649c911`
 
 ```json
 {
@@ -6470,7 +6489,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
         11,
         14,
         15,
-        16
+        16,
+        19
       ],
       "calificacion": 4.0,
       "evaluaciones": 1
@@ -6494,7 +6514,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
         11,
         14,
         15,
-        16
+        16,
+        19
       ],
       "calificacion": 4.0,
       "evaluaciones": 1
@@ -6518,7 +6539,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
         11,
         14,
         15,
-        16
+        16,
+        19
       ],
       "calificacion": 4.0,
       "evaluaciones": 1
@@ -6541,15 +6563,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/xml
-X-Traza-Id: 1952cf1b-f7eb-41a5-ac2d-36d71cb48b20
+X-Traza-Id: 4a08c586-085c-4c68-9704-d7d14990afcd
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 53 ms · traza `1952cf1b-f7eb-41a5-ac2d-36d71cb48b20`
+**Respuesta.** HTTP 200 (esperado 200) · 56 ms · traza `4a08c586-085c-4c68-9704-d7d14990afcd`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<proveedores xmlns="urn:microhubs:v1" version="1"><datos><proveedor><id>1</id><clave>PV-01</clave><nombre>Abarrotes del Norte</nombre><contacto>Rosa Garza</contacto><correo>ventas@abarrotesdelnorte.example</correo><telefono>8181000101</telefono><dias_entrega>2</dias_entrega><pedido_minimo>800.00</pedido_minimo><condiciones_pago>Contado</condiciones_pago><estatus>activo</estatus><zonas><zona_id>1</zona_id><zona_id>2</zona_id><zona_id>3</zona_id><zona_id>4</zona_id><zona_id>11</zona_id><zona_id>14</zona_id><zona_id>15</zona_id><zona_id>16</zona_id></zonas><calificacion>4</calificacion><evaluaciones>1</evaluaciones></proveedor><proveedor><id>2</id><clave>PV-02</clave><nombre>Distribuidora Regia</nombre><contacto>Luis Treviño</contacto><correo>pedidos@distregia.example</correo><telefono>8181000102</telefono><dias_entrega>1</dias_entrega><pedido_minimo>500.00</pedido_minimo><condiciones_pago>Crédito a 7 días</condiciones_pago><estatus>activo</estatus><zonas><zona_id>1</zona_id><zona_id>2</zona_id><zona_id>3</zona_id><zona_id>4</zona_id><zona_id>11</zona_id><zona_id>14</zona_id><zona_id>15</zona_id><zona_id>16</zona_id></zonas><calificacion>4</calificacion><evaluaciones>1</evaluaciones></proveedor><proveedor><id>3</id><clave>PV-03</clave><nombre>Mayorista San Nicolás</nombre><contacto>Elena Cantú</contacto><correo>compras@mayoristasn.example</correo><telefono>8181000103</telefono><dias_entrega>4</dias_entrega><pedido_minimo>1500.00</pedido_minimo><condiciones_pago>Crédito a 15 días</condiciones_pago><estatus>activo</estatus><zonas><zona_id>1</zona_id><zona_id>2</zona_id><zona_id>3</zona_id><zona_id>4</zona_id><zona_id>11</zona_id><zona_id>14</zona_id><zona_id>15</zona_id><zona_id>16</zona_id></zonas><calificacion>4</calificacion><evaluaciones>1</evaluaciones></proveedor></datos><paginacion><pagina>1</pagina><por_pagina>3</por_pagina><total>3</total><paginas>1</paginas></paginacion></proveedores>
+<proveedores xmlns="urn:microhubs:v1" version="1"><datos><proveedor><id>1</id><clave>PV-01</clave><nombre>Abarrotes del Norte</nombre><contacto>Rosa Garza</contacto><correo>ventas@abarrotesdelnorte.example</correo><telefono>8181000101</telefono><dias_entrega>2</dias_entrega><pedido_minimo>800.00</pedido_minimo><condiciones_pago>Contado</condiciones_pago><estatus>activo</estatus><zonas><zona_id>1</zona_id><zona_id>2</zona_id><zona_id>3</zona_id><zona_id>4</zona_id><zona_id>11</zona_id><zona_id>14</zona_id><zona_id>15</zona_id><zona_id>16</zona_id><zona_id>19</zona_id></zonas><calificacion>4</calificacion><evaluaciones>1</evaluaciones></proveedor><proveedor><id>2</id><clave>PV-02</clave><nombre>Distribuidora Regia</nombre><contacto>Luis Treviño</contacto><correo>pedidos@distregia.example</correo><telefono>8181000102</telefono><dias_entrega>1</dias_entrega><pedido_minimo>500.00</pedido_minimo><condiciones_pago>Crédito a 7 días</condiciones_pago><estatus>activo</estatus><zonas><zona_id>1</zona_id><zona_id>2</zona_id><zona_id>3</zona_id><zona_id>4</zona_id><zona_id>11</zona_id><zona_id>14</zona_id><zona_id>15</zona_id><zona_id>16</zona_id><zona_id>19</zona_id></zonas><calificacion>4</calificacion><evaluaciones>1</evaluaciones></proveedor><proveedor><id>3</id><clave>PV-03</clave><nombre>Mayorista San Nicolás</nombre><contacto>Elena Cantú</contacto><correo>compras@mayoristasn.example</correo><telefono>8181000103</telefono><dias_entrega>4</dias_entrega><pedido_minimo>1500.00</pedido_minimo><condiciones_pago>Crédito a 15 días</condiciones_pago><estatus>activo</estatus><zonas><zona_id>1</zona_id><zona_id>2</zona_id><zona_id>3</zona_id><zona_id>4</zona_id><zona_id>11</zona_id><zona_id>14</zona_id><zona_id>15</zona_id><zona_id>16</zona_id><zona_id>19</zona_id></zonas><calificacion>4</calificacion><evaluaciones>1</evaluaciones></proveedor></datos><paginacion><pagina>1</pagina><por_pagina>3</por_pagina><total>3</total><paginas>1</paginas></paginacion></proveedores>
 ```
 
 ### PRV-03 · Un cliente intenta ver proveedores · PASA
@@ -6560,18 +6582,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: b9c08d5f-7853-475f-ab8b-02aea2b33293
+X-Traza-Id: 36dc8533-6284-4df8-b297-068c03735d7e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 27 ms · traza `b9c08d5f-7853-475f-ab8b-02aea2b33293`
+**Respuesta.** HTTP 403 (esperado 403) · 32 ms · traza `36dc8533-6284-4df8-b297-068c03735d7e`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "b9c08d5f-7853-475f-ab8b-02aea2b33293"
+    "traza_id": "36dc8533-6284-4df8-b297-068c03735d7e"
   }
 }
 ```
@@ -6584,11 +6606,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 930292bb-da1b-43d4-87af-fe8796a10f2e
+X-Traza-Id: 62f6be3a-5942-4ad3-adf1-fdfcf7ea4451
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 28 ms · traza `930292bb-da1b-43d4-87af-fe8796a10f2e`
+**Respuesta.** HTTP 200 (esperado 200) · 50 ms · traza `62f6be3a-5942-4ad3-adf1-fdfcf7ea4451`
 
 ```json
 {
@@ -6610,7 +6632,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
     11,
     14,
     15,
-    16
+    16,
+    19
   ],
   "calificacion": 4.0,
   "evaluaciones": 1
@@ -6625,7 +6648,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 1a3227e1-8332-45a8-9e50-ffbfb10973f7
+X-Traza-Id: b902b0e3-9ace-433a-b8b6-000788cb28b1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -6647,11 +6670,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 88 ms · traza `1a3227e1-8332-45a8-9e50-ffbfb10973f7`
+**Respuesta.** HTTP 201 (esperado 201) · 129 ms · traza `b902b0e3-9ace-433a-b8b6-000788cb28b1`
 
 ```json
 {
-  "id": 158,
+  "id": 168,
   "clave": "********",
   "nombre": "Proveedor de evidencias",
   "contacto": "Ana Prueba",
@@ -6675,8 +6698,8 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 158,
-    "clave": "EV-A0F184",
+    "id": 168,
+    "clave": "EV-AE4F04",
     "dias_entrega": 3,
     "pedido_minimo": "250.00",
     "zonas": [
@@ -6707,7 +6730,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 7d5f0cb3-11b1-41b9-bae9-394091de049d
+X-Traza-Id: c14d86b5-01c1-4751-9a59-98e3accb82fb
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -6729,14 +6752,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 27 ms · traza `7d5f0cb3-11b1-41b9-bae9-394091de049d`
+**Respuesta.** HTTP 409 (esperado 409) · 29 ms · traza `c14d86b5-01c1-4751-9a59-98e3accb82fb`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
-    "mensaje": "Ya existe un proveedor con la clave EV-A0F184.",
-    "traza_id": "7d5f0cb3-11b1-41b9-bae9-394091de049d"
+    "mensaje": "Ya existe un proveedor con la clave EV-AE4F04.",
+    "traza_id": "c14d86b5-01c1-4751-9a59-98e3accb82fb"
   }
 }
 ```
@@ -6749,7 +6772,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 6218c7ed-86a7-469e-9156-f4749d7deb22
+X-Traza-Id: d695ae62-cda8-4659-9ffa-6b360cf46219
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -6771,7 +6794,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 6 ms · traza `6218c7ed-86a7-469e-9156-f4749d7deb22`
+**Respuesta.** HTTP 422 (esperado 422) · 9 ms · traza `d695ae62-cda8-4659-9ffa-6b360cf46219`
 
 ```json
 {
@@ -6784,7 +6807,7 @@ Content-Type: application/json
         "mensaje": "Debe ser un correo válido."
       }
     ],
-    "traza_id": "6218c7ed-86a7-469e-9156-f4749d7deb22"
+    "traza_id": "d695ae62-cda8-4659-9ffa-6b360cf46219"
   }
 }
 ```
@@ -6797,7 +6820,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: dad06678-5586-4a53-8575-462ff16e37fd
+X-Traza-Id: 3d98ed1d-3a78-413f-9df0-8ff5befa2d72
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -6819,14 +6842,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 29 ms · traza `dad06678-5586-4a53-8575-462ff16e37fd`
+**Respuesta.** HTTP 403 (esperado 403) · 29 ms · traza `3d98ed1d-3a78-413f-9df0-8ff5befa2d72`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "dad06678-5586-4a53-8575-462ff16e37fd"
+    "traza_id": "3d98ed1d-3a78-413f-9df0-8ff5befa2d72"
   }
 }
 ```
@@ -6835,11 +6858,11 @@ Content-Type: application/json
 
 **Objetivo.** Cambia el plazo y la cobertura; la clave no se toca.
 
-**Petición.** `PUT http://proveedores:5113/api/v1/proveedores/158`
+**Petición.** `PUT http://proveedores:5113/api/v1/proveedores/168`
 
 ```http
 Accept: application/json
-X-Traza-Id: 6aadde11-e920-4812-97d2-c7bb05171fb7
+X-Traza-Id: f9b2413e-1141-4c93-bcdc-f00784b3f0bd
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -6853,11 +6876,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 82 ms · traza `6aadde11-e920-4812-97d2-c7bb05171fb7`
+**Respuesta.** HTTP 200 (esperado 200) · 102 ms · traza `f9b2413e-1141-4c93-bcdc-f00784b3f0bd`
 
 ```json
 {
-  "id": 158,
+  "id": 168,
   "clave": "********",
   "nombre": "Proveedor de evidencias",
   "contacto": "Ana Prueba",
@@ -6879,11 +6902,11 @@ Content-Type: application/json
 
 **Objetivo.** PATCH cambia solo los campos enviados; también acepta PUT.
 
-**Petición.** `PATCH http://proveedores:5113/api/v1/proveedores/158`
+**Petición.** `PATCH http://proveedores:5113/api/v1/proveedores/168`
 
 ```http
 Accept: application/json
-X-Traza-Id: 884d922f-d62e-458b-84f8-df66b9cb99d2
+X-Traza-Id: 0d3609fd-1db5-4723-ac29-422d1dbce372
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -6894,11 +6917,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 80 ms · traza `884d922f-d62e-458b-84f8-df66b9cb99d2`
+**Respuesta.** HTTP 200 (esperado 200) · 103 ms · traza `0d3609fd-1db5-4723-ac29-422d1dbce372`
 
 ```json
 {
-  "id": 158,
+  "id": 168,
   "clave": "********",
   "nombre": "Proveedor de evidencias",
   "contacto": "Luis Prueba",
@@ -6921,7 +6944,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "clave": "EV-A0F184",
+    "clave": "EV-AE4F04",
     "contacto": "Luis Prueba",
     "dias_entrega": 5
   }
@@ -6932,11 +6955,11 @@ Content-Type: application/json
 
 **Objetivo.** Alta del precio de compra de un producto.
 
-**Petición.** `PUT http://proveedores:5113/api/v1/proveedores/158/catalogo/6`
+**Petición.** `PUT http://proveedores:5113/api/v1/proveedores/168/catalogo/6`
 
 ```http
 Accept: application/json
-X-Traza-Id: 87d2255c-8e04-4066-af75-ab048baf26bd
+X-Traza-Id: ce4db034-5f8a-45f8-a2fd-7c44dd4071b3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -6950,7 +6973,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 81 ms · traza `87d2255c-8e04-4066-af75-ab048baf26bd`
+**Respuesta.** HTTP 200 (esperado 200) · 63 ms · traza `ce4db034-5f8a-45f8-a2fd-7c44dd4071b3`
 
 ```json
 {
@@ -6971,7 +6994,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "proveedor_id": 158,
+    "proveedor_id": 168,
     "producto_id": 6,
     "precio_compra": "0.05",
     "capacidad_semanal": 100,
@@ -6984,11 +7007,11 @@ Content-Type: application/json
 
 **Objetivo.** La llave foránea rechaza el producto.
 
-**Petición.** `PUT http://proveedores:5113/api/v1/proveedores/158/catalogo/999999`
+**Petición.** `PUT http://proveedores:5113/api/v1/proveedores/168/catalogo/999999`
 
 ```http
 Accept: application/json
-X-Traza-Id: 9f7dd094-6d8e-431f-b1db-4d03caac2849
+X-Traza-Id: b6001de1-c406-461b-8b50-2e3b85280216
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -7000,14 +7023,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 55 ms · traza `9f7dd094-6d8e-431f-b1db-4d03caac2849`
+**Respuesta.** HTTP 422 (esperado 422) · 51 ms · traza `b6001de1-c406-461b-8b50-2e3b85280216`
 
 ```json
 {
   "error": {
     "codigo": "REGLA_NEGOCIO",
     "mensaje": "El producto no existe.",
-    "traza_id": "9f7dd094-6d8e-431f-b1db-4d03caac2849"
+    "traza_id": "b6001de1-c406-461b-8b50-2e3b85280216"
   }
 }
 ```
@@ -7016,15 +7039,15 @@ Content-Type: application/json
 
 **Objetivo.** Sus ofertas, con el nombre del producto.
 
-**Petición.** `GET http://proveedores:5113/api/v1/proveedores/158/catalogo`
+**Petición.** `GET http://proveedores:5113/api/v1/proveedores/168/catalogo`
 
 ```http
 Accept: application/json
-X-Traza-Id: 84687b22-494e-423c-acd0-d756a5622383
+X-Traza-Id: 664304f8-3d04-4a5d-b42d-28ac1a9bde9f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 59 ms · traza `84687b22-494e-423c-acd0-d756a5622383`
+**Respuesta.** HTTP 200 (esperado 200) · 62 ms · traza `664304f8-3d04-4a5d-b42d-28ac1a9bde9f`
 
 ```json
 {
@@ -7054,11 +7077,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Un operador califica puntualidad, calidad y precio.
 
-**Petición.** `POST http://proveedores:5113/api/v1/proveedores/158/evaluaciones`
+**Petición.** `POST http://proveedores:5113/api/v1/proveedores/168/evaluaciones`
 
 ```http
 Accept: application/json
-X-Traza-Id: 221ad180-d48a-44ef-9e53-0a9ca06d6115
+X-Traza-Id: f97e8205-6b57-43d1-9829-5cf6319ad2d3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -7072,18 +7095,18 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 56 ms · traza `221ad180-d48a-44ef-9e53-0a9ca06d6115`
+**Respuesta.** HTTP 201 (esperado 201) · 58 ms · traza `f97e8205-6b57-43d1-9829-5cf6319ad2d3`
 
 ```json
 {
-  "id": 33,
-  "proveedor_id": 158,
+  "id": 36,
+  "proveedor_id": 168,
   "puntualidad": 5,
   "calidad": 4,
   "precio": 3,
   "comentario": "Llegó a tiempo",
   "evaluado_por": 2,
-  "evaluado_en": "2026-11-27T01:24:36-06:00"
+  "evaluado_en": "2026-11-27T02:10:45-06:00"
 }
 ```
 
@@ -7092,7 +7115,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "proveedor_id": 158,
+    "proveedor_id": 168,
     "puntualidad": 5,
     "calidad": 4,
     "precio": 3,
@@ -7105,28 +7128,28 @@ Content-Type: application/json
 
 **Objetivo.** Calificaciones recibidas y su promedio.
 
-**Petición.** `GET http://proveedores:5113/api/v1/proveedores/158/evaluaciones`
+**Petición.** `GET http://proveedores:5113/api/v1/proveedores/168/evaluaciones`
 
 ```http
 Accept: application/json
-X-Traza-Id: 2cfaf71a-1f52-4640-ae8b-272e62d30e12
+X-Traza-Id: 7d7f4649-b65b-45d3-af9c-3a7822b0b88a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 63 ms · traza `2cfaf71a-1f52-4640-ae8b-272e62d30e12`
+**Respuesta.** HTTP 200 (esperado 200) · 83 ms · traza `7d7f4649-b65b-45d3-af9c-3a7822b0b88a`
 
 ```json
 {
   "datos": [
     {
-      "id": 33,
-      "proveedor_id": 158,
+      "id": 36,
+      "proveedor_id": 168,
       "puntualidad": 5,
       "calidad": 4,
       "precio": 3,
       "comentario": "Llegó a tiempo",
       "evaluado_por": 2,
-      "evaluado_en": "2026-11-27T01:24:36-06:00"
+      "evaluado_en": "2026-11-27T02:10:45-06:00"
     }
   ],
   "promedio": {
@@ -7148,11 +7171,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** El auditor solo consulta.
 
-**Petición.** `POST http://proveedores:5113/api/v1/proveedores/158/evaluaciones`
+**Petición.** `POST http://proveedores:5113/api/v1/proveedores/168/evaluaciones`
 
 ```http
 Accept: application/json
-X-Traza-Id: ef654868-f9c0-4de3-bcd1-ce42ee970455
+X-Traza-Id: 4281d802-074a-4213-a9a0-f709d47bc123
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 Content-Type: application/json
 ```
@@ -7165,14 +7188,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 26 ms · traza `ef654868-f9c0-4de3-bcd1-ce42ee970455`
+**Respuesta.** HTTP 403 (esperado 403) · 40 ms · traza `4281d802-074a-4213-a9a0-f709d47bc123`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "ef654868-f9c0-4de3-bcd1-ce42ee970455"
+    "traza_id": "4281d802-074a-4213-a9a0-f709d47bc123"
   }
 }
 ```
@@ -7185,18 +7208,18 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: dfb1ddaa-5277-455d-ad45-efea8c78fed3
+X-Traza-Id: 0ab99f30-bec5-4635-888e-8735209259a1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 65 ms · traza `dfb1ddaa-5277-455d-ad45-efea8c78fed3`
+**Respuesta.** HTTP 200 (esperado 200) · 78 ms · traza `0ab99f30-bec5-4635-888e-8735209259a1`
 
 ```json
 {
   "datos": [
     {
       "proveedor": {
-        "id": 158,
+        "id": 168,
         "clave": "********",
         "nombre": "Proveedor de evidencias"
       },
@@ -7288,18 +7311,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 586a4da7-c414-41c2-88f8-3c30c7891ef6
+X-Traza-Id: 1efa6151-b833-41c4-be3e-020fa973b4a6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 64 ms · traza `586a4da7-c414-41c2-88f8-3c30c7891ef6`
+**Respuesta.** HTTP 200 (esperado 200) · 80 ms · traza `1efa6151-b833-41c4-be3e-020fa973b4a6`
 
 ```json
 {
   "datos": [
     {
       "proveedor": {
-        "id": 158,
+        "id": 168,
         "clave": "********",
         "nombre": "Proveedor de evidencias"
       },
@@ -7353,11 +7376,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 6ba55222-5b5a-44e4-9169-dcbbb79c26cd
+X-Traza-Id: c61c3c86-98d1-4ddd-ac6a-c2544aa6b3df
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 5 ms · traza `6ba55222-5b5a-44e4-9169-dcbbb79c26cd`
+**Respuesta.** HTTP 400 (esperado 400) · 6 ms · traza `c61c3c86-98d1-4ddd-ac6a-c2544aa6b3df`
 
 ```json
 {
@@ -7370,7 +7393,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "mensaje": "Indica producto_id o producto_ids."
       }
     ],
-    "traza_id": "6ba55222-5b5a-44e4-9169-dcbbb79c26cd"
+    "traza_id": "c61c3c86-98d1-4ddd-ac6a-c2544aa6b3df"
   }
 }
 ```
@@ -7379,15 +7402,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 **Objetivo.** Baja lógica: ya no aparece en las ofertas.
 
-**Petición.** `DELETE http://proveedores:5113/api/v1/proveedores/158`
+**Petición.** `DELETE http://proveedores:5113/api/v1/proveedores/168`
 
 ```http
 Accept: application/json
-X-Traza-Id: b869bf13-ff63-42c9-8b3d-b07551092a1a
+X-Traza-Id: 84547d45-09e7-49eb-bd34-b86e162db829
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 33 ms · traza `b869bf13-ff63-42c9-8b3d-b07551092a1a`
+**Respuesta.** HTTP 204 (esperado 204) · 50 ms · traza `84547d45-09e7-49eb-bd34-b86e162db829`
 
 ```json
 (sin cuerpo)
@@ -7398,7 +7421,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 ```json
 [
   {
-    "clave": "EV-A0F184",
+    "clave": "EV-AE4F04",
     "estatus": "inactivo"
   }
 ]
@@ -7412,11 +7435,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: d9ceda35-c8c5-4acc-b50c-9003d331c51a
+X-Traza-Id: 7358043f-f288-43a2-9444-3b10dc5d22c8
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 59 ms · traza `d9ceda35-c8c5-4acc-b50c-9003d331c51a`
+**Respuesta.** HTTP 200 (esperado 200) · 112 ms · traza `7358043f-f288-43a2-9444-3b10dc5d22c8`
 
 ```json
 {
@@ -7498,15 +7521,33 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 4000826e-dab0-4d02-9e8c-ed7a4735e3e5
+X-Traza-Id: 667be74c-4d48-4e5a-a483-2aa4bd56e855
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 47 ms · traza `4000826e-dab0-4d02-9e8c-ed7a4735e3e5`
+**Respuesta.** HTTP 200 (esperado 200) · 117 ms · traza `667be74c-4d48-4e5a-a483-2aa4bd56e855`
 
 ```json
 {
   "datos": [
+    {
+      "id": 94,
+      "nombre": "Lista de prueba 9d830000",
+      "zona_id": 3,
+      "vigente_desde": "2027-01-01",
+      "vigente_hasta": "2027-01-31",
+      "estatus": "inactivo",
+      "productos": 1
+    },
+    {
+      "id": 92,
+      "nombre": "Lista de evidencias e3b7c4",
+      "zona_id": 3,
+      "vigente_desde": "2027-01-01",
+      "vigente_hasta": "2027-01-31",
+      "estatus": "inactivo",
+      "productos": 1
+    },
     {
       "id": 88,
       "nombre": "Lista de prueba fba30541",
@@ -7668,30 +7709,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
       "vigente_hasta": "2027-01-31",
       "estatus": "inactivo",
       "productos": 1
-    },
-    {
-      "id": 11,
-      "nombre": "Lista de prueba a8dad7c8",
-      "zona_id": 3,
-      "vigente_desde": "2027-01-01",
-      "vigente_hasta": "2027-01-31",
-      "estatus": "inactivo",
-      "productos": 1
-    },
-    {
-      "id": 4,
-      "nombre": "Lista de prueba 8a4e607d",
-      "zona_id": 3,
-      "vigente_desde": "2027-01-01",
-      "vigente_hasta": "2027-01-31",
-      "estatus": "inactivo",
-      "productos": 1
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 20,
-    "total": 22,
+    "total": 24,
     "paginas": 2
   }
 }
@@ -7705,15 +7728,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/xml
-X-Traza-Id: 964a746a-7e9c-47f7-99d2-e264a92dd107
+X-Traza-Id: 2f52674d-f2c0-4aeb-bf55-5db5ccd4cb30
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 41 ms · traza `964a746a-7e9c-47f7-99d2-e264a92dd107`
+**Respuesta.** HTTP 200 (esperado 200) · 75 ms · traza `2f52674d-f2c0-4aeb-bf55-5db5ccd4cb30`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<listas xmlns="urn:microhubs:v1" version="1"><datos><lista><id>88</id><nombre>Lista de prueba fba30541</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>86</id><nombre>Lista de evidencias df2943</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>85</id><nombre>Lista de evidencias 5b17dd</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>82</id><nombre>Lista de evidencias bca875</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>79</id><nombre>Lista de prueba 1286b043</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>40</id><nombre>Lista de evidencias a7a59e</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>36</id><nombre>Lista de prueba cf2a1ce6</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>35</id><nombre>Lista de evidencias 41a205</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>34</id><nombre>Lista de evidencias f9009f</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>33</id><nombre>Lista de evidencias 3fdd2e</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>29</id><nombre>Lista de prueba 994bc9b6</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>25</id><nombre>Lista de prueba 53ef8464</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>23</id><nombre>Lista de prueba 6efd002d</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>20</id><nombre>Lista de evidencias dba9cd</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>17</id><nombre>Lista de evidencias 4ccd1c</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>16</id><nombre>Lista de evidencias 6ddeea</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>15</id><nombre>Lista de evidencias 962abe</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>14</id><nombre>Lista de evidencias fa981b</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>11</id><nombre>Lista de prueba a8dad7c8</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>4</id><nombre>Lista de prueba 8a4e607d</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista></datos><paginacion><pagina>1</pagina><por_pagina>20</por_pagina><total>22</total><paginas>2</paginas></paginacion></listas>
+<listas xmlns="urn:microhubs:v1" version="1"><datos><lista><id>94</id><nombre>Lista de prueba 9d830000</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>92</id><nombre>Lista de evidencias e3b7c4</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>88</id><nombre>Lista de prueba fba30541</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>86</id><nombre>Lista de evidencias df2943</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>85</id><nombre>Lista de evidencias 5b17dd</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>82</id><nombre>Lista de evidencias bca875</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>79</id><nombre>Lista de prueba 1286b043</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>40</id><nombre>Lista de evidencias a7a59e</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>36</id><nombre>Lista de prueba cf2a1ce6</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>35</id><nombre>Lista de evidencias 41a205</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>34</id><nombre>Lista de evidencias f9009f</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>33</id><nombre>Lista de evidencias 3fdd2e</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>29</id><nombre>Lista de prueba 994bc9b6</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>25</id><nombre>Lista de prueba 53ef8464</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>23</id><nombre>Lista de prueba 6efd002d</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>20</id><nombre>Lista de evidencias dba9cd</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>17</id><nombre>Lista de evidencias 4ccd1c</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>16</id><nombre>Lista de evidencias 6ddeea</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>15</id><nombre>Lista de evidencias 962abe</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista><lista><id>14</id><nombre>Lista de evidencias fa981b</nombre><zona_id>3</zona_id><vigente_desde>2027-01-01</vigente_desde><vigente_hasta>2027-01-31</vigente_hasta><estatus>inactivo</estatus><productos>1</productos></lista></datos><paginacion><pagina>1</pagina><por_pagina>20</por_pagina><total>24</total><paginas>2</paginas></paginacion></listas>
 ```
 
 ### PRE-03 · Un cliente intenta ver las listas · PASA
@@ -7724,18 +7747,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 0656056e-cdd7-4945-a578-92616e52ca77
+X-Traza-Id: 258ffdf2-5c2d-4669-9d3c-6f32b3af8901
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 28 ms · traza `0656056e-cdd7-4945-a578-92616e52ca77`
+**Respuesta.** HTTP 403 (esperado 403) · 28 ms · traza `258ffdf2-5c2d-4669-9d3c-6f32b3af8901`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "0656056e-cdd7-4945-a578-92616e52ca77"
+    "traza_id": "258ffdf2-5c2d-4669-9d3c-6f32b3af8901"
   }
 }
 ```
@@ -7748,14 +7771,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: d087f4a3-90ca-478b-a74c-1ae7662b7275
+X-Traza-Id: ebbd8196-ea9e-4b27-8d7a-49ff97faeeed
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "nombre": "Lista de evidencias e3b7c4",
+  "nombre": "Lista de evidencias cb548d",
   "zona_id": 3,
   "vigente_desde": "2027-01-01",
   "vigente_hasta": "2027-01-31",
@@ -7769,12 +7792,12 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 94 ms · traza `d087f4a3-90ca-478b-a74c-1ae7662b7275`
+**Respuesta.** HTTP 201 (esperado 201) · 136 ms · traza `ebbd8196-ea9e-4b27-8d7a-49ff97faeeed`
 
 ```json
 {
-  "id": 92,
-  "nombre": "Lista de evidencias e3b7c4",
+  "id": 97,
+  "nombre": "Lista de evidencias cb548d",
   "zona_id": 3,
   "vigente_desde": "2027-01-01",
   "vigente_hasta": "2027-01-31",
@@ -7789,7 +7812,7 @@ Content-Type: application/json
       "precio": 50.0,
       "costo": 30.0,
       "margen_pct": 40.0,
-      "actualizado_en": "2026-11-27T01:24:36-06:00"
+      "actualizado_en": "2026-11-27T02:10:45-06:00"
     }
   ]
 }
@@ -7802,8 +7825,8 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 92,
-    "nombre": "Lista de evidencias e3b7c4",
+    "id": 97,
+    "nombre": "Lista de evidencias cb548d",
     "zona_id": 3,
     "vigente_desde": "2027-01-01",
     "vigente_hasta": "2027-01-31",
@@ -7822,14 +7845,14 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 2e65a579-df96-4f3c-b8f9-975777503a72
+X-Traza-Id: a804ba25-4384-4cd4-8c46-21995ee8387f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "nombre": "Lista de evidencias e3b7c4 bis",
+  "nombre": "Lista de evidencias cb548d bis",
   "zona_id": 3,
   "vigente_desde": "2027-01-15",
   "vigente_hasta": "2027-02-15",
@@ -7843,14 +7866,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 32 ms · traza `2e65a579-df96-4f3c-b8f9-975777503a72`
+**Respuesta.** HTTP 409 (esperado 409) · 61 ms · traza `a804ba25-4384-4cd4-8c46-21995ee8387f`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
-    "mensaje": "La lista «Lista de evidencias e3b7c4» ya rige en esa zona durante esas fechas.",
-    "traza_id": "2e65a579-df96-4f3c-b8f9-975777503a72"
+    "mensaje": "La lista «Lista de evidencias cb548d» ya rige en esa zona durante esas fechas.",
+    "traza_id": "a804ba25-4384-4cd4-8c46-21995ee8387f"
   }
 }
 ```
@@ -7859,11 +7882,11 @@ Content-Type: application/json
 
 **Objetivo.** Sube el precio de 50 a 52; el costo se conserva.
 
-**Petición.** `PUT http://precios:5112/api/v1/precios/listas/92/items/2`
+**Petición.** `PUT http://precios:5112/api/v1/precios/listas/97/items/2`
 
 ```http
 Accept: application/json
-X-Traza-Id: 1fa91ada-faac-43f5-b0b6-3dbd6a4f9bff
+X-Traza-Id: cafa00ed-e915-45dd-9c3e-85641fbe22c3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -7874,7 +7897,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 41 ms · traza `1fa91ada-faac-43f5-b0b6-3dbd6a4f9bff`
+**Respuesta.** HTTP 200 (esperado 200) · 77 ms · traza `cafa00ed-e915-45dd-9c3e-85641fbe22c3`
 
 ```json
 {
@@ -7885,7 +7908,7 @@ Content-Type: application/json
   "precio": 52.0,
   "costo": 30.0,
   "margen_pct": 42.3,
-  "actualizado_en": "2026-11-27T01:24:36-06:00"
+  "actualizado_en": "2026-11-27T02:10:46-06:00"
 }
 ```
 
@@ -7910,36 +7933,36 @@ Content-Type: application/json
 
 **Objetivo.** Cada cambio de precio queda registrado por un trigger.
 
-**Petición.** `GET http://precios:5112/api/v1/precios/historial?lista_id=92&producto_id=2`
+**Petición.** `GET http://precios:5112/api/v1/precios/historial?lista_id=97&producto_id=2`
 
 ```http
 Accept: application/json
-X-Traza-Id: 2bc981eb-2169-4a4f-8605-b9e62e2d1842
+X-Traza-Id: 5ac52491-290c-49da-8044-5e98913b20a4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 41 ms · traza `2bc981eb-2169-4a4f-8605-b9e62e2d1842`
+**Respuesta.** HTTP 200 (esperado 200) · 61 ms · traza `5ac52491-290c-49da-8044-5e98913b20a4`
 
 ```json
 {
   "datos": [
     {
-      "id": 68,
-      "lista_id": 92,
+      "id": 73,
+      "lista_id": 97,
       "producto_id": 2,
       "precio_anterior": 50.0,
       "precio_nuevo": 52.0,
       "usuario_id": 1,
-      "fecha": "2026-11-27T01:24:36-06:00"
+      "fecha": "2026-11-27T02:10:46-06:00"
     },
     {
-      "id": 67,
-      "lista_id": 92,
+      "id": 72,
+      "lista_id": 97,
       "producto_id": 2,
       "precio_anterior": null,
       "precio_nuevo": 50.0,
       "usuario_id": 1,
-      "fecha": "2026-11-27T01:24:36-06:00"
+      "fecha": "2026-11-27T02:10:45-06:00"
     }
   ],
   "paginacion": {
@@ -7955,20 +7978,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 **Objetivo.** Precios, costos y margen de cada renglón.
 
-**Petición.** `GET http://precios:5112/api/v1/precios/listas/92`
+**Petición.** `GET http://precios:5112/api/v1/precios/listas/97`
 
 ```http
 Accept: application/json
-X-Traza-Id: 48561b5a-7f93-4c00-825a-844f805d7041
+X-Traza-Id: 358f671a-9fc5-4ac1-a3f7-6bea792f9e27
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 63 ms · traza `48561b5a-7f93-4c00-825a-844f805d7041`
+**Respuesta.** HTTP 200 (esperado 200) · 71 ms · traza `358f671a-9fc5-4ac1-a3f7-6bea792f9e27`
 
 ```json
 {
-  "id": 92,
-  "nombre": "Lista de evidencias e3b7c4",
+  "id": 97,
+  "nombre": "Lista de evidencias cb548d",
   "zona_id": 3,
   "vigente_desde": "2027-01-01",
   "vigente_hasta": "2027-01-31",
@@ -7983,7 +8006,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
       "precio": 52.0,
       "costo": 30.0,
       "margen_pct": 42.3,
-      "actualizado_en": "2026-11-27T01:24:36-06:00"
+      "actualizado_en": "2026-11-27T02:10:46-06:00"
     }
   ]
 }
@@ -7997,11 +8020,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: a6f0a337-d2b7-48af-b757-9e542d67ac96
+X-Traza-Id: d3f05d7d-bdc3-46a8-803d-e10bacaf74fa
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 118 ms · traza `a6f0a337-d2b7-48af-b757-9e542d67ac96`
+**Respuesta.** HTTP 200 (esperado 200) · 130 ms · traza `d3f05d7d-bdc3-46a8-803d-e10bacaf74fa`
 
 ```json
 {
@@ -8010,8 +8033,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(2
   "fecha": "2027-01-15",
   "precio_base": 29.9,
   "lista": {
-    "id": 92,
-    "nombre": "Lista de evidencias e3b7c4"
+    "id": 97,
+    "nombre": "Lista de evidencias cb548d"
   },
   "precio_vigente": 52.0,
   "promocion": null,
@@ -8032,11 +8055,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: eecaece1-3152-4bb1-a4ef-ae9890a6ee55
+X-Traza-Id: 7d6e0230-44a1-432d-87f7-4fa5ad1f1083
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 119 ms · traza `eecaece1-3152-4bb1-a4ef-ae9890a6ee55`
+**Respuesta.** HTTP 200 (esperado 200) · 185 ms · traza `7d6e0230-44a1-432d-87f7-4fa5ad1f1083`
 
 ```json
 {
@@ -8064,11 +8087,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 5cebd32f-8449-4e38-b00f-8ada68419ace
+X-Traza-Id: a16526fc-f8f3-4575-a46c-e7c2a6dd8b36
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 90 ms · traza `5cebd32f-8449-4e38-b00f-8ada68419ace`
+**Respuesta.** HTTP 200 (esperado 200) · 177 ms · traza `a16526fc-f8f3-4575-a46c-e7c2a6dd8b36`
 
 ```json
 {
@@ -8101,11 +8124,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: fc3cedf4-efc5-4383-a657-438afd03ff88
+X-Traza-Id: 425bb758-1ac9-4465-b226-5a669c917b63
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 92 ms · traza `fc3cedf4-efc5-4383-a657-438afd03ff88`
+**Respuesta.** HTTP 200 (esperado 200) · 167 ms · traza `425bb758-1ac9-4465-b226-5a669c917b63`
 
 ```json
 {
@@ -8138,7 +8161,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 74ae1845-0819-4685-8d08-aec802b4cadc
+X-Traza-Id: 9d0caa5e-bd39-4c8b-8449-cb1a891d32e8
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 Content-Type: application/json
 ```
@@ -8159,7 +8182,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 91 ms · traza `74ae1845-0819-4685-8d08-aec802b4cadc`
+**Respuesta.** HTTP 200 (esperado 200) · 158 ms · traza `9d0caa5e-bd39-4c8b-8449-cb1a891d32e8`
 
 ```json
 {
@@ -8199,7 +8222,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: caeee0b1-bac3-40c5-af3a-ddc4cb7a37c9
+X-Traza-Id: f92ebeba-76be-4f4d-9751-59ba9fff02f3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 Content-Type: application/json
 ```
@@ -8215,7 +8238,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 6 ms · traza `caeee0b1-bac3-40c5-af3a-ddc4cb7a37c9`
+**Respuesta.** HTTP 422 (esperado 422) · 11 ms · traza `f92ebeba-76be-4f4d-9751-59ba9fff02f3`
 
 ```json
 {
@@ -8228,7 +8251,7 @@ Content-Type: application/json
         "mensaje": "No existe ese producto."
       }
     ],
-    "traza_id": "caeee0b1-bac3-40c5-af3a-ddc4cb7a37c9"
+    "traza_id": "f92ebeba-76be-4f4d-9751-59ba9fff02f3"
   }
 }
 ```
@@ -8241,7 +8264,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: d0a61871-423f-4cb7-b979-51824d105cd7
+X-Traza-Id: 935c00b1-03d4-4865-9252-c8071f30d132
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -8256,7 +8279,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 26 ms · traza `d0a61871-423f-4cb7-b979-51824d105cd7`
+**Respuesta.** HTTP 422 (esperado 422) · 45 ms · traza `935c00b1-03d4-4865-9252-c8071f30d132`
 
 ```json
 {
@@ -8269,7 +8292,7 @@ Content-Type: application/json
         "mensaje": "Un descuento porcentual no puede pasar de 30 %."
       }
     ],
-    "traza_id": "d0a61871-423f-4cb7-b979-51824d105cd7"
+    "traza_id": "935c00b1-03d4-4865-9252-c8071f30d132"
   }
 }
 ```
@@ -8282,14 +8305,14 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 6bfbe718-1c81-4fcd-b750-e7a8ecbdcde4
+X-Traza-Id: 643044f5-bf44-4b70-a5ac-5c86c007d8f3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "nombre": "Promoción de evidencias db01",
+  "nombre": "Promoción de evidencias 142b",
   "tipo": "monto",
   "valor": 2.0,
   "producto_id": 1,
@@ -8297,12 +8320,12 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 73 ms · traza `6bfbe718-1c81-4fcd-b750-e7a8ecbdcde4`
+**Respuesta.** HTTP 201 (esperado 201) · 136 ms · traza `643044f5-bf44-4b70-a5ac-5c86c007d8f3`
 
 ```json
 {
-  "id": 23,
-  "nombre": "Promoción de evidencias db01",
+  "id": 25,
+  "nombre": "Promoción de evidencias 142b",
   "tipo": "monto",
   "valor": 2.0,
   "producto_id": 1,
@@ -8319,8 +8342,8 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 23,
-    "nombre": "Promoción de evidencias db01",
+    "id": 25,
+    "nombre": "Promoción de evidencias 142b",
     "tipo": "monto",
     "valor": "2.00",
     "producto_id": 1,
@@ -8338,18 +8361,18 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 57d3bbfc-734d-4f3c-9b21-11c5eaf9312d
+X-Traza-Id: 45cc53b5-06ec-4373-a02a-323d8b2b8148
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 72 ms · traza `57d3bbfc-734d-4f3c-9b21-11c5eaf9312d`
+**Respuesta.** HTTP 200 (esperado 200) · 73 ms · traza `45cc53b5-06ec-4373-a02a-323d8b2b8148`
 
 ```json
 {
   "datos": [
     {
-      "id": 23,
-      "nombre": "Promoción de evidencias db01",
+      "id": 25,
+      "nombre": "Promoción de evidencias 142b",
       "tipo": "monto",
       "valor": 2.0,
       "producto_id": 1,
@@ -8373,15 +8396,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 **Objetivo.** Baja lógica.
 
-**Petición.** `DELETE http://precios:5112/api/v1/precios/promociones/23`
+**Petición.** `DELETE http://precios:5112/api/v1/precios/promociones/25`
 
 ```http
 Accept: application/json
-X-Traza-Id: ff20b253-afc4-47c9-9d1a-c8bd071e73e3
+X-Traza-Id: 86cf312f-ec92-44fd-9a3d-3405b398a2ab
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 55 ms · traza `ff20b253-afc4-47c9-9d1a-c8bd071e73e3`
+**Respuesta.** HTTP 204 (esperado 204) · 51 ms · traza `86cf312f-ec92-44fd-9a3d-3405b398a2ab`
 
 ```json
 (sin cuerpo)
@@ -8392,7 +8415,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 ```json
 [
   {
-    "id": 23,
+    "id": 25,
     "estatus": "inactivo"
   }
 ]
@@ -8406,11 +8429,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 4ee6aed3-da31-4531-8718-e7c2b7d296d6
+X-Traza-Id: 11092087-9629-464b-afca-5950cbc566cb
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 70 ms · traza `4ee6aed3-da31-4531-8718-e7c2b7d296d6`
+**Respuesta.** HTTP 200 (esperado 200) · 168 ms · traza `11092087-9629-464b-afca-5950cbc566cb`
 
 ```json
 {
@@ -8489,7 +8512,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
   "paginacion": {
     "pagina": 1,
     "por_pagina": 5,
-    "total": 24,
+    "total": 25,
     "paginas": 5
   }
 }
@@ -8503,11 +8526,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 3fff0be6-5968-4aec-a726-56961d8c5c67
+X-Traza-Id: f1854442-14dc-4879-851c-e40735410873
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 106 ms · traza `3fff0be6-5968-4aec-a726-56961d8c5c67`
+**Respuesta.** HTTP 200 (esperado 200) · 363 ms · traza `f1854442-14dc-4879-851c-e40735410873`
 
 ```json
 {
@@ -8587,11 +8610,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: d1412531-fcc2-4e80-b17a-684fb2b7605a
+X-Traza-Id: 9d12a7c2-93dc-4b92-b0d3-f41891e5c5f7
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 5 ms · traza `d1412531-fcc2-4e80-b17a-684fb2b7605a`
+**Respuesta.** HTTP 400 (esperado 400) · 10 ms · traza `9d12a7c2-93dc-4b92-b0d3-f41891e5c5f7`
 
 ```json
 {
@@ -8604,7 +8627,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
         "mensaje": "elasticidad debe estar entre -10 y 0."
       }
     ],
-    "traza_id": "d1412531-fcc2-4e80-b17a-684fb2b7605a"
+    "traza_id": "9d12a7c2-93dc-4b92-b0d3-f41891e5c5f7"
   }
 }
 ```
@@ -8619,11 +8642,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: cca42c3a-d41f-40bf-8d29-113d888998cc
+X-Traza-Id: 9bba29af-40a9-488b-9ba5-110927e46edc
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 212 ms · traza `cca42c3a-d41f-40bf-8d29-113d888998cc`
+**Respuesta.** HTTP 200 (esperado 200) · 279 ms · traza `9bba29af-40a9-488b-9ba5-110927e46edc`
 
 ```json
 {
@@ -8656,30 +8679,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
     },
     {
       "producto": {
-        "id": 8,
-        "nombre": "Pasta para sopa surtida"
-      },
-      "existencia": 6,
-      "minimo": 10,
-      "disponible": 6,
-      "en_camino": 0,
-      "solicitado": 0,
-      "cantidad_sugerida": 24,
-      "cantidad_a_comprar": 24,
-      "mejor_oferta": {
-        "proveedor": {
-          "id": 1,
-          "nombre": "Abarrotes del Norte"
-        },
-        "precio_compra": 6.65,
-        "dias_entrega": 2,
-        "capacidad_semanal": 500,
-        "minimo_compra": 6
-      },
-      "costo_estimado": 159.6
-    },
-    {
-      "producto": {
         "id": 40,
         "nombre": "Limpiador multiusos"
       },
@@ -8706,7 +8705,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
   "paginacion": {
     "pagina": 1,
     "por_pagina": 100,
-    "total": 3,
+    "total": 2,
     "paginas": 1
   }
 }
@@ -8722,11 +8721,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: da1a3b36-ce23-46d0-85db-29a40c27058d
+X-Traza-Id: 7cbe7679-54a5-43db-8fbb-e8c095c475fc
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 5 ms · traza `da1a3b36-ce23-46d0-85db-29a40c27058d`
+**Respuesta.** HTTP 400 (esperado 400) · 5 ms · traza `7cbe7679-54a5-43db-8fbb-e8c095c475fc`
 
 ```json
 {
@@ -8739,7 +8738,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "mensaje": "microhub_id es obligatorio."
       }
     ],
-    "traza_id": "da1a3b36-ce23-46d0-85db-29a40c27058d"
+    "traza_id": "7cbe7679-54a5-43db-8fbb-e8c095c475fc"
   }
 }
 ```
@@ -8752,7 +8751,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 0d289cb3-ce3f-469e-a29b-7daca2952f32
+X-Traza-Id: cb151139-fb32-4110-832e-56d0ad8381c5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -8770,12 +8769,12 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 78 ms · traza `0d289cb3-ce3f-469e-a29b-7daca2952f32`
+**Respuesta.** HTTP 201 (esperado 201) · 96 ms · traza `cb151139-fb32-4110-832e-56d0ad8381c5`
 
 ```json
 {
-  "id": 91,
-  "folio": "SC-20261127-000091",
+  "id": 102,
+  "folio": "SC-20261127-000102",
   "microhub_id": 1,
   "estado": "pendiente",
   "motivo": "Se acabó el producto el fin de semana",
@@ -8783,7 +8782,7 @@ Content-Type: application/json
   "decidida_por": null,
   "decision_motivo": null,
   "decidida_en": null,
-  "creada_en": "2026-11-27T01:24:38-06:00",
+  "creada_en": "2026-11-27T02:10:48-06:00",
   "lineas": [
     {
       "producto": {
@@ -8801,8 +8800,8 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 91,
-    "folio": "SC-20261127-000091",
+    "id": 102,
+    "folio": "SC-20261127-000102",
     "microhub_id": 1,
     "estado": "pendiente",
     "solicitada_por": 2
@@ -8817,7 +8816,7 @@ Content-Type: application/json
   {
     "destinatario_id": 1,
     "tipo": "abastecimiento",
-    "titulo": "Solicitud de compra SC-20261127-000091",
+    "titulo": "Solicitud de compra SC-20261127-000102",
     "referencia_tipo": "solicitud"
   }
 ]
@@ -8831,7 +8830,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 32d858b1-0123-4cd2-a2af-8d12afe8372e
+X-Traza-Id: 46ff4602-cff3-49d4-a5c6-e2ff84941391
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -8848,14 +8847,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 8 ms · traza `32d858b1-0123-4cd2-a2af-8d12afe8372e`
+**Respuesta.** HTTP 403 (esperado 403) · 6 ms · traza `46ff4602-cff3-49d4-a5c6-e2ff84941391`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil solo puede trabajar con su propio microhub.",
-    "traza_id": "32d858b1-0123-4cd2-a2af-8d12afe8372e"
+    "traza_id": "46ff4602-cff3-49d4-a5c6-e2ff84941391"
   }
 }
 ```
@@ -8868,7 +8867,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 7c626564-1512-4205-af3a-631d9002fa52
+X-Traza-Id: 8c60f358-7307-446f-b067-1328025c1a3f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -8889,7 +8888,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 5 ms · traza `7c626564-1512-4205-af3a-631d9002fa52`
+**Respuesta.** HTTP 422 (esperado 422) · 5 ms · traza `8c60f358-7307-446f-b067-1328025c1a3f`
 
 ```json
 {
@@ -8902,7 +8901,7 @@ Content-Type: application/json
         "mensaje": "Un producto no puede aparecer dos veces en la misma solicitud."
       }
     ],
-    "traza_id": "7c626564-1512-4205-af3a-631d9002fa52"
+    "traza_id": "8c60f358-7307-446f-b067-1328025c1a3f"
   }
 }
 ```
@@ -8911,22 +8910,22 @@ Content-Type: application/json
 
 **Objetivo.** Otro operador no la ve.
 
-**Petición.** `GET http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/91`
+**Petición.** `GET http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/102`
 
 ```http
 Accept: application/json
-X-Traza-Id: bd421f12-3fd0-4f7c-a487-9ef61fe521e2
+X-Traza-Id: d4bdba1d-56a7-4375-a1f5-56e637be5053
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(310 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 21 ms · traza `bd421f12-3fd0-4f7c-a487-9ef61fe521e2`
+**Respuesta.** HTTP 404 (esperado 404) · 24 ms · traza `d4bdba1d-56a7-4375-a1f5-56e637be5053`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe esa solicitud de compra.",
-    "traza_id": "bd421f12-3fd0-4f7c-a487-9ef61fe521e2"
+    "traza_id": "d4bdba1d-56a7-4375-a1f5-56e637be5053"
   }
 }
 ```
@@ -8935,11 +8934,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(3
 
 **Objetivo.** Solo el administrador decide.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/91/decision`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/102/decision`
 
 ```http
 Accept: application/json
-X-Traza-Id: ab4b0e75-d9cb-4a3b-b2ed-84e44a76ea32
+X-Traza-Id: d8e84b26-8849-44b5-9d56-ddc49431373d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -8950,14 +8949,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 25 ms · traza `ab4b0e75-d9cb-4a3b-b2ed-84e44a76ea32`
+**Respuesta.** HTTP 403 (esperado 403) · 28 ms · traza `d8e84b26-8849-44b5-9d56-ddc49431373d`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "ab4b0e75-d9cb-4a3b-b2ed-84e44a76ea32"
+    "traza_id": "d8e84b26-8849-44b5-9d56-ddc49431373d"
   }
 }
 ```
@@ -8966,11 +8965,11 @@ Content-Type: application/json
 
 **Objetivo.** Rechazar exige el motivo.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/91/decision`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/102/decision`
 
 ```http
 Accept: application/json
-X-Traza-Id: 5ab6b942-9c68-4866-a480-7f2fb96f0098
+X-Traza-Id: 3f095319-0570-4e05-9d99-48e4ba7e4773
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -8981,7 +8980,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 6 ms · traza `5ab6b942-9c68-4866-a480-7f2fb96f0098`
+**Respuesta.** HTTP 422 (esperado 422) · 8 ms · traza `3f095319-0570-4e05-9d99-48e4ba7e4773`
 
 ```json
 {
@@ -8994,7 +8993,7 @@ Content-Type: application/json
         "mensaje": "Rechazar una solicitud exige el motivo."
       }
     ],
-    "traza_id": "5ab6b942-9c68-4866-a480-7f2fb96f0098"
+    "traza_id": "3f095319-0570-4e05-9d99-48e4ba7e4773"
   }
 }
 ```
@@ -9003,11 +9002,11 @@ Content-Type: application/json
 
 **Objetivo.** Solo se ordena una solicitud aprobada.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/91/ordenar`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/102/ordenar`
 
 ```http
 Accept: application/json
-X-Traza-Id: 6de1153b-b4a0-4565-838b-2bb6b2f0ca47
+X-Traza-Id: b3d14356-b83f-4477-8546-d079df99ded4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -9018,14 +9017,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 40 ms · traza `6de1153b-b4a0-4565-838b-2bb6b2f0ca47`
+**Respuesta.** HTTP 409 (esperado 409) · 48 ms · traza `b3d14356-b83f-4477-8546-d079df99ded4`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "Solo se ordena una solicitud aprobada; esta está pendiente.",
-    "traza_id": "6de1153b-b4a0-4565-838b-2bb6b2f0ca47"
+    "traza_id": "b3d14356-b83f-4477-8546-d079df99ded4"
   }
 }
 ```
@@ -9034,11 +9033,11 @@ Content-Type: application/json
 
 **Objetivo.** El administrador aprueba y quien pidió recibe el aviso.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/91/decision`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/102/decision`
 
 ```http
 Accept: application/json
-X-Traza-Id: ed005be7-0400-4adf-b858-cd56a8c63b97
+X-Traza-Id: e9c27511-7eff-493c-9423-6d470652ec68
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -9050,20 +9049,20 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 88 ms · traza `ed005be7-0400-4adf-b858-cd56a8c63b97`
+**Respuesta.** HTTP 200 (esperado 200) · 104 ms · traza `e9c27511-7eff-493c-9423-6d470652ec68`
 
 ```json
 {
-  "id": 91,
-  "folio": "SC-20261127-000091",
+  "id": 102,
+  "folio": "SC-20261127-000102",
   "microhub_id": 1,
   "estado": "aprobada",
   "motivo": "Se acabó el producto el fin de semana",
   "solicitada_por": 2,
   "decidida_por": 1,
   "decision_motivo": "Hay presupuesto",
-  "decidida_en": "2026-11-27T01:24:38-06:00",
-  "creada_en": "2026-11-27T01:24:38-06:00",
+  "decidida_en": "2026-11-27T02:10:49-06:00",
+  "creada_en": "2026-11-27T02:10:48-06:00",
   "lineas": [
     {
       "producto": {
@@ -9094,7 +9093,7 @@ Content-Type: application/json
 [
   {
     "destinatario_id": 2,
-    "titulo": "Solicitud de compra SC-20261127-000091",
+    "titulo": "Solicitud de compra SC-20261127-000102",
     "mensaje": "Tu solicitud fue aprobada."
   }
 ]
@@ -9104,11 +9103,11 @@ Content-Type: application/json
 
 **Objetivo.** Cada línea va al proveedor indicado; el total es piezas × precio de compra.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/91/ordenar`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/102/ordenar`
 
 ```http
 Accept: application/json
-X-Traza-Id: 2ec18903-7c61-47fd-9533-ee443d099f02
+X-Traza-Id: 21a027d4-bfd5-411b-bccd-d45271da1c2b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -9119,16 +9118,16 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 193 ms · traza `2ec18903-7c61-47fd-9533-ee443d099f02`
+**Respuesta.** HTTP 201 (esperado 201) · 223 ms · traza `21a027d4-bfd5-411b-bccd-d45271da1c2b`
 
 ```json
 {
-  "solicitud_id": 91,
+  "solicitud_id": 102,
   "ordenes": [
     {
-      "id": 58,
-      "folio": "OC-20261127-000058",
-      "solicitud_id": 91,
+      "id": 65,
+      "folio": "OC-20261127-000065",
+      "solicitud_id": 102,
       "proveedor": {
         "id": 1,
         "nombre": "Abarrotes del Norte"
@@ -9137,7 +9136,7 @@ Content-Type: application/json
       "estado": "emitida",
       "fecha_esperada": "2026-11-29",
       "total": 853.3,
-      "creada_en": "2026-11-27T01:24:38-06:00",
+      "creada_en": "2026-11-27T02:10:49-06:00",
       "cerrada_en": null,
       "lineas": [
         {
@@ -9161,8 +9160,8 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 58,
-    "folio": "OC-20261127-000058",
+    "id": 65,
+    "folio": "OC-20261127-000065",
     "estado": "emitida",
     "fecha_esperada": "2026-11-29",
     "total": "853.30",
@@ -9187,11 +9186,11 @@ Content-Type: application/json
 
 **Objetivo.** La solicitud ya quedó ordenada.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/91/ordenar`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/solicitudes/102/ordenar`
 
 ```http
 Accept: application/json
-X-Traza-Id: 8e63a3d6-a923-4600-9b70-84b9f5b32f01
+X-Traza-Id: ebdc4526-8058-4df1-b7ac-391cec97159e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -9202,14 +9201,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 44 ms · traza `8e63a3d6-a923-4600-9b70-84b9f5b32f01`
+**Respuesta.** HTTP 409 (esperado 409) · 45 ms · traza `ebdc4526-8058-4df1-b7ac-391cec97159e`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "Solo se ordena una solicitud aprobada; esta está ordenada.",
-    "traza_id": "8e63a3d6-a923-4600-9b70-84b9f5b32f01"
+    "traza_id": "ebdc4526-8058-4df1-b7ac-391cec97159e"
   }
 }
 ```
@@ -9218,18 +9217,18 @@ Content-Type: application/json
 
 **Objetivo.** La mercancía que llegó entra al inventario.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/58/recepcion`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/65/recepcion`
 
 ```http
 Accept: application/json
-X-Traza-Id: 9ae43f23-3a79-4f78-a1e9-9436c46bf7f8
+X-Traza-Id: 1336e6f0-544a-47c0-b315-25d122a244c3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "operacion_uuid": "157be8f2-3443-45a3-966c-bfa85120639b",
+  "operacion_uuid": "5f53c4c2-1710-4008-8d1c-466f0696385e",
   "nota": "Llegó la primera caja",
   "lineas": [
     {
@@ -9240,14 +9239,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 250 ms · traza `9ae43f23-3a79-4f78-a1e9-9436c46bf7f8`
+**Respuesta.** HTTP 201 (esperado 201) · 300 ms · traza `1336e6f0-544a-47c0-b315-25d122a244c3`
 
 ```json
 {
   "orden": {
-    "id": 58,
-    "folio": "OC-20261127-000058",
-    "solicitud_id": 91,
+    "id": 65,
+    "folio": "OC-20261127-000065",
+    "solicitud_id": 102,
     "proveedor": {
       "id": 1,
       "nombre": "Abarrotes del Norte"
@@ -9256,7 +9255,7 @@ Content-Type: application/json
     "estado": "parcial",
     "fecha_esperada": "2026-11-29",
     "total": 853.3,
-    "creada_en": "2026-11-27T01:24:38-06:00",
+    "creada_en": "2026-11-27T02:10:49-06:00",
     "cerrada_en": null,
     "lineas": [
       {
@@ -9286,7 +9285,7 @@ Content-Type: application/json
   {
     "producto_id": 10,
     "cantidad": 23,
-    "operacion_uuid": "157be8f2-3443-45a3-966c-bfa85120639b:10",
+    "operacion_uuid": "5f53c4c2-1710-4008-8d1c-466f0696385e:10",
     "aplicada": true
   }
 ]
@@ -9299,9 +9298,9 @@ Content-Type: application/json
   {
     "tipo": "recepcion",
     "cantidad": 23,
-    "existencia_resultante": 1035,
+    "existencia_resultante": 1127,
     "referencia_tipo": "orden_compra",
-    "referencia_id": 58
+    "referencia_id": 65
   }
 ]
 ```
@@ -9320,18 +9319,18 @@ Content-Type: application/json
 
 **Objetivo.** No entra dos veces al inventario.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/58/recepcion`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/65/recepcion`
 
 ```http
 Accept: application/json
-X-Traza-Id: dd0461e1-a8cc-4bee-9b23-a23037ec3caa
+X-Traza-Id: ea7d0f18-381f-4c5a-8ab5-4392b0c84b6b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "operacion_uuid": "157be8f2-3443-45a3-966c-bfa85120639b",
+  "operacion_uuid": "5f53c4c2-1710-4008-8d1c-466f0696385e",
   "nota": "Llegó la primera caja",
   "lineas": [
     {
@@ -9342,14 +9341,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 147 ms · traza `dd0461e1-a8cc-4bee-9b23-a23037ec3caa`
+**Respuesta.** HTTP 201 (esperado 201) · 158 ms · traza `ea7d0f18-381f-4c5a-8ab5-4392b0c84b6b`
 
 ```json
 {
   "orden": {
-    "id": 58,
-    "folio": "OC-20261127-000058",
-    "solicitud_id": 91,
+    "id": 65,
+    "folio": "OC-20261127-000065",
+    "solicitud_id": 102,
     "proveedor": {
       "id": 1,
       "nombre": "Abarrotes del Norte"
@@ -9358,7 +9357,7 @@ Content-Type: application/json
     "estado": "parcial",
     "fecha_esperada": "2026-11-29",
     "total": 853.3,
-    "creada_en": "2026-11-27T01:24:38-06:00",
+    "creada_en": "2026-11-27T02:10:49-06:00",
     "cerrada_en": null,
     "lineas": [
       {
@@ -9384,7 +9383,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "existencia": 1035
+    "existencia": 1127
   }
 ]
 ```
@@ -9393,11 +9392,11 @@ Content-Type: application/json
 
 **Objetivo.** Solo falta lo que no ha llegado.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/58/recepcion`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/65/recepcion`
 
 ```http
 Accept: application/json
-X-Traza-Id: 4a5c3e84-b4b4-4c74-9c5b-ce1d018d2321
+X-Traza-Id: bb924560-ead7-48ec-a5aa-e42fd3071aaa
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -9413,7 +9412,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 45 ms · traza `4a5c3e84-b4b4-4c74-9c5b-ce1d018d2321`
+**Respuesta.** HTTP 422 (esperado 422) · 62 ms · traza `bb924560-ead7-48ec-a5aa-e42fd3071aaa`
 
 ```json
 {
@@ -9426,7 +9425,7 @@ Content-Type: application/json
         "mensaje": "Solo faltan 23 por recibir de ese producto."
       }
     ],
-    "traza_id": "4a5c3e84-b4b4-4c74-9c5b-ce1d018d2321"
+    "traza_id": "bb924560-ead7-48ec-a5aa-e42fd3071aaa"
   }
 }
 ```
@@ -9435,11 +9434,11 @@ Content-Type: application/json
 
 **Objetivo.** Solo se cancela una orden sin recepciones.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/58/cancelar`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/65/cancelar`
 
 ```http
 Accept: application/json
-X-Traza-Id: a8626d4d-c094-43ba-9f55-3e2f0d1455fc
+X-Traza-Id: ccf625f4-1dc3-4d0d-b72d-1804d453378a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -9450,14 +9449,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 43 ms · traza `a8626d4d-c094-43ba-9f55-3e2f0d1455fc`
+**Respuesta.** HTTP 409 (esperado 409) · 55 ms · traza `ccf625f4-1dc3-4d0d-b72d-1804d453378a`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "Solo se cancela una orden emitida que todavía no recibió mercancía.",
-    "traza_id": "a8626d4d-c094-43ba-9f55-3e2f0d1455fc"
+    "traza_id": "ccf625f4-1dc3-4d0d-b72d-1804d453378a"
   }
 }
 ```
@@ -9466,11 +9465,11 @@ Content-Type: application/json
 
 **Objetivo.** Llega el resto: la orden queda recibida y avisa.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/58/recepcion`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/65/recepcion`
 
 ```http
 Accept: application/json
-X-Traza-Id: 286a1b7d-da76-411d-84cf-1d8105ad089b
+X-Traza-Id: af517020-bd73-49fe-9f39-18e6674dce42
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -9486,14 +9485,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 281 ms · traza `286a1b7d-da76-411d-84cf-1d8105ad089b`
+**Respuesta.** HTTP 201 (esperado 201) · 327 ms · traza `af517020-bd73-49fe-9f39-18e6674dce42`
 
 ```json
 {
   "orden": {
-    "id": 58,
-    "folio": "OC-20261127-000058",
-    "solicitud_id": 91,
+    "id": 65,
+    "folio": "OC-20261127-000065",
+    "solicitud_id": 102,
     "proveedor": {
       "id": 1,
       "nombre": "Abarrotes del Norte"
@@ -9502,8 +9501,8 @@ Content-Type: application/json
     "estado": "recibida",
     "fecha_esperada": "2026-11-29",
     "total": 853.3,
-    "creada_en": "2026-11-27T01:24:38-06:00",
-    "cerrada_en": "2026-11-27T01:24:39-06:00",
+    "creada_en": "2026-11-27T02:10:49-06:00",
+    "cerrada_en": "2026-11-27T02:10:50-06:00",
     "lineas": [
       {
         "producto": {
@@ -9539,7 +9538,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "existencia": 1058
+    "existencia": 1150
   }
 ]
 ```
@@ -9550,12 +9549,12 @@ Content-Type: application/json
 [
   {
     "destinatario_id": 2,
-    "titulo": "Orden de compra OC-20261127-000058",
+    "titulo": "Orden de compra OC-20261127-000065",
     "mensaje": "La orden quedó recibida."
   },
   {
     "destinatario_id": 1,
-    "titulo": "Orden de compra OC-20261127-000058",
+    "titulo": "Orden de compra OC-20261127-000065",
     "mensaje": "La orden quedó recibida."
   }
 ]
@@ -9565,11 +9564,11 @@ Content-Type: application/json
 
 **Objetivo.** Una orden recibida no admite más mercancía.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/58/recepcion`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/65/recepcion`
 
 ```http
 Accept: application/json
-X-Traza-Id: 6bdc6980-d107-448a-8893-ee773a534dcb
+X-Traza-Id: e3066fdb-4237-4297-af0d-24fd847b5ad3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -9585,14 +9584,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 60 ms · traza `6bdc6980-d107-448a-8893-ee773a534dcb`
+**Respuesta.** HTTP 409 (esperado 409) · 52 ms · traza `e3066fdb-4237-4297-af0d-24fd847b5ad3`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "La orden está recibida; ya no recibe mercancía.",
-    "traza_id": "6bdc6980-d107-448a-8893-ee773a534dcb"
+    "traza_id": "e3066fdb-4237-4297-af0d-24fd847b5ad3"
   }
 }
 ```
@@ -9601,21 +9600,21 @@ Content-Type: application/json
 
 **Objetivo.** Con lo recibido de cada línea.
 
-**Petición.** `GET http://abastecimiento:5114/api/v1/abastecimiento/ordenes/58`
+**Petición.** `GET http://abastecimiento:5114/api/v1/abastecimiento/ordenes/65`
 
 ```http
 Accept: application/json
-X-Traza-Id: be0ede69-27c3-408c-b343-98e4eb4fb68b
+X-Traza-Id: 62ce781d-1766-4d90-9d55-cc03d220c321
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 91 ms · traza `be0ede69-27c3-408c-b343-98e4eb4fb68b`
+**Respuesta.** HTTP 200 (esperado 200) · 66 ms · traza `62ce781d-1766-4d90-9d55-cc03d220c321`
 
 ```json
 {
-  "id": 58,
-  "folio": "OC-20261127-000058",
-  "solicitud_id": 91,
+  "id": 65,
+  "folio": "OC-20261127-000065",
+  "solicitud_id": 102,
   "proveedor": {
     "id": 1,
     "nombre": "Abarrotes del Norte"
@@ -9624,8 +9623,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
   "estado": "recibida",
   "fecha_esperada": "2026-11-29",
   "total": 853.3,
-  "creada_en": "2026-11-27T01:24:38-06:00",
-  "cerrada_en": "2026-11-27T01:24:39-06:00",
+  "creada_en": "2026-11-27T02:10:49-06:00",
+  "cerrada_en": "2026-11-27T02:10:50-06:00",
   "lineas": [
     {
       "producto": {
@@ -9649,15 +9648,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/xml
-X-Traza-Id: 9b15745c-f7c6-4038-8fee-d6a75dd83cc7
+X-Traza-Id: 8d3ba74e-7e81-4f61-a822-ff33afc9b0d2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 112 ms · traza `9b15745c-f7c6-4038-8fee-d6a75dd83cc7`
+**Respuesta.** HTTP 200 (esperado 200) · 100 ms · traza `8d3ba74e-7e81-4f61-a822-ff33afc9b0d2`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<ordenes xmlns="urn:microhubs:v1" version="1"><datos><orden><id>58</id><folio>OC-20261127-000058</folio><solicitud_id>91</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-29</fecha_esperada><total>853.30</total><creada_en>2026-11-27T01:24:38-06:00</creada_en><cerrada_en>2026-11-27T01:24:39-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>57</id><folio>OC-20261127-000057</folio><solicitud_id>90</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-29</fecha_esperada><total>4060.00</total><creada_en>2026-11-27T01:24:14-06:00</creada_en><cerrada_en>2026-11-27T01:24:14-06:00</cerrada_en><lineas><linea><producto><id>31</id><nombre>Queso fresco</nombre></producto><cantidad>100</cantidad><precio_compra>40.60</precio_compra><cantidad_recibida>100</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>56</id><folio>OC-20261127-000056</folio><solicitud_id>88</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-29</fecha_esperada><total>859.95</total><creada_en>2026-11-27T01:17:04-06:00</creada_en><cerrada_en>2026-11-27T01:17:05-06:00</cerrada_en><lineas><linea><producto><id>12</id><nombre>Chiles jalapeños en escabeche</nombre></producto><cantidad>63</cantidad><precio_compra>13.65</precio_compra><cantidad_recibida>63</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>55</id><folio>OC-20261127-000055</folio><solicitud_id>86</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-29</fecha_esperada><total>853.30</total><creada_en>2026-11-27T01:17:01-06:00</creada_en><cerrada_en>2026-11-27T01:17:02-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>53</id><folio>OC-20261126-000053</folio><solicitud_id>82</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>800.80</total><creada_en>2026-11-26T23:25:14-06:00</creada_en><cerrada_en>2026-11-26T23:25:15-06:00</cerrada_en><lineas><linea><producto><id>34</id><nombre>Yogur natural</nombre></producto><cantidad>26</cantidad><precio_compra>30.80</precio_compra><cantidad_recibida>26</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>51</id><folio>OC-20261126-000051</folio><solicitud_id>80</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T23:20:39-06:00</creada_en><cerrada_en>2026-11-26T23:20:40-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>49</id><folio>OC-20261126-000049</folio><solicitud_id>78</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T23:19:22-06:00</creada_en><cerrada_en>2026-11-26T23:19:23-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>48</id><folio>OC-20261126-000048</folio><solicitud_id>77</solicitud_id><proveedor><id>2</id><nombre>Distribuidora Regia</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-27</fecha_esperada><total>745.92</total><creada_en>2026-11-26T23:17:15-06:00</creada_en><cerrada_en>2026-11-26T23:17:16-06:00</cerrada_en><lineas><linea><producto><id>3</id><nombre>Aceite vegetal</nombre></producto><cantidad>24</cantidad><precio_compra>31.08</precio_compra><cantidad_recibida>24</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>47</id><folio>OC-20261126-000047</folio><solicitud_id>76</solicitud_id><proveedor><id>2</id><nombre>Distribuidora Regia</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-27</fecha_esperada><total>843.60</total><creada_en>2026-11-26T23:15:54-06:00</creada_en><cerrada_en>2026-11-26T23:15:55-06:00</cerrada_en><lineas><linea><producto><id>21</id><nombre>Agua purificada</nombre></producto><cantidad>30</cantidad><precio_compra>28.12</precio_compra><cantidad_recibida>30</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>45</id><folio>OC-20261126-000045</folio><solicitud_id>74</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T23:12:13-06:00</creada_en><cerrada_en>2026-11-26T23:12:14-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>44</id><folio>OC-20261126-000044</folio><solicitud_id>73</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>4060.00</total><creada_en>2026-11-26T23:11:45-06:00</creada_en><cerrada_en>2026-11-26T23:11:46-06:00</cerrada_en><lineas><linea><producto><id>31</id><nombre>Queso fresco</nombre></producto><cantidad>100</cantidad><precio_compra>40.60</precio_compra><cantidad_recibida>100</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>43</id><folio>OC-20261126-000043</folio><solicitud_id>71</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>859.95</total><creada_en>2026-11-26T23:07:20-06:00</creada_en><cerrada_en>2026-11-26T23:07:21-06:00</cerrada_en><lineas><linea><producto><id>12</id><nombre>Chiles jalapeños en escabeche</nombre></producto><cantidad>63</cantidad><precio_compra>13.65</precio_compra><cantidad_recibida>63</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>42</id><folio>OC-20261126-000042</folio><solicitud_id>69</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T23:07:16-06:00</creada_en><cerrada_en>2026-11-26T23:07:17-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>39</id><folio>OC-20261126-000039</folio><solicitud_id>64</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T15:23:08-06:00</creada_en><cerrada_en>2026-11-26T15:23:09-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>38</id><folio>OC-20261126-000038</folio><solicitud_id>63</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>4060.00</total><creada_en>2026-11-26T15:22:04-06:00</creada_en><cerrada_en>2026-11-26T15:22:04-06:00</cerrada_en><lineas><linea><producto><id>31</id><nombre>Queso fresco</nombre></producto><cantidad>100</cantidad><precio_compra>40.60</precio_compra><cantidad_recibida>100</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>37</id><folio>OC-20261126-000037</folio><solicitud_id>60</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>859.95</total><creada_en>2026-11-26T14:22:19-06:00</creada_en><cerrada_en>2026-11-26T14:22:21-06:00</cerrada_en><lineas><linea><producto><id>12</id><nombre>Chiles jalapeños en escabeche</nombre></producto><cantidad>63</cantidad><precio_compra>13.65</precio_compra><cantidad_recibida>63</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>36</id><folio>OC-20261126-000036</folio><solicitud_id>58</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T14:22:16-06:00</creada_en><cerrada_en>2026-11-26T14:22:17-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>33</id><folio>OC-20261126-000033</folio><solicitud_id>53</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T14:19:44-06:00</creada_en><cerrada_en>2026-11-26T14:19:45-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>31</id><folio>OC-20261126-000031</folio><solicitud_id>51</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T14:04:57-06:00</creada_en><cerrada_en>2026-11-26T14:04:58-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>29</id><folio>OC-20261126-000029</folio><solicitud_id>49</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T13:51:34-06:00</creada_en><cerrada_en>2026-11-26T13:51:35-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden></datos><paginacion><pagina>1</pagina><por_pagina>20</por_pagina><total>37</total><paginas>2</paginas></paginacion></ordenes>
+<ordenes xmlns="urn:microhubs:v1" version="1"><datos><orden><id>65</id><folio>OC-20261127-000065</folio><solicitud_id>102</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-29</fecha_esperada><total>853.30</total><creada_en>2026-11-27T02:10:49-06:00</creada_en><cerrada_en>2026-11-27T02:10:50-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>64</id><folio>OC-20261127-000064</folio><solicitud_id>101</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-29</fecha_esperada><total>4060.00</total><creada_en>2026-11-27T02:10:21-06:00</creada_en><cerrada_en>2026-11-27T02:10:21-06:00</cerrada_en><lineas><linea><producto><id>31</id><nombre>Queso fresco</nombre></producto><cantidad>100</cantidad><precio_compra>40.60</precio_compra><cantidad_recibida>100</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>63</id><folio>OC-20261127-000063</folio><solicitud_id>99</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-29</fecha_esperada><total>859.95</total><creada_en>2026-11-27T02:06:20-06:00</creada_en><cerrada_en>2026-11-27T02:06:21-06:00</cerrada_en><lineas><linea><producto><id>12</id><nombre>Chiles jalapeños en escabeche</nombre></producto><cantidad>63</cantidad><precio_compra>13.65</precio_compra><cantidad_recibida>63</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>62</id><folio>OC-20261127-000062</folio><solicitud_id>97</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-29</fecha_esperada><total>853.30</total><creada_en>2026-11-27T02:06:16-06:00</creada_en><cerrada_en>2026-11-27T02:06:18-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>60</id><folio>OC-20261127-000060</folio><solicitud_id>93</solicitud_id><proveedor><id>2</id><nombre>Distribuidora Regia</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>506.16</total><creada_en>2026-11-27T01:25:33-06:00</creada_en><cerrada_en>2026-11-27T01:25:34-06:00</cerrada_en><lineas><linea><producto><id>8</id><nombre>Pasta para sopa surtida</nombre></producto><cantidad>72</cantidad><precio_compra>7.03</precio_compra><cantidad_recibida>72</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>58</id><folio>OC-20261127-000058</folio><solicitud_id>91</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-29</fecha_esperada><total>853.30</total><creada_en>2026-11-27T01:24:38-06:00</creada_en><cerrada_en>2026-11-27T01:24:39-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>57</id><folio>OC-20261127-000057</folio><solicitud_id>90</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-29</fecha_esperada><total>4060.00</total><creada_en>2026-11-27T01:24:14-06:00</creada_en><cerrada_en>2026-11-27T01:24:14-06:00</cerrada_en><lineas><linea><producto><id>31</id><nombre>Queso fresco</nombre></producto><cantidad>100</cantidad><precio_compra>40.60</precio_compra><cantidad_recibida>100</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>56</id><folio>OC-20261127-000056</folio><solicitud_id>88</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-29</fecha_esperada><total>859.95</total><creada_en>2026-11-27T01:17:04-06:00</creada_en><cerrada_en>2026-11-27T01:17:05-06:00</cerrada_en><lineas><linea><producto><id>12</id><nombre>Chiles jalapeños en escabeche</nombre></producto><cantidad>63</cantidad><precio_compra>13.65</precio_compra><cantidad_recibida>63</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>55</id><folio>OC-20261127-000055</folio><solicitud_id>86</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-29</fecha_esperada><total>853.30</total><creada_en>2026-11-27T01:17:01-06:00</creada_en><cerrada_en>2026-11-27T01:17:02-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>53</id><folio>OC-20261126-000053</folio><solicitud_id>82</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>800.80</total><creada_en>2026-11-26T23:25:14-06:00</creada_en><cerrada_en>2026-11-26T23:25:15-06:00</cerrada_en><lineas><linea><producto><id>34</id><nombre>Yogur natural</nombre></producto><cantidad>26</cantidad><precio_compra>30.80</precio_compra><cantidad_recibida>26</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>51</id><folio>OC-20261126-000051</folio><solicitud_id>80</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T23:20:39-06:00</creada_en><cerrada_en>2026-11-26T23:20:40-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>49</id><folio>OC-20261126-000049</folio><solicitud_id>78</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T23:19:22-06:00</creada_en><cerrada_en>2026-11-26T23:19:23-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>48</id><folio>OC-20261126-000048</folio><solicitud_id>77</solicitud_id><proveedor><id>2</id><nombre>Distribuidora Regia</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-27</fecha_esperada><total>745.92</total><creada_en>2026-11-26T23:17:15-06:00</creada_en><cerrada_en>2026-11-26T23:17:16-06:00</cerrada_en><lineas><linea><producto><id>3</id><nombre>Aceite vegetal</nombre></producto><cantidad>24</cantidad><precio_compra>31.08</precio_compra><cantidad_recibida>24</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>47</id><folio>OC-20261126-000047</folio><solicitud_id>76</solicitud_id><proveedor><id>2</id><nombre>Distribuidora Regia</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-27</fecha_esperada><total>843.60</total><creada_en>2026-11-26T23:15:54-06:00</creada_en><cerrada_en>2026-11-26T23:15:55-06:00</cerrada_en><lineas><linea><producto><id>21</id><nombre>Agua purificada</nombre></producto><cantidad>30</cantidad><precio_compra>28.12</precio_compra><cantidad_recibida>30</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>45</id><folio>OC-20261126-000045</folio><solicitud_id>74</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T23:12:13-06:00</creada_en><cerrada_en>2026-11-26T23:12:14-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>44</id><folio>OC-20261126-000044</folio><solicitud_id>73</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>4060.00</total><creada_en>2026-11-26T23:11:45-06:00</creada_en><cerrada_en>2026-11-26T23:11:46-06:00</cerrada_en><lineas><linea><producto><id>31</id><nombre>Queso fresco</nombre></producto><cantidad>100</cantidad><precio_compra>40.60</precio_compra><cantidad_recibida>100</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>43</id><folio>OC-20261126-000043</folio><solicitud_id>71</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>859.95</total><creada_en>2026-11-26T23:07:20-06:00</creada_en><cerrada_en>2026-11-26T23:07:21-06:00</cerrada_en><lineas><linea><producto><id>12</id><nombre>Chiles jalapeños en escabeche</nombre></producto><cantidad>63</cantidad><precio_compra>13.65</precio_compra><cantidad_recibida>63</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>42</id><folio>OC-20261126-000042</folio><solicitud_id>69</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T23:07:16-06:00</creada_en><cerrada_en>2026-11-26T23:07:17-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>39</id><folio>OC-20261126-000039</folio><solicitud_id>64</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>853.30</total><creada_en>2026-11-26T15:23:08-06:00</creada_en><cerrada_en>2026-11-26T15:23:09-06:00</cerrada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad><precio_compra>18.55</precio_compra><cantidad_recibida>46</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden><orden><id>38</id><folio>OC-20261126-000038</folio><solicitud_id>63</solicitud_id><proveedor><id>1</id><nombre>Abarrotes del Norte</nombre></proveedor><microhub_id>1</microhub_id><estado>recibida</estado><fecha_esperada>2026-11-28</fecha_esperada><total>4060.00</total><creada_en>2026-11-26T15:22:04-06:00</creada_en><cerrada_en>2026-11-26T15:22:04-06:00</cerrada_en><lineas><linea><producto><id>31</id><nombre>Queso fresco</nombre></producto><cantidad>100</cantidad><precio_compra>40.60</precio_compra><cantidad_recibida>100</cantidad_recibida><pendiente_inventario>0</pendiente_inventario></linea></lineas></orden></datos><paginacion><pagina>1</pagina><por_pagina>20</por_pagina><total>42</total><paginas>3</paginas></paginacion></ordenes>
 ```
 
 ### ABA-21 · Tablero de abastecimiento · PASA
@@ -9668,11 +9667,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 8fb6bc74-9acb-4b3c-b8a7-d55e3e74f65f
+X-Traza-Id: fff60e62-cf94-49a5-8959-8c00361a4f58
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 132 ms · traza `8fb6bc74-9acb-4b3c-b8a7-d55e3e74f65f`
+**Respuesta.** HTTP 200 (esperado 200) · 116 ms · traza `fff60e62-cf94-49a5-8959-8c00361a4f58`
 
 ```json
 {
@@ -9680,14 +9679,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
   "solicitudes": {
     "pendiente": 0,
     "aprobada": 1,
-    "rechazada": 24,
-    "ordenada": 58
+    "rechazada": 27,
+    "ordenada": 65
   },
   "ordenes": {
     "emitida": 0,
     "parcial": 0,
-    "recibida": 37,
-    "cancelada": 21
+    "recibida": 42,
+    "cancelada": 23
   },
   "atrasadas": 0,
   "pendientes_inventario": 0,
@@ -9699,11 +9698,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 **Objetivo.** Cancelar una orden es del administrador.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/59/cancelar`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/66/cancelar`
 
 ```http
 Accept: application/json
-X-Traza-Id: c4300dfb-3bad-4bcf-a13f-50c0a4ab9702
+X-Traza-Id: 4fd3ef78-cd33-439c-8852-7e1527c8cd8b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -9714,14 +9713,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 26 ms · traza `c4300dfb-3bad-4bcf-a13f-50c0a4ab9702`
+**Respuesta.** HTTP 403 (esperado 403) · 28 ms · traza `4fd3ef78-cd33-439c-8852-7e1527c8cd8b`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "c4300dfb-3bad-4bcf-a13f-50c0a4ab9702"
+    "traza_id": "4fd3ef78-cd33-439c-8852-7e1527c8cd8b"
   }
 }
 ```
@@ -9730,11 +9729,11 @@ Content-Type: application/json
 
 **Objetivo.** Una orden sin recepciones se puede cancelar con motivo.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/59/cancelar`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/66/cancelar`
 
 ```http
 Accept: application/json
-X-Traza-Id: 35902961-b22c-49ba-8c81-8474f3e17eb0
+X-Traza-Id: ce08de51-6577-46bb-9ed2-61daf0feb75c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -9745,13 +9744,13 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 122 ms · traza `35902961-b22c-49ba-8c81-8474f3e17eb0`
+**Respuesta.** HTTP 200 (esperado 200) · 128 ms · traza `ce08de51-6577-46bb-9ed2-61daf0feb75c`
 
 ```json
 {
-  "id": 59,
-  "folio": "OC-20261127-000059",
-  "solicitud_id": 92,
+  "id": 66,
+  "folio": "OC-20261127-000066",
+  "solicitud_id": 103,
   "proveedor": {
     "id": 1,
     "nombre": "Abarrotes del Norte"
@@ -9760,8 +9759,8 @@ Content-Type: application/json
   "estado": "cancelada",
   "fecha_esperada": "2026-11-29",
   "total": 853.3,
-  "creada_en": "2026-11-27T01:24:40-06:00",
-  "cerrada_en": "2026-11-27T01:24:40-06:00",
+  "creada_en": "2026-11-27T02:10:51-06:00",
+  "cerrada_en": "2026-11-27T02:10:51-06:00",
   "lineas": [
     {
       "producto": {
@@ -9793,11 +9792,11 @@ Content-Type: application/json
 
 **Objetivo.** No recibe mercancía.
 
-**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/59/recepcion`
+**Petición.** `POST http://abastecimiento:5114/api/v1/abastecimiento/ordenes/66/recepcion`
 
 ```http
 Accept: application/json
-X-Traza-Id: 15079e2d-5acd-4ac1-b1b7-b9deb87fa798
+X-Traza-Id: c1683383-541b-4228-b92b-20c8b2a19f19
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -9813,14 +9812,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 44 ms · traza `15079e2d-5acd-4ac1-b1b7-b9deb87fa798`
+**Respuesta.** HTTP 409 (esperado 409) · 49 ms · traza `c1683383-541b-4228-b92b-20c8b2a19f19`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "La orden está cancelada; ya no recibe mercancía.",
-    "traza_id": "15079e2d-5acd-4ac1-b1b7-b9deb87fa798"
+    "traza_id": "c1683383-541b-4228-b92b-20c8b2a19f19"
   }
 }
 ```
@@ -9833,15 +9832,15 @@ Content-Type: application/json
 
 ```http
 Accept: application/xml
-X-Traza-Id: ddd60c23-0146-46e3-ae42-26773cd09c89
+X-Traza-Id: d0c026d8-6d38-4686-8a00-07010ea89084
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 60 ms · traza `ddd60c23-0146-46e3-ae42-26773cd09c89`
+**Respuesta.** HTTP 200 (esperado 200) · 109 ms · traza `d0c026d8-6d38-4686-8a00-07010ea89084`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<solicitudes xmlns="urn:microhubs:v1" version="1"><datos><solicitud><id>92</id><folio>SC-20261127-000092</folio><microhub_id>1</microhub_id><estado>ordenada</estado><motivo>Compra para cancelar</motivo><solicitada_por>2</solicitada_por><decidida_por>1</decidida_por><decision_motivo>Hay presupuesto</decision_motivo><decidida_en>2026-11-27T01:24:40-06:00</decidida_en><creada_en>2026-11-27T01:24:40-06:00</creada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad></linea></lineas></solicitud><solicitud><id>91</id><folio>SC-20261127-000091</folio><microhub_id>1</microhub_id><estado>ordenada</estado><motivo>Se acabó el producto el fin de semana</motivo><solicitada_por>2</solicitada_por><decidida_por>1</decidida_por><decision_motivo>Hay presupuesto</decision_motivo><decidida_en>2026-11-27T01:24:38-06:00</decidida_en><creada_en>2026-11-27T01:24:38-06:00</creada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad></linea></lineas></solicitud><solicitud><id>90</id><folio>SC-20261127-000090</folio><microhub_id>1</microhub_id><estado>ordenada</estado><motivo>Faltante detectado por el sistema</motivo><solicitada_por>2</solicitada_por><decidida_por>1</decidida_por><decision_motivo>Con presupuesto</decision_motivo><decidida_en>2026-11-27T01:24:14-06:00</decidida_en><creada_en>2026-11-27T01:24:14-06:00</creada_en><lineas><linea><producto><id>31</id><nombre>Queso fresco</nombre></producto><cantidad>100</cantidad></linea></lineas></solicitud></datos><paginacion><pagina>1</pagina><por_pagina>3</por_pagina><total>84</total><paginas>28</paginas></paginacion></solicitudes>
+<solicitudes xmlns="urn:microhubs:v1" version="1"><datos><solicitud><id>103</id><folio>SC-20261127-000103</folio><microhub_id>1</microhub_id><estado>ordenada</estado><motivo>Compra para cancelar</motivo><solicitada_por>2</solicitada_por><decidida_por>1</decidida_por><decision_motivo>Hay presupuesto</decision_motivo><decidida_en>2026-11-27T02:10:51-06:00</decidida_en><creada_en>2026-11-27T02:10:50-06:00</creada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad></linea></lineas></solicitud><solicitud><id>102</id><folio>SC-20261127-000102</folio><microhub_id>1</microhub_id><estado>ordenada</estado><motivo>Se acabó el producto el fin de semana</motivo><solicitada_por>2</solicitada_por><decidida_por>1</decidida_por><decision_motivo>Hay presupuesto</decision_motivo><decidida_en>2026-11-27T02:10:49-06:00</decidida_en><creada_en>2026-11-27T02:10:48-06:00</creada_en><lineas><linea><producto><id>10</id><nombre>Sardina en salsa de tomate</nombre></producto><cantidad>46</cantidad></linea></lineas></solicitud><solicitud><id>101</id><folio>SC-20261127-000101</folio><microhub_id>1</microhub_id><estado>ordenada</estado><motivo>Faltante detectado por el sistema</motivo><solicitada_por>2</solicitada_por><decidida_por>1</decidida_por><decision_motivo>Con presupuesto</decision_motivo><decidida_en>2026-11-27T02:10:20-06:00</decidida_en><creada_en>2026-11-27T02:10:20-06:00</creada_en><lineas><linea><producto><id>31</id><nombre>Queso fresco</nombre></producto><cantidad>100</cantidad></linea></lineas></solicitud></datos><paginacion><pagina>1</pagina><por_pagina>3</por_pagina><total>94</total><paginas>32</paginas></paginacion></solicitudes>
 ```
 
 ### ABA-26 · Un auditor consulta · PASA
@@ -9852,15 +9851,225 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 04c42602-53e6-42a5-9745-8ddb55b6fe24
+X-Traza-Id: dbbc2f87-cd6c-42b8-866c-110527d2a3cc
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 63 ms · traza `04c42602-53e6-42a5-9745-8ddb55b6fe24`
+**Respuesta.** HTTP 200 (esperado 200) · 131 ms · traza `dbbc2f87-cd6c-42b8-866c-110527d2a3cc`
 
 ```json
 {
   "datos": [
+    {
+      "id": 103,
+      "folio": "SC-20261127-000103",
+      "microhub_id": 1,
+      "estado": "ordenada",
+      "motivo": "Compra para cancelar",
+      "solicitada_por": 2,
+      "decidida_por": 1,
+      "decision_motivo": "Hay presupuesto",
+      "decidida_en": "2026-11-27T02:10:51-06:00",
+      "creada_en": "2026-11-27T02:10:50-06:00",
+      "lineas": [
+        {
+          "producto": {
+            "id": 10,
+            "nombre": "Sardina en salsa de tomate"
+          },
+          "cantidad": 46
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "folio": "SC-20261127-000102",
+      "microhub_id": 1,
+      "estado": "ordenada",
+      "motivo": "Se acabó el producto el fin de semana",
+      "solicitada_por": 2,
+      "decidida_por": 1,
+      "decision_motivo": "Hay presupuesto",
+      "decidida_en": "2026-11-27T02:10:49-06:00",
+      "creada_en": "2026-11-27T02:10:48-06:00",
+      "lineas": [
+        {
+          "producto": {
+            "id": 10,
+            "nombre": "Sardina en salsa de tomate"
+          },
+          "cantidad": 46
+        }
+      ]
+    },
+    {
+      "id": 101,
+      "folio": "SC-20261127-000101",
+      "microhub_id": 1,
+      "estado": "ordenada",
+      "motivo": "Faltante detectado por el sistema",
+      "solicitada_por": 2,
+      "decidida_por": 1,
+      "decision_motivo": "Con presupuesto",
+      "decidida_en": "2026-11-27T02:10:20-06:00",
+      "creada_en": "2026-11-27T02:10:20-06:00",
+      "lineas": [
+        {
+          "producto": {
+            "id": 31,
+            "nombre": "Queso fresco"
+          },
+          "cantidad": 100
+        }
+      ]
+    },
+    {
+      "id": 100,
+      "folio": "SC-20261127-000100",
+      "microhub_id": 1,
+      "estado": "rechazada",
+      "motivo": "Prueba XML",
+      "solicitada_por": 2,
+      "decidida_por": 1,
+      "decision_motivo": "Prueba XML",
+      "decidida_en": "2026-11-27T02:06:21-06:00",
+      "creada_en": "2026-11-27T02:06:21-06:00",
+      "lineas": [
+        {
+          "producto": {
+            "id": 14,
+            "nombre": "Café soluble"
+          },
+          "cantidad": 12
+        }
+      ]
+    },
+    {
+      "id": 99,
+      "folio": "SC-20261127-000099",
+      "microhub_id": 1,
+      "estado": "ordenada",
+      "motivo": "Prueba de abastecimiento",
+      "solicitada_por": 2,
+      "decidida_por": 1,
+      "decision_motivo": "Hay presupuesto",
+      "decidida_en": "2026-11-27T02:06:20-06:00",
+      "creada_en": "2026-11-27T02:06:20-06:00",
+      "lineas": [
+        {
+          "producto": {
+            "id": 12,
+            "nombre": "Chiles jalapeños en escabeche"
+          },
+          "cantidad": 63
+        }
+      ]
+    },
+    {
+      "id": 98,
+      "folio": "SC-20261127-000098",
+      "microhub_id": 1,
+      "estado": "rechazada",
+      "motivo": "Prueba de abastecimiento",
+      "solicitada_por": 2,
+      "decidida_por": null,
+      "decision_motivo": "Limpieza de la prueba",
+      "decidida_en": null,
+      "creada_en": "2026-11-27T02:06:19-06:00",
+      "lineas": [
+        {
+          "producto": {
+            "id": 15,
+            "nombre": "Avena en hojuelas"
+          },
+          "cantidad": 164
+        }
+      ]
+    },
+    {
+      "id": 97,
+      "folio": "SC-20261127-000097",
+      "microhub_id": 1,
+      "estado": "ordenada",
+      "motivo": "Prueba de abastecimiento",
+      "solicitada_por": 2,
+      "decidida_por": 1,
+      "decision_motivo": "ok",
+      "decidida_en": "2026-11-27T02:06:16-06:00",
+      "creada_en": "2026-11-27T02:06:15-06:00",
+      "lineas": [
+        {
+          "producto": {
+            "id": 10,
+            "nombre": "Sardina en salsa de tomate"
+          },
+          "cantidad": 46
+        }
+      ]
+    },
+    {
+      "id": 95,
+      "folio": "SC-20261127-000095",
+      "microhub_id": 1,
+      "estado": "rechazada",
+      "motivo": "Prueba de abastecimiento",
+      "solicitada_por": 2,
+      "decidida_por": 1,
+      "decision_motivo": "Todavía hay existencia",
+      "decidida_en": "2026-11-27T02:06:15-06:00",
+      "creada_en": "2026-11-27T02:06:15-06:00",
+      "lineas": [
+        {
+          "producto": {
+            "id": 13,
+            "nombre": "Puré de tomate"
+          },
+          "cantidad": 111
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "folio": "SC-20261127-000094",
+      "microhub_id": 1,
+      "estado": "ordenada",
+      "motivo": "Prueba de abastecimiento",
+      "solicitada_por": 2,
+      "decidida_por": 1,
+      "decision_motivo": "Hay presupuesto",
+      "decidida_en": "2026-11-27T02:06:14-06:00",
+      "creada_en": "2026-11-27T02:06:14-06:00",
+      "lineas": [
+        {
+          "producto": {
+            "id": 13,
+            "nombre": "Puré de tomate"
+          },
+          "cantidad": 111
+        }
+      ]
+    },
+    {
+      "id": 93,
+      "folio": "SC-20261127-000093",
+      "microhub_id": 1,
+      "estado": "ordenada",
+      "motivo": "Proceso integral 8678e2",
+      "solicitada_por": 2,
+      "decidida_por": 1,
+      "decision_motivo": "Hay presupuesto",
+      "decidida_en": "2026-11-27T01:25:32-06:00",
+      "creada_en": "2026-11-27T01:25:31-06:00",
+      "lineas": [
+        {
+          "producto": {
+            "id": 8,
+            "nombre": "Pasta para sopa surtida"
+          },
+          "cantidad": 72
+        }
+      ]
+    },
     {
       "id": 92,
       "folio": "SC-20261127-000092",
@@ -10070,222 +10279,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
           "cantidad": 26
         }
       ]
-    },
-    {
-      "id": 81,
-      "folio": "SC-20261126-000081",
-      "microhub_id": 1,
-      "estado": "ordenada",
-      "motivo": "Compra para cancelar",
-      "solicitada_por": 2,
-      "decidida_por": 1,
-      "decision_motivo": "Hay presupuesto",
-      "decidida_en": "2026-11-26T23:20:41-06:00",
-      "creada_en": "2026-11-26T23:20:41-06:00",
-      "lineas": [
-        {
-          "producto": {
-            "id": 10,
-            "nombre": "Sardina en salsa de tomate"
-          },
-          "cantidad": 46
-        }
-      ]
-    },
-    {
-      "id": 80,
-      "folio": "SC-20261126-000080",
-      "microhub_id": 1,
-      "estado": "ordenada",
-      "motivo": "Se acabó el producto el fin de semana",
-      "solicitada_por": 2,
-      "decidida_por": 1,
-      "decision_motivo": "Hay presupuesto",
-      "decidida_en": "2026-11-26T23:20:39-06:00",
-      "creada_en": "2026-11-26T23:20:39-06:00",
-      "lineas": [
-        {
-          "producto": {
-            "id": 10,
-            "nombre": "Sardina en salsa de tomate"
-          },
-          "cantidad": 46
-        }
-      ]
-    },
-    {
-      "id": 79,
-      "folio": "SC-20261126-000079",
-      "microhub_id": 1,
-      "estado": "ordenada",
-      "motivo": "Compra para cancelar",
-      "solicitada_por": 2,
-      "decidida_por": 1,
-      "decision_motivo": "Hay presupuesto",
-      "decidida_en": "2026-11-26T23:19:23-06:00",
-      "creada_en": "2026-11-26T23:19:23-06:00",
-      "lineas": [
-        {
-          "producto": {
-            "id": 10,
-            "nombre": "Sardina en salsa de tomate"
-          },
-          "cantidad": 46
-        }
-      ]
-    },
-    {
-      "id": 78,
-      "folio": "SC-20261126-000078",
-      "microhub_id": 1,
-      "estado": "ordenada",
-      "motivo": "Se acabó el producto el fin de semana",
-      "solicitada_por": 2,
-      "decidida_por": 1,
-      "decision_motivo": "Hay presupuesto",
-      "decidida_en": "2026-11-26T23:19:21-06:00",
-      "creada_en": "2026-11-26T23:19:21-06:00",
-      "lineas": [
-        {
-          "producto": {
-            "id": 10,
-            "nombre": "Sardina en salsa de tomate"
-          },
-          "cantidad": 46
-        }
-      ]
-    },
-    {
-      "id": 77,
-      "folio": "SC-20261126-000077",
-      "microhub_id": 1,
-      "estado": "ordenada",
-      "motivo": "Proceso integral b84e26",
-      "solicitada_por": 2,
-      "decidida_por": 1,
-      "decision_motivo": "Hay presupuesto",
-      "decidida_en": "2026-11-26T23:17:15-06:00",
-      "creada_en": "2026-11-26T23:17:14-06:00",
-      "lineas": [
-        {
-          "producto": {
-            "id": 3,
-            "nombre": "Aceite vegetal"
-          },
-          "cantidad": 24
-        }
-      ]
-    },
-    {
-      "id": 76,
-      "folio": "SC-20261126-000076",
-      "microhub_id": 1,
-      "estado": "ordenada",
-      "motivo": "Proceso integral 5514e1",
-      "solicitada_por": 2,
-      "decidida_por": 1,
-      "decision_motivo": "Hay presupuesto",
-      "decidida_en": "2026-11-26T23:15:54-06:00",
-      "creada_en": "2026-11-26T23:15:53-06:00",
-      "lineas": [
-        {
-          "producto": {
-            "id": 21,
-            "nombre": "Agua purificada"
-          },
-          "cantidad": 30
-        }
-      ]
-    },
-    {
-      "id": 75,
-      "folio": "SC-20261126-000075",
-      "microhub_id": 1,
-      "estado": "ordenada",
-      "motivo": "Compra para cancelar",
-      "solicitada_por": 2,
-      "decidida_por": 1,
-      "decision_motivo": "Hay presupuesto",
-      "decidida_en": "2026-11-26T23:12:15-06:00",
-      "creada_en": "2026-11-26T23:12:15-06:00",
-      "lineas": [
-        {
-          "producto": {
-            "id": 10,
-            "nombre": "Sardina en salsa de tomate"
-          },
-          "cantidad": 46
-        }
-      ]
-    },
-    {
-      "id": 74,
-      "folio": "SC-20261126-000074",
-      "microhub_id": 1,
-      "estado": "ordenada",
-      "motivo": "Se acabó el producto el fin de semana",
-      "solicitada_por": 2,
-      "decidida_por": 1,
-      "decision_motivo": "Hay presupuesto",
-      "decidida_en": "2026-11-26T23:12:13-06:00",
-      "creada_en": "2026-11-26T23:12:13-06:00",
-      "lineas": [
-        {
-          "producto": {
-            "id": 10,
-            "nombre": "Sardina en salsa de tomate"
-          },
-          "cantidad": 46
-        }
-      ]
-    },
-    {
-      "id": 73,
-      "folio": "SC-20261126-000073",
-      "microhub_id": 1,
-      "estado": "ordenada",
-      "motivo": "Faltante detectado por el sistema",
-      "solicitada_por": 2,
-      "decidida_por": 1,
-      "decision_motivo": "Con presupuesto",
-      "decidida_en": "2026-11-26T23:11:45-06:00",
-      "creada_en": "2026-11-26T23:11:45-06:00",
-      "lineas": [
-        {
-          "producto": {
-            "id": 31,
-            "nombre": "Queso fresco"
-          },
-          "cantidad": 100
-        }
-      ]
-    },
-    {
-      "id": 72,
-      "folio": "SC-20261126-000072",
-      "microhub_id": 1,
-      "estado": "rechazada",
-      "motivo": "Prueba XML",
-      "solicitada_por": 2,
-      "decidida_por": 1,
-      "decision_motivo": "Prueba XML",
-      "decidida_en": "2026-11-26T23:07:21-06:00",
-      "creada_en": "2026-11-26T23:07:21-06:00",
-      "lineas": [
-        {
-          "producto": {
-            "id": 14,
-            "nombre": "Café soluble"
-          },
-          "cantidad": 12
-        }
-      ]
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 20,
-    "total": 84,
+    "total": 94,
     "paginas": 5
   }
 }
@@ -10299,18 +10298,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: afb0a23d-2f79-4e5e-84ea-42e59291b4e5
+X-Traza-Id: 61b9ebcf-fc5d-45c3-820c-b36eee13e464
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 35 ms · traza `afb0a23d-2f79-4e5e-84ea-42e59291b4e5`
+**Respuesta.** HTTP 403 (esperado 403) · 43 ms · traza `61b9ebcf-fc5d-45c3-820c-b36eee13e464`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "afb0a23d-2f79-4e5e-84ea-42e59291b4e5"
+    "traza_id": "61b9ebcf-fc5d-45c3-820c-b36eee13e464"
   }
 }
 ```
@@ -10325,11 +10324,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 27dcf85a-a764-4bc9-b992-eee2c7bf29eb
+X-Traza-Id: f57be40e-c7e8-42e3-afb6-baff19962d59
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 89 ms · traza `27dcf85a-a764-4bc9-b992-eee2c7bf29eb`
+**Respuesta.** HTTP 200 (esperado 200) · 92 ms · traza `f57be40e-c7e8-42e3-afb6-baff19962d59`
 
 ```json
 {
@@ -10378,9 +10377,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "fecha": "2026-11-26",
       "zona_id": 1,
       "categoria_id": null,
-      "pedidos": 49,
-      "unidades": 254,
-      "venta": 6848.6,
+      "pedidos": 48,
+      "unidades": 250,
+      "venta": 6722.6,
       "clientes": 8,
       "no_atendidos": 0
     }
@@ -10436,11 +10435,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: e7097131-cee2-4de4-8952-3c857363fcd2
+X-Traza-Id: c41fc3cd-779b-457a-9587-0b8e83788349
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 6 ms · traza `e7097131-cee2-4de4-8952-3c857363fcd2`
+**Respuesta.** HTTP 400 (esperado 400) · 7 ms · traza `c41fc3cd-779b-457a-9587-0b8e83788349`
 
 ```json
 {
@@ -10453,7 +10452,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "mensaje": "Valor no permitido para agrupar: otra."
       }
     ],
-    "traza_id": "e7097131-cee2-4de4-8952-3c857363fcd2"
+    "traza_id": "c41fc3cd-779b-457a-9587-0b8e83788349"
   }
 }
 ```
@@ -10466,44 +10465,44 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 73810983-8e60-4660-a0ed-9c89e7d34394
+X-Traza-Id: 3b1ba08e-88d5-4767-8822-b0b63b12d2d6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 85 ms · traza `73810983-8e60-4660-a0ed-9c89e7d34394`
+**Respuesta.** HTTP 200 (esperado 200) · 84 ms · traza `3b1ba08e-88d5-4767-8822-b0b63b12d2d6`
 
 ```json
 {
   "datos": [
     {
       "producto_id": 28,
-      "unidades": 84,
-      "venta": 630.0,
-      "pedidos": 21
+      "unidades": 91,
+      "venta": 682.5,
+      "pedidos": 22
     },
     {
       "producto_id": 31,
-      "unidades": 68,
-      "venta": 3944.0,
-      "pedidos": 32
-    },
-    {
-      "producto_id": 16,
-      "unidades": 61,
-      "venta": 1006.5,
-      "pedidos": 27
+      "unidades": 77,
+      "venta": 4466.0,
+      "pedidos": 35
     },
     {
       "producto_id": 32,
-      "unidades": 61,
-      "venta": 4392.0,
-      "pedidos": 32
+      "unidades": 67,
+      "venta": 4824.0,
+      "pedidos": 34
+    },
+    {
+      "producto_id": 51,
+      "unidades": 67,
+      "venta": 4556.0,
+      "pedidos": 37
     },
     {
       "producto_id": 45,
-      "unidades": 61,
-      "venta": 1098.0,
-      "pedidos": 31
+      "unidades": 64,
+      "venta": 1152.0,
+      "pedidos": 32
     }
   ],
   "paginacion": {
@@ -10523,11 +10522,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: b5995951-04e4-47f3-8efd-da5fdf715eab
+X-Traza-Id: 12ac9510-2419-4571-a6c5-5dd494509cac
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 7 ms · traza `b5995951-04e4-47f3-8efd-da5fdf715eab`
+**Respuesta.** HTTP 400 (esperado 400) · 6 ms · traza `12ac9510-2419-4571-a6c5-5dd494509cac`
 
 ```json
 {
@@ -10540,7 +10539,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "mensaje": "microhub_id es obligatorio."
       }
     ],
-    "traza_id": "b5995951-04e4-47f3-8efd-da5fdf715eab"
+    "traza_id": "12ac9510-2419-4571-a6c5-5dd494509cac"
   }
 }
 ```
@@ -10553,93 +10552,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 7d43c926-62a5-4a63-ad88-68fc6d934325
+X-Traza-Id: 60d28459-9224-4915-a907-dfde535b2181
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 70 ms · traza `7d43c926-62a5-4a63-ad88-68fc6d934325`
+**Respuesta.** HTTP 200 (esperado 200) · 72 ms · traza `60d28459-9224-4915-a907-dfde535b2181`
 
 ```json
 {
-  "datos": [
-    {
-      "id": 729,
-      "folio": "PED-20261127-000729",
-      "zona": {
-        "id": 2,
-        "nombre": "Valles de San Bernabé"
-      },
-      "latitud": 25.748439,
-      "longitud": -100.369944,
-      "total": 193.0,
-      "listo_en": "2026-11-27T00:14:44-06:00"
-    },
-    {
-      "id": 730,
-      "folio": "PED-20261127-000730",
-      "zona": {
-        "id": 2,
-        "nombre": "Valles de San Bernabé"
-      },
-      "latitud": 25.751679,
-      "longitud": -100.366615,
-      "total": 127.5,
-      "listo_en": "2026-11-27T00:14:44-06:00"
-    },
-    {
-      "id": 731,
-      "folio": "PED-20261127-000731",
-      "zona": {
-        "id": 2,
-        "nombre": "Valles de San Bernabé"
-      },
-      "latitud": 25.751679,
-      "longitud": -100.366615,
-      "total": 180.0,
-      "listo_en": "2026-11-27T00:14:44-06:00"
-    },
-    {
-      "id": 732,
-      "folio": "PED-20261127-000732",
-      "zona": {
-        "id": 2,
-        "nombre": "Valles de San Bernabé"
-      },
-      "latitud": 25.753225,
-      "longitud": -100.365213,
-      "total": 167.0,
-      "listo_en": "2026-11-27T00:14:44-06:00"
-    },
-    {
-      "id": 748,
-      "folio": "PED-20261127-000748",
-      "zona": {
-        "id": 2,
-        "nombre": "Valles de San Bernabé"
-      },
-      "latitud": 25.751679,
-      "longitud": -100.366615,
-      "total": 261.0,
-      "listo_en": "2026-11-27T01:18:40-06:00"
-    },
-    {
-      "id": 749,
-      "folio": "PED-20261127-000749",
-      "zona": {
-        "id": 1,
-        "nombre": "San Bernabé Centro"
-      },
-      "latitud": 25.742956,
-      "longitud": -100.361173,
-      "total": 132.5,
-      "listo_en": "2026-11-27T01:18:40-06:00"
-    }
-  ],
+  "datos": [],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 100,
-    "total": 6,
-    "paginas": 1
+    "total": 0,
+    "paginas": 0
   }
 }
 ```
@@ -10649,7 +10575,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 ```json
 [
   {
-    "listos": 6
+    "listos": 0
   }
 ]
 ```
@@ -10664,11 +10590,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 67bf9857-b977-4291-8105-edfd9410ccd0
+X-Traza-Id: 14bfb9a7-bc34-49c0-97d2-1f0474e8d074
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 63 ms · traza `67bf9857-b977-4291-8105-edfd9410ccd0`
+**Respuesta.** HTTP 200 (esperado 200) · 60 ms · traza `14bfb9a7-bc34-49c0-97d2-1f0474e8d074`
 
 ```json
 {
@@ -10676,12 +10602,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
     {
       "id": 7,
       "nombre": "Ramiro Alanís Lozano",
-      "entregas_abiertas": 2
+      "entregas_abiertas": 4
     },
     {
       "id": 8,
       "nombre": "Diana Sepúlveda Ibarra",
-      "entregas_abiertas": 0
+      "entregas_abiertas": 1
     }
   ],
   "paginacion": {
@@ -10703,11 +10629,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: cc2e030e-0640-472a-9629-1208618ae918
+X-Traza-Id: 17765860-1463-4564-a934-76d918a554e7
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 94 ms · traza `cc2e030e-0640-472a-9629-1208618ae918`
+**Respuesta.** HTTP 200 (esperado 200) · 132 ms · traza `17765860-1463-4564-a934-76d918a554e7`
 
 ```json
 {
@@ -10744,11 +10670,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: a9a5df34-7442-430a-91cb-38512e1d90d7
+X-Traza-Id: f1e8f24b-2e9b-4cab-bf35-0c58f63905fa
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 6 ms · traza `a9a5df34-7442-430a-91cb-38512e1d90d7`
+**Respuesta.** HTTP 400 (esperado 400) · 9 ms · traza `f1e8f24b-2e9b-4cab-bf35-0c58f63905fa`
 
 ```json
 {
@@ -10761,7 +10687,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "mensaje": "dias debe estar entre 1 y 365."
       }
     ],
-    "traza_id": "a9a5df34-7442-430a-91cb-38512e1d90d7"
+    "traza_id": "f1e8f24b-2e9b-4cab-bf35-0c58f63905fa"
   }
 }
 ```
@@ -10776,11 +10702,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 6886a244-4ff1-483e-86e0-6567a9e80ba8
+X-Traza-Id: 2bb64228-2173-4c0b-a6ab-0eb79e3524ab
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 185 ms · traza `6886a244-4ff1-483e-86e0-6567a9e80ba8`
+**Respuesta.** HTTP 200 (esperado 200) · 167 ms · traza `2bb64228-2173-4c0b-a6ab-0eb79e3524ab`
 
 ```json
 {
@@ -10888,11 +10814,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/xml
-X-Traza-Id: ae1efb4b-9cba-4cc8-bd73-c521a99998d9
+X-Traza-Id: ab91b61b-207b-4a19-9d73-38c6d2853308
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 137 ms · traza `ae1efb4b-9cba-4cc8-bd73-c521a99998d9`
+**Respuesta.** HTTP 200 (esperado 200) · 153 ms · traza `ab91b61b-207b-4a19-9d73-38c6d2853308`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -10907,11 +10833,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: bba18122-5e83-4c26-b78a-8b1f8fdfda73
+X-Traza-Id: d3b5e8b3-da7e-4e09-adfa-d8292ab577a2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 52 ms · traza `bba18122-5e83-4c26-b78a-8b1f8fdfda73`
+**Respuesta.** HTTP 400 (esperado 400) · 55 ms · traza `d3b5e8b3-da7e-4e09-adfa-d8292ab577a2`
 
 ```json
 {
@@ -10924,7 +10850,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "mensaje": "Valor no permitido para fuente: inventada."
       }
     ],
-    "traza_id": "bba18122-5e83-4c26-b78a-8b1f8fdfda73"
+    "traza_id": "d3b5e8b3-da7e-4e09-adfa-d8292ab577a2"
   }
 }
 ```
@@ -10937,18 +10863,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 204c798a-cfdb-47ce-9346-e89f9c9c66bc
+X-Traza-Id: 88c2b487-43a5-4e59-b21a-743797dde884
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 30 ms · traza `204c798a-cfdb-47ce-9346-e89f9c9c66bc`
+**Respuesta.** HTTP 403 (esperado 403) · 30 ms · traza `88c2b487-43a5-4e59-b21a-743797dde884`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "204c798a-cfdb-47ce-9346-e89f9c9c66bc"
+    "traza_id": "88c2b487-43a5-4e59-b21a-743797dde884"
   }
 }
 ```
@@ -10961,11 +10887,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: b7e6452a-bb12-4224-9bd8-add1f6b4e1c8
+X-Traza-Id: e642645f-8842-4dc4-864b-1add0ca01a36
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 135 ms · traza `b7e6452a-bb12-4224-9bd8-add1f6b4e1c8`
+**Respuesta.** HTTP 200 (esperado 200) · 120 ms · traza `e642645f-8842-4dc4-864b-1add0ca01a36`
 
 ```json
 {
@@ -11083,11 +11009,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: b1251471-5400-4823-bb70-f31864a045c9
+X-Traza-Id: d771a68c-8e86-47c1-83f9-0d7056508017
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 84 ms · traza `b1251471-5400-4823-bb70-f31864a045c9`
+**Respuesta.** HTTP 200 (esperado 200) · 101 ms · traza `d771a68c-8e86-47c1-83f9-0d7056508017`
 
 ```json
 {
@@ -11202,11 +11128,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: abcfd8a1-2e48-4970-bac2-66bd123a1e82
+X-Traza-Id: 38009f27-a5da-4fb4-9d71-6b43abc7bf8c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 67 ms · traza `abcfd8a1-2e48-4970-bac2-66bd123a1e82`
+**Respuesta.** HTTP 200 (esperado 200) · 73 ms · traza `38009f27-a5da-4fb4-9d71-6b43abc7bf8c`
 
 ```json
 {
@@ -11333,11 +11259,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 8303df77-faab-4422-8af6-b55bde68b8fb
+X-Traza-Id: 865000c9-35e0-4cd2-84b3-250416ce9600
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 62 ms · traza `8303df77-faab-4422-8af6-b55bde68b8fb`
+**Respuesta.** HTTP 200 (esperado 200) · 69 ms · traza `865000c9-35e0-4cd2-84b3-250416ce9600`
 
 ```json
 {
@@ -11420,11 +11346,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 8cc16bcc-af07-4bb8-8e42-c8f41ae9c1b9
+X-Traza-Id: 883b4a6a-a755-4b04-8b7b-7129c4bc7bbf
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 29 ms · traza `8cc16bcc-af07-4bb8-8e42-c8f41ae9c1b9`
+**Respuesta.** HTTP 400 (esperado 400) · 29 ms · traza `883b4a6a-a755-4b04-8b7b-7129c4bc7bbf`
 
 ```json
 {
@@ -11437,7 +11363,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "mensaje": "Valor no permitido para metodo: magico."
       }
     ],
-    "traza_id": "8cc16bcc-af07-4bb8-8e42-c8f41ae9c1b9"
+    "traza_id": "883b4a6a-a755-4b04-8b7b-7129c4bc7bbf"
   }
 }
 ```
@@ -11450,11 +11376,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 0bb97821-8aa8-4722-9fa5-d6ad4b9557c3
+X-Traza-Id: 09722c2c-f700-484b-abb8-e2f8e8b77964
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 61 ms · traza `0bb97821-8aa8-4722-9fa5-d6ad4b9557c3`
+**Respuesta.** HTTP 200 (esperado 200) · 68 ms · traza `09722c2c-f700-484b-abb8-e2f8e8b77964`
 
 ```json
 {
@@ -11541,11 +11467,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 87eaa1f1-6743-4c79-b060-f45142bd9b29
+X-Traza-Id: 8d820657-a7a6-427b-ba73-a4bacfddfa10
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 204 ms · traza `87eaa1f1-6743-4c79-b060-f45142bd9b29`
+**Respuesta.** HTTP 200 (esperado 200) · 278 ms · traza `8d820657-a7a6-427b-ba73-a4bacfddfa10`
 
 ```json
 {
@@ -11630,11 +11556,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: b92c9a4c-e269-4037-a594-e9121a74a5e9
+X-Traza-Id: 78043e76-f393-4b54-8fb7-4d956f4a5021
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 119 ms · traza `b92c9a4c-e269-4037-a594-e9121a74a5e9`
+**Respuesta.** HTTP 200 (esperado 200) · 115 ms · traza `78043e76-f393-4b54-8fb7-4d956f4a5021`
 
 ```json
 {
@@ -11717,7 +11643,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 4dfc8212-2d0f-46d1-9d36-afecfa2c9e0a
+X-Traza-Id: dbfc7d76-d607-4d6f-a6ae-1a8eb3973664
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 Content-Type: application/json
 ```
@@ -11729,14 +11655,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 25 ms · traza `4dfc8212-2d0f-46d1-9d36-afecfa2c9e0a`
+**Respuesta.** HTTP 403 (esperado 403) · 27 ms · traza `dbfc7d76-d607-4d6f-a6ae-1a8eb3973664`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "4dfc8212-2d0f-46d1-9d36-afecfa2c9e0a"
+    "traza_id": "dbfc7d76-d607-4d6f-a6ae-1a8eb3973664"
   }
 }
 ```
@@ -11749,7 +11675,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 2530f5e6-8d6a-4af5-aa0b-b5f4d3043d8c
+X-Traza-Id: dcab0ed5-5a36-42b0-8fb3-1ee89de561e2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -11761,14 +11687,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 138 ms · traza `2530f5e6-8d6a-4af5-aa0b-b5f4d3043d8c`
+**Respuesta.** HTTP 201 (esperado 201) · 225 ms · traza `dcab0ed5-5a36-42b0-8fb3-1ee89de561e2`
 
 ```json
 {
   "desde": "2026-11-25",
   "hasta": "2026-11-27",
   "filas_escritas": 12,
-  "pedidos_leidos": 302,
+  "pedidos_leidos": 322,
   "sinteticas_reemplazadas": 48
 }
 ```
@@ -11794,7 +11720,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 19cdd0af-be01-4a69-bdcf-25242004b78d
+X-Traza-Id: c85a594b-e1d1-4630-9f1b-ea137e99d162
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -11806,7 +11732,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 6 ms · traza `19cdd0af-be01-4a69-bdcf-25242004b78d`
+**Respuesta.** HTTP 422 (esperado 422) · 8 ms · traza `c85a594b-e1d1-4630-9f1b-ea137e99d162`
 
 ```json
 {
@@ -11819,7 +11745,7 @@ Content-Type: application/json
         "mensaje": "El rango va de desde a hasta, con 400 días como máximo."
       }
     ],
-    "traza_id": "19cdd0af-be01-4a69-bdcf-25242004b78d"
+    "traza_id": "c85a594b-e1d1-4630-9f1b-ea137e99d162"
   }
 }
 ```
@@ -11832,7 +11758,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/xml
-X-Traza-Id: 3dc35198-d009-4fd9-b421-bac1729824e7
+X-Traza-Id: f068da4f-fd47-4b57-b3a6-8bdb51e52b23
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/xml
 ```
@@ -11841,11 +11767,11 @@ Content-Type: application/xml
 <?xml version="1.0" encoding="UTF-8"?><sincronizacion_nueva xmlns="urn:microhubs:v1"><desde>2026-11-27</desde><hasta>2026-11-27</hasta></sincronizacion_nueva>
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 181 ms · traza `3dc35198-d009-4fd9-b421-bac1729824e7`
+**Respuesta.** HTTP 201 (esperado 201) · 255 ms · traza `f068da4f-fd47-4b57-b3a6-8bdb51e52b23`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<sincronizacion xmlns="urn:microhubs:v1" version="1"><desde>2026-11-27</desde><hasta>2026-11-27</hasta><filas_escritas>4</filas_escritas><pedidos_leidos>33</pedidos_leidos><sinteticas_reemplazadas>0</sinteticas_reemplazadas></sincronizacion>
+<sincronizacion xmlns="urn:microhubs:v1" version="1"><desde>2026-11-27</desde><hasta>2026-11-27</hasta><filas_escritas>4</filas_escritas><pedidos_leidos>54</pedidos_leidos><sinteticas_reemplazadas>0</sinteticas_reemplazadas></sincronizacion>
 ```
 
 ### DEM-17 · Supuestos de la demanda · PASA
@@ -11856,11 +11782,11 @@ Content-Type: application/xml
 
 ```http
 Accept: application/json
-X-Traza-Id: 35ebbe29-1b46-4f45-8654-ed5017d7425f
+X-Traza-Id: 67916e08-9da7-448e-8c82-b9f1adf2900f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 32 ms · traza `35ebbe29-1b46-4f45-8654-ed5017d7425f`
+**Respuesta.** HTTP 200 (esperado 200) · 39 ms · traza `67916e08-9da7-448e-8c82-b9f1adf2900f`
 
 ```json
 {
@@ -11980,11 +11906,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: c6123c9e-d5ad-4bac-a661-0ca011d7559a
+X-Traza-Id: 44dce26c-b536-45a9-8ece-bf7a4183cb40
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 63 ms · traza `c6123c9e-d5ad-4bac-a661-0ca011d7559a`
+**Respuesta.** HTTP 200 (esperado 200) · 53 ms · traza `44dce26c-b536-45a9-8ece-bf7a4183cb40`
 
 ```json
 {
@@ -12245,12 +12171,34 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "dentro_promesa": true
       },
       "minutos_mejor": null
+    },
+    {
+      "zona": {
+        "id": 19,
+        "nombre": "Zona 48BE4A renombrada"
+      },
+      "hogares": 0,
+      "estado": "sin_cobertura",
+      "solapada": false,
+      "cubierta_por": [],
+      "mas_cercano": {
+        "microhub": {
+          "id": 2,
+          "nombre": "Microhub Valles"
+        },
+        "distancia_km": 1.62,
+        "distancia_calle_km": 2.11,
+        "minutos": 9.8,
+        "cubre": false,
+        "dentro_promesa": true
+      },
+      "minutos_mejor": null
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 20,
-    "total": 8,
+    "total": 9,
     "paginas": 1
   }
 }
@@ -12272,17 +12220,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 4ba44a83-93f6-4093-9263-d2d56a9ca4ec
+X-Traza-Id: 3a7dbe13-05f7-4892-a912-109222607b07
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 44 ms · traza `4ba44a83-93f6-4093-9263-d2d56a9ca4ec`
+**Respuesta.** HTTP 200 (esperado 200) · 59 ms · traza `3a7dbe13-05f7-4892-a912-109222607b07`
 
 ```json
 {
-  "zonas": 8,
+  "zonas": 9,
   "zonas_cubiertas": 4,
-  "pct_zonas": 50.0,
+  "pct_zonas": 44.4,
   "hogares": 6709,
   "hogares_cubiertos": 6709,
   "pct_hogares": 100.0,
@@ -12337,6 +12285,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "nombre": "Microhub Valles"
       },
       "distancia_km": 1.62
+    },
+    {
+      "zona": {
+        "id": 19,
+        "nombre": "Zona 48BE4A renombrada"
+      },
+      "hogares": 0,
+      "microhub_mas_cercano": {
+        "id": 2,
+        "nombre": "Microhub Valles"
+      },
+      "distancia_km": 1.62
     }
   ],
   "microhubs_activos": 3,
@@ -12383,15 +12343,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/xml
-X-Traza-Id: 5324494c-889e-43f0-b57a-1fa726db1744
+X-Traza-Id: b1e0a63c-12b0-4286-a9b3-57785caf5c16
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 44 ms · traza `5324494c-889e-43f0-b57a-1fa726db1744`
+**Respuesta.** HTTP 200 (esperado 200) · 51 ms · traza `b1e0a63c-12b0-4286-a9b3-57785caf5c16`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<cobertura_resumen xmlns="urn:microhubs:v1" version="1"><zonas>8</zonas><zonas_cubiertas>4</zonas_cubiertas><pct_zonas>50</pct_zonas><hogares>6709</hogares><hogares_cubiertos>6709</hogares_cubiertos><pct_hogares>100</pct_hogares><tiempo_promedio_min>5.5</tiempo_promedio_min><dentro_promesa_pct>100</dentro_promesa_pct><zonas_solapadas>3</zonas_solapadas><zonas_sin_cobertura><zona_sin_cobertura><zona><id>11</id><nombre>Zona D5F75A renombrada</nombre></zona><hogares>0</hogares><microhub_mas_cercano><id>2</id><nombre>Microhub Valles</nombre></microhub_mas_cercano><distancia_km>1.62</distancia_km></zona_sin_cobertura><zona_sin_cobertura><zona><id>14</id><nombre>Zona 97A5B6 renombrada</nombre></zona><hogares>0</hogares><microhub_mas_cercano><id>2</id><nombre>Microhub Valles</nombre></microhub_mas_cercano><distancia_km>1.62</distancia_km></zona_sin_cobertura><zona_sin_cobertura><zona><id>15</id><nombre>Zona 1FF3C5 renombrada</nombre></zona><hogares>0</hogares><microhub_mas_cercano><id>2</id><nombre>Microhub Valles</nombre></microhub_mas_cercano><distancia_km>1.62</distancia_km></zona_sin_cobertura><zona_sin_cobertura><zona><id>16</id><nombre>Zona 184C3B renombrada</nombre></zona><hogares>0</hogares><microhub_mas_cercano><id>2</id><nombre>Microhub Valles</nombre></microhub_mas_cercano><distancia_km>1.62</distancia_km></zona_sin_cobertura></zonas_sin_cobertura><microhubs_activos>3</microhubs_activos><supuestos_usados><supuesto><clave>factor_rodeo_distancia</clave><valor>1.3</valor><modificado>false</modificado></supuesto><supuesto><clave>velocidad_reparto_kmh</clave><valor>22</valor><modificado>false</modificado></supuesto><supuesto><clave>tiempo_servicio_min</clave><valor>4</valor><modificado>false</modificado></supuesto><supuesto><clave>cob_tiempo_max_min</clave><valor>30</valor><modificado>false</modificado></supuesto><supuesto><clave>cob_solape_max_pct</clave><valor>40</valor><modificado>false</modificado></supuesto><supuesto><clave>tamano_hogar</clave><valor>3.6</valor><modificado>false</modificado></supuesto></supuestos_usados></cobertura_resumen>
+<cobertura_resumen xmlns="urn:microhubs:v1" version="1"><zonas>9</zonas><zonas_cubiertas>4</zonas_cubiertas><pct_zonas>44.4</pct_zonas><hogares>6709</hogares><hogares_cubiertos>6709</hogares_cubiertos><pct_hogares>100</pct_hogares><tiempo_promedio_min>5.5</tiempo_promedio_min><dentro_promesa_pct>100</dentro_promesa_pct><zonas_solapadas>3</zonas_solapadas><zonas_sin_cobertura><zona_sin_cobertura><zona><id>11</id><nombre>Zona D5F75A renombrada</nombre></zona><hogares>0</hogares><microhub_mas_cercano><id>2</id><nombre>Microhub Valles</nombre></microhub_mas_cercano><distancia_km>1.62</distancia_km></zona_sin_cobertura><zona_sin_cobertura><zona><id>14</id><nombre>Zona 97A5B6 renombrada</nombre></zona><hogares>0</hogares><microhub_mas_cercano><id>2</id><nombre>Microhub Valles</nombre></microhub_mas_cercano><distancia_km>1.62</distancia_km></zona_sin_cobertura><zona_sin_cobertura><zona><id>15</id><nombre>Zona 1FF3C5 renombrada</nombre></zona><hogares>0</hogares><microhub_mas_cercano><id>2</id><nombre>Microhub Valles</nombre></microhub_mas_cercano><distancia_km>1.62</distancia_km></zona_sin_cobertura><zona_sin_cobertura><zona><id>16</id><nombre>Zona 184C3B renombrada</nombre></zona><hogares>0</hogares><microhub_mas_cercano><id>2</id><nombre>Microhub Valles</nombre></microhub_mas_cercano><distancia_km>1.62</distancia_km></zona_sin_cobertura><zona_sin_cobertura><zona><id>19</id><nombre>Zona 48BE4A renombrada</nombre></zona><hogares>0</hogares><microhub_mas_cercano><id>2</id><nombre>Microhub Valles</nombre></microhub_mas_cercano><distancia_km>1.62</distancia_km></zona_sin_cobertura></zonas_sin_cobertura><microhubs_activos>3</microhubs_activos><supuestos_usados><supuesto><clave>factor_rodeo_distancia</clave><valor>1.3</valor><modificado>false</modificado></supuesto><supuesto><clave>velocidad_reparto_kmh</clave><valor>22</valor><modificado>false</modificado></supuesto><supuesto><clave>tiempo_servicio_min</clave><valor>4</valor><modificado>false</modificado></supuesto><supuesto><clave>cob_tiempo_max_min</clave><valor>30</valor><modificado>false</modificado></supuesto><supuesto><clave>cob_solape_max_pct</clave><valor>40</valor><modificado>false</modificado></supuesto><supuesto><clave>tamano_hogar</clave><valor>3.6</valor><modificado>false</modificado></supuesto></supuestos_usados></cobertura_resumen>
 ```
 
 ### COB-04 · Un punto junto a un microhub · PASA
@@ -12402,11 +12362,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 82ac39a4-9321-4211-9495-ff6f1ac9c4bd
+X-Traza-Id: f40cd6d1-4439-446c-ab03-efc19dcd5b3d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 44 ms · traza `82ac39a4-9321-4211-9495-ff6f1ac9c4bd`
+**Respuesta.** HTTP 200 (esperado 200) · 46 ms · traza `f40cd6d1-4439-446c-ab03-efc19dcd5b3d`
 
 ```json
 {
@@ -12496,11 +12456,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: d337fc90-0c89-4030-b25c-81192da30801
+X-Traza-Id: 178d9fce-3fe1-46e5-8ce7-1586dbf8b79b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 42 ms · traza `d337fc90-0c89-4030-b25c-81192da30801`
+**Respuesta.** HTTP 200 (esperado 200) · 53 ms · traza `178d9fce-3fe1-46e5-8ce7-1586dbf8b79b`
 
 ```json
 {
@@ -12590,11 +12550,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 64225cff-320d-46af-bb5a-20ae5b349a41
+X-Traza-Id: f9572531-a8df-4ff1-838d-a71a11c2d600
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 5 ms · traza `64225cff-320d-46af-bb5a-20ae5b349a41`
+**Respuesta.** HTTP 400 (esperado 400) · 8 ms · traza `f9572531-a8df-4ff1-838d-a71a11c2d600`
 
 ```json
 {
@@ -12607,7 +12567,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "mensaje": "latitud debe estar entre 20 y 33."
       }
     ],
-    "traza_id": "64225cff-320d-46af-bb5a-20ae5b349a41"
+    "traza_id": "f9572531-a8df-4ff1-838d-a71a11c2d600"
   }
 }
 ```
@@ -12620,11 +12580,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 4ea56c45-5b41-4b15-9500-cd09bd015a4b
+X-Traza-Id: 3e361497-cc91-4df8-b58e-9a13169b27e4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 150 ms · traza `4ea56c45-5b41-4b15-9500-cd09bd015a4b`
+**Respuesta.** HTTP 200 (esperado 200) · 134 ms · traza `3e361497-cc91-4df8-b58e-9a13169b27e4`
 
 ```json
 {
@@ -12840,7 +12800,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "candidato": {
-        "id": 112,
+        "id": 323,
         "clave": "********",
         "nombre": "Alianza Norte (editado)"
       },
@@ -12859,7 +12819,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "candidato": {
-        "id": 91,
+        "id": 112,
         "clave": "********",
         "nombre": "Alianza Norte (editado)"
       },
@@ -12878,7 +12838,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "candidato": {
-        "id": 248,
+        "id": 91,
         "clave": "********",
         "nombre": "Alianza Norte (editado)"
       },
@@ -12897,7 +12857,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "candidato": {
-        "id": 293,
+        "id": 248,
         "clave": "********",
         "nombre": "Alianza Norte (editado)"
       },
@@ -12916,7 +12876,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "candidato": {
-        "id": 143,
+        "id": 293,
         "clave": "********",
         "nombre": "Alianza Norte (editado)"
       },
@@ -12935,7 +12895,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "candidato": {
-        "id": 93,
+        "id": 143,
         "clave": "********",
         "nombre": "Alianza Norte (editado)"
       },
@@ -12954,7 +12914,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "candidato": {
-        "id": 52,
+        "id": 93,
         "clave": "********",
         "nombre": "Alianza Norte (editado)"
       },
@@ -12973,7 +12933,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "candidato": {
-        "id": 118,
+        "id": 52,
         "clave": "********",
         "nombre": "Alianza Norte (editado)"
       },
@@ -12992,7 +12952,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "candidato": {
-        "id": 110,
+        "id": 118,
         "clave": "********",
         "nombre": "Alianza Norte (editado)"
       },
@@ -13011,7 +12971,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "candidato": {
-        "id": 141,
+        "id": 110,
         "clave": "********",
         "nombre": "Alianza Norte (editado)"
       },
@@ -13030,7 +12990,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "candidato": {
-        "id": 18,
+        "id": 141,
         "clave": "********",
         "nombre": "Alianza Norte (editado)"
       },
@@ -13049,6 +13009,25 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "candidato": {
+        "id": 18,
+        "clave": "********",
+        "nombre": "Alianza Norte (editado)"
+      },
+      "latitud": 25.7601,
+      "longitud": -100.3555,
+      "radio_km": 1.5,
+      "zonas_nuevas": 0,
+      "hogares_nuevos": 0,
+      "hogares_con_mejor_tiempo": 0,
+      "minutos_ahorrados": 0.0,
+      "solapamiento_pct": 0.0,
+      "canibaliza": false,
+      "minutos_promedio": 4.0,
+      "costo_ultima_milla": 18.0,
+      "ranking": 23
+    },
+    {
+      "candidato": {
         "id": 4,
         "clave": "********",
         "nombre": "Paseo Sur"
@@ -13056,15 +13035,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "latitud": 25.759,
       "longitud": -100.372,
       "radio_km": 1.4,
-      "zonas_nuevas": 4,
+      "zonas_nuevas": 5,
       "hogares_nuevos": 0,
       "hogares_con_mejor_tiempo": 0,
       "minutos_ahorrados": 0.0,
-      "solapamiento_pct": 42.9,
-      "canibaliza": true,
+      "solapamiento_pct": 37.5,
+      "canibaliza": false,
       "minutos_promedio": 6.6,
       "costo_ultima_milla": 20.89,
-      "ranking": 23
+      "ranking": 24
     },
     {
       "candidato": {
@@ -13075,15 +13054,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "latitud": 25.760195,
       "longitud": -100.370891,
       "radio_km": 1.5,
-      "zonas_nuevas": 4,
+      "zonas_nuevas": 5,
       "hogares_nuevos": 0,
       "hogares_con_mejor_tiempo": 0,
       "minutos_ahorrados": 0.0,
-      "solapamiento_pct": 42.9,
-      "canibaliza": true,
+      "solapamiento_pct": 37.5,
+      "canibaliza": false,
       "minutos_promedio": 7.1,
       "costo_ultima_milla": 21.43,
-      "ranking": 24
+      "ranking": 25
     },
     {
       "candidato": {
@@ -13094,15 +13073,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "latitud": 25.760195,
       "longitud": -100.370891,
       "radio_km": 1.5,
-      "zonas_nuevas": 4,
+      "zonas_nuevas": 5,
       "hogares_nuevos": 0,
       "hogares_con_mejor_tiempo": 0,
       "minutos_ahorrados": 0.0,
-      "solapamiento_pct": 42.9,
-      "canibaliza": true,
+      "solapamiento_pct": 37.5,
+      "canibaliza": false,
       "minutos_promedio": 7.1,
       "costo_ultima_milla": 21.43,
-      "ranking": 25
+      "ranking": 26
     },
     {
       "candidato": {
@@ -13113,15 +13092,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "latitud": 25.760195,
       "longitud": -100.370891,
       "radio_km": 1.5,
-      "zonas_nuevas": 4,
+      "zonas_nuevas": 5,
       "hogares_nuevos": 0,
       "hogares_con_mejor_tiempo": 0,
       "minutos_ahorrados": 0.0,
-      "solapamiento_pct": 42.9,
-      "canibaliza": true,
+      "solapamiento_pct": 37.5,
+      "canibaliza": false,
       "minutos_promedio": 7.1,
       "costo_ultima_milla": 21.43,
-      "ranking": 26
+      "ranking": 27
     },
     {
       "candidato": {
@@ -13132,15 +13111,34 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "latitud": 25.760195,
       "longitud": -100.370891,
       "radio_km": 1.5,
-      "zonas_nuevas": 4,
+      "zonas_nuevas": 5,
       "hogares_nuevos": 0,
       "hogares_con_mejor_tiempo": 0,
       "minutos_ahorrados": 0.0,
-      "solapamiento_pct": 42.9,
-      "canibaliza": true,
+      "solapamiento_pct": 37.5,
+      "canibaliza": false,
       "minutos_promedio": 7.1,
       "costo_ultima_milla": 21.43,
-      "ranking": 27
+      "ranking": 28
+    },
+    {
+      "candidato": {
+        "id": 335,
+        "clave": "********",
+        "nombre": "Ubicación del flujo EC3AF"
+      },
+      "latitud": 25.760195,
+      "longitud": -100.370891,
+      "radio_km": 1.5,
+      "zonas_nuevas": 5,
+      "hogares_nuevos": 0,
+      "hogares_con_mejor_tiempo": 0,
+      "minutos_ahorrados": 0.0,
+      "solapamiento_pct": 37.5,
+      "canibaliza": false,
+      "minutos_promedio": 7.1,
+      "costo_ultima_milla": 21.43,
+      "ranking": 29
     },
     {
       "candidato": {
@@ -13159,7 +13157,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "canibaliza": true,
       "minutos_promedio": 6.8,
       "costo_ultima_milla": 21.06,
-      "ranking": 28
+      "ranking": 30
     },
     {
       "candidato": {
@@ -13178,7 +13176,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "canibaliza": true,
       "minutos_promedio": 6.2,
       "costo_ultima_milla": 20.4,
-      "ranking": 29
+      "ranking": 31
     },
     {
       "candidato": {
@@ -13197,11 +13195,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "canibaliza": true,
       "minutos_promedio": 7.3,
       "costo_ultima_milla": 21.63,
-      "ranking": 30
+      "ranking": 32
     }
   ],
   "red_actual": {
-    "pct_zonas": 50.0,
+    "pct_zonas": 44.4,
     "pct_hogares": 100.0
   },
   "supuestos_usados": [
@@ -13249,7 +13247,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 582572c6-91b7-4db6-a9f7-f59e316e802c
+X-Traza-Id: 808fe9f2-6852-4d68-abdd-b962c6f13e27
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -13260,7 +13258,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 72 ms · traza `582572c6-91b7-4db6-a9f7-f59e316e802c`
+**Respuesta.** HTTP 200 (esperado 200) · 95 ms · traza `808fe9f2-6852-4d68-abdd-b962c6f13e27`
 
 ```json
 {
@@ -13286,11 +13284,11 @@ Content-Type: application/json
   "minutos_promedio": 4.0,
   "costo_ultima_milla": 18.0,
   "antes": {
-    "pct_zonas": 50.0,
+    "pct_zonas": 44.4,
     "pct_hogares": 100.0
   },
   "despues": {
-    "pct_zonas": 50.0,
+    "pct_zonas": 44.4,
     "pct_hogares": 100.0
   },
   "supuestos_usados": [
@@ -13336,7 +13334,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 0546ffc5-49ea-4116-adb7-a8f158cbc444
+X-Traza-Id: d06e7d51-5af6-4af9-b2bd-d3e2170b197b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 Content-Type: application/json
 ```
@@ -13348,14 +13346,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 67 ms · traza `0546ffc5-49ea-4116-adb7-a8f158cbc444`
+**Respuesta.** HTTP 403 (esperado 403) · 92 ms · traza `d06e7d51-5af6-4af9-b2bd-d3e2170b197b`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Guardar una evaluación exige el permiso planeacion.editar.",
-    "traza_id": "0546ffc5-49ea-4116-adb7-a8f158cbc444"
+    "traza_id": "d06e7d51-5af6-4af9-b2bd-d3e2170b197b"
   }
 }
 ```
@@ -13368,7 +13366,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: f415da30-764f-4dd1-8b4d-cde5a4c561e3
+X-Traza-Id: a2203939-1bb3-4f80-b6ae-8b6acf57f4e4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -13381,11 +13379,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 148 ms · traza `f415da30-764f-4dd1-8b4d-cde5a4c561e3`
+**Respuesta.** HTTP 201 (esperado 201) · 113 ms · traza `a2203939-1bb3-4f80-b6ae-8b6acf57f4e4`
 
 ```json
 {
-  "id": 31,
+  "id": 33,
   "nombre": "Evidencia Ola 2",
   "candidato": {
     "id": 3,
@@ -13407,11 +13405,11 @@ Content-Type: application/json
   "minutos_promedio": 4.0,
   "costo_ultima_milla": 18.0,
   "antes": {
-    "pct_zonas": 50.0,
+    "pct_zonas": 44.4,
     "pct_hogares": 100.0
   },
   "despues": {
-    "pct_zonas": 50.0,
+    "pct_zonas": 44.4,
     "pct_hogares": 100.0
   },
   "supuestos_usados": [
@@ -13454,7 +13452,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 31,
+    "id": 33,
     "nombre": "Evidencia Ola 2",
     "parametros": {
       "latitud": 25.7625,
@@ -13475,24 +13473,24 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 0580f71e-7e8d-4df7-b2e4-b240b301c5bb
+X-Traza-Id: 9a3503b2-4888-4433-8eec-a6b49778e421
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 39 ms · traza `0580f71e-7e8d-4df7-b2e4-b240b301c5bb`
+**Respuesta.** HTTP 200 (esperado 200) · 50 ms · traza `9a3503b2-4888-4433-8eec-a6b49778e421`
 
 ```json
 {
   "datos": [
     {
-      "id": 31,
+      "id": 33,
       "nombre": "Evidencia Ola 2",
       "zonas_nuevas": 0,
       "hogares_nuevos": 0,
       "solapamiento_pct": 0.0,
       "canibaliza": false,
       "creado_por": 5,
-      "creado_en": "2026-11-27T01:24:46-06:00"
+      "creado_en": "2026-11-27T02:10:58-06:00"
     }
   ],
   "paginacion": {
@@ -13508,19 +13506,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Con el resultado completo con que se guardó.
 
-**Petición.** `GET http://cobertura:5116/api/v1/cobertura/evaluaciones/31`
+**Petición.** `GET http://cobertura:5116/api/v1/cobertura/evaluaciones/33`
 
 ```http
 Accept: application/json
-X-Traza-Id: 7c605332-c52b-4a5a-a395-64a22ca8906a
+X-Traza-Id: 0d9cc08a-13e0-4c86-8684-54420bc76d7f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 21 ms · traza `7c605332-c52b-4a5a-a395-64a22ca8906a`
+**Respuesta.** HTTP 200 (esperado 200) · 28 ms · traza `0d9cc08a-13e0-4c86-8684-54420bc76d7f`
 
 ```json
 {
-  "id": 31,
+  "id": 33,
   "nombre": "Evidencia Ola 2",
   "candidato": {
     "id": 3,
@@ -13542,11 +13540,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "minutos_promedio": 4.0,
   "costo_ultima_milla": 18.0,
   "antes": {
-    "pct_zonas": 50.0,
+    "pct_zonas": 44.4,
     "pct_hogares": 100.0
   },
   "despues": {
-    "pct_zonas": 50.0,
+    "pct_zonas": 44.4,
     "pct_hogares": 100.0
   },
   "supuestos_usados": [
@@ -13592,7 +13590,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 02ab33c8-7aac-48e5-9f88-f1e169300b76
+X-Traza-Id: 32165c97-62e5-4edd-8db9-50da43cc77f7
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -13605,7 +13603,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 57 ms · traza `02ab33c8-7aac-48e5-9f88-f1e169300b76`
+**Respuesta.** HTTP 200 (esperado 200) · 51 ms · traza `32165c97-62e5-4edd-8db9-50da43cc77f7`
 
 ```json
 {
@@ -13672,11 +13670,11 @@ Content-Type: application/json
   "minutos_promedio": 7.6,
   "costo_ultima_milla": 22.0,
   "antes": {
-    "pct_zonas": 50.0,
+    "pct_zonas": 44.4,
     "pct_hogares": 100.0
   },
   "despues": {
-    "pct_zonas": 50.0,
+    "pct_zonas": 44.4,
     "pct_hogares": 100.0
   },
   "supuestos_usados": [
@@ -13722,7 +13720,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: c3424ee2-5a31-4f73-a44b-772289dd163e
+X-Traza-Id: 0f7915b0-073d-462d-85d1-c7d7b7f19fa3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -13733,7 +13731,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 5 ms · traza `c3424ee2-5a31-4f73-a44b-772289dd163e`
+**Respuesta.** HTTP 422 (esperado 422) · 7 ms · traza `0f7915b0-073d-462d-85d1-c7d7b7f19fa3`
 
 ```json
 {
@@ -13746,7 +13744,7 @@ Content-Type: application/json
         "mensaje": "Indica latitud y longitud, o un candidato_id."
       }
     ],
-    "traza_id": "c3424ee2-5a31-4f73-a44b-772289dd163e"
+    "traza_id": "0f7915b0-073d-462d-85d1-c7d7b7f19fa3"
   }
 }
 ```
@@ -13759,11 +13757,11 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 39d881cd-5546-42c8-9e3e-ead3a6b6e276
+X-Traza-Id: ac387954-9520-4684-969f-0bc37e604ddf
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 41 ms · traza `39d881cd-5546-42c8-9e3e-ead3a6b6e276`
+**Respuesta.** HTTP 200 (esperado 200) · 54 ms · traza `ac387954-9520-4684-969f-0bc37e604ddf`
 
 ```json
 {
@@ -13772,7 +13770,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "radio_km": 0.5,
       "rodeo": 1.2,
       "zonas_cubiertas": 3,
-      "pct_zonas": 37.5,
+      "pct_zonas": 33.3,
       "pct_hogares": 65.1,
       "tiempo_promedio_min": 5.0,
       "dentro_promesa_pct": 100.0
@@ -13781,7 +13779,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "radio_km": 1.0,
       "rodeo": 1.2,
       "zonas_cubiertas": 4,
-      "pct_zonas": 50.0,
+      "pct_zonas": 44.4,
       "pct_hogares": 100.0,
       "tiempo_promedio_min": 5.4,
       "dentro_promesa_pct": 100.0
@@ -13790,7 +13788,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "radio_km": 1.5,
       "rodeo": 1.2,
       "zonas_cubiertas": 4,
-      "pct_zonas": 50.0,
+      "pct_zonas": 44.4,
       "pct_hogares": 100.0,
       "tiempo_promedio_min": 5.4,
       "dentro_promesa_pct": 100.0
@@ -13798,7 +13796,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     {
       "radio_km": 2.0,
       "rodeo": 1.2,
-      "zonas_cubiertas": 8,
+      "zonas_cubiertas": 9,
       "pct_zonas": 100.0,
       "pct_hogares": 100.0,
       "tiempo_promedio_min": 5.4,
@@ -13808,7 +13806,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "radio_km": 0.5,
       "rodeo": 1.5,
       "zonas_cubiertas": 3,
-      "pct_zonas": 37.5,
+      "pct_zonas": 33.3,
       "pct_hogares": 65.1,
       "tiempo_promedio_min": 5.3,
       "dentro_promesa_pct": 100.0
@@ -13817,7 +13815,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "radio_km": 1.0,
       "rodeo": 1.5,
       "zonas_cubiertas": 4,
-      "pct_zonas": 50.0,
+      "pct_zonas": 44.4,
       "pct_hogares": 100.0,
       "tiempo_promedio_min": 5.7,
       "dentro_promesa_pct": 100.0
@@ -13826,7 +13824,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "radio_km": 1.5,
       "rodeo": 1.5,
       "zonas_cubiertas": 4,
-      "pct_zonas": 50.0,
+      "pct_zonas": 44.4,
       "pct_hogares": 100.0,
       "tiempo_promedio_min": 5.7,
       "dentro_promesa_pct": 100.0
@@ -13834,7 +13832,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     {
       "radio_km": 2.0,
       "rodeo": 1.5,
-      "zonas_cubiertas": 8,
+      "zonas_cubiertas": 9,
       "pct_zonas": 100.0,
       "pct_hogares": 100.0,
       "tiempo_promedio_min": 5.7,
@@ -13886,7 +13884,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: c578931e-8e54-4927-b651-0efe3428fa64
+X-Traza-Id: 01e0a03a-a286-42bf-88b8-e9e9b0d3eac6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -13898,7 +13896,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 62 ms · traza `c578931e-8e54-4927-b651-0efe3428fa64`
+**Respuesta.** HTTP 200 (esperado 200) · 78 ms · traza `01e0a03a-a286-42bf-88b8-e9e9b0d3eac6`
 
 ```json
 {
@@ -13934,12 +13932,12 @@ Content-Type: application/json
     "valores_anteriores": {
       "fuente": "Estimación del equipo (06_planeacion.sql); sustituir por el dato de INEGI de cada colonia",
       "poblacion": 8420,
-      "actualizado_en": "2026-11-27T01:21:04.72405-06:00"
+      "actualizado_en": "2026-11-27T02:07:14.385249-06:00"
     },
     "valores_nuevos": {
       "fuente": "INEGI, Censo 2020, AGEB de prueba",
       "poblacion": 8520,
-      "actualizado_en": "2026-11-27T01:24:47.233159-06:00"
+      "actualizado_en": "2026-11-27T02:10:58.787656-06:00"
     }
   }
 ]
@@ -13953,7 +13951,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 72e18a7c-032c-42a6-a7f9-6f1eea1addee
+X-Traza-Id: 0f8a4b95-bca4-4717-983f-abaaebe2ad06
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -13965,14 +13963,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 26 ms · traza `72e18a7c-032c-42a6-a7f9-6f1eea1addee`
+**Respuesta.** HTTP 403 (esperado 403) · 33 ms · traza `0f8a4b95-bca4-4717-983f-abaaebe2ad06`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "72e18a7c-032c-42a6-a7f9-6f1eea1addee"
+    "traza_id": "0f8a4b95-bca4-4717-983f-abaaebe2ad06"
   }
 }
 ```
@@ -13985,11 +13983,11 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: a23f4da3-711f-4875-b4bb-4d6cfbe15101
+X-Traza-Id: 6a654def-689a-4584-b75c-c88edf98deb3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 42 ms · traza `a23f4da3-711f-4875-b4bb-4d6cfbe15101`
+**Respuesta.** HTTP 200 (esperado 200) · 44 ms · traza `6a654def-689a-4584-b75c-c88edf98deb3`
 
 ```json
 {
@@ -14080,11 +14078,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 2ad6ad32-1fa0-43f6-93dd-4ff18813eb95
+X-Traza-Id: d5233e84-1c08-4228-b892-637bf478dcb4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 41 ms · traza `2ad6ad32-1fa0-43f6-93dd-4ff18813eb95`
+**Respuesta.** HTTP 200 (esperado 200) · 55 ms · traza `d5233e84-1c08-4228-b892-637bf478dcb4`
 
 ```json
 {
@@ -14097,7 +14095,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "operadores": 3,
       "repartidores": 3,
       "capacidad_fisica": 150,
-      "actualizado_en": "2026-11-27T01:21:08-06:00"
+      "actualizado_en": "2026-11-27T02:07:17-06:00"
     },
     {
       "microhub": {
@@ -14168,12 +14166,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "repartidores": 2,
       "capacidad_fisica": 120,
       "actualizado_en": "2026-11-27T01:24:09-06:00"
+    },
+    {
+      "microhub": {
+        "id": 20,
+        "nombre": "Microhub EC3AF"
+      },
+      "operadores": 2,
+      "repartidores": 2,
+      "capacidad_fisica": 120,
+      "actualizado_en": "2026-11-27T02:10:15-06:00"
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 20,
-    "total": 8,
+    "total": 9,
     "paginas": 1
   }
 }
@@ -14230,6 +14238,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     "operadores": 2,
     "repartidores": 2,
     "capacidad_fisica": 120
+  },
+  {
+    "microhub_id": 20,
+    "operadores": 2,
+    "repartidores": 2,
+    "capacidad_fisica": 120
   }
 ]
 ```
@@ -14242,18 +14256,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 0ac800f0-63c6-4575-96ca-52dd92602de1
+X-Traza-Id: 7dd125f5-7b4c-47e0-9697-3188c030c5a5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 7 ms · traza `0ac800f0-63c6-4575-96ca-52dd92602de1`
+**Respuesta.** HTTP 403 (esperado 403) · 10 ms · traza `7dd125f5-7b4c-47e0-9697-3188c030c5a5`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil solo puede trabajar con su propio microhub.",
-    "traza_id": "0ac800f0-63c6-4575-96ca-52dd92602de1"
+    "traza_id": "7dd125f5-7b4c-47e0-9697-3188c030c5a5"
   }
 }
 ```
@@ -14266,11 +14280,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: c113fc02-f434-4c36-be9c-90b6f57e811b
+X-Traza-Id: ce59b522-5243-45f2-855c-f77cbee27932
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 56 ms · traza `c113fc02-f434-4c36-be9c-90b6f57e811b`
+**Respuesta.** HTTP 200 (esperado 200) · 57 ms · traza `ce59b522-5243-45f2-855c-f77cbee27932`
 
 ```json
 {
@@ -14383,11 +14397,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 22532416-4e5b-4f83-b286-0ce1ff60d71f
+X-Traza-Id: c1780747-69ea-4c6a-a28e-916d19e5d6ca
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 64 ms · traza `22532416-4e5b-4f83-b286-0ce1ff60d71f`
+**Respuesta.** HTTP 200 (esperado 200) · 78 ms · traza `c1780747-69ea-4c6a-a28e-916d19e5d6ca`
 
 ```json
 {
@@ -15175,12 +15189,110 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
           "modificado": false
         }
       ]
+    },
+    {
+      "microhub": {
+        "id": 20,
+        "nombre": "Microhub EC3AF"
+      },
+      "operadores": 2,
+      "repartidores": 2,
+      "capacidad_fisica": 120,
+      "horas": 10.0,
+      "distancia_km": 2.4,
+      "carga_dia": 40.0,
+      "capacidad_hora": 10.91,
+      "capacidad_dia": 109.1,
+      "utilizacion_pct": 36.7,
+      "nivel": "estable",
+      "utilizacion_pico_pct": 49.5,
+      "nivel_pico": "estable",
+      "cuello_botella": "operacion",
+      "minutos_por_pedido_operacion": 11.0,
+      "minutos_por_entrega": 8.4,
+      "etapas": [
+        {
+          "etapa": "picking",
+          "minutos_por_pedido": 6.0,
+          "pct_tiempo": 54.5,
+          "capacidad_hora": 20.0
+        },
+        {
+          "etapa": "empaque",
+          "minutos_por_pedido": 3.0,
+          "pct_tiempo": 27.3,
+          "capacidad_hora": 40.0
+        },
+        {
+          "etapa": "despacho",
+          "minutos_por_pedido": 2.0,
+          "pct_tiempo": 18.2,
+          "capacidad_hora": 60.0
+        },
+        {
+          "etapa": "reparto",
+          "minutos_por_pedido": 8.4,
+          "pct_tiempo": null,
+          "capacidad_hora": 14.3
+        }
+      ],
+      "operadores_requeridos": 1,
+      "repartidores_requeridos": 1,
+      "holgura_pedidos_dia": 69.1,
+      "formula": "2 operadores × 5.45 pedidos/h combinados; 2 repartidores × 7.17 entregas/h",
+      "supuestos_usados": [
+        {
+          "clave": "********",
+          "valor": 70.0,
+          "modificado": false
+        },
+        {
+          "clave": "********",
+          "valor": 85.0,
+          "modificado": false
+        },
+        {
+          "clave": "********",
+          "valor": 1.35,
+          "modificado": false
+        },
+        {
+          "clave": "********",
+          "valor": 10.0,
+          "modificado": false
+        },
+        {
+          "clave": "********",
+          "valor": 20.0,
+          "modificado": false
+        },
+        {
+          "clave": "********",
+          "valor": 30.0,
+          "modificado": false
+        },
+        {
+          "clave": "********",
+          "valor": 22.0,
+          "modificado": false
+        },
+        {
+          "clave": "********",
+          "valor": 4.0,
+          "modificado": false
+        },
+        {
+          "clave": "********",
+          "valor": 3.0,
+          "modificado": false
+        }
+      ]
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 100,
-    "total": 8,
+    "total": 9,
     "paginas": 1
   }
 }
@@ -15194,11 +15306,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 696773e7-769f-4f8f-8def-51d744a50bfa
+X-Traza-Id: a3069f14-f925-4550-acbf-07eb9110d2fc
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 42 ms · traza `696773e7-769f-4f8f-8def-51d744a50bfa`
+**Respuesta.** HTTP 200 (esperado 200) · 53 ms · traza `a3069f14-f925-4550-acbf-07eb9110d2fc`
 
 ```json
 {
@@ -15309,11 +15421,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 45627bb9-0069-4c9e-9fab-217e5fb59966
+X-Traza-Id: a6ce5997-dad1-49b0-a95b-6964968eef7b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 31 ms · traza `45627bb9-0069-4c9e-9fab-217e5fb59966`
+**Respuesta.** HTTP 400 (esperado 400) · 30 ms · traza `a6ce5997-dad1-49b0-a95b-6964968eef7b`
 
 ```json
 {
@@ -15326,7 +15438,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "mensaje": "horas debe estar entre 1 y 24."
       }
     ],
-    "traza_id": "45627bb9-0069-4c9e-9fab-217e5fb59966"
+    "traza_id": "a6ce5997-dad1-49b0-a95b-6964968eef7b"
   }
 }
 ```
@@ -15339,11 +15451,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/xml
-X-Traza-Id: ea0bc546-406b-4671-8be0-d5b16ea7cdb2
+X-Traza-Id: 8431af99-3548-4a0f-b9cc-a458ac959d70
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 44 ms · traza `ea0bc546-406b-4671-8be0-d5b16ea7cdb2`
+**Respuesta.** HTTP 200 (esperado 200) · 51 ms · traza `8431af99-3548-4a0f-b9cc-a458ac959d70`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -15358,7 +15470,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: a049a298-4af9-4ae1-8bcd-b6670a876aaa
+X-Traza-Id: a621fba5-efb1-4060-84b3-2932ba7f287e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -15373,7 +15485,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 42 ms · traza `a049a298-4af9-4ae1-8bcd-b6670a876aaa`
+**Respuesta.** HTTP 200 (esperado 200) · 44 ms · traza `a621fba5-efb1-4060-84b3-2932ba7f287e`
 
 ```json
 {
@@ -15541,11 +15653,11 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: a7780550-8f45-4d6e-a417-f83f1eaf3ba9
+X-Traza-Id: 744c5de5-afee-4b66-a7b2-2a214c04c7e6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 55 ms · traza `a7780550-8f45-4d6e-a417-f83f1eaf3ba9`
+**Respuesta.** HTTP 200 (esperado 200) · 64 ms · traza `744c5de5-afee-4b66-a7b2-2a214c04c7e6`
 
 ```json
 {
@@ -15680,7 +15792,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: d86f2b99-d0f3-4734-abfe-9a0a221e4106
+X-Traza-Id: 8698a854-1706-461c-8114-3a550f6259fd
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -15693,7 +15805,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 56 ms · traza `d86f2b99-d0f3-4734-abfe-9a0a221e4106`
+**Respuesta.** HTTP 200 (esperado 200) · 50 ms · traza `8698a854-1706-461c-8114-3a550f6259fd`
 
 ```json
 {
@@ -15704,7 +15816,7 @@ Content-Type: application/json
   "operadores": 4,
   "repartidores": 3,
   "capacidad_fisica": 150,
-  "actualizado_en": "2026-11-27T01:24:47-06:00"
+  "actualizado_en": "2026-11-27T02:10:59-06:00"
 }
 ```
 
@@ -15728,11 +15840,11 @@ Content-Type: application/json
     "accion": "modificacion",
     "valores_anteriores": {
       "operadores": 3,
-      "actualizado_en": "2026-11-27T01:21:08.251251-06:00"
+      "actualizado_en": "2026-11-27T02:07:17.965863-06:00"
     },
     "valores_nuevos": {
       "operadores": 4,
-      "actualizado_en": "2026-11-27T01:24:47.854707-06:00"
+      "actualizado_en": "2026-11-27T02:10:59.515092-06:00"
     }
   }
 ]
@@ -15746,7 +15858,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: d131fc3f-18c9-4d56-a2c6-9949c603cd35
+X-Traza-Id: b1aef4e6-0ac1-46ac-84a1-86bb251b37ab
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -15758,14 +15870,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 25 ms · traza `d131fc3f-18c9-4d56-a2c6-9949c603cd35`
+**Respuesta.** HTTP 403 (esperado 403) · 26 ms · traza `b1aef4e6-0ac1-46ac-84a1-86bb251b37ab`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "d131fc3f-18c9-4d56-a2c6-9949c603cd35"
+    "traza_id": "b1aef4e6-0ac1-46ac-84a1-86bb251b37ab"
   }
 }
 ```
@@ -15778,7 +15890,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 4ccc36a6-1ee5-4a34-b4f1-b95bf6045671
+X-Traza-Id: 7d06b6c3-b511-44de-bf41-5e9b88a10fa0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -15790,7 +15902,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 6 ms · traza `4ccc36a6-1ee5-4a34-b4f1-b95bf6045671`
+**Respuesta.** HTTP 422 (esperado 422) · 9 ms · traza `7d06b6c3-b511-44de-bf41-5e9b88a10fa0`
 
 ```json
 {
@@ -15803,7 +15915,368 @@ Content-Type: application/json
         "mensaje": "Debe ser mayor o igual a 1."
       }
     ],
-    "traza_id": "4ccc36a6-1ee5-4a34-b4f1-b95bf6045671"
+    "traza_id": "7d06b6c3-b511-44de-bf41-5e9b88a10fa0"
+  }
+}
+```
+
+### CAP-14 · Colas M/M/c de la preparación · PASA
+
+**Objetivo.** Espera, utilización y personal necesario (Erlang C).
+
+**Petición.** `GET http://capacidad:5117/api/v1/capacidad/colas?microhub_id=1&llegadas_hora=10&servicio_min=10&servidores=2`
+
+```http
+Accept: application/json
+X-Traza-Id: 146c88d0-39ae-4ce8-ba32-e60f1fbc546b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
+```
+
+**Respuesta.** HTTP 200 (esperado 200) · 59 ms · traza `146c88d0-39ae-4ce8-ba32-e60f1fbc546b`
+
+```json
+{
+  "microhub": {
+    "id": 1,
+    "nombre": "Microhub San Bernabé Centro"
+  },
+  "llegadas_hora": 10.0,
+  "servicio_min": 10.0,
+  "atencion_hora": 6.0,
+  "espera_max_min": 5.0,
+  "actual": {
+    "servidores": 2,
+    "modelo": "M/M/c",
+    "estable": true,
+    "utilizacion_pct": 83.3,
+    "prob_vacio": 0.0909,
+    "prob_espera": 0.7576,
+    "en_cola": 3.788,
+    "en_sistema": 5.455,
+    "espera_cola_min": 22.73,
+    "tiempo_sistema_min": 32.73
+  },
+  "comparacion": [
+    {
+      "servidores": 1,
+      "modelo": "M/M/1",
+      "estable": false,
+      "utilizacion_pct": 166.7,
+      "prob_vacio": null,
+      "prob_espera": null,
+      "en_cola": null,
+      "en_sistema": null,
+      "espera_cola_min": null,
+      "tiempo_sistema_min": null
+    },
+    {
+      "servidores": 2,
+      "modelo": "M/M/c",
+      "estable": true,
+      "utilizacion_pct": 83.3,
+      "prob_vacio": 0.0909,
+      "prob_espera": 0.7576,
+      "en_cola": 3.788,
+      "en_sistema": 5.455,
+      "espera_cola_min": 22.73,
+      "tiempo_sistema_min": 32.73
+    },
+    {
+      "servidores": 3,
+      "modelo": "M/M/c",
+      "estable": true,
+      "utilizacion_pct": 55.6,
+      "prob_vacio": 0.1727,
+      "prob_espera": 0.2998,
+      "en_cola": 0.375,
+      "en_sistema": 2.041,
+      "espera_cola_min": 2.25,
+      "tiempo_sistema_min": 12.25
+    },
+    {
+      "servidores": 4,
+      "modelo": "M/M/c",
+      "estable": true,
+      "utilizacion_pct": 41.7,
+      "prob_vacio": 0.1859,
+      "prob_espera": 0.1025,
+      "en_cola": 0.073,
+      "en_sistema": 1.74,
+      "espera_cola_min": 0.44,
+      "tiempo_sistema_min": 10.44
+    },
+    {
+      "servidores": 5,
+      "modelo": "M/M/c",
+      "estable": true,
+      "utilizacion_pct": 33.3,
+      "prob_vacio": 0.1883,
+      "prob_espera": 0.0303,
+      "en_cola": 0.015,
+      "en_sistema": 1.682,
+      "espera_cola_min": 0.09,
+      "tiempo_sistema_min": 10.09
+    }
+  ],
+  "servidores_necesarios": 3,
+  "lectura": "Con 2 persona(s) la utilización es 83 %, se espera en fila 2…(158 caracteres)",
+  "valores_modificados": [
+    "llegadas_hora",
+    "servicio_min",
+    "servidores"
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "********",
+      "valor": 70.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 85.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 1.35,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 10.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 20.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 30.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 22.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 4.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 3.0,
+      "modificado": false
+    }
+  ]
+}
+```
+
+**Explicación.** λ = 10 pedidos/h y μ = 6/h por persona: con 2 la utilización es 83 % y la probabilidad de esperar 76 %.
+
+### CAP-15 · Colas con una sola persona (M/M/1) · PASA
+
+**Objetivo.** Si llegan más de los que atiende, la fila no es estable.
+
+**Petición.** `GET http://capacidad:5117/api/v1/capacidad/colas?microhub_id=1&llegadas_hora=10&servicio_min=10&servidores=1`
+
+```http
+Accept: application/json
+X-Traza-Id: 02b28d5d-ae05-461f-b0d8-6a95d0e8d387
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
+```
+
+**Respuesta.** HTTP 200 (esperado 200) · 54 ms · traza `02b28d5d-ae05-461f-b0d8-6a95d0e8d387`
+
+```json
+{
+  "microhub": {
+    "id": 1,
+    "nombre": "Microhub San Bernabé Centro"
+  },
+  "llegadas_hora": 10.0,
+  "servicio_min": 10.0,
+  "atencion_hora": 6.0,
+  "espera_max_min": 5.0,
+  "actual": {
+    "servidores": 1,
+    "modelo": "M/M/1",
+    "estable": false,
+    "utilizacion_pct": 166.7,
+    "prob_vacio": null,
+    "prob_espera": null,
+    "en_cola": null,
+    "en_sistema": null,
+    "espera_cola_min": null,
+    "tiempo_sistema_min": null
+  },
+  "comparacion": [
+    {
+      "servidores": 1,
+      "modelo": "M/M/1",
+      "estable": false,
+      "utilizacion_pct": 166.7,
+      "prob_vacio": null,
+      "prob_espera": null,
+      "en_cola": null,
+      "en_sistema": null,
+      "espera_cola_min": null,
+      "tiempo_sistema_min": null
+    },
+    {
+      "servidores": 2,
+      "modelo": "M/M/c",
+      "estable": true,
+      "utilizacion_pct": 83.3,
+      "prob_vacio": 0.0909,
+      "prob_espera": 0.7576,
+      "en_cola": 3.788,
+      "en_sistema": 5.455,
+      "espera_cola_min": 22.73,
+      "tiempo_sistema_min": 32.73
+    },
+    {
+      "servidores": 3,
+      "modelo": "M/M/c",
+      "estable": true,
+      "utilizacion_pct": 55.6,
+      "prob_vacio": 0.1727,
+      "prob_espera": 0.2998,
+      "en_cola": 0.375,
+      "en_sistema": 2.041,
+      "espera_cola_min": 2.25,
+      "tiempo_sistema_min": 12.25
+    },
+    {
+      "servidores": 4,
+      "modelo": "M/M/c",
+      "estable": true,
+      "utilizacion_pct": 41.7,
+      "prob_vacio": 0.1859,
+      "prob_espera": 0.1025,
+      "en_cola": 0.073,
+      "en_sistema": 1.74,
+      "espera_cola_min": 0.44,
+      "tiempo_sistema_min": 10.44
+    },
+    {
+      "servidores": 5,
+      "modelo": "M/M/c",
+      "estable": true,
+      "utilizacion_pct": 33.3,
+      "prob_vacio": 0.1883,
+      "prob_espera": 0.0303,
+      "en_cola": 0.015,
+      "en_sistema": 1.682,
+      "espera_cola_min": 0.09,
+      "tiempo_sistema_min": 10.09
+    }
+  ],
+  "servidores_necesarios": 3,
+  "lectura": "Con 1 persona(s) los pedidos llegan más rápido de lo que se …(168 caracteres)",
+  "valores_modificados": [
+    "llegadas_hora",
+    "servicio_min",
+    "servidores"
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "********",
+      "valor": 70.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 85.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 1.35,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 10.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 20.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 30.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 22.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 4.0,
+      "modificado": false
+    },
+    {
+      "clave": "********",
+      "valor": 3.0,
+      "modificado": false
+    }
+  ]
+}
+```
+
+### CAP-16 · Colas (XML) con los datos del microhub · PASA
+
+**Objetivo.** Por omisión usa la hora pico observada y sus operadores.
+
+**Petición.** `GET http://capacidad:5117/api/v1/capacidad/colas?microhub_id=1`
+
+```http
+Accept: application/xml
+X-Traza-Id: 1da15a39-19f5-4112-839d-7a35ef3b8155
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
+```
+
+**Respuesta.** HTTP 200 (esperado 200) · 163 ms · traza `1da15a39-19f5-4112-839d-7a35ef3b8155`
+
+```xml
+<?xml version='1.0' encoding='utf-8'?>
+<capacidad_colas xmlns="urn:microhubs:v1" version="1"><microhub><id>1</id><nombre>Microhub San Bernabé Centro</nombre></microhub><llegadas_hora>1.697</llegadas_hora><servicio_min>11</servicio_min><atencion_hora>5.455</atencion_hora><espera_max_min>5</espera_max_min><actual><servidores>3</servidores><modelo>M/M/c</modelo><estable>true</estable><utilizacion_pct>10.4</utilizacion_pct><prob_vacio>0.7325</prob_vacio><prob_espera>0.0041</prob_espera><en_cola>0</en_cola><en_sistema>0.312</en_sistema><espera_cola_min>0.02</espera_cola_min><tiempo_sistema_min>11.02</tiempo_sistema_min></actual><comparacion><escenario><servidores>1</servidores><modelo>M/M/1</modelo><estable>true</estable><utilizacion_pct>31.1</utilizacion_pct><prob_vacio>0.6889</prob_vacio><prob_espera>0.3111</prob_espera><en_cola>0.141</en_cola><en_sistema>0.452</en_sistema><espera_cola_min>4.97</espera_cola_min><tiempo_sistema_min>15.97</tiempo_sistema_min></escenario><escenario><servidores>2</servidores><modelo>M/M/c</modelo><estable>true</estable><utilizacion_pct>15.6</utilizacion_pct><prob_vacio>0.7307</prob_vacio><prob_espera>0.0419</prob_espera><en_cola>0.008</en_cola><en_sistema>0.319</en_sistema><espera_cola_min>0.27</espera_cola_min><tiempo_sistema_min>11.27</tiempo_sistema_min></escenario><escenario><servidores>3</servidores><modelo>M/M/c</modelo><estable>true</estable><utilizacion_pct>10.4</utilizacion_pct><prob_vacio>0.7325</prob_vacio><prob_espera>0.0041</prob_espera><en_cola>0</en_cola><en_sistema>0.312</en_sistema><espera_cola_min>0.02</espera_cola_min><tiempo_sistema_min>11.02</tiempo_sistema_min></escenario><escenario><servidores>4</servidores><modelo>M/M/c</modelo><estable>true</estable><utilizacion_pct>7.8</utilizacion_pct><prob_vacio>0.7326</prob_vacio><prob_espera>0.0003</prob_espera><en_cola>0</en_cola><en_sistema>0.311</en_sistema><espera_cola_min>0</espera_cola_min><tiempo_sistema_min>11</tiempo_sistema_min></escenario><escenario><servidores>5</servidores><modelo>M/M/c</modelo><estable>true</estable><utilizacion_pct>6.2</utilizacion_pct><prob_vacio>0.7326</prob_vacio><prob_espera>0</prob_espera><en_cola>0</en_cola><en_sistema>0.311</en_sistema><espera_cola_min>0</espera_cola_min><tiempo_sistema_min>11</tiempo_sistema_min></escenario></comparacion><servidores_necesarios>1</servidores_necesarios><lectura>Con 3 persona(s) la utilización es 10 %, se espera en fila 0…(156 caracteres)</lectura><valores_modificados /><supuestos_usados><supuesto><clave>umbral_utilizacion_estable</clave><valor>70</valor><modificado>false</modificado></supuesto><supuesto><clave>umbral_utilizacion_riesgo</clave><valor>85</valor><modificado>false</modificado></supuesto><supuesto><clave>cap_factor_pico</clave><valor>1.35</valor><modificado>false</modificado></supuesto><supuesto><clave>picking_pedidos_hora</clave><valor>10</valor><modificado>false</modificado></supuesto><supuesto><clave>packing_pedidos_hora</clave><valor>20</valor><modificado>false</modificado></supuesto><supuesto><clave>despacho_pedidos_hora</clave><valor>30</valor><modificado>false</modificado></supuesto><supuesto><clave>velocidad_reparto_kmh</clave><valor>22</valor><modificado>false</modificado></supuesto><supuesto><clave>tiempo_servicio_min</clave><valor>4</valor><modificado>false</modificado></supuesto><supuesto><clave>paradas_por_viaje</clave><valor>3</valor><modificado>false</modificado></supuesto></supuestos_usados></capacidad_colas>
+```
+
+### CAP-17 · Colas sin microhub · PASA
+
+**Objetivo.** microhub_id es obligatorio.
+
+**Petición.** `GET http://capacidad:5117/api/v1/capacidad/colas`
+
+```http
+Accept: application/json
+X-Traza-Id: 6b9ca4dd-a4a4-4a2e-9a9f-b1c948200019
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
+```
+
+**Respuesta.** HTTP 400 (esperado 400) · 8 ms · traza `6b9ca4dd-a4a4-4a2e-9a9f-b1c948200019`
+
+```json
+{
+  "error": {
+    "codigo": "FILTRO_INVALIDO",
+    "mensaje": "microhub_id es obligatorio.",
+    "detalles": [
+      {
+        "campo": "microhub_id",
+        "mensaje": "microhub_id es obligatorio."
+      }
+    ],
+    "traza_id": "6b9ca4dd-a4a4-4a2e-9a9f-b1c948200019"
   }
 }
 ```
@@ -15816,11 +16289,11 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 83f55bc0-9010-4738-81f0-bdd24bc4cb3d
+X-Traza-Id: 8dbadb93-6401-46a1-b4a9-44d672c191c4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 30 ms · traza `83f55bc0-9010-4738-81f0-bdd24bc4cb3d`
+**Respuesta.** HTTP 200 (esperado 200) · 35 ms · traza `8dbadb93-6401-46a1-b4a9-44d672c191c4`
 
 ```json
 {
@@ -15927,11 +16400,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 96e7972a-7394-4152-9f2b-8732fcf298ed
+X-Traza-Id: e613322d-14da-4b49-b770-92d9b284e3d3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 54 ms · traza `96e7972a-7394-4152-9f2b-8732fcf298ed`
+**Respuesta.** HTTP 200 (esperado 200) · 59 ms · traza `e613322d-14da-4b49-b770-92d9b284e3d3`
 
 ```json
 {
@@ -16198,11 +16671,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 895c394b-ad9b-47ec-9527-82368461295b
+X-Traza-Id: e131b8cf-19bc-4522-a9c4-4a880ef11ef4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 37 ms · traza `895c394b-ad9b-47ec-9527-82368461295b`
+**Respuesta.** HTTP 200 (esperado 200) · 28 ms · traza `e131b8cf-19bc-4522-a9c4-4a880ef11ef4`
 
 ```json
 {
@@ -16266,11 +16739,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 6b7ef05f-35a0-44c7-80b5-2ad719053228
+X-Traza-Id: ea83e73b-8485-4ea5-be56-5c75e51ce302
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 49 ms · traza `6b7ef05f-35a0-44c7-80b5-2ad719053228`
+**Respuesta.** HTTP 200 (esperado 200) · 53 ms · traza `ea83e73b-8485-4ea5-be56-5c75e51ce302`
 
 ```json
 {
@@ -16345,11 +16818,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: ac20146c-e6cf-4336-a349-e59bdfadc93b
+X-Traza-Id: cf7dbebd-aac4-48af-8144-a13fda3bb37a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 51 ms · traza `ac20146c-e6cf-4336-a349-e59bdfadc93b`
+**Respuesta.** HTTP 200 (esperado 200) · 52 ms · traza `cf7dbebd-aac4-48af-8144-a13fda3bb37a`
 
 ```json
 {
@@ -16424,11 +16897,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: e71ad7c9-979c-404a-9c38-5d7d5ff08470
+X-Traza-Id: acaf6d2c-cd4e-4b89-b5bf-9f600bb64e71
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 50 ms · traza `e71ad7c9-979c-404a-9c38-5d7d5ff08470`
+**Respuesta.** HTTP 200 (esperado 200) · 51 ms · traza `acaf6d2c-cd4e-4b89-b5bf-9f600bb64e71`
 
 ```json
 {
@@ -16666,11 +17139,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/xml
-X-Traza-Id: 859d9556-2d0e-496e-97c5-7f86f7c17c01
+X-Traza-Id: ea18f2c3-547c-4d41-9ad7-2edc24c315dd
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 49 ms · traza `859d9556-2d0e-496e-97c5-7f86f7c17c01`
+**Respuesta.** HTTP 200 (esperado 200) · 52 ms · traza `ea18f2c3-547c-4d41-9ad7-2edc24c315dd`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -16685,18 +17158,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 72c4aab8-b9ec-4231-aee3-cfe3b2c2c343
+X-Traza-Id: 458edb4d-948e-4d0c-88c0-70ca155ffb01
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 34 ms · traza `72c4aab8-b9ec-4231-aee3-cfe3b2c2c343`
+**Respuesta.** HTTP 403 (esperado 403) · 31 ms · traza `458edb4d-948e-4d0c-88c0-70ca155ffb01`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "72c4aab8-b9ec-4231-aee3-cfe3b2c2c343"
+    "traza_id": "458edb4d-948e-4d0c-88c0-70ca155ffb01"
   }
 }
 ```
@@ -16709,7 +17182,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 6044b01c-f167-41ed-97b8-926661b4d6b6
+X-Traza-Id: 426aacfe-4c5c-449b-ba80-67a371322ef0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 Content-Type: application/json
 ```
@@ -16727,14 +17200,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 36 ms · traza `6044b01c-f167-41ed-97b8-926661b4d6b6`
+**Respuesta.** HTTP 403 (esperado 403) · 26 ms · traza `426aacfe-4c5c-449b-ba80-67a371322ef0`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "6044b01c-f167-41ed-97b8-926661b4d6b6"
+    "traza_id": "426aacfe-4c5c-449b-ba80-67a371322ef0"
   }
 }
 ```
@@ -16747,7 +17220,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 388872a7-d928-4561-90b7-ed5fd0a357b2
+X-Traza-Id: 92f0bfe4-77b7-4988-9250-45663b93bcd2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -16765,11 +17238,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 62 ms · traza `388872a7-d928-4561-90b7-ed5fd0a357b2`
+**Respuesta.** HTTP 201 (esperado 201) · 53 ms · traza `92f0bfe4-77b7-4988-9250-45663b93bcd2`
 
 ```json
 {
-  "id": 85,
+  "id": 89,
   "ambito": "microhub",
   "ambito_id": 1,
   "nombre": "Evidencia de vigilancia",
@@ -16790,7 +17263,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 85,
+    "id": 89,
     "ambito": "microhub",
     "ambito_id": 1,
     "nombre": "Evidencia de vigilancia",
@@ -16819,11 +17292,11 @@ Content-Type: application/json
 
 **Objetivo.** Cualquier subconjunto de campos; el ámbito no cambia.
 
-**Petición.** `PUT http://costos:5119/api/v1/costos/conceptos/85`
+**Petición.** `PUT http://costos:5119/api/v1/costos/conceptos/89`
 
 ```http
 Accept: application/json
-X-Traza-Id: 04a8589a-5b81-45e9-abd6-a10923c8165b
+X-Traza-Id: 420ef293-e258-493a-89c8-41ecaefc95a1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -16835,11 +17308,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 76 ms · traza `04a8589a-5b81-45e9-abd6-a10923c8165b`
+**Respuesta.** HTTP 200 (esperado 200) · 74 ms · traza `420ef293-e258-493a-89c8-41ecaefc95a1`
 
 ```json
 {
-  "id": 85,
+  "id": 89,
   "ambito": "microhub",
   "ambito_id": 1,
   "nombre": "Evidencia de vigilancia",
@@ -16859,11 +17332,11 @@ Content-Type: application/json
 
 **Objetivo.** PATCH es alias de PUT: lo usa la app Android cuando la JVM no admite PUT con cuerpo parcial.
 
-**Petición.** `PATCH http://costos:5119/api/v1/costos/conceptos/85`
+**Petición.** `PATCH http://costos:5119/api/v1/costos/conceptos/89`
 
 ```http
 Accept: application/json
-X-Traza-Id: c938d185-a0d4-4059-b539-f6cd522d9c83
+X-Traza-Id: a7034409-f022-48df-9c47-bf4363d53aa2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -16875,11 +17348,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 75 ms · traza `c938d185-a0d4-4059-b539-f6cd522d9c83`
+**Respuesta.** HTTP 200 (esperado 200) · 70 ms · traza `a7034409-f022-48df-9c47-bf4363d53aa2`
 
 ```json
 {
-  "id": 85,
+  "id": 89,
   "ambito": "microhub",
   "ambito_id": 1,
   "nombre": "Evidencia de vigilancia",
@@ -16899,15 +17372,15 @@ Content-Type: application/json
 
 **Objetivo.** Baja lógica: el renglón se conserva para la historia.
 
-**Petición.** `DELETE http://costos:5119/api/v1/costos/conceptos/85`
+**Petición.** `DELETE http://costos:5119/api/v1/costos/conceptos/89`
 
 ```http
 Accept: application/json
-X-Traza-Id: 7db2b764-0790-45ae-ac5e-ed98c392ca7c
+X-Traza-Id: 88ee104a-07bc-40dd-95eb-b28eaed1fd1e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 34 ms · traza `7db2b764-0790-45ae-ac5e-ed98c392ca7c`
+**Respuesta.** HTTP 204 (esperado 204) · 35 ms · traza `88ee104a-07bc-40dd-95eb-b28eaed1fd1e`
 
 ```json
 (sin cuerpo)
@@ -16918,7 +17391,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 ```json
 [
   {
-    "id": 85,
+    "id": 89,
     "estatus": "inactivo"
   }
 ]
@@ -16932,7 +17405,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 5cb40b77-69e3-4d54-b06d-d8743b5267e9
+X-Traza-Id: c68caca3-c51b-4e61-b18b-77109cb0fde3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -16950,7 +17423,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 6 ms · traza `5cb40b77-69e3-4d54-b06d-d8743b5267e9`
+**Respuesta.** HTTP 422 (esperado 422) · 6 ms · traza `c68caca3-c51b-4e61-b18b-77109cb0fde3`
 
 ```json
 {
@@ -16963,7 +17436,7 @@ Content-Type: application/json
         "mensaje": "Un costo fijo se da por mes; uno variable, por pedido, entrega, km o porcentaje de la venta."
       }
     ],
-    "traza_id": "5cb40b77-69e3-4d54-b06d-d8743b5267e9"
+    "traza_id": "c68caca3-c51b-4e61-b18b-77109cb0fde3"
   }
 }
 ```
@@ -16976,7 +17449,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: e1d68fb4-d48f-423a-a26c-244b9ccb154c
+X-Traza-Id: 5e2b663f-5de7-461d-b0ed-5a1885031edb
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -16994,7 +17467,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 7 ms · traza `e1d68fb4-d48f-423a-a26c-244b9ccb154c`
+**Respuesta.** HTTP 422 (esperado 422) · 7 ms · traza `5e2b663f-5de7-461d-b0ed-5a1885031edb`
 
 ```json
 {
@@ -17007,7 +17480,7 @@ Content-Type: application/json
         "mensaje": "No existe ese microhub."
       }
     ],
-    "traza_id": "e1d68fb4-d48f-423a-a26c-244b9ccb154c"
+    "traza_id": "5e2b663f-5de7-461d-b0ed-5a1885031edb"
   }
 }
 ```
@@ -17020,11 +17493,11 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 88ee15c9-8b11-4df7-b926-6a345970599d
+X-Traza-Id: 641af1ca-95ec-4fcb-9feb-536b40f664c1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 81 ms · traza `88ee15c9-8b11-4df7-b926-6a345970599d`
+**Respuesta.** HTTP 200 (esperado 200) · 74 ms · traza `641af1ca-95ec-4fcb-9feb-536b40f664c1`
 
 ```json
 {
@@ -17088,11 +17561,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: be45a603-76e5-41ec-9945-2456483afbf9
+X-Traza-Id: 77095a66-0ed9-4a36-ae7a-c6f0d6de6e42
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 32 ms · traza `be45a603-76e5-41ec-9945-2456483afbf9`
+**Respuesta.** HTTP 200 (esperado 200) · 36 ms · traza `77095a66-0ed9-4a36-ae7a-c6f0d6de6e42`
 
 ```json
 {
@@ -17159,7 +17632,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 45051067-90b7-47c7-b415-43378160a00b
+X-Traza-Id: abfb0924-5afd-47be-9a7b-a36816684711
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -17174,7 +17647,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 30 ms · traza `45051067-90b7-47c7-b415-43378160a00b`
+**Respuesta.** HTTP 200 (esperado 200) · 66 ms · traza `abfb0924-5afd-47be-9a7b-a36816684711`
 
 ```json
 {
@@ -17248,7 +17721,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: dfa1f992-395f-49a9-8732-01c4eb12780f
+X-Traza-Id: 45bda551-5ee6-483b-be3a-4315a888dd67
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -17263,7 +17736,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 28 ms · traza `dfa1f992-395f-49a9-8732-01c4eb12780f`
+**Respuesta.** HTTP 200 (esperado 200) · 33 ms · traza `45bda551-5ee6-483b-be3a-4315a888dd67`
 
 ```json
 {
@@ -17335,7 +17808,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 109dec4f-7e45-4ad6-b3d7-e808fd49472f
+X-Traza-Id: d4e2a91a-b4e1-4120-be61-7269eb41897f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -17350,7 +17823,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 29 ms · traza `109dec4f-7e45-4ad6-b3d7-e808fd49472f`
+**Respuesta.** HTTP 200 (esperado 200) · 39 ms · traza `d4e2a91a-b4e1-4120-be61-7269eb41897f`
 
 ```json
 {
@@ -17422,7 +17895,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 30e51c13-55ab-474e-969c-801af8c58cbc
+X-Traza-Id: d8d192bf-9eda-49b6-a7bb-48ee7536459a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -17437,7 +17910,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 30 ms · traza `30e51c13-55ab-474e-969c-801af8c58cbc`
+**Respuesta.** HTTP 200 (esperado 200) · 43 ms · traza `d8d192bf-9eda-49b6-a7bb-48ee7536459a`
 
 ```json
 {
@@ -17509,7 +17982,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 3d57bd83-0e25-4c82-9b1d-8c35fd7e5e3f
+X-Traza-Id: ddfad5ee-2da8-4975-a02e-8482c0e0c1d8
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -17520,7 +17993,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 307 ms · traza `3d57bd83-0e25-4c82-9b1d-8c35fd7e5e3f`
+**Respuesta.** HTTP 200 (esperado 200) · 335 ms · traza `ddfad5ee-2da8-4975-a02e-8482c0e0c1d8`
 
 ```json
 {
@@ -17594,7 +18067,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 4caccbb3-7057-4e0b-9e26-f92ea8927c2e
+X-Traza-Id: 3459d8cb-f0c7-4560-9633-d31b9aa97ae5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -17606,7 +18079,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 311 ms · traza `4caccbb3-7057-4e0b-9e26-f92ea8927c2e`
+**Respuesta.** HTTP 200 (esperado 200) · 310 ms · traza `3459d8cb-f0c7-4560-9633-d31b9aa97ae5`
 
 ```json
 {
@@ -17678,7 +18151,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: c00803e1-66f7-4511-a672-5b34001c058c
+X-Traza-Id: c1e67afa-8178-495c-90b5-6c9060950eab
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -17689,7 +18162,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 148 ms · traza `c00803e1-66f7-4511-a672-5b34001c058c`
+**Respuesta.** HTTP 422 (esperado 422) · 149 ms · traza `c1e67afa-8178-495c-90b5-6c9060950eab`
 
 ```json
 {
@@ -17702,7 +18175,7 @@ Content-Type: application/json
         "mensaje": "Sin microhub ni candidato hay que indicar costos_fijos y costo_variable_pedido."
       }
     ],
-    "traza_id": "c00803e1-66f7-4511-a672-5b34001c058c"
+    "traza_id": "c1e67afa-8178-495c-90b5-6c9060950eab"
   }
 }
 ```
@@ -17715,7 +18188,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 2d219abb-1789-4a76-9c00-35b19e855749
+X-Traza-Id: ad2c77e2-5fcc-40d2-aaf2-eb787f39f645
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -17730,7 +18203,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 26 ms · traza `2d219abb-1789-4a76-9c00-35b19e855749`
+**Respuesta.** HTTP 200 (esperado 200) · 45 ms · traza `ad2c77e2-5fcc-40d2-aaf2-eb787f39f645`
 
 ```json
 {
@@ -18011,7 +18484,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/xml
-X-Traza-Id: 08e54168-ddf1-47f6-b5e6-34497c99c1f0
+X-Traza-Id: c8345177-4be0-4c8e-a995-ef956fe31460
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/xml
 ```
@@ -18020,7 +18493,7 @@ Content-Type: application/xml
 <?xml version="1.0" encoding="UTF-8"?><equilibrio_calculo_nuevo xmlns="urn:microhubs:v1"><pedidos_dia>45</pedidos_dia><ticket>135</ticket><margen_bruto>0.28</margen_bruto><costos_fijos>60000</costos_fijos><costo_variable_pedido>32.6</costo_variable_pedido></equilibrio_calculo_nuevo>
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 86 ms · traza `08e54168-ddf1-47f6-b5e6-34497c99c1f0`
+**Respuesta.** HTTP 200 (esperado 200) · 235 ms · traza `c8345177-4be0-4c8e-a995-ef956fe31460`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -18035,7 +18508,7 @@ Content-Type: application/xml
 
 ```http
 Accept: application/json
-X-Traza-Id: 51f361a2-f2c2-4032-9513-7599dfef7615
+X-Traza-Id: c168b233-801a-4451-8fb7-e1609598fd55
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 Content-Type: application/json
 ```
@@ -18051,14 +18524,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 7 ms · traza `51f361a2-f2c2-4032-9513-7599dfef7615`
+**Respuesta.** HTTP 403 (esperado 403) · 13 ms · traza `c168b233-801a-4451-8fb7-e1609598fd55`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Guardar un escenario exige el permiso equilibrio.editar.",
-    "traza_id": "51f361a2-f2c2-4032-9513-7599dfef7615"
+    "traza_id": "c168b233-801a-4451-8fb7-e1609598fd55"
   }
 }
 ```
@@ -18071,7 +18544,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: cafae9cb-ef51-4a13-935c-79678fc33ccc
+X-Traza-Id: 44e888c3-4e39-4368-b674-7c59810f3ab6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -18088,11 +18561,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 77 ms · traza `cafae9cb-ef51-4a13-935c-79678fc33ccc`
+**Respuesta.** HTTP 201 (esperado 201) · 101 ms · traza `44e888c3-4e39-4368-b674-7c59810f3ab6`
 
 ```json
 {
-  "id": 70,
+  "id": 74,
   "nombre": "Evidencia equilibrio A",
   "objeto": {
     "tipo": "manual",
@@ -18157,7 +18630,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 70,
+    "id": 74,
     "nombre": "Evidencia equilibrio A",
     "microhub_id": null,
     "candidato_id": null,
@@ -18174,7 +18647,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 634d99eb-26e7-4853-a800-124901d756d2
+X-Traza-Id: c2d58555-4631-45a2-93aa-b0227fb2eed9
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -18191,11 +18664,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 79 ms · traza `634d99eb-26e7-4853-a800-124901d756d2`
+**Respuesta.** HTTP 201 (esperado 201) · 94 ms · traza `c2d58555-4631-45a2-93aa-b0227fb2eed9`
 
 ```json
 {
-  "id": 71,
+  "id": 75,
   "nombre": "Evidencia equilibrio B",
   "objeto": {
     "tipo": "manual",
@@ -18260,7 +18733,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 71,
+    "id": 75,
     "nombre": "Evidencia equilibrio B",
     "microhub_id": null,
     "candidato_id": null,
@@ -18277,17 +18750,17 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 44cc05d3-4e0b-4dfa-b575-1cc82ff79ced
+X-Traza-Id: 99804dff-6079-48cd-8338-848026876085
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 49 ms · traza `44cc05d3-4e0b-4dfa-b575-1cc82ff79ced`
+**Respuesta.** HTTP 200 (esperado 200) · 54 ms · traza `99804dff-6079-48cd-8338-848026876085`
 
 ```json
 {
   "datos": [
     {
-      "id": 71,
+      "id": 75,
       "nombre": "Evidencia equilibrio B",
       "microhub_id": null,
       "candidato_id": null,
@@ -18296,10 +18769,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "pedidos_dia": 80.0,
       "utilidad_mes": 20000.0,
       "creado_por": 5,
-      "creado_en": "2026-11-27T01:24:50-06:00"
+      "creado_en": "2026-11-27T02:11:02-06:00"
     },
     {
-      "id": 70,
+      "id": 74,
       "nombre": "Evidencia equilibrio A",
       "microhub_id": null,
       "candidato_id": null,
@@ -18308,7 +18781,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "pedidos_dia": 45.0,
       "utilidad_mes": -6250.0,
       "creado_por": 5,
-      "creado_en": "2026-11-27T01:24:49-06:00"
+      "creado_en": "2026-11-27T02:11:02-06:00"
     },
     {
       "id": 65,
@@ -18444,21 +18917,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Lado a lado: decisión, equilibrio, diferencia y utilidad.
 
-**Petición.** `GET http://punto-equilibrio:5120/api/v1/punto-equilibrio/comparacion?ids=70,71`
+**Petición.** `GET http://punto-equilibrio:5120/api/v1/punto-equilibrio/comparacion?ids=74,75`
 
 ```http
 Accept: application/json
-X-Traza-Id: d7bb557a-ad87-454b-8453-4b100b4eccd5
+X-Traza-Id: 663b0e2c-8e5c-454b-b78e-7ae02db0242b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 47 ms · traza `d7bb557a-ad87-454b-8453-4b100b4eccd5`
+**Respuesta.** HTTP 200 (esperado 200) · 48 ms · traza `663b0e2c-8e5c-454b-b78e-7ae02db0242b`
 
 ```json
 {
   "filas": [
     {
-      "id": 70,
+      "id": 74,
       "nombre": "Evidencia equilibrio A",
       "decision": "no_viable",
       "pedidos_dia": 45.0,
@@ -18468,7 +18941,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "utilidad_mes": -6250.0
     },
     {
-      "id": 71,
+      "id": 75,
       "nombre": "Evidencia equilibrio B",
       "decision": "viable",
       "pedidos_dia": 80.0,
@@ -18478,7 +18951,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "utilidad_mes": 20000.0
     }
   ],
-  "mejor_utilidad_id": 71,
+  "mejor_utilidad_id": 75,
   "mejor_utilidad_nombre": "Evidencia equilibrio B"
 }
 ```
@@ -18487,19 +18960,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Con su cálculo paso a paso.
 
-**Petición.** `GET http://punto-equilibrio:5120/api/v1/punto-equilibrio/escenarios/70`
+**Petición.** `GET http://punto-equilibrio:5120/api/v1/punto-equilibrio/escenarios/74`
 
 ```http
 Accept: application/json
-X-Traza-Id: abf690a0-c236-4f24-a88f-4a419df30692
+X-Traza-Id: 8a3d5269-9d17-49e1-a737-ee24139a6911
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 30 ms · traza `abf690a0-c236-4f24-a88f-4a419df30692`
+**Respuesta.** HTTP 200 (esperado 200) · 29 ms · traza `8a3d5269-9d17-49e1-a737-ee24139a6911`
 
 ```json
 {
-  "id": 70,
+  "id": 74,
   "nombre": "Evidencia equilibrio A",
   "objeto": {
     "tipo": "manual",
@@ -18563,22 +19036,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Borrar es de equilibrio.editar.
 
-**Petición.** `DELETE http://punto-equilibrio:5120/api/v1/punto-equilibrio/escenarios/70`
+**Petición.** `DELETE http://punto-equilibrio:5120/api/v1/punto-equilibrio/escenarios/74`
 
 ```http
 Accept: application/json
-X-Traza-Id: ca102306-ba36-4125-8914-45a63b0003fa
+X-Traza-Id: f7776c61-d982-4a67-993f-58b8227d4154
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 31 ms · traza `ca102306-ba36-4125-8914-45a63b0003fa`
+**Respuesta.** HTTP 403 (esperado 403) · 33 ms · traza `f7776c61-d982-4a67-993f-58b8227d4154`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "ca102306-ba36-4125-8914-45a63b0003fa"
+    "traza_id": "f7776c61-d982-4a67-993f-58b8227d4154"
   }
 }
 ```
@@ -18587,15 +19060,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 **Objetivo.** Se elimina el escenario.
 
-**Petición.** `DELETE http://punto-equilibrio:5120/api/v1/punto-equilibrio/escenarios/70`
+**Petición.** `DELETE http://punto-equilibrio:5120/api/v1/punto-equilibrio/escenarios/74`
 
 ```http
 Accept: application/json
-X-Traza-Id: f96c1f17-d0a0-4e21-9ea9-cc5294f6f889
+X-Traza-Id: 2d577d07-5f48-4f45-9e5d-ecc533b90841
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 33 ms · traza `f96c1f17-d0a0-4e21-9ea9-cc5294f6f889`
+**Respuesta.** HTTP 204 (esperado 204) · 37 ms · traza `2d577d07-5f48-4f45-9e5d-ecc533b90841`
 
 ```json
 (sin cuerpo)
@@ -18619,11 +19092,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: dfca7704-6f5b-4565-947a-a78ee2424c7d
+X-Traza-Id: 45bbf5d5-7532-4bf4-8550-1447b2685fb6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 339 ms · traza `dfca7704-6f5b-4565-947a-a78ee2424c7d`
+**Respuesta.** HTTP 200 (esperado 200) · 455 ms · traza `45bbf5d5-7532-4bf4-8550-1447b2685fb6`
 
 ```json
 {
@@ -18691,11 +19164,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: ee420da0-8953-4027-962c-3384f89e393c
+X-Traza-Id: e9427a76-c625-491f-b2ca-8ff8d30deadb
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 32 ms · traza `ee420da0-8953-4027-962c-3384f89e393c`
+**Respuesta.** HTTP 200 (esperado 200) · 40 ms · traza `e9427a76-c625-491f-b2ca-8ff8d30deadb`
 
 ```json
 {
@@ -18746,11 +19219,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 7b9a48fd-08a3-4e64-a0df-6033b305de20
+X-Traza-Id: 2e5b5fc8-e76d-4bf4-962a-e030da127299
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 337 ms · traza `7b9a48fd-08a3-4e64-a0df-6033b305de20`
+**Respuesta.** HTTP 200 (esperado 200) · 783 ms · traza `2e5b5fc8-e76d-4bf4-962a-e030da127299`
 
 ```json
 {
@@ -18763,29 +19236,40 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     {
       "clase": "A",
       "productos": 33,
-      "unidades": 522,
-      "venta": 13598.4,
-      "pct_unidades": 80.1,
-      "pct_venta": 72.2
+      "unidades": 540,
+      "venta": 13972.2,
+      "pct_unidades": 80.4,
+      "pct_venta": 72.4
     },
     {
       "clase": "B",
       "productos": 12,
-      "unidades": 99,
-      "venta": 4125.5,
-      "pct_unidades": 15.2,
-      "pct_venta": 21.9
+      "unidades": 101,
+      "venta": 4326.5,
+      "pct_unidades": 15.0,
+      "pct_venta": 22.4
     },
     {
       "clase": "C",
       "productos": 6,
       "unidades": 31,
-      "venta": 1106.0,
-      "pct_unidades": 4.8,
-      "pct_venta": 5.9
+      "venta": 1001.0,
+      "pct_unidades": 4.6,
+      "pct_venta": 5.2
     }
   ],
   "filas": [
+    {
+      "producto": {
+        "id": 8,
+        "clave_interna": "AB-008",
+        "nombre": "Pasta para sopa surtida"
+      },
+      "clase": "A",
+      "unidades": 32,
+      "venta": 304.0,
+      "pct_acum": 4.8
+    },
     {
       "producto": {
         "id": 28,
@@ -18795,18 +19279,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 28,
       "venta": 210.0,
-      "pct_acum": 4.3
-    },
-    {
-      "producto": {
-        "id": 8,
-        "clave_interna": "AB-008",
-        "nombre": "Pasta para sopa surtida"
-      },
-      "clase": "A",
-      "unidades": 27,
-      "venta": 256.5,
-      "pct_acum": 8.4
+      "pct_acum": 8.9
     },
     {
       "producto": {
@@ -18815,9 +19288,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "nombre": "Fibra para trastes"
       },
       "clase": "A",
-      "unidades": 25,
-      "venta": 450.0,
-      "pct_acum": 12.3
+      "unidades": 28,
+      "venta": 504.0,
+      "pct_acum": 13.1
     },
     {
       "producto": {
@@ -18828,7 +19301,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 24,
       "venta": 768.0,
-      "pct_acum": 16.0
+      "pct_acum": 16.7
     },
     {
       "producto": {
@@ -18839,7 +19312,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 20,
       "venta": 490.0,
-      "pct_acum": 19.0
+      "pct_acum": 19.6
     },
     {
       "producto": {
@@ -18850,7 +19323,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 18,
       "venta": 252.0,
-      "pct_acum": 21.8
+      "pct_acum": 22.3
     },
     {
       "producto": {
@@ -18861,7 +19334,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 18,
       "venta": 351.0,
-      "pct_acum": 24.5
+      "pct_acum": 25.0
     },
     {
       "producto": {
@@ -18872,7 +19345,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 18,
       "venta": 792.0,
-      "pct_acum": 27.3
+      "pct_acum": 27.7
     },
     {
       "producto": {
@@ -18883,7 +19356,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 18,
       "venta": 828.0,
-      "pct_acum": 30.1
+      "pct_acum": 30.4
     },
     {
       "producto": {
@@ -18894,7 +19367,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 17,
       "venta": 476.0,
-      "pct_acum": 32.7
+      "pct_acum": 32.9
+    },
+    {
+      "producto": {
+        "id": 38,
+        "clave_interna": "LI-002",
+        "nombre": "Jabón para trastes"
+      },
+      "clase": "A",
+      "unidades": 17,
+      "venta": 442.0,
+      "pct_acum": 35.4
     },
     {
       "producto": {
@@ -18905,7 +19389,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 16,
       "venta": 368.0,
-      "pct_acum": 35.1
+      "pct_acum": 37.8
+    },
+    {
+      "producto": {
+        "id": 29,
+        "clave_interna": "LA-001",
+        "nombre": "Leche entera"
+      },
+      "clase": "A",
+      "unidades": 16,
+      "venta": 440.0,
+      "pct_acum": 40.2
     },
     {
       "producto": {
@@ -18916,7 +19411,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 16,
       "venta": 448.0,
-      "pct_acum": 37.6
+      "pct_acum": 42.6
     },
     {
       "producto": {
@@ -18927,7 +19422,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 16,
       "venta": 384.0,
-      "pct_acum": 40.0
+      "pct_acum": 44.9
     },
     {
       "producto": {
@@ -18938,7 +19433,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 16,
       "venta": 576.0,
-      "pct_acum": 42.5
+      "pct_acum": 47.3
     },
     {
       "producto": {
@@ -18949,7 +19444,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 15,
       "venta": 660.0,
-      "pct_acum": 44.8
+      "pct_acum": 49.6
     },
     {
       "producto": {
@@ -18960,7 +19455,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 15,
       "venta": 360.0,
-      "pct_acum": 47.1
+      "pct_acum": 51.8
     },
     {
       "producto": {
@@ -18971,7 +19466,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 15,
       "venta": 540.0,
-      "pct_acum": 49.4
+      "pct_acum": 54.0
     },
     {
       "producto": {
@@ -18982,7 +19477,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 15,
       "venta": 480.0,
-      "pct_acum": 51.7
+      "pct_acum": 56.2
     },
     {
       "producto": {
@@ -18993,7 +19488,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 14,
       "venta": 154.0,
-      "pct_acum": 53.8
+      "pct_acum": 58.3
     },
     {
       "producto": {
@@ -19004,7 +19499,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 14,
       "venta": 434.0,
-      "pct_acum": 56.0
+      "pct_acum": 60.4
     },
     {
       "producto": {
@@ -19015,7 +19510,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 14,
       "venta": 273.0,
-      "pct_acum": 58.1
+      "pct_acum": 62.5
     },
     {
       "producto": {
@@ -19026,7 +19521,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 14,
       "venta": 532.0,
-      "pct_acum": 60.3
+      "pct_acum": 64.6
     },
     {
       "producto": {
@@ -19037,18 +19532,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 14,
       "venta": 448.0,
-      "pct_acum": 62.4
+      "pct_acum": 66.7
     },
     {
       "producto": {
-        "id": 29,
-        "clave_interna": "LA-001",
-        "nombre": "Leche entera"
+        "id": 2,
+        "clave_interna": "AB-002",
+        "nombre": "Arroz superextra"
       },
       "clase": "A",
       "unidades": 13,
-      "venta": 357.5,
-      "pct_acum": 64.4
+      "venta": 388.7,
+      "pct_acum": 68.6
     },
     {
       "producto": {
@@ -19059,7 +19554,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 12,
       "venta": 504.0,
-      "pct_acum": 66.3
+      "pct_acum": 70.4
     },
     {
       "producto": {
@@ -19070,29 +19565,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 12,
       "venta": 504.0,
-      "pct_acum": 68.1
-    },
-    {
-      "producto": {
-        "id": 38,
-        "clave_interna": "LI-002",
-        "nombre": "Jabón para trastes"
-      },
-      "clase": "A",
-      "unidades": 12,
-      "venta": 312.0,
-      "pct_acum": 69.9
-    },
-    {
-      "producto": {
-        "id": 2,
-        "clave_interna": "AB-002",
-        "nombre": "Arroz superextra"
-      },
-      "clase": "A",
-      "unidades": 11,
-      "venta": 328.9,
-      "pct_acum": 71.6
+      "pct_acum": 72.2
     },
     {
       "producto": {
@@ -19103,7 +19576,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 11,
       "venta": 286.0,
-      "pct_acum": 73.3
+      "pct_acum": 73.8
     },
     {
       "producto": {
@@ -19114,7 +19587,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 11,
       "venta": 181.5,
-      "pct_acum": 75.0
+      "pct_acum": 75.4
     },
     {
       "producto": {
@@ -19125,7 +19598,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 11,
       "venta": 165.0,
-      "pct_acum": 76.7
+      "pct_acum": 77.1
     },
     {
       "producto": {
@@ -19136,7 +19609,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 11,
       "venta": 187.0,
-      "pct_acum": 78.4
+      "pct_acum": 78.7
     },
     {
       "producto": {
@@ -19147,7 +19620,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "unidades": 11,
       "venta": 242.0,
-      "pct_acum": 80.1
+      "pct_acum": 80.4
     },
     {
       "producto": {
@@ -19158,7 +19631,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "unidades": 11,
       "venta": 159.5,
-      "pct_acum": 81.7
+      "pct_acum": 82.0
     },
     {
       "producto": {
@@ -19169,7 +19642,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "unidades": 10,
       "venta": 385.0,
-      "pct_acum": 83.3
+      "pct_acum": 83.5
     },
     {
       "producto": {
@@ -19180,7 +19653,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "unidades": 9,
       "venta": 346.5,
-      "pct_acum": 84.7
+      "pct_acum": 84.8
     },
     {
       "producto": {
@@ -19191,7 +19664,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "unidades": 9,
       "venta": 486.0,
-      "pct_acum": 86.0
+      "pct_acum": 86.2
+    },
+    {
+      "producto": {
+        "id": 49,
+        "clave_interna": "HI-004",
+        "nombre": "Desodorante"
+      },
+      "clase": "B",
+      "unidades": 9,
+      "venta": 432.0,
+      "pct_acum": 87.5
     },
     {
       "producto": {
@@ -19202,7 +19686,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "unidades": 8,
       "venta": 168.0,
-      "pct_acum": 87.3
+      "pct_acum": 88.7
     },
     {
       "producto": {
@@ -19213,7 +19697,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "unidades": 8,
       "venta": 464.0,
-      "pct_acum": 88.5
+      "pct_acum": 89.9
     },
     {
       "producto": {
@@ -19224,7 +19708,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "unidades": 8,
       "venta": 288.0,
-      "pct_acum": 89.7
+      "pct_acum": 91.1
     },
     {
       "producto": {
@@ -19235,7 +19719,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "unidades": 8,
       "venta": 544.0,
-      "pct_acum": 91.0
+      "pct_acum": 92.3
     },
     {
       "producto": {
@@ -19246,7 +19730,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "unidades": 7,
       "venta": 185.5,
-      "pct_acum": 92.0
+      "pct_acum": 93.3
     },
     {
       "producto": {
@@ -19257,7 +19741,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "unidades": 7,
       "venta": 364.0,
-      "pct_acum": 93.1
+      "pct_acum": 94.3
     },
     {
       "producto": {
@@ -19268,7 +19752,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "unidades": 7,
       "venta": 504.0,
-      "pct_acum": 94.2
+      "pct_acum": 95.4
     },
     {
       "producto": {
@@ -19276,21 +19760,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "clave_interna": "LI-005",
         "nombre": "Suavizante de telas"
       },
-      "clase": "B",
-      "unidades": 7,
-      "venta": 231.0,
-      "pct_acum": 95.2
-    },
-    {
-      "producto": {
-        "id": 49,
-        "clave_interna": "HI-004",
-        "nombre": "Desodorante"
-      },
       "clase": "C",
       "unidades": 7,
-      "venta": 336.0,
-      "pct_acum": 96.3
+      "venta": 231.0,
+      "pct_acum": 96.4
     },
     {
       "producto": {
@@ -19301,7 +19774,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "C",
       "unidades": 6,
       "venta": 144.0,
-      "pct_acum": 97.2
+      "pct_acum": 97.3
     },
     {
       "producto": {
@@ -19398,11 +19871,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: eec1eda9-e8d4-47ae-8a23-75df8a4ad94d
+X-Traza-Id: 7612dc67-26a1-4104-8f99-064b8519e84e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 494 ms · traza `eec1eda9-e8d4-47ae-8a23-75df8a4ad94d`
+**Respuesta.** HTTP 200 (esperado 200) · 937 ms · traza `7612dc67-26a1-4104-8f99-064b8519e84e`
 
 ```json
 {
@@ -19413,9 +19886,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "ventana_dias": 90,
   "resumen": {
     "productos": 51,
-    "aumentar": 4,
+    "aumentar": 3,
     "mantener": 0,
-    "reducir": 47,
+    "reducir": 48,
     "eliminar": 0,
     "excluir": 0,
     "clase_a": 33,
@@ -19425,9 +19898,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     "con_costo_estimado": 51,
     "espacio": {
       "total": 3600.0,
-      "ocupado": 4007.0,
+      "ocupado": 4312.0,
       "sugerido": 0.0,
-      "ocupacion_pct": 111.3
+      "ocupacion_pct": 119.8
     },
     "presupuesto": {
       "total": 120000.0,
@@ -19438,13 +19911,38 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "filas": [
     {
       "producto": {
+        "id": 8,
+        "clave_interna": "AB-008",
+        "nombre": "Pasta para sopa surtida"
+      },
+      "categoria": "Abarrote básico",
+      "clase": "A",
+      "pct_acum": 4.8,
+      "unidades": 32,
+      "venta": 304.0,
+      "margen_unitario": 2.66,
+      "margen_total": 85.12,
+      "costo_estimado": true,
+      "existencia": 73,
+      "minimo": 10,
+      "quiebres": 0,
+      "demanda_dia": 0.36,
+      "cobertura_dias": 205.3,
+      "rotacion": 0.44,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 205 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
         "id": 28,
         "clave_interna": "BE-008",
         "nombre": "Polvo para agua de sabor"
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 4.3,
+      "pct_acum": 8.9,
       "unidades": 28,
       "venta": 210.0,
       "margen_unitario": 2.1,
@@ -19463,51 +19961,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 8,
-        "clave_interna": "AB-008",
-        "nombre": "Pasta para sopa surtida"
-      },
-      "categoria": "Abarrote básico",
-      "clase": "A",
-      "pct_acum": 8.4,
-      "unidades": 27,
-      "venta": 256.5,
-      "margen_unitario": 2.66,
-      "margen_total": 71.82,
-      "costo_estimado": true,
-      "existencia": 6,
-      "minimo": 10,
-      "quiebres": 0,
-      "demanda_dia": 0.3,
-      "cobertura_dias": 20.0,
-      "rotacion": 4.5,
-      "recomendacion": "Aumentar",
-      "motivo": "existencia en o bajo el mínimo",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
         "id": 45,
         "clave_interna": "LI-009",
         "nombre": "Fibra para trastes"
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 12.3,
-      "unidades": 25,
-      "venta": 450.0,
+      "pct_acum": 13.1,
+      "unidades": 28,
+      "venta": 504.0,
       "margen_unitario": 5.04,
-      "margen_total": 126.0,
+      "margen_total": 141.12,
       "costo_estimado": true,
-      "existencia": 43,
+      "existencia": 40,
       "minimo": 10,
       "quiebres": 0,
-      "demanda_dia": 0.28,
-      "cobertura_dias": 154.8,
-      "rotacion": 0.58,
+      "demanda_dia": 0.31,
+      "cobertura_dias": 128.6,
+      "rotacion": 0.7,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 155 días, exceso de stock",
+      "motivo": "cobertura de 129 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -19519,7 +19992,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "A",
-      "pct_acum": 16.0,
+      "pct_acum": 16.7,
       "unidades": 24,
       "venta": 768.0,
       "margen_unitario": 8.96,
@@ -19544,7 +20017,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 19.0,
+      "pct_acum": 19.6,
       "unidades": 20,
       "venta": 490.0,
       "margen_unitario": 6.86,
@@ -19569,7 +20042,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 21.8,
+      "pct_acum": 22.3,
       "unidades": 18,
       "venta": 252.0,
       "margen_unitario": 3.92,
@@ -19594,20 +20067,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 24.5,
+      "pct_acum": 25.0,
       "unidades": 18,
       "venta": 351.0,
       "margen_unitario": 5.46,
       "margen_total": 98.28,
       "costo_estimado": true,
-      "existencia": 575,
+      "existencia": 638,
       "minimo": 8,
       "quiebres": 0,
       "demanda_dia": 0.2,
-      "cobertura_dias": 2875.0,
+      "cobertura_dias": 3190.0,
       "rotacion": 0.03,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 2875 días, exceso de stock",
+      "motivo": "cobertura de 3190 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -19619,7 +20092,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 27.3,
+      "pct_acum": 27.7,
       "unidades": 18,
       "venta": 792.0,
       "margen_unitario": 12.32,
@@ -19644,7 +20117,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 30.1,
+      "pct_acum": 30.4,
       "unidades": 18,
       "venta": 828.0,
       "margen_unitario": 12.88,
@@ -19669,7 +20142,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 32.7,
+      "pct_acum": 32.9,
       "unidades": 17,
       "venta": 476.0,
       "margen_unitario": 7.84,
@@ -19688,26 +20161,76 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
+        "id": 38,
+        "clave_interna": "LI-002",
+        "nombre": "Jabón para trastes"
+      },
+      "categoria": "Limpieza del hogar",
+      "clase": "A",
+      "pct_acum": 35.4,
+      "unidades": 17,
+      "venta": 442.0,
+      "margen_unitario": 7.28,
+      "margen_total": 123.76,
+      "costo_estimado": true,
+      "existencia": 37,
+      "minimo": 5,
+      "quiebres": 0,
+      "demanda_dia": 0.19,
+      "cobertura_dias": 195.9,
+      "rotacion": 0.46,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 196 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
         "id": 11,
         "clave_interna": "AB-011",
         "nombre": "Frijoles refritos"
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 35.1,
+      "pct_acum": 37.8,
       "unidades": 16,
       "venta": 368.0,
       "margen_unitario": 6.44,
       "margen_total": 103.04,
       "costo_estimado": true,
-      "existencia": 22,
+      "existencia": 25,
       "minimo": 10,
       "quiebres": 0,
       "demanda_dia": 0.18,
-      "cobertura_dias": 123.8,
-      "rotacion": 0.73,
+      "cobertura_dias": 140.6,
+      "rotacion": 0.64,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 124 días, exceso de stock",
+      "motivo": "cobertura de 141 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 29,
+        "clave_interna": "LA-001",
+        "nombre": "Leche entera"
+      },
+      "categoria": "Lácteos y huevo",
+      "clase": "A",
+      "pct_acum": 40.2,
+      "unidades": 16,
+      "venta": 440.0,
+      "margen_unitario": 7.7,
+      "margen_total": 123.2,
+      "costo_estimado": true,
+      "existencia": 45,
+      "minimo": 10,
+      "quiebres": 0,
+      "demanda_dia": 0.18,
+      "cobertura_dias": 253.1,
+      "rotacion": 0.36,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 253 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -19719,7 +20242,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 37.6,
+      "pct_acum": 42.6,
       "unidades": 16,
       "venta": 448.0,
       "margen_unitario": 7.84,
@@ -19744,7 +20267,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 40.0,
+      "pct_acum": 44.9,
       "unidades": 16,
       "venta": 384.0,
       "margen_unitario": 6.72,
@@ -19769,7 +20292,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "A",
-      "pct_acum": 42.5,
+      "pct_acum": 47.3,
       "unidades": 16,
       "venta": 576.0,
       "margen_unitario": 10.08,
@@ -19794,20 +20317,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 44.8,
+      "pct_acum": 49.6,
       "unidades": 15,
       "venta": 660.0,
       "margen_unitario": 12.32,
       "margen_total": 184.8,
       "costo_estimado": true,
-      "existencia": 62,
+      "existencia": 50,
       "minimo": 8,
       "quiebres": 0,
       "demanda_dia": 0.17,
-      "cobertura_dias": 372.0,
-      "rotacion": 0.24,
+      "cobertura_dias": 300.0,
+      "rotacion": 0.3,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 372 días, exceso de stock",
+      "motivo": "cobertura de 300 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -19819,7 +20342,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 47.1,
+      "pct_acum": 51.8,
       "unidades": 15,
       "venta": 360.0,
       "margen_unitario": 6.72,
@@ -19844,7 +20367,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 49.4,
+      "pct_acum": 54.0,
       "unidades": 15,
       "venta": 540.0,
       "margen_unitario": 10.08,
@@ -19869,7 +20392,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 51.7,
+      "pct_acum": 56.2,
       "unidades": 15,
       "venta": 480.0,
       "margen_unitario": 8.96,
@@ -19894,7 +20417,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 53.8,
+      "pct_acum": 58.3,
       "unidades": 14,
       "venta": 154.0,
       "margen_unitario": 3.08,
@@ -19919,20 +20442,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 56.0,
+      "pct_acum": 60.4,
       "unidades": 14,
       "venta": 434.0,
       "margen_unitario": 8.68,
       "margen_total": 121.52,
       "costo_estimado": true,
-      "existencia": 10,
+      "existencia": 12,
       "minimo": 5,
       "quiebres": 0,
       "demanda_dia": 0.16,
-      "cobertura_dias": 64.3,
-      "rotacion": 1.4,
+      "cobertura_dias": 77.1,
+      "rotacion": 1.17,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 64 días, exceso de stock",
+      "motivo": "cobertura de 77 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -19944,7 +20467,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 58.1,
+      "pct_acum": 62.5,
       "unidades": 14,
       "venta": 273.0,
       "margen_unitario": 5.46,
@@ -19969,7 +20492,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 60.3,
+      "pct_acum": 64.6,
       "unidades": 14,
       "venta": 532.0,
       "margen_unitario": 10.64,
@@ -19994,7 +20517,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 62.4,
+      "pct_acum": 66.7,
       "unidades": 14,
       "venta": 448.0,
       "margen_unitario": 8.96,
@@ -20013,26 +20536,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 29,
-        "clave_interna": "LA-001",
-        "nombre": "Leche entera"
+        "id": 2,
+        "clave_interna": "AB-002",
+        "nombre": "Arroz superextra"
       },
-      "categoria": "Lácteos y huevo",
+      "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 64.4,
+      "pct_acum": 68.6,
       "unidades": 13,
-      "venta": 357.5,
-      "margen_unitario": 7.7,
-      "margen_total": 100.1,
+      "venta": 388.7,
+      "margen_unitario": 8.37,
+      "margen_total": 108.81,
       "costo_estimado": true,
-      "existencia": 45,
+      "existencia": 36,
       "minimo": 10,
       "quiebres": 0,
       "demanda_dia": 0.14,
-      "cobertura_dias": 311.5,
-      "rotacion": 0.29,
+      "cobertura_dias": 249.2,
+      "rotacion": 0.36,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 312 días, exceso de stock",
+      "motivo": "cobertura de 249 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -20044,7 +20567,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 66.3,
+      "pct_acum": 70.4,
       "unidades": 12,
       "venta": 504.0,
       "margen_unitario": 11.76,
@@ -20069,7 +20592,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 68.1,
+      "pct_acum": 72.2,
       "unidades": 12,
       "venta": 504.0,
       "margen_unitario": 11.76,
@@ -20088,76 +20611,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 38,
-        "clave_interna": "LI-002",
-        "nombre": "Jabón para trastes"
-      },
-      "categoria": "Limpieza del hogar",
-      "clase": "A",
-      "pct_acum": 69.9,
-      "unidades": 12,
-      "venta": 312.0,
-      "margen_unitario": 7.28,
-      "margen_total": 87.36,
-      "costo_estimado": true,
-      "existencia": 42,
-      "minimo": 5,
-      "quiebres": 0,
-      "demanda_dia": 0.13,
-      "cobertura_dias": 315.0,
-      "rotacion": 0.29,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 315 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
-        "id": 2,
-        "clave_interna": "AB-002",
-        "nombre": "Arroz superextra"
-      },
-      "categoria": "Abarrote básico",
-      "clase": "A",
-      "pct_acum": 71.6,
-      "unidades": 11,
-      "venta": 328.9,
-      "margen_unitario": 8.37,
-      "margen_total": 92.07,
-      "costo_estimado": true,
-      "existencia": 36,
-      "minimo": 10,
-      "quiebres": 0,
-      "demanda_dia": 0.12,
-      "cobertura_dias": 294.5,
-      "rotacion": 0.31,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 295 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
         "id": 6,
         "clave_interna": "AB-006",
         "nombre": "Harina de maíz nixtamalizado"
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 73.3,
+      "pct_acum": 73.8,
       "unidades": 11,
       "venta": 286.0,
       "margen_unitario": 7.28,
       "margen_total": 80.08,
       "costo_estimado": true,
-      "existencia": 93,
+      "existencia": 98,
       "minimo": 10,
       "quiebres": 0,
       "demanda_dia": 0.12,
-      "cobertura_dias": 760.9,
-      "rotacion": 0.12,
+      "cobertura_dias": 801.8,
+      "rotacion": 0.11,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 761 días, exceso de stock",
+      "motivo": "cobertura de 802 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -20169,7 +20642,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 75.0,
+      "pct_acum": 75.4,
       "unidades": 11,
       "venta": 181.5,
       "margen_unitario": 4.62,
@@ -20194,7 +20667,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 76.7,
+      "pct_acum": 77.1,
       "unidades": 11,
       "venta": 165.0,
       "margen_unitario": 4.2,
@@ -20219,7 +20692,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 78.4,
+      "pct_acum": 78.7,
       "unidades": 11,
       "venta": 187.0,
       "margen_unitario": 4.76,
@@ -20244,7 +20717,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 80.1,
+      "pct_acum": 80.4,
       "unidades": 11,
       "venta": 242.0,
       "margen_unitario": 6.16,
@@ -20269,20 +20742,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "B",
-      "pct_acum": 81.7,
+      "pct_acum": 82.0,
       "unidades": 11,
       "venta": 159.5,
       "margen_unitario": 4.06,
       "margen_total": 44.66,
       "costo_estimado": true,
-      "existencia": 60,
+      "existencia": 63,
       "minimo": 5,
       "quiebres": 0,
       "demanda_dia": 0.12,
-      "cobertura_dias": 490.9,
-      "rotacion": 0.18,
+      "cobertura_dias": 515.5,
+      "rotacion": 0.17,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 491 días, exceso de stock",
+      "motivo": "cobertura de 515 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -20294,7 +20767,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "B",
-      "pct_acum": 83.3,
+      "pct_acum": 83.5,
       "unidades": 10,
       "venta": 385.0,
       "margen_unitario": 10.78,
@@ -20319,7 +20792,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "B",
-      "pct_acum": 84.7,
+      "pct_acum": 84.8,
       "unidades": 9,
       "venta": 346.5,
       "margen_unitario": 10.78,
@@ -20344,7 +20817,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "B",
-      "pct_acum": 86.0,
+      "pct_acum": 86.2,
       "unidades": 9,
       "venta": 486.0,
       "margen_unitario": 15.12,
@@ -20363,13 +20836,38 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
+        "id": 49,
+        "clave_interna": "HI-004",
+        "nombre": "Desodorante"
+      },
+      "categoria": "Higiene personal",
+      "clase": "B",
+      "pct_acum": 87.5,
+      "unidades": 9,
+      "venta": 432.0,
+      "margen_unitario": 13.44,
+      "margen_total": 120.96,
+      "costo_estimado": true,
+      "existencia": 36,
+      "minimo": 5,
+      "quiebres": 0,
+      "demanda_dia": 0.1,
+      "cobertura_dias": 360.0,
+      "rotacion": 0.25,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 360 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
         "id": 9,
         "clave_interna": "AB-009",
         "nombre": "Atún en agua"
       },
       "categoria": "Abarrote básico",
       "clase": "B",
-      "pct_acum": 87.3,
+      "pct_acum": 88.7,
       "unidades": 8,
       "venta": 168.0,
       "margen_unitario": 5.88,
@@ -20394,20 +20892,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "B",
-      "pct_acum": 88.5,
+      "pct_acum": 89.9,
       "unidades": 8,
       "venta": 464.0,
       "margen_unitario": 16.24,
       "margen_total": 129.92,
       "costo_estimado": true,
-      "existencia": 301,
+      "existencia": 391,
       "minimo": 5,
       "quiebres": 0,
       "demanda_dia": 0.09,
-      "cobertura_dias": 3386.2,
-      "rotacion": 0.03,
+      "cobertura_dias": 4398.8,
+      "rotacion": 0.02,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 3386 días, exceso de stock",
+      "motivo": "cobertura de 4399 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -20419,7 +20917,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "B",
-      "pct_acum": 89.7,
+      "pct_acum": 91.1,
       "unidades": 8,
       "venta": 288.0,
       "margen_unitario": 10.08,
@@ -20444,7 +20942,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "B",
-      "pct_acum": 91.0,
+      "pct_acum": 92.3,
       "unidades": 8,
       "venta": 544.0,
       "margen_unitario": 19.04,
@@ -20469,20 +20967,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "B",
-      "pct_acum": 92.0,
+      "pct_acum": 93.3,
       "unidades": 7,
       "venta": 185.5,
       "margen_unitario": 7.42,
       "margen_total": 51.94,
       "costo_estimado": true,
-      "existencia": 1058,
+      "existencia": 1150,
       "minimo": 10,
       "quiebres": 0,
       "demanda_dia": 0.08,
-      "cobertura_dias": 13602.9,
+      "cobertura_dias": 14785.7,
       "rotacion": 0.01,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 13603 días, exceso de stock",
+      "motivo": "cobertura de 14786 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -20494,7 +20992,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "B",
-      "pct_acum": 93.1,
+      "pct_acum": 94.3,
       "unidades": 7,
       "venta": 364.0,
       "margen_unitario": 14.56,
@@ -20519,7 +21017,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "B",
-      "pct_acum": 94.2,
+      "pct_acum": 95.4,
       "unidades": 7,
       "venta": 504.0,
       "margen_unitario": 20.16,
@@ -20543,8 +21041,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "nombre": "Suavizante de telas"
       },
       "categoria": "Limpieza del hogar",
-      "clase": "B",
-      "pct_acum": 95.2,
+      "clase": "C",
+      "pct_acum": 96.4,
       "unidades": 7,
       "venta": 231.0,
       "margen_unitario": 9.24,
@@ -20563,38 +21061,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 49,
-        "clave_interna": "HI-004",
-        "nombre": "Desodorante"
-      },
-      "categoria": "Higiene personal",
-      "clase": "C",
-      "pct_acum": 96.3,
-      "unidades": 7,
-      "venta": 336.0,
-      "margen_unitario": 13.44,
-      "margen_total": 94.08,
-      "costo_estimado": true,
-      "existencia": 36,
-      "minimo": 5,
-      "quiebres": 0,
-      "demanda_dia": 0.08,
-      "cobertura_dias": 462.9,
-      "rotacion": 0.19,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 463 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
         "id": 17,
         "clave_interna": "AB-017",
         "nombre": "Tortillas de maíz"
       },
       "categoria": "Abarrote básico",
       "clase": "C",
-      "pct_acum": 97.2,
+      "pct_acum": 97.3,
       "unidades": 6,
       "venta": 144.0,
       "margen_unitario": 6.72,
@@ -20789,11 +21262,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: affc7168-ea79-4957-82a8-03c61f683dce
+X-Traza-Id: 45fedb3a-f7ce-45c4-9e53-a1059336aee7
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 351 ms · traza `affc7168-ea79-4957-82a8-03c61f683dce`
+**Respuesta.** HTTP 200 (esperado 200) · 462 ms · traza `45fedb3a-f7ce-45c4-9e53-a1059336aee7`
 
 ```json
 {
@@ -20813,7 +21286,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     "con_costo_estimado": 51,
     "espacio": {
       "total": null,
-      "ocupado": 8151.0,
+      "ocupado": 8445.0,
       "sugerido": 0.0,
       "ocupacion_pct": null
     },
@@ -20832,20 +21305,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 4.1,
-      "unidades": 84,
-      "venta": 630.0,
+      "pct_acum": 4.2,
+      "unidades": 91,
+      "venta": 682.5,
       "margen_unitario": 2.1,
-      "margen_total": 176.4,
+      "margen_total": 191.1,
       "costo_estimado": true,
       "existencia": 148,
       "minimo": 23,
       "quiebres": 0,
-      "demanda_dia": 0.93,
-      "cobertura_dias": 158.6,
-      "rotacion": 0.57,
+      "demanda_dia": 1.01,
+      "cobertura_dias": 146.4,
+      "rotacion": 0.61,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 159 días, exceso de stock",
+      "motivo": "cobertura de 146 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -20857,20 +21330,95 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 7.5,
-      "unidades": 68,
-      "venta": 3944.0,
+      "pct_acum": 7.8,
+      "unidades": 77,
+      "venta": 4466.0,
       "margen_unitario": 16.24,
-      "margen_total": 1104.32,
+      "margen_total": 1250.48,
       "costo_estimado": true,
-      "existencia": 455,
+      "existencia": 548,
       "minimo": 23,
       "quiebres": 0,
-      "demanda_dia": 0.76,
-      "cobertura_dias": 602.2,
-      "rotacion": 0.15,
+      "demanda_dia": 0.86,
+      "cobertura_dias": 640.5,
+      "rotacion": 0.14,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 602 días, exceso de stock",
+      "motivo": "cobertura de 641 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 32,
+        "clave_interna": "LA-004",
+        "nombre": "Queso Oaxaca"
+      },
+      "categoria": "Lácteos y huevo",
+      "clase": "A",
+      "pct_acum": 10.9,
+      "unidades": 67,
+      "venta": 4824.0,
+      "margen_unitario": 20.16,
+      "margen_total": 1350.72,
+      "costo_estimado": true,
+      "existencia": 93,
+      "minimo": 28,
+      "quiebres": 0,
+      "demanda_dia": 0.74,
+      "cobertura_dias": 124.9,
+      "rotacion": 0.72,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 125 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 51,
+        "clave_interna": "HI-006",
+        "nombre": "Pañal etapa 3"
+      },
+      "categoria": "Higiene personal",
+      "clase": "A",
+      "pct_acum": 14.0,
+      "unidades": 67,
+      "venta": 4556.0,
+      "margen_unitario": 19.04,
+      "margen_total": 1275.68,
+      "costo_estimado": true,
+      "existencia": 109,
+      "minimo": 20,
+      "quiebres": 0,
+      "demanda_dia": 0.74,
+      "cobertura_dias": 146.4,
+      "rotacion": 0.61,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 146 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 45,
+        "clave_interna": "LI-009",
+        "nombre": "Fibra para trastes"
+      },
+      "categoria": "Limpieza del hogar",
+      "clase": "A",
+      "pct_acum": 17.0,
+      "unidades": 64,
+      "venta": 1152.0,
+      "margen_unitario": 5.04,
+      "margen_total": 322.56,
+      "costo_estimado": true,
+      "existencia": 158,
+      "minimo": 26,
+      "quiebres": 0,
+      "demanda_dia": 0.71,
+      "cobertura_dias": 222.2,
+      "rotacion": 0.41,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 222 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -20882,7 +21430,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 10.5,
+      "pct_acum": 19.8,
       "unidades": 61,
       "venta": 1006.5,
       "margen_unitario": 4.62,
@@ -20901,88 +21449,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 32,
-        "clave_interna": "LA-004",
-        "nombre": "Queso Oaxaca"
-      },
-      "categoria": "Lácteos y huevo",
-      "clase": "A",
-      "pct_acum": 13.5,
-      "unidades": 61,
-      "venta": 4392.0,
-      "margen_unitario": 20.16,
-      "margen_total": 1229.76,
-      "costo_estimado": true,
-      "existencia": 96,
-      "minimo": 28,
-      "quiebres": 0,
-      "demanda_dia": 0.68,
-      "cobertura_dias": 141.6,
-      "rotacion": 0.64,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 142 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
-        "id": 45,
-        "clave_interna": "LI-009",
-        "nombre": "Fibra para trastes"
-      },
-      "categoria": "Limpieza del hogar",
-      "clase": "A",
-      "pct_acum": 16.5,
-      "unidades": 61,
-      "venta": 1098.0,
-      "margen_unitario": 5.04,
-      "margen_total": 307.44,
-      "costo_estimado": true,
-      "existencia": 161,
-      "minimo": 26,
-      "quiebres": 0,
-      "demanda_dia": 0.68,
-      "cobertura_dias": 237.5,
-      "rotacion": 0.38,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 238 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
-        "id": 51,
-        "clave_interna": "HI-006",
-        "nombre": "Pañal etapa 3"
-      },
-      "categoria": "Higiene personal",
-      "clase": "A",
-      "pct_acum": 19.4,
-      "unidades": 60,
-      "venta": 4080.0,
-      "margen_unitario": 19.04,
-      "margen_total": 1142.4,
-      "costo_estimado": true,
-      "existencia": 113,
-      "minimo": 20,
-      "quiebres": 0,
-      "demanda_dia": 0.67,
-      "cobertura_dias": 169.5,
-      "rotacion": 0.53,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 170 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
         "id": 19,
         "clave_interna": "AB-019",
         "nombre": "Huevo blanco"
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 22.3,
+      "pct_acum": 22.5,
       "unidades": 59,
       "venta": 2478.0,
       "margen_unitario": 11.76,
@@ -21001,13 +21474,113 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
+        "id": 23,
+        "clave_interna": "BE-003",
+        "nombre": "Refresco de cola"
+      },
+      "categoria": "Bebidas",
+      "clase": "A",
+      "pct_acum": 25.1,
+      "unidades": 56,
+      "venta": 2156.0,
+      "margen_unitario": 10.78,
+      "margen_total": 603.68,
+      "costo_estimado": true,
+      "existencia": 168,
+      "minimo": 21,
+      "quiebres": 0,
+      "demanda_dia": 0.62,
+      "cobertura_dias": 270.0,
+      "rotacion": 0.33,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 270 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 8,
+        "clave_interna": "AB-008",
+        "nombre": "Pasta para sopa surtida"
+      },
+      "categoria": "Abarrote básico",
+      "clase": "A",
+      "pct_acum": 27.7,
+      "unidades": 55,
+      "venta": 522.5,
+      "margen_unitario": 2.66,
+      "margen_total": 146.3,
+      "costo_estimado": true,
+      "existencia": 159,
+      "minimo": 28,
+      "quiebres": 0,
+      "demanda_dia": 0.61,
+      "cobertura_dias": 260.2,
+      "rotacion": 0.35,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 260 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 15,
+        "clave_interna": "AB-015",
+        "nombre": "Avena en hojuelas"
+      },
+      "categoria": "Abarrote básico",
+      "clase": "A",
+      "pct_acum": 30.1,
+      "unidades": 53,
+      "venta": 1431.0,
+      "margen_unitario": 7.56,
+      "margen_total": 400.68,
+      "costo_estimado": true,
+      "existencia": 149,
+      "minimo": 15,
+      "quiebres": 0,
+      "demanda_dia": 0.59,
+      "cobertura_dias": 253.0,
+      "rotacion": 0.36,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 253 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 40,
+        "clave_interna": "LI-004",
+        "nombre": "Limpiador multiusos"
+      },
+      "categoria": "Limpieza del hogar",
+      "clase": "A",
+      "pct_acum": 32.5,
+      "unidades": 52,
+      "venta": 1456.0,
+      "margen_unitario": 7.84,
+      "margen_total": 407.68,
+      "costo_estimado": true,
+      "existencia": 59,
+      "minimo": 24,
+      "quiebres": 0,
+      "demanda_dia": 0.58,
+      "cobertura_dias": 102.1,
+      "rotacion": 0.88,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 102 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
         "id": 7,
         "clave_interna": "AB-007",
         "nombre": "Harina de trigo"
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 24.8,
+      "pct_acum": 34.9,
       "unidades": 50,
       "venta": 1225.0,
       "margen_unitario": 6.86,
@@ -21026,76 +21599,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 23,
-        "clave_interna": "BE-003",
-        "nombre": "Refresco de cola"
-      },
-      "categoria": "Bebidas",
-      "clase": "A",
-      "pct_acum": 27.2,
-      "unidades": 50,
-      "venta": 1925.0,
-      "margen_unitario": 10.78,
-      "margen_total": 539.0,
-      "costo_estimado": true,
-      "existencia": 174,
-      "minimo": 21,
-      "quiebres": 0,
-      "demanda_dia": 0.56,
-      "cobertura_dias": 313.2,
-      "rotacion": 0.29,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 313 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
-        "id": 15,
-        "clave_interna": "AB-015",
-        "nombre": "Avena en hojuelas"
+        "id": 2,
+        "clave_interna": "AB-002",
+        "nombre": "Arroz superextra"
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 29.6,
-      "unidades": 48,
-      "venta": 1296.0,
-      "margen_unitario": 7.56,
-      "margen_total": 362.88,
-      "costo_estimado": true,
-      "existencia": 149,
-      "minimo": 15,
-      "quiebres": 0,
-      "demanda_dia": 0.53,
-      "cobertura_dias": 279.4,
-      "rotacion": 0.32,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 279 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
-        "id": 40,
-        "clave_interna": "LI-004",
-        "nombre": "Limpiador multiusos"
-      },
-      "categoria": "Limpieza del hogar",
-      "clase": "A",
-      "pct_acum": 31.9,
+      "pct_acum": 37.0,
       "unidades": 47,
-      "venta": 1316.0,
-      "margen_unitario": 7.84,
-      "margen_total": 368.48,
+      "venta": 1405.3,
+      "margen_unitario": 8.37,
+      "margen_total": 393.39,
       "costo_estimado": true,
-      "existencia": 61,
-      "minimo": 24,
+      "existencia": 104,
+      "minimo": 25,
       "quiebres": 0,
       "demanda_dia": 0.52,
-      "cobertura_dias": 116.8,
-      "rotacion": 0.77,
+      "cobertura_dias": 199.1,
+      "rotacion": 0.45,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 117 días, exceso de stock",
+      "motivo": "cobertura de 199 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -21107,7 +21630,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 34.1,
+      "pct_acum": 39.1,
       "unidades": 45,
       "venta": 1732.5,
       "margen_unitario": 10.78,
@@ -21126,26 +21649,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 8,
-        "clave_interna": "AB-008",
-        "nombre": "Pasta para sopa surtida"
+        "id": 38,
+        "clave_interna": "LI-002",
+        "nombre": "Jabón para trastes"
       },
-      "categoria": "Abarrote básico",
+      "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 36.3,
+      "pct_acum": 41.2,
       "unidades": 45,
-      "venta": 427.5,
-      "margen_unitario": 2.66,
-      "margen_total": 119.7,
+      "venta": 1170.0,
+      "margen_unitario": 7.28,
+      "margen_total": 327.6,
       "costo_estimado": true,
-      "existencia": 92,
-      "minimo": 28,
+      "existencia": 128,
+      "minimo": 18,
       "quiebres": 0,
       "demanda_dia": 0.5,
-      "cobertura_dias": 184.0,
-      "rotacion": 0.49,
+      "cobertura_dias": 256.0,
+      "rotacion": 0.35,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 184 días, exceso de stock",
+      "motivo": "cobertura de 256 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -21157,7 +21680,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 38.5,
+      "pct_acum": 43.3,
       "unidades": 44,
       "venta": 1584.0,
       "margen_unitario": 10.08,
@@ -21176,26 +21699,101 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 2,
-        "clave_interna": "AB-002",
-        "nombre": "Arroz superextra"
+        "id": 3,
+        "clave_interna": "AB-003",
+        "nombre": "Aceite vegetal"
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 40.6,
+      "pct_acum": 45.2,
       "unidades": 43,
-      "venta": 1285.7,
-      "margen_unitario": 8.37,
-      "margen_total": 359.91,
+      "venta": 1806.0,
+      "margen_unitario": 11.76,
+      "margen_total": 505.68,
       "costo_estimado": true,
-      "existencia": 104,
-      "minimo": 25,
-      "quiebres": 0,
+      "existencia": 106,
+      "minimo": 15,
+      "quiebres": 1,
       "demanda_dia": 0.48,
-      "cobertura_dias": 217.7,
+      "cobertura_dias": 221.9,
+      "rotacion": 0.41,
+      "recomendacion": "Aumentar",
+      "motivo": "hubo quiebres",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 34,
+        "clave_interna": "LA-006",
+        "nombre": "Yogur natural"
+      },
+      "categoria": "Lácteos y huevo",
+      "clase": "A",
+      "pct_acum": 47.2,
+      "unidades": 43,
+      "venta": 1892.0,
+      "margen_unitario": 12.32,
+      "margen_total": 529.76,
+      "costo_estimado": true,
+      "existencia": 108,
+      "minimo": 21,
+      "quiebres": 3,
+      "demanda_dia": 0.48,
+      "cobertura_dias": 226.0,
+      "rotacion": 0.4,
+      "recomendacion": "Aumentar",
+      "motivo": "hubo quiebres",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 5,
+        "clave_interna": "AB-005",
+        "nombre": "Sal de mesa"
+      },
+      "categoria": "Abarrote básico",
+      "clase": "A",
+      "pct_acum": 49.2,
+      "unidades": 42,
+      "venta": 588.0,
+      "margen_unitario": 3.92,
+      "margen_total": 164.64,
+      "costo_estimado": true,
+      "existencia": 102,
+      "minimo": 21,
+      "quiebres": 0,
+      "demanda_dia": 0.47,
+      "cobertura_dias": 218.6,
       "rotacion": 0.41,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 218 días, exceso de stock",
+      "motivo": "cobertura de 219 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 27,
+        "clave_interna": "BE-007",
+        "nombre": "Té helado de limón"
+      },
+      "categoria": "Bebidas",
+      "clase": "A",
+      "pct_acum": 51.1,
+      "unidades": 42,
+      "venta": 714.0,
+      "margen_unitario": 4.76,
+      "margen_total": 199.92,
+      "costo_estimado": true,
+      "existencia": 143,
+      "minimo": 28,
+      "quiebres": 0,
+      "demanda_dia": 0.47,
+      "cobertura_dias": 306.4,
+      "rotacion": 0.29,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 306 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -21207,7 +21805,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 42.7,
+      "pct_acum": 53.1,
       "unidades": 42,
       "venta": 1344.0,
       "margen_unitario": 8.96,
@@ -21232,7 +21830,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "A",
-      "pct_acum": 44.7,
+      "pct_acum": 55.0,
       "unidades": 42,
       "venta": 1512.0,
       "margen_unitario": 10.08,
@@ -21251,51 +21849,76 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
+        "id": 25,
+        "clave_interna": "BE-005",
+        "nombre": "Jugo de naranja"
+      },
+      "categoria": "Bebidas",
+      "clase": "A",
+      "pct_acum": 56.9,
+      "unidades": 41,
+      "venta": 1148.0,
+      "margen_unitario": 7.84,
+      "margen_total": 321.44,
+      "costo_estimado": true,
+      "existencia": 194,
+      "minimo": 15,
+      "quiebres": 0,
+      "demanda_dia": 0.46,
+      "cobertura_dias": 425.9,
+      "rotacion": 0.21,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 426 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 29,
+        "clave_interna": "LA-001",
+        "nombre": "Leche entera"
+      },
+      "categoria": "Lácteos y huevo",
+      "clase": "A",
+      "pct_acum": 58.8,
+      "unidades": 41,
+      "venta": 1127.5,
+      "margen_unitario": 7.7,
+      "margen_total": 315.7,
+      "costo_estimado": true,
+      "existencia": 126,
+      "minimo": 25,
+      "quiebres": 0,
+      "demanda_dia": 0.46,
+      "cobertura_dias": 276.6,
+      "rotacion": 0.33,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 277 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
         "id": 30,
         "clave_interna": "LA-002",
         "nombre": "Leche deslactosada"
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 46.7,
+      "pct_acum": 60.7,
       "unidades": 41,
       "venta": 1271.0,
       "margen_unitario": 8.68,
       "margen_total": 355.88,
       "costo_estimado": true,
-      "existencia": 54,
+      "existencia": 56,
       "minimo": 23,
       "quiebres": 0,
       "demanda_dia": 0.46,
-      "cobertura_dias": 118.5,
-      "rotacion": 0.76,
+      "cobertura_dias": 122.9,
+      "rotacion": 0.73,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 119 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
-        "id": 34,
-        "clave_interna": "LA-006",
-        "nombre": "Yogur natural"
-      },
-      "categoria": "Lácteos y huevo",
-      "clase": "A",
-      "pct_acum": 48.7,
-      "unidades": 41,
-      "venta": 1804.0,
-      "margen_unitario": 12.32,
-      "margen_total": 505.12,
-      "costo_estimado": true,
-      "existencia": 108,
-      "minimo": 21,
-      "quiebres": 3,
-      "demanda_dia": 0.46,
-      "cobertura_dias": 237.1,
-      "rotacion": 0.38,
-      "recomendacion": "Aumentar",
-      "motivo": "hubo quiebres",
+      "motivo": "cobertura de 123 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -21307,7 +21930,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 50.8,
+      "pct_acum": 62.6,
       "unidades": 41,
       "venta": 1886.0,
       "margen_unitario": 12.88,
@@ -21332,7 +21955,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 52.7,
+      "pct_acum": 64.5,
       "unidades": 40,
       "venta": 960.0,
       "margen_unitario": 6.72,
@@ -21357,7 +21980,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 54.7,
+      "pct_acum": 66.3,
       "unidades": 40,
       "venta": 1280.0,
       "margen_unitario": 8.96,
@@ -21376,26 +21999,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 38,
-        "clave_interna": "LI-002",
-        "nombre": "Jabón para trastes"
+        "id": 46,
+        "clave_interna": "HI-001",
+        "nombre": "Jabón de tocador"
       },
-      "categoria": "Limpieza del hogar",
+      "categoria": "Higiene personal",
       "clase": "A",
-      "pct_acum": 56.7,
+      "pct_acum": 68.2,
       "unidades": 40,
-      "venta": 1040.0,
-      "margen_unitario": 7.28,
-      "margen_total": 291.2,
+      "venta": 580.0,
+      "margen_unitario": 4.06,
+      "margen_total": 162.4,
       "costo_estimado": true,
-      "existencia": 133,
-      "minimo": 18,
+      "existencia": 173,
+      "minimo": 21,
       "quiebres": 0,
       "demanda_dia": 0.44,
-      "cobertura_dias": 299.2,
-      "rotacion": 0.3,
+      "cobertura_dias": 389.2,
+      "rotacion": 0.23,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 299 días, exceso de stock",
+      "motivo": "cobertura de 389 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -21407,7 +22030,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "A",
-      "pct_acum": 58.6,
+      "pct_acum": 70.1,
       "unidades": 40,
       "venta": 1280.0,
       "margen_unitario": 8.96,
@@ -21426,26 +22049,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 5,
-        "clave_interna": "AB-005",
-        "nombre": "Sal de mesa"
+        "id": 11,
+        "clave_interna": "AB-011",
+        "nombre": "Frijoles refritos"
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 60.5,
+      "pct_acum": 71.9,
       "unidades": 39,
-      "venta": 546.0,
-      "margen_unitario": 3.92,
-      "margen_total": 152.88,
+      "venta": 897.0,
+      "margen_unitario": 6.44,
+      "margen_total": 251.16,
       "costo_estimado": true,
-      "existencia": 102,
-      "minimo": 21,
+      "existencia": 124,
+      "minimo": 20,
       "quiebres": 0,
       "demanda_dia": 0.43,
-      "cobertura_dias": 235.4,
-      "rotacion": 0.38,
+      "cobertura_dias": 286.2,
+      "rotacion": 0.31,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 235 días, exceso de stock",
+      "motivo": "cobertura de 286 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -21457,20 +22080,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 62.5,
+      "pct_acum": 73.7,
       "unidades": 39,
       "venta": 760.5,
       "margen_unitario": 5.46,
       "margen_total": 212.94,
       "costo_estimado": true,
-      "existencia": 662,
+      "existencia": 725,
       "minimo": 23,
       "quiebres": 0,
       "demanda_dia": 0.43,
-      "cobertura_dias": 1527.7,
-      "rotacion": 0.06,
+      "cobertura_dias": 1673.1,
+      "rotacion": 0.05,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 1528 días, exceso de stock",
+      "motivo": "cobertura de 1673 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -21482,7 +22105,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 64.4,
+      "pct_acum": 75.5,
       "unidades": 39,
       "venta": 429.0,
       "margen_unitario": 3.08,
@@ -21501,45 +22124,45 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 25,
-        "clave_interna": "BE-005",
-        "nombre": "Jugo de naranja"
+        "id": 18,
+        "clave_interna": "AB-018",
+        "nombre": "Pan de caja blanco"
       },
-      "categoria": "Bebidas",
+      "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 66.3,
+      "pct_acum": 77.3,
       "unidades": 39,
-      "venta": 1092.0,
-      "margen_unitario": 7.84,
-      "margen_total": 305.76,
+      "venta": 1716.0,
+      "margen_unitario": 12.32,
+      "margen_total": 480.48,
       "costo_estimado": true,
-      "existencia": 194,
-      "minimo": 15,
+      "existencia": 147,
+      "minimo": 23,
       "quiebres": 0,
       "demanda_dia": 0.43,
-      "cobertura_dias": 447.7,
-      "rotacion": 0.2,
+      "cobertura_dias": 339.2,
+      "rotacion": 0.27,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 448 días, exceso de stock",
+      "motivo": "cobertura de 339 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
     {
       "producto": {
-        "id": 27,
-        "clave_interna": "BE-007",
-        "nombre": "Té helado de limón"
+        "id": 47,
+        "clave_interna": "HI-002",
+        "nombre": "Shampoo"
       },
-      "categoria": "Bebidas",
+      "categoria": "Higiene personal",
       "clase": "A",
-      "pct_acum": 68.2,
+      "pct_acum": 79.1,
       "unidades": 39,
-      "venta": 663.0,
-      "margen_unitario": 4.76,
-      "margen_total": 185.64,
+      "venta": 2106.0,
+      "margen_unitario": 15.12,
+      "margen_total": 589.68,
       "costo_estimado": true,
       "existencia": 146,
-      "minimo": 28,
+      "minimo": 25,
       "quiebres": 0,
       "demanda_dia": 0.43,
       "cobertura_dias": 336.9,
@@ -21557,7 +22180,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 70.0,
+      "pct_acum": 80.8,
       "unidades": 37,
       "venta": 721.5,
       "margen_unitario": 5.46,
@@ -21576,76 +22199,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 3,
-        "clave_interna": "AB-003",
-        "nombre": "Aceite vegetal"
+        "id": 41,
+        "clave_interna": "LI-005",
+        "nombre": "Suavizante de telas"
       },
-      "categoria": "Abarrote básico",
-      "clase": "A",
-      "pct_acum": 71.8,
-      "unidades": 36,
-      "venta": 1512.0,
-      "margen_unitario": 11.76,
-      "margen_total": 423.36,
+      "categoria": "Limpieza del hogar",
+      "clase": "B",
+      "pct_acum": 82.5,
+      "unidades": 37,
+      "venta": 1221.0,
+      "margen_unitario": 9.24,
+      "margen_total": 341.88,
       "costo_estimado": true,
-      "existencia": 106,
-      "minimo": 15,
-      "quiebres": 1,
-      "demanda_dia": 0.4,
-      "cobertura_dias": 265.0,
-      "rotacion": 0.34,
-      "recomendacion": "Aumentar",
-      "motivo": "hubo quiebres",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
-        "id": 11,
-        "clave_interna": "AB-011",
-        "nombre": "Frijoles refritos"
-      },
-      "categoria": "Abarrote básico",
-      "clase": "A",
-      "pct_acum": 73.6,
-      "unidades": 36,
-      "venta": 828.0,
-      "margen_unitario": 6.44,
-      "margen_total": 231.84,
-      "costo_estimado": true,
-      "existencia": 121,
-      "minimo": 20,
+      "existencia": 136,
+      "minimo": 24,
       "quiebres": 0,
-      "demanda_dia": 0.4,
-      "cobertura_dias": 302.5,
-      "rotacion": 0.3,
+      "demanda_dia": 0.41,
+      "cobertura_dias": 330.8,
+      "rotacion": 0.27,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 302 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
-        "id": 18,
-        "clave_interna": "AB-018",
-        "nombre": "Pan de caja blanco"
-      },
-      "categoria": "Abarrote básico",
-      "clase": "A",
-      "pct_acum": 75.3,
-      "unidades": 36,
-      "venta": 1584.0,
-      "margen_unitario": 12.32,
-      "margen_total": 443.52,
-      "costo_estimado": true,
-      "existencia": 150,
-      "minimo": 23,
-      "quiebres": 0,
-      "demanda_dia": 0.4,
-      "cobertura_dias": 375.0,
-      "rotacion": 0.24,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 375 días, exceso de stock",
+      "motivo": "cobertura de 331 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -21656,8 +22229,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "nombre": "Detergente en polvo"
       },
       "categoria": "Limpieza del hogar",
-      "clase": "A",
-      "pct_acum": 77.1,
+      "clase": "B",
+      "pct_acum": 84.2,
       "unidades": 36,
       "venta": 1512.0,
       "margen_unitario": 11.76,
@@ -21681,8 +22254,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "nombre": "Bolsas para basura"
       },
       "categoria": "Limpieza del hogar",
-      "clase": "A",
-      "pct_acum": 78.9,
+      "clase": "B",
+      "pct_acum": 85.9,
       "unidades": 36,
       "venta": 864.0,
       "margen_unitario": 6.72,
@@ -21701,51 +22274,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 41,
-        "clave_interna": "LI-005",
-        "nombre": "Suavizante de telas"
+        "id": 10,
+        "clave_interna": "AB-010",
+        "nombre": "Sardina en salsa de tomate"
       },
-      "categoria": "Limpieza del hogar",
-      "clase": "A",
-      "pct_acum": 80.6,
-      "unidades": 35,
-      "venta": 1155.0,
-      "margen_unitario": 9.24,
-      "margen_total": 323.4,
-      "costo_estimado": true,
-      "existencia": 136,
-      "minimo": 24,
-      "quiebres": 0,
-      "demanda_dia": 0.39,
-      "cobertura_dias": 349.7,
-      "rotacion": 0.26,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 350 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
-        "id": 47,
-        "clave_interna": "HI-002",
-        "nombre": "Shampoo"
-      },
-      "categoria": "Higiene personal",
+      "categoria": "Abarrote básico",
       "clase": "B",
-      "pct_acum": 82.3,
+      "pct_acum": 87.5,
       "unidades": 35,
-      "venta": 1890.0,
-      "margen_unitario": 15.12,
-      "margen_total": 529.2,
+      "venta": 927.5,
+      "margen_unitario": 7.42,
+      "margen_total": 259.7,
       "costo_estimado": true,
-      "existencia": 145,
-      "minimo": 25,
+      "existencia": 1254,
+      "minimo": 23,
       "quiebres": 0,
       "demanda_dia": 0.39,
-      "cobertura_dias": 372.9,
-      "rotacion": 0.24,
+      "cobertura_dias": 3224.6,
+      "rotacion": 0.03,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 373 días, exceso de stock",
+      "motivo": "cobertura de 3225 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -21757,7 +22305,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "B",
-      "pct_acum": 84.0,
+      "pct_acum": 89.1,
       "unidades": 34,
       "venta": 816.0,
       "margen_unitario": 6.72,
@@ -21776,76 +22324,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 29,
-        "clave_interna": "LA-001",
-        "nombre": "Leche entera"
+        "id": 42,
+        "clave_interna": "LI-006",
+        "nombre": "Papel higiénico"
       },
-      "categoria": "Lácteos y huevo",
+      "categoria": "Limpieza del hogar",
       "clase": "B",
-      "pct_acum": 85.6,
-      "unidades": 33,
-      "venta": 907.5,
-      "margen_unitario": 7.7,
-      "margen_total": 254.1,
+      "pct_acum": 90.6,
+      "unidades": 34,
+      "venta": 1292.0,
+      "margen_unitario": 10.64,
+      "margen_total": 361.76,
       "costo_estimado": true,
-      "existencia": 127,
-      "minimo": 25,
+      "existencia": 140,
+      "minimo": 18,
       "quiebres": 0,
-      "demanda_dia": 0.37,
-      "cobertura_dias": 346.4,
-      "rotacion": 0.26,
+      "demanda_dia": 0.38,
+      "cobertura_dias": 370.6,
+      "rotacion": 0.24,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 346 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
-        "id": 46,
-        "clave_interna": "HI-001",
-        "nombre": "Jabón de tocador"
-      },
-      "categoria": "Higiene personal",
-      "clase": "B",
-      "pct_acum": 87.2,
-      "unidades": 33,
-      "venta": 478.5,
-      "margen_unitario": 4.06,
-      "margen_total": 133.98,
-      "costo_estimado": true,
-      "existencia": 170,
-      "minimo": 21,
-      "quiebres": 0,
-      "demanda_dia": 0.37,
-      "cobertura_dias": 463.6,
-      "rotacion": 0.19,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 464 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
-        "id": 10,
-        "clave_interna": "AB-010",
-        "nombre": "Sardina en salsa de tomate"
-      },
-      "categoria": "Abarrote básico",
-      "clase": "B",
-      "pct_acum": 88.7,
-      "unidades": 31,
-      "venta": 821.5,
-      "margen_unitario": 7.42,
-      "margen_total": 230.02,
-      "costo_estimado": true,
-      "existencia": 1164,
-      "minimo": 23,
-      "quiebres": 0,
-      "demanda_dia": 0.34,
-      "cobertura_dias": 3379.4,
-      "rotacion": 0.03,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 3379 días, exceso de stock",
+      "motivo": "cobertura de 371 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -21857,7 +22355,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "B",
-      "pct_acum": 90.3,
+      "pct_acum": 92.1,
       "unidades": 31,
       "venta": 465.0,
       "margen_unitario": 4.2,
@@ -21882,7 +22380,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "B",
-      "pct_acum": 91.8,
+      "pct_acum": 93.5,
       "unidades": 31,
       "venta": 682.0,
       "margen_unitario": 6.16,
@@ -21901,26 +22399,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 42,
-        "clave_interna": "LI-006",
-        "nombre": "Papel higiénico"
+        "id": 24,
+        "clave_interna": "BE-004",
+        "nombre": "Refresco sabor manzana"
       },
-      "categoria": "Limpieza del hogar",
+      "categoria": "Bebidas",
       "clase": "B",
-      "pct_acum": 93.3,
-      "unidades": 31,
-      "venta": 1178.0,
-      "margen_unitario": 10.64,
-      "margen_total": 329.84,
+      "pct_acum": 94.8,
+      "unidades": 27,
+      "venta": 972.0,
+      "margen_unitario": 10.08,
+      "margen_total": 272.16,
       "costo_estimado": true,
-      "existencia": 141,
-      "minimo": 18,
+      "existencia": 87,
+      "minimo": 25,
       "quiebres": 0,
-      "demanda_dia": 0.34,
-      "cobertura_dias": 409.4,
-      "rotacion": 0.22,
+      "demanda_dia": 0.3,
+      "cobertura_dias": 290.0,
+      "rotacion": 0.31,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 409 días, exceso de stock",
+      "motivo": "cobertura de 290 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -21932,7 +22430,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "B",
-      "pct_acum": 94.6,
+      "pct_acum": 96.0,
       "unidades": 26,
       "venta": 546.0,
       "margen_unitario": 5.88,
@@ -21951,51 +22449,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 24,
-        "clave_interna": "BE-004",
-        "nombre": "Refresco sabor manzana"
-      },
-      "categoria": "Bebidas",
-      "clase": "B",
-      "pct_acum": 95.8,
-      "unidades": 25,
-      "venta": 900.0,
-      "margen_unitario": 10.08,
-      "margen_total": 252.0,
-      "costo_estimado": true,
-      "existencia": 89,
-      "minimo": 25,
-      "quiebres": 0,
-      "demanda_dia": 0.28,
-      "cobertura_dias": 320.4,
-      "rotacion": 0.28,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 320 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
         "id": 6,
         "clave_interna": "AB-006",
         "nombre": "Harina de maíz nixtamalizado"
       },
       "categoria": "Abarrote básico",
       "clase": "C",
-      "pct_acum": 96.9,
+      "pct_acum": 97.0,
       "unidades": 22,
       "venta": 572.0,
       "margen_unitario": 7.28,
       "margen_total": 160.16,
       "costo_estimado": true,
-      "existencia": 208,
+      "existencia": 213,
       "minimo": 30,
       "quiebres": 0,
       "demanda_dia": 0.24,
-      "cobertura_dias": 850.9,
-      "rotacion": 0.11,
+      "cobertura_dias": 871.4,
+      "rotacion": 0.1,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 851 días, exceso de stock",
+      "motivo": "cobertura de 871 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -22033,19 +22506,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "categoria": "Higiene personal",
       "clase": "C",
       "pct_acum": 99.0,
-      "unidades": 20,
-      "venta": 960.0,
+      "unidades": 22,
+      "venta": 1056.0,
       "margen_unitario": 13.44,
-      "margen_total": 268.8,
+      "margen_total": 295.68,
       "costo_estimado": true,
       "existencia": 93,
       "minimo": 15,
       "quiebres": 0,
-      "demanda_dia": 0.22,
-      "cobertura_dias": 418.5,
-      "rotacion": 0.22,
+      "demanda_dia": 0.24,
+      "cobertura_dias": 380.5,
+      "rotacion": 0.24,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 418 días, exceso de stock",
+      "motivo": "cobertura de 380 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -22148,11 +22621,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: c94ae9cb-9bd7-4009-b4ef-f2105d55a570
+X-Traza-Id: ae283d59-5673-49a8-88c7-77e96e394c91
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 296 ms · traza `c94ae9cb-9bd7-4009-b4ef-f2105d55a570`
+**Respuesta.** HTTP 200 (esperado 200) · 387 ms · traza `ae283d59-5673-49a8-88c7-77e96e394c91`
 
 ```json
 {
@@ -22163,9 +22636,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "ventana_dias": 90,
   "resumen": {
     "productos": 51,
-    "aumentar": 4,
+    "aumentar": 3,
     "mantener": 0,
-    "reducir": 47,
+    "reducir": 48,
     "eliminar": 0,
     "excluir": 0,
     "clase_a": 33,
@@ -22175,9 +22648,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     "con_costo_estimado": 51,
     "espacio": {
       "total": 3600.0,
-      "ocupado": 4007.0,
+      "ocupado": 4312.0,
       "sugerido": 0.0,
-      "ocupacion_pct": 111.3
+      "ocupacion_pct": 119.8
     },
     "presupuesto": {
       "total": 120000.0,
@@ -22188,13 +22661,38 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "filas": [
     {
       "producto": {
+        "id": 8,
+        "clave_interna": "AB-008",
+        "nombre": "Pasta para sopa surtida"
+      },
+      "categoria": "Abarrote básico",
+      "clase": "A",
+      "pct_acum": 4.8,
+      "unidades": 32,
+      "venta": 304.0,
+      "margen_unitario": 2.66,
+      "margen_total": 85.12,
+      "costo_estimado": true,
+      "existencia": 73,
+      "minimo": 10,
+      "quiebres": 0,
+      "demanda_dia": 0.36,
+      "cobertura_dias": 205.3,
+      "rotacion": 0.44,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 205 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
         "id": 28,
         "clave_interna": "BE-008",
         "nombre": "Polvo para agua de sabor"
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 4.3,
+      "pct_acum": 8.9,
       "unidades": 28,
       "venta": 210.0,
       "margen_unitario": 2.1,
@@ -22213,51 +22711,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 8,
-        "clave_interna": "AB-008",
-        "nombre": "Pasta para sopa surtida"
-      },
-      "categoria": "Abarrote básico",
-      "clase": "A",
-      "pct_acum": 8.4,
-      "unidades": 27,
-      "venta": 256.5,
-      "margen_unitario": 2.66,
-      "margen_total": 71.82,
-      "costo_estimado": true,
-      "existencia": 6,
-      "minimo": 10,
-      "quiebres": 0,
-      "demanda_dia": 0.3,
-      "cobertura_dias": 20.0,
-      "rotacion": 4.5,
-      "recomendacion": "Aumentar",
-      "motivo": "existencia en o bajo el mínimo",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
         "id": 45,
         "clave_interna": "LI-009",
         "nombre": "Fibra para trastes"
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 12.3,
-      "unidades": 25,
-      "venta": 450.0,
+      "pct_acum": 13.1,
+      "unidades": 28,
+      "venta": 504.0,
       "margen_unitario": 5.04,
-      "margen_total": 126.0,
+      "margen_total": 141.12,
       "costo_estimado": true,
-      "existencia": 43,
+      "existencia": 40,
       "minimo": 10,
       "quiebres": 0,
-      "demanda_dia": 0.28,
-      "cobertura_dias": 154.8,
-      "rotacion": 0.58,
+      "demanda_dia": 0.31,
+      "cobertura_dias": 128.6,
+      "rotacion": 0.7,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 155 días, exceso de stock",
+      "motivo": "cobertura de 129 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -22269,7 +22742,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "A",
-      "pct_acum": 16.0,
+      "pct_acum": 16.7,
       "unidades": 24,
       "venta": 768.0,
       "margen_unitario": 8.96,
@@ -22294,7 +22767,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 19.0,
+      "pct_acum": 19.6,
       "unidades": 20,
       "venta": 490.0,
       "margen_unitario": 6.86,
@@ -22319,7 +22792,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 21.8,
+      "pct_acum": 22.3,
       "unidades": 18,
       "venta": 252.0,
       "margen_unitario": 3.92,
@@ -22344,20 +22817,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 24.5,
+      "pct_acum": 25.0,
       "unidades": 18,
       "venta": 351.0,
       "margen_unitario": 5.46,
       "margen_total": 98.28,
       "costo_estimado": true,
-      "existencia": 575,
+      "existencia": 638,
       "minimo": 8,
       "quiebres": 0,
       "demanda_dia": 0.2,
-      "cobertura_dias": 2875.0,
+      "cobertura_dias": 3190.0,
       "rotacion": 0.03,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 2875 días, exceso de stock",
+      "motivo": "cobertura de 3190 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -22369,7 +22842,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 27.3,
+      "pct_acum": 27.7,
       "unidades": 18,
       "venta": 792.0,
       "margen_unitario": 12.32,
@@ -22394,7 +22867,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 30.1,
+      "pct_acum": 30.4,
       "unidades": 18,
       "venta": 828.0,
       "margen_unitario": 12.88,
@@ -22419,7 +22892,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 32.7,
+      "pct_acum": 32.9,
       "unidades": 17,
       "venta": 476.0,
       "margen_unitario": 7.84,
@@ -22438,26 +22911,76 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
+        "id": 38,
+        "clave_interna": "LI-002",
+        "nombre": "Jabón para trastes"
+      },
+      "categoria": "Limpieza del hogar",
+      "clase": "A",
+      "pct_acum": 35.4,
+      "unidades": 17,
+      "venta": 442.0,
+      "margen_unitario": 7.28,
+      "margen_total": 123.76,
+      "costo_estimado": true,
+      "existencia": 37,
+      "minimo": 5,
+      "quiebres": 0,
+      "demanda_dia": 0.19,
+      "cobertura_dias": 195.9,
+      "rotacion": 0.46,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 196 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
         "id": 11,
         "clave_interna": "AB-011",
         "nombre": "Frijoles refritos"
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 35.1,
+      "pct_acum": 37.8,
       "unidades": 16,
       "venta": 368.0,
       "margen_unitario": 6.44,
       "margen_total": 103.04,
       "costo_estimado": true,
-      "existencia": 22,
+      "existencia": 25,
       "minimo": 10,
       "quiebres": 0,
       "demanda_dia": 0.18,
-      "cobertura_dias": 123.8,
-      "rotacion": 0.73,
+      "cobertura_dias": 140.6,
+      "rotacion": 0.64,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 124 días, exceso de stock",
+      "motivo": "cobertura de 141 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 29,
+        "clave_interna": "LA-001",
+        "nombre": "Leche entera"
+      },
+      "categoria": "Lácteos y huevo",
+      "clase": "A",
+      "pct_acum": 40.2,
+      "unidades": 16,
+      "venta": 440.0,
+      "margen_unitario": 7.7,
+      "margen_total": 123.2,
+      "costo_estimado": true,
+      "existencia": 45,
+      "minimo": 10,
+      "quiebres": 0,
+      "demanda_dia": 0.18,
+      "cobertura_dias": 253.1,
+      "rotacion": 0.36,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 253 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -22469,7 +22992,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 37.6,
+      "pct_acum": 42.6,
       "unidades": 16,
       "venta": 448.0,
       "margen_unitario": 7.84,
@@ -22494,7 +23017,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 40.0,
+      "pct_acum": 44.9,
       "unidades": 16,
       "venta": 384.0,
       "margen_unitario": 6.72,
@@ -22519,7 +23042,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "A",
-      "pct_acum": 42.5,
+      "pct_acum": 47.3,
       "unidades": 16,
       "venta": 576.0,
       "margen_unitario": 10.08,
@@ -22544,20 +23067,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 44.8,
+      "pct_acum": 49.6,
       "unidades": 15,
       "venta": 660.0,
       "margen_unitario": 12.32,
       "margen_total": 184.8,
       "costo_estimado": true,
-      "existencia": 62,
+      "existencia": 50,
       "minimo": 8,
       "quiebres": 0,
       "demanda_dia": 0.17,
-      "cobertura_dias": 372.0,
-      "rotacion": 0.24,
+      "cobertura_dias": 300.0,
+      "rotacion": 0.3,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 372 días, exceso de stock",
+      "motivo": "cobertura de 300 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -22569,7 +23092,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 47.1,
+      "pct_acum": 51.8,
       "unidades": 15,
       "venta": 360.0,
       "margen_unitario": 6.72,
@@ -22594,7 +23117,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 49.4,
+      "pct_acum": 54.0,
       "unidades": 15,
       "venta": 540.0,
       "margen_unitario": 10.08,
@@ -22619,7 +23142,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 51.7,
+      "pct_acum": 56.2,
       "unidades": 15,
       "venta": 480.0,
       "margen_unitario": 8.96,
@@ -22644,7 +23167,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 53.8,
+      "pct_acum": 58.3,
       "unidades": 14,
       "venta": 154.0,
       "margen_unitario": 3.08,
@@ -22669,20 +23192,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 56.0,
+      "pct_acum": 60.4,
       "unidades": 14,
       "venta": 434.0,
       "margen_unitario": 8.68,
       "margen_total": 121.52,
       "costo_estimado": true,
-      "existencia": 10,
+      "existencia": 12,
       "minimo": 5,
       "quiebres": 0,
       "demanda_dia": 0.16,
-      "cobertura_dias": 64.3,
-      "rotacion": 1.4,
+      "cobertura_dias": 77.1,
+      "rotacion": 1.17,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 64 días, exceso de stock",
+      "motivo": "cobertura de 77 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -22694,7 +23217,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 58.1,
+      "pct_acum": 62.5,
       "unidades": 14,
       "venta": 273.0,
       "margen_unitario": 5.46,
@@ -22719,7 +23242,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 60.3,
+      "pct_acum": 64.6,
       "unidades": 14,
       "venta": 532.0,
       "margen_unitario": 10.64,
@@ -22744,7 +23267,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 62.4,
+      "pct_acum": 66.7,
       "unidades": 14,
       "venta": 448.0,
       "margen_unitario": 8.96,
@@ -22763,26 +23286,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 29,
-        "clave_interna": "LA-001",
-        "nombre": "Leche entera"
+        "id": 2,
+        "clave_interna": "AB-002",
+        "nombre": "Arroz superextra"
       },
-      "categoria": "Lácteos y huevo",
+      "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 64.4,
+      "pct_acum": 68.6,
       "unidades": 13,
-      "venta": 357.5,
-      "margen_unitario": 7.7,
-      "margen_total": 100.1,
+      "venta": 388.7,
+      "margen_unitario": 8.37,
+      "margen_total": 108.81,
       "costo_estimado": true,
-      "existencia": 45,
+      "existencia": 36,
       "minimo": 10,
       "quiebres": 0,
       "demanda_dia": 0.14,
-      "cobertura_dias": 311.5,
-      "rotacion": 0.29,
+      "cobertura_dias": 249.2,
+      "rotacion": 0.36,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 312 días, exceso de stock",
+      "motivo": "cobertura de 249 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -22794,7 +23317,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 66.3,
+      "pct_acum": 70.4,
       "unidades": 12,
       "venta": 504.0,
       "margen_unitario": 11.76,
@@ -22819,7 +23342,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 68.1,
+      "pct_acum": 72.2,
       "unidades": 12,
       "venta": 504.0,
       "margen_unitario": 11.76,
@@ -22838,76 +23361,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 38,
-        "clave_interna": "LI-002",
-        "nombre": "Jabón para trastes"
-      },
-      "categoria": "Limpieza del hogar",
-      "clase": "A",
-      "pct_acum": 69.9,
-      "unidades": 12,
-      "venta": 312.0,
-      "margen_unitario": 7.28,
-      "margen_total": 87.36,
-      "costo_estimado": true,
-      "existencia": 42,
-      "minimo": 5,
-      "quiebres": 0,
-      "demanda_dia": 0.13,
-      "cobertura_dias": 315.0,
-      "rotacion": 0.29,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 315 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
-        "id": 2,
-        "clave_interna": "AB-002",
-        "nombre": "Arroz superextra"
-      },
-      "categoria": "Abarrote básico",
-      "clase": "A",
-      "pct_acum": 71.6,
-      "unidades": 11,
-      "venta": 328.9,
-      "margen_unitario": 8.37,
-      "margen_total": 92.07,
-      "costo_estimado": true,
-      "existencia": 36,
-      "minimo": 10,
-      "quiebres": 0,
-      "demanda_dia": 0.12,
-      "cobertura_dias": 294.5,
-      "rotacion": 0.31,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 295 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
         "id": 6,
         "clave_interna": "AB-006",
         "nombre": "Harina de maíz nixtamalizado"
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 73.3,
+      "pct_acum": 73.8,
       "unidades": 11,
       "venta": 286.0,
       "margen_unitario": 7.28,
       "margen_total": 80.08,
       "costo_estimado": true,
-      "existencia": 93,
+      "existencia": 98,
       "minimo": 10,
       "quiebres": 0,
       "demanda_dia": 0.12,
-      "cobertura_dias": 760.9,
-      "rotacion": 0.12,
+      "cobertura_dias": 801.8,
+      "rotacion": 0.11,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 761 días, exceso de stock",
+      "motivo": "cobertura de 802 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -22919,7 +23392,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 75.0,
+      "pct_acum": 75.4,
       "unidades": 11,
       "venta": 181.5,
       "margen_unitario": 4.62,
@@ -22944,7 +23417,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 76.7,
+      "pct_acum": 77.1,
       "unidades": 11,
       "venta": 165.0,
       "margen_unitario": 4.2,
@@ -22969,7 +23442,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 78.4,
+      "pct_acum": 78.7,
       "unidades": 11,
       "venta": 187.0,
       "margen_unitario": 4.76,
@@ -22994,7 +23467,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 80.1,
+      "pct_acum": 80.4,
       "unidades": 11,
       "venta": 242.0,
       "margen_unitario": 6.16,
@@ -23060,11 +23533,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: d1cbc7cf-18eb-4d97-9fbf-ad244d50b669
+X-Traza-Id: 48b079ea-f7b0-4d66-bbb5-0f219309e4b1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 8 ms · traza `d1cbc7cf-18eb-4d97-9fbf-ad244d50b669`
+**Respuesta.** HTTP 400 (esperado 400) · 11 ms · traza `48b079ea-f7b0-4d66-bbb5-0f219309e4b1`
 
 ```json
 {
@@ -23077,7 +23550,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "mensaje": "Valor no permitido para clase: Z."
       }
     ],
-    "traza_id": "d1cbc7cf-18eb-4d97-9fbf-ad244d50b669"
+    "traza_id": "48b079ea-f7b0-4d66-bbb5-0f219309e4b1"
   }
 }
 ```
@@ -23090,15 +23563,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/xml
-X-Traza-Id: e8437794-da93-47eb-8b43-2248e574a0b1
+X-Traza-Id: 8982df86-6d9a-4224-af38-c5cbf5a61fac
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 375 ms · traza `e8437794-da93-47eb-8b43-2248e574a0b1`
+**Respuesta.** HTTP 200 (esperado 200) · 458 ms · traza `8982df86-6d9a-4224-af38-c5cbf5a61fac`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<surtido_analisis xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><microhub><id>1</id><nombre>Microhub San Bernabé Centro</nombre></microhub><ventana_dias>90</ventana_dias><resumen><productos>51</productos><aumentar>4</aumentar><mantener>0</mantener><reducir>47</reducir><eliminar>0</eliminar><excluir>0</excluir><clase_a>33</clase_a><clase_b>12</clase_b><clase_c>6</clase_c><unidades_a_comprar>0</unidades_a_comprar><con_costo_estimado>51</con_costo_estimado><espacio><total>3600</total><ocupado>4007</ocupado><sugerido>0</sugerido><ocupacion_pct>111.3</ocupacion_pct></espacio><presupuesto><total>120000</total><requerido>0</requerido><uso_pct>0</uso_pct></presupuesto></resumen><filas><fila><producto><id>28</id><clave_interna>BE-008</clave_interna><nombre>Polvo para agua de sabor</nombre></producto><categoria>Bebidas</categoria><clase>A</clase><pct_acum>4.3</pct_acum><unidades>28</unidades><venta>210</venta><margen_unitario>2.1</margen_unitario><margen_total>58.8</margen_total><costo_estimado>true</costo_estimado><existencia>24</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.31</demanda_dia><cobertura_dias>77.1</cobertura_dias><rotacion>1.17</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 77 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>8</id><clave_interna>AB-008</clave_interna><nombre>Pasta para sopa surtida</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>8.4</pct_acum><unidades>27</unidades><venta>256.5</venta><margen_unitario>2.66</margen_unitario><margen_total>71.82</margen_total><costo_estimado>true</costo_estimado><existencia>6</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.3</demanda_dia><cobertura_dias>20</cobertura_dias><rotacion>4.5</rotacion><recomendacion>Aumentar</recomendacion><motivo>existencia en o bajo el mínimo</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>45</id><clave_interna>LI-009</clave_interna><nombre>Fibra para trastes</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>12.3</pct_acum><unidades>25</unidades><venta>450</venta><margen_unitario>5.04</margen_unitario><margen_total>126</margen_total><costo_estimado>true</costo_estimado><existencia>43</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.28</demanda_dia><cobertura_dias>154.8</cobertura_dias><rotacion>0.58</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 155 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>48</id><clave_interna>HI-003</clave_interna><nombre>Pasta dental</nombre></producto><categoria>Higiene personal</categoria><clase>A</clase><pct_acum>16</pct_acum><unidades>24</unidades><venta>768</venta><margen_unitario>8.96</margen_unitario><margen_total>215.04</margen_total><costo_estimado>true</costo_estimado><existencia>72</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.27</demanda_dia><cobertura_dias>270</cobertura_dias><rotacion>0.33</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 270 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>7</id><clave_interna>AB-007</clave_interna><nombre>Harina de trigo</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>19</pct_acum><unidades>20</unidades><venta>490</venta><margen_unitario>6.86</margen_unitario><margen_total>137.2</margen_total><costo_estimado>true</costo_estimado><existencia>12</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.22</demanda_dia><cobertura_dias>54</cobertura_dias><rotacion>1.67</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 54 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>5</id><clave_interna>AB-005</clave_interna><nombre>Sal de mesa</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>21.8</pct_acum><unidades>18</unidades><venta>252</venta><margen_unitario>3.92</margen_unitario><margen_total>70.56</margen_total><costo_estimado>true</costo_estimado><existencia>22</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.2</demanda_dia><cobertura_dias>110</cobertura_dias><rotacion>0.82</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 110 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>12</id><clave_interna>AB-012</clave_interna><nombre>Chiles jalapeños en escabeche</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>24.5</pct_acum><unidades>18</unidades><venta>351</venta><margen_unitario>5.46</margen_unitario><margen_total>98.28</margen_total><costo_estimado>true</costo_estimado><existencia>575</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.2</demanda_dia><cobertura_dias>2875</cobertura_dias><rotacion>0.03</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 2875 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>34</id><clave_interna>LA-006</clave_interna><nombre>Yogur natural</nombre></producto><categoria>Lácteos y huevo</categoria><clase>A</clase><pct_acum>27.3</pct_acum><unidades>18</unidades><venta>792</venta><margen_unitario>12.32</margen_unitario><margen_total>221.76</margen_total><costo_estimado>true</costo_estimado><existencia>34</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.2</demanda_dia><cobertura_dias>170</cobertura_dias><rotacion>0.53</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 170 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>36</id><clave_interna>LA-008</clave_interna><nombre>Jamón de pavo</nombre></producto><categoria>Lácteos y huevo</categoria><clase>A</clase><pct_acum>30.1</pct_acum><unidades>18</unidades><venta>828</venta><margen_unitario>12.88</margen_unitario><margen_total>231.84</margen_total><costo_estimado>true</costo_estimado><existencia>30</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.2</demanda_dia><cobertura_dias>150</cobertura_dias><rotacion>0.6</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 150 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>25</id><clave_interna>BE-005</clave_interna><nombre>Jugo de naranja</nombre></producto><categoria>Bebidas</categoria><clase>A</clase><pct_acum>32.7</pct_acum><unidades>17</unidades><venta>476</venta><margen_unitario>7.84</margen_unitario><margen_total>133.28</margen_total><costo_estimado>true</costo_estimado><existencia>78</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.19</demanda_dia><cobertura_dias>412.9</cobertura_dias><rotacion>0.22</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 413 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>11</id><clave_interna>AB-011</clave_interna><nombre>Frijoles refritos</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>35.1</pct_acum><unidades>16</unidades><venta>368</venta><margen_unitario>6.44</margen_unitario><margen_total>103.04</margen_total><costo_estimado>true</costo_estimado><existencia>22</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.18</demanda_dia><cobertura_dias>123.8</cobertura_dias><rotacion>0.73</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 124 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>40</id><clave_interna>LI-004</clave_interna><nombre>Limpiador multiusos</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>37.6</pct_acum><unidades>16</unidades><venta>448</venta><margen_unitario>7.84</margen_unitario><margen_total>125.44</margen_total><costo_estimado>true</costo_estimado><existencia>8</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.18</demanda_dia><cobertura_dias>45</cobertura_dias><rotacion>2</rotacion><recomendacion>Aumentar</recomendacion><motivo>existencia en o bajo el mínimo</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>44</id><clave_interna>LI-008</clave_interna><nombre>Bolsas para basura</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>40</pct_acum><unidades>16</unidades><venta>384</venta><margen_unitario>6.72</margen_unitario><margen_total>107.52</margen_total><costo_estimado>true</costo_estimado><existencia>19</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.18</demanda_dia><cobertura_dias>106.9</cobertura_dias><rotacion>0.84</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 107 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>50</id><clave_interna>HI-005</clave_interna><nombre>Toallas femeninas</nombre></producto><categoria>Higiene personal</categoria><clase>A</clase><pct_acum>42.5</pct_acum><unidades>16</unidades><venta>576</venta><margen_unitario>10.08</margen_unitario><margen_total>161.28</margen_total><costo_estimado>true</costo_estimado><existencia>68</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.18</demanda_dia><cobertura_dias>382.5</cobertura_dias><rotacion>0.24</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 382 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>18</id><clave_interna>AB-018</clave_interna><nombre>Pan de caja blanco</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>44.8</pct_acum><unidades>15</unidades><venta>660</venta><margen_unitario>12.32</margen_unitario><margen_total>184.8</margen_total><costo_estimado>true</costo_estimado><existencia>62</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.17</demanda_dia><cobertura_dias>372</cobertura_dias><rotacion>0.24</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 372 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>20</id><clave_interna>AB-020</clave_interna><nombre>Lenteja</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>47.1</pct_acum><unidades>15</unidades><venta>360</venta><margen_unitario>6.72</margen_unitario><margen_total>100.8</margen_total><costo_estimado>true</costo_estimado><existencia>73</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.17</demanda_dia><cobertura_dias>438</cobertura_dias><rotacion>0.21</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 438 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>24</id><clave_interna>BE-004</clave_interna><nombre>Refresco sabor manzana</nombre></producto><categoria>Bebidas</categoria><clase>A</clase><pct_acum>49.4</pct_acum><unidades>15</unidades><venta>540</venta><margen_unitario>10.08</margen_unitario><margen_total>151.2</margen_total><costo_estimado>true</costo_estimado><existencia>37</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.17</demanda_dia><cobertura_dias>222</cobertura_dias><rotacion>0.41</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 222 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>26</id><clave_interna>BE-006</clave_interna><nombre>Bebida de soya</nombre></producto><categoria>Bebidas</categoria><clase>A</clase><pct_acum>51.7</pct_acum><unidades>15</unidades><venta>480</venta><margen_unitario>8.96</margen_unitario><margen_total>134.4</margen_total><costo_estimado>true</costo_estimado><existencia>13</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.17</demanda_dia><cobertura_dias>78</cobertura_dias><rotacion>1.15</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 78 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>13</id><clave_interna>AB-013</clave_interna><nombre>Puré de tomate</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>53.8</pct_acum><unidades>14</unidades><venta>154</venta><margen_unitario>3.08</margen_unitario><margen_total>43.12</margen_total><costo_estimado>true</costo_estimado><existencia>56</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.16</demanda_dia><cobertura_dias>360</cobertura_dias><rotacion>0.25</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 360 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>30</id><clave_interna>LA-002</clave_interna><nombre>Leche deslactosada</nombre></producto><categoria>Lácteos y huevo</categoria><clase>A</clase><pct_acum>56</pct_acum><unidades>14</unidades><venta>434</venta><margen_unitario>8.68</margen_unitario><margen_total>121.52</margen_total><costo_estimado>true</costo_estimado><existencia>10</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.16</demanda_dia><cobertura_dias>64.3</cobertura_dias><rotacion>1.4</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 64 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>39</id><clave_interna>LI-003</clave_interna><nombre>Cloro</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>58.1</pct_acum><unidades>14</unidades><venta>273</venta><margen_unitario>5.46</margen_unitario><margen_total>76.44</margen_total><costo_estimado>true</costo_estimado><existencia>41</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.16</demanda_dia><cobertura_dias>263.6</cobertura_dias><rotacion>0.34</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 264 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>42</id><clave_interna>LI-006</clave_interna><nombre>Papel higiénico</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>60.3</pct_acum><unidades>14</unidades><venta>532</venta><margen_unitario>10.64</margen_unitario><margen_total>148.96</margen_total><costo_estimado>true</costo_estimado><existencia>64</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.16</demanda_dia><cobertura_dias>411.4</cobertura_dias><rotacion>0.22</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 411 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>43</id><clave_interna>LI-007</clave_interna><nombre>Servilletas</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>62.4</pct_acum><unidades>14</unidades><venta>448</venta><margen_unitario>8.96</margen_unitario><margen_total>125.44</margen_total><costo_estimado>true</costo_estimado><existencia>65</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.16</demanda_dia><cobertura_dias>417.9</cobertura_dias><rotacion>0.22</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 418 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>29</id><clave_interna>LA-001</clave_interna><nombre>Leche entera</nombre></producto><categoria>Lácteos y huevo</categoria><clase>A</clase><pct_acum>64.4</pct_acum><unidades>13</unidades><venta>357.5</venta><margen_unitario>7.7</margen_unitario><margen_total>100.1</margen_total><costo_estimado>true</costo_estimado><existencia>45</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.14</demanda_dia><cobertura_dias>311.5</cobertura_dias><rotacion>0.29</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 312 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>3</id><clave_interna>AB-003</clave_interna><nombre>Aceite vegetal</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>66.3</pct_acum><unidades>12</unidades><venta>504</venta><margen_unitario>11.76</margen_unitario><margen_total>141.12</margen_total><costo_estimado>true</costo_estimado><existencia>22</existencia><minimo>5</minimo><quiebres>1</quiebres><demanda_dia>0.13</demanda_dia><cobertura_dias>165</cobertura_dias><rotacion>0.55</rotacion><recomendacion>Aumentar</recomendacion><motivo>hubo quiebres</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>19</id><clave_interna>AB-019</clave_interna><nombre>Huevo blanco</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>68.1</pct_acum><unidades>12</unidades><venta>504</venta><margen_unitario>11.76</margen_unitario><margen_total>141.12</margen_total><costo_estimado>true</costo_estimado><existencia>48</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.13</demanda_dia><cobertura_dias>360</cobertura_dias><rotacion>0.25</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 360 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>38</id><clave_interna>LI-002</clave_interna><nombre>Jabón para trastes</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>69.9</pct_acum><unidades>12</unidades><venta>312</venta><margen_unitario>7.28</margen_unitario><margen_total>87.36</margen_total><costo_estimado>true</costo_estimado><existencia>42</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.13</demanda_dia><cobertura_dias>315</cobertura_dias><rotacion>0.29</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 315 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>2</id><clave_interna>AB-002</clave_interna><nombre>Arroz superextra</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>71.6</pct_acum><unidades>11</unidades><venta>328.9</venta><margen_unitario>8.37</margen_unitario><margen_total>92.07</margen_total><costo_estimado>true</costo_estimado><existencia>36</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.12</demanda_dia><cobertura_dias>294.5</cobertura_dias><rotacion>0.31</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 295 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>6</id><clave_interna>AB-006</clave_interna><nombre>Harina de maíz nixtamalizado</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>73.3</pct_acum><unidades>11</unidades><venta>286</venta><margen_unitario>7.28</margen_unitario><margen_total>80.08</margen_total><costo_estimado>true</costo_estimado><existencia>93</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.12</demanda_dia><cobertura_dias>760.9</cobertura_dias><rotacion>0.12</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 761 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>16</id><clave_interna>AB-016</clave_interna><nombre>Galletas María</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>75</pct_acum><unidades>11</unidades><venta>181.5</venta><margen_unitario>4.62</margen_unitario><margen_total>50.82</margen_total><costo_estimado>true</costo_estimado><existencia>75</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.12</demanda_dia><cobertura_dias>613.6</cobertura_dias><rotacion>0.15</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 614 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>22</id><clave_interna>BE-002</clave_interna><nombre>Agua embotellada</nombre></producto><categoria>Bebidas</categoria><clase>A</clase><pct_acum>76.7</pct_acum><unidades>11</unidades><venta>165</venta><margen_unitario>4.2</margen_unitario><margen_total>46.2</margen_total><costo_estimado>true</costo_estimado><existencia>66</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.12</demanda_dia><cobertura_dias>540</cobertura_dias><rotacion>0.17</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 540 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>27</id><clave_interna>BE-007</clave_interna><nombre>Té helado de limón</nombre></producto><categoria>Bebidas</categoria><clase>A</clase><pct_acum>78.4</pct_acum><unidades>11</unidades><venta>187</venta><margen_unitario>4.76</margen_unitario><margen_total>52.36</margen_total><costo_estimado>true</costo_estimado><existencia>84</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.12</demanda_dia><cobertura_dias>687.3</cobertura_dias><rotacion>0.13</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 687 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>35</id><clave_interna>LA-007</clave_interna><nombre>Mantequilla</nombre></producto><categoria>Lácteos y huevo</categoria><clase>A</clase><pct_acum>80.1</pct_acum><unidades>11</unidades><venta>242</venta><margen_unitario>6.16</margen_unitario><margen_total>67.76</margen_total><costo_estimado>true</costo_estimado><existencia>60</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.12</demanda_dia><cobertura_dias>490.9</cobertura_dias><rotacion>0.18</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 491 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>46</id><clave_interna>HI-001</clave_interna><nombre>Jabón de tocador</nombre></producto><categoria>Higiene personal</categoria><clase>B</clase><pct_acum>81.7</pct_acum><unidades>11</unidades><venta>159.5</venta><margen_unitario>4.06</margen_unitario><margen_total>44.66</margen_total><costo_estimado>true</costo_estimado><existencia>60</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.12</demanda_dia><cobertura_dias>490.9</cobertura_dias><rotacion>0.18</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 491 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>1</id><clave_interna>AB-001</clave_interna><nombre>Frijol negro a granel</nombre></producto><categoria>Abarrote básico</categoria><clase>B</clase><pct_acum>83.3</pct_acum><unidades>10</unidades><venta>385</venta><margen_unitario>10.78</margen_unitario><margen_total>107.8</margen_total><costo_estimado>true</costo_estimado><existencia>58</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.11</demanda_dia><cobertura_dias>522</cobertura_dias><rotacion>0.17</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 522 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>23</id><clave_interna>BE-003</clave_interna><nombre>Refresco de cola</nombre></producto><categoria>Bebidas</categoria><clase>B</clase><pct_acum>84.7</pct_acum><unidades>9</unidades><venta>346.5</venta><margen_unitario>10.78</margen_unitario><margen_total>97.02</margen_total><costo_estimado>true</costo_estimado><existencia>52</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.1</demanda_dia><cobertura_dias>520</cobertura_dias><rotacion>0.17</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 520 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>47</id><clave_interna>HI-002</clave_interna><nombre>Shampoo</nombre></producto><categoria>Higiene personal</categoria><clase>B</clase><pct_acum>86</pct_acum><unidades>9</unidades><venta>486</venta><margen_unitario>15.12</margen_unitario><margen_total>136.08</margen_total><costo_estimado>true</costo_estimado><existencia>34</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.1</demanda_dia><cobertura_dias>340</cobertura_dias><rotacion>0.26</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 340 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>9</id><clave_interna>AB-009</clave_interna><nombre>Atún en agua</nombre></producto><categoria>Abarrote básico</categoria><clase>B</clase><pct_acum>87.3</pct_acum><unidades>8</unidades><venta>168</venta><margen_unitario>5.88</margen_unitario><margen_total>47.04</margen_total><costo_estimado>true</costo_estimado><existencia>42</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.09</demanda_dia><cobertura_dias>472.5</cobertura_dias><rotacion>0.19</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 472 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>31</id><clave_interna>LA-003</clave_interna><nombre>Queso fresco</nombre></producto><categoria>Lácteos y huevo</categoria><clase>B</clase><pct_acum>88.5</pct_acum><unidades>8</unidades><venta>464</venta><margen_unitario>16.24</margen_unitario><margen_total>129.92</margen_total><costo_estimado>true</costo_estimado><existencia>301</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.09</demanda_dia><cobertura_dias>3386.2</cobertura_dias><rotacion>0.03</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 3386 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>33</id><clave_interna>LA-005</clave_interna><nombre>Crema ácida</nombre></producto><categoria>Lácteos y huevo</categoria><clase>B</clase><pct_acum>89.7</pct_acum><unidades>8</unidades><venta>288</venta><margen_unitario>10.08</margen_unitario><margen_total>80.64</margen_total><costo_estimado>true</costo_estimado><existencia>78</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.09</demanda_dia><cobertura_dias>877.5</cobertura_dias><rotacion>0.1</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 878 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>51</id><clave_interna>HI-006</clave_interna><nombre>Pañal etapa 3</nombre></producto><categoria>Higiene personal</categoria><clase>B</clase><pct_acum>91</pct_acum><unidades>8</unidades><venta>544</venta><margen_unitario>19.04</margen_unitario><margen_total>152.32</margen_total><costo_estimado>true</costo_estimado><existencia>29</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.09</demanda_dia><cobertura_dias>326.2</cobertura_dias><rotacion>0.28</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 326 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>10</id><clave_interna>AB-010</clave_interna><nombre>Sardina en salsa de tomate</nombre></producto><categoria>Abarrote básico</categoria><clase>B</clase><pct_acum>92</pct_acum><unidades>7</unidades><venta>185.5</venta><margen_unitario>7.42</margen_unitario><margen_total>51.94</margen_total><costo_estimado>true</costo_estimado><existencia>1058</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.08</demanda_dia><cobertura_dias>13602.9</cobertura_dias><rotacion>0.01</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 13603 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>14</id><clave_interna>AB-014</clave_interna><nombre>Café soluble</nombre></producto><categoria>Abarrote básico</categoria><clase>B</clase><pct_acum>93.1</pct_acum><unidades>7</unidades><venta>364</venta><margen_unitario>14.56</margen_unitario><margen_total>101.92</margen_total><costo_estimado>true</costo_estimado><existencia>33</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.08</demanda_dia><cobertura_dias>424.3</cobertura_dias><rotacion>0.21</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 424 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>32</id><clave_interna>LA-004</clave_interna><nombre>Queso Oaxaca</nombre></producto><categoria>Lácteos y huevo</categoria><clase>B</clase><pct_acum>94.2</pct_acum><unidades>7</unidades><venta>504</venta><margen_unitario>20.16</margen_unitario><margen_total>141.12</margen_total><costo_estimado>true</costo_estimado><existencia>20</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.08</demanda_dia><cobertura_dias>257.1</cobertura_dias><rotacion>0.35</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 257 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>41</id><clave_interna>LI-005</clave_interna><nombre>Suavizante de telas</nombre></producto><categoria>Limpieza del hogar</categoria><clase>B</clase><pct_acum>95.2</pct_acum><unidades>7</unidades><venta>231</venta><margen_unitario>9.24</margen_unitario><margen_total>64.68</margen_total><costo_estimado>true</costo_estimado><existencia>69</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.08</demanda_dia><cobertura_dias>887.1</cobertura_dias><rotacion>0.1</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 887 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>49</id><clave_interna>HI-004</clave_interna><nombre>Desodorante</nombre></producto><categoria>Higiene personal</categoria><clase>C</clase><pct_acum>96.3</pct_acum><unidades>7</unidades><venta>336</venta><margen_unitario>13.44</margen_unitario><margen_total>94.08</margen_total><costo_estimado>true</costo_estimado><existencia>36</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.08</demanda_dia><cobertura_dias>462.9</cobertura_dias><rotacion>0.19</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 463 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>17</id><clave_interna>AB-017</clave_interna><nombre>Tortillas de maíz</nombre></producto><categoria>Abarrote básico</categoria><clase>C</clase><pct_acum>97.2</pct_acum><unidades>6</unidades><venta>144</venta><margen_unitario>6.72</margen_unitario><margen_total>40.32</margen_total><costo_estimado>true</costo_estimado><existencia>21</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.07</demanda_dia><cobertura_dias>315</cobertura_dias><rotacion>0.29</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 315 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>37</id><clave_interna>LI-001</clave_interna><nombre>Detergente en polvo</nombre></producto><categoria>Limpieza del hogar</categoria><clase>C</clase><pct_acum>98.2</pct_acum><unidades>6</unidades><venta>252</venta><margen_unitario>11.76</margen_unitario><margen_total>70.56</margen_total><costo_estimado>true</costo_estimado><existencia>11</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.07</demanda_dia><cobertura_dias>165</cobertura_dias><rotacion>0.55</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 165 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>4</id><clave_interna>AB-004</clave_interna><nombre>Azúcar estándar</nombre></producto><categoria>Abarrote básico</categoria><clase>C</clase><pct_acum>98.8</pct_acum><unidades>4</unidades><venta>114</venta><margen_unitario>7.98</margen_unitario><margen_total>31.92</margen_total><costo_estimado>true</costo_estimado><existencia>18</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.04</demanda_dia><cobertura_dias>405</cobertura_dias><rotacion>0.22</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 405 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>15</id><clave_interna>AB-015</clave_interna><nombre>Avena en hojuelas</nombre></producto><categoria>Abarrote básico</categoria><clase>C</clase><pct_acum>99.4</pct_acum><unidades>4</unidades><venta>108</venta><margen_unitario>7.56</margen_unitario><margen_total>30.24</margen_total><costo_estimado>true</costo_estimado><existencia>52</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.04</demanda_dia><cobertura_dias>1170</cobertura_dias><rotacion>0.08</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 1170 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>21</id><clave_interna>BE-001</clave_interna><nombre>Agua purificada</nombre></producto><categoria>Bebidas</categoria><clase>C</clase><pct_acum>100</pct_acum><unidades>4</unidades><venta>152</venta><margen_unitario>10.64</margen_unitario><margen_total>42.56</margen_total><costo_estimado>true</costo_estimado><existencia>30</existencia><minimo>10</minimo><quiebres>1</quiebres><demanda_dia>0.04</demanda_dia><cobertura_dias>675</cobertura_dias><rotacion>0.13</rotacion><recomendacion>Aumentar</recomendacion><motivo>hubo quiebres</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila></filas><supuestos_usados><supuesto><clave>abc_a_pct</clave><valor>80</valor><modificado>false</modificado></supuesto><supuesto><clave>abc_b_pct</clave><valor>95</valor><modificado>false</modificado></supuesto><supuesto><clave>cobertura_dias_a</clave><valor>7</valor><modificado>false</modificado></supuesto><supuesto><clave>cobertura_dias_b</clave><valor>5</valor><modificado>false</modificado></supuesto><supuesto><clave>cobertura_dias_c</clave><valor>3</valor><modificado>false</modificado></supuesto><supuesto><clave>cobertura_dias_exceso</clave><valor>30</valor><modificado>false</modificado></supuesto><supuesto><clave>ventana_analisis_dias</clave><valor>90</valor><modificado>false</modificado></supuesto></supuestos_usados></surtido_analisis>
+<surtido_analisis xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><microhub><id>1</id><nombre>Microhub San Bernabé Centro</nombre></microhub><ventana_dias>90</ventana_dias><resumen><productos>51</productos><aumentar>3</aumentar><mantener>0</mantener><reducir>48</reducir><eliminar>0</eliminar><excluir>0</excluir><clase_a>33</clase_a><clase_b>12</clase_b><clase_c>6</clase_c><unidades_a_comprar>0</unidades_a_comprar><con_costo_estimado>51</con_costo_estimado><espacio><total>3600</total><ocupado>4312</ocupado><sugerido>0</sugerido><ocupacion_pct>119.8</ocupacion_pct></espacio><presupuesto><total>120000</total><requerido>0</requerido><uso_pct>0</uso_pct></presupuesto></resumen><filas><fila><producto><id>8</id><clave_interna>AB-008</clave_interna><nombre>Pasta para sopa surtida</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>4.8</pct_acum><unidades>32</unidades><venta>304</venta><margen_unitario>2.66</margen_unitario><margen_total>85.12</margen_total><costo_estimado>true</costo_estimado><existencia>73</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.36</demanda_dia><cobertura_dias>205.3</cobertura_dias><rotacion>0.44</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 205 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>28</id><clave_interna>BE-008</clave_interna><nombre>Polvo para agua de sabor</nombre></producto><categoria>Bebidas</categoria><clase>A</clase><pct_acum>8.9</pct_acum><unidades>28</unidades><venta>210</venta><margen_unitario>2.1</margen_unitario><margen_total>58.8</margen_total><costo_estimado>true</costo_estimado><existencia>24</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.31</demanda_dia><cobertura_dias>77.1</cobertura_dias><rotacion>1.17</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 77 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>45</id><clave_interna>LI-009</clave_interna><nombre>Fibra para trastes</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>13.1</pct_acum><unidades>28</unidades><venta>504</venta><margen_unitario>5.04</margen_unitario><margen_total>141.12</margen_total><costo_estimado>true</costo_estimado><existencia>40</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.31</demanda_dia><cobertura_dias>128.6</cobertura_dias><rotacion>0.7</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 129 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>48</id><clave_interna>HI-003</clave_interna><nombre>Pasta dental</nombre></producto><categoria>Higiene personal</categoria><clase>A</clase><pct_acum>16.7</pct_acum><unidades>24</unidades><venta>768</venta><margen_unitario>8.96</margen_unitario><margen_total>215.04</margen_total><costo_estimado>true</costo_estimado><existencia>72</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.27</demanda_dia><cobertura_dias>270</cobertura_dias><rotacion>0.33</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 270 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>7</id><clave_interna>AB-007</clave_interna><nombre>Harina de trigo</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>19.6</pct_acum><unidades>20</unidades><venta>490</venta><margen_unitario>6.86</margen_unitario><margen_total>137.2</margen_total><costo_estimado>true</costo_estimado><existencia>12</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.22</demanda_dia><cobertura_dias>54</cobertura_dias><rotacion>1.67</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 54 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>5</id><clave_interna>AB-005</clave_interna><nombre>Sal de mesa</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>22.3</pct_acum><unidades>18</unidades><venta>252</venta><margen_unitario>3.92</margen_unitario><margen_total>70.56</margen_total><costo_estimado>true</costo_estimado><existencia>22</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.2</demanda_dia><cobertura_dias>110</cobertura_dias><rotacion>0.82</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 110 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>12</id><clave_interna>AB-012</clave_interna><nombre>Chiles jalapeños en escabeche</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>25</pct_acum><unidades>18</unidades><venta>351</venta><margen_unitario>5.46</margen_unitario><margen_total>98.28</margen_total><costo_estimado>true</costo_estimado><existencia>638</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.2</demanda_dia><cobertura_dias>3190</cobertura_dias><rotacion>0.03</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 3190 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>34</id><clave_interna>LA-006</clave_interna><nombre>Yogur natural</nombre></producto><categoria>Lácteos y huevo</categoria><clase>A</clase><pct_acum>27.7</pct_acum><unidades>18</unidades><venta>792</venta><margen_unitario>12.32</margen_unitario><margen_total>221.76</margen_total><costo_estimado>true</costo_estimado><existencia>34</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.2</demanda_dia><cobertura_dias>170</cobertura_dias><rotacion>0.53</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 170 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>36</id><clave_interna>LA-008</clave_interna><nombre>Jamón de pavo</nombre></producto><categoria>Lácteos y huevo</categoria><clase>A</clase><pct_acum>30.4</pct_acum><unidades>18</unidades><venta>828</venta><margen_unitario>12.88</margen_unitario><margen_total>231.84</margen_total><costo_estimado>true</costo_estimado><existencia>30</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.2</demanda_dia><cobertura_dias>150</cobertura_dias><rotacion>0.6</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 150 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>25</id><clave_interna>BE-005</clave_interna><nombre>Jugo de naranja</nombre></producto><categoria>Bebidas</categoria><clase>A</clase><pct_acum>32.9</pct_acum><unidades>17</unidades><venta>476</venta><margen_unitario>7.84</margen_unitario><margen_total>133.28</margen_total><costo_estimado>true</costo_estimado><existencia>78</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.19</demanda_dia><cobertura_dias>412.9</cobertura_dias><rotacion>0.22</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 413 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>38</id><clave_interna>LI-002</clave_interna><nombre>Jabón para trastes</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>35.4</pct_acum><unidades>17</unidades><venta>442</venta><margen_unitario>7.28</margen_unitario><margen_total>123.76</margen_total><costo_estimado>true</costo_estimado><existencia>37</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.19</demanda_dia><cobertura_dias>195.9</cobertura_dias><rotacion>0.46</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 196 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>11</id><clave_interna>AB-011</clave_interna><nombre>Frijoles refritos</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>37.8</pct_acum><unidades>16</unidades><venta>368</venta><margen_unitario>6.44</margen_unitario><margen_total>103.04</margen_total><costo_estimado>true</costo_estimado><existencia>25</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.18</demanda_dia><cobertura_dias>140.6</cobertura_dias><rotacion>0.64</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 141 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>29</id><clave_interna>LA-001</clave_interna><nombre>Leche entera</nombre></producto><categoria>Lácteos y huevo</categoria><clase>A</clase><pct_acum>40.2</pct_acum><unidades>16</unidades><venta>440</venta><margen_unitario>7.7</margen_unitario><margen_total>123.2</margen_total><costo_estimado>true</costo_estimado><existencia>45</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.18</demanda_dia><cobertura_dias>253.1</cobertura_dias><rotacion>0.36</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 253 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>40</id><clave_interna>LI-004</clave_interna><nombre>Limpiador multiusos</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>42.6</pct_acum><unidades>16</unidades><venta>448</venta><margen_unitario>7.84</margen_unitario><margen_total>125.44</margen_total><costo_estimado>true</costo_estimado><existencia>8</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.18</demanda_dia><cobertura_dias>45</cobertura_dias><rotacion>2</rotacion><recomendacion>Aumentar</recomendacion><motivo>existencia en o bajo el mínimo</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>44</id><clave_interna>LI-008</clave_interna><nombre>Bolsas para basura</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>44.9</pct_acum><unidades>16</unidades><venta>384</venta><margen_unitario>6.72</margen_unitario><margen_total>107.52</margen_total><costo_estimado>true</costo_estimado><existencia>19</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.18</demanda_dia><cobertura_dias>106.9</cobertura_dias><rotacion>0.84</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 107 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>50</id><clave_interna>HI-005</clave_interna><nombre>Toallas femeninas</nombre></producto><categoria>Higiene personal</categoria><clase>A</clase><pct_acum>47.3</pct_acum><unidades>16</unidades><venta>576</venta><margen_unitario>10.08</margen_unitario><margen_total>161.28</margen_total><costo_estimado>true</costo_estimado><existencia>68</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.18</demanda_dia><cobertura_dias>382.5</cobertura_dias><rotacion>0.24</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 382 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>18</id><clave_interna>AB-018</clave_interna><nombre>Pan de caja blanco</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>49.6</pct_acum><unidades>15</unidades><venta>660</venta><margen_unitario>12.32</margen_unitario><margen_total>184.8</margen_total><costo_estimado>true</costo_estimado><existencia>50</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.17</demanda_dia><cobertura_dias>300</cobertura_dias><rotacion>0.3</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 300 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>20</id><clave_interna>AB-020</clave_interna><nombre>Lenteja</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>51.8</pct_acum><unidades>15</unidades><venta>360</venta><margen_unitario>6.72</margen_unitario><margen_total>100.8</margen_total><costo_estimado>true</costo_estimado><existencia>73</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.17</demanda_dia><cobertura_dias>438</cobertura_dias><rotacion>0.21</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 438 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>24</id><clave_interna>BE-004</clave_interna><nombre>Refresco sabor manzana</nombre></producto><categoria>Bebidas</categoria><clase>A</clase><pct_acum>54</pct_acum><unidades>15</unidades><venta>540</venta><margen_unitario>10.08</margen_unitario><margen_total>151.2</margen_total><costo_estimado>true</costo_estimado><existencia>37</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.17</demanda_dia><cobertura_dias>222</cobertura_dias><rotacion>0.41</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 222 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>26</id><clave_interna>BE-006</clave_interna><nombre>Bebida de soya</nombre></producto><categoria>Bebidas</categoria><clase>A</clase><pct_acum>56.2</pct_acum><unidades>15</unidades><venta>480</venta><margen_unitario>8.96</margen_unitario><margen_total>134.4</margen_total><costo_estimado>true</costo_estimado><existencia>13</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.17</demanda_dia><cobertura_dias>78</cobertura_dias><rotacion>1.15</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 78 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>13</id><clave_interna>AB-013</clave_interna><nombre>Puré de tomate</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>58.3</pct_acum><unidades>14</unidades><venta>154</venta><margen_unitario>3.08</margen_unitario><margen_total>43.12</margen_total><costo_estimado>true</costo_estimado><existencia>56</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.16</demanda_dia><cobertura_dias>360</cobertura_dias><rotacion>0.25</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 360 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>30</id><clave_interna>LA-002</clave_interna><nombre>Leche deslactosada</nombre></producto><categoria>Lácteos y huevo</categoria><clase>A</clase><pct_acum>60.4</pct_acum><unidades>14</unidades><venta>434</venta><margen_unitario>8.68</margen_unitario><margen_total>121.52</margen_total><costo_estimado>true</costo_estimado><existencia>12</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.16</demanda_dia><cobertura_dias>77.1</cobertura_dias><rotacion>1.17</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 77 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>39</id><clave_interna>LI-003</clave_interna><nombre>Cloro</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>62.5</pct_acum><unidades>14</unidades><venta>273</venta><margen_unitario>5.46</margen_unitario><margen_total>76.44</margen_total><costo_estimado>true</costo_estimado><existencia>41</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.16</demanda_dia><cobertura_dias>263.6</cobertura_dias><rotacion>0.34</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 264 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>42</id><clave_interna>LI-006</clave_interna><nombre>Papel higiénico</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>64.6</pct_acum><unidades>14</unidades><venta>532</venta><margen_unitario>10.64</margen_unitario><margen_total>148.96</margen_total><costo_estimado>true</costo_estimado><existencia>64</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.16</demanda_dia><cobertura_dias>411.4</cobertura_dias><rotacion>0.22</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 411 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>43</id><clave_interna>LI-007</clave_interna><nombre>Servilletas</nombre></producto><categoria>Limpieza del hogar</categoria><clase>A</clase><pct_acum>66.7</pct_acum><unidades>14</unidades><venta>448</venta><margen_unitario>8.96</margen_unitario><margen_total>125.44</margen_total><costo_estimado>true</costo_estimado><existencia>65</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.16</demanda_dia><cobertura_dias>417.9</cobertura_dias><rotacion>0.22</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 418 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>2</id><clave_interna>AB-002</clave_interna><nombre>Arroz superextra</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>68.6</pct_acum><unidades>13</unidades><venta>388.7</venta><margen_unitario>8.37</margen_unitario><margen_total>108.81</margen_total><costo_estimado>true</costo_estimado><existencia>36</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.14</demanda_dia><cobertura_dias>249.2</cobertura_dias><rotacion>0.36</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 249 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>3</id><clave_interna>AB-003</clave_interna><nombre>Aceite vegetal</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>70.4</pct_acum><unidades>12</unidades><venta>504</venta><margen_unitario>11.76</margen_unitario><margen_total>141.12</margen_total><costo_estimado>true</costo_estimado><existencia>22</existencia><minimo>5</minimo><quiebres>1</quiebres><demanda_dia>0.13</demanda_dia><cobertura_dias>165</cobertura_dias><rotacion>0.55</rotacion><recomendacion>Aumentar</recomendacion><motivo>hubo quiebres</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>19</id><clave_interna>AB-019</clave_interna><nombre>Huevo blanco</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>72.2</pct_acum><unidades>12</unidades><venta>504</venta><margen_unitario>11.76</margen_unitario><margen_total>141.12</margen_total><costo_estimado>true</costo_estimado><existencia>48</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.13</demanda_dia><cobertura_dias>360</cobertura_dias><rotacion>0.25</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 360 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>6</id><clave_interna>AB-006</clave_interna><nombre>Harina de maíz nixtamalizado</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>73.8</pct_acum><unidades>11</unidades><venta>286</venta><margen_unitario>7.28</margen_unitario><margen_total>80.08</margen_total><costo_estimado>true</costo_estimado><existencia>98</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.12</demanda_dia><cobertura_dias>801.8</cobertura_dias><rotacion>0.11</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 802 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>16</id><clave_interna>AB-016</clave_interna><nombre>Galletas María</nombre></producto><categoria>Abarrote básico</categoria><clase>A</clase><pct_acum>75.4</pct_acum><unidades>11</unidades><venta>181.5</venta><margen_unitario>4.62</margen_unitario><margen_total>50.82</margen_total><costo_estimado>true</costo_estimado><existencia>75</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.12</demanda_dia><cobertura_dias>613.6</cobertura_dias><rotacion>0.15</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 614 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>22</id><clave_interna>BE-002</clave_interna><nombre>Agua embotellada</nombre></producto><categoria>Bebidas</categoria><clase>A</clase><pct_acum>77.1</pct_acum><unidades>11</unidades><venta>165</venta><margen_unitario>4.2</margen_unitario><margen_total>46.2</margen_total><costo_estimado>true</costo_estimado><existencia>66</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.12</demanda_dia><cobertura_dias>540</cobertura_dias><rotacion>0.17</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 540 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>27</id><clave_interna>BE-007</clave_interna><nombre>Té helado de limón</nombre></producto><categoria>Bebidas</categoria><clase>A</clase><pct_acum>78.7</pct_acum><unidades>11</unidades><venta>187</venta><margen_unitario>4.76</margen_unitario><margen_total>52.36</margen_total><costo_estimado>true</costo_estimado><existencia>84</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.12</demanda_dia><cobertura_dias>687.3</cobertura_dias><rotacion>0.13</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 687 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>35</id><clave_interna>LA-007</clave_interna><nombre>Mantequilla</nombre></producto><categoria>Lácteos y huevo</categoria><clase>A</clase><pct_acum>80.4</pct_acum><unidades>11</unidades><venta>242</venta><margen_unitario>6.16</margen_unitario><margen_total>67.76</margen_total><costo_estimado>true</costo_estimado><existencia>60</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.12</demanda_dia><cobertura_dias>490.9</cobertura_dias><rotacion>0.18</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 491 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>46</id><clave_interna>HI-001</clave_interna><nombre>Jabón de tocador</nombre></producto><categoria>Higiene personal</categoria><clase>B</clase><pct_acum>82</pct_acum><unidades>11</unidades><venta>159.5</venta><margen_unitario>4.06</margen_unitario><margen_total>44.66</margen_total><costo_estimado>true</costo_estimado><existencia>63</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.12</demanda_dia><cobertura_dias>515.5</cobertura_dias><rotacion>0.17</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 515 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>1</id><clave_interna>AB-001</clave_interna><nombre>Frijol negro a granel</nombre></producto><categoria>Abarrote básico</categoria><clase>B</clase><pct_acum>83.5</pct_acum><unidades>10</unidades><venta>385</venta><margen_unitario>10.78</margen_unitario><margen_total>107.8</margen_total><costo_estimado>true</costo_estimado><existencia>58</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.11</demanda_dia><cobertura_dias>522</cobertura_dias><rotacion>0.17</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 522 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>23</id><clave_interna>BE-003</clave_interna><nombre>Refresco de cola</nombre></producto><categoria>Bebidas</categoria><clase>B</clase><pct_acum>84.8</pct_acum><unidades>9</unidades><venta>346.5</venta><margen_unitario>10.78</margen_unitario><margen_total>97.02</margen_total><costo_estimado>true</costo_estimado><existencia>52</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.1</demanda_dia><cobertura_dias>520</cobertura_dias><rotacion>0.17</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 520 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>47</id><clave_interna>HI-002</clave_interna><nombre>Shampoo</nombre></producto><categoria>Higiene personal</categoria><clase>B</clase><pct_acum>86.2</pct_acum><unidades>9</unidades><venta>486</venta><margen_unitario>15.12</margen_unitario><margen_total>136.08</margen_total><costo_estimado>true</costo_estimado><existencia>34</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.1</demanda_dia><cobertura_dias>340</cobertura_dias><rotacion>0.26</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 340 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>49</id><clave_interna>HI-004</clave_interna><nombre>Desodorante</nombre></producto><categoria>Higiene personal</categoria><clase>B</clase><pct_acum>87.5</pct_acum><unidades>9</unidades><venta>432</venta><margen_unitario>13.44</margen_unitario><margen_total>120.96</margen_total><costo_estimado>true</costo_estimado><existencia>36</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.1</demanda_dia><cobertura_dias>360</cobertura_dias><rotacion>0.25</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 360 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>9</id><clave_interna>AB-009</clave_interna><nombre>Atún en agua</nombre></producto><categoria>Abarrote básico</categoria><clase>B</clase><pct_acum>88.7</pct_acum><unidades>8</unidades><venta>168</venta><margen_unitario>5.88</margen_unitario><margen_total>47.04</margen_total><costo_estimado>true</costo_estimado><existencia>42</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.09</demanda_dia><cobertura_dias>472.5</cobertura_dias><rotacion>0.19</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 472 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>31</id><clave_interna>LA-003</clave_interna><nombre>Queso fresco</nombre></producto><categoria>Lácteos y huevo</categoria><clase>B</clase><pct_acum>89.9</pct_acum><unidades>8</unidades><venta>464</venta><margen_unitario>16.24</margen_unitario><margen_total>129.92</margen_total><costo_estimado>true</costo_estimado><existencia>391</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.09</demanda_dia><cobertura_dias>4398.8</cobertura_dias><rotacion>0.02</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 4399 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>33</id><clave_interna>LA-005</clave_interna><nombre>Crema ácida</nombre></producto><categoria>Lácteos y huevo</categoria><clase>B</clase><pct_acum>91.1</pct_acum><unidades>8</unidades><venta>288</venta><margen_unitario>10.08</margen_unitario><margen_total>80.64</margen_total><costo_estimado>true</costo_estimado><existencia>78</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.09</demanda_dia><cobertura_dias>877.5</cobertura_dias><rotacion>0.1</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 878 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>51</id><clave_interna>HI-006</clave_interna><nombre>Pañal etapa 3</nombre></producto><categoria>Higiene personal</categoria><clase>B</clase><pct_acum>92.3</pct_acum><unidades>8</unidades><venta>544</venta><margen_unitario>19.04</margen_unitario><margen_total>152.32</margen_total><costo_estimado>true</costo_estimado><existencia>29</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.09</demanda_dia><cobertura_dias>326.2</cobertura_dias><rotacion>0.28</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 326 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>10</id><clave_interna>AB-010</clave_interna><nombre>Sardina en salsa de tomate</nombre></producto><categoria>Abarrote básico</categoria><clase>B</clase><pct_acum>93.3</pct_acum><unidades>7</unidades><venta>185.5</venta><margen_unitario>7.42</margen_unitario><margen_total>51.94</margen_total><costo_estimado>true</costo_estimado><existencia>1150</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.08</demanda_dia><cobertura_dias>14785.7</cobertura_dias><rotacion>0.01</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 14786 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>14</id><clave_interna>AB-014</clave_interna><nombre>Café soluble</nombre></producto><categoria>Abarrote básico</categoria><clase>B</clase><pct_acum>94.3</pct_acum><unidades>7</unidades><venta>364</venta><margen_unitario>14.56</margen_unitario><margen_total>101.92</margen_total><costo_estimado>true</costo_estimado><existencia>33</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.08</demanda_dia><cobertura_dias>424.3</cobertura_dias><rotacion>0.21</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 424 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>32</id><clave_interna>LA-004</clave_interna><nombre>Queso Oaxaca</nombre></producto><categoria>Lácteos y huevo</categoria><clase>B</clase><pct_acum>95.4</pct_acum><unidades>7</unidades><venta>504</venta><margen_unitario>20.16</margen_unitario><margen_total>141.12</margen_total><costo_estimado>true</costo_estimado><existencia>20</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.08</demanda_dia><cobertura_dias>257.1</cobertura_dias><rotacion>0.35</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 257 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>41</id><clave_interna>LI-005</clave_interna><nombre>Suavizante de telas</nombre></producto><categoria>Limpieza del hogar</categoria><clase>C</clase><pct_acum>96.4</pct_acum><unidades>7</unidades><venta>231</venta><margen_unitario>9.24</margen_unitario><margen_total>64.68</margen_total><costo_estimado>true</costo_estimado><existencia>69</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.08</demanda_dia><cobertura_dias>887.1</cobertura_dias><rotacion>0.1</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 887 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>17</id><clave_interna>AB-017</clave_interna><nombre>Tortillas de maíz</nombre></producto><categoria>Abarrote básico</categoria><clase>C</clase><pct_acum>97.3</pct_acum><unidades>6</unidades><venta>144</venta><margen_unitario>6.72</margen_unitario><margen_total>40.32</margen_total><costo_estimado>true</costo_estimado><existencia>21</existencia><minimo>8</minimo><quiebres>0</quiebres><demanda_dia>0.07</demanda_dia><cobertura_dias>315</cobertura_dias><rotacion>0.29</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 315 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>37</id><clave_interna>LI-001</clave_interna><nombre>Detergente en polvo</nombre></producto><categoria>Limpieza del hogar</categoria><clase>C</clase><pct_acum>98.2</pct_acum><unidades>6</unidades><venta>252</venta><margen_unitario>11.76</margen_unitario><margen_total>70.56</margen_total><costo_estimado>true</costo_estimado><existencia>11</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.07</demanda_dia><cobertura_dias>165</cobertura_dias><rotacion>0.55</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 165 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>4</id><clave_interna>AB-004</clave_interna><nombre>Azúcar estándar</nombre></producto><categoria>Abarrote básico</categoria><clase>C</clase><pct_acum>98.8</pct_acum><unidades>4</unidades><venta>114</venta><margen_unitario>7.98</margen_unitario><margen_total>31.92</margen_total><costo_estimado>true</costo_estimado><existencia>18</existencia><minimo>10</minimo><quiebres>0</quiebres><demanda_dia>0.04</demanda_dia><cobertura_dias>405</cobertura_dias><rotacion>0.22</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 405 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>15</id><clave_interna>AB-015</clave_interna><nombre>Avena en hojuelas</nombre></producto><categoria>Abarrote básico</categoria><clase>C</clase><pct_acum>99.4</pct_acum><unidades>4</unidades><venta>108</venta><margen_unitario>7.56</margen_unitario><margen_total>30.24</margen_total><costo_estimado>true</costo_estimado><existencia>52</existencia><minimo>5</minimo><quiebres>0</quiebres><demanda_dia>0.04</demanda_dia><cobertura_dias>1170</cobertura_dias><rotacion>0.08</rotacion><recomendacion>Reducir</recomendacion><motivo>cobertura de 1170 días, exceso de stock</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila><fila><producto><id>21</id><clave_interna>BE-001</clave_interna><nombre>Agua purificada</nombre></producto><categoria>Bebidas</categoria><clase>C</clase><pct_acum>100</pct_acum><unidades>4</unidades><venta>152</venta><margen_unitario>10.64</margen_unitario><margen_total>42.56</margen_total><costo_estimado>true</costo_estimado><existencia>30</existencia><minimo>10</minimo><quiebres>1</quiebres><demanda_dia>0.04</demanda_dia><cobertura_dias>675</cobertura_dias><rotacion>0.13</rotacion><recomendacion>Aumentar</recomendacion><motivo>hubo quiebres</motivo><sugerido>0</sugerido><limitado_por xsi:nil="true" /></fila></filas><supuestos_usados><supuesto><clave>abc_a_pct</clave><valor>80</valor><modificado>false</modificado></supuesto><supuesto><clave>abc_b_pct</clave><valor>95</valor><modificado>false</modificado></supuesto><supuesto><clave>cobertura_dias_a</clave><valor>7</valor><modificado>false</modificado></supuesto><supuesto><clave>cobertura_dias_b</clave><valor>5</valor><modificado>false</modificado></supuesto><supuesto><clave>cobertura_dias_c</clave><valor>3</valor><modificado>false</modificado></supuesto><supuesto><clave>cobertura_dias_exceso</clave><valor>30</valor><modificado>false</modificado></supuesto><supuesto><clave>ventana_analisis_dias</clave><valor>90</valor><modificado>false</modificado></supuesto></supuestos_usados></surtido_analisis>
 ```
 
 ### SUR-07 · El operador analiza su microhub · PASA
@@ -23109,11 +23582,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 6c02bf83-f40a-40f6-b1b5-80ea652d8df7
+X-Traza-Id: f5e8b55d-9755-41d2-8888-cdfc5aff0d26
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 293 ms · traza `6c02bf83-f40a-40f6-b1b5-80ea652d8df7`
+**Respuesta.** HTTP 200 (esperado 200) · 352 ms · traza `f5e8b55d-9755-41d2-8888-cdfc5aff0d26`
 
 ```json
 {
@@ -23124,9 +23597,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
   "ventana_dias": 90,
   "resumen": {
     "productos": 51,
-    "aumentar": 4,
+    "aumentar": 3,
     "mantener": 0,
-    "reducir": 47,
+    "reducir": 48,
     "eliminar": 0,
     "excluir": 0,
     "clase_a": 33,
@@ -23136,9 +23609,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
     "con_costo_estimado": 51,
     "espacio": {
       "total": 3600.0,
-      "ocupado": 4007.0,
+      "ocupado": 4312.0,
       "sugerido": 0.0,
-      "ocupacion_pct": 111.3
+      "ocupacion_pct": 119.8
     },
     "presupuesto": {
       "total": 120000.0,
@@ -23149,13 +23622,38 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
   "filas": [
     {
       "producto": {
+        "id": 8,
+        "clave_interna": "AB-008",
+        "nombre": "Pasta para sopa surtida"
+      },
+      "categoria": "Abarrote básico",
+      "clase": "A",
+      "pct_acum": 4.8,
+      "unidades": 32,
+      "venta": 304.0,
+      "margen_unitario": 2.66,
+      "margen_total": 85.12,
+      "costo_estimado": true,
+      "existencia": 73,
+      "minimo": 10,
+      "quiebres": 0,
+      "demanda_dia": 0.36,
+      "cobertura_dias": 205.3,
+      "rotacion": 0.44,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 205 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
         "id": 28,
         "clave_interna": "BE-008",
         "nombre": "Polvo para agua de sabor"
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 4.3,
+      "pct_acum": 8.9,
       "unidades": 28,
       "venta": 210.0,
       "margen_unitario": 2.1,
@@ -23174,51 +23672,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
     },
     {
       "producto": {
-        "id": 8,
-        "clave_interna": "AB-008",
-        "nombre": "Pasta para sopa surtida"
-      },
-      "categoria": "Abarrote básico",
-      "clase": "A",
-      "pct_acum": 8.4,
-      "unidades": 27,
-      "venta": 256.5,
-      "margen_unitario": 2.66,
-      "margen_total": 71.82,
-      "costo_estimado": true,
-      "existencia": 6,
-      "minimo": 10,
-      "quiebres": 0,
-      "demanda_dia": 0.3,
-      "cobertura_dias": 20.0,
-      "rotacion": 4.5,
-      "recomendacion": "Aumentar",
-      "motivo": "existencia en o bajo el mínimo",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
         "id": 45,
         "clave_interna": "LI-009",
         "nombre": "Fibra para trastes"
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 12.3,
-      "unidades": 25,
-      "venta": 450.0,
+      "pct_acum": 13.1,
+      "unidades": 28,
+      "venta": 504.0,
       "margen_unitario": 5.04,
-      "margen_total": 126.0,
+      "margen_total": 141.12,
       "costo_estimado": true,
-      "existencia": 43,
+      "existencia": 40,
       "minimo": 10,
       "quiebres": 0,
-      "demanda_dia": 0.28,
-      "cobertura_dias": 154.8,
-      "rotacion": 0.58,
+      "demanda_dia": 0.31,
+      "cobertura_dias": 128.6,
+      "rotacion": 0.7,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 155 días, exceso de stock",
+      "motivo": "cobertura de 129 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -23230,7 +23703,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "A",
-      "pct_acum": 16.0,
+      "pct_acum": 16.7,
       "unidades": 24,
       "venta": 768.0,
       "margen_unitario": 8.96,
@@ -23255,7 +23728,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 19.0,
+      "pct_acum": 19.6,
       "unidades": 20,
       "venta": 490.0,
       "margen_unitario": 6.86,
@@ -23280,7 +23753,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 21.8,
+      "pct_acum": 22.3,
       "unidades": 18,
       "venta": 252.0,
       "margen_unitario": 3.92,
@@ -23305,20 +23778,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 24.5,
+      "pct_acum": 25.0,
       "unidades": 18,
       "venta": 351.0,
       "margen_unitario": 5.46,
       "margen_total": 98.28,
       "costo_estimado": true,
-      "existencia": 575,
+      "existencia": 638,
       "minimo": 8,
       "quiebres": 0,
       "demanda_dia": 0.2,
-      "cobertura_dias": 2875.0,
+      "cobertura_dias": 3190.0,
       "rotacion": 0.03,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 2875 días, exceso de stock",
+      "motivo": "cobertura de 3190 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -23330,7 +23803,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 27.3,
+      "pct_acum": 27.7,
       "unidades": 18,
       "venta": 792.0,
       "margen_unitario": 12.32,
@@ -23355,7 +23828,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 30.1,
+      "pct_acum": 30.4,
       "unidades": 18,
       "venta": 828.0,
       "margen_unitario": 12.88,
@@ -23380,7 +23853,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 32.7,
+      "pct_acum": 32.9,
       "unidades": 17,
       "venta": 476.0,
       "margen_unitario": 7.84,
@@ -23399,26 +23872,76 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
     },
     {
       "producto": {
+        "id": 38,
+        "clave_interna": "LI-002",
+        "nombre": "Jabón para trastes"
+      },
+      "categoria": "Limpieza del hogar",
+      "clase": "A",
+      "pct_acum": 35.4,
+      "unidades": 17,
+      "venta": 442.0,
+      "margen_unitario": 7.28,
+      "margen_total": 123.76,
+      "costo_estimado": true,
+      "existencia": 37,
+      "minimo": 5,
+      "quiebres": 0,
+      "demanda_dia": 0.19,
+      "cobertura_dias": 195.9,
+      "rotacion": 0.46,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 196 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
         "id": 11,
         "clave_interna": "AB-011",
         "nombre": "Frijoles refritos"
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 35.1,
+      "pct_acum": 37.8,
       "unidades": 16,
       "venta": 368.0,
       "margen_unitario": 6.44,
       "margen_total": 103.04,
       "costo_estimado": true,
-      "existencia": 22,
+      "existencia": 25,
       "minimo": 10,
       "quiebres": 0,
       "demanda_dia": 0.18,
-      "cobertura_dias": 123.8,
-      "rotacion": 0.73,
+      "cobertura_dias": 140.6,
+      "rotacion": 0.64,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 124 días, exceso de stock",
+      "motivo": "cobertura de 141 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
+        "id": 29,
+        "clave_interna": "LA-001",
+        "nombre": "Leche entera"
+      },
+      "categoria": "Lácteos y huevo",
+      "clase": "A",
+      "pct_acum": 40.2,
+      "unidades": 16,
+      "venta": 440.0,
+      "margen_unitario": 7.7,
+      "margen_total": 123.2,
+      "costo_estimado": true,
+      "existencia": 45,
+      "minimo": 10,
+      "quiebres": 0,
+      "demanda_dia": 0.18,
+      "cobertura_dias": 253.1,
+      "rotacion": 0.36,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 253 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -23430,7 +23953,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 37.6,
+      "pct_acum": 42.6,
       "unidades": 16,
       "venta": 448.0,
       "margen_unitario": 7.84,
@@ -23455,7 +23978,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 40.0,
+      "pct_acum": 44.9,
       "unidades": 16,
       "venta": 384.0,
       "margen_unitario": 6.72,
@@ -23480,7 +24003,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "A",
-      "pct_acum": 42.5,
+      "pct_acum": 47.3,
       "unidades": 16,
       "venta": 576.0,
       "margen_unitario": 10.08,
@@ -23505,20 +24028,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 44.8,
+      "pct_acum": 49.6,
       "unidades": 15,
       "venta": 660.0,
       "margen_unitario": 12.32,
       "margen_total": 184.8,
       "costo_estimado": true,
-      "existencia": 62,
+      "existencia": 50,
       "minimo": 8,
       "quiebres": 0,
       "demanda_dia": 0.17,
-      "cobertura_dias": 372.0,
-      "rotacion": 0.24,
+      "cobertura_dias": 300.0,
+      "rotacion": 0.3,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 372 días, exceso de stock",
+      "motivo": "cobertura de 300 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -23530,7 +24053,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 47.1,
+      "pct_acum": 51.8,
       "unidades": 15,
       "venta": 360.0,
       "margen_unitario": 6.72,
@@ -23555,7 +24078,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 49.4,
+      "pct_acum": 54.0,
       "unidades": 15,
       "venta": 540.0,
       "margen_unitario": 10.08,
@@ -23580,7 +24103,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 51.7,
+      "pct_acum": 56.2,
       "unidades": 15,
       "venta": 480.0,
       "margen_unitario": 8.96,
@@ -23605,7 +24128,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 53.8,
+      "pct_acum": 58.3,
       "unidades": 14,
       "venta": 154.0,
       "margen_unitario": 3.08,
@@ -23630,20 +24153,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 56.0,
+      "pct_acum": 60.4,
       "unidades": 14,
       "venta": 434.0,
       "margen_unitario": 8.68,
       "margen_total": 121.52,
       "costo_estimado": true,
-      "existencia": 10,
+      "existencia": 12,
       "minimo": 5,
       "quiebres": 0,
       "demanda_dia": 0.16,
-      "cobertura_dias": 64.3,
-      "rotacion": 1.4,
+      "cobertura_dias": 77.1,
+      "rotacion": 1.17,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 64 días, exceso de stock",
+      "motivo": "cobertura de 77 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -23655,7 +24178,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 58.1,
+      "pct_acum": 62.5,
       "unidades": 14,
       "venta": 273.0,
       "margen_unitario": 5.46,
@@ -23680,7 +24203,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 60.3,
+      "pct_acum": 64.6,
       "unidades": 14,
       "venta": 532.0,
       "margen_unitario": 10.64,
@@ -23705,7 +24228,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Limpieza del hogar",
       "clase": "A",
-      "pct_acum": 62.4,
+      "pct_acum": 66.7,
       "unidades": 14,
       "venta": 448.0,
       "margen_unitario": 8.96,
@@ -23724,26 +24247,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
     },
     {
       "producto": {
-        "id": 29,
-        "clave_interna": "LA-001",
-        "nombre": "Leche entera"
+        "id": 2,
+        "clave_interna": "AB-002",
+        "nombre": "Arroz superextra"
       },
-      "categoria": "Lácteos y huevo",
+      "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 64.4,
+      "pct_acum": 68.6,
       "unidades": 13,
-      "venta": 357.5,
-      "margen_unitario": 7.7,
-      "margen_total": 100.1,
+      "venta": 388.7,
+      "margen_unitario": 8.37,
+      "margen_total": 108.81,
       "costo_estimado": true,
-      "existencia": 45,
+      "existencia": 36,
       "minimo": 10,
       "quiebres": 0,
       "demanda_dia": 0.14,
-      "cobertura_dias": 311.5,
-      "rotacion": 0.29,
+      "cobertura_dias": 249.2,
+      "rotacion": 0.36,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 312 días, exceso de stock",
+      "motivo": "cobertura de 249 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -23755,7 +24278,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 66.3,
+      "pct_acum": 70.4,
       "unidades": 12,
       "venta": 504.0,
       "margen_unitario": 11.76,
@@ -23780,7 +24303,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 68.1,
+      "pct_acum": 72.2,
       "unidades": 12,
       "venta": 504.0,
       "margen_unitario": 11.76,
@@ -23799,76 +24322,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
     },
     {
       "producto": {
-        "id": 38,
-        "clave_interna": "LI-002",
-        "nombre": "Jabón para trastes"
-      },
-      "categoria": "Limpieza del hogar",
-      "clase": "A",
-      "pct_acum": 69.9,
-      "unidades": 12,
-      "venta": 312.0,
-      "margen_unitario": 7.28,
-      "margen_total": 87.36,
-      "costo_estimado": true,
-      "existencia": 42,
-      "minimo": 5,
-      "quiebres": 0,
-      "demanda_dia": 0.13,
-      "cobertura_dias": 315.0,
-      "rotacion": 0.29,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 315 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
-        "id": 2,
-        "clave_interna": "AB-002",
-        "nombre": "Arroz superextra"
-      },
-      "categoria": "Abarrote básico",
-      "clase": "A",
-      "pct_acum": 71.6,
-      "unidades": 11,
-      "venta": 328.9,
-      "margen_unitario": 8.37,
-      "margen_total": 92.07,
-      "costo_estimado": true,
-      "existencia": 36,
-      "minimo": 10,
-      "quiebres": 0,
-      "demanda_dia": 0.12,
-      "cobertura_dias": 294.5,
-      "rotacion": 0.31,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 295 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
         "id": 6,
         "clave_interna": "AB-006",
         "nombre": "Harina de maíz nixtamalizado"
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 73.3,
+      "pct_acum": 73.8,
       "unidades": 11,
       "venta": 286.0,
       "margen_unitario": 7.28,
       "margen_total": 80.08,
       "costo_estimado": true,
-      "existencia": 93,
+      "existencia": 98,
       "minimo": 10,
       "quiebres": 0,
       "demanda_dia": 0.12,
-      "cobertura_dias": 760.9,
-      "rotacion": 0.12,
+      "cobertura_dias": 801.8,
+      "rotacion": 0.11,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 761 días, exceso de stock",
+      "motivo": "cobertura de 802 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -23880,7 +24353,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "A",
-      "pct_acum": 75.0,
+      "pct_acum": 75.4,
       "unidades": 11,
       "venta": 181.5,
       "margen_unitario": 4.62,
@@ -23905,7 +24378,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 76.7,
+      "pct_acum": 77.1,
       "unidades": 11,
       "venta": 165.0,
       "margen_unitario": 4.2,
@@ -23930,7 +24403,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "A",
-      "pct_acum": 78.4,
+      "pct_acum": 78.7,
       "unidades": 11,
       "venta": 187.0,
       "margen_unitario": 4.76,
@@ -23955,7 +24428,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "A",
-      "pct_acum": 80.1,
+      "pct_acum": 80.4,
       "unidades": 11,
       "venta": 242.0,
       "margen_unitario": 6.16,
@@ -23980,20 +24453,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "B",
-      "pct_acum": 81.7,
+      "pct_acum": 82.0,
       "unidades": 11,
       "venta": 159.5,
       "margen_unitario": 4.06,
       "margen_total": 44.66,
       "costo_estimado": true,
-      "existencia": 60,
+      "existencia": 63,
       "minimo": 5,
       "quiebres": 0,
       "demanda_dia": 0.12,
-      "cobertura_dias": 490.9,
-      "rotacion": 0.18,
+      "cobertura_dias": 515.5,
+      "rotacion": 0.17,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 491 días, exceso de stock",
+      "motivo": "cobertura de 515 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -24005,7 +24478,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "B",
-      "pct_acum": 83.3,
+      "pct_acum": 83.5,
       "unidades": 10,
       "venta": 385.0,
       "margen_unitario": 10.78,
@@ -24030,7 +24503,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Bebidas",
       "clase": "B",
-      "pct_acum": 84.7,
+      "pct_acum": 84.8,
       "unidades": 9,
       "venta": 346.5,
       "margen_unitario": 10.78,
@@ -24055,7 +24528,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "B",
-      "pct_acum": 86.0,
+      "pct_acum": 86.2,
       "unidades": 9,
       "venta": 486.0,
       "margen_unitario": 15.12,
@@ -24074,13 +24547,38 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
     },
     {
       "producto": {
+        "id": 49,
+        "clave_interna": "HI-004",
+        "nombre": "Desodorante"
+      },
+      "categoria": "Higiene personal",
+      "clase": "B",
+      "pct_acum": 87.5,
+      "unidades": 9,
+      "venta": 432.0,
+      "margen_unitario": 13.44,
+      "margen_total": 120.96,
+      "costo_estimado": true,
+      "existencia": 36,
+      "minimo": 5,
+      "quiebres": 0,
+      "demanda_dia": 0.1,
+      "cobertura_dias": 360.0,
+      "rotacion": 0.25,
+      "recomendacion": "Reducir",
+      "motivo": "cobertura de 360 días, exceso de stock",
+      "sugerido": 0,
+      "limitado_por": null
+    },
+    {
+      "producto": {
         "id": 9,
         "clave_interna": "AB-009",
         "nombre": "Atún en agua"
       },
       "categoria": "Abarrote básico",
       "clase": "B",
-      "pct_acum": 87.3,
+      "pct_acum": 88.7,
       "unidades": 8,
       "venta": 168.0,
       "margen_unitario": 5.88,
@@ -24105,20 +24603,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "B",
-      "pct_acum": 88.5,
+      "pct_acum": 89.9,
       "unidades": 8,
       "venta": 464.0,
       "margen_unitario": 16.24,
       "margen_total": 129.92,
       "costo_estimado": true,
-      "existencia": 301,
+      "existencia": 391,
       "minimo": 5,
       "quiebres": 0,
       "demanda_dia": 0.09,
-      "cobertura_dias": 3386.2,
-      "rotacion": 0.03,
+      "cobertura_dias": 4398.8,
+      "rotacion": 0.02,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 3386 días, exceso de stock",
+      "motivo": "cobertura de 4399 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -24130,7 +24628,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "B",
-      "pct_acum": 89.7,
+      "pct_acum": 91.1,
       "unidades": 8,
       "venta": 288.0,
       "margen_unitario": 10.08,
@@ -24155,7 +24653,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Higiene personal",
       "clase": "B",
-      "pct_acum": 91.0,
+      "pct_acum": 92.3,
       "unidades": 8,
       "venta": 544.0,
       "margen_unitario": 19.04,
@@ -24180,20 +24678,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "B",
-      "pct_acum": 92.0,
+      "pct_acum": 93.3,
       "unidades": 7,
       "venta": 185.5,
       "margen_unitario": 7.42,
       "margen_total": 51.94,
       "costo_estimado": true,
-      "existencia": 1058,
+      "existencia": 1150,
       "minimo": 10,
       "quiebres": 0,
       "demanda_dia": 0.08,
-      "cobertura_dias": 13602.9,
+      "cobertura_dias": 14785.7,
       "rotacion": 0.01,
       "recomendacion": "Reducir",
-      "motivo": "cobertura de 13603 días, exceso de stock",
+      "motivo": "cobertura de 14786 días, exceso de stock",
       "sugerido": 0,
       "limitado_por": null
     },
@@ -24205,7 +24703,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Abarrote básico",
       "clase": "B",
-      "pct_acum": 93.1,
+      "pct_acum": 94.3,
       "unidades": 7,
       "venta": 364.0,
       "margen_unitario": 14.56,
@@ -24230,7 +24728,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
       },
       "categoria": "Lácteos y huevo",
       "clase": "B",
-      "pct_acum": 94.2,
+      "pct_acum": 95.4,
       "unidades": 7,
       "venta": 504.0,
       "margen_unitario": 20.16,
@@ -24254,8 +24752,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
         "nombre": "Suavizante de telas"
       },
       "categoria": "Limpieza del hogar",
-      "clase": "B",
-      "pct_acum": 95.2,
+      "clase": "C",
+      "pct_acum": 96.4,
       "unidades": 7,
       "venta": 231.0,
       "margen_unitario": 9.24,
@@ -24274,38 +24772,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
     },
     {
       "producto": {
-        "id": 49,
-        "clave_interna": "HI-004",
-        "nombre": "Desodorante"
-      },
-      "categoria": "Higiene personal",
-      "clase": "C",
-      "pct_acum": 96.3,
-      "unidades": 7,
-      "venta": 336.0,
-      "margen_unitario": 13.44,
-      "margen_total": 94.08,
-      "costo_estimado": true,
-      "existencia": 36,
-      "minimo": 5,
-      "quiebres": 0,
-      "demanda_dia": 0.08,
-      "cobertura_dias": 462.9,
-      "rotacion": 0.19,
-      "recomendacion": "Reducir",
-      "motivo": "cobertura de 463 días, exceso de stock",
-      "sugerido": 0,
-      "limitado_por": null
-    },
-    {
-      "producto": {
         "id": 17,
         "clave_interna": "AB-017",
         "nombre": "Tortillas de maíz"
       },
       "categoria": "Abarrote básico",
       "clase": "C",
-      "pct_acum": 97.2,
+      "pct_acum": 97.3,
       "unidades": 6,
       "venta": 144.0,
       "margen_unitario": 6.72,
@@ -24471,18 +24944,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 85592171-d33a-4ebf-8485-8c1d8dca3b46
+X-Traza-Id: 0444cf9a-e541-45f1-9881-c15eb95e7f60
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 7 ms · traza `85592171-d33a-4ebf-8485-8c1d8dca3b46`
+**Respuesta.** HTTP 403 (esperado 403) · 7 ms · traza `0444cf9a-e541-45f1-9881-c15eb95e7f60`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil solo puede trabajar con su propio microhub.",
-    "traza_id": "85592171-d33a-4ebf-8485-8c1d8dca3b46"
+    "traza_id": "0444cf9a-e541-45f1-9881-c15eb95e7f60"
   }
 }
 ```
@@ -24495,11 +24968,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: aecedceb-6a68-4ea0-814f-d9e6fcd9fde0
+X-Traza-Id: 4d8ab4e3-99aa-4d9b-b407-8d1d8d1db20a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 27 ms · traza `aecedceb-6a68-4ea0-814f-d9e6fcd9fde0`
+**Respuesta.** HTTP 200 (esperado 200) · 25 ms · traza `4d8ab4e3-99aa-4d9b-b407-8d1d8d1db20a`
 
 ```json
 {
@@ -24509,7 +24982,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   },
   "espacio_total": 3600.0,
   "presupuesto": 120000.0,
-  "actualizado_en": "2026-11-27T01:21:32-06:00"
+  "actualizado_en": "2026-11-27T02:07:37-06:00"
 }
 ```
 
@@ -24521,7 +24994,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 08ca7a81-6301-4fb7-92ea-3667312aa3c5
+X-Traza-Id: b9617a28-a5f2-41dc-84f6-95f725fc0a39
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -24533,7 +25006,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 51 ms · traza `08ca7a81-6301-4fb7-92ea-3667312aa3c5`
+**Respuesta.** HTTP 200 (esperado 200) · 59 ms · traza `b9617a28-a5f2-41dc-84f6-95f725fc0a39`
 
 ```json
 {
@@ -24543,7 +25016,7 @@ Content-Type: application/json
   },
   "espacio_total": 3700.0,
   "presupuesto": 120000.0,
-  "actualizado_en": "2026-11-27T01:24:52-06:00"
+  "actualizado_en": "2026-11-27T02:11:06-06:00"
 }
 ```
 
@@ -24567,11 +25040,11 @@ Content-Type: application/json
     "entidad": "surtido_restriccion",
     "valores_anteriores": {
       "espacio_total": 3600.0,
-      "actualizado_en": "2026-11-27T01:21:32.073232-06:00"
+      "actualizado_en": "2026-11-27T02:07:37.480004-06:00"
     },
     "valores_nuevos": {
       "espacio_total": 3700.0,
-      "actualizado_en": "2026-11-27T01:24:52.980213-06:00"
+      "actualizado_en": "2026-11-27T02:11:06.621043-06:00"
     }
   }
 ]
@@ -24585,7 +25058,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: eaca7635-d149-45b3-92c0-4d6c1cd5ea31
+X-Traza-Id: d4e8f6d1-e13b-4574-b3f9-eb4f32d430c1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -24597,7 +25070,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 53 ms · traza `eaca7635-d149-45b3-92c0-4d6c1cd5ea31`
+**Respuesta.** HTTP 200 (esperado 200) · 71 ms · traza `d4e8f6d1-e13b-4574-b3f9-eb4f32d430c1`
 
 ```json
 {
@@ -24607,7 +25080,7 @@ Content-Type: application/json
   },
   "espacio_total": 3650.0,
   "presupuesto": 120000.0,
-  "actualizado_en": "2026-11-27T01:24:53-06:00"
+  "actualizado_en": "2026-11-27T02:11:06-06:00"
 }
 ```
 
@@ -24619,7 +25092,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 40ea04b5-3424-49ee-b86d-4140c19a9ff5
+X-Traza-Id: 36c6f591-9b8e-469a-a276-00330a7335f1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 Content-Type: application/json
 ```
@@ -24630,14 +25103,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 30 ms · traza `40ea04b5-3424-49ee-b86d-4140c19a9ff5`
+**Respuesta.** HTTP 403 (esperado 403) · 29 ms · traza `36c6f591-9b8e-469a-a276-00330a7335f1`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "40ea04b5-3424-49ee-b86d-4140c19a9ff5"
+    "traza_id": "36c6f591-9b8e-469a-a276-00330a7335f1"
   }
 }
 ```
@@ -24650,7 +25123,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: af8d307a-2667-49e2-9a7a-35de451071a5
+X-Traza-Id: cf9cdc65-a43a-45af-beb4-7cb3b77d7012
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -24661,7 +25134,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 6 ms · traza `af8d307a-2667-49e2-9a7a-35de451071a5`
+**Respuesta.** HTTP 422 (esperado 422) · 6 ms · traza `cf9cdc65-a43a-45af-beb4-7cb3b77d7012`
 
 ```json
 {
@@ -24674,7 +25147,7 @@ Content-Type: application/json
         "mensaje": "Debe ser mayor o igual a 1."
       }
     ],
-    "traza_id": "af8d307a-2667-49e2-9a7a-35de451071a5"
+    "traza_id": "cf9cdc65-a43a-45af-beb4-7cb3b77d7012"
   }
 }
 ```
@@ -24687,7 +25160,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 645a8ffa-97c7-4b4d-8eea-0aca77ef0390
+X-Traza-Id: 08a89879-8251-44c6-995d-ab2f4dc8e737
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -24699,11 +25172,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 503 ms · traza `645a8ffa-97c7-4b4d-8eea-0aca77ef0390`
+**Respuesta.** HTTP 201 (esperado 201) · 475 ms · traza `08a89879-8251-44c6-995d-ab2f4dc8e737`
 
 ```json
 {
-  "id": 47,
+  "id": 50,
   "microhub": {
     "id": 1,
     "nombre": "Microhub San Bernabé Centro"
@@ -24712,9 +25185,9 @@ Content-Type: application/json
   "nota": "Evidencia de la Ola 2",
   "resumen": {
     "productos": 51,
-    "aumentar": 4,
+    "aumentar": 3,
     "mantener": 0,
-    "reducir": 47,
+    "reducir": 48,
     "eliminar": 0,
     "excluir": 0,
     "clase_a": 33,
@@ -24724,9 +25197,9 @@ Content-Type: application/json
     "con_costo_estimado": 51,
     "espacio": {
       "total": 3600.0,
-      "ocupado": 4007.0,
+      "ocupado": 4312.0,
       "sugerido": 0.0,
-      "ocupacion_pct": 111.3
+      "ocupacion_pct": 119.8
     },
     "presupuesto": {
       "total": 120000.0,
@@ -24735,8 +25208,23 @@ Content-Type: application/json
     }
   },
   "creado_por": 5,
-  "creado_en": "2026-11-27T01:24:53-06:00",
+  "creado_en": "2026-11-27T02:11:07-06:00",
   "lineas": [
+    {
+      "producto": {
+        "id": 8,
+        "clave_interna": "AB-008",
+        "nombre": "Pasta para sopa surtida"
+      },
+      "clase": "A",
+      "recomendacion": "Reducir",
+      "unidades": 32,
+      "existencia": 73,
+      "sugerido": 0,
+      "margen_unitario": 2.66,
+      "rotacion": 0.44,
+      "motivo": "cobertura de 205 días, exceso de stock"
+    },
     {
       "producto": {
         "id": 28,
@@ -24754,33 +25242,18 @@ Content-Type: application/json
     },
     {
       "producto": {
-        "id": 8,
-        "clave_interna": "AB-008",
-        "nombre": "Pasta para sopa surtida"
-      },
-      "clase": "A",
-      "recomendacion": "Aumentar",
-      "unidades": 27,
-      "existencia": 6,
-      "sugerido": 0,
-      "margen_unitario": 2.66,
-      "rotacion": 4.5,
-      "motivo": "existencia en o bajo el mínimo"
-    },
-    {
-      "producto": {
         "id": 45,
         "clave_interna": "LI-009",
         "nombre": "Fibra para trastes"
       },
       "clase": "A",
       "recomendacion": "Reducir",
-      "unidades": 25,
-      "existencia": 43,
+      "unidades": 28,
+      "existencia": 40,
       "sugerido": 0,
       "margen_unitario": 5.04,
-      "rotacion": 0.58,
-      "motivo": "cobertura de 155 días, exceso de stock"
+      "rotacion": 0.7,
+      "motivo": "cobertura de 129 días, exceso de stock"
     },
     {
       "producto": {
@@ -24836,11 +25309,11 @@ Content-Type: application/json
       "clase": "A",
       "recomendacion": "Reducir",
       "unidades": 18,
-      "existencia": 575,
+      "existencia": 638,
       "sugerido": 0,
       "margen_unitario": 5.46,
       "rotacion": 0.03,
-      "motivo": "cobertura de 2875 días, exceso de stock"
+      "motivo": "cobertura de 3190 días, exceso de stock"
     },
     {
       "producto": {
@@ -24889,6 +25362,21 @@ Content-Type: application/json
     },
     {
       "producto": {
+        "id": 38,
+        "clave_interna": "LI-002",
+        "nombre": "Jabón para trastes"
+      },
+      "clase": "A",
+      "recomendacion": "Reducir",
+      "unidades": 17,
+      "existencia": 37,
+      "sugerido": 0,
+      "margen_unitario": 7.28,
+      "rotacion": 0.46,
+      "motivo": "cobertura de 196 días, exceso de stock"
+    },
+    {
+      "producto": {
         "id": 11,
         "clave_interna": "AB-011",
         "nombre": "Frijoles refritos"
@@ -24896,11 +25384,26 @@ Content-Type: application/json
       "clase": "A",
       "recomendacion": "Reducir",
       "unidades": 16,
-      "existencia": 22,
+      "existencia": 25,
       "sugerido": 0,
       "margen_unitario": 6.44,
-      "rotacion": 0.73,
-      "motivo": "cobertura de 124 días, exceso de stock"
+      "rotacion": 0.64,
+      "motivo": "cobertura de 141 días, exceso de stock"
+    },
+    {
+      "producto": {
+        "id": 29,
+        "clave_interna": "LA-001",
+        "nombre": "Leche entera"
+      },
+      "clase": "A",
+      "recomendacion": "Reducir",
+      "unidades": 16,
+      "existencia": 45,
+      "sugerido": 0,
+      "margen_unitario": 7.7,
+      "rotacion": 0.36,
+      "motivo": "cobertura de 253 días, exceso de stock"
     },
     {
       "producto": {
@@ -24956,11 +25459,11 @@ Content-Type: application/json
       "clase": "A",
       "recomendacion": "Reducir",
       "unidades": 15,
-      "existencia": 62,
+      "existencia": 50,
       "sugerido": 0,
       "margen_unitario": 12.32,
-      "rotacion": 0.24,
-      "motivo": "cobertura de 372 días, exceso de stock"
+      "rotacion": 0.3,
+      "motivo": "cobertura de 300 días, exceso de stock"
     },
     {
       "producto": {
@@ -25031,11 +25534,11 @@ Content-Type: application/json
       "clase": "A",
       "recomendacion": "Reducir",
       "unidades": 14,
-      "existencia": 10,
+      "existencia": 12,
       "sugerido": 0,
       "margen_unitario": 8.68,
-      "rotacion": 1.4,
-      "motivo": "cobertura de 64 días, exceso de stock"
+      "rotacion": 1.17,
+      "motivo": "cobertura de 77 días, exceso de stock"
     },
     {
       "producto": {
@@ -25084,18 +25587,18 @@ Content-Type: application/json
     },
     {
       "producto": {
-        "id": 29,
-        "clave_interna": "LA-001",
-        "nombre": "Leche entera"
+        "id": 2,
+        "clave_interna": "AB-002",
+        "nombre": "Arroz superextra"
       },
       "clase": "A",
       "recomendacion": "Reducir",
       "unidades": 13,
-      "existencia": 45,
+      "existencia": 36,
       "sugerido": 0,
-      "margen_unitario": 7.7,
-      "rotacion": 0.29,
-      "motivo": "cobertura de 312 días, exceso de stock"
+      "margen_unitario": 8.37,
+      "rotacion": 0.36,
+      "motivo": "cobertura de 249 días, exceso de stock"
     },
     {
       "producto": {
@@ -25129,36 +25632,6 @@ Content-Type: application/json
     },
     {
       "producto": {
-        "id": 38,
-        "clave_interna": "LI-002",
-        "nombre": "Jabón para trastes"
-      },
-      "clase": "A",
-      "recomendacion": "Reducir",
-      "unidades": 12,
-      "existencia": 42,
-      "sugerido": 0,
-      "margen_unitario": 7.28,
-      "rotacion": 0.29,
-      "motivo": "cobertura de 315 días, exceso de stock"
-    },
-    {
-      "producto": {
-        "id": 2,
-        "clave_interna": "AB-002",
-        "nombre": "Arroz superextra"
-      },
-      "clase": "A",
-      "recomendacion": "Reducir",
-      "unidades": 11,
-      "existencia": 36,
-      "sugerido": 0,
-      "margen_unitario": 8.37,
-      "rotacion": 0.31,
-      "motivo": "cobertura de 295 días, exceso de stock"
-    },
-    {
-      "producto": {
         "id": 6,
         "clave_interna": "AB-006",
         "nombre": "Harina de maíz nixtamalizado"
@@ -25166,11 +25639,11 @@ Content-Type: application/json
       "clase": "A",
       "recomendacion": "Reducir",
       "unidades": 11,
-      "existencia": 93,
+      "existencia": 98,
       "sugerido": 0,
       "margen_unitario": 7.28,
-      "rotacion": 0.12,
-      "motivo": "cobertura de 761 días, exceso de stock"
+      "rotacion": 0.11,
+      "motivo": "cobertura de 802 días, exceso de stock"
     },
     {
       "producto": {
@@ -25241,11 +25714,11 @@ Content-Type: application/json
       "clase": "B",
       "recomendacion": "Reducir",
       "unidades": 11,
-      "existencia": 60,
+      "existencia": 63,
       "sugerido": 0,
       "margen_unitario": 4.06,
-      "rotacion": 0.18,
-      "motivo": "cobertura de 491 días, exceso de stock"
+      "rotacion": 0.17,
+      "motivo": "cobertura de 515 días, exceso de stock"
     },
     {
       "producto": {
@@ -25294,6 +25767,21 @@ Content-Type: application/json
     },
     {
       "producto": {
+        "id": 49,
+        "clave_interna": "HI-004",
+        "nombre": "Desodorante"
+      },
+      "clase": "B",
+      "recomendacion": "Reducir",
+      "unidades": 9,
+      "existencia": 36,
+      "sugerido": 0,
+      "margen_unitario": 13.44,
+      "rotacion": 0.25,
+      "motivo": "cobertura de 360 días, exceso de stock"
+    },
+    {
+      "producto": {
         "id": 9,
         "clave_interna": "AB-009",
         "nombre": "Atún en agua"
@@ -25316,11 +25804,11 @@ Content-Type: application/json
       "clase": "B",
       "recomendacion": "Reducir",
       "unidades": 8,
-      "existencia": 301,
+      "existencia": 391,
       "sugerido": 0,
       "margen_unitario": 16.24,
-      "rotacion": 0.03,
-      "motivo": "cobertura de 3386 días, exceso de stock"
+      "rotacion": 0.02,
+      "motivo": "cobertura de 4399 días, exceso de stock"
     },
     {
       "producto": {
@@ -25361,11 +25849,11 @@ Content-Type: application/json
       "clase": "B",
       "recomendacion": "Reducir",
       "unidades": 7,
-      "existencia": 1058,
+      "existencia": 1150,
       "sugerido": 0,
       "margen_unitario": 7.42,
       "rotacion": 0.01,
-      "motivo": "cobertura de 13603 días, exceso de stock"
+      "motivo": "cobertura de 14786 días, exceso de stock"
     },
     {
       "producto": {
@@ -25403,7 +25891,7 @@ Content-Type: application/json
         "clave_interna": "LI-005",
         "nombre": "Suavizante de telas"
       },
-      "clase": "B",
+      "clase": "C",
       "recomendacion": "Reducir",
       "unidades": 7,
       "existencia": 69,
@@ -25411,21 +25899,6 @@ Content-Type: application/json
       "margen_unitario": 9.24,
       "rotacion": 0.1,
       "motivo": "cobertura de 887 días, exceso de stock"
-    },
-    {
-      "producto": {
-        "id": 49,
-        "clave_interna": "HI-004",
-        "nombre": "Desodorante"
-      },
-      "clase": "C",
-      "recomendacion": "Reducir",
-      "unidades": 7,
-      "existencia": 36,
-      "sugerido": 0,
-      "margen_unitario": 13.44,
-      "rotacion": 0.19,
-      "motivo": "cobertura de 463 días, exceso de stock"
     },
     {
       "producto": {
@@ -25548,13 +26021,13 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 47,
+    "id": 50,
     "microhub_id": 1,
     "resumen": {
       "productos": 51,
-      "aumentar": 4,
+      "aumentar": 3,
       "mantener": 0,
-      "reducir": 47,
+      "reducir": 48,
       "eliminar": 0,
       "excluir": 0,
       "clase_a": 33,
@@ -25564,9 +26037,9 @@ Content-Type: application/json
       "con_costo_estimado": 51,
       "espacio": {
         "total": 3600.0,
-        "ocupado": 4007.0,
+        "ocupado": 4312.0,
         "sugerido": 0.0,
-        "ocupacion_pct": 111.3
+        "ocupacion_pct": 119.8
       },
       "presupuesto": {
         "total": 120000.0,
@@ -25585,12 +26058,12 @@ Content-Type: application/json
 [
   {
     "accion": "Aumentar",
-    "lineas": 4,
+    "lineas": 3,
     "sugerido": 0
   },
   {
     "accion": "Reducir",
-    "lineas": 47,
+    "lineas": 48,
     "sugerido": 0
   }
 ]
@@ -25604,17 +26077,17 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 24241ed6-64d1-4b15-a284-530bae52e49d
+X-Traza-Id: f3c0461d-ccc8-4dc0-819c-a775c887cc25
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 41 ms · traza `24241ed6-64d1-4b15-a284-530bae52e49d`
+**Respuesta.** HTTP 200 (esperado 200) · 47 ms · traza `f3c0461d-ccc8-4dc0-819c-a775c887cc25`
 
 ```json
 {
   "datos": [
     {
-      "id": 47,
+      "id": 50,
       "microhub": {
         "id": 1,
         "nombre": "Microhub San Bernabé Centro"
@@ -25623,9 +26096,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "nota": "Evidencia de la Ola 2",
       "resumen": {
         "productos": 51,
-        "aumentar": 4,
+        "aumentar": 3,
         "mantener": 0,
-        "reducir": 47,
+        "reducir": 48,
         "eliminar": 0,
         "excluir": 0,
         "clase_a": 33,
@@ -25635,9 +26108,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "con_costo_estimado": 51,
         "espacio": {
           "total": 3600.0,
-          "ocupado": 4007.0,
+          "ocupado": 4312.0,
           "sugerido": 0.0,
-          "ocupacion_pct": 111.3
+          "ocupacion_pct": 119.8
         },
         "presupuesto": {
           "total": 120000.0,
@@ -25646,7 +26119,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         }
       },
       "creado_por": 5,
-      "creado_en": "2026-11-27T01:24:53-06:00"
+      "creado_en": "2026-11-27T02:11:07-06:00"
     }
   ],
   "paginacion": {
@@ -25662,19 +26135,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Con el mismo resumen con que se guardó.
 
-**Petición.** `GET http://surtido:5122/api/v1/surtido/recomendaciones/47`
+**Petición.** `GET http://surtido:5122/api/v1/surtido/recomendaciones/50`
 
 ```http
 Accept: application/json
-X-Traza-Id: 0b4415e7-ee70-4b89-9739-cc7b2c1cdf19
+X-Traza-Id: 9a0529b3-4a78-47a1-a023-4b6b70cf33f3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 41 ms · traza `0b4415e7-ee70-4b89-9739-cc7b2c1cdf19`
+**Respuesta.** HTTP 200 (esperado 200) · 46 ms · traza `9a0529b3-4a78-47a1-a023-4b6b70cf33f3`
 
 ```json
 {
-  "id": 47,
+  "id": 50,
   "microhub": {
     "id": 1,
     "nombre": "Microhub San Bernabé Centro"
@@ -25683,9 +26156,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "nota": "Evidencia de la Ola 2",
   "resumen": {
     "productos": 51,
-    "aumentar": 4,
+    "aumentar": 3,
     "mantener": 0,
-    "reducir": 47,
+    "reducir": 48,
     "eliminar": 0,
     "excluir": 0,
     "clase_a": 33,
@@ -25695,9 +26168,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     "con_costo_estimado": 51,
     "espacio": {
       "total": 3600.0,
-      "ocupado": 4007.0,
+      "ocupado": 4312.0,
       "sugerido": 0.0,
-      "ocupacion_pct": 111.3
+      "ocupacion_pct": 119.8
     },
     "presupuesto": {
       "total": 120000.0,
@@ -25706,8 +26179,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     }
   },
   "creado_por": 5,
-  "creado_en": "2026-11-27T01:24:53-06:00",
+  "creado_en": "2026-11-27T02:11:07-06:00",
   "lineas": [
+    {
+      "producto": {
+        "id": 8,
+        "clave_interna": "AB-008",
+        "nombre": "Pasta para sopa surtida"
+      },
+      "clase": "A",
+      "recomendacion": "Reducir",
+      "unidades": 32,
+      "existencia": 73,
+      "sugerido": 0,
+      "margen_unitario": 2.66,
+      "rotacion": 0.44,
+      "motivo": "cobertura de 205 días, exceso de stock"
+    },
     {
       "producto": {
         "id": 28,
@@ -25725,33 +26213,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 8,
-        "clave_interna": "AB-008",
-        "nombre": "Pasta para sopa surtida"
-      },
-      "clase": "A",
-      "recomendacion": "Aumentar",
-      "unidades": 27,
-      "existencia": 6,
-      "sugerido": 0,
-      "margen_unitario": 2.66,
-      "rotacion": 4.5,
-      "motivo": "existencia en o bajo el mínimo"
-    },
-    {
-      "producto": {
         "id": 45,
         "clave_interna": "LI-009",
         "nombre": "Fibra para trastes"
       },
       "clase": "A",
       "recomendacion": "Reducir",
-      "unidades": 25,
-      "existencia": 43,
+      "unidades": 28,
+      "existencia": 40,
       "sugerido": 0,
       "margen_unitario": 5.04,
-      "rotacion": 0.58,
-      "motivo": "cobertura de 155 días, exceso de stock"
+      "rotacion": 0.7,
+      "motivo": "cobertura de 129 días, exceso de stock"
     },
     {
       "producto": {
@@ -25807,11 +26280,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "recomendacion": "Reducir",
       "unidades": 18,
-      "existencia": 575,
+      "existencia": 638,
       "sugerido": 0,
       "margen_unitario": 5.46,
       "rotacion": 0.03,
-      "motivo": "cobertura de 2875 días, exceso de stock"
+      "motivo": "cobertura de 3190 días, exceso de stock"
     },
     {
       "producto": {
@@ -25860,6 +26333,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
+        "id": 38,
+        "clave_interna": "LI-002",
+        "nombre": "Jabón para trastes"
+      },
+      "clase": "A",
+      "recomendacion": "Reducir",
+      "unidades": 17,
+      "existencia": 37,
+      "sugerido": 0,
+      "margen_unitario": 7.28,
+      "rotacion": 0.46,
+      "motivo": "cobertura de 196 días, exceso de stock"
+    },
+    {
+      "producto": {
         "id": 11,
         "clave_interna": "AB-011",
         "nombre": "Frijoles refritos"
@@ -25867,11 +26355,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "recomendacion": "Reducir",
       "unidades": 16,
-      "existencia": 22,
+      "existencia": 25,
       "sugerido": 0,
       "margen_unitario": 6.44,
-      "rotacion": 0.73,
-      "motivo": "cobertura de 124 días, exceso de stock"
+      "rotacion": 0.64,
+      "motivo": "cobertura de 141 días, exceso de stock"
+    },
+    {
+      "producto": {
+        "id": 29,
+        "clave_interna": "LA-001",
+        "nombre": "Leche entera"
+      },
+      "clase": "A",
+      "recomendacion": "Reducir",
+      "unidades": 16,
+      "existencia": 45,
+      "sugerido": 0,
+      "margen_unitario": 7.7,
+      "rotacion": 0.36,
+      "motivo": "cobertura de 253 días, exceso de stock"
     },
     {
       "producto": {
@@ -25927,11 +26430,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "recomendacion": "Reducir",
       "unidades": 15,
-      "existencia": 62,
+      "existencia": 50,
       "sugerido": 0,
       "margen_unitario": 12.32,
-      "rotacion": 0.24,
-      "motivo": "cobertura de 372 días, exceso de stock"
+      "rotacion": 0.3,
+      "motivo": "cobertura de 300 días, exceso de stock"
     },
     {
       "producto": {
@@ -26002,11 +26505,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "recomendacion": "Reducir",
       "unidades": 14,
-      "existencia": 10,
+      "existencia": 12,
       "sugerido": 0,
       "margen_unitario": 8.68,
-      "rotacion": 1.4,
-      "motivo": "cobertura de 64 días, exceso de stock"
+      "rotacion": 1.17,
+      "motivo": "cobertura de 77 días, exceso de stock"
     },
     {
       "producto": {
@@ -26055,18 +26558,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 29,
-        "clave_interna": "LA-001",
-        "nombre": "Leche entera"
+        "id": 2,
+        "clave_interna": "AB-002",
+        "nombre": "Arroz superextra"
       },
       "clase": "A",
       "recomendacion": "Reducir",
       "unidades": 13,
-      "existencia": 45,
+      "existencia": 36,
       "sugerido": 0,
-      "margen_unitario": 7.7,
-      "rotacion": 0.29,
-      "motivo": "cobertura de 312 días, exceso de stock"
+      "margen_unitario": 8.37,
+      "rotacion": 0.36,
+      "motivo": "cobertura de 249 días, exceso de stock"
     },
     {
       "producto": {
@@ -26100,36 +26603,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
-        "id": 38,
-        "clave_interna": "LI-002",
-        "nombre": "Jabón para trastes"
-      },
-      "clase": "A",
-      "recomendacion": "Reducir",
-      "unidades": 12,
-      "existencia": 42,
-      "sugerido": 0,
-      "margen_unitario": 7.28,
-      "rotacion": 0.29,
-      "motivo": "cobertura de 315 días, exceso de stock"
-    },
-    {
-      "producto": {
-        "id": 2,
-        "clave_interna": "AB-002",
-        "nombre": "Arroz superextra"
-      },
-      "clase": "A",
-      "recomendacion": "Reducir",
-      "unidades": 11,
-      "existencia": 36,
-      "sugerido": 0,
-      "margen_unitario": 8.37,
-      "rotacion": 0.31,
-      "motivo": "cobertura de 295 días, exceso de stock"
-    },
-    {
-      "producto": {
         "id": 6,
         "clave_interna": "AB-006",
         "nombre": "Harina de maíz nixtamalizado"
@@ -26137,11 +26610,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "A",
       "recomendacion": "Reducir",
       "unidades": 11,
-      "existencia": 93,
+      "existencia": 98,
       "sugerido": 0,
       "margen_unitario": 7.28,
-      "rotacion": 0.12,
-      "motivo": "cobertura de 761 días, exceso de stock"
+      "rotacion": 0.11,
+      "motivo": "cobertura de 802 días, exceso de stock"
     },
     {
       "producto": {
@@ -26212,11 +26685,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "recomendacion": "Reducir",
       "unidades": 11,
-      "existencia": 60,
+      "existencia": 63,
       "sugerido": 0,
       "margen_unitario": 4.06,
-      "rotacion": 0.18,
-      "motivo": "cobertura de 491 días, exceso de stock"
+      "rotacion": 0.17,
+      "motivo": "cobertura de 515 días, exceso de stock"
     },
     {
       "producto": {
@@ -26265,6 +26738,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "producto": {
+        "id": 49,
+        "clave_interna": "HI-004",
+        "nombre": "Desodorante"
+      },
+      "clase": "B",
+      "recomendacion": "Reducir",
+      "unidades": 9,
+      "existencia": 36,
+      "sugerido": 0,
+      "margen_unitario": 13.44,
+      "rotacion": 0.25,
+      "motivo": "cobertura de 360 días, exceso de stock"
+    },
+    {
+      "producto": {
         "id": 9,
         "clave_interna": "AB-009",
         "nombre": "Atún en agua"
@@ -26287,11 +26775,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "recomendacion": "Reducir",
       "unidades": 8,
-      "existencia": 301,
+      "existencia": 391,
       "sugerido": 0,
       "margen_unitario": 16.24,
-      "rotacion": 0.03,
-      "motivo": "cobertura de 3386 días, exceso de stock"
+      "rotacion": 0.02,
+      "motivo": "cobertura de 4399 días, exceso de stock"
     },
     {
       "producto": {
@@ -26332,11 +26820,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "clase": "B",
       "recomendacion": "Reducir",
       "unidades": 7,
-      "existencia": 1058,
+      "existencia": 1150,
       "sugerido": 0,
       "margen_unitario": 7.42,
       "rotacion": 0.01,
-      "motivo": "cobertura de 13603 días, exceso de stock"
+      "motivo": "cobertura de 14786 días, exceso de stock"
     },
     {
       "producto": {
@@ -26374,7 +26862,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "clave_interna": "LI-005",
         "nombre": "Suavizante de telas"
       },
-      "clase": "B",
+      "clase": "C",
       "recomendacion": "Reducir",
       "unidades": 7,
       "existencia": 69,
@@ -26382,21 +26870,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "margen_unitario": 9.24,
       "rotacion": 0.1,
       "motivo": "cobertura de 887 días, exceso de stock"
-    },
-    {
-      "producto": {
-        "id": 49,
-        "clave_interna": "HI-004",
-        "nombre": "Desodorante"
-      },
-      "clase": "C",
-      "recomendacion": "Reducir",
-      "unidades": 7,
-      "existencia": 36,
-      "sugerido": 0,
-      "margen_unitario": 13.44,
-      "rotacion": 0.19,
-      "motivo": "cobertura de 463 días, exceso de stock"
     },
     {
       "producto": {
@@ -26518,22 +26991,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** El operador de otro microhub no la ve.
 
-**Petición.** `GET http://surtido:5122/api/v1/surtido/recomendaciones/47`
+**Petición.** `GET http://surtido:5122/api/v1/surtido/recomendaciones/50`
 
 ```http
 Accept: application/json
-X-Traza-Id: 2d5cb1bb-f67c-4d8c-a373-8ecb47448e09
+X-Traza-Id: b8a84913-dc50-4847-8024-6d6053f5ec7d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(310 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 22 ms · traza `2d5cb1bb-f67c-4d8c-a373-8ecb47448e09`
+**Respuesta.** HTTP 403 (esperado 403) · 26 ms · traza `b8a84913-dc50-4847-8024-6d6053f5ec7d`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil solo puede trabajar con su propio microhub.",
-    "traza_id": "2d5cb1bb-f67c-4d8c-a373-8ecb47448e09"
+    "traza_id": "b8a84913-dc50-4847-8024-6d6053f5ec7d"
   }
 }
 ```
@@ -26546,7 +27019,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: e221b425-485a-4699-a432-5fe03481529e
+X-Traza-Id: 376db3bc-acb1-48a4-ad53-7ebbbc8339df
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -26557,14 +27030,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 41 ms · traza `e221b425-485a-4699-a432-5fe03481529e`
+**Respuesta.** HTTP 403 (esperado 403) · 29 ms · traza `376db3bc-acb1-48a4-ad53-7ebbbc8339df`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "e221b425-485a-4699-a432-5fe03481529e"
+    "traza_id": "376db3bc-acb1-48a4-ad53-7ebbbc8339df"
   }
 }
 ```
@@ -26577,11 +27050,11 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: a50fb8e1-958a-4ace-8074-dcc660c1041f
+X-Traza-Id: 8526ada5-7d73-40c1-bedd-ec82321cb45b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 36 ms · traza `a50fb8e1-958a-4ace-8074-dcc660c1041f`
+**Respuesta.** HTTP 200 (esperado 200) · 36 ms · traza `8526ada5-7d73-40c1-bedd-ec82321cb45b`
 
 ```json
 {
@@ -26664,86 +27137,86 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 1954e225-f88f-4122-82a2-7d302a06c4e0
+X-Traza-Id: 472a02a7-0f9c-45ec-b860-f07d8722f47c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 71 ms · traza `1954e225-f88f-4122-82a2-7d302a06c4e0`
+**Respuesta.** HTTP 200 (esperado 200) · 74 ms · traza `472a02a7-0f9c-45ec-b860-f07d8722f47c`
 
 ```json
 {
   "datos": [
     {
-      "id": 729,
-      "folio": "PED-20261127-000729",
-      "zona": {
-        "id": 2,
-        "nombre": "Valles de San Bernabé"
-      },
-      "latitud": 25.748439,
-      "longitud": -100.369944,
-      "total": 193.0,
-      "listo_en": "2026-11-27T00:14:44-06:00"
-    },
-    {
-      "id": 730,
-      "folio": "PED-20261127-000730",
-      "zona": {
-        "id": 2,
-        "nombre": "Valles de San Bernabé"
-      },
-      "latitud": 25.751679,
-      "longitud": -100.366615,
-      "total": 127.5,
-      "listo_en": "2026-11-27T00:14:44-06:00"
-    },
-    {
-      "id": 731,
-      "folio": "PED-20261127-000731",
-      "zona": {
-        "id": 2,
-        "nombre": "Valles de San Bernabé"
-      },
-      "latitud": 25.751679,
-      "longitud": -100.366615,
-      "total": 180.0,
-      "listo_en": "2026-11-27T00:14:44-06:00"
-    },
-    {
-      "id": 732,
-      "folio": "PED-20261127-000732",
-      "zona": {
-        "id": 2,
-        "nombre": "Valles de San Bernabé"
-      },
-      "latitud": 25.753225,
-      "longitud": -100.365213,
-      "total": 167.0,
-      "listo_en": "2026-11-27T00:14:44-06:00"
-    },
-    {
-      "id": 748,
-      "folio": "PED-20261127-000748",
-      "zona": {
-        "id": 2,
-        "nombre": "Valles de San Bernabé"
-      },
-      "latitud": 25.751679,
-      "longitud": -100.366615,
-      "total": 261.0,
-      "listo_en": "2026-11-27T01:18:40-06:00"
-    },
-    {
-      "id": 749,
-      "folio": "PED-20261127-000749",
+      "id": 795,
+      "folio": "PED-20261127-000795",
       "zona": {
         "id": 1,
         "nombre": "San Bernabé Centro"
       },
-      "latitud": 25.742956,
-      "longitud": -100.361173,
-      "total": 132.5,
-      "listo_en": "2026-11-27T01:18:40-06:00"
+      "latitud": 25.745527,
+      "longitud": -100.362981,
+      "total": 157.0,
+      "listo_en": "2026-11-27T02:11:07-06:00"
+    },
+    {
+      "id": 796,
+      "folio": "PED-20261127-000796",
+      "zona": {
+        "id": 2,
+        "nombre": "Valles de San Bernabé"
+      },
+      "latitud": 25.752587,
+      "longitud": -100.364483,
+      "total": 147.0,
+      "listo_en": "2026-11-27T02:11:07-06:00"
+    },
+    {
+      "id": 797,
+      "folio": "PED-20261127-000797",
+      "zona": {
+        "id": 2,
+        "nombre": "Valles de San Bernabé"
+      },
+      "latitud": 25.752587,
+      "longitud": -100.364483,
+      "total": 147.0,
+      "listo_en": "2026-11-27T02:11:07-06:00"
+    },
+    {
+      "id": 798,
+      "folio": "PED-20261127-000798",
+      "zona": {
+        "id": 2,
+        "nombre": "Valles de San Bernabé"
+      },
+      "latitud": 25.751679,
+      "longitud": -100.366615,
+      "total": 149.0,
+      "listo_en": "2026-11-27T02:11:07-06:00"
+    },
+    {
+      "id": 799,
+      "folio": "PED-20261127-000799",
+      "zona": {
+        "id": 1,
+        "nombre": "San Bernabé Centro"
+      },
+      "latitud": 25.745527,
+      "longitud": -100.362981,
+      "total": 139.0,
+      "listo_en": "2026-11-27T02:11:07-06:00"
+    },
+    {
+      "id": 800,
+      "folio": "PED-20261127-000800",
+      "zona": {
+        "id": 2,
+        "nombre": "Valles de San Bernabé"
+      },
+      "latitud": 25.752587,
+      "longitud": -100.364483,
+      "total": 195.0,
+      "listo_en": "2026-11-27T02:11:07-06:00"
     }
   ],
   "paginacion": {
@@ -26760,45 +27233,45 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 ```json
 [
   {
-    "id": 729,
-    "folio": "PED-20261127-000729",
-    "estado": "en_preparacion",
-    "zona_id": 2,
-    "listo": true
-  },
-  {
-    "id": 730,
-    "folio": "PED-20261127-000730",
-    "estado": "en_preparacion",
-    "zona_id": 2,
-    "listo": true
-  },
-  {
-    "id": 731,
-    "folio": "PED-20261127-000731",
-    "estado": "en_preparacion",
-    "zona_id": 2,
-    "listo": true
-  },
-  {
-    "id": 732,
-    "folio": "PED-20261127-000732",
-    "estado": "en_preparacion",
-    "zona_id": 2,
-    "listo": true
-  },
-  {
-    "id": 748,
-    "folio": "PED-20261127-000748",
-    "estado": "en_preparacion",
-    "zona_id": 2,
-    "listo": true
-  },
-  {
-    "id": 749,
-    "folio": "PED-20261127-000749",
+    "id": 795,
+    "folio": "PED-20261127-000795",
     "estado": "en_preparacion",
     "zona_id": 1,
+    "listo": true
+  },
+  {
+    "id": 796,
+    "folio": "PED-20261127-000796",
+    "estado": "en_preparacion",
+    "zona_id": 2,
+    "listo": true
+  },
+  {
+    "id": 797,
+    "folio": "PED-20261127-000797",
+    "estado": "en_preparacion",
+    "zona_id": 2,
+    "listo": true
+  },
+  {
+    "id": 798,
+    "folio": "PED-20261127-000798",
+    "estado": "en_preparacion",
+    "zona_id": 2,
+    "listo": true
+  },
+  {
+    "id": 799,
+    "folio": "PED-20261127-000799",
+    "estado": "en_preparacion",
+    "zona_id": 1,
+    "listo": true
+  },
+  {
+    "id": 800,
+    "folio": "PED-20261127-000800",
+    "estado": "en_preparacion",
+    "zona_id": 2,
     "listo": true
   }
 ]
@@ -26814,7 +27287,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: a4b0f5d6-0c13-4e17-b5b4-15fafc10e79c
+X-Traza-Id: d2845580-419b-44ad-ab96-b2a103086fa3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -26823,17 +27296,17 @@ Content-Type: application/json
 {
   "microhub_id": 1,
   "pedido_ids": [
-    729,
-    730,
-    731,
-    732,
-    748,
-    749
+    795,
+    796,
+    797,
+    798,
+    799,
+    800
   ]
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 184 ms · traza `a4b0f5d6-0c13-4e17-b5b4-15fafc10e79c`
+**Respuesta.** HTTP 200 (esperado 200) · 183 ms · traza `d2845580-419b-44ad-ab96-b2a103086fa3`
 
 ```json
 {
@@ -26860,82 +27333,67 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 732,
-            "folio": "PED-20261127-000732"
+            "id": 798,
+            "folio": "PED-20261127-000798"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.753225,
-          "longitud": -100.365213,
-          "tramo_km": 0.77,
-          "minutos_acum": 6.1
+          "latitud": 25.751679,
+          "longitud": -100.366615,
+          "tramo_km": 0.63,
+          "minutos_acum": 5.7
         },
         {
           "orden": 2,
           "pedido": {
-            "id": 730,
-            "folio": "PED-20261127-000730"
+            "id": 796,
+            "folio": "PED-20261127-000796"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
-          "tramo_km": 0.29,
-          "minutos_acum": 10.9
+          "latitud": 25.752587,
+          "longitud": -100.364483,
+          "tramo_km": 0.31,
+          "minutos_acum": 10.6
         },
         {
           "orden": 3,
           "pedido": {
-            "id": 731,
-            "folio": "PED-20261127-000731"
+            "id": 797,
+            "folio": "PED-20261127-000797"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 14.9
+          "minutos_acum": 14.6
         },
         {
           "orden": 4,
           "pedido": {
-            "id": 748,
-            "folio": "PED-20261127-000748"
+            "id": 800,
+            "folio": "PED-20261127-000800"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 18.9
-        },
-        {
-          "orden": 5,
-          "pedido": {
-            "id": 729,
-            "folio": "PED-20261127-000729"
-          },
-          "zona": {
-            "id": 2,
-            "nombre": "Valles de San Bernabé"
-          },
-          "latitud": 25.748439,
-          "longitud": -100.369944,
-          "tramo_km": 0.64,
-          "minutos_acum": 24.6
+          "minutos_acum": 18.6
         }
       ],
-      "distancia_km": 1.7,
-      "minutos": 24.6,
-      "costo": 97.64
+      "distancia_km": 0.94,
+      "minutos": 18.6,
+      "costo": 76.22
     },
     {
       "repartidor": {
@@ -26950,31 +27408,46 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 749,
-            "folio": "PED-20261127-000749"
+            "id": 795,
+            "folio": "PED-20261127-000795"
           },
           "zona": {
             "id": 1,
             "nombre": "San Bernabé Centro"
           },
-          "latitud": 25.742956,
-          "longitud": -100.361173,
-          "tramo_km": 0.82,
-          "minutos_acum": 6.2
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.38,
+          "minutos_acum": 5.0
+        },
+        {
+          "orden": 2,
+          "pedido": {
+            "id": 799,
+            "folio": "PED-20261127-000799"
+          },
+          "zona": {
+            "id": 1,
+            "nombre": "San Bernabé Centro"
+          },
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.0,
+          "minutos_acum": 9.0
         }
       ],
-      "distancia_km": 0.82,
-      "minutos": 6.2,
-      "costo": 21.68
+      "distancia_km": 0.38,
+      "minutos": 9.0,
+      "costo": 37.72
     }
   ],
   "sin_asignar": [],
   "total": {
     "rutas": 2,
     "paradas": 6,
-    "distancia_km": 2.52,
-    "minutos_maximo": 24.6,
-    "costo": 119.32
+    "distancia_km": 1.32,
+    "minutos_maximo": 18.6,
+    "costo": 113.94
   },
   "cambios": [],
   "supuestos_usados": [
@@ -27019,7 +27492,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "planes": 3
+    "planes": 4
   }
 ]
 ```
@@ -27032,7 +27505,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 21b6ae0e-ef0e-4e8a-ac57-ddc84c86c223
+X-Traza-Id: 2b6d9de9-6e96-4786-9c73-18c0764b0876
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -27041,17 +27514,17 @@ Content-Type: application/json
 {
   "microhub_id": 1,
   "pedido_ids": [
-    729,
-    730,
-    731,
-    732,
-    748,
-    749
+    795,
+    796,
+    797,
+    798,
+    799,
+    800
   ]
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 125 ms · traza `21b6ae0e-ef0e-4e8a-ac57-ddc84c86c223`
+**Respuesta.** HTTP 200 (esperado 200) · 117 ms · traza `2b6d9de9-6e96-4786-9c73-18c0764b0876`
 
 ```json
 {
@@ -27063,34 +27536,34 @@ Content-Type: application/json
   "filas": [
     {
       "metodo": "Orden de llegada",
-      "distancia_km": 3.44,
-      "minutos": 33.4,
-      "costo": 123.47,
+      "distancia_km": 3.77,
+      "minutos": 34.3,
+      "costo": 124.98,
       "mejora_pct": 0.0
     },
     {
       "metodo": "Vecino más cercano",
-      "distancia_km": 3.24,
-      "minutos": 32.8,
-      "costo": 122.56,
-      "mejora_pct": 5.8
+      "distancia_km": 1.7,
+      "minutos": 28.6,
+      "costo": 115.63,
+      "mejora_pct": 54.9
     },
     {
       "metodo": "Vecino más cercano + 2-opt",
-      "distancia_km": 3.09,
-      "minutos": 32.4,
-      "costo": 121.9,
-      "mejora_pct": 10.2
+      "distancia_km": 1.7,
+      "minutos": 28.6,
+      "costo": 115.63,
+      "mejora_pct": 54.9
     },
     {
       "metodo": "TSP exacto",
-      "distancia_km": 3.09,
-      "minutos": 32.4,
-      "costo": 121.9,
-      "mejora_pct": 10.2
+      "distancia_km": 1.7,
+      "minutos": 28.6,
+      "costo": 115.63,
+      "mejora_pct": 54.9
     }
   ],
-  "mejor_metodo": "Vecino más cercano + 2-opt",
+  "mejor_metodo": "Vecino más cercano",
   "nota": "Una sola ruta con todas las paradas.",
   "supuestos_usados": [
     {
@@ -27135,7 +27608,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 070524e2-5775-4bdc-b6ec-8d4960dd5cf1
+X-Traza-Id: 368d9072-9043-47cc-ad8d-c6a520f45e7c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -27144,18 +27617,18 @@ Content-Type: application/json
 {
   "microhub_id": 1,
   "pedido_ids": [
-    729,
-    730,
-    731,
-    732,
-    748,
-    749
+    795,
+    796,
+    797,
+    798,
+    799,
+    800
   ],
   "metodo": "exacto"
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 156 ms · traza `070524e2-5775-4bdc-b6ec-8d4960dd5cf1`
+**Respuesta.** HTTP 200 (esperado 200) · 161 ms · traza `368d9072-9043-47cc-ad8d-c6a520f45e7c`
 
 ```json
 {
@@ -27182,82 +27655,67 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 732,
-            "folio": "PED-20261127-000732"
+            "id": 798,
+            "folio": "PED-20261127-000798"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.753225,
-          "longitud": -100.365213,
-          "tramo_km": 0.77,
-          "minutos_acum": 6.1
+          "latitud": 25.751679,
+          "longitud": -100.366615,
+          "tramo_km": 0.63,
+          "minutos_acum": 5.7
         },
         {
           "orden": 2,
           "pedido": {
-            "id": 730,
-            "folio": "PED-20261127-000730"
+            "id": 796,
+            "folio": "PED-20261127-000796"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
-          "tramo_km": 0.29,
-          "minutos_acum": 10.9
+          "latitud": 25.752587,
+          "longitud": -100.364483,
+          "tramo_km": 0.31,
+          "minutos_acum": 10.6
         },
         {
           "orden": 3,
           "pedido": {
-            "id": 731,
-            "folio": "PED-20261127-000731"
+            "id": 797,
+            "folio": "PED-20261127-000797"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 14.9
+          "minutos_acum": 14.6
         },
         {
           "orden": 4,
           "pedido": {
-            "id": 748,
-            "folio": "PED-20261127-000748"
+            "id": 800,
+            "folio": "PED-20261127-000800"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 18.9
-        },
-        {
-          "orden": 5,
-          "pedido": {
-            "id": 729,
-            "folio": "PED-20261127-000729"
-          },
-          "zona": {
-            "id": 2,
-            "nombre": "Valles de San Bernabé"
-          },
-          "latitud": 25.748439,
-          "longitud": -100.369944,
-          "tramo_km": 0.64,
-          "minutos_acum": 24.6
+          "minutos_acum": 18.6
         }
       ],
-      "distancia_km": 1.7,
-      "minutos": 24.6,
-      "costo": 97.64
+      "distancia_km": 0.94,
+      "minutos": 18.6,
+      "costo": 76.22
     },
     {
       "repartidor": {
@@ -27272,31 +27730,46 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 749,
-            "folio": "PED-20261127-000749"
+            "id": 795,
+            "folio": "PED-20261127-000795"
           },
           "zona": {
             "id": 1,
             "nombre": "San Bernabé Centro"
           },
-          "latitud": 25.742956,
-          "longitud": -100.361173,
-          "tramo_km": 0.82,
-          "minutos_acum": 6.2
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.38,
+          "minutos_acum": 5.0
+        },
+        {
+          "orden": 2,
+          "pedido": {
+            "id": 799,
+            "folio": "PED-20261127-000799"
+          },
+          "zona": {
+            "id": 1,
+            "nombre": "San Bernabé Centro"
+          },
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.0,
+          "minutos_acum": 9.0
         }
       ],
-      "distancia_km": 0.82,
-      "minutos": 6.2,
-      "costo": 21.68
+      "distancia_km": 0.38,
+      "minutos": 9.0,
+      "costo": 37.72
     }
   ],
   "sin_asignar": [],
   "total": {
     "rutas": 2,
     "paradas": 6,
-    "distancia_km": 2.52,
-    "minutos_maximo": 24.6,
-    "costo": 119.32
+    "distancia_km": 1.32,
+    "minutos_maximo": 18.6,
+    "costo": 113.94
   },
   "cambios": [],
   "supuestos_usados": [
@@ -27342,7 +27815,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 8bc43bc0-6433-4611-ac9b-7361662437a4
+X-Traza-Id: 0a4a2a30-b3f9-4c67-80dd-81509ad325e9
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -27351,22 +27824,22 @@ Content-Type: application/json
 {
   "microhub_id": 1,
   "pedido_ids": [
-    729,
-    730,
-    731,
-    732,
-    748,
-    749
+    795,
+    796,
+    797,
+    798,
+    799,
+    800
   ],
   "guardar": true
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 208 ms · traza `8bc43bc0-6433-4611-ac9b-7361662437a4`
+**Respuesta.** HTTP 201 (esperado 201) · 220 ms · traza `0a4a2a30-b3f9-4c67-80dd-81509ad325e9`
 
 ```json
 {
-  "id": 138,
+  "id": 148,
   "estado": "propuesto",
   "version": 1,
   "microhub": {
@@ -27389,82 +27862,67 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 732,
-            "folio": "PED-20261127-000732"
+            "id": 798,
+            "folio": "PED-20261127-000798"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.753225,
-          "longitud": -100.365213,
-          "tramo_km": 0.77,
-          "minutos_acum": 6.1
+          "latitud": 25.751679,
+          "longitud": -100.366615,
+          "tramo_km": 0.63,
+          "minutos_acum": 5.7
         },
         {
           "orden": 2,
           "pedido": {
-            "id": 730,
-            "folio": "PED-20261127-000730"
+            "id": 796,
+            "folio": "PED-20261127-000796"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
-          "tramo_km": 0.29,
-          "minutos_acum": 10.9
+          "latitud": 25.752587,
+          "longitud": -100.364483,
+          "tramo_km": 0.31,
+          "minutos_acum": 10.6
         },
         {
           "orden": 3,
           "pedido": {
-            "id": 731,
-            "folio": "PED-20261127-000731"
+            "id": 797,
+            "folio": "PED-20261127-000797"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 14.9
+          "minutos_acum": 14.6
         },
         {
           "orden": 4,
           "pedido": {
-            "id": 748,
-            "folio": "PED-20261127-000748"
+            "id": 800,
+            "folio": "PED-20261127-000800"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 18.9
-        },
-        {
-          "orden": 5,
-          "pedido": {
-            "id": 729,
-            "folio": "PED-20261127-000729"
-          },
-          "zona": {
-            "id": 2,
-            "nombre": "Valles de San Bernabé"
-          },
-          "latitud": 25.748439,
-          "longitud": -100.369944,
-          "tramo_km": 0.64,
-          "minutos_acum": 24.6
+          "minutos_acum": 18.6
         }
       ],
-      "distancia_km": 1.7,
-      "minutos": 24.6,
-      "costo": 97.64
+      "distancia_km": 0.94,
+      "minutos": 18.6,
+      "costo": 76.22
     },
     {
       "repartidor": {
@@ -27479,31 +27937,46 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 749,
-            "folio": "PED-20261127-000749"
+            "id": 795,
+            "folio": "PED-20261127-000795"
           },
           "zona": {
             "id": 1,
             "nombre": "San Bernabé Centro"
           },
-          "latitud": 25.742956,
-          "longitud": -100.361173,
-          "tramo_km": 0.82,
-          "minutos_acum": 6.2
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.38,
+          "minutos_acum": 5.0
+        },
+        {
+          "orden": 2,
+          "pedido": {
+            "id": 799,
+            "folio": "PED-20261127-000799"
+          },
+          "zona": {
+            "id": 1,
+            "nombre": "San Bernabé Centro"
+          },
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.0,
+          "minutos_acum": 9.0
         }
       ],
-      "distancia_km": 0.82,
-      "minutos": 6.2,
-      "costo": 21.68
+      "distancia_km": 0.38,
+      "minutos": 9.0,
+      "costo": 37.72
     }
   ],
   "sin_asignar": [],
   "total": {
     "rutas": 2,
     "paradas": 6,
-    "distancia_km": 2.52,
-    "minutos_maximo": 24.6,
-    "costo": 119.32
+    "distancia_km": 1.32,
+    "minutos_maximo": 18.6,
+    "costo": 113.94
   },
   "cambios": [],
   "supuestos_usados": [
@@ -27546,7 +28019,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 138,
+    "id": 148,
     "microhub_id": 1,
     "estado": "propuesto",
     "version": 1
@@ -27568,11 +28041,11 @@ Content-Type: application/json
 
 **Objetivo.** Suma minutos a su ruta y dice qué paradas quedan fuera de la promesa de 30 minutos.
 
-**Petición.** `POST http://rutas:5118/api/v1/rutas/planes/138/ajustes`
+**Petición.** `POST http://rutas:5118/api/v1/rutas/planes/148/ajustes`
 
 ```http
 Accept: application/json
-X-Traza-Id: f68feaa9-b1ae-405b-952e-3853aa74ba6d
+X-Traza-Id: 58130a5d-0978-40ba-9b21-6fa5f6206332
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -27585,11 +28058,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 86 ms · traza `f68feaa9-b1ae-405b-952e-3853aa74ba6d`
+**Respuesta.** HTTP 200 (esperado 200) · 96 ms · traza `58130a5d-0978-40ba-9b21-6fa5f6206332`
 
 ```json
 {
-  "id": 138,
+  "id": 148,
   "estado": "propuesto",
   "version": 2,
   "microhub": {
@@ -27612,82 +28085,67 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 732,
-            "folio": "PED-20261127-000732"
+            "id": 798,
+            "folio": "PED-20261127-000798"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.753225,
-          "longitud": -100.365213,
-          "tramo_km": 0.77,
-          "minutos_acum": 31.1
+          "latitud": 25.751679,
+          "longitud": -100.366615,
+          "tramo_km": 0.63,
+          "minutos_acum": 30.7
         },
         {
           "orden": 2,
           "pedido": {
-            "id": 730,
-            "folio": "PED-20261127-000730"
+            "id": 796,
+            "folio": "PED-20261127-000796"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
-          "tramo_km": 0.29,
-          "minutos_acum": 35.9
+          "latitud": 25.752587,
+          "longitud": -100.364483,
+          "tramo_km": 0.31,
+          "minutos_acum": 35.6
         },
         {
           "orden": 3,
           "pedido": {
-            "id": 731,
-            "folio": "PED-20261127-000731"
+            "id": 797,
+            "folio": "PED-20261127-000797"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 39.9
+          "minutos_acum": 39.6
         },
         {
           "orden": 4,
           "pedido": {
-            "id": 748,
-            "folio": "PED-20261127-000748"
+            "id": 800,
+            "folio": "PED-20261127-000800"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 43.9
-        },
-        {
-          "orden": 5,
-          "pedido": {
-            "id": 729,
-            "folio": "PED-20261127-000729"
-          },
-          "zona": {
-            "id": 2,
-            "nombre": "Valles de San Bernabé"
-          },
-          "latitud": 25.748439,
-          "longitud": -100.369944,
-          "tramo_km": 0.64,
-          "minutos_acum": 49.6
+          "minutos_acum": 43.6
         }
       ],
-      "distancia_km": 1.7,
-      "minutos": 49.6,
-      "costo": 97.64
+      "distancia_km": 0.94,
+      "minutos": 43.6,
+      "costo": 76.22
     },
     {
       "repartidor": {
@@ -27702,34 +28160,49 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 749,
-            "folio": "PED-20261127-000749"
+            "id": 795,
+            "folio": "PED-20261127-000795"
           },
           "zona": {
             "id": 1,
             "nombre": "San Bernabé Centro"
           },
-          "latitud": 25.742956,
-          "longitud": -100.361173,
-          "tramo_km": 0.82,
-          "minutos_acum": 6.2
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.38,
+          "minutos_acum": 5.0
+        },
+        {
+          "orden": 2,
+          "pedido": {
+            "id": 799,
+            "folio": "PED-20261127-000799"
+          },
+          "zona": {
+            "id": 1,
+            "nombre": "San Bernabé Centro"
+          },
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.0,
+          "minutos_acum": 9.0
         }
       ],
-      "distancia_km": 0.82,
-      "minutos": 6.2,
-      "costo": 21.68
+      "distancia_km": 0.38,
+      "minutos": 9.0,
+      "costo": 37.72
     }
   ],
   "sin_asignar": [],
   "total": {
     "rutas": 2,
     "paradas": 6,
-    "distancia_km": 2.52,
-    "minutos_maximo": 49.6,
-    "costo": 119.32
+    "distancia_km": 1.32,
+    "minutos_maximo": 43.6,
+    "costo": 113.94
   },
   "cambios": [
-    "Retraso de 25 minutos en la ruta de Ramiro Alanís Lozano: 5 de 5 paradas quedan fuera de la promesa de 30 minutos."
+    "Retraso de 25 minutos en la ruta de Ramiro Alanís Lozano: 4 de 4 paradas quedan fuera de la promesa de 30 minutos."
   ],
   "supuestos_usados": [
     {
@@ -27764,11 +28237,10 @@ Content-Type: application/json
     }
   ],
   "paradas_fuera_de_promesa": [
-    "PED-20261127-000732",
-    "PED-20261127-000730",
-    "PED-20261127-000731",
-    "PED-20261127-000748",
-    "PED-20261127-000729"
+    "PED-20261127-000798",
+    "PED-20261127-000796",
+    "PED-20261127-000797",
+    "PED-20261127-000800"
   ]
 }
 ```
@@ -27777,11 +28249,11 @@ Content-Type: application/json
 
 **Objetivo.** Recalcula la ruta afectada con el mismo método.
 
-**Petición.** `POST http://rutas:5118/api/v1/rutas/planes/138/ajustes`
+**Petición.** `POST http://rutas:5118/api/v1/rutas/planes/148/ajustes`
 
 ```http
 Accept: application/json
-X-Traza-Id: 4c74ac1e-9ccb-4233-a593-4067e32caadf
+X-Traza-Id: 6b5a2ade-2ce1-443a-b836-75f86a839937
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -27789,15 +28261,15 @@ Content-Type: application/json
 ```json
 {
   "tipo": "quitar_pedido",
-  "pedido_id": 732
+  "pedido_id": 798
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 87 ms · traza `4c74ac1e-9ccb-4233-a593-4067e32caadf`
+**Respuesta.** HTTP 200 (esperado 200) · 89 ms · traza `6b5a2ade-2ce1-443a-b836-75f86a839937`
 
 ```json
 {
-  "id": 138,
+  "id": 148,
   "estado": "propuesto",
   "version": 3,
   "microhub": {
@@ -27820,67 +28292,52 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 730,
-            "folio": "PED-20261127-000730"
+            "id": 796,
+            "folio": "PED-20261127-000796"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
-          "tramo_km": 0.63,
-          "minutos_acum": 5.7
+          "latitud": 25.752587,
+          "longitud": -100.364483,
+          "tramo_km": 0.67,
+          "minutos_acum": 5.8
         },
         {
           "orden": 2,
           "pedido": {
-            "id": 731,
-            "folio": "PED-20261127-000731"
+            "id": 797,
+            "folio": "PED-20261127-000797"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 9.7
+          "minutos_acum": 9.8
         },
         {
           "orden": 3,
           "pedido": {
-            "id": 748,
-            "folio": "PED-20261127-000748"
+            "id": 800,
+            "folio": "PED-20261127-000800"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 13.7
-        },
-        {
-          "orden": 4,
-          "pedido": {
-            "id": 729,
-            "folio": "PED-20261127-000729"
-          },
-          "zona": {
-            "id": 2,
-            "nombre": "Valles de San Bernabé"
-          },
-          "latitud": 25.748439,
-          "longitud": -100.369944,
-          "tramo_km": 0.64,
-          "minutos_acum": 19.5
+          "minutos_acum": 13.8
         }
       ],
-      "distancia_km": 1.27,
-      "minutos": 19.5,
-      "costo": 77.71
+      "distancia_km": 0.67,
+      "minutos": 13.8,
+      "costo": 57.0
     },
     {
       "repartidor": {
@@ -27895,34 +28352,49 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 749,
-            "folio": "PED-20261127-000749"
+            "id": 795,
+            "folio": "PED-20261127-000795"
           },
           "zona": {
             "id": 1,
             "nombre": "San Bernabé Centro"
           },
-          "latitud": 25.742956,
-          "longitud": -100.361173,
-          "tramo_km": 0.82,
-          "minutos_acum": 6.2
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.38,
+          "minutos_acum": 5.0
+        },
+        {
+          "orden": 2,
+          "pedido": {
+            "id": 799,
+            "folio": "PED-20261127-000799"
+          },
+          "zona": {
+            "id": 1,
+            "nombre": "San Bernabé Centro"
+          },
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.0,
+          "minutos_acum": 9.0
         }
       ],
-      "distancia_km": 0.82,
-      "minutos": 6.2,
-      "costo": 21.68
+      "distancia_km": 0.38,
+      "minutos": 9.0,
+      "costo": 37.72
     }
   ],
   "sin_asignar": [],
   "total": {
     "rutas": 2,
     "paradas": 5,
-    "distancia_km": 2.09,
-    "minutos_maximo": 19.5,
-    "costo": 99.39
+    "distancia_km": 1.05,
+    "minutos_maximo": 13.8,
+    "costo": 94.72
   },
   "cambios": [
-    "Se quitó el pedido PED-20261127-000732; la ruta de Ramiro Alanís Lozano se recalculó con 4 paradas."
+    "Se quitó el pedido PED-20261127-000798; la ruta de Ramiro Alanís Lozano se recalculó con 3 paradas."
   ],
   "supuestos_usados": [
     {
@@ -27964,11 +28436,11 @@ Content-Type: application/json
 
 **Objetivo.** Lo pone en la ruta con menos paradas, sin pasar del tope de 8.
 
-**Petición.** `POST http://rutas:5118/api/v1/rutas/planes/138/ajustes`
+**Petición.** `POST http://rutas:5118/api/v1/rutas/planes/148/ajustes`
 
 ```http
 Accept: application/json
-X-Traza-Id: 8b9cb4a8-3718-4891-9a04-f4e24b4cd79d
+X-Traza-Id: e8fc8671-6306-4109-a729-e659c5e45aef
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -27976,15 +28448,15 @@ Content-Type: application/json
 ```json
 {
   "tipo": "agregar_pedido",
-  "pedido_id": 732
+  "pedido_id": 798
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 162 ms · traza `8b9cb4a8-3718-4891-9a04-f4e24b4cd79d`
+**Respuesta.** HTTP 200 (esperado 200) · 175 ms · traza `e8fc8671-6306-4109-a729-e659c5e45aef`
 
 ```json
 {
-  "id": 138,
+  "id": 148,
   "estado": "propuesto",
   "version": 4,
   "microhub": {
@@ -28007,67 +28479,52 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 730,
-            "folio": "PED-20261127-000730"
+            "id": 796,
+            "folio": "PED-20261127-000796"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
-          "tramo_km": 0.63,
-          "minutos_acum": 5.7
+          "latitud": 25.752587,
+          "longitud": -100.364483,
+          "tramo_km": 0.67,
+          "minutos_acum": 5.8
         },
         {
           "orden": 2,
           "pedido": {
-            "id": 731,
-            "folio": "PED-20261127-000731"
+            "id": 797,
+            "folio": "PED-20261127-000797"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 9.7
+          "minutos_acum": 9.8
         },
         {
           "orden": 3,
           "pedido": {
-            "id": 748,
-            "folio": "PED-20261127-000748"
+            "id": 800,
+            "folio": "PED-20261127-000800"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 13.7
-        },
-        {
-          "orden": 4,
-          "pedido": {
-            "id": 729,
-            "folio": "PED-20261127-000729"
-          },
-          "zona": {
-            "id": 2,
-            "nombre": "Valles de San Bernabé"
-          },
-          "latitud": 25.748439,
-          "longitud": -100.369944,
-          "tramo_km": 0.64,
-          "minutos_acum": 19.5
+          "minutos_acum": 13.8
         }
       ],
-      "distancia_km": 1.27,
-      "minutos": 19.5,
-      "costo": 77.71
+      "distancia_km": 0.67,
+      "minutos": 13.8,
+      "costo": 57.0
     },
     {
       "repartidor": {
@@ -28083,49 +28540,64 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 732,
-            "folio": "PED-20261127-000732"
-          },
-          "zona": {
-            "id": 2,
-            "nombre": "Valles de San Bernabé"
-          },
-          "latitud": 25.753225,
-          "longitud": -100.365213,
-          "tramo_km": 0.77,
-          "minutos_acum": 6.1
-        },
-        {
-          "orden": 2,
-          "pedido": {
-            "id": 749,
-            "folio": "PED-20261127-000749"
+            "id": 795,
+            "folio": "PED-20261127-000795"
           },
           "zona": {
             "id": 1,
             "nombre": "San Bernabé Centro"
           },
-          "latitud": 25.742956,
-          "longitud": -100.361173,
-          "tramo_km": 1.57,
-          "minutos_acum": 14.4
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.38,
+          "minutos_acum": 5.0
+        },
+        {
+          "orden": 2,
+          "pedido": {
+            "id": 799,
+            "folio": "PED-20261127-000799"
+          },
+          "zona": {
+            "id": 1,
+            "nombre": "San Bernabé Centro"
+          },
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.0,
+          "minutos_acum": 9.0
+        },
+        {
+          "orden": 3,
+          "pedido": {
+            "id": 798,
+            "folio": "PED-20261127-000798"
+          },
+          "zona": {
+            "id": 2,
+            "nombre": "Valles de San Bernabé"
+          },
+          "latitud": 25.751679,
+          "longitud": -100.366615,
+          "tramo_km": 1.01,
+          "minutos_acum": 15.8
         }
       ],
-      "distancia_km": 2.35,
-      "minutos": 14.4,
-      "costo": 46.56
+      "distancia_km": 1.39,
+      "minutos": 15.8,
+      "costo": 60.25
     }
   ],
   "sin_asignar": [],
   "total": {
     "rutas": 2,
     "paradas": 6,
-    "distancia_km": 3.62,
-    "minutos_maximo": 19.5,
-    "costo": 124.27
+    "distancia_km": 2.06,
+    "minutos_maximo": 15.8,
+    "costo": 117.25
   },
   "cambios": [
-    "Se agregó el pedido PED-20261127-000732 a la ruta de Diana Sepúlveda Ibarra; ahora tiene 2 paradas."
+    "Se agregó el pedido PED-20261127-000798 a la ruta de Diana Sepúlveda Ibarra; ahora tiene 3 paradas."
   ],
   "supuestos_usados": [
     {
@@ -28167,22 +28639,22 @@ Content-Type: application/json
 
 **Objetivo.** Operador y supervisor solo trabajan con el suyo.
 
-**Petición.** `GET http://rutas:5118/api/v1/rutas/planes/138`
+**Petición.** `GET http://rutas:5118/api/v1/rutas/planes/148`
 
 ```http
 Accept: application/json
-X-Traza-Id: 7e07f906-4595-4ae9-be0b-fa2fad5c1edf
+X-Traza-Id: f85afe6c-6b10-4d59-90e0-a71bdf25e8c5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(310 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 24 ms · traza `7e07f906-4595-4ae9-be0b-fa2fad5c1edf`
+**Respuesta.** HTTP 403 (esperado 403) · 25 ms · traza `f85afe6c-6b10-4d59-90e0-a71bdf25e8c5`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil solo puede trabajar con su propio microhub.",
-    "traza_id": "7e07f906-4595-4ae9-be0b-fa2fad5c1edf"
+    "traza_id": "f85afe6c-6b10-4d59-90e0-a71bdf25e8c5"
   }
 }
 ```
@@ -28191,11 +28663,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(3
 
 **Objetivo.** Comprueba que los pedidos sigan listos y deja las rutas en plan_ruta.
 
-**Petición.** `POST http://rutas:5118/api/v1/rutas/planes/138/confirmar`
+**Petición.** `POST http://rutas:5118/api/v1/rutas/planes/148/confirmar`
 
 ```http
 Accept: application/json
-X-Traza-Id: 769a4066-e564-449c-877d-2d54a264cdf4
+X-Traza-Id: 5aee37a3-6704-4fd5-834b-0de319cb610f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -28204,11 +28676,11 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 163 ms · traza `769a4066-e564-449c-877d-2d54a264cdf4`
+**Respuesta.** HTTP 200 (esperado 200) · 170 ms · traza `5aee37a3-6704-4fd5-834b-0de319cb610f`
 
 ```json
 {
-  "id": 138,
+  "id": 148,
   "estado": "confirmado",
   "version": 4,
   "microhub": {
@@ -28231,67 +28703,52 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 730,
-            "folio": "PED-20261127-000730"
+            "id": 796,
+            "folio": "PED-20261127-000796"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
-          "tramo_km": 0.63,
-          "minutos_acum": 5.7
+          "latitud": 25.752587,
+          "longitud": -100.364483,
+          "tramo_km": 0.67,
+          "minutos_acum": 5.8
         },
         {
           "orden": 2,
           "pedido": {
-            "id": 731,
-            "folio": "PED-20261127-000731"
+            "id": 797,
+            "folio": "PED-20261127-000797"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 9.7
+          "minutos_acum": 9.8
         },
         {
           "orden": 3,
           "pedido": {
-            "id": 748,
-            "folio": "PED-20261127-000748"
+            "id": 800,
+            "folio": "PED-20261127-000800"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 13.7
-        },
-        {
-          "orden": 4,
-          "pedido": {
-            "id": 729,
-            "folio": "PED-20261127-000729"
-          },
-          "zona": {
-            "id": 2,
-            "nombre": "Valles de San Bernabé"
-          },
-          "latitud": 25.748439,
-          "longitud": -100.369944,
-          "tramo_km": 0.64,
-          "minutos_acum": 19.5
+          "minutos_acum": 13.8
         }
       ],
-      "distancia_km": 1.27,
-      "minutos": 19.5,
-      "costo": 77.71
+      "distancia_km": 0.67,
+      "minutos": 13.8,
+      "costo": 57.0
     },
     {
       "repartidor": {
@@ -28307,49 +28764,64 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 732,
-            "folio": "PED-20261127-000732"
-          },
-          "zona": {
-            "id": 2,
-            "nombre": "Valles de San Bernabé"
-          },
-          "latitud": 25.753225,
-          "longitud": -100.365213,
-          "tramo_km": 0.77,
-          "minutos_acum": 6.1
-        },
-        {
-          "orden": 2,
-          "pedido": {
-            "id": 749,
-            "folio": "PED-20261127-000749"
+            "id": 795,
+            "folio": "PED-20261127-000795"
           },
           "zona": {
             "id": 1,
             "nombre": "San Bernabé Centro"
           },
-          "latitud": 25.742956,
-          "longitud": -100.361173,
-          "tramo_km": 1.57,
-          "minutos_acum": 14.4
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.38,
+          "minutos_acum": 5.0
+        },
+        {
+          "orden": 2,
+          "pedido": {
+            "id": 799,
+            "folio": "PED-20261127-000799"
+          },
+          "zona": {
+            "id": 1,
+            "nombre": "San Bernabé Centro"
+          },
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.0,
+          "minutos_acum": 9.0
+        },
+        {
+          "orden": 3,
+          "pedido": {
+            "id": 798,
+            "folio": "PED-20261127-000798"
+          },
+          "zona": {
+            "id": 2,
+            "nombre": "Valles de San Bernabé"
+          },
+          "latitud": 25.751679,
+          "longitud": -100.366615,
+          "tramo_km": 1.01,
+          "minutos_acum": 15.8
         }
       ],
-      "distancia_km": 2.35,
-      "minutos": 14.4,
-      "costo": 46.56
+      "distancia_km": 1.39,
+      "minutos": 15.8,
+      "costo": 60.25
     }
   ],
   "sin_asignar": [],
   "total": {
     "rutas": 2,
     "paradas": 6,
-    "distancia_km": 3.62,
-    "minutos_maximo": 19.5,
-    "costo": 124.27
+    "distancia_km": 2.06,
+    "minutos_maximo": 15.8,
+    "costo": 117.25
   },
   "cambios": [
-    "Se agregó el pedido PED-20261127-000732 a la ruta de Diana Sepúlveda Ibarra; ahora tiene 2 paradas."
+    "Se agregó el pedido PED-20261127-000798 a la ruta de Diana Sepúlveda Ibarra; ahora tiene 3 paradas."
   ],
   "supuestos_usados": [
     {
@@ -28391,22 +28863,22 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 130,
+    "id": 140,
     "repartidor_id": 7,
     "metodo": "TSP exacto",
-    "paradas": 4,
-    "distancia_km": "1.27",
-    "minutos": "19.5",
-    "costo_estimado": "77.71"
+    "paradas": 3,
+    "distancia_km": "0.67",
+    "minutos": "13.8",
+    "costo_estimado": "57.00"
   },
   {
-    "id": 131,
+    "id": 141,
     "repartidor_id": 8,
     "metodo": "TSP exacto",
-    "paradas": 2,
-    "distancia_km": "2.35",
-    "minutos": "14.4",
-    "costo_estimado": "46.56"
+    "paradas": 3,
+    "distancia_km": "1.39",
+    "minutos": "15.8",
+    "costo_estimado": "60.25"
   }
 ]
 ```
@@ -28425,11 +28897,11 @@ Content-Type: application/json
 
 **Objetivo.** Un plan confirmado no se vuelve a confirmar.
 
-**Petición.** `POST http://rutas:5118/api/v1/rutas/planes/138/confirmar`
+**Petición.** `POST http://rutas:5118/api/v1/rutas/planes/148/confirmar`
 
 ```http
 Accept: application/json
-X-Traza-Id: ca3c3037-84b7-409f-81ac-5eb686cf9c71
+X-Traza-Id: 6c1e1095-bce2-471a-96af-9ee1e74695a9
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -28438,14 +28910,14 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 23 ms · traza `ca3c3037-84b7-409f-81ac-5eb686cf9c71`
+**Respuesta.** HTTP 409 (esperado 409) · 31 ms · traza `6c1e1095-bce2-471a-96af-9ee1e74695a9`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "Solo se confirma un plan propuesto; este está confirmado.",
-    "traza_id": "ca3c3037-84b7-409f-81ac-5eb686cf9c71"
+    "traza_id": "6c1e1095-bce2-471a-96af-9ee1e74695a9"
   }
 }
 ```
@@ -28458,17 +28930,17 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: f75dcd9e-aee2-4487-b78d-d230f5b7fe82
+X-Traza-Id: baa3710e-20da-42f9-b64f-c55f1607c4df
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 44 ms · traza `f75dcd9e-aee2-4487-b78d-d230f5b7fe82`
+**Respuesta.** HTTP 200 (esperado 200) · 54 ms · traza `baa3710e-20da-42f9-b64f-c55f1607c4df`
 
 ```json
 {
   "datos": [
     {
-      "id": 138,
+      "id": 148,
       "estado": "confirmado",
       "version": 4,
       "microhub": {
@@ -28478,10 +28950,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "fecha": "2026-11-27",
       "rutas": 2,
       "paradas": 6,
-      "distancia_km": 3.62,
-      "costo": 124.27,
+      "distancia_km": 2.06,
+      "costo": 117.25,
       "creado_por": 5,
-      "creado_en": "2026-11-27T01:24:54-06:00"
+      "creado_en": "2026-11-27T02:11:08-06:00"
+    },
+    {
+      "id": 140,
+      "estado": "confirmado",
+      "version": 1,
+      "microhub": {
+        "id": 1,
+        "nombre": "Microhub San Bernabé Centro"
+      },
+      "fecha": "2026-11-27",
+      "rutas": 2,
+      "paradas": 4,
+      "distancia_km": 1.74,
+      "costo": 79.82,
+      "creado_por": 5,
+      "creado_en": "2026-11-27T01:25:36-06:00"
     },
     {
       "id": 122,
@@ -28535,7 +29023,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "paginacion": {
     "pagina": 1,
     "por_pagina": 20,
-    "total": 4,
+    "total": 5,
     "paginas": 1
   }
 }
@@ -28545,11 +29033,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Un plan que no se confirmó se cancela.
 
-**Petición.** `POST http://rutas:5118/api/v1/rutas/planes/139/cancelar`
+**Petición.** `POST http://rutas:5118/api/v1/rutas/planes/149/cancelar`
 
 ```http
 Accept: application/json
-X-Traza-Id: eb2478eb-80e2-4b86-903f-a41dd5617e1c
+X-Traza-Id: 5d6d5d9d-d358-429c-aa92-cab8f37542ab
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -28558,11 +29046,11 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 76 ms · traza `eb2478eb-80e2-4b86-903f-a41dd5617e1c`
+**Respuesta.** HTTP 200 (esperado 200) · 118 ms · traza `5d6d5d9d-d358-429c-aa92-cab8f37542ab`
 
 ```json
 {
-  "id": 139,
+  "id": 149,
   "estado": "cancelado",
   "version": 1,
   "microhub": {
@@ -28585,82 +29073,67 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 732,
-            "folio": "PED-20261127-000732"
+            "id": 798,
+            "folio": "PED-20261127-000798"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.753225,
-          "longitud": -100.365213,
-          "tramo_km": 0.77,
-          "minutos_acum": 6.1
+          "latitud": 25.751679,
+          "longitud": -100.366615,
+          "tramo_km": 0.63,
+          "minutos_acum": 5.7
         },
         {
           "orden": 2,
           "pedido": {
-            "id": 730,
-            "folio": "PED-20261127-000730"
+            "id": 796,
+            "folio": "PED-20261127-000796"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
-          "tramo_km": 0.29,
-          "minutos_acum": 10.9
+          "latitud": 25.752587,
+          "longitud": -100.364483,
+          "tramo_km": 0.31,
+          "minutos_acum": 10.6
         },
         {
           "orden": 3,
           "pedido": {
-            "id": 731,
-            "folio": "PED-20261127-000731"
+            "id": 797,
+            "folio": "PED-20261127-000797"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 14.9
+          "minutos_acum": 14.6
         },
         {
           "orden": 4,
           "pedido": {
-            "id": 748,
-            "folio": "PED-20261127-000748"
+            "id": 800,
+            "folio": "PED-20261127-000800"
           },
           "zona": {
             "id": 2,
             "nombre": "Valles de San Bernabé"
           },
-          "latitud": 25.751679,
-          "longitud": -100.366615,
+          "latitud": 25.752587,
+          "longitud": -100.364483,
           "tramo_km": 0.0,
-          "minutos_acum": 18.9
-        },
-        {
-          "orden": 5,
-          "pedido": {
-            "id": 729,
-            "folio": "PED-20261127-000729"
-          },
-          "zona": {
-            "id": 2,
-            "nombre": "Valles de San Bernabé"
-          },
-          "latitud": 25.748439,
-          "longitud": -100.369944,
-          "tramo_km": 0.64,
-          "minutos_acum": 24.6
+          "minutos_acum": 18.6
         }
       ],
-      "distancia_km": 1.7,
-      "minutos": 24.6,
-      "costo": 97.64
+      "distancia_km": 0.94,
+      "minutos": 18.6,
+      "costo": 76.22
     },
     {
       "repartidor": {
@@ -28675,31 +29148,46 @@ Content-Type: application/json
         {
           "orden": 1,
           "pedido": {
-            "id": 749,
-            "folio": "PED-20261127-000749"
+            "id": 795,
+            "folio": "PED-20261127-000795"
           },
           "zona": {
             "id": 1,
             "nombre": "San Bernabé Centro"
           },
-          "latitud": 25.742956,
-          "longitud": -100.361173,
-          "tramo_km": 0.82,
-          "minutos_acum": 6.2
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.38,
+          "minutos_acum": 5.0
+        },
+        {
+          "orden": 2,
+          "pedido": {
+            "id": 799,
+            "folio": "PED-20261127-000799"
+          },
+          "zona": {
+            "id": 1,
+            "nombre": "San Bernabé Centro"
+          },
+          "latitud": 25.745527,
+          "longitud": -100.362981,
+          "tramo_km": 0.0,
+          "minutos_acum": 9.0
         }
       ],
-      "distancia_km": 0.82,
-      "minutos": 6.2,
-      "costo": 21.68
+      "distancia_km": 0.38,
+      "minutos": 9.0,
+      "costo": 37.72
     }
   ],
   "sin_asignar": [],
   "total": {
     "rutas": 2,
     "paradas": 6,
-    "distancia_km": 2.52,
-    "minutos_maximo": 24.6,
-    "costo": 119.32
+    "distancia_km": 1.32,
+    "minutos_maximo": 18.6,
+    "costo": 113.94
   },
   "cambios": [],
   "supuestos_usados": [
@@ -28745,7 +29233,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 117f0518-c613-4d64-ba65-2848f481b91a
+X-Traza-Id: 687ebe83-7546-4787-888f-8a8d432c486d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -28756,14 +29244,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 87 ms · traza `117f0518-c613-4d64-ba65-2848f481b91a`
+**Respuesta.** HTTP 422 (esperado 422) · 104 ms · traza `687ebe83-7546-4787-888f-8a8d432c486d`
 
 ```json
 {
   "error": {
     "codigo": "VALIDACION",
     "mensaje": "No hay pedidos listos para despachar en ese microhub.",
-    "traza_id": "117f0518-c613-4d64-ba65-2848f481b91a"
+    "traza_id": "687ebe83-7546-4787-888f-8a8d432c486d"
   }
 }
 ```
@@ -28776,7 +29264,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 724fbbfc-071d-41df-9a23-823585ade01a
+X-Traza-Id: c4b4287f-022f-4696-b2c7-932348e2bee4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -28790,7 +29278,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 96 ms · traza `724fbbfc-071d-41df-9a23-823585ade01a`
+**Respuesta.** HTTP 422 (esperado 422) · 122 ms · traza `c4b4287f-022f-4696-b2c7-932348e2bee4`
 
 ```json
 {
@@ -28803,7 +29291,7 @@ Content-Type: application/json
         "mensaje": "El pedido 999999 no está listo o no es de ese microhub."
       }
     ],
-    "traza_id": "724fbbfc-071d-41df-9a23-823585ade01a"
+    "traza_id": "c4b4287f-022f-4696-b2c7-932348e2bee4"
   }
 }
 ```
@@ -28816,7 +29304,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 0fda7fbd-9dc7-4cd0-9df2-10b98cd7b4aa
+X-Traza-Id: 3d4f3f8d-351f-4ee4-a274-4f59fe9540d7
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(310 caracteres)
 Content-Type: application/json
 ```
@@ -28825,24 +29313,24 @@ Content-Type: application/json
 {
   "microhub_id": 1,
   "pedido_ids": [
-    729,
-    730,
-    731,
-    732,
-    748,
-    749
+    795,
+    796,
+    797,
+    798,
+    799,
+    800
   ]
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 6 ms · traza `0fda7fbd-9dc7-4cd0-9df2-10b98cd7b4aa`
+**Respuesta.** HTTP 403 (esperado 403) · 7 ms · traza `3d4f3f8d-351f-4ee4-a274-4f59fe9540d7`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil solo puede trabajar con su propio microhub.",
-    "traza_id": "0fda7fbd-9dc7-4cd0-9df2-10b98cd7b4aa"
+    "traza_id": "3d4f3f8d-351f-4ee4-a274-4f59fe9540d7"
   }
 }
 ```
@@ -28855,7 +29343,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 2050db9e-a94b-445f-b403-f0bd1a08c617
+X-Traza-Id: 8aa33367-152e-4fa6-a227-3e736a44041d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 Content-Type: application/json
 ```
@@ -28866,14 +29354,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 35 ms · traza `2050db9e-a94b-445f-b403-f0bd1a08c617`
+**Respuesta.** HTTP 403 (esperado 403) · 56 ms · traza `8aa33367-152e-4fa6-a227-3e736a44041d`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "2050db9e-a94b-445f-b403-f0bd1a08c617"
+    "traza_id": "8aa33367-152e-4fa6-a227-3e736a44041d"
   }
 }
 ```
@@ -28886,20 +29374,20 @@ Content-Type: application/json
 
 ```http
 Accept: application/xml
-X-Traza-Id: 8828b30a-87f1-4a0a-b832-1c15d408df66
+X-Traza-Id: 512ff1b9-f599-4896-8f2e-1a9f3c3636ca
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/xml
 ```
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?><ruta_plan_nuevo xmlns="urn:microhubs:v1"><microhub_id>1</microhub_id><pedido_ids><id>729</id><id>730</id><id>731</id></pedido_ids><metodo>exacto</metodo></ruta_plan_nuevo>
+<?xml version="1.0" encoding="UTF-8"?><ruta_plan_nuevo xmlns="urn:microhubs:v1"><microhub_id>1</microhub_id><pedido_ids><id>795</id><id>796</id><id>797</id></pedido_ids><metodo>exacto</metodo></ruta_plan_nuevo>
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 234 ms · traza `8828b30a-87f1-4a0a-b832-1c15d408df66`
+**Respuesta.** HTTP 200 (esperado 200) · 254 ms · traza `512ff1b9-f599-4896-8f2e-1a9f3c3636ca`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<ruta_plan xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id xsi:nil="true" /><estado>calculo</estado><version>1</version><microhub><id>1</id><nombre>Microhub San Bernabé Centro</nombre></microhub><fecha>2026-11-27</fecha><metodo_pedido>exacto</metodo_pedido><rutas><ruta><repartidor><id>7</id><nombre>Ramiro Alanís Lozano</nombre></repartidor><metodo>TSP exacto</metodo><zonas><nombre_zona>Valles de San Bernabé</nombre_zona></zonas><paradas><parada><orden>1</orden><pedido><id>730</id><folio>PED-20261127-000730</folio></pedido><zona><id>2</id><nombre>Valles de San Bernabé</nombre></zona><latitud>25.751679</latitud><longitud>-100.366615</longitud><tramo_km>0.63</tramo_km><minutos_acum>5.7</minutos_acum></parada><parada><orden>2</orden><pedido><id>731</id><folio>PED-20261127-000731</folio></pedido><zona><id>2</id><nombre>Valles de San Bernabé</nombre></zona><latitud>25.751679</latitud><longitud>-100.366615</longitud><tramo_km>0</tramo_km><minutos_acum>9.7</minutos_acum></parada><parada><orden>3</orden><pedido><id>729</id><folio>PED-20261127-000729</folio></pedido><zona><id>2</id><nombre>Valles de San Bernabé</nombre></zona><latitud>25.748439</latitud><longitud>-100.369944</longitud><tramo_km>0.64</tramo_km><minutos_acum>15.5</minutos_acum></parada></paradas><distancia_km>1.27</distancia_km><minutos>15.5</minutos><costo>59.71</costo></ruta></rutas><sin_asignar /><total><rutas>1</rutas><paradas>3</paradas><distancia_km>1.27</distancia_km><minutos_maximo>15.5</minutos_maximo><costo>59.71</costo></total><cambios /><supuestos_usados><supuesto><clave>velocidad_reparto_kmh</clave><valor>22</valor><modificado>false</modificado></supuesto><supuesto><clave>tiempo_servicio_min</clave><valor>4</valor><modificado>false</modificado></supuesto><supuesto><clave>costo_km_reparto</clave><valor>4.5</valor><modificado>false</modificado></supuesto><supuesto><clave>costo_base_entrega</clave><valor>18</valor><modificado>false</modificado></supuesto><supuesto><clave>max_paradas_repartidor</clave><valor>8</valor><modificado>false</modificado></supuesto><supuesto><clave>factor_rodeo_distancia</clave><valor>1.3</valor><modificado>false</modificado></supuesto></supuestos_usados></ruta_plan>
+<ruta_plan xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id xsi:nil="true" /><estado>calculo</estado><version>1</version><microhub><id>1</id><nombre>Microhub San Bernabé Centro</nombre></microhub><fecha>2026-11-27</fecha><metodo_pedido>exacto</metodo_pedido><rutas><ruta><repartidor><id>7</id><nombre>Ramiro Alanís Lozano</nombre></repartidor><metodo>TSP exacto</metodo><zonas><nombre_zona>Valles de San Bernabé</nombre_zona></zonas><paradas><parada><orden>1</orden><pedido><id>796</id><folio>PED-20261127-000796</folio></pedido><zona><id>2</id><nombre>Valles de San Bernabé</nombre></zona><latitud>25.752587</latitud><longitud>-100.364483</longitud><tramo_km>0.67</tramo_km><minutos_acum>5.8</minutos_acum></parada><parada><orden>2</orden><pedido><id>797</id><folio>PED-20261127-000797</folio></pedido><zona><id>2</id><nombre>Valles de San Bernabé</nombre></zona><latitud>25.752587</latitud><longitud>-100.364483</longitud><tramo_km>0</tramo_km><minutos_acum>9.8</minutos_acum></parada></paradas><distancia_km>0.67</distancia_km><minutos>9.8</minutos><costo>39</costo></ruta><ruta><repartidor><id>8</id><nombre>Diana Sepúlveda Ibarra</nombre></repartidor><metodo>TSP exacto</metodo><zonas><nombre_zona>San Bernabé Centro</nombre_zona></zonas><paradas><parada><orden>1</orden><pedido><id>795</id><folio>PED-20261127-000795</folio></pedido><zona><id>1</id><nombre>San Bernabé Centro</nombre></zona><latitud>25.745527</latitud><longitud>-100.362981</longitud><tramo_km>0.38</tramo_km><minutos_acum>5</minutos_acum></parada></paradas><distancia_km>0.38</distancia_km><minutos>5</minutos><costo>19.72</costo></ruta></rutas><sin_asignar /><total><rutas>2</rutas><paradas>3</paradas><distancia_km>1.05</distancia_km><minutos_maximo>9.8</minutos_maximo><costo>58.72</costo></total><cambios /><supuestos_usados><supuesto><clave>velocidad_reparto_kmh</clave><valor>22</valor><modificado>false</modificado></supuesto><supuesto><clave>tiempo_servicio_min</clave><valor>4</valor><modificado>false</modificado></supuesto><supuesto><clave>costo_km_reparto</clave><valor>4.5</valor><modificado>false</modificado></supuesto><supuesto><clave>costo_base_entrega</clave><valor>18</valor><modificado>false</modificado></supuesto><supuesto><clave>max_paradas_repartidor</clave><valor>8</valor><modificado>false</modificado></supuesto><supuesto><clave>factor_rodeo_distancia</clave><valor>1.3</valor><modificado>false</modificado></supuesto></supuestos_usados></ruta_plan>
 ```
 
 ### RUT-19 · Supuestos de las rutas · PASA
@@ -28910,11 +29398,11 @@ Content-Type: application/xml
 
 ```http
 Accept: application/json
-X-Traza-Id: 200a5e54-6d08-4ead-b7e8-a142cae9be6c
+X-Traza-Id: 39b5c16f-11c7-4617-9172-228221dd5eb3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 31 ms · traza `200a5e54-6d08-4ead-b7e8-a142cae9be6c`
+**Respuesta.** HTTP 200 (esperado 200) · 35 ms · traza `39b5c16f-11c7-4617-9172-228221dd5eb3`
 
 ```json
 {
@@ -28997,7 +29485,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 765abaa5-cff3-4c45-aba0-b505728760f6
+X-Traza-Id: b4a7a2f3-6c25-44d5-b995-ca13e8905fe8
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -29011,11 +29499,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 202 (esperado 202) · 589 ms · traza `765abaa5-cff3-4c45-aba0-b505728760f6`
+**Respuesta.** HTTP 202 (esperado 202) · 617 ms · traza `b4a7a2f3-6c25-44d5-b995-ca13e8905fe8`
 
 ```json
 {
-  "id": "1e285462-9bf0-4bfd-8992-0772855c77ff",
+  "id": "f0b5df62-88fb-4842-9e31-ba4b383249b0",
   "nombre": "Simulación de Microhub San Bernabé Centro 2026-11-27",
   "estado": "en_cola",
   "objeto": {
@@ -29112,7 +29600,7 @@ Content-Type: application/json
   "reproducible": null,
   "error": null,
   "creado_por": 5,
-  "creado_en": "2026-11-27T01:24:56-06:00",
+  "creado_en": "2026-11-27T02:11:11-06:00",
   "inicio_en": null,
   "fin_en": null,
   "supuestos_usados": [
@@ -29177,7 +29665,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": "1e285462-9bf0-4bfd-8992-0772855c77ff",
+    "id": "f0b5df62-88fb-4842-9e31-ba4b383249b0",
     "estado": "en_cola",
     "semilla": 11,
     "version_modelo": "1.0",
@@ -29191,19 +29679,19 @@ Content-Type: application/json
 
 **Objetivo.** Media y percentiles 10, 50 y 90 de utilidad, pedidos atendidos y rechazados; probabilidad de perder.
 
-**Petición.** `GET http://simulacion:5121/api/v1/simulacion/ejecuciones/1e285462-9bf0-4bfd-8992-0772855c77ff`
+**Petición.** `GET http://simulacion:5121/api/v1/simulacion/ejecuciones/f0b5df62-88fb-4842-9e31-ba4b383249b0`
 
 ```http
 Accept: application/json
-X-Traza-Id: 5789f623-5936-45bc-913c-97c19a80684f
+X-Traza-Id: 5ac76678-2a94-4e75-8ca8-59ba716549ff
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 26 ms · traza `5789f623-5936-45bc-913c-97c19a80684f`
+**Respuesta.** HTTP 200 (esperado 200) · 43 ms · traza `5ac76678-2a94-4e75-8ca8-59ba716549ff`
 
 ```json
 {
-  "id": "1e285462-9bf0-4bfd-8992-0772855c77ff",
+  "id": "f0b5df62-88fb-4842-9e31-ba4b383249b0",
   "nombre": "Simulación de Microhub San Bernabé Centro 2026-11-27",
   "estado": "terminada",
   "objeto": {
@@ -29471,9 +29959,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "reproducible": null,
   "error": null,
   "creado_por": 5,
-  "creado_en": "2026-11-27T01:24:56-06:00",
-  "inicio_en": "2026-11-27T01:24:57-06:00",
-  "fin_en": "2026-11-27T01:24:57-06:00",
+  "creado_en": "2026-11-27T02:11:11-06:00",
+  "inicio_en": "2026-11-27T02:11:12-06:00",
+  "fin_en": "2026-11-27T02:11:12-06:00",
   "supuestos_usados": [
     {
       "clave": "********",
@@ -29549,11 +30037,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Debe dar exactamente lo mismo.
 
-**Petición.** `POST http://simulacion:5121/api/v1/simulacion/ejecuciones/1e285462-9bf0-4bfd-8992-0772855c77ff/repetir`
+**Petición.** `POST http://simulacion:5121/api/v1/simulacion/ejecuciones/f0b5df62-88fb-4842-9e31-ba4b383249b0/repetir`
 
 ```http
 Accept: application/json
-X-Traza-Id: e42a3e0e-2721-41e0-b8df-9b87e8844c9a
+X-Traza-Id: 3bb67be1-f2e5-49b2-b0c9-feba253038c0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -29562,11 +30050,11 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 202 (esperado 202) · 118 ms · traza `e42a3e0e-2721-41e0-b8df-9b87e8844c9a`
+**Respuesta.** HTTP 202 (esperado 202) · 152 ms · traza `3bb67be1-f2e5-49b2-b0c9-feba253038c0`
 
 ```json
 {
-  "id": "cb147693-24c5-4c44-b320-ec0d89ce6dfb",
+  "id": "20ad2330-13d5-4737-bdbb-90cbaae2f565",
   "nombre": "Repetición de Simulación de Microhub San Bernabé Centro 2026-11-27",
   "estado": "en_cola",
   "objeto": {
@@ -29659,11 +30147,11 @@ Content-Type: application/json
   },
   "resultados": null,
   "huella": null,
-  "repeticion_de": "1e285462-9bf0-4bfd-8992-0772855c77ff",
+  "repeticion_de": "f0b5df62-88fb-4842-9e31-ba4b383249b0",
   "reproducible": null,
   "error": null,
   "creado_por": 5,
-  "creado_en": "2026-11-27T01:24:57-06:00",
+  "creado_en": "2026-11-27T02:11:13-06:00",
   "inicio_en": null,
   "fin_en": null,
   "supuestos_usados": [
@@ -29725,19 +30213,19 @@ Content-Type: application/json
 
 **Objetivo.** Misma huella: la simulación es reproducible.
 
-**Petición.** `GET http://simulacion:5121/api/v1/simulacion/ejecuciones/cb147693-24c5-4c44-b320-ec0d89ce6dfb`
+**Petición.** `GET http://simulacion:5121/api/v1/simulacion/ejecuciones/20ad2330-13d5-4737-bdbb-90cbaae2f565`
 
 ```http
 Accept: application/json
-X-Traza-Id: 523c4f0f-ce34-4b10-a146-6872a45a9e2e
+X-Traza-Id: b75d60ff-1fb9-4ab6-b122-d295d241b62e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 50 ms · traza `523c4f0f-ce34-4b10-a146-6872a45a9e2e`
+**Respuesta.** HTTP 200 (esperado 200) · 102 ms · traza `b75d60ff-1fb9-4ab6-b122-d295d241b62e`
 
 ```json
 {
-  "id": "cb147693-24c5-4c44-b320-ec0d89ce6dfb",
+  "id": "20ad2330-13d5-4737-bdbb-90cbaae2f565",
   "nombre": "Repetición de Simulación de Microhub San Bernabé Centro 2026-11-27",
   "estado": "terminada",
   "objeto": {
@@ -30001,13 +30489,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     ]
   },
   "huella": "965494c522389f8261692a25ee93b14024a903f389e7eb3144e0d3e879506679",
-  "repeticion_de": "1e285462-9bf0-4bfd-8992-0772855c77ff",
+  "repeticion_de": "f0b5df62-88fb-4842-9e31-ba4b383249b0",
   "reproducible": true,
   "error": null,
   "creado_por": 5,
-  "creado_en": "2026-11-27T01:24:57-06:00",
-  "inicio_en": "2026-11-27T01:24:59-06:00",
-  "fin_en": "2026-11-27T01:24:59-06:00",
+  "creado_en": "2026-11-27T02:11:13-06:00",
+  "inicio_en": "2026-11-27T02:11:14-06:00",
+  "fin_en": "2026-11-27T02:11:14-06:00",
   "supuestos_usados": [
     {
       "clave": "********",
@@ -30068,16 +30556,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 ```json
 [
   {
-    "id": "1e285462-9bf0-4bfd-8992-0772855c77ff",
+    "id": "f0b5df62-88fb-4842-9e31-ba4b383249b0",
     "estado": "terminada",
     "huella": "965494c522389f8261692a25ee93b14024a903f389e7eb3144e0d3e879506679",
     "repite_a": null
   },
   {
-    "id": "cb147693-24c5-4c44-b320-ec0d89ce6dfb",
+    "id": "20ad2330-13d5-4737-bdbb-90cbaae2f565",
     "estado": "terminada",
     "huella": "965494c522389f8261692a25ee93b14024a903f389e7eb3144e0d3e879506679",
-    "repite_a": "1e285462-9bf0-4bfd-8992-0772855c77ff"
+    "repite_a": "f0b5df62-88fb-4842-9e31-ba4b383249b0"
   }
 ]
 ```
@@ -30086,19 +30574,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Misma entrada con semilla 12: la huella cambia.
 
-**Petición.** `GET http://simulacion:5121/api/v1/simulacion/ejecuciones/d65f32e7-30af-4fdf-a5a0-3e8ee2c70dac`
+**Petición.** `GET http://simulacion:5121/api/v1/simulacion/ejecuciones/4296cd2d-7cc4-4b76-8f04-38d7c2b88aee`
 
 ```http
 Accept: application/json
-X-Traza-Id: d182e630-9765-41fc-87e5-b9dd0081be1b
+X-Traza-Id: e14f798a-e7b2-4370-aa5c-6e1bbdb30419
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 34 ms · traza `d182e630-9765-41fc-87e5-b9dd0081be1b`
+**Respuesta.** HTTP 200 (esperado 200) · 26 ms · traza `e14f798a-e7b2-4370-aa5c-6e1bbdb30419`
 
 ```json
 {
-  "id": "d65f32e7-30af-4fdf-a5a0-3e8ee2c70dac",
+  "id": "4296cd2d-7cc4-4b76-8f04-38d7c2b88aee",
   "nombre": "Simulación de Microhub San Bernabé Centro 2026-11-27",
   "estado": "terminada",
   "objeto": {
@@ -30366,9 +30854,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "reproducible": null,
   "error": null,
   "creado_por": 5,
-  "creado_en": "2026-11-27T01:25:00-06:00",
-  "inicio_en": "2026-11-27T01:25:01-06:00",
-  "fin_en": "2026-11-27T01:25:01-06:00",
+  "creado_en": "2026-11-27T02:11:16-06:00",
+  "inicio_en": "2026-11-27T02:11:16-06:00",
+  "fin_en": "2026-11-27T02:11:17-06:00",
   "supuestos_usados": [
     {
       "clave": "********",
@@ -30428,21 +30916,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Utilidad media, P10, P90, probabilidad de pérdida y días saturados lado a lado.
 
-**Petición.** `GET http://simulacion:5121/api/v1/simulacion/comparacion?ids=1e285462-9bf0-4bfd-8992-0772855c77ff,d65f32e7-30af-4fdf-a5a0-3e8ee2c70dac`
+**Petición.** `GET http://simulacion:5121/api/v1/simulacion/comparacion?ids=f0b5df62-88fb-4842-9e31-ba4b383249b0,4296cd2d-7cc4-4b76-8f04-38d7c2b88aee`
 
 ```http
 Accept: application/json
-X-Traza-Id: cbed91bc-7854-46ef-bfcf-c1e9a2072d02
+X-Traza-Id: f38631a6-5a99-4ded-bd8f-67139c7df0c4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 45 ms · traza `cbed91bc-7854-46ef-bfcf-c1e9a2072d02`
+**Respuesta.** HTTP 200 (esperado 200) · 50 ms · traza `f38631a6-5a99-4ded-bd8f-67139c7df0c4`
 
 ```json
 {
   "ejecuciones": [
     {
-      "id": "1e285462-9bf0-4bfd-8992-0772855c77ff",
+      "id": "f0b5df62-88fb-4842-9e31-ba4b383249b0",
       "nombre": "Simulación de Microhub San Bernabé Centro 2026-11-27",
       "objeto": {
         "tipo": "microhub",
@@ -30461,7 +30949,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "huella": "965494c522389f8261692a25ee93b14024a903f389e7eb3144e0d3e879506679"
     },
     {
-      "id": "d65f32e7-30af-4fdf-a5a0-3e8ee2c70dac",
+      "id": "4296cd2d-7cc4-4b76-8f04-38d7c2b88aee",
       "nombre": "Simulación de Microhub San Bernabé Centro 2026-11-27",
       "objeto": {
         "tipo": "microhub",
@@ -30480,7 +30968,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "huella": "9e7f010a3b7375a6dd9323a43e910c61e3a32b08a33220c54e5b8eaf74c7835a"
     }
   ],
-  "mejor_id": "d65f32e7-30af-4fdf-a5a0-3e8ee2c70dac",
+  "mejor_id": "4296cd2d-7cc4-4b76-8f04-38d7c2b88aee",
   "criterio": "Mayor utilidad media entre las que pierden dinero en menos de la mitad de las réplicas."
 }
 ```
@@ -30493,7 +30981,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 60667e86-4214-4594-8af7-bd2636227ad0
+X-Traza-Id: 17b8cc01-1953-4ada-9b66-2bcd328890fc
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -30512,11 +31000,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 202 (esperado 202) · 208 ms · traza `60667e86-4214-4594-8af7-bd2636227ad0`
+**Respuesta.** HTTP 202 (esperado 202) · 295 ms · traza `17b8cc01-1953-4ada-9b66-2bcd328890fc`
 
 ```json
 {
-  "id": "010e2981-0fad-4f81-9e18-3b36f54bbc18",
+  "id": "1da507b7-7d18-4267-bc70-9c240abeadb1",
   "nombre": "Simulación de escenario manual 2026-11-27",
   "estado": "en_cola",
   "objeto": {
@@ -30613,7 +31101,7 @@ Content-Type: application/json
   "reproducible": null,
   "error": null,
   "creado_por": 5,
-  "creado_en": "2026-11-27T01:25:01-06:00",
+  "creado_en": "2026-11-27T02:11:17-06:00",
   "inicio_en": null,
   "fin_en": null,
   "supuestos_usados": [
@@ -30675,19 +31163,19 @@ Content-Type: application/json
 
 **Objetivo.** 100 % de las réplicas terminan en pérdida: lo que ya decía el punto de equilibrio.
 
-**Petición.** `GET http://simulacion:5121/api/v1/simulacion/ejecuciones/010e2981-0fad-4f81-9e18-3b36f54bbc18`
+**Petición.** `GET http://simulacion:5121/api/v1/simulacion/ejecuciones/1da507b7-7d18-4267-bc70-9c240abeadb1`
 
 ```http
 Accept: application/json
-X-Traza-Id: 2386a170-5baa-4a64-a565-da6d66e8526d
+X-Traza-Id: b78d05e8-e038-4957-b96f-07fbe9bf38ad
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 31 ms · traza `2386a170-5baa-4a64-a565-da6d66e8526d`
+**Respuesta.** HTTP 200 (esperado 200) · 49 ms · traza `b78d05e8-e038-4957-b96f-07fbe9bf38ad`
 
 ```json
 {
-  "id": "010e2981-0fad-4f81-9e18-3b36f54bbc18",
+  "id": "1da507b7-7d18-4267-bc70-9c240abeadb1",
   "nombre": "Simulación de escenario manual 2026-11-27",
   "estado": "terminada",
   "objeto": {
@@ -30955,9 +31443,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "reproducible": null,
   "error": null,
   "creado_por": 5,
-  "creado_en": "2026-11-27T01:25:01-06:00",
-  "inicio_en": "2026-11-27T01:25:03-06:00",
-  "fin_en": "2026-11-27T01:25:03-06:00",
+  "creado_en": "2026-11-27T02:11:17-06:00",
+  "inicio_en": "2026-11-27T02:11:19-06:00",
+  "fin_en": "2026-11-27T02:11:19-06:00",
   "supuestos_usados": [
     {
       "clave": "********",
@@ -31021,7 +31509,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 380a68ef-d35c-4f67-9308-eda691bd8625
+X-Traza-Id: 6ea98b19-7b32-4e8d-b4fc-f6dafd81e7bf
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -31032,7 +31520,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 39 ms · traza `380a68ef-d35c-4f67-9308-eda691bd8625`
+**Respuesta.** HTTP 422 (esperado 422) · 63 ms · traza `6ea98b19-7b32-4e8d-b4fc-f6dafd81e7bf`
 
 ```json
 {
@@ -31061,7 +31549,7 @@ Content-Type: application/json
         "mensaje": "Es obligatorio sin microhub ni candidato."
       }
     ],
-    "traza_id": "380a68ef-d35c-4f67-9308-eda691bd8625"
+    "traza_id": "6ea98b19-7b32-4e8d-b4fc-f6dafd81e7bf"
   }
 }
 ```
@@ -31074,7 +31562,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 673955f0-4d5f-4e22-bc2e-a89754dd881a
+X-Traza-Id: 68a9a0ea-1a39-47d3-a1d2-654e71980b61
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -31087,7 +31575,7 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 733 ms · traza `673955f0-4d5f-4e22-bc2e-a89754dd881a`
+**Respuesta.** HTTP 422 (esperado 422) · 706 ms · traza `68a9a0ea-1a39-47d3-a1d2-654e71980b61`
 
 ```json
 {
@@ -31100,7 +31588,7 @@ Content-Type: application/json
         "mensaje": "Reduce los días o las réplicas (máximo 200,000 entre las dos)."
       }
     ],
-    "traza_id": "673955f0-4d5f-4e22-bc2e-a89754dd881a"
+    "traza_id": "68a9a0ea-1a39-47d3-a1d2-654e71980b61"
   }
 }
 ```
@@ -31109,11 +31597,11 @@ Content-Type: application/json
 
 **Objetivo.** Una ejecución en cola o en curso se puede cancelar.
 
-**Petición.** `POST http://simulacion:5121/api/v1/simulacion/ejecuciones/d3320bf1-7a3a-45ab-bf86-e654c8d172a9/cancelar`
+**Petición.** `POST http://simulacion:5121/api/v1/simulacion/ejecuciones/81e7c3e7-fd95-45c8-b81b-87e9fbd6ea95/cancelar`
 
 ```http
 Accept: application/json
-X-Traza-Id: 365e7244-b594-4a6a-8e4f-1d33d01ee4b6
+X-Traza-Id: ff4e4a38-9760-472d-b232-74cee9f4a0c8
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -31122,11 +31610,11 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 89 ms · traza `365e7244-b594-4a6a-8e4f-1d33d01ee4b6`
+**Respuesta.** HTTP 200 (esperado 200) · 110 ms · traza `ff4e4a38-9760-472d-b232-74cee9f4a0c8`
 
 ```json
 {
-  "id": "d3320bf1-7a3a-45ab-bf86-e654c8d172a9",
+  "id": "81e7c3e7-fd95-45c8-b81b-87e9fbd6ea95",
   "nombre": "Simulación de Microhub San Bernabé Centro 2026-11-27",
   "estado": "cancelada",
   "objeto": {
@@ -31223,9 +31711,9 @@ Content-Type: application/json
   "reproducible": null,
   "error": null,
   "creado_por": 5,
-  "creado_en": "2026-11-27T01:25:05-06:00",
-  "inicio_en": "2026-11-27T01:25:05-06:00",
-  "fin_en": "2026-11-27T01:25:05-06:00",
+  "creado_en": "2026-11-27T02:11:21-06:00",
+  "inicio_en": "2026-11-27T02:11:21-06:00",
+  "fin_en": "2026-11-27T02:11:21-06:00",
   "supuestos_usados": [
     {
       "clave": "********",
@@ -31286,7 +31774,7 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": "d3320bf1-7a3a-45ab-bf86-e654c8d172a9",
+    "id": "81e7c3e7-fd95-45c8-b81b-87e9fbd6ea95",
     "estado": "cancelada",
     "fin": true,
     "sin_resultados": true
@@ -31298,11 +31786,11 @@ Content-Type: application/json
 
 **Objetivo.** Solo se cancela lo que está en cola o en curso.
 
-**Petición.** `POST http://simulacion:5121/api/v1/simulacion/ejecuciones/d3320bf1-7a3a-45ab-bf86-e654c8d172a9/cancelar`
+**Petición.** `POST http://simulacion:5121/api/v1/simulacion/ejecuciones/81e7c3e7-fd95-45c8-b81b-87e9fbd6ea95/cancelar`
 
 ```http
 Accept: application/json
-X-Traza-Id: edca6ffd-3575-415c-81d0-56b9117360e4
+X-Traza-Id: 101a96a7-4ae9-4a72-b66a-c23fb8c05f41
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -31311,14 +31799,14 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 45 ms · traza `edca6ffd-3575-415c-81d0-56b9117360e4`
+**Respuesta.** HTTP 409 (esperado 409) · 53 ms · traza `101a96a7-4ae9-4a72-b66a-c23fb8c05f41`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "Solo se cancela una ejecución en cola o en curso; esta está cancelada.",
-    "traza_id": "edca6ffd-3575-415c-81d0-56b9117360e4"
+    "traza_id": "101a96a7-4ae9-4a72-b66a-c23fb8c05f41"
   }
 }
 ```
@@ -31331,17 +31819,17 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 321d3c73-5cbc-4fae-a7d6-a644194cf040
+X-Traza-Id: 3a5ece7e-d490-4330-ab8a-20d074f58c85
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 45 ms · traza `321d3c73-5cbc-4fae-a7d6-a644194cf040`
+**Respuesta.** HTTP 200 (esperado 200) · 48 ms · traza `3a5ece7e-d490-4330-ab8a-20d074f58c85`
 
 ```json
 {
   "datos": [
     {
-      "id": "d3320bf1-7a3a-45ab-bf86-e654c8d172a9",
+      "id": "81e7c3e7-fd95-45c8-b81b-87e9fbd6ea95",
       "nombre": "Simulación de Microhub San Bernabé Centro 2026-11-27",
       "estado": "cancelada",
       "objeto": {
@@ -31355,11 +31843,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "utilidad_media": null,
       "prob_perdida_pct": null,
       "huella": null,
-      "creado_en": "2026-11-27T01:25:05-06:00",
-      "fin_en": "2026-11-27T01:25:05-06:00"
+      "creado_en": "2026-11-27T02:11:21-06:00",
+      "fin_en": "2026-11-27T02:11:21-06:00"
     },
     {
-      "id": "010e2981-0fad-4f81-9e18-3b36f54bbc18",
+      "id": "1da507b7-7d18-4267-bc70-9c240abeadb1",
       "nombre": "Simulación de escenario manual 2026-11-27",
       "estado": "terminada",
       "objeto": {
@@ -31373,11 +31861,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "utilidad_media": -24685.572,
       "prob_perdida_pct": 100.0,
       "huella": "1e804ce094413563fb6d4d1db0a7054106a1ae2b2fbdee125c910821b30044f6",
-      "creado_en": "2026-11-27T01:25:01-06:00",
-      "fin_en": "2026-11-27T01:25:03-06:00"
+      "creado_en": "2026-11-27T02:11:17-06:00",
+      "fin_en": "2026-11-27T02:11:19-06:00"
     },
     {
-      "id": "d65f32e7-30af-4fdf-a5a0-3e8ee2c70dac",
+      "id": "4296cd2d-7cc4-4b76-8f04-38d7c2b88aee",
       "nombre": "Simulación de Microhub San Bernabé Centro 2026-11-27",
       "estado": "terminada",
       "objeto": {
@@ -31391,11 +31879,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "utilidad_media": -30708.1992,
       "prob_perdida_pct": 100.0,
       "huella": "9e7f010a3b7375a6dd9323a43e910c61e3a32b08a33220c54e5b8eaf74c7835a",
-      "creado_en": "2026-11-27T01:25:00-06:00",
-      "fin_en": "2026-11-27T01:25:01-06:00"
+      "creado_en": "2026-11-27T02:11:16-06:00",
+      "fin_en": "2026-11-27T02:11:17-06:00"
     },
     {
-      "id": "cb147693-24c5-4c44-b320-ec0d89ce6dfb",
+      "id": "20ad2330-13d5-4737-bdbb-90cbaae2f565",
       "nombre": "Repetición de Simulación de Microhub San Bernabé Centro 2026-11-27",
       "estado": "terminada",
       "objeto": {
@@ -31409,11 +31897,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "utilidad_media": -30726.0016,
       "prob_perdida_pct": 100.0,
       "huella": "965494c522389f8261692a25ee93b14024a903f389e7eb3144e0d3e879506679",
-      "creado_en": "2026-11-27T01:24:57-06:00",
-      "fin_en": "2026-11-27T01:24:59-06:00"
+      "creado_en": "2026-11-27T02:11:13-06:00",
+      "fin_en": "2026-11-27T02:11:14-06:00"
     },
     {
-      "id": "1e285462-9bf0-4bfd-8992-0772855c77ff",
+      "id": "f0b5df62-88fb-4842-9e31-ba4b383249b0",
       "nombre": "Simulación de Microhub San Bernabé Centro 2026-11-27",
       "estado": "terminada",
       "objeto": {
@@ -31427,8 +31915,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "utilidad_media": -30726.0016,
       "prob_perdida_pct": 100.0,
       "huella": "965494c522389f8261692a25ee93b14024a903f389e7eb3144e0d3e879506679",
-      "creado_en": "2026-11-27T01:24:56-06:00",
-      "fin_en": "2026-11-27T01:24:57-06:00"
+      "creado_en": "2026-11-27T02:11:11-06:00",
+      "fin_en": "2026-11-27T02:11:12-06:00"
     }
   ],
   "paginacion": {
@@ -31448,18 +31936,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: ace71639-e268-4381-96ce-5a845723f9e2
+X-Traza-Id: 57db406c-92c4-4f75-b84a-797b927e62fa
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 26 ms · traza `ace71639-e268-4381-96ce-5a845723f9e2`
+**Respuesta.** HTTP 403 (esperado 403) · 27 ms · traza `57db406c-92c4-4f75-b84a-797b927e62fa`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "ace71639-e268-4381-96ce-5a845723f9e2"
+    "traza_id": "57db406c-92c4-4f75-b84a-797b927e62fa"
   }
 }
 ```
@@ -31472,7 +31960,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 335b4087-c4bb-4681-8cb2-b63d2356bf26
+X-Traza-Id: 997edaa3-6644-4817-be00-2ea8ce9c1bbc
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -31483,14 +31971,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 35 ms · traza `335b4087-c4bb-4681-8cb2-b63d2356bf26`
+**Respuesta.** HTTP 403 (esperado 403) · 27 ms · traza `997edaa3-6644-4817-be00-2ea8ce9c1bbc`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "335b4087-c4bb-4681-8cb2-b63d2356bf26"
+    "traza_id": "997edaa3-6644-4817-be00-2ea8ce9c1bbc"
   }
 }
 ```
@@ -31503,7 +31991,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/xml
-X-Traza-Id: e84551db-63c2-454e-a651-c56c192ca71b
+X-Traza-Id: 2da401b5-23cc-473f-8bdb-b79791da9ca6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 Content-Type: application/xml
 ```
@@ -31512,33 +32000,33 @@ Content-Type: application/xml
 <?xml version="1.0" encoding="UTF-8"?><simulacion_nueva xmlns="urn:microhubs:v1"><microhub_id>1</microhub_id><dias>5</dias><replicas>20</replicas><semilla>3</semilla></simulacion_nueva>
 ```
 
-**Respuesta.** HTTP 202 (esperado 202) · 567 ms · traza `e84551db-63c2-454e-a651-c56c192ca71b`
+**Respuesta.** HTTP 202 (esperado 202) · 797 ms · traza `2da401b5-23cc-473f-8bdb-b79791da9ca6`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<simulacion_ejecucion xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id>32b4d0df-cf1d-4bc8-b0e2-049f7c90cdfc</id><nombre>Simulación de Microhub San Bernabé Centro 2026-11-27</nombre><estado>en_cola</estado><objeto><tipo>microhub</tipo><id>1</id><nombre>Microhub San Bernabé Centro</nombre></objeto><semilla>3</semilla><version_modelo>1.0</version_modelo><dias>5</dias><replicas>20</replicas><entrada><pedidos_dia>23.58</pedidos_dia><ticket>134.84</ticket><margen_bruto>0.28</margen_bruto><costos_fijos_mes>69500</costos_fijos_mes><costo_variable_pedido>32.61</costo_variable_pedido><dias_mes>30</dias_mes><operadores>3</operadores><repartidores>3</repartidores><capacidad_fisica>150</capacidad_fisica><horas>10</horas><distancia_km>2.4</distancia_km><ausentismo>0.05</ausentismo><variacion_demanda>0.1</variacion_demanda><indice_semanal><indice>0.895</indice><indice>0.845</indice><indice>0.886</indice><indice>0.942</indice><indice>1.156</indice><indice>1.305</indice><indice>1.027</indice></indice_semanal><dia_inicio>5</dia_inicio><origen_de_datos><dato><dato>costos_fijos</dato><fuente>costos</fuente></dato><dato><dato>costo_variable_pedido</dato><fuente>costos</fuente></dato><dato><dato>ticket</dato><fuente>demanda</fuente></dato><dato><dato>margen_bruto</dato><fuente>configuracion</fuente></dato><dato><dato>pedidos_dia</dato><fuente>demanda_repartida</fuente></dato><dato><dato>operadores</dato><fuente>capacidad</fuente></dato><dato><dato>repartidores</dato><fuente>capacidad</fuente></dato><dato><dato>capacidad_fisica</dato><fuente>capacidad</fuente></dato><dato><dato>horas</dato><fuente>configuracion</fuente></dato><dato><dato>distancia_km</dato><fuente>configuracion</fuente></dato><dato><dato>ausentismo</dato><fuente>configuracion</fuente></dato><dato><dato>variacion_demanda</dato><fuente>configuracion</fuente></dato><dato><dato>indice_semanal</dato><fuente>demanda</fuente></dato></origen_de_datos></entrada><resultados xsi:nil="true" /><huella xsi:nil="true" /><repeticion_de xsi:nil="true" /><reproducible xsi:nil="true" /><error xsi:nil="true" /><creado_por>5</creado_por><creado_en>2026-11-27T01:25:06-06:00</creado_en><inicio_en xsi:nil="true" /><fin_en xsi:nil="true" /><supuestos_usados><supuesto><clave>picking_pedidos_hora</clave><valor>10</valor><modificado>false</modificado></supuesto><supuesto><clave>packing_pedidos_hora</clave><valor>20</valor><modificado>false</modificado></supuesto><supuesto><clave>despacho_pedidos_hora</clave><valor>30</valor><modificado>false</modificado></supuesto><supuesto><clave>velocidad_reparto_kmh</clave><valor>22</valor><modificado>false</modificado></supuesto><supuesto><clave>tiempo_servicio_min</clave><valor>4</valor><modificado>false</modificado></supuesto><supuesto><clave>paradas_por_viaje</clave><valor>3</valor><modificado>false</modificado></supuesto><supuesto><clave>horas_turno</clave><valor>10</valor><modificado>false</modificado></supuesto><supuesto><clave>umbral_utilizacion_riesgo</clave><valor>85</valor><modificado>false</modificado></supuesto><supuesto><clave>sim_ausentismo</clave><valor>0.05</valor><modificado>false</modificado></supuesto><supuesto><clave>sim_variacion_demanda</clave><valor>0.1</valor><modificado>false</modificado></supuesto></supuestos_usados></simulacion_ejecucion>
+<simulacion_ejecucion xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><id>b33b49d1-c89c-4c2f-b6a4-d411afe2d33a</id><nombre>Simulación de Microhub San Bernabé Centro 2026-11-27</nombre><estado>en_cola</estado><objeto><tipo>microhub</tipo><id>1</id><nombre>Microhub San Bernabé Centro</nombre></objeto><semilla>3</semilla><version_modelo>1.0</version_modelo><dias>5</dias><replicas>20</replicas><entrada><pedidos_dia>23.58</pedidos_dia><ticket>134.84</ticket><margen_bruto>0.28</margen_bruto><costos_fijos_mes>69500</costos_fijos_mes><costo_variable_pedido>32.61</costo_variable_pedido><dias_mes>30</dias_mes><operadores>3</operadores><repartidores>3</repartidores><capacidad_fisica>150</capacidad_fisica><horas>10</horas><distancia_km>2.4</distancia_km><ausentismo>0.05</ausentismo><variacion_demanda>0.1</variacion_demanda><indice_semanal><indice>0.895</indice><indice>0.845</indice><indice>0.886</indice><indice>0.942</indice><indice>1.156</indice><indice>1.305</indice><indice>1.027</indice></indice_semanal><dia_inicio>5</dia_inicio><origen_de_datos><dato><dato>costos_fijos</dato><fuente>costos</fuente></dato><dato><dato>costo_variable_pedido</dato><fuente>costos</fuente></dato><dato><dato>ticket</dato><fuente>demanda</fuente></dato><dato><dato>margen_bruto</dato><fuente>configuracion</fuente></dato><dato><dato>pedidos_dia</dato><fuente>demanda_repartida</fuente></dato><dato><dato>operadores</dato><fuente>capacidad</fuente></dato><dato><dato>repartidores</dato><fuente>capacidad</fuente></dato><dato><dato>capacidad_fisica</dato><fuente>capacidad</fuente></dato><dato><dato>horas</dato><fuente>configuracion</fuente></dato><dato><dato>distancia_km</dato><fuente>configuracion</fuente></dato><dato><dato>ausentismo</dato><fuente>configuracion</fuente></dato><dato><dato>variacion_demanda</dato><fuente>configuracion</fuente></dato><dato><dato>indice_semanal</dato><fuente>demanda</fuente></dato></origen_de_datos></entrada><resultados xsi:nil="true" /><huella xsi:nil="true" /><repeticion_de xsi:nil="true" /><reproducible xsi:nil="true" /><error xsi:nil="true" /><creado_por>5</creado_por><creado_en>2026-11-27T02:11:22-06:00</creado_en><inicio_en xsi:nil="true" /><fin_en xsi:nil="true" /><supuestos_usados><supuesto><clave>picking_pedidos_hora</clave><valor>10</valor><modificado>false</modificado></supuesto><supuesto><clave>packing_pedidos_hora</clave><valor>20</valor><modificado>false</modificado></supuesto><supuesto><clave>despacho_pedidos_hora</clave><valor>30</valor><modificado>false</modificado></supuesto><supuesto><clave>velocidad_reparto_kmh</clave><valor>22</valor><modificado>false</modificado></supuesto><supuesto><clave>tiempo_servicio_min</clave><valor>4</valor><modificado>false</modificado></supuesto><supuesto><clave>paradas_por_viaje</clave><valor>3</valor><modificado>false</modificado></supuesto><supuesto><clave>horas_turno</clave><valor>10</valor><modificado>false</modificado></supuesto><supuesto><clave>umbral_utilizacion_riesgo</clave><valor>85</valor><modificado>false</modificado></supuesto><supuesto><clave>sim_ausentismo</clave><valor>0.05</valor><modificado>false</modificado></supuesto><supuesto><clave>sim_variacion_demanda</clave><valor>0.1</valor><modificado>false</modificado></supuesto></supuestos_usados></simulacion_ejecucion>
 ```
 
 ### SIM-17 · Una ejecución inexistente · PASA
 
 **Objetivo.** Un identificador que no existe.
 
-**Petición.** `GET http://simulacion:5121/api/v1/simulacion/ejecuciones/2b2ef042-4786-4075-b476-64187068e8e5`
+**Petición.** `GET http://simulacion:5121/api/v1/simulacion/ejecuciones/47a93365-6dc3-4105-9b30-7d9a93a8e027`
 
 ```http
 Accept: application/json
-X-Traza-Id: 015532bd-2009-43c1-8a48-588884e9d3e0
+X-Traza-Id: 87239ea0-0474-4ff6-addf-3a4541245770
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 23 ms · traza `015532bd-2009-43c1-8a48-588884e9d3e0`
+**Respuesta.** HTTP 404 (esperado 404) · 22 ms · traza `87239ea0-0474-4ff6-addf-3a4541245770`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe esa ejecución.",
-    "traza_id": "015532bd-2009-43c1-8a48-588884e9d3e0"
+    "traza_id": "87239ea0-0474-4ff6-addf-3a4541245770"
   }
 }
 ```
@@ -31551,11 +32039,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: fccce6f3-2da5-4cee-a0a9-c3b49bbc13ef
+X-Traza-Id: ddeadc2b-f97e-49f8-83e2-2b6497f9be36
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 31 ms · traza `fccce6f3-2da5-4cee-a0a9-c3b49bbc13ef`
+**Respuesta.** HTTP 200 (esperado 200) · 29 ms · traza `ddeadc2b-f97e-49f8-83e2-2b6497f9be36`
 
 ```json
 {
@@ -31690,24 +32178,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 **Objetivo.** URL de un solo método y con caducidad para bajar el archivo del almacén.
 
-**Petición.** `GET http://documentos:5107/api/v1/documentos/6b093055f700eb3849c5ada0/enlace`
+**Petición.** `GET http://documentos:5107/api/v1/documentos/6b093b2df68f30141947181c/enlace`
 
 ```http
 Accept: application/json
-X-Traza-Id: 544b11b4-a5ba-405b-ad26-827a8079ffb1
+X-Traza-Id: 321dad4f-12d1-4b86-92f4-fccc32ee6abe
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 30 ms · traza `544b11b4-a5ba-405b-ad26-827a8079ffb1`
+**Respuesta.** HTTP 200 (esperado 200) · 27 ms · traza `321dad4f-12d1-4b86-92f4-fccc32ee6abe`
 
 ```json
 {
-  "id": "6b093055f700eb3849c5ada0",
+  "id": "6b093b2df68f30141947181c",
   "nombre": "evidencia-enlace.pdf",
   "url_firmada": "http://documentos:5107/api/v1/documentos/descarga?k=document…(207 caracteres)",
   "metodo": "GET",
   "segundos": 300,
-  "expira_en": "2026-11-27T01:30:09-06:00"
+  "expira_en": "2026-11-27T02:16:25-06:00"
 }
 ```
 
@@ -31718,13 +32206,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 ```json
 [
   {
-    "fecha": "2026-11-27 01:25:09.876187-06:00",
+    "fecha": "2026-11-27 02:11:25.910308-06:00",
     "modulo": "documentos",
     "accion": "alta",
     "detalle": "evidencia-enlace.pdf (42 bytes) a usuario 7."
   },
   {
-    "fecha": "2026-11-27 01:25:09.905168-06:00",
+    "fecha": "2026-11-27 02:11:25.950302-06:00",
     "modulo": "documentos",
     "accion": "descarga",
     "detalle": "Enlace de descarga de evidencia-enlace.pdf (caduca en 300 s)."
@@ -31736,14 +32224,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Objetivo.** El enlace funciona sin token: la firma es el permiso.
 
-**Petición.** `GET http://documentos:5107/api/v1/documentos/descarga?k=documentos%2F2026%2F11%2F6b093055f700eb3849c5ada0.pdf&e=1795764609&n=evidencia-enlace.pdf&t=application%2Fpdf&s=aLLBAlsnEBvJ0vH9atbiDFXK5KPJ76EICIPsM7u8qSY`
+**Petición.** `GET http://documentos:5107/api/v1/documentos/descarga?k=documentos%2F2026%2F11%2F6b093b2df68f30141947181c.pdf&e=1795767385&n=evidencia-enlace.pdf&t=application%2Fpdf&s=nKhjXFlxuyI03tNrl5wgnn2-X40B2-GCRlI-C6bvZCw`
 
 ```http
 Accept: application/json
-X-Traza-Id: a5124d9b-d367-4b87-8e5c-b637c6012d94
+X-Traza-Id: 75571f58-a058-4e31-bf46-21b18e79d7f0
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 7 ms · traza `a5124d9b-d367-4b87-8e5c-b637c6012d94`
+**Respuesta.** HTTP 200 (esperado 200) · 5 ms · traza `75571f58-a058-4e31-bf46-21b18e79d7f0`
 
 ```json
 %PDF-1.4 evidencia de enlace firmado %%EOF
@@ -31753,21 +32241,21 @@ X-Traza-Id: a5124d9b-d367-4b87-8e5c-b637c6012d94
 
 **Objetivo.** Cambiar un carácter de la firma lo invalida.
 
-**Petición.** `GET http://documentos:5107/api/v1/documentos/descarga?k=documentos%2F2026%2F11%2F6b093055f700eb3849c5ada0.pdf&e=1795764609&n=evidencia-enlace.pdf&t=application%2Fpdf&s=aLLBAlsnEBvJ0vH9atbiDFXK5KPJ76EICIPsM7u8qAA`
+**Petición.** `GET http://documentos:5107/api/v1/documentos/descarga?k=documentos%2F2026%2F11%2F6b093b2df68f30141947181c.pdf&e=1795767385&n=evidencia-enlace.pdf&t=application%2Fpdf&s=nKhjXFlxuyI03tNrl5wgnn2-X40B2-GCRlI-C6bvZAA`
 
 ```http
 Accept: application/json
-X-Traza-Id: 15259678-94f4-4c48-939b-609685c193d8
+X-Traza-Id: fd3a6785-ff52-441c-956e-c063d274774b
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 8 ms · traza `15259678-94f4-4c48-939b-609685c193d8`
+**Respuesta.** HTTP 403 (esperado 403) · 5 ms · traza `fd3a6785-ff52-441c-956e-c063d274774b`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "El enlace de descarga no es válido o ya caducó.",
-    "traza_id": "15259678-94f4-4c48-939b-609685c193d8"
+    "traza_id": "fd3a6785-ff52-441c-956e-c063d274774b"
   }
 }
 ```
@@ -31782,7 +32270,7 @@ X-Traza-Id: 15259678-94f4-4c48-939b-609685c193d8
 
 ```http
 Accept: application/json
-X-Traza-Id: ba4978cb-d301-4d30-b7be-ca5af3025754
+X-Traza-Id: 695e4f9a-3375-41a4-8353-a13aa1e8ebf8
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -31791,7 +32279,7 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 245 ms · traza `ba4978cb-d301-4d30-b7be-ca5af3025754`
+**Respuesta.** HTTP 201 (esperado 201) · 236 ms · traza `695e4f9a-3375-41a4-8353-a13aa1e8ebf8`
 
 ```json
 {
@@ -31803,157 +32291,157 @@ Content-Type: application/json
     {
       "servicio": "auth",
       "estado": "ok",
-      "tiempo_ms": 33.7,
+      "tiempo_ms": 39.2,
       "error": null
     },
     {
       "servicio": "usuarios",
       "estado": "ok",
-      "tiempo_ms": 38.4,
+      "tiempo_ms": 46.8,
       "error": null
     },
     {
       "servicio": "productos",
       "estado": "ok",
-      "tiempo_ms": 35.7,
+      "tiempo_ms": 29.2,
       "error": null
     },
     {
       "servicio": "pedidos",
       "estado": "ok",
-      "tiempo_ms": 32.4,
+      "tiempo_ms": 35.5,
       "error": null
     },
     {
       "servicio": "entregas",
       "estado": "ok",
-      "tiempo_ms": 32.4,
+      "tiempo_ms": 55.2,
       "error": null
     },
     {
       "servicio": "planeacion",
       "estado": "ok",
-      "tiempo_ms": 28.2,
+      "tiempo_ms": 41.6,
       "error": null
     },
     {
       "servicio": "documentos",
       "estado": "ok",
-      "tiempo_ms": 26.2,
+      "tiempo_ms": 42.8,
       "error": null
     },
     {
       "servicio": "zonas",
       "estado": "ok",
-      "tiempo_ms": 32.0,
+      "tiempo_ms": 36.4,
       "error": null
     },
     {
       "servicio": "microhubs",
       "estado": "ok",
-      "tiempo_ms": 27.9,
+      "tiempo_ms": 34.1,
       "error": null
     },
     {
       "servicio": "seguimiento",
       "estado": "ok",
-      "tiempo_ms": 35.5,
+      "tiempo_ms": 43.0,
       "error": null
     },
     {
       "servicio": "inventario",
       "estado": "ok",
-      "tiempo_ms": 28.1,
+      "tiempo_ms": 32.1,
       "error": null
     },
     {
       "servicio": "precios",
       "estado": "ok",
-      "tiempo_ms": 25.7,
+      "tiempo_ms": 42.2,
       "error": null
     },
     {
       "servicio": "proveedores",
       "estado": "ok",
-      "tiempo_ms": 33.7,
+      "tiempo_ms": 36.7,
       "error": null
     },
     {
       "servicio": "abastecimiento",
       "estado": "ok",
-      "tiempo_ms": 25.6,
+      "tiempo_ms": 28.2,
       "error": null
     },
     {
       "servicio": "demanda",
       "estado": "ok",
-      "tiempo_ms": 36.8,
+      "tiempo_ms": 34.4,
       "error": null
     },
     {
       "servicio": "cobertura",
       "estado": "ok",
-      "tiempo_ms": 24.6,
+      "tiempo_ms": 39.5,
       "error": null
     },
     {
       "servicio": "capacidad",
       "estado": "ok",
-      "tiempo_ms": 34.1,
+      "tiempo_ms": 37.4,
       "error": null
     },
     {
       "servicio": "rutas",
       "estado": "ok",
-      "tiempo_ms": 36.5,
+      "tiempo_ms": 43.2,
       "error": null
     },
     {
       "servicio": "costos",
       "estado": "ok",
-      "tiempo_ms": 29.0,
+      "tiempo_ms": 39.5,
       "error": null
     },
     {
       "servicio": "punto-equilibrio",
       "estado": "ok",
-      "tiempo_ms": 31.5,
+      "tiempo_ms": 35.5,
       "error": null
     },
     {
       "servicio": "simulacion",
       "estado": "ok",
-      "tiempo_ms": 30.8,
+      "tiempo_ms": 33.5,
       "error": null
     },
     {
       "servicio": "surtido",
       "estado": "ok",
-      "tiempo_ms": 36.2,
+      "tiempo_ms": 33.9,
       "error": null
     },
     {
       "servicio": "notificaciones",
       "estado": "ok",
-      "tiempo_ms": 34.1,
+      "tiempo_ms": 32.9,
       "error": null
     },
     {
       "servicio": "reportes",
       "estado": "ok",
-      "tiempo_ms": 32.4,
+      "tiempo_ms": 23.5,
       "error": null
     },
     {
       "servicio": "sincronizacion",
       "estado": "ok",
-      "tiempo_ms": 36.2,
+      "tiempo_ms": 24.3,
       "error": null
     },
     {
       "servicio": "auditoria-monitoreo",
       "estado": "ok",
-      "tiempo_ms": 33.1,
+      "tiempo_ms": 21.8,
       "error": null
     }
   ]
@@ -31969,7 +32457,7 @@ Content-Type: application/json
   {
     "estado": "ok",
     "verificaciones": 78,
-    "ms_promedio": "34.0"
+    "ms_promedio": "42.5"
   }
 ]
 ```
@@ -31982,15 +32470,15 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 297b3e14-5891-4910-901f-72c501b903d0
+X-Traza-Id: 93471608-d1d1-4773-958b-fc9bb169edf3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 91 ms · traza `297b3e14-5891-4910-901f-72c501b903d0`
+**Respuesta.** HTTP 200 (esperado 200) · 120 ms · traza `93471608-d1d1-4773-958b-fc9bb169edf3`
 
 ```json
 {
-  "generado_en": "2026-11-27T01:25:10-06:00",
+  "generado_en": "2026-11-27T02:11:26-06:00",
   "resumen": {
     "total": 26,
     "ok": 26,
@@ -32000,16 +32488,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
     "alertas_abiertas": 0,
     "monitor_activo": true,
     "intervalo_seg": 30,
-    "ultima_ronda": "2026-11-27T01:25:10-06:00"
+    "ultima_ronda": "2026-11-27T02:11:26-06:00"
   },
   "servicios": [
     {
       "servicio": "auth",
       "puerto": 5101,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 33.7,
+      "tiempo_ms": 39.2,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32018,18 +32506,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 351,
+      "peticiones_hora": 628,
       "errores_5xx_hora": 0,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 56.6,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "usuarios",
       "puerto": 5102,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 38.4,
+      "tiempo_ms": 46.8,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32038,18 +32529,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 42,
+      "peticiones_hora": 91,
       "errores_5xx_hora": 0,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 64.6,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "productos",
       "puerto": 5103,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 35.7,
+      "tiempo_ms": 29.2,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32058,136 +32552,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 50,
+      "peticiones_hora": 101,
       "errores_5xx_hora": 0,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 65.0,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "pedidos",
       "puerto": 5104,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
-      "antiguedad_seg": 0,
-      "tiempo_ms": 32.4,
-      "version": "1.0.0",
-      "dependencias": {
-        "postgres": "ok",
-        "redis": "ok",
-        "mongo": "ok",
-        "bucket": "ok"
-      },
-      "error": null,
-      "peticiones_hora": 315,
-      "errores_5xx_hora": 0,
-      "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
-    },
-    {
-      "servicio": "entregas",
-      "puerto": 5105,
-      "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
-      "antiguedad_seg": 0,
-      "tiempo_ms": 32.4,
-      "version": "1.0.0",
-      "dependencias": {
-        "postgres": "ok",
-        "redis": "ok",
-        "mongo": "ok",
-        "bucket": "ok"
-      },
-      "error": null,
-      "peticiones_hora": 115,
-      "errores_5xx_hora": 0,
-      "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
-    },
-    {
-      "servicio": "planeacion",
-      "puerto": 5106,
-      "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
-      "antiguedad_seg": 0,
-      "tiempo_ms": 28.2,
-      "version": "1.0.0",
-      "dependencias": {
-        "postgres": "ok",
-        "redis": "ok",
-        "mongo": "ok",
-        "bucket": "ok"
-      },
-      "error": null,
-      "peticiones_hora": 87,
-      "errores_5xx_hora": 0,
-      "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
-    },
-    {
-      "servicio": "documentos",
-      "puerto": 5107,
-      "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
-      "antiguedad_seg": 0,
-      "tiempo_ms": 26.2,
-      "version": "1.0.0",
-      "dependencias": {
-        "postgres": "ok",
-        "redis": "ok",
-        "mongo": "ok",
-        "bucket": "ok"
-      },
-      "error": null,
-      "peticiones_hora": 61,
-      "errores_5xx_hora": 0,
-      "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
-    },
-    {
-      "servicio": "zonas",
-      "puerto": 5108,
-      "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
-      "antiguedad_seg": 0,
-      "tiempo_ms": 32.0,
-      "version": "1.0.0",
-      "dependencias": {
-        "postgres": "ok",
-        "redis": "ok",
-        "mongo": "ok",
-        "bucket": "ok"
-      },
-      "error": null,
-      "peticiones_hora": 54,
-      "errores_5xx_hora": 0,
-      "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
-    },
-    {
-      "servicio": "microhubs",
-      "puerto": 5109,
-      "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
-      "antiguedad_seg": 0,
-      "tiempo_ms": 27.9,
-      "version": "1.0.0",
-      "dependencias": {
-        "postgres": "ok",
-        "redis": "ok",
-        "mongo": "ok",
-        "bucket": "ok"
-      },
-      "error": null,
-      "peticiones_hora": 60,
-      "errores_5xx_hora": 0,
-      "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
-    },
-    {
-      "servicio": "seguimiento",
-      "puerto": 5110,
-      "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
       "tiempo_ms": 35.5,
       "version": "1.0.0",
@@ -32198,18 +32575,159 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 18,
+      "peticiones_hora": 593,
       "errores_5xx_hora": 0,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 57.1,
+      "ultimo_error": null,
+      "ultimo_error_en": null
+    },
+    {
+      "servicio": "entregas",
+      "puerto": 5105,
+      "estado": "ok",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
+      "antiguedad_seg": 0,
+      "tiempo_ms": 55.2,
+      "version": "1.0.0",
+      "dependencias": {
+        "postgres": "ok",
+        "redis": "ok",
+        "mongo": "ok",
+        "bucket": "ok"
+      },
+      "error": null,
+      "peticiones_hora": 228,
+      "errores_5xx_hora": 0,
+      "disponibilidad_24h_pct": 100.0,
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 58.9,
+      "ultimo_error": null,
+      "ultimo_error_en": null
+    },
+    {
+      "servicio": "planeacion",
+      "puerto": 5106,
+      "estado": "ok",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
+      "antiguedad_seg": 0,
+      "tiempo_ms": 41.6,
+      "version": "1.0.0",
+      "dependencias": {
+        "postgres": "ok",
+        "redis": "ok",
+        "mongo": "ok",
+        "bucket": "ok"
+      },
+      "error": null,
+      "peticiones_hora": 155,
+      "errores_5xx_hora": 0,
+      "disponibilidad_24h_pct": 100.0,
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 56.5,
+      "ultimo_error": null,
+      "ultimo_error_en": null
+    },
+    {
+      "servicio": "documentos",
+      "puerto": 5107,
+      "estado": "ok",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
+      "antiguedad_seg": 0,
+      "tiempo_ms": 42.8,
+      "version": "1.0.0",
+      "dependencias": {
+        "postgres": "ok",
+        "redis": "ok",
+        "mongo": "ok",
+        "bucket": "ok"
+      },
+      "error": null,
+      "peticiones_hora": 136,
+      "errores_5xx_hora": 0,
+      "disponibilidad_24h_pct": 100.0,
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 54.0,
+      "ultimo_error": null,
+      "ultimo_error_en": null
+    },
+    {
+      "servicio": "zonas",
+      "puerto": 5108,
+      "estado": "ok",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
+      "antiguedad_seg": 0,
+      "tiempo_ms": 36.4,
+      "version": "1.0.0",
+      "dependencias": {
+        "postgres": "ok",
+        "redis": "ok",
+        "mongo": "ok",
+        "bucket": "ok"
+      },
+      "error": null,
+      "peticiones_hora": 338,
+      "errores_5xx_hora": 0,
+      "disponibilidad_24h_pct": 100.0,
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 65.8,
+      "ultimo_error": null,
+      "ultimo_error_en": null
+    },
+    {
+      "servicio": "microhubs",
+      "puerto": 5109,
+      "estado": "ok",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
+      "antiguedad_seg": 0,
+      "tiempo_ms": 34.1,
+      "version": "1.0.0",
+      "dependencias": {
+        "postgres": "ok",
+        "redis": "ok",
+        "mongo": "ok",
+        "bucket": "ok"
+      },
+      "error": null,
+      "peticiones_hora": 109,
+      "errores_5xx_hora": 0,
+      "disponibilidad_24h_pct": 100.0,
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 30.7,
+      "ultimo_error": null,
+      "ultimo_error_en": null
+    },
+    {
+      "servicio": "seguimiento",
+      "puerto": 5110,
+      "estado": "ok",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
+      "antiguedad_seg": 0,
+      "tiempo_ms": 43.0,
+      "version": "1.0.0",
+      "dependencias": {
+        "postgres": "ok",
+        "redis": "ok",
+        "mongo": "ok",
+        "bucket": "ok"
+      },
+      "error": null,
+      "peticiones_hora": 39,
+      "errores_5xx_hora": 0,
+      "disponibilidad_24h_pct": 100.0,
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 42.6,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "inventario",
       "puerto": 5111,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 28.1,
+      "tiempo_ms": 32.1,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32218,18 +32736,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 251,
+      "peticiones_hora": 470,
       "errores_5xx_hora": 0,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 48.0,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "precios",
       "puerto": 5112,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 25.7,
+      "tiempo_ms": 42.2,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32238,18 +32759,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 116,
+      "peticiones_hora": 216,
       "errores_5xx_hora": 0,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 38.4,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "proveedores",
       "puerto": 5113,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 33.7,
+      "tiempo_ms": 36.7,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32258,18 +32782,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 85,
+      "peticiones_hora": 177,
       "errores_5xx_hora": 0,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 48.0,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "abastecimiento",
       "puerto": 5114,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 25.6,
+      "tiempo_ms": 28.2,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32278,18 +32805,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 102,
+      "peticiones_hora": 226,
       "errores_5xx_hora": 0,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 44.3,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "demanda",
       "puerto": 5115,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 36.8,
+      "tiempo_ms": 34.4,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32298,18 +32828,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 229,
-      "errores_5xx_hora": 2,
+      "peticiones_hora": 366,
+      "errores_5xx_hora": 3,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 106.7,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "cobertura",
       "puerto": 5116,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 24.6,
+      "tiempo_ms": 39.5,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32318,18 +32851,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 201,
-      "errores_5xx_hora": 4,
+      "peticiones_hora": 322,
+      "errores_5xx_hora": 6,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 39.3,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "capacidad",
       "puerto": 5117,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 34.1,
+      "tiempo_ms": 37.4,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32338,18 +32874,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 131,
-      "errores_5xx_hora": 2,
+      "peticiones_hora": 210,
+      "errores_5xx_hora": 3,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 44.6,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "rutas",
       "puerto": 5118,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 36.5,
+      "tiempo_ms": 43.2,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32358,18 +32897,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 128,
-      "errores_5xx_hora": 4,
+      "peticiones_hora": 209,
+      "errores_5xx_hora": 6,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 45.1,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "costos",
       "puerto": 5119,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 29.0,
+      "tiempo_ms": 39.5,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32378,18 +32920,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 231,
-      "errores_5xx_hora": 2,
+      "peticiones_hora": 379,
+      "errores_5xx_hora": 3,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 44.4,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "punto-equilibrio",
       "puerto": 5120,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 31.5,
+      "tiempo_ms": 35.5,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32398,18 +32943,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 144,
-      "errores_5xx_hora": 6,
+      "peticiones_hora": 235,
+      "errores_5xx_hora": 9,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 107.4,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "simulacion",
       "puerto": 5121,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 30.8,
+      "tiempo_ms": 33.5,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32418,18 +32966,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 201,
-      "errores_5xx_hora": 6,
+      "peticiones_hora": 321,
+      "errores_5xx_hora": 9,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 34.8,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "surtido",
       "puerto": 5122,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 36.2,
+      "tiempo_ms": 33.9,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32438,18 +32989,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 103,
-      "errores_5xx_hora": 6,
+      "peticiones_hora": 164,
+      "errores_5xx_hora": 9,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 42.3,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "notificaciones",
       "puerto": 5124,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 34.1,
+      "tiempo_ms": 32.9,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32458,18 +33012,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 53,
+      "peticiones_hora": 110,
       "errores_5xx_hora": 0,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 30.3,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "reportes",
       "puerto": 5123,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 32.4,
+      "tiempo_ms": 23.5,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32478,18 +33035,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 88,
-      "errores_5xx_hora": 2,
+      "peticiones_hora": 196,
+      "errores_5xx_hora": 4,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 35.4,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "sincronizacion",
       "puerto": 5125,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 36.2,
+      "tiempo_ms": 24.3,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32498,18 +33058,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 56,
+      "peticiones_hora": 124,
       "errores_5xx_hora": 0,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 35.2,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     },
     {
       "servicio": "auditoria-monitoreo",
       "puerto": 5126,
       "estado": "ok",
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "antiguedad_seg": 0,
-      "tiempo_ms": 33.1,
+      "tiempo_ms": 21.8,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32518,10 +33081,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "bucket": "ok"
       },
       "error": null,
-      "peticiones_hora": 157,
+      "peticiones_hora": 333,
       "errores_5xx_hora": 0,
       "disponibilidad_24h_pct": 100.0,
-      "bajo_objetivo": false
+      "bajo_objetivo": false,
+      "tiempo_promedio_ms": 33.4,
+      "ultimo_error": null,
+      "ultimo_error_en": null
     }
   ],
   "dependencias_caidas": []
@@ -32536,15 +33102,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 ```http
 Accept: application/xml
-X-Traza-Id: 01b0cbb5-7187-414e-b272-e18b4f7b4321
+X-Traza-Id: 5f0562f3-3c17-4cb0-b90a-94b522c42fc5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 94 ms · traza `01b0cbb5-7187-414e-b272-e18b4f7b4321`
+**Respuesta.** HTTP 200 (esperado 200) · 121 ms · traza `5f0562f3-3c17-4cb0-b90a-94b522c42fc5`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<monitoreo_estado xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><generado_en>2026-11-27T01:25:10-06:00</generado_en><resumen><total>26</total><ok>26</ok><degradados>0</degradados><caidos>0</caidos><sin_datos>0</sin_datos><alertas_abiertas>0</alertas_abiertas><monitor_activo>true</monitor_activo><intervalo_seg>30</intervalo_seg><ultima_ronda>2026-11-27T01:25:10-06:00</ultima_ronda></resumen><servicios><servicio><servicio>auth</servicio><puerto>5101</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>33.7</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>351</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>usuarios</servicio><puerto>5102</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>38.4</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>42</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>productos</servicio><puerto>5103</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>35.7</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>50</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>pedidos</servicio><puerto>5104</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>32.4</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>315</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>entregas</servicio><puerto>5105</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>32.4</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>115</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>planeacion</servicio><puerto>5106</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>28.2</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>87</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>documentos</servicio><puerto>5107</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>26.2</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>61</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>zonas</servicio><puerto>5108</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>32</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>54</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>microhubs</servicio><puerto>5109</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>27.9</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>60</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>seguimiento</servicio><puerto>5110</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>35.5</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>18</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>inventario</servicio><puerto>5111</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>28.1</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>251</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>precios</servicio><puerto>5112</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>25.7</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>116</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>proveedores</servicio><puerto>5113</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>33.7</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>85</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>abastecimiento</servicio><puerto>5114</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>25.6</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>102</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>demanda</servicio><puerto>5115</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>36.8</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>229</peticiones_hora><errores_5xx_hora>2</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>cobertura</servicio><puerto>5116</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>24.6</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>201</peticiones_hora><errores_5xx_hora>4</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>capacidad</servicio><puerto>5117</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>34.1</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>131</peticiones_hora><errores_5xx_hora>2</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>rutas</servicio><puerto>5118</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>36.5</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>128</peticiones_hora><errores_5xx_hora>4</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>costos</servicio><puerto>5119</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>29</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>231</peticiones_hora><errores_5xx_hora>2</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>punto-equilibrio</servicio><puerto>5120</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>31.5</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>144</peticiones_hora><errores_5xx_hora>6</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>simulacion</servicio><puerto>5121</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>30.8</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>201</peticiones_hora><errores_5xx_hora>6</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>surtido</servicio><puerto>5122</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>36.2</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>103</peticiones_hora><errores_5xx_hora>6</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>notificaciones</servicio><puerto>5124</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>34.1</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>53</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>reportes</servicio><puerto>5123</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>32.4</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>88</peticiones_hora><errores_5xx_hora>2</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>sincronizacion</servicio><puerto>5125</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>36.2</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>56</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio><servicio><servicio>auditoria-monitoreo</servicio><puerto>5126</puerto><estado>ok</estado><verificado_en>2026-11-27T01:25:10-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>33.1</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>158</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo></servicio></servicios><dependencias_caidas /></monitoreo_estado>
+<monitoreo_estado xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><generado_en>2026-11-27T02:11:26-06:00</generado_en><resumen><total>26</total><ok>26</ok><degradados>0</degradados><caidos>0</caidos><sin_datos>0</sin_datos><alertas_abiertas>0</alertas_abiertas><monitor_activo>true</monitor_activo><intervalo_seg>30</intervalo_seg><ultima_ronda>2026-11-27T02:11:26-06:00</ultima_ronda></resumen><servicios><servicio><servicio>auth</servicio><puerto>5101</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>39.2</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>628</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>56.6</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>usuarios</servicio><puerto>5102</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>46.8</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>91</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>64.6</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>productos</servicio><puerto>5103</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>29.2</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>101</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>65</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>pedidos</servicio><puerto>5104</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>35.5</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>593</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>57.1</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>entregas</servicio><puerto>5105</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>55.2</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>228</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>58.9</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>planeacion</servicio><puerto>5106</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>41.6</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>155</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>56.5</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>documentos</servicio><puerto>5107</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>42.8</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>136</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>54</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>zonas</servicio><puerto>5108</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>36.4</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>338</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>65.8</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>microhubs</servicio><puerto>5109</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>34.1</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>109</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>30.7</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>seguimiento</servicio><puerto>5110</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>43</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>39</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>42.6</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>inventario</servicio><puerto>5111</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>32.1</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>470</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>48</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>precios</servicio><puerto>5112</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>42.2</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>216</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>38.4</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>proveedores</servicio><puerto>5113</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>36.7</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>177</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>48</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>abastecimiento</servicio><puerto>5114</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>28.2</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>226</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>44.3</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>demanda</servicio><puerto>5115</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>34.4</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>366</peticiones_hora><errores_5xx_hora>3</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>106.7</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>cobertura</servicio><puerto>5116</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>39.5</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>322</peticiones_hora><errores_5xx_hora>6</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>39.3</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>capacidad</servicio><puerto>5117</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>37.4</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>210</peticiones_hora><errores_5xx_hora>3</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>44.6</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>rutas</servicio><puerto>5118</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>43.2</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>209</peticiones_hora><errores_5xx_hora>6</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>45.1</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>costos</servicio><puerto>5119</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>39.5</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>379</peticiones_hora><errores_5xx_hora>3</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>44.4</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>punto-equilibrio</servicio><puerto>5120</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>35.5</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>235</peticiones_hora><errores_5xx_hora>9</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>107.4</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>simulacion</servicio><puerto>5121</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>33.5</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>321</peticiones_hora><errores_5xx_hora>9</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>34.8</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>surtido</servicio><puerto>5122</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>33.9</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>164</peticiones_hora><errores_5xx_hora>9</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>42.3</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>notificaciones</servicio><puerto>5124</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>32.9</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>110</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>30.3</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>reportes</servicio><puerto>5123</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>23.5</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>196</peticiones_hora><errores_5xx_hora>4</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>35.4</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>sincronizacion</servicio><puerto>5125</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>24.3</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>124</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>35.2</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio><servicio><servicio>auditoria-monitoreo</servicio><puerto>5126</puerto><estado>ok</estado><verificado_en>2026-11-27T02:11:26-06:00</verificado_en><antiguedad_seg>0</antiguedad_seg><tiempo_ms>21.8</tiempo_ms><version>1.0.0</version><dependencias><postgres>ok</postgres><redis>ok</redis><mongo>ok</mongo><bucket>ok</bucket></dependencias><error xsi:nil="true" /><peticiones_hora>334</peticiones_hora><errores_5xx_hora>0</errores_5xx_hora><disponibilidad_24h_pct>100</disponibilidad_24h_pct><bajo_objetivo>false</bajo_objetivo><tiempo_promedio_ms>33.4</tiempo_promedio_ms><ultimo_error xsi:nil="true" /><ultimo_error_en xsi:nil="true" /></servicio></servicios><dependencias_caidas /></monitoreo_estado>
 ```
 
 ### MNT-04 · Historial de un servicio · PASA
@@ -32555,20 +33121,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: e40cba6b-9c07-4b38-b3c1-c62c8d64d88c
+X-Traza-Id: 50e9bce7-0b6a-452d-ba5f-694a70f74c5e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 47 ms · traza `e40cba6b-9c07-4b38-b3c1-c62c8d64d88c`
+**Respuesta.** HTTP 200 (esperado 200) · 52 ms · traza `50e9bce7-0b6a-452d-ba5f-694a70f74c5e`
 
 ```json
 {
   "datos": [
     {
-      "verificado_en": "2026-11-27T01:25:10-06:00",
+      "verificado_en": "2026-11-27T02:11:26-06:00",
       "estado": "ok",
       "http_status": 200,
-      "tiempo_ms": 32.4,
+      "tiempo_ms": 35.5,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32579,10 +33145,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "error": null
     },
     {
-      "verificado_en": "2026-11-27T01:24:56-06:00",
+      "verificado_en": "2026-11-27T02:11:22-06:00",
       "estado": "ok",
       "http_status": 200,
-      "tiempo_ms": 48.5,
+      "tiempo_ms": 38.1,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32593,10 +33159,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
       "error": null
     },
     {
-      "verificado_en": "2026-11-27T01:24:25-06:00",
+      "verificado_en": "2026-11-27T02:10:51-06:00",
       "estado": "ok",
       "http_status": 200,
-      "tiempo_ms": 25.6,
+      "tiempo_ms": 91.0,
       "version": "1.0.0",
       "dependencias": {
         "postgres": "ok",
@@ -32610,8 +33176,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "paginacion": {
     "pagina": 1,
     "por_pagina": 3,
-    "total": 9,
-    "paginas": 3
+    "total": 5,
+    "paginas": 2
   }
 }
 ```
@@ -32624,11 +33190,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 4234bd89-51ff-485f-b0de-b3d8046d687e
+X-Traza-Id: 7e4281fb-f2bc-4a28-afbf-41250c92475d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 50 ms · traza `4234bd89-51ff-485f-b0de-b3d8046d687e`
+**Respuesta.** HTTP 200 (esperado 200) · 52 ms · traza `7e4281fb-f2bc-4a28-afbf-41250c92475d`
 
 ```json
 {
@@ -32637,288 +33203,288 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "servicios": [
     {
       "servicio": "auth",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 60.5,
-      "tiempo_p95_ms": 148.7,
-      "tiempo_max_ms": 176.4,
+      "tiempo_p50_ms": 39.2,
+      "tiempo_p95_ms": 91.8,
+      "tiempo_max_ms": 91.8,
       "bajo_objetivo": false
     },
     {
       "servicio": "usuarios",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 53.6,
-      "tiempo_p95_ms": 166.6,
-      "tiempo_max_ms": 201.9,
+      "tiempo_p50_ms": 46.8,
+      "tiempo_p95_ms": 110.9,
+      "tiempo_max_ms": 119.0,
       "bajo_objetivo": false
     },
     {
       "servicio": "productos",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 67.1,
-      "tiempo_p95_ms": 202.5,
-      "tiempo_max_ms": 208.8,
+      "tiempo_p50_ms": 51.0,
+      "tiempo_p95_ms": 110.5,
+      "tiempo_max_ms": 116.4,
       "bajo_objetivo": false
     },
     {
       "servicio": "pedidos",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 60.2,
-      "tiempo_p95_ms": 161.0,
-      "tiempo_max_ms": 198.3,
+      "tiempo_p50_ms": 38.1,
+      "tiempo_p95_ms": 91.6,
+      "tiempo_max_ms": 91.7,
       "bajo_objetivo": false
     },
     {
       "servicio": "entregas",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 71.9,
-      "tiempo_p95_ms": 202.9,
-      "tiempo_max_ms": 239.6,
+      "tiempo_p50_ms": 55.2,
+      "tiempo_p95_ms": 88.2,
+      "tiempo_max_ms": 93.5,
       "bajo_objetivo": false
     },
     {
       "servicio": "planeacion",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 74.6,
-      "tiempo_p95_ms": 187.2,
-      "tiempo_max_ms": 236.3,
+      "tiempo_p50_ms": 51.1,
+      "tiempo_p95_ms": 84.5,
+      "tiempo_max_ms": 88.7,
       "bajo_objetivo": false
     },
     {
       "servicio": "documentos",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 54.0,
-      "tiempo_p95_ms": 136.8,
-      "tiempo_max_ms": 147.4,
+      "tiempo_p50_ms": 46.0,
+      "tiempo_p95_ms": 72.2,
+      "tiempo_max_ms": 73.4,
       "bajo_objetivo": false
     },
     {
       "servicio": "zonas",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 54.0,
-      "tiempo_p95_ms": 118.6,
-      "tiempo_max_ms": 143.5,
+      "tiempo_p50_ms": 58.5,
+      "tiempo_p95_ms": 108.3,
+      "tiempo_max_ms": 117.7,
       "bajo_objetivo": false
     },
     {
       "servicio": "microhubs",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 42.9,
-      "tiempo_p95_ms": 90.0,
-      "tiempo_max_ms": 93.9,
+      "tiempo_p50_ms": 30.9,
+      "tiempo_p95_ms": 34.0,
+      "tiempo_max_ms": 34.1,
       "bajo_objetivo": false
     },
     {
       "servicio": "seguimiento",
-      "verificaciones": 9,
-      "caidas": 0,
-      "disponibilidad_pct": 100.0,
-      "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 50.4,
-      "tiempo_p95_ms": 243.3,
-      "tiempo_max_ms": 352.9,
-      "bajo_objetivo": false
-    },
-    {
-      "servicio": "inventario",
-      "verificaciones": 9,
-      "caidas": 0,
-      "disponibilidad_pct": 100.0,
-      "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 57.5,
-      "tiempo_p95_ms": 72.6,
-      "tiempo_max_ms": 76.6,
-      "bajo_objetivo": false
-    },
-    {
-      "servicio": "precios",
-      "verificaciones": 9,
-      "caidas": 0,
-      "disponibilidad_pct": 100.0,
-      "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 48.8,
-      "tiempo_p95_ms": 130.2,
-      "tiempo_max_ms": 162.5,
-      "bajo_objetivo": false
-    },
-    {
-      "servicio": "proveedores",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
       "tiempo_p50_ms": 43.0,
-      "tiempo_p95_ms": 292.3,
-      "tiempo_max_ms": 416.4,
+      "tiempo_p95_ms": 47.4,
+      "tiempo_max_ms": 48.0,
+      "bajo_objetivo": false
+    },
+    {
+      "servicio": "inventario",
+      "verificaciones": 5,
+      "caidas": 0,
+      "disponibilidad_pct": 100.0,
+      "salud_plena_pct": 100.0,
+      "tiempo_p50_ms": 41.4,
+      "tiempo_p95_ms": 73.7,
+      "tiempo_max_ms": 79.7,
+      "bajo_objetivo": false
+    },
+    {
+      "servicio": "precios",
+      "verificaciones": 5,
+      "caidas": 0,
+      "disponibilidad_pct": 100.0,
+      "salud_plena_pct": 100.0,
+      "tiempo_p50_ms": 42.2,
+      "tiempo_p95_ms": 45.9,
+      "tiempo_max_ms": 46.1,
+      "bajo_objetivo": false
+    },
+    {
+      "servicio": "proveedores",
+      "verificaciones": 5,
+      "caidas": 0,
+      "disponibilidad_pct": 100.0,
+      "salud_plena_pct": 100.0,
+      "tiempo_p50_ms": 41.0,
+      "tiempo_p95_ms": 75.7,
+      "tiempo_max_ms": 83.1,
       "bajo_objetivo": false
     },
     {
       "servicio": "abastecimiento",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 60.6,
-      "tiempo_p95_ms": 72.6,
-      "tiempo_max_ms": 75.4,
+      "tiempo_p50_ms": 40.7,
+      "tiempo_p95_ms": 67.2,
+      "tiempo_max_ms": 72.7,
       "bajo_objetivo": false
     },
     {
       "servicio": "demanda",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 54.8,
-      "tiempo_p95_ms": 72.8,
-      "tiempo_max_ms": 78.7,
+      "tiempo_p50_ms": 41.3,
+      "tiempo_p95_ms": 312.7,
+      "tiempo_max_ms": 380.5,
       "bajo_objetivo": false
     },
     {
       "servicio": "cobertura",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 51.2,
-      "tiempo_p95_ms": 197.1,
-      "tiempo_max_ms": 286.4,
+      "tiempo_p50_ms": 39.5,
+      "tiempo_p95_ms": 42.9,
+      "tiempo_max_ms": 43.1,
       "bajo_objetivo": false
     },
     {
       "servicio": "capacidad",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 48.7,
-      "tiempo_p95_ms": 55.7,
-      "tiempo_max_ms": 56.8,
+      "tiempo_p50_ms": 37.4,
+      "tiempo_p95_ms": 66.5,
+      "tiempo_max_ms": 72.5,
       "bajo_objetivo": false
     },
     {
       "servicio": "rutas",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 42.3,
-      "tiempo_p95_ms": 69.7,
-      "tiempo_max_ms": 71.3,
+      "tiempo_p50_ms": 43.2,
+      "tiempo_p95_ms": 63.2,
+      "tiempo_max_ms": 67.2,
       "bajo_objetivo": false
     },
     {
       "servicio": "costos",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 52.8,
-      "tiempo_p95_ms": 74.5,
-      "tiempo_max_ms": 80.9,
+      "tiempo_p50_ms": 38.0,
+      "tiempo_p95_ms": 68.5,
+      "tiempo_max_ms": 75.8,
       "bajo_objetivo": false
     },
     {
       "servicio": "punto-equilibrio",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 33.9,
-      "tiempo_p95_ms": 61.2,
-      "tiempo_max_ms": 62.6,
+      "tiempo_p50_ms": 35.6,
+      "tiempo_p95_ms": 325.6,
+      "tiempo_max_ms": 397.6,
       "bajo_objetivo": false
     },
     {
       "servicio": "simulacion",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 32.6,
-      "tiempo_p95_ms": 83.7,
-      "tiempo_max_ms": 97.0,
+      "tiempo_p50_ms": 33.5,
+      "tiempo_p95_ms": 40.4,
+      "tiempo_max_ms": 41.6,
       "bajo_objetivo": false
     },
     {
       "servicio": "surtido",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 47.4,
-      "tiempo_p95_ms": 80.1,
-      "tiempo_max_ms": 97.3,
+      "tiempo_p50_ms": 37.1,
+      "tiempo_p95_ms": 61.0,
+      "tiempo_max_ms": 65.9,
       "bajo_objetivo": false
     },
     {
       "servicio": "notificaciones",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 42.4,
-      "tiempo_p95_ms": 53.5,
-      "tiempo_max_ms": 55.0,
+      "tiempo_p50_ms": 30.7,
+      "tiempo_p95_ms": 33.8,
+      "tiempo_max_ms": 34.0,
       "bajo_objetivo": false
     },
     {
       "servicio": "reportes",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 32.4,
-      "tiempo_p95_ms": 92.7,
-      "tiempo_max_ms": 120.7,
+      "tiempo_p50_ms": 33.6,
+      "tiempo_p95_ms": 51.0,
+      "tiempo_max_ms": 53.3,
       "bajo_objetivo": false
     },
     {
       "servicio": "sincronizacion",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 36.2,
-      "tiempo_p95_ms": 73.6,
-      "tiempo_max_ms": 94.5,
+      "tiempo_p50_ms": 28.3,
+      "tiempo_p95_ms": 53.3,
+      "tiempo_max_ms": 56.7,
       "bajo_objetivo": false
     },
     {
       "servicio": "auditoria-monitoreo",
-      "verificaciones": 9,
+      "verificaciones": 5,
       "caidas": 0,
       "disponibilidad_pct": 100.0,
       "salud_plena_pct": 100.0,
-      "tiempo_p50_ms": 33.1,
-      "tiempo_p95_ms": 42.0,
-      "tiempo_max_ms": 43.2,
+      "tiempo_p50_ms": 28.2,
+      "tiempo_p95_ms": 52.0,
+      "tiempo_max_ms": 55.8,
       "bajo_objetivo": false
     }
   ]
@@ -32933,242 +33499,242 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: a734c79c-aa1f-430a-8e2f-adc0ac61bd5e
+X-Traza-Id: 50220d3d-48a2-48fa-a852-389db411da2e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 31 ms · traza `a734c79c-aa1f-430a-8e2f-adc0ac61bd5e`
+**Respuesta.** HTTP 200 (esperado 200) · 76 ms · traza `50220d3d-48a2-48fa-a852-389db411da2e`
 
 ```json
 {
   "minutos": 60,
-  "peticiones_total": 3433,
+  "peticiones_total": 6480,
   "servicios": [
     {
       "servicio": "auth",
-      "peticiones": 351,
+      "peticiones": 628,
       "errores_5xx": 0,
-      "errores_4xx": 12,
+      "errores_4xx": 27,
       "tasa_5xx_pct": 0.0,
       "duracion_p50_ms": 278,
-      "duracion_p95_ms": 515,
-      "duracion_p99_ms": 977
+      "duracion_p95_ms": 468,
+      "duracion_p99_ms": 940
     },
     {
       "servicio": "usuarios",
-      "peticiones": 42,
+      "peticiones": 91,
       "errores_5xx": 0,
-      "errores_4xx": 25,
+      "errores_4xx": 53,
       "tasa_5xx_pct": 0.0,
-      "duracion_p50_ms": 28,
-      "duracion_p95_ms": 194,
+      "duracion_p50_ms": 24,
+      "duracion_p95_ms": 184,
       "duracion_p99_ms": 268
     },
     {
       "servicio": "productos",
-      "peticiones": 50,
+      "peticiones": 101,
       "errores_5xx": 0,
-      "errores_4xx": 19,
+      "errores_4xx": 40,
       "tasa_5xx_pct": 0.0,
       "duracion_p50_ms": 24,
       "duracion_p95_ms": 81,
-      "duracion_p99_ms": 106
+      "duracion_p99_ms": 109
     },
     {
       "servicio": "pedidos",
-      "peticiones": 315,
+      "peticiones": 593,
       "errores_5xx": 0,
-      "errores_4xx": 33,
+      "errores_4xx": 63,
       "tasa_5xx_pct": 0.0,
-      "duracion_p50_ms": 64,
+      "duracion_p50_ms": 63,
       "duracion_p95_ms": 130,
-      "duracion_p99_ms": 232
+      "duracion_p99_ms": 250
     },
     {
       "servicio": "entregas",
-      "peticiones": 115,
+      "peticiones": 228,
       "errores_5xx": 0,
-      "errores_4xx": 18,
+      "errores_4xx": 40,
       "tasa_5xx_pct": 0.0,
-      "duracion_p50_ms": 60,
-      "duracion_p95_ms": 147,
-      "duracion_p99_ms": 190
+      "duracion_p50_ms": 61,
+      "duracion_p95_ms": 138,
+      "duracion_p99_ms": 185
     },
     {
       "servicio": "planeacion",
-      "peticiones": 87,
+      "peticiones": 155,
       "errores_5xx": 0,
-      "errores_4xx": 15,
+      "errores_4xx": 28,
       "tasa_5xx_pct": 0.0,
-      "duracion_p50_ms": 39,
-      "duracion_p95_ms": 99,
-      "duracion_p99_ms": 427
+      "duracion_p50_ms": 38,
+      "duracion_p95_ms": 122,
+      "duracion_p99_ms": 359
     },
     {
       "servicio": "documentos",
-      "peticiones": 61,
+      "peticiones": 136,
       "errores_5xx": 0,
-      "errores_4xx": 10,
+      "errores_4xx": 20,
       "tasa_5xx_pct": 0.0,
-      "duracion_p50_ms": 26,
+      "duracion_p50_ms": 27,
       "duracion_p95_ms": 74,
       "duracion_p99_ms": 113
     },
     {
       "servicio": "zonas",
-      "peticiones": 54,
+      "peticiones": 338,
       "errores_5xx": 0,
-      "errores_4xx": 18,
+      "errores_4xx": 274,
       "tasa_5xx_pct": 0.0,
-      "duracion_p50_ms": 2,
-      "duracion_p95_ms": 74,
-      "duracion_p99_ms": 87
+      "duracion_p50_ms": 0,
+      "duracion_p95_ms": 65,
+      "duracion_p99_ms": 81
     },
     {
       "servicio": "microhubs",
-      "peticiones": 60,
+      "peticiones": 109,
       "errores_5xx": 0,
-      "errores_4xx": 13,
+      "errores_4xx": 27,
       "tasa_5xx_pct": 0.0,
-      "duracion_p50_ms": 2,
-      "duracion_p95_ms": 70,
+      "duracion_p50_ms": 19,
+      "duracion_p95_ms": 78,
       "duracion_p99_ms": 98
     },
     {
       "servicio": "seguimiento",
-      "peticiones": 18,
+      "peticiones": 39,
       "errores_5xx": 0,
-      "errores_4xx": 2,
+      "errores_4xx": 4,
       "tasa_5xx_pct": 0.0,
-      "duracion_p50_ms": 30,
-      "duracion_p95_ms": 83,
+      "duracion_p50_ms": 29,
+      "duracion_p95_ms": 56,
       "duracion_p99_ms": 83
     },
     {
       "servicio": "inventario",
-      "peticiones": 251,
+      "peticiones": 470,
       "errores_5xx": 0,
-      "errores_4xx": 38,
+      "errores_4xx": 74,
       "tasa_5xx_pct": 0.0,
       "duracion_p50_ms": 56,
-      "duracion_p95_ms": 104,
+      "duracion_p95_ms": 114,
       "duracion_p99_ms": 233
     },
     {
       "servicio": "precios",
-      "peticiones": 116,
+      "peticiones": 216,
       "errores_5xx": 0,
-      "errores_4xx": 40,
+      "errores_4xx": 78,
       "tasa_5xx_pct": 0.0,
       "duracion_p50_ms": 48,
-      "duracion_p95_ms": 224,
+      "duracion_p95_ms": 181,
       "duracion_p99_ms": 329
     },
     {
       "servicio": "proveedores",
-      "peticiones": 85,
+      "peticiones": 177,
       "errores_5xx": 0,
-      "errores_4xx": 30,
+      "errores_4xx": 60,
       "tasa_5xx_pct": 0.0,
-      "duracion_p50_ms": 52,
-      "duracion_p95_ms": 83,
-      "duracion_p99_ms": 106
+      "duracion_p50_ms": 53,
+      "duracion_p95_ms": 98,
+      "duracion_p99_ms": 121
     },
     {
       "servicio": "abastecimiento",
-      "peticiones": 102,
+      "peticiones": 226,
       "errores_5xx": 0,
-      "errores_4xx": 44,
+      "errores_4xx": 88,
       "tasa_5xx_pct": 0.0,
-      "duracion_p50_ms": 66,
-      "duracion_p95_ms": 265,
-      "duracion_p99_ms": 302
+      "duracion_p50_ms": 81,
+      "duracion_p95_ms": 295,
+      "duracion_p99_ms": 369
     },
     {
       "servicio": "demanda",
-      "peticiones": 229,
-      "errores_5xx": 2,
-      "errores_4xx": 33,
-      "tasa_5xx_pct": 0.87,
+      "peticiones": 366,
+      "errores_5xx": 3,
+      "errores_4xx": 52,
+      "tasa_5xx_pct": 0.82,
       "duracion_p50_ms": 102,
-      "duracion_p95_ms": 177,
-      "duracion_p99_ms": 260
+      "duracion_p95_ms": 175,
+      "duracion_p99_ms": 273
     },
     {
       "servicio": "cobertura",
-      "peticiones": 201,
-      "errores_5xx": 4,
-      "errores_4xx": 36,
-      "tasa_5xx_pct": 1.99,
+      "peticiones": 322,
+      "errores_5xx": 6,
+      "errores_4xx": 56,
+      "tasa_5xx_pct": 1.86,
       "duracion_p50_ms": 46,
-      "duracion_p95_ms": 141,
-      "duracion_p99_ms": 290
+      "duracion_p95_ms": 139,
+      "duracion_p99_ms": 282
     },
     {
       "servicio": "capacidad",
-      "peticiones": 131,
-      "errores_5xx": 2,
-      "errores_4xx": 38,
-      "tasa_5xx_pct": 1.53,
-      "duracion_p50_ms": 48,
-      "duracion_p95_ms": 117,
-      "duracion_p99_ms": 153
+      "peticiones": 210,
+      "errores_5xx": 3,
+      "errores_4xx": 60,
+      "tasa_5xx_pct": 1.43,
+      "duracion_p50_ms": 47,
+      "duracion_p95_ms": 141,
+      "duracion_p99_ms": 193
     },
     {
       "servicio": "rutas",
-      "peticiones": 128,
-      "errores_5xx": 4,
-      "errores_4xx": 54,
-      "tasa_5xx_pct": 3.12,
-      "duracion_p50_ms": 81,
-      "duracion_p95_ms": 227,
-      "duracion_p99_ms": 270
+      "peticiones": 209,
+      "errores_5xx": 6,
+      "errores_4xx": 84,
+      "tasa_5xx_pct": 2.87,
+      "duracion_p50_ms": 82,
+      "duracion_p95_ms": 249,
+      "duracion_p99_ms": 315
     },
     {
       "servicio": "costos",
-      "peticiones": 231,
-      "errores_5xx": 2,
-      "errores_4xx": 46,
-      "tasa_5xx_pct": 0.87,
+      "peticiones": 379,
+      "errores_5xx": 3,
+      "errores_4xx": 71,
+      "tasa_5xx_pct": 0.79,
       "duracion_p50_ms": 47,
-      "duracion_p95_ms": 76,
+      "duracion_p95_ms": 75,
       "duracion_p99_ms": 108
     },
     {
       "servicio": "punto-equilibrio",
-      "peticiones": 144,
-      "errores_5xx": 6,
-      "errores_4xx": 23,
-      "tasa_5xx_pct": 4.17,
-      "duracion_p50_ms": 203,
-      "duracion_p95_ms": 382,
-      "duracion_p99_ms": 573
+      "peticiones": 235,
+      "errores_5xx": 9,
+      "errores_4xx": 36,
+      "tasa_5xx_pct": 3.83,
+      "duracion_p50_ms": 217,
+      "duracion_p95_ms": 385,
+      "duracion_p99_ms": 545
     },
     {
       "servicio": "simulacion",
-      "peticiones": 201,
-      "errores_5xx": 6,
-      "errores_4xx": 56,
-      "tasa_5xx_pct": 2.99,
-      "duracion_p50_ms": 30,
-      "duracion_p95_ms": 625,
-      "duracion_p99_ms": 728
+      "peticiones": 321,
+      "errores_5xx": 9,
+      "errores_4xx": 87,
+      "tasa_5xx_pct": 2.8,
+      "duracion_p50_ms": 31,
+      "duracion_p95_ms": 629,
+      "duracion_p99_ms": 793
     },
     {
       "servicio": "surtido",
-      "peticiones": 103,
-      "errores_5xx": 6,
-      "errores_4xx": 34,
-      "tasa_5xx_pct": 5.83,
-      "duracion_p50_ms": 56,
+      "peticiones": 164,
+      "errores_5xx": 9,
+      "errores_4xx": 54,
+      "tasa_5xx_pct": 5.49,
+      "duracion_p50_ms": 53,
       "duracion_p95_ms": 555,
-      "duracion_p99_ms": 611
+      "duracion_p99_ms": 776
     },
     {
       "servicio": "notificaciones",
-      "peticiones": 53,
+      "peticiones": 110,
       "errores_5xx": 0,
-      "errores_4xx": 21,
+      "errores_4xx": 42,
       "tasa_5xx_pct": 0.0,
       "duracion_p50_ms": 25,
       "duracion_p95_ms": 61,
@@ -33176,32 +33742,32 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     },
     {
       "servicio": "reportes",
-      "peticiones": 88,
-      "errores_5xx": 2,
-      "errores_4xx": 31,
-      "tasa_5xx_pct": 2.27,
-      "duracion_p50_ms": 60,
+      "peticiones": 196,
+      "errores_5xx": 4,
+      "errores_4xx": 66,
+      "tasa_5xx_pct": 2.04,
+      "duracion_p50_ms": 50,
       "duracion_p95_ms": 642,
-      "duracion_p99_ms": 995
+      "duracion_p99_ms": 1118
     },
     {
       "servicio": "sincronizacion",
-      "peticiones": 56,
+      "peticiones": 124,
       "errores_5xx": 0,
-      "errores_4xx": 22,
+      "errores_4xx": 46,
       "tasa_5xx_pct": 0.0,
-      "duracion_p50_ms": 59,
-      "duracion_p95_ms": 489,
-      "duracion_p99_ms": 547
+      "duracion_p50_ms": 56,
+      "duracion_p95_ms": 340,
+      "duracion_p99_ms": 507
     },
     {
       "servicio": "auditoria-monitoreo",
-      "peticiones": 161,
+      "peticiones": 337,
       "errores_5xx": 0,
-      "errores_4xx": 59,
+      "errores_4xx": 122,
       "tasa_5xx_pct": 0.0,
-      "duracion_p50_ms": 54,
-      "duracion_p95_ms": 194,
+      "duracion_p50_ms": 51,
+      "duracion_p95_ms": 230,
       "duracion_p99_ms": 334
     }
   ]
@@ -33216,11 +33782,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 0cd94c8c-0933-4377-941e-a23ac570ddba
+X-Traza-Id: 8921665d-b3a3-4cda-9588-23dec67caa07
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 28 ms · traza `0cd94c8c-0933-4377-941e-a23ac570ddba`
+**Respuesta.** HTTP 200 (esperado 200) · 36 ms · traza `8921665d-b3a3-4cda-9588-23dec67caa07`
 
 ```json
 {
@@ -33301,22 +33867,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: e9bcd423-6318-4eab-81e2-76c04f3b704a
+X-Traza-Id: c18c05d3-1e6b-45ea-b847-b831d1279ad5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 56 ms · traza `e9bcd423-6318-4eab-81e2-76c04f3b704a`
+**Respuesta.** HTTP 200 (esperado 200) · 59 ms · traza `c18c05d3-1e6b-45ea-b847-b831d1279ad5`
 
 ```json
 {
   "datos": [
     {
-      "id": 577,
+      "id": 616,
       "servicio": "zonas",
       "tipo": "latencia_alta",
       "severidad": "media",
-      "detalle": "/salud de zonas tardó 24 ms (umbral 0 ms).",
-      "abierta_en": "2026-11-27T01:25:10-06:00",
+      "detalle": "/salud de zonas tardó 17 ms (umbral 0 ms).",
+      "abierta_en": "2026-11-27T02:11:26-06:00",
       "cerrada_en": null,
       "duracion_seg": 0,
       "reconocida": null
@@ -33339,7 +33905,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     "servicio": "zonas",
     "tipo": "latencia_alta",
     "severidad": "media",
-    "detalle": "/salud de zonas tardó 24 ms (umbral 0 ms)."
+    "detalle": "/salud de zonas tardó 17 ms (umbral 0 ms)."
   }
 ]
 ```
@@ -33348,11 +33914,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Queda quién se hizo cargo y cuándo.
 
-**Petición.** `POST http://auditoria-monitoreo:5126/api/v1/monitoreo/alertas/577/reconocer`
+**Petición.** `POST http://auditoria-monitoreo:5126/api/v1/monitoreo/alertas/616/reconocer`
 
 ```http
 Accept: application/json
-X-Traza-Id: bdeca3ce-d180-4165-a0e0-ec85f0673795
+X-Traza-Id: 252f9d0d-5372-4b9d-af06-f19eb6a16f0d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -33361,16 +33927,16 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 61 ms · traza `bdeca3ce-d180-4165-a0e0-ec85f0673795`
+**Respuesta.** HTTP 200 (esperado 200) · 59 ms · traza `252f9d0d-5372-4b9d-af06-f19eb6a16f0d`
 
 ```json
 {
-  "id": 577,
+  "id": 616,
   "servicio": "zonas",
   "tipo": "latencia_alta",
   "severidad": "media",
-  "detalle": "/salud de zonas tardó 24 ms (umbral 0 ms).",
-  "abierta_en": "2026-11-27T01:25:10-06:00",
+  "detalle": "/salud de zonas tardó 17 ms (umbral 0 ms).",
+  "abierta_en": "2026-11-27T02:11:26-06:00",
   "cerrada_en": null,
   "duracion_seg": 0,
   "reconocida": {
@@ -33378,7 +33944,7 @@ Content-Type: application/json
       "id": 1,
       "nombre": "Mauro Castillo Peña"
     },
-    "en": "2026-11-27T01:25:10-06:00"
+    "en": "2026-11-27T02:11:27-06:00"
   }
 }
 ```
@@ -33388,13 +33954,13 @@ Content-Type: application/json
 ```json
 [
   {
-    "fecha": "2026-11-27 01:25:10.781592-06:00",
+    "fecha": "2026-11-27 02:11:26.882335-06:00",
     "accion": "alta",
     "detalle": null,
     "usuario_id": 1
   },
   {
-    "fecha": "2026-11-27 01:25:10.914346-06:00",
+    "fecha": "2026-11-27 02:11:27.007213-06:00",
     "accion": "modificacion",
     "detalle": null,
     "usuario_id": 1
@@ -33406,11 +33972,11 @@ Content-Type: application/json
 
 **Objetivo.** El auditor ve el monitoreo pero no lo opera.
 
-**Petición.** `POST http://auditoria-monitoreo:5126/api/v1/monitoreo/alertas/577/reconocer`
+**Petición.** `POST http://auditoria-monitoreo:5126/api/v1/monitoreo/alertas/616/reconocer`
 
 ```http
 Accept: application/json
-X-Traza-Id: 3e8bd08f-c7a1-451b-a839-46739d33fc8e
+X-Traza-Id: 4008f957-cb49-4472-8d25-0315f61cbfab
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 Content-Type: application/json
 ```
@@ -33419,14 +33985,14 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 29 ms · traza `3e8bd08f-c7a1-451b-a839-46739d33fc8e`
+**Respuesta.** HTTP 403 (esperado 403) · 27 ms · traza `4008f957-cb49-4472-8d25-0315f61cbfab`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "3e8bd08f-c7a1-451b-a839-46739d33fc8e"
+    "traza_id": "4008f957-cb49-4472-8d25-0315f61cbfab"
   }
 }
 ```
@@ -33439,18 +34005,18 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 2653c0c8-8913-42fe-b916-c852dfa5e405
+X-Traza-Id: ab338d52-cc19-4ee2-8cd2-c1b625c927ad
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 46 ms · traza `2653c0c8-8913-42fe-b916-c852dfa5e405`
+**Respuesta.** HTTP 403 (esperado 403) · 26 ms · traza `ab338d52-cc19-4ee2-8cd2-c1b625c927ad`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "2653c0c8-8913-42fe-b916-c852dfa5e405"
+    "traza_id": "ab338d52-cc19-4ee2-8cd2-c1b625c927ad"
   }
 }
 ```
@@ -33463,96 +34029,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 9f8bb3d1-278f-4c25-92b0-c05522a1fccd
+X-Traza-Id: d7151cf7-e1e9-47bb-be19-3d0f1bd6e519
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 103 ms · traza `9f8bb3d1-278f-4c25-92b0-c05522a1fccd`
+**Respuesta.** HTTP 200 (esperado 200) · 61 ms · traza `d7151cf7-e1e9-47bb-be19-3d0f1bd6e519`
 
 ```json
 {
   "datos": [
     {
-      "id": 24486,
-      "fecha": "2026-11-27T01:24:29-06:00",
+      "id": 26362,
+      "fecha": "2026-11-27T02:11:10-06:00",
       "usuario": {
-        "id": 7,
-        "nombre": "Ramiro Alanís Lozano"
-      },
-      "correo_intento": null,
-      "ip_origen": "172.24.0.32",
-      "modulo": "pedidos",
-      "accion": "cambio_estado",
-      "entidad": {
-        "tipo": "pedido",
-        "id": "764"
-      },
-      "exitoso": true,
-      "detalle": null,
-      "cambios": [
-        {
-          "campo": "actualizado_en",
-          "anterior": "2026-11-27T01:24:23.361901-06:00",
-          "nuevo": "2026-11-27T01:24:29.167278-06:00"
-        },
-        {
-          "campo": "cerrado_en",
-          "anterior": null,
-          "nuevo": "2026-11-27T01:24:29.167278-06:00"
-        },
-        {
-          "campo": "estado",
-          "anterior": "en_ruta",
-          "nuevo": "entrega_parcial"
-        },
-        {
-          "campo": "motivo_cancelacion",
-          "anterior": null,
-          "nuevo": "El cliente rechazó una línea."
-        }
-      ]
-    },
-    {
-      "id": 24482,
-      "fecha": "2026-11-27T01:24:28-06:00",
-      "usuario": {
-        "id": 7,
-        "nombre": "Ramiro Alanís Lozano"
-      },
-      "correo_intento": null,
-      "ip_origen": "172.24.0.32",
-      "modulo": "pedidos",
-      "accion": "cambio_estado",
-      "entidad": {
-        "tipo": "pedido",
-        "id": "763"
-      },
-      "exitoso": true,
-      "detalle": null,
-      "cambios": [
-        {
-          "campo": "actualizado_en",
-          "anterior": "2026-11-27T01:24:23.361901-06:00",
-          "nuevo": "2026-11-27T01:24:28.707937-06:00"
-        },
-        {
-          "campo": "cerrado_en",
-          "anterior": null,
-          "nuevo": "2026-11-27T01:24:28.707937-06:00"
-        },
-        {
-          "campo": "estado",
-          "anterior": "en_ruta",
-          "nuevo": "entregado"
-        }
-      ]
-    },
-    {
-      "id": 24453,
-      "fecha": "2026-11-27T01:24:23-06:00",
-      "usuario": {
-        "id": 3,
-        "nombre": "María José Cedillo Mata"
+        "id": 1,
+        "nombre": "Mauro Castillo Peña"
       },
       "correo_intento": null,
       "ip_origen": null,
@@ -33560,15 +34051,110 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
       "accion": "cambio_estado",
       "entidad": {
         "tipo": "pedido",
-        "id": "764"
+        "id": "800"
       },
       "exitoso": true,
       "detalle": null,
       "cambios": [
         {
+          "campo": "actualizado_en",
+          "anterior": "2026-11-27T02:11:07.633366-06:00",
+          "nuevo": "2026-11-27T02:11:10.561543-06:00"
+        },
+        {
+          "campo": "cerrado_en",
+          "anterior": null,
+          "nuevo": "2026-11-27T02:11:10.561543-06:00"
+        },
+        {
           "campo": "estado",
-          "anterior": "en_preparacion",
-          "nuevo": "en_ruta"
+          "anterior": "asignado",
+          "nuevo": "cancelado"
+        },
+        {
+          "campo": "motivo_cancelacion",
+          "anterior": null,
+          "nuevo": "Pedido de prueba"
+        }
+      ]
+    },
+    {
+      "id": 26359,
+      "fecha": "2026-11-27T02:11:10-06:00",
+      "usuario": {
+        "id": 1,
+        "nombre": "Mauro Castillo Peña"
+      },
+      "correo_intento": null,
+      "ip_origen": null,
+      "modulo": "pedidos",
+      "accion": "cambio_estado",
+      "entidad": {
+        "tipo": "pedido",
+        "id": "799"
+      },
+      "exitoso": true,
+      "detalle": null,
+      "cambios": [
+        {
+          "campo": "actualizado_en",
+          "anterior": "2026-11-27T02:11:07.633366-06:00",
+          "nuevo": "2026-11-27T02:11:10.561543-06:00"
+        },
+        {
+          "campo": "cerrado_en",
+          "anterior": null,
+          "nuevo": "2026-11-27T02:11:10.561543-06:00"
+        },
+        {
+          "campo": "estado",
+          "anterior": "asignado",
+          "nuevo": "cancelado"
+        },
+        {
+          "campo": "motivo_cancelacion",
+          "anterior": null,
+          "nuevo": "Pedido de prueba"
+        }
+      ]
+    },
+    {
+      "id": 26356,
+      "fecha": "2026-11-27T02:11:10-06:00",
+      "usuario": {
+        "id": 1,
+        "nombre": "Mauro Castillo Peña"
+      },
+      "correo_intento": null,
+      "ip_origen": null,
+      "modulo": "pedidos",
+      "accion": "cambio_estado",
+      "entidad": {
+        "tipo": "pedido",
+        "id": "798"
+      },
+      "exitoso": true,
+      "detalle": null,
+      "cambios": [
+        {
+          "campo": "actualizado_en",
+          "anterior": "2026-11-27T02:11:07.633366-06:00",
+          "nuevo": "2026-11-27T02:11:10.561543-06:00"
+        },
+        {
+          "campo": "cerrado_en",
+          "anterior": null,
+          "nuevo": "2026-11-27T02:11:10.561543-06:00"
+        },
+        {
+          "campo": "estado",
+          "anterior": "asignado",
+          "nuevo": "cancelado"
+        },
+        {
+          "campo": "motivo_cancelacion",
+          "anterior": null,
+          "nuevo": "Pedido de prueba"
         }
       ]
     }
@@ -33576,8 +34162,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
   "paginacion": {
     "pagina": 1,
     "por_pagina": 3,
-    "total": 5961,
-    "paginas": 1987
+    "total": 6267,
+    "paginas": 2089
   }
 }
 ```
@@ -33592,39 +34178,39 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 8d77ea5b-e45b-4180-8719-aad3c3d0f6bd
+X-Traza-Id: 795d2ffd-6f9a-4e2f-902e-d0fa8f17b165
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 166 ms · traza `8d77ea5b-e45b-4180-8719-aad3c3d0f6bd`
+**Respuesta.** HTTP 200 (esperado 200) · 177 ms · traza `795d2ffd-6f9a-4e2f-902e-d0fa8f17b165`
 
 ```json
 {
   "desde": "2026-11-20",
   "hasta": "2026-11-27",
   "totales": {
-    "login_exitoso": 1812,
-    "login_fallido": 64,
-    "logout": 52,
+    "login_exitoso": 2077,
+    "login_fallido": 70,
+    "logout": 55,
     "bloqueo_cuenta": 2,
     "desbloqueo": 0,
-    "acceso_denegado": 1648
+    "acceso_denegado": 1830
   },
   "correos_con_mas_fallos": [
     {
       "correo": "planeador@codex.mx",
-      "intentos": 15,
-      "ultimo_intento": "2026-11-27T01:15:59-06:00"
+      "intentos": 16,
+      "ultimo_intento": "2026-11-27T02:05:17-06:00"
     },
     {
       "correo": "repartidor1@codex.mx",
-      "intentos": 13,
-      "ultimo_intento": "2026-11-27T01:16:03-06:00"
+      "intentos": 14,
+      "ultimo_intento": "2026-11-27T02:05:20-06:00"
     },
     {
       "correo": "auditor@codex.mx",
-      "intentos": 8,
-      "ultimo_intento": "2026-11-27T01:24:24-06:00"
+      "intentos": 9,
+      "ultimo_intento": "2026-11-27T02:10:31-06:00"
     },
     {
       "correo": "nadie.c4423816@codex.mx",
@@ -33640,23 +34226,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
   "denegados_frecuentes": [
     {
       "detalle": "GET /api/v1/auditoria sin auditoria.ver",
-      "veces": 76
+      "veces": 81
     },
     {
       "detalle": "GET /api/v1/auditoria/accesos sin auditoria.ver",
-      "veces": 68
+      "veces": 72
     },
     {
       "detalle": "GET /api/v1/auditoria/trazabilidad/inventario sin auditoria.ver",
-      "veces": 68
+      "veces": 72
     },
     {
       "detalle": "GET /api/v1/auditoria/trazabilidad/pedido/1 sin auditoria.ver",
-      "veces": 68
+      "veces": 72
     },
     {
       "detalle": "GET /api/v1/monitoreo/estado sin monitoreo.ver",
-      "veces": 65
+      "veces": 69
     }
   ]
 }
@@ -33670,11 +34256,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: a25c54a0-51ec-4671-a56e-ae989fdec86c
+X-Traza-Id: 765b45e9-1be3-47b7-8661-78b6e640884c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 107 ms · traza `a25c54a0-51ec-4671-a56e-ae989fdec86c`
+**Respuesta.** HTTP 200 (esperado 200) · 120 ms · traza `765b45e9-1be3-47b7-8661-78b6e640884c`
 
 ```json
 {
@@ -34252,11 +34838,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 18a8f076-96a7-461a-89dd-1b4cebd24b44
+X-Traza-Id: 188ada07-87e5-4015-9465-25d13fd546fa
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 48 ms · traza `18a8f076-96a7-461a-89dd-1b4cebd24b44`
+**Respuesta.** HTTP 200 (esperado 200) · 54 ms · traza `188ada07-87e5-4015-9465-25d13fd546fa`
 
 ```json
 {
@@ -34389,11 +34975,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 55a1926c-89dd-41f6-a9f9-59c8b1d83a0d
+X-Traza-Id: a7343e39-8db3-4c4f-a4db-1d2f3360d3f9
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 43 ms · traza `55a1926c-89dd-41f6-a9f9-59c8b1d83a0d`
+**Respuesta.** HTTP 200 (esperado 200) · 52 ms · traza `a7343e39-8db3-4c4f-a4db-1d2f3360d3f9`
 
 ```json
 {
@@ -34646,18 +35232,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 3719f7a2-f40a-453b-b55d-e054b63c3014
+X-Traza-Id: 1303e47e-7248-4752-a2ad-7fb34c3b6e5e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 26 ms · traza `3719f7a2-f40a-453b-b55d-e054b63c3014`
+**Respuesta.** HTTP 403 (esperado 403) · 31 ms · traza `1303e47e-7248-4752-a2ad-7fb34c3b6e5e`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "3719f7a2-f40a-453b-b55d-e054b63c3014"
+    "traza_id": "1303e47e-7248-4752-a2ad-7fb34c3b6e5e"
   }
 }
 ```
@@ -34667,7 +35253,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 ```json
 [
   {
-    "fecha": "2026-11-27 01:25:11.922949-06:00",
+    "fecha": "2026-11-27 02:11:27.940801-06:00",
     "accion": "acceso_denegado",
     "detalle": "GET /api/v1/auditoria sin auditoria.ver",
     "exitoso": false
@@ -34685,11 +35271,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 59d1dcf4-ed36-4d67-a4a6-feeaec922e85
+X-Traza-Id: 2e88f8cc-af8f-43ae-b448-a190bc78938c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 9 ms · traza `59d1dcf4-ed36-4d67-a4a6-feeaec922e85`
+**Respuesta.** HTTP 200 (esperado 200) · 7 ms · traza `2e88f8cc-af8f-43ae-b448-a190bc78938c`
 
 ```json
 {
@@ -34789,11 +35375,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 1ca49b9c-447d-46c6-b2e6-de0c019de337
+X-Traza-Id: b0d7a4ac-e63e-4f9e-a5c3-2d05c6ca0ab1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 666 ms · traza `1ca49b9c-447d-46c6-b2e6-de0c019de337`
+**Respuesta.** HTTP 200 (esperado 200) · 669 ms · traza `b0d7a4ac-e63e-4f9e-a5c3-2d05c6ca0ab1`
 
 ```json
 {
@@ -34803,35 +35389,35 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
     {
       "clave": "********",
       "titulo": "Pedidos del periodo",
-      "valor": 467,
+      "valor": 487,
       "unidad": "pedidos",
       "fuente": "pedidos"
     },
     {
       "clave": "********",
       "titulo": "Venta del periodo",
-      "valor": 73676.6,
+      "valor": 77753.2,
       "unidad": "MXN",
       "fuente": "pedidos"
     },
     {
       "clave": "********",
       "titulo": "Ticket promedio",
-      "valor": 157.77,
+      "valor": 159.66,
       "unidad": "MXN",
       "fuente": "pedidos"
     },
     {
       "clave": "********",
       "titulo": "Demanda no atendida",
-      "valor": 59,
+      "valor": 61,
       "unidad": "pedidos",
       "fuente": "pedidos"
     },
     {
       "clave": "********",
       "titulo": "Productos en alerta de inventario",
-      "valor": 12,
+      "valor": 11,
       "unidad": "productos",
       "fuente": "inventario"
     },
@@ -34845,7 +35431,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
     {
       "clave": "********",
       "titulo": "Entregas abiertas hoy",
-      "valor": 2,
+      "valor": 5,
       "unidad": "entregas",
       "fuente": "entregas"
     },
@@ -34871,18 +35457,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: d0bb8370-48f0-46a9-8a45-cdc3000d162d
+X-Traza-Id: e2b02308-5e82-4096-a2d1-b096c35a1490
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 1053 ms · traza `d0bb8370-48f0-46a9-8a45-cdc3000d162d`
+**Respuesta.** HTTP 200 (esperado 200) · 1305 ms · traza `e2b02308-5e82-4096-a2d1-b096c35a1490`
 
 ```json
 {
   "reporte": "comparacion_microhubs",
   "familia": "comercial",
   "titulo": "Comparación entre microhubs",
-  "generado_en": "2026-11-27T01:25:13-06:00",
+  "generado_en": "2026-11-27T02:11:29-06:00",
   "filtros": {
     "desde": "2026-08-29",
     "hasta": "2026-11-27",
@@ -34925,31 +35511,31 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     {
       "celdas": [
         "Microhub Valles",
-        "182",
-        "928",
-        "31629.80",
-        "173.79",
-        "49.02"
+        "191",
+        "992",
+        "34094.60",
+        "178.51",
+        "49.68"
       ]
     },
     {
       "celdas": [
         "Microhub San Bernabé Centro",
-        "132",
-        "652",
-        "18829.90",
-        "142.65",
-        "29.19"
+        "135",
+        "672",
+        "19299.70",
+        "142.96",
+        "28.12"
       ]
     },
     {
       "celdas": [
         "Microhub Poniente F-113",
-        "85",
-        "431",
-        "12768.50",
-        "150.22",
-        "19.79"
+        "92",
+        "463",
+        "13638.50",
+        "148.24",
+        "19.87"
       ]
     },
     {
@@ -34959,7 +35545,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "6",
         "336.00",
         "336.00",
-        "0.52"
+        "0.49"
       ]
     },
     {
@@ -34969,7 +35555,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "6",
         "336.00",
         "336.00",
-        "0.52"
+        "0.49"
       ]
     },
     {
@@ -34979,7 +35565,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "6",
         "312.00",
         "312.00",
-        "0.48"
+        "0.45"
       ]
     },
     {
@@ -34989,7 +35575,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "6",
         "306.00",
         "306.00",
-        "0.47"
+        "0.45"
+      ]
+    },
+    {
+      "celdas": [
+        "Microhub EC3AF",
+        "1",
+        "6",
+        "306.00",
+        "306.00",
+        "0.45"
       ]
     },
     {
@@ -35005,6 +35601,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     {
       "celdas": [
         "Microhub 1FF3C5",
+        "0",
+        "0",
+        "0.00",
+        "",
+        "0.00"
+      ]
+    },
+    {
+      "celdas": [
+        "Microhub 48BE4A",
         "0",
         "0",
         "0.00",
@@ -35046,14 +35652,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "totales": {
     "celdas": [
       "Total",
-      "403",
-      "2035",
-      "64518.20",
-      "160.09",
-      "99.99"
+      "423",
+      "2157",
+      "68628.80",
+      "162.24",
+      "100.00"
     ]
   },
-  "total_filas": 12
+  "total_filas": 14
 }
 ```
 
@@ -35063,18 +35669,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 [
   {
     "nombre": "Microhub Valles",
-    "pedidos": 182,
-    "venta": "31629.80"
+    "pedidos": 191,
+    "venta": "34094.60"
   },
   {
     "nombre": "Microhub San Bernabé Centro",
-    "pedidos": 132,
-    "venta": "18829.90"
+    "pedidos": 135,
+    "venta": "19299.70"
   },
   {
     "nombre": "Microhub Poniente F-113",
-    "pedidos": 85,
-    "venta": "12768.50"
+    "pedidos": 92,
+    "venta": "13638.50"
   },
   {
     "nombre": "Microhub E0FDE",
@@ -35095,6 +35701,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
     "nombre": "Microhub E83EF",
     "pedidos": 1,
     "venta": "306.00"
+  },
+  {
+    "nombre": "Microhub EC3AF",
+    "pedidos": 1,
+    "venta": "306.00"
   }
 ]
 ```
@@ -35107,15 +35718,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/xml
-X-Traza-Id: 54019502-1424-4a41-b16f-24aee2227467
+X-Traza-Id: 65aa5aaf-4036-4cf4-95f6-bcbdcc7970cf
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 444 ms · traza `54019502-1424-4a41-b16f-24aee2227467`
+**Respuesta.** HTTP 200 (esperado 200) · 468 ms · traza `65aa5aaf-4036-4cf4-95f6-bcbdcc7970cf`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<reporte xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><reporte>equilibrio_microhubs</reporte><familia>financiero</familia><titulo>Punto de equilibrio por microhub</titulo><generado_en>2026-11-27T01:25:14-06:00</generado_en><filtros><desde>2026-10-29</desde><hasta>2026-11-27</hasta><zona_id xsi:nil="true" /><microhub_id xsi:nil="true" /></filtros><columnas><columna><clave>microhub</clave><titulo>Microhub</titulo><tipo>texto</tipo></columna><columna><clave>costos_fijos_mes</clave><titulo>Costos fijos del mes</titulo><tipo>dinero</tipo></columna><columna><clave>margen_pedido</clave><titulo>Margen por pedido</titulo><tipo>dinero</tipo></columna><columna><clave>equilibrio_diario</clave><titulo>Equilibrio (pedidos/día)</titulo><tipo>dinero</tipo></columna><columna><clave>pedidos_dia</clave><titulo>Pedidos/día esperados</titulo><tipo>dinero</tipo></columna><columna><clave>diferencia_pedidos_dia</clave><titulo>Diferencia (pedidos/día)</titulo><tipo>dinero</tipo></columna><columna><clave>utilidad_mes</clave><titulo>Utilidad del mes</titulo><tipo>dinero</tipo></columna><columna><clave>decision</clave><titulo>Decisión</titulo><tipo>texto</tipo></columna></columnas><filas><fila><celdas><celda>Microhub San Bernabé Centro</celda><celda>69500.00</celda><celda>5.15</celda><celda>450.26</celda><celda>23.58</celda><celda>-426.68</celda><celda>-65860.29</celda><celda>no_viable</celda></celdas></fila><fila><celdas><celda>Microhub Valles</celda><celda>66500.00</celda><celda>5.15</celda><celda>430.82</celda><celda>16.07</celda><celda>-414.75</celda><celda>-64018.73</celda><celda>no_viable</celda></celdas></fila><fila><celdas><celda>Microhub Poniente F-113</celda><celda>50000.00</celda><celda>5.15</celda><celda>323.93</celda><celda>9.78</celda><celda>-314.15</celda><celda>-48491.17</celda><celda>no_viable</celda></celdas></fila></filas><totales><celdas><celda>Total</celda><celda>186000.00</celda><celda /><celda /><celda /><celda /><celda>-178370.19</celda><celda /></celdas></totales><total_filas>3</total_filas></reporte>
+<reporte xmlns="urn:microhubs:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"><reporte>equilibrio_microhubs</reporte><familia>financiero</familia><titulo>Punto de equilibrio por microhub</titulo><generado_en>2026-11-27T02:11:30-06:00</generado_en><filtros><desde>2026-10-29</desde><hasta>2026-11-27</hasta><zona_id xsi:nil="true" /><microhub_id xsi:nil="true" /></filtros><columnas><columna><clave>microhub</clave><titulo>Microhub</titulo><tipo>texto</tipo></columna><columna><clave>costos_fijos_mes</clave><titulo>Costos fijos del mes</titulo><tipo>dinero</tipo></columna><columna><clave>margen_pedido</clave><titulo>Margen por pedido</titulo><tipo>dinero</tipo></columna><columna><clave>equilibrio_diario</clave><titulo>Equilibrio (pedidos/día)</titulo><tipo>dinero</tipo></columna><columna><clave>pedidos_dia</clave><titulo>Pedidos/día esperados</titulo><tipo>dinero</tipo></columna><columna><clave>diferencia_pedidos_dia</clave><titulo>Diferencia (pedidos/día)</titulo><tipo>dinero</tipo></columna><columna><clave>utilidad_mes</clave><titulo>Utilidad del mes</titulo><tipo>dinero</tipo></columna><columna><clave>decision</clave><titulo>Decisión</titulo><tipo>texto</tipo></columna></columnas><filas><fila><celdas><celda>Microhub San Bernabé Centro</celda><celda>69500.00</celda><celda>5.15</celda><celda>450.26</celda><celda>23.58</celda><celda>-426.68</celda><celda>-65860.29</celda><celda>no_viable</celda></celdas></fila><fila><celdas><celda>Microhub Valles</celda><celda>66500.00</celda><celda>5.15</celda><celda>430.82</celda><celda>16.07</celda><celda>-414.75</celda><celda>-64018.73</celda><celda>no_viable</celda></celdas></fila><fila><celdas><celda>Microhub Poniente F-113</celda><celda>50000.00</celda><celda>5.15</celda><celda>323.93</celda><celda>9.78</celda><celda>-314.15</celda><celda>-48491.17</celda><celda>no_viable</celda></celdas></fila></filas><totales><celdas><celda>Total</celda><celda>186000.00</celda><celda /><celda /><celda /><celda /><celda>-178370.19</celda><celda /></celdas></totales><total_filas>3</total_filas></reporte>
 ```
 
 ### REP-05 · Datos para Highcharts · PASA
@@ -35126,11 +35737,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 6c74f8a6-5b50-4de8-9c1d-19ed3b2b4e04
+X-Traza-Id: 68cfa78d-61f7-4e57-b55b-9cecf4a70840
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 148 ms · traza `6c74f8a6-5b50-4de8-9c1d-19ed3b2b4e04`
+**Respuesta.** HTTP 200 (esperado 200) · 172 ms · traza `68cfa78d-61f7-4e57-b55b-9cecf4a70840`
 
 ```json
 {
@@ -35141,24 +35752,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
   "categorias": [
     "Valles de San Bernabé",
     "Paseo de San Bernabé",
-    "San Bernabé Centro",
-    "San Bernabé X (F-113)"
+    "San Bernabé X (F-113)",
+    "San Bernabé Centro"
   ],
   "series": [
     {
       "nombre": "Pedidos",
       "datos": [
-        172.0,
-        108.0,
-        98.0,
-        89.0
+        175.0,
+        116.0,
+        96.0,
+        100.0
       ]
     },
     {
       "nombre": "Demanda no atendida",
       "datos": [
         13.0,
-        22.0,
+        24.0,
         12.0,
         12.0
       ]
@@ -35175,19 +35786,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 62491f4f-50da-4d2b-9688-cbd0fcc43470
+X-Traza-Id: ab504a5b-7bba-4136-86c3-fc30fda38de6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 192 ms · traza `62491f4f-50da-4d2b-9688-cbd0fcc43470`
+**Respuesta.** HTTP 200 (esperado 200) · 197 ms · traza `ab504a5b-7bba-4136-86c3-fc30fda38de6`
 
 ```json
 ﻿Zona,Pedidos,Unidades,Venta,Ticket promedio,Demanda no atendida,No atendida (%)
-Valles de San Bernabé,172,819,25270.00,146.92,13,7.03
-Paseo de San Bernabé,108,586,21572.20,199.74,22,16.92
-San Bernabé Centro,98,490,13517.90,137.94,12,10.91
-San Bernabé X (F-113),89,450,13316.50,149.62,12,11.88
-Total,467,2345,73676.60,157.77,59,11.22
+Valles de San Bernabé,175,837,25720.50,146.97,13,6.91
+Paseo de San Bernabé,116,642,24033.50,207.19,24,17.14
+San Bernabé X (F-113),96,480,14137.50,147.27,12,11.11
+San Bernabé Centro,100,506,13861.70,138.62,12,10.71
+Total,487,2465,77753.20,159.66,61,11.13
 
 ```
 
@@ -35201,8 +35812,8 @@ Total,467,2345,73676.60,157.77,59,11.22
     "reporte": "pedidos_por_zona",
     "formato": "csv",
     "filas": 4,
-    "bytes": 346,
-    "sha256": "7ae58b6e6af3ac6e",
+    "bytes": 347,
+    "sha256": "1b541180329d6316",
     "creado_por": 1
   }
 ]
@@ -35216,17 +35827,17 @@ Total,467,2345,73676.60,157.77,59,11.22
 
 ```http
 Accept: application/json
-X-Traza-Id: 64d4d0cb-3695-4853-9ed1-16df7b20ea04
+X-Traza-Id: 20b544b5-c7fc-46fb-8eb4-546ef1aa093f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 51 ms · traza `64d4d0cb-3695-4853-9ed1-16df7b20ea04`
+**Respuesta.** HTTP 200 (esperado 200) · 54 ms · traza `20b544b5-c7fc-46fb-8eb4-546ef1aa093f`
 
 ```json
 {
   "datos": [
     {
-      "id": 130,
+      "id": 141,
       "reporte": "pedidos_por_zona",
       "formato": "csv",
       "filtros": {
@@ -35236,16 +35847,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "microhub_id": null
       },
       "filas": 4,
-      "bytes": 346,
-      "sha256": "7ae58b6e6af3ac6e80bf9772459c3be9723bc2f97e1a85304dfbe3b1efc27f73",
+      "bytes": 347,
+      "sha256": "1b541180329d631609d5e364bf72d3d0ce4fd9df3ffb568d6ce4c05acbe71cc2",
       "creado_por": {
         "id": 1,
         "nombre": "Mauro Castillo Peña"
       },
-      "creado_en": "2026-11-27T01:25:14-06:00"
+      "creado_en": "2026-11-27T02:11:30-06:00"
     },
     {
-      "id": 129,
+      "id": 140,
       "reporte": "pedidos_por_dia",
       "formato": "csv",
       "filtros": {
@@ -35255,16 +35866,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "microhub_id": null
       },
       "filas": 3,
-      "bytes": 213,
-      "sha256": "26ee903c46f44310734fefbebc46c540d2bb03d7694ca95c8e9413f08d769d06",
+      "bytes": 214,
+      "sha256": "be0e1e1dcdb9faa82e0a5d2fbfa8fe9ff3c87356cce538b56c197da85c22c309",
       "creado_por": {
         "id": 1,
         "nombre": "Mauro Castillo Peña"
       },
-      "creado_en": "2026-11-27T01:24:18-06:00"
+      "creado_en": "2026-11-27T02:10:25-06:00"
     },
     {
-      "id": 128,
+      "id": 139,
       "reporte": "inventario_alertas",
       "formato": "csv",
       "filtros": {
@@ -35273,21 +35884,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "zona_id": null,
         "microhub_id": 1
       },
-      "filas": 2,
-      "bytes": 216,
-      "sha256": "14205d6031d3356998495aeaa1962da14750d1ad33e87d9c0110cbada3f5cf8a",
+      "filas": 1,
+      "bytes": 148,
+      "sha256": "490d2762ac8b172498cccc306b9e89e60cfdb278f91d06433decf52e004297db",
       "creado_por": {
         "id": 1,
         "nombre": "Mauro Castillo Peña"
       },
-      "creado_en": "2026-11-27T01:24:15-06:00"
+      "creado_en": "2026-11-27T02:10:22-06:00"
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 3,
-    "total": 130,
-    "paginas": 44
+    "total": 141,
+    "paginas": 47
   }
 }
 ```
@@ -35300,11 +35911,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 2837d319-ac64-4487-9c53-e1c519aa9694
+X-Traza-Id: 975ddc1d-529d-44bc-a059-ab84dd740d09
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 400 (esperado 400) · 7 ms · traza `2837d319-ac64-4487-9c53-e1c519aa9694`
+**Respuesta.** HTTP 400 (esperado 400) · 8 ms · traza `975ddc1d-529d-44bc-a059-ab84dd740d09`
 
 ```json
 {
@@ -35317,7 +35928,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
         "mensaje": "Este reporte no admite el filtro zona_id."
       }
     ],
-    "traza_id": "2837d319-ac64-4487-9c53-e1c519aa9694"
+    "traza_id": "975ddc1d-529d-44bc-a059-ab84dd740d09"
   }
 }
 ```
@@ -35330,18 +35941,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 1f656c49-1aec-4165-a331-a2c9cc239c92
+X-Traza-Id: 7526c4e5-727b-4d9d-84a0-9c491357b293
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 31 ms · traza `1f656c49-1aec-4165-a331-a2c9cc239c92`
+**Respuesta.** HTTP 403 (esperado 403) · 32 ms · traza `7526c4e5-727b-4d9d-84a0-9c491357b293`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "1f656c49-1aec-4165-a331-a2c9cc239c92"
+    "traza_id": "7526c4e5-727b-4d9d-84a0-9c491357b293"
   }
 }
 ```
@@ -35356,23 +35967,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 4ba2e3fb-632f-48f1-8b1c-3b59898d700c
+X-Traza-Id: 1ab9ab1a-1c58-495b-ac13-6f844b4e45ea
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "lote_uuid": "ed8898d4-b7a4-4f1d-8143-39d70ba82b2e",
-  "dispositivo": "android-evidencia-da0d02",
+  "lote_uuid": "12408de3-273f-4dc1-847d-e0feeb917fa1",
+  "dispositivo": "android-evidencia-abc9b4",
   "cliente": "android",
   "operaciones": [
     {
-      "operacion_uuid": "f1cc44db-4103-47cb-a188-93871dcc311b",
+      "operacion_uuid": "790dfd9d-dccf-4ead-9c01-a71daefc0a85",
       "tipo": "entrega_resultado",
-      "creada_en": "2026-11-27T07:22:14.817442+00:00",
+      "creada_en": "2026-11-27T08:08:31.135590+00:00",
       "datos": {
-        "entrega_id": 433,
+        "entrega_id": 461,
         "resultado": "fallida",
         "monto_cobrado": 0,
         "cambio_entregado": 0,
@@ -35382,22 +35993,22 @@ Content-Type: application/json
           "longitud": -100.3611
         },
         "evidencia_ids": [
-          "6b09305a7d5722bf71504817"
+          "6b093b33f6e2f9fdd510ee51"
         ],
-        "capturado_en": "2026-11-27T07:22:14.817373+00:00"
+        "capturado_en": "2026-11-27T08:08:31.135546+00:00"
       }
     },
     {
-      "operacion_uuid": "1a478ed4-3ac5-412d-817e-dd4b7ea429f4",
+      "operacion_uuid": "50d53a10-01ca-486b-8368-91dcb45f69b4",
       "tipo": "ubicaciones",
-      "creada_en": "2026-11-27T07:13:14.817464+00:00",
+      "creada_en": "2026-11-27T07:59:31.135605+00:00",
       "datos": {
-        "entrega_id": 433,
+        "entrega_id": 461,
         "puntos": [
           {
             "latitud": 25.7488,
             "longitud": -100.3608,
-            "capturado_en": "2026-11-27T07:13:14.817478+00:00"
+            "capturado_en": "2026-11-27T07:59:31.135610+00:00"
           }
         ]
       }
@@ -35406,14 +36017,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 378 ms · traza `4ba2e3fb-632f-48f1-8b1c-3b59898d700c`
+**Respuesta.** HTTP 201 (esperado 201) · 400 ms · traza `1ab9ab1a-1c58-495b-ac13-6f844b4e45ea`
 
 ```json
 {
-  "id": 247,
-  "lote_uuid": "ed8898d4-b7a4-4f1d-8143-39d70ba82b2e",
-  "dispositivo": "android-evidencia-da0d02",
-  "recibido_en": "2026-11-27T01:25:14-06:00",
+  "id": 265,
+  "lote_uuid": "12408de3-273f-4dc1-847d-e0feeb917fa1",
+  "dispositivo": "android-evidencia-abc9b4",
+  "recibido_en": "2026-11-27T02:11:31-06:00",
   "total": 2,
   "aplicadas": 2,
   "duplicadas": 0,
@@ -35422,7 +36033,7 @@ Content-Type: application/json
   "pendientes": 0,
   "operaciones": [
     {
-      "operacion_uuid": "f1cc44db-4103-47cb-a188-93871dcc311b",
+      "operacion_uuid": "790dfd9d-dccf-4ead-9c01-a71daefc0a85",
       "tipo": "entrega_resultado",
       "estado": "aplicada",
       "duplicada": false,
@@ -35432,7 +36043,7 @@ Content-Type: application/json
       "reintentar": false
     },
     {
-      "operacion_uuid": "1a478ed4-3ac5-412d-817e-dd4b7ea429f4",
+      "operacion_uuid": "50d53a10-01ca-486b-8368-91dcb45f69b4",
       "tipo": "ubicaciones",
       "estado": "aplicada",
       "duplicada": false,
@@ -35452,9 +36063,9 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 433,
+    "id": 461,
     "resultado": "fallida",
-    "id_cliente_local": "f1cc44db-4103-47cb-a188-93871dcc311b",
+    "id_cliente_local": "790dfd9d-dccf-4ead-9c01-a71daefc0a85",
     "estado": "entrega_fallida"
   }
 ]
@@ -35465,13 +36076,13 @@ Content-Type: application/json
 ```json
 [
   {
-    "operacion_uuid": "1a478ed4-3ac5-412d-817e-dd4b7ea429f4",
+    "operacion_uuid": "50d53a10-01ca-486b-8368-91dcb45f69b4",
     "tipo": "ubicaciones",
     "estado": "aplicada",
     "intentos": 1
   },
   {
-    "operacion_uuid": "f1cc44db-4103-47cb-a188-93871dcc311b",
+    "operacion_uuid": "790dfd9d-dccf-4ead-9c01-a71daefc0a85",
     "tipo": "entrega_resultado",
     "estado": "aplicada",
     "intentos": 1
@@ -35487,23 +36098,23 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: ce6b86cf-f7b8-4f72-95e5-1afbc5a2ffbf
+X-Traza-Id: 26e4e35d-1c84-4353-b659-e3a7d655e586
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "lote_uuid": "ed8898d4-b7a4-4f1d-8143-39d70ba82b2e",
-  "dispositivo": "android-evidencia-da0d02",
+  "lote_uuid": "12408de3-273f-4dc1-847d-e0feeb917fa1",
+  "dispositivo": "android-evidencia-abc9b4",
   "cliente": "android",
   "operaciones": [
     {
-      "operacion_uuid": "f1cc44db-4103-47cb-a188-93871dcc311b",
+      "operacion_uuid": "790dfd9d-dccf-4ead-9c01-a71daefc0a85",
       "tipo": "entrega_resultado",
-      "creada_en": "2026-11-27T07:22:14.817442+00:00",
+      "creada_en": "2026-11-27T08:08:31.135590+00:00",
       "datos": {
-        "entrega_id": 433,
+        "entrega_id": 461,
         "resultado": "fallida",
         "monto_cobrado": 0,
         "cambio_entregado": 0,
@@ -35513,22 +36124,22 @@ Content-Type: application/json
           "longitud": -100.3611
         },
         "evidencia_ids": [
-          "6b09305a7d5722bf71504817"
+          "6b093b33f6e2f9fdd510ee51"
         ],
-        "capturado_en": "2026-11-27T07:22:14.817373+00:00"
+        "capturado_en": "2026-11-27T08:08:31.135546+00:00"
       }
     },
     {
-      "operacion_uuid": "1a478ed4-3ac5-412d-817e-dd4b7ea429f4",
+      "operacion_uuid": "50d53a10-01ca-486b-8368-91dcb45f69b4",
       "tipo": "ubicaciones",
-      "creada_en": "2026-11-27T07:13:14.817464+00:00",
+      "creada_en": "2026-11-27T07:59:31.135605+00:00",
       "datos": {
-        "entrega_id": 433,
+        "entrega_id": 461,
         "puntos": [
           {
             "latitud": 25.7488,
             "longitud": -100.3608,
-            "capturado_en": "2026-11-27T07:13:14.817478+00:00"
+            "capturado_en": "2026-11-27T07:59:31.135610+00:00"
           }
         ]
       }
@@ -35537,14 +36148,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 144 ms · traza `ce6b86cf-f7b8-4f72-95e5-1afbc5a2ffbf`
+**Respuesta.** HTTP 200 (esperado 200) · 180 ms · traza `26e4e35d-1c84-4353-b659-e3a7d655e586`
 
 ```json
 {
-  "id": 247,
-  "lote_uuid": "ed8898d4-b7a4-4f1d-8143-39d70ba82b2e",
-  "dispositivo": "android-evidencia-da0d02",
-  "recibido_en": "2026-11-27T01:25:14-06:00",
+  "id": 265,
+  "lote_uuid": "12408de3-273f-4dc1-847d-e0feeb917fa1",
+  "dispositivo": "android-evidencia-abc9b4",
+  "recibido_en": "2026-11-27T02:11:31-06:00",
   "total": 2,
   "aplicadas": 2,
   "duplicadas": 2,
@@ -35553,7 +36164,7 @@ Content-Type: application/json
   "pendientes": 0,
   "operaciones": [
     {
-      "operacion_uuid": "f1cc44db-4103-47cb-a188-93871dcc311b",
+      "operacion_uuid": "790dfd9d-dccf-4ead-9c01-a71daefc0a85",
       "tipo": "entrega_resultado",
       "estado": "aplicada",
       "duplicada": true,
@@ -35563,7 +36174,7 @@ Content-Type: application/json
       "reintentar": false
     },
     {
-      "operacion_uuid": "1a478ed4-3ac5-412d-817e-dd4b7ea429f4",
+      "operacion_uuid": "50d53a10-01ca-486b-8368-91dcb45f69b4",
       "tipo": "ubicaciones",
       "estado": "aplicada",
       "duplicada": true,
@@ -35584,23 +36195,23 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 84b0baf2-de00-4bdc-959f-0c67456bfb44
+X-Traza-Id: 5c4d65e0-1dbd-4131-b590-564f574a284f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "lote_uuid": "04f882c3-b895-48db-bc80-63629af5bf2c",
-  "dispositivo": "android-evidencia-da0d02",
+  "lote_uuid": "61ea2512-9712-4fe3-849d-b1a9692eba59",
+  "dispositivo": "android-evidencia-abc9b4",
   "cliente": "android",
   "operaciones": [
     {
-      "operacion_uuid": "eda25709-b85f-4e43-8bd1-4e3e6ab0281b",
+      "operacion_uuid": "cfd1bcd5-71c6-41d7-85d8-03df0cd97783",
       "tipo": "entrega_resultado",
-      "creada_en": "2026-11-27T07:24:15.381226+00:00",
+      "creada_en": "2026-11-27T08:10:31.760088+00:00",
       "datos": {
-        "entrega_id": 433,
+        "entrega_id": 461,
         "resultado": "fallida",
         "monto_cobrado": 0,
         "cambio_entregado": 0,
@@ -35610,23 +36221,23 @@ Content-Type: application/json
           "longitud": -100.3611
         },
         "evidencia_ids": [
-          "6b09305a7d5722bf71504817"
+          "6b093b33f6e2f9fdd510ee51"
         ],
-        "capturado_en": "2026-11-27T07:22:14.817373+00:00"
+        "capturado_en": "2026-11-27T08:08:31.135546+00:00"
       }
     }
   ]
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 297 ms · traza `84b0baf2-de00-4bdc-959f-0c67456bfb44`
+**Respuesta.** HTTP 200 (esperado 200) · 332 ms · traza `5c4d65e0-1dbd-4131-b590-564f574a284f`
 
 ```json
 {
-  "id": 248,
-  "lote_uuid": "04f882c3-b895-48db-bc80-63629af5bf2c",
-  "dispositivo": "android-evidencia-da0d02",
-  "recibido_en": "2026-11-27T01:25:15-06:00",
+  "id": 266,
+  "lote_uuid": "61ea2512-9712-4fe3-849d-b1a9692eba59",
+  "dispositivo": "android-evidencia-abc9b4",
+  "recibido_en": "2026-11-27T02:11:31-06:00",
   "total": 1,
   "aplicadas": 0,
   "duplicadas": 0,
@@ -35635,7 +36246,7 @@ Content-Type: application/json
   "pendientes": 0,
   "operaciones": [
     {
-      "operacion_uuid": "eda25709-b85f-4e43-8bd1-4e3e6ab0281b",
+      "operacion_uuid": "cfd1bcd5-71c6-41d7-85d8-03df0cd97783",
       "tipo": "entrega_resultado",
       "estado": "conflicto",
       "duplicada": false,
@@ -35656,15 +36267,51 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 727dd757-df0b-47af-a144-3e0967aeb639
+X-Traza-Id: 7fec1ccf-2544-442f-a9b5-f2e4d9b30cac
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(294 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 75 ms · traza `727dd757-df0b-47af-a144-3e0967aeb639`
+**Respuesta.** HTTP 200 (esperado 200) · 113 ms · traza `7fec1ccf-2544-442f-a9b5-f2e4d9b30cac`
 
 ```json
 {
   "datos": [
+    {
+      "id": 290,
+      "lote_uuid": "61ea2512-9712-4fe3-849d-b1a9692eba59",
+      "dispositivo": "android-evidencia-abc9b4",
+      "operacion_uuid": "cfd1bcd5-71c6-41d7-85d8-03df0cd97783",
+      "tipo": "entrega_resultado",
+      "creada_en": "2026-11-27T02:10:31-06:00",
+      "estado": "conflicto",
+      "http_status": 409,
+      "codigo": "CONFLICTO",
+      "mensaje": "La entrega ya se cerró con otra operación.",
+      "intentos": 1,
+      "procesada_en": "2026-11-27T02:11:31-06:00",
+      "usuario": {
+        "id": 7,
+        "nombre": "Ramiro Alanís Lozano"
+      }
+    },
+    {
+      "id": 273,
+      "lote_uuid": "987ee8c6-8ebc-474f-85d1-bd8ab2757253",
+      "dispositivo": "android-prueba-ola3",
+      "operacion_uuid": "787782c7-2c6d-42c6-b030-9125475f82b9",
+      "tipo": "entrega_resultado",
+      "creada_en": "2026-11-27T02:03:55-06:00",
+      "estado": "conflicto",
+      "http_status": 409,
+      "codigo": "CONFLICTO",
+      "mensaje": "La entrega ya se cerró con otra operación.",
+      "intentos": 1,
+      "procesada_en": "2026-11-27T02:08:55-06:00",
+      "usuario": {
+        "id": 7,
+        "nombre": "Ramiro Alanís Lozano"
+      }
+    },
     {
       "id": 269,
       "lote_uuid": "04f882c3-b895-48db-bc80-63629af5bf2c",
@@ -35682,49 +36329,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
         "id": 7,
         "nombre": "Ramiro Alanís Lozano"
       }
-    },
-    {
-      "id": 252,
-      "lote_uuid": "178ad65a-ade7-40f9-9493-88540df68d5b",
-      "dispositivo": "android-prueba-ola3",
-      "operacion_uuid": "9679bd67-ad25-4b56-accc-b1fa778f7ca7",
-      "tipo": "entrega_resultado",
-      "creada_en": "2026-11-27T01:14:55-06:00",
-      "estado": "conflicto",
-      "http_status": 409,
-      "codigo": "CONFLICTO",
-      "mensaje": "La entrega ya se cerró con otra operación.",
-      "intentos": 1,
-      "procesada_en": "2026-11-27T01:19:55-06:00",
-      "usuario": {
-        "id": 7,
-        "nombre": "Ramiro Alanís Lozano"
-      }
-    },
-    {
-      "id": 248,
-      "lote_uuid": "a90dae16-214b-499c-9151-4269fa83bda8",
-      "dispositivo": "android-acb242c35f88",
-      "operacion_uuid": "6edf2bc4-fc2d-4a8e-a322-010f4dbb5bab",
-      "tipo": "entrega_resultado",
-      "creada_en": "2026-11-27T00:18:22-06:00",
-      "estado": "conflicto",
-      "http_status": 409,
-      "codigo": "CONFLICTO",
-      "mensaje": "La entrega ya se cerró con otra operación.",
-      "intentos": 1,
-      "procesada_en": "2026-11-27T00:18:22-06:00",
-      "usuario": {
-        "id": 7,
-        "nombre": "Ramiro Alanís Lozano"
-      }
     }
   ],
   "paginacion": {
     "pagina": 1,
     "por_pagina": 3,
-    "total": 24,
-    "paginas": 8
+    "total": 26,
+    "paginas": 9
   }
 }
 ```
@@ -35737,25 +36348,25 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: ba1b81cc-e5a7-4c16-b4c2-6d75d0f7a43b
+X-Traza-Id: 10cfa638-4d7b-4941-b13f-fc09782100fd
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 57 ms · traza `ba1b81cc-e5a7-4c16-b4c2-6d75d0f7a43b`
+**Respuesta.** HTTP 200 (esperado 200) · 72 ms · traza `10cfa638-4d7b-4941-b13f-fc09782100fd`
 
 ```json
 {
   "datos": [
     {
-      "id": 248,
-      "lote_uuid": "04f882c3-b895-48db-bc80-63629af5bf2c",
-      "dispositivo": "android-evidencia-da0d02",
+      "id": 266,
+      "lote_uuid": "61ea2512-9712-4fe3-849d-b1a9692eba59",
+      "dispositivo": "android-evidencia-abc9b4",
       "cliente": "android",
       "usuario": {
         "id": 7,
         "nombre": "Ramiro Alanís Lozano"
       },
-      "recibido_en": "2026-11-27T01:25:15-06:00",
+      "recibido_en": "2026-11-27T02:11:31-06:00",
       "total": 1,
       "aplicadas": 0,
       "duplicadas": 0,
@@ -35764,15 +36375,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
       "pendientes": 0
     },
     {
-      "id": 247,
-      "lote_uuid": "ed8898d4-b7a4-4f1d-8143-39d70ba82b2e",
-      "dispositivo": "android-evidencia-da0d02",
+      "id": 265,
+      "lote_uuid": "12408de3-273f-4dc1-847d-e0feeb917fa1",
+      "dispositivo": "android-evidencia-abc9b4",
       "cliente": "android",
       "usuario": {
         "id": 7,
         "nombre": "Ramiro Alanís Lozano"
       },
-      "recibido_en": "2026-11-27T01:25:14-06:00",
+      "recibido_en": "2026-11-27T02:11:31-06:00",
       "total": 2,
       "aplicadas": 2,
       "duplicadas": 2,
@@ -35781,15 +36392,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
       "pendientes": 0
     },
     {
-      "id": 246,
-      "lote_uuid": "28ba36fe-0da0-46be-b149-8ce298955e9e",
-      "dispositivo": "android-flujo-d2328a",
+      "id": 264,
+      "lote_uuid": "63045dcf-e44b-4305-a244-8447d6e56f3f",
+      "dispositivo": "android-flujo-b2b325",
       "cliente": "android",
       "usuario": {
         "id": 7,
         "nombre": "Ramiro Alanís Lozano"
       },
-      "recibido_en": "2026-11-27T01:24:17-06:00",
+      "recibido_en": "2026-11-27T02:10:24-06:00",
       "total": 2,
       "aplicadas": 2,
       "duplicadas": 2,
@@ -35801,8 +36412,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
   "paginacion": {
     "pagina": 1,
     "por_pagina": 3,
-    "total": 216,
-    "paginas": 72
+    "total": 232,
+    "paginas": 78
   }
 }
 ```
@@ -35811,27 +36422,27 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Objetivo.** Cada operación con su resultado.
 
-**Petición.** `GET http://sincronizacion:5125/api/v1/sincronizacion/lotes/247`
+**Petición.** `GET http://sincronizacion:5125/api/v1/sincronizacion/lotes/265`
 
 ```http
 Accept: application/json
-X-Traza-Id: 10fd2b21-4540-407f-99b4-4207032f5325
+X-Traza-Id: 981d3203-f59f-409e-a1dc-395bc3b5f5c5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 65 ms · traza `10fd2b21-4540-407f-99b4-4207032f5325`
+**Respuesta.** HTTP 200 (esperado 200) · 65 ms · traza `981d3203-f59f-409e-a1dc-395bc3b5f5c5`
 
 ```json
 {
-  "id": 247,
-  "lote_uuid": "ed8898d4-b7a4-4f1d-8143-39d70ba82b2e",
-  "dispositivo": "android-evidencia-da0d02",
+  "id": 265,
+  "lote_uuid": "12408de3-273f-4dc1-847d-e0feeb917fa1",
+  "dispositivo": "android-evidencia-abc9b4",
   "cliente": "android",
   "usuario": {
     "id": 7,
     "nombre": "Ramiro Alanís Lozano"
   },
-  "recibido_en": "2026-11-27T01:25:14-06:00",
+  "recibido_en": "2026-11-27T02:11:31-06:00",
   "total": 2,
   "aplicadas": 2,
   "duplicadas": 2,
@@ -35840,36 +36451,36 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
   "pendientes": 0,
   "operaciones": [
     {
-      "id": 267,
-      "lote_uuid": "ed8898d4-b7a4-4f1d-8143-39d70ba82b2e",
-      "dispositivo": "android-evidencia-da0d02",
-      "operacion_uuid": "1a478ed4-3ac5-412d-817e-dd4b7ea429f4",
+      "id": 288,
+      "lote_uuid": "12408de3-273f-4dc1-847d-e0feeb917fa1",
+      "dispositivo": "android-evidencia-abc9b4",
+      "operacion_uuid": "50d53a10-01ca-486b-8368-91dcb45f69b4",
       "tipo": "ubicaciones",
-      "creada_en": "2026-11-27T01:13:14-06:00",
+      "creada_en": "2026-11-27T01:59:31-06:00",
       "estado": "aplicada",
       "http_status": 201,
       "codigo": null,
       "mensaje": null,
       "intentos": 1,
-      "procesada_en": "2026-11-27T01:25:14-06:00",
+      "procesada_en": "2026-11-27T02:11:31-06:00",
       "usuario": {
         "id": 7,
         "nombre": "Ramiro Alanís Lozano"
       }
     },
     {
-      "id": 268,
-      "lote_uuid": "ed8898d4-b7a4-4f1d-8143-39d70ba82b2e",
-      "dispositivo": "android-evidencia-da0d02",
-      "operacion_uuid": "f1cc44db-4103-47cb-a188-93871dcc311b",
+      "id": 289,
+      "lote_uuid": "12408de3-273f-4dc1-847d-e0feeb917fa1",
+      "dispositivo": "android-evidencia-abc9b4",
+      "operacion_uuid": "790dfd9d-dccf-4ead-9c01-a71daefc0a85",
       "tipo": "entrega_resultado",
-      "creada_en": "2026-11-27T01:22:14-06:00",
+      "creada_en": "2026-11-27T02:08:31-06:00",
       "estado": "aplicada",
       "http_status": 201,
       "codigo": null,
       "mensaje": null,
       "intentos": 1,
-      "procesada_en": "2026-11-27T01:25:15-06:00",
+      "procesada_en": "2026-11-27T02:11:31-06:00",
       "usuario": {
         "id": 7,
         "nombre": "Ramiro Alanís Lozano"
@@ -35887,11 +36498,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 4ba5612f-730c-4ecb-a516-b9c01f2caa01
+X-Traza-Id: 6698b517-1036-44c6-9d16-6e7cb9856b82
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 66 ms · traza `4ba5612f-730c-4ecb-a516-b9c01f2caa01`
+**Respuesta.** HTTP 200 (esperado 200) · 61 ms · traza `6698b517-1036-44c6-9d16-6e7cb9856b82`
 
 ```json
 {
@@ -35928,20 +36539,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 **Objetivo.** Última sincronización y pendientes.
 
-**Petición.** `GET http://sincronizacion:5125/api/v1/sincronizacion/estado?dispositivo=android-evidencia-da0d02`
+**Petición.** `GET http://sincronizacion:5125/api/v1/sincronizacion/estado?dispositivo=android-evidencia-abc9b4`
 
 ```http
 Accept: application/json
-X-Traza-Id: a4058ae7-14be-4713-b45c-38558b84ff49
+X-Traza-Id: 466617b4-ab1d-4cb1-bee2-dd3c4a03514c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 69 ms · traza `a4058ae7-14be-4713-b45c-38558b84ff49`
+**Respuesta.** HTTP 200 (esperado 200) · 53 ms · traza `466617b4-ab1d-4cb1-bee2-dd3c4a03514c`
 
 ```json
 {
-  "dispositivo": "android-evidencia-da0d02",
-  "ultima_sincronizacion": "2026-11-27T01:25:15-06:00",
+  "dispositivo": "android-evidencia-abc9b4",
+  "ultima_sincronizacion": "2026-11-27T02:11:31-06:00",
   "lotes": 2,
   "aplicadas": 2,
   "conflictos": 1,
@@ -35958,11 +36569,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 8ebdeab6-e46f-4e7e-8836-7a17517ab922
+X-Traza-Id: b972aafc-472b-4bbc-8af3-3c6062c50879
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 38 ms · traza `8ebdeab6-e46f-4e7e-8836-7a17517ab922`
+**Respuesta.** HTTP 200 (esperado 200) · 41 ms · traza `b972aafc-472b-4bbc-8af3-3c6062c50879`
 
 ```json
 {
@@ -36003,23 +36614,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 51f9e0fc-a3b8-4aae-b8c5-e7b1548c5dcc
+X-Traza-Id: f7a85b8c-b523-4776-a5c8-5f0ab8b502e0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "lote_uuid": "ed8898d4-b7a4-4f1d-8143-39d70ba82b2e",
-  "dispositivo": "android-evidencia-da0d02",
+  "lote_uuid": "12408de3-273f-4dc1-847d-e0feeb917fa1",
+  "dispositivo": "android-evidencia-abc9b4",
   "cliente": "android",
   "operaciones": [
     {
-      "operacion_uuid": "f1cc44db-4103-47cb-a188-93871dcc311b",
+      "operacion_uuid": "790dfd9d-dccf-4ead-9c01-a71daefc0a85",
       "tipo": "entrega_resultado",
-      "creada_en": "2026-11-27T07:22:14.817442+00:00",
+      "creada_en": "2026-11-27T08:08:31.135590+00:00",
       "datos": {
-        "entrega_id": 433,
+        "entrega_id": 461,
         "resultado": "fallida",
         "monto_cobrado": 0,
         "cambio_entregado": 0,
@@ -36029,22 +36640,22 @@ Content-Type: application/json
           "longitud": -100.3611
         },
         "evidencia_ids": [
-          "6b09305a7d5722bf71504817"
+          "6b093b33f6e2f9fdd510ee51"
         ],
-        "capturado_en": "2026-11-27T07:22:14.817373+00:00"
+        "capturado_en": "2026-11-27T08:08:31.135546+00:00"
       }
     },
     {
-      "operacion_uuid": "1a478ed4-3ac5-412d-817e-dd4b7ea429f4",
+      "operacion_uuid": "50d53a10-01ca-486b-8368-91dcb45f69b4",
       "tipo": "ubicaciones",
-      "creada_en": "2026-11-27T07:13:14.817464+00:00",
+      "creada_en": "2026-11-27T07:59:31.135605+00:00",
       "datos": {
-        "entrega_id": 433,
+        "entrega_id": 461,
         "puntos": [
           {
             "latitud": 25.7488,
             "longitud": -100.3608,
-            "capturado_en": "2026-11-27T07:13:14.817478+00:00"
+            "capturado_en": "2026-11-27T07:59:31.135610+00:00"
           }
         ]
       }
@@ -36053,14 +36664,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 27 ms · traza `51f9e0fc-a3b8-4aae-b8c5-e7b1548c5dcc`
+**Respuesta.** HTTP 403 (esperado 403) · 39 ms · traza `f7a85b8c-b523-4776-a5c8-5f0ab8b502e0`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "51f9e0fc-a3b8-4aae-b8c5-e7b1548c5dcc"
+    "traza_id": "f7a85b8c-b523-4776-a5c8-5f0ab8b502e0"
   }
 }
 ```
@@ -36073,21 +36684,21 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 3f37babb-31c6-40a4-ba13-ddc8ab2466ac
+X-Traza-Id: e1a9fc31-cfaa-4c05-9443-2175a5b9c5f1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "lote_uuid": "ed8898d4-b7a4-4f1d-8143-39d70ba82b2e",
-  "dispositivo": "android-evidencia-da0d02",
+  "lote_uuid": "12408de3-273f-4dc1-847d-e0feeb917fa1",
+  "dispositivo": "android-evidencia-abc9b4",
   "cliente": "android",
   "operaciones": "x"
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 41 ms · traza `3f37babb-31c6-40a4-ba13-ddc8ab2466ac`
+**Respuesta.** HTTP 422 (esperado 422) · 30 ms · traza `e1a9fc31-cfaa-4c05-9443-2175a5b9c5f1`
 
 ```json
 {
@@ -36100,7 +36711,7 @@ Content-Type: application/json
         "mensaje": "operaciones debe ser una lista."
       }
     ],
-    "traza_id": "3f37babb-31c6-40a4-ba13-ddc8ab2466ac"
+    "traza_id": "e1a9fc31-cfaa-4c05-9443-2175a5b9c5f1"
   }
 }
 ```
@@ -36109,19 +36720,19 @@ Content-Type: application/json
 
 **Objetivo.** Validado contra sincronizacion.xsd.
 
-**Petición.** `GET http://sincronizacion:5125/api/v1/sincronizacion/estado?dispositivo=android-evidencia-da0d02`
+**Petición.** `GET http://sincronizacion:5125/api/v1/sincronizacion/estado?dispositivo=android-evidencia-abc9b4`
 
 ```http
 Accept: application/xml
-X-Traza-Id: 3ecaab74-32aa-4f04-b0f4-d100ed551b48
+X-Traza-Id: 8b3ecbc2-e981-4560-a545-e0318cf94610
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 67 ms · traza `3ecaab74-32aa-4f04-b0f4-d100ed551b48`
+**Respuesta.** HTTP 200 (esperado 200) · 138 ms · traza `8b3ecbc2-e981-4560-a545-e0318cf94610`
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<sync_estado xmlns="urn:microhubs:v1" version="1"><dispositivo>android-evidencia-da0d02</dispositivo><ultima_sincronizacion>2026-11-27T01:25:15-06:00</ultima_sincronizacion><lotes>2</lotes><aplicadas>2</aplicadas><conflictos>1</conflictos><rechazadas>0</rechazadas><pendientes>0</pendientes></sync_estado>
+<sync_estado xmlns="urn:microhubs:v1" version="1"><dispositivo>android-evidencia-abc9b4</dispositivo><ultima_sincronizacion>2026-11-27T02:11:31-06:00</ultima_sincronizacion><lotes>2</lotes><aplicadas>2</aplicadas><conflictos>1</conflictos><rechazadas>0</rechazadas><pendientes>0</pendientes></sync_estado>
 ```
 
 ## Servicio productos · puerto 5103
@@ -36134,28 +36745,28 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(2
 
 ```http
 Accept: application/json
-X-Traza-Id: 018bdca8-020e-44a3-a14d-5fd879de6278
+X-Traza-Id: 74a98277-48f2-4800-b9d4-0698ed0d1b51
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "clave_interna": "EV-48BE4A",
-  "nombre": "Producto de evidencia 48BE4A",
+  "clave_interna": "EV-3A0861",
+  "nombre": "Producto de evidencia 3A0861",
   "categoria_id": 1,
   "unidad": "pieza",
   "precio": 19.5
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 76 ms · traza `018bdca8-020e-44a3-a14d-5fd879de6278`
+**Respuesta.** HTTP 201 (esperado 201) · 82 ms · traza `74a98277-48f2-4800-b9d4-0698ed0d1b51`
 
 ```json
 {
-  "id": 75,
-  "clave_interna": "EV-48BE4A",
-  "nombre": "Producto de evidencia 48BE4A",
+  "id": 80,
+  "clave_interna": "EV-3A0861",
+  "nombre": "Producto de evidencia 3A0861",
   "categoria": {
     "id": 1,
     "nombre": "Abarrote básico"
@@ -36175,7 +36786,7 @@ Content-Type: application/json
   {
     "accion": "alta",
     "usuario_id": 1,
-    "fecha": "2026-11-27 01:25:17.327814-06:00"
+    "fecha": "2026-11-27 02:11:34.283813-06:00"
   }
 ]
 ```
@@ -36184,11 +36795,11 @@ Content-Type: application/json
 
 **Objetivo.** Solo los campos enviados.
 
-**Petición.** `PATCH http://productos:5103/api/v1/productos/75`
+**Petición.** `PATCH http://productos:5103/api/v1/productos/80`
 
 ```http
 Accept: application/json
-X-Traza-Id: 076de194-61ef-4c68-9b6c-95e9cb8446e1
+X-Traza-Id: 48facbae-ecb4-4b86-ac38-8e6c90c433c4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -36199,13 +36810,13 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 71 ms · traza `076de194-61ef-4c68-9b6c-95e9cb8446e1`
+**Respuesta.** HTTP 200 (esperado 200) · 93 ms · traza `48facbae-ecb4-4b86-ac38-8e6c90c433c4`
 
 ```json
 {
-  "id": 75,
-  "clave_interna": "EV-48BE4A",
-  "nombre": "Producto de evidencia 48BE4A",
+  "id": 80,
+  "clave_interna": "EV-3A0861",
+  "nombre": "Producto de evidencia 3A0861",
   "categoria": {
     "id": 1,
     "nombre": "Abarrote básico"
@@ -36222,11 +36833,11 @@ Content-Type: application/json
 
 **Objetivo.** PUT es alias de PATCH.
 
-**Petición.** `PUT http://productos:5103/api/v1/productos/75`
+**Petición.** `PUT http://productos:5103/api/v1/productos/80`
 
 ```http
 Accept: application/json
-X-Traza-Id: 7e24d15c-8f67-4a20-8385-51fb08c1662a
+X-Traza-Id: 236ee9c6-556b-4652-832a-35bba8873b47
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -36237,13 +36848,13 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 64 ms · traza `7e24d15c-8f67-4a20-8385-51fb08c1662a`
+**Respuesta.** HTTP 200 (esperado 200) · 70 ms · traza `236ee9c6-556b-4652-832a-35bba8873b47`
 
 ```json
 {
-  "id": 75,
-  "clave_interna": "EV-48BE4A",
-  "nombre": "Producto de evidencia 48BE4A",
+  "id": 80,
+  "clave_interna": "EV-3A0861",
+  "nombre": "Producto de evidencia 3A0861",
   "categoria": {
     "id": 1,
     "nombre": "Abarrote básico"
@@ -36264,29 +36875,29 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 9628d458-ae9b-46e5-93af-4faacb2a4742
+X-Traza-Id: bc40170c-5d81-4df5-8085-e3611604a905
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "clave_interna": "EV-48BE4A",
-  "nombre": "Producto de evidencia 48BE4A",
+  "clave_interna": "EV-3A0861",
+  "nombre": "Producto de evidencia 3A0861",
   "categoria_id": 1,
   "unidad": "pieza",
   "precio": 19.5
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 26 ms · traza `9628d458-ae9b-46e5-93af-4faacb2a4742`
+**Respuesta.** HTTP 403 (esperado 403) · 28 ms · traza `bc40170c-5d81-4df5-8085-e3611604a905`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "9628d458-ae9b-46e5-93af-4faacb2a4742"
+    "traza_id": "bc40170c-5d81-4df5-8085-e3611604a905"
   }
 }
 ```
@@ -36295,15 +36906,15 @@ Content-Type: application/json
 
 **Objetivo.** Baja lógica: se conserva su historia.
 
-**Petición.** `DELETE http://productos:5103/api/v1/productos/75`
+**Petición.** `DELETE http://productos:5103/api/v1/productos/80`
 
 ```http
 Accept: application/json
-X-Traza-Id: 8337d465-01e9-4e7e-8f6d-90cffb181ec0
+X-Traza-Id: 22dc5265-8833-4bb3-b57f-75d3b6742a2b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 50 ms · traza `8337d465-01e9-4e7e-8f6d-90cffb181ec0`
+**Respuesta.** HTTP 204 (esperado 204) · 50 ms · traza `22dc5265-8833-4bb3-b57f-75d3b6742a2b`
 
 ```json
 (sin cuerpo)
@@ -36314,7 +36925,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 ```json
 [
   {
-    "id": 75,
+    "id": 80,
     "estatus": "inactivo"
   }
 ]
@@ -36330,7 +36941,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 4915c8c2-c446-48e2-a4b1-a23241e9b938
+X-Traza-Id: 4c77b34f-0215-4e2b-9af3-692426670ae7
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -36338,22 +36949,22 @@ Content-Type: application/json
 ```json
 {
   "clave": "********",
-  "nombre": "Zona 48BE4A",
-  "colonia": "Colonia 48BE4A",
+  "nombre": "Zona 3A0861",
+  "colonia": "Colonia 3A0861",
   "codigo_postal": "64102",
   "latitud": 25.77,
   "longitud": -100.37
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 62 ms · traza `4915c8c2-c446-48e2-a4b1-a23241e9b938`
+**Respuesta.** HTTP 201 (esperado 201) · 84 ms · traza `4c77b34f-0215-4e2b-9af3-692426670ae7`
 
 ```json
 {
-  "id": 19,
+  "id": 22,
   "clave": "********",
-  "nombre": "Zona 48BE4A",
-  "colonia": "Colonia 48BE4A",
+  "nombre": "Zona 3A0861",
+  "colonia": "Colonia 3A0861",
   "codigo_postal": "64102",
   "latitud": 25.77,
   "longitud": -100.37
@@ -36367,7 +36978,7 @@ Content-Type: application/json
   {
     "accion": "alta",
     "usuario_id": 1,
-    "fecha": "2026-11-27 01:25:17.657342-06:00"
+    "fecha": "2026-11-27 02:11:34.660893-06:00"
   }
 ]
 ```
@@ -36376,29 +36987,29 @@ Content-Type: application/json
 
 **Objetivo.** Solo los campos enviados.
 
-**Petición.** `PATCH http://zonas:5108/api/v1/zonas/19`
+**Petición.** `PATCH http://zonas:5108/api/v1/zonas/22`
 
 ```http
 Accept: application/json
-X-Traza-Id: 7ae48247-592c-4ba7-b669-6b8e1671146c
+X-Traza-Id: 205d3505-67b7-4c2b-9cd9-c9c93da8191c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "nombre": "Zona 48BE4A renombrada"
+  "nombre": "Zona 3A0861 renombrada"
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 72 ms · traza `7ae48247-592c-4ba7-b669-6b8e1671146c`
+**Respuesta.** HTTP 200 (esperado 200) · 71 ms · traza `205d3505-67b7-4c2b-9cd9-c9c93da8191c`
 
 ```json
 {
-  "id": 19,
+  "id": 22,
   "clave": "********",
-  "nombre": "Zona 48BE4A renombrada",
-  "colonia": "Colonia 48BE4A",
+  "nombre": "Zona 3A0861 renombrada",
+  "colonia": "Colonia 3A0861",
   "codigo_postal": "64102",
   "latitud": 25.77,
   "longitud": -100.37
@@ -36409,29 +37020,29 @@ Content-Type: application/json
 
 **Objetivo.** PUT es alias de PATCH.
 
-**Petición.** `PUT http://zonas:5108/api/v1/zonas/19`
+**Petición.** `PUT http://zonas:5108/api/v1/zonas/22`
 
 ```http
 Accept: application/json
-X-Traza-Id: a06931be-0edd-403e-94a4-a2808ff272e1
+X-Traza-Id: f791915b-6b14-474b-8d7a-6ebb744b9356
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "nombre": "Zona 48BE4A renombrada"
+  "nombre": "Zona 3A0861 renombrada"
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 78 ms · traza `a06931be-0edd-403e-94a4-a2808ff272e1`
+**Respuesta.** HTTP 200 (esperado 200) · 73 ms · traza `f791915b-6b14-474b-8d7a-6ebb744b9356`
 
 ```json
 {
-  "id": 19,
+  "id": 22,
   "clave": "********",
-  "nombre": "Zona 48BE4A renombrada",
-  "colonia": "Colonia 48BE4A",
+  "nombre": "Zona 3A0861 renombrada",
+  "colonia": "Colonia 3A0861",
   "codigo_postal": "64102",
   "latitud": 25.77,
   "longitud": -100.37
@@ -36446,7 +37057,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 90d561c0-7a1d-453d-bb46-89ff20e595ee
+X-Traza-Id: faa64cc5-1114-4444-b865-5e9bffbd7101
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -36454,22 +37065,22 @@ Content-Type: application/json
 ```json
 {
   "clave": "********",
-  "nombre": "Zona 48BE4A",
-  "colonia": "Colonia 48BE4A",
+  "nombre": "Zona 3A0861",
+  "colonia": "Colonia 3A0861",
   "codigo_postal": "64102",
   "latitud": 25.77,
   "longitud": -100.37
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 34 ms · traza `90d561c0-7a1d-453d-bb46-89ff20e595ee`
+**Respuesta.** HTTP 403 (esperado 403) · 53 ms · traza `faa64cc5-1114-4444-b865-5e9bffbd7101`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "90d561c0-7a1d-453d-bb46-89ff20e595ee"
+    "traza_id": "faa64cc5-1114-4444-b865-5e9bffbd7101"
   }
 }
 ```
@@ -36478,15 +37089,15 @@ Content-Type: application/json
 
 **Objetivo.** Baja lógica: se conserva su historia.
 
-**Petición.** `DELETE http://zonas:5108/api/v1/zonas/19`
+**Petición.** `DELETE http://zonas:5108/api/v1/zonas/22`
 
 ```http
 Accept: application/json
-X-Traza-Id: 72e5ede9-b719-4f05-aaec-65d790b46098
+X-Traza-Id: f9f0e855-e4bf-4111-a6b6-b235bcad1f3f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 48 ms · traza `72e5ede9-b719-4f05-aaec-65d790b46098`
+**Respuesta.** HTTP 204 (esperado 204) · 53 ms · traza `f9f0e855-e4bf-4111-a6b6-b235bcad1f3f`
 
 ```json
 (sin cuerpo)
@@ -36497,7 +37108,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 ```json
 [
   {
-    "id": 19,
+    "id": 22,
     "estatus": "inactivo"
   }
 ]
@@ -36513,7 +37124,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 4f4fd372-0cf5-4c67-a4c4-5089dda244d7
+X-Traza-Id: f5ac0ee8-45cb-4905-9277-9db6f5e9f3af
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -36521,7 +37132,7 @@ Content-Type: application/json
 ```json
 {
   "clave": "********",
-  "nombre": "Microhub 48BE4A",
+  "nombre": "Microhub 3A0861",
   "direccion": "Calle de evidencia 1",
   "latitud": 25.7705,
   "longitud": -100.3705,
@@ -36530,13 +37141,13 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 66 ms · traza `4f4fd372-0cf5-4c67-a4c4-5089dda244d7`
+**Respuesta.** HTTP 201 (esperado 201) · 72 ms · traza `f5ac0ee8-45cb-4905-9277-9db6f5e9f3af`
 
 ```json
 {
-  "id": 18,
+  "id": 21,
   "clave": "********",
-  "nombre": "Microhub 48BE4A",
+  "nombre": "Microhub 3A0861",
   "latitud": 25.7705,
   "longitud": -100.3705,
   "radio_km": 0.5,
@@ -36551,7 +37162,7 @@ Content-Type: application/json
   {
     "accion": "alta",
     "usuario_id": 1,
-    "fecha": "2026-11-27 01:25:17.997644-06:00"
+    "fecha": "2026-11-27 02:11:35.044883-06:00"
   }
 ]
 ```
@@ -36560,11 +37171,11 @@ Content-Type: application/json
 
 **Objetivo.** Solo los campos enviados.
 
-**Petición.** `PATCH http://microhubs:5109/api/v1/microhubs/18`
+**Petición.** `PATCH http://microhubs:5109/api/v1/microhubs/21`
 
 ```http
 Accept: application/json
-X-Traza-Id: 4d4ca81d-b205-46af-8efc-faac76fb9107
+X-Traza-Id: acbd9821-83da-440a-90b1-f1f165f3ccef
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -36575,13 +37186,13 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 67 ms · traza `4d4ca81d-b205-46af-8efc-faac76fb9107`
+**Respuesta.** HTTP 200 (esperado 200) · 65 ms · traza `acbd9821-83da-440a-90b1-f1f165f3ccef`
 
 ```json
 {
-  "id": 18,
+  "id": 21,
   "clave": "********",
-  "nombre": "Microhub 48BE4A",
+  "nombre": "Microhub 3A0861",
   "latitud": 25.7705,
   "longitud": -100.3705,
   "radio_km": 0.8,
@@ -36593,11 +37204,11 @@ Content-Type: application/json
 
 **Objetivo.** PUT es alias de PATCH.
 
-**Petición.** `PUT http://microhubs:5109/api/v1/microhubs/18`
+**Petición.** `PUT http://microhubs:5109/api/v1/microhubs/21`
 
 ```http
 Accept: application/json
-X-Traza-Id: 96be24cb-b13c-4759-bc47-2e54df14f71e
+X-Traza-Id: 9bf20154-d3e4-4c37-9713-422d3b1557aa
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -36608,13 +37219,13 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 63 ms · traza `96be24cb-b13c-4759-bc47-2e54df14f71e`
+**Respuesta.** HTTP 200 (esperado 200) · 88 ms · traza `9bf20154-d3e4-4c37-9713-422d3b1557aa`
 
 ```json
 {
-  "id": 18,
+  "id": 21,
   "clave": "********",
-  "nombre": "Microhub 48BE4A",
+  "nombre": "Microhub 3A0861",
   "latitud": 25.7705,
   "longitud": -100.3705,
   "radio_km": 0.8,
@@ -36630,7 +37241,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 675a4184-46ff-43cb-b2c4-7c0959b1baac
+X-Traza-Id: 7e5b425a-9778-4f2c-9da4-f8bdecfaa78c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -36638,7 +37249,7 @@ Content-Type: application/json
 ```json
 {
   "clave": "********",
-  "nombre": "Microhub 48BE4A",
+  "nombre": "Microhub 3A0861",
   "direccion": "Calle de evidencia 1",
   "latitud": 25.7705,
   "longitud": -100.3705,
@@ -36647,14 +37258,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 28 ms · traza `675a4184-46ff-43cb-b2c4-7c0959b1baac`
+**Respuesta.** HTTP 403 (esperado 403) · 35 ms · traza `7e5b425a-9778-4f2c-9da4-f8bdecfaa78c`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "675a4184-46ff-43cb-b2c4-7c0959b1baac"
+    "traza_id": "7e5b425a-9778-4f2c-9da4-f8bdecfaa78c"
   }
 }
 ```
@@ -36663,15 +37274,15 @@ Content-Type: application/json
 
 **Objetivo.** Baja lógica: se conserva su historia.
 
-**Petición.** `DELETE http://microhubs:5109/api/v1/microhubs/18`
+**Petición.** `DELETE http://microhubs:5109/api/v1/microhubs/21`
 
 ```http
 Accept: application/json
-X-Traza-Id: 3334890c-2a9f-4d7c-b53c-d7a56d55123b
+X-Traza-Id: 7a4bde8e-41bc-4a68-9f1c-5f30aa71ea7d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 50 ms · traza `3334890c-2a9f-4d7c-b53c-d7a56d55123b`
+**Respuesta.** HTTP 204 (esperado 204) · 62 ms · traza `7a4bde8e-41bc-4a68-9f1c-5f30aa71ea7d`
 
 ```json
 (sin cuerpo)
@@ -36682,7 +37293,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 ```json
 [
   {
-    "id": 18,
+    "id": 21,
     "estatus": "inactivo"
   }
 ]
@@ -36698,7 +37309,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 4d15f04e-12d4-46ae-a371-236690e99529
+X-Traza-Id: ebb4467f-58f9-4c44-9799-42831235c6fd
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -36707,20 +37318,20 @@ Content-Type: application/json
 {
   "nombre": "Cuenta",
   "apellidos": "De evidencia",
-  "correo": "ev.48be4a@ejemplo.mx",
+  "correo": "ev.3a0861@ejemplo.mx",
   "clave": "********",
   "rol": "repartidor"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 165 ms · traza `4d15f04e-12d4-46ae-a371-236690e99529`
+**Respuesta.** HTTP 201 (esperado 201) · 244 ms · traza `ebb4467f-58f9-4c44-9799-42831235c6fd`
 
 ```json
 {
-  "id": 72,
+  "id": 79,
   "nombre": "Cuenta",
   "apellidos": "De evidencia",
-  "correo": "ev.48be4a@ejemplo.mx",
+  "correo": "ev.3a0861@ejemplo.mx",
   "telefono": null,
   "rol": "repartidor",
   "microhub": null,
@@ -36733,8 +37344,8 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 72,
-    "correo": "ev.48be4a@ejemplo.mx",
+    "id": 79,
+    "correo": "ev.3a0861@ejemplo.mx",
     "algoritmo": "$2b$",
     "estatus": "activo"
   }
@@ -36745,11 +37356,11 @@ Content-Type: application/json
 
 **Objetivo.** Cierra sus sesiones.
 
-**Petición.** `PATCH http://usuarios:5102/api/v1/usuarios/72`
+**Petición.** `PATCH http://usuarios:5102/api/v1/usuarios/79`
 
 ```http
 Accept: application/json
-X-Traza-Id: 01483b0b-aacd-4816-8ef9-27d10f93ffeb
+X-Traza-Id: 5746d2c7-cde7-48e7-aaf0-04f1c52966a9
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -36760,14 +37371,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 77 ms · traza `01483b0b-aacd-4816-8ef9-27d10f93ffeb`
+**Respuesta.** HTTP 200 (esperado 200) · 138 ms · traza `5746d2c7-cde7-48e7-aaf0-04f1c52966a9`
 
 ```json
 {
-  "id": 72,
+  "id": 79,
   "nombre": "Cuenta",
   "apellidos": "De evidencia",
-  "correo": "ev.48be4a@ejemplo.mx",
+  "correo": "ev.3a0861@ejemplo.mx",
   "telefono": null,
   "rol": "planeador",
   "microhub": null,
@@ -36779,11 +37390,11 @@ Content-Type: application/json
 
 **Objetivo.** PUT es alias de PATCH.
 
-**Petición.** `PUT http://usuarios:5102/api/v1/usuarios/72`
+**Petición.** `PUT http://usuarios:5102/api/v1/usuarios/79`
 
 ```http
 Accept: application/json
-X-Traza-Id: 4a278dc6-d8cb-458b-beb0-68acb5a462f1
+X-Traza-Id: fc9d1564-4917-41bc-b57e-67e26a0f2982
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 Content-Type: application/json
 ```
@@ -36794,14 +37405,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 66 ms · traza `4a278dc6-d8cb-458b-beb0-68acb5a462f1`
+**Respuesta.** HTTP 200 (esperado 200) · 121 ms · traza `fc9d1564-4917-41bc-b57e-67e26a0f2982`
 
 ```json
 {
-  "id": 72,
+  "id": 79,
   "nombre": "Cuenta",
   "apellidos": "De evidencia",
-  "correo": "ev.48be4a@ejemplo.mx",
+  "correo": "ev.3a0861@ejemplo.mx",
   "telefono": "8112223344",
   "rol": "planeador",
   "microhub": null,
@@ -36817,18 +37428,18 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 4bc85efa-5513-4f0f-b4f1-bbd6ee46ea7d
+X-Traza-Id: 5457e435-5f01-4dc5-b956-5f3f2ebe64d4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 23 ms · traza `4bc85efa-5513-4f0f-b4f1-bbd6ee46ea7d`
+**Respuesta.** HTTP 409 (esperado 409) · 55 ms · traza `5457e435-5f01-4dc5-b956-5f3f2ebe64d4`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "No puedes cambiar tu propio perfil ni darte de baja: pídeselo a otro administrador.",
-    "traza_id": "4bc85efa-5513-4f0f-b4f1-bbd6ee46ea7d"
+    "traza_id": "5457e435-5f01-4dc5-b956-5f3f2ebe64d4"
   }
 }
 ```
@@ -36837,15 +37448,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Baja lógica y cierre de sesiones.
 
-**Petición.** `DELETE http://usuarios:5102/api/v1/usuarios/72`
+**Petición.** `DELETE http://usuarios:5102/api/v1/usuarios/79`
 
 ```http
 Accept: application/json
-X-Traza-Id: d8fc26e7-51c8-4518-a022-09e0840dfe7d
+X-Traza-Id: 09c3bc24-b363-4547-bfd5-1c8acf86bb86
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 204 (esperado 204) · 48 ms · traza `d8fc26e7-51c8-4518-a022-09e0840dfe7d`
+**Respuesta.** HTTP 204 (esperado 204) · 74 ms · traza `09c3bc24-b363-4547-bfd5-1c8acf86bb86`
 
 ```json
 (sin cuerpo)
@@ -36856,7 +37467,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 ```json
 [
   {
-    "id": 72,
+    "id": 79,
     "estatus": "baja",
     "con_fecha": true
   }
@@ -36869,24 +37480,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** El archivo vive en el almacén; la base guarda su ruta y su SHA-256.
 
-**Petición.** `GET http://reportes:5123/api/v1/reportes/exportaciones/131/enlace`
+**Petición.** `GET http://reportes:5123/api/v1/reportes/exportaciones/142/enlace`
 
 ```http
 Accept: application/json
-X-Traza-Id: 1b5837ee-bc01-4775-a838-d06090cab60d
+X-Traza-Id: 7dd32488-4996-4561-9dfe-8b3fae4cc97d
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 62 ms · traza `1b5837ee-bc01-4775-a838-d06090cab60d`
+**Respuesta.** HTTP 200 (esperado 200) · 48 ms · traza `7dd32488-4996-4561-9dfe-8b3fae4cc97d`
 
 ```json
 {
-  "id": 131,
-  "nombre": "pedidos_por_dia_131.csv",
+  "id": 142,
+  "nombre": "pedidos_por_dia_142.csv",
   "url_firmada": "http://reportes:5123/api/v1/reportes/descarga?k=reportes%2F2…(176 caracteres)",
   "metodo": "GET",
   "segundos": 300,
-  "expira_en": "2026-11-27T01:30:19-06:00"
+  "expira_en": "2026-11-27T02:16:36-06:00"
 }
 ```
 
@@ -36895,11 +37506,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 ```json
 [
   {
-    "id": 131,
-    "ruta": "reportes/2026/11/131.csv",
+    "id": 142,
+    "ruta": "reportes/2026/11/142.csv",
     "almacen": "local",
-    "sha256": "aa1a203d7d2e4e49",
-    "bytes": 213
+    "sha256": "dd29368cb388e7e7",
+    "bytes": 214
   }
 ]
 ```
@@ -36908,22 +37519,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Objetivo.** Solo quien exportó, el administrador o el auditor.
 
-**Petición.** `GET http://reportes:5123/api/v1/reportes/exportaciones/131/enlace`
+**Petición.** `GET http://reportes:5123/api/v1/reportes/exportaciones/142/enlace`
 
 ```http
 Accept: application/json
-X-Traza-Id: 4947dcc2-b6f1-4760-addc-577c245401a9
+X-Traza-Id: 27a209d2-e77d-4a76-9c2c-688ff27c3cc7
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(298 caracteres)
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 29 ms · traza `4947dcc2-b6f1-4760-addc-577c245401a9`
+**Respuesta.** HTTP 404 (esperado 404) · 25 ms · traza `27a209d2-e77d-4a76-9c2c-688ff27c3cc7`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe esa exportación.",
-    "traza_id": "4947dcc2-b6f1-4760-addc-577c245401a9"
+    "traza_id": "27a209d2-e77d-4a76-9c2c-688ff27c3cc7"
   }
 }
 ```
@@ -36932,21 +37543,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1Iiwi…(2
 
 **Objetivo.** La firma sustituye al token y caduca.
 
-**Petición.** `GET http://reportes:5123/api/v1/reportes/descarga?k=reportes%2F2026%2F11%2F131.csv&e=1795764619&n=pedidos_por_dia_131.csv&t=text%2Fcsv&s=iqqQ6_38gaZPP1JqvcPsWGVQsWTEuBm13OrJhwBg1nc`
+**Petición.** `GET http://reportes:5123/api/v1/reportes/descarga?k=reportes%2F2026%2F11%2F142.csv&e=1795767396&n=pedidos_por_dia_142.csv&t=text%2Fcsv&s=ARwE-SFNVZC0lCDYiyqzBpD_0yX9l7id6G4o8ZXUz_M`
 
 ```http
 Accept: application/json
-X-Traza-Id: 81f2928f-cdb3-4ba9-bdb2-51bb0f5c57ca
+X-Traza-Id: 057fe85e-41fe-4d7f-9bdf-723f915b21e7
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 6 ms · traza `81f2928f-cdb3-4ba9-bdb2-51bb0f5c57ca`
+**Respuesta.** HTTP 200 (esperado 200) · 5 ms · traza `057fe85e-41fe-4d7f-9bdf-723f915b21e7`
 
 ```json
 ﻿Día,Pedidos,Unidades,Venta,Ticket promedio,Demanda no atendida
 2026-11-25,56,282,8032.40,143.44,0
-2026-11-26,213,1100,35117.60,164.87,8
-2026-11-27,34,178,5713.30,168.04,1
-Total,303,1560,48863.30,161.27,9
+2026-11-26,212,1096,34991.60,165.05,8
+2026-11-27,55,302,9946.10,180.84,3
+Total,323,1680,52970.10,163.99,11
 
 ```
 
@@ -36958,17 +37569,17 @@ Total,303,1560,48863.30,161.27,9
 
 ```http
 Accept: application/json
-X-Traza-Id: 9c29c5b8-d5c1-425f-a3e8-b521119326e1
+X-Traza-Id: 9793be48-6a5d-40cf-86dd-f3f0eca22f18
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 6 ms · traza `9c29c5b8-d5c1-425f-a3e8-b521119326e1`
+**Respuesta.** HTTP 403 (esperado 403) · 5 ms · traza `9793be48-6a5d-40cf-86dd-f3f0eca22f18`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "El enlace de descarga no es válido o ya caducó.",
-    "traza_id": "9c29c5b8-d5c1-425f-a3e8-b521119326e1"
+    "traza_id": "9793be48-6a5d-40cf-86dd-f3f0eca22f18"
   }
 }
 ```
@@ -36983,7 +37594,7 @@ X-Traza-Id: 9c29c5b8-d5c1-425f-a3e8-b521119326e1
 
 ```http
 Accept: application/json
-X-Traza-Id: 084d8781-6e98-4806-bac2-88e1b1921264
+X-Traza-Id: f4a2f547-66a9-46fb-9733-3115c031a70a
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -36992,12 +37603,12 @@ Content-Type: application/json
 {
   "paradas": [
     {
-      "pedido_id": 729,
+      "pedido_id": 802,
       "repartidor_id": 7,
       "orden_parada": 1
     },
     {
-      "pedido_id": 730,
+      "pedido_id": 804,
       "repartidor_id": 7,
       "orden_parada": 2
     }
@@ -37005,14 +37616,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 34 ms · traza `084d8781-6e98-4806-bac2-88e1b1921264`
+**Respuesta.** HTTP 403 (esperado 403) · 29 ms · traza `f4a2f547-66a9-46fb-9733-3115c031a70a`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "084d8781-6e98-4806-bac2-88e1b1921264"
+    "traza_id": "f4a2f547-66a9-46fb-9733-3115c031a70a"
   }
 }
 ```
@@ -37025,7 +37636,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: d6dd3391-8e73-4cb6-b482-8461b5c1bceb
+X-Traza-Id: e8e4509b-8a7d-4286-a6ba-8788472bce24
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -37034,12 +37645,12 @@ Content-Type: application/json
 {
   "paradas": [
     {
-      "pedido_id": 729,
+      "pedido_id": 802,
       "repartidor_id": 7,
       "orden_parada": 1
     },
     {
-      "pedido_id": 730,
+      "pedido_id": 804,
       "repartidor_id": 7,
       "orden_parada": 2
     },
@@ -37052,14 +37663,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 404 (esperado 404) · 121 ms · traza `d6dd3391-8e73-4cb6-b482-8461b5c1bceb`
+**Respuesta.** HTTP 404 (esperado 404) · 93 ms · traza `e8e4509b-8a7d-4286-a6ba-8788472bce24`
 
 ```json
 {
   "error": {
     "codigo": "NO_ENCONTRADO",
     "mensaje": "No existe el pedido 999999999.",
-    "traza_id": "d6dd3391-8e73-4cb6-b482-8461b5c1bceb"
+    "traza_id": "e8e4509b-8a7d-4286-a6ba-8788472bce24"
   }
 }
 ```
@@ -37069,11 +37680,11 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 729,
+    "id": 802,
     "estado": "en_preparacion"
   },
   {
-    "id": 730,
+    "id": 804,
     "estado": "en_preparacion"
   }
 ]
@@ -37087,7 +37698,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 03b63c7f-94b1-4be7-9e97-ac97fc2463db
+X-Traza-Id: d1aa349a-7fb7-4b79-9831-8616a65c2e18
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwi…(302 caracteres)
 Content-Type: application/json
 ```
@@ -37096,12 +37707,12 @@ Content-Type: application/json
 {
   "paradas": [
     {
-      "pedido_id": 729,
+      "pedido_id": 802,
       "repartidor_id": 7,
       "orden_parada": 1
     },
     {
-      "pedido_id": 730,
+      "pedido_id": 804,
       "repartidor_id": 7,
       "orden_parada": 2
     }
@@ -37109,21 +37720,21 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 109 ms · traza `03b63c7f-94b1-4be7-9e97-ac97fc2463db`
+**Respuesta.** HTTP 201 (esperado 201) · 103 ms · traza `d1aa349a-7fb7-4b79-9831-8616a65c2e18`
 
 ```json
 {
   "asignadas": 2,
   "entregas": [
     {
-      "entrega_id": 436,
-      "pedido_id": 729,
+      "entrega_id": 464,
+      "pedido_id": 802,
       "repartidor_id": 7,
       "orden_parada": 1
     },
     {
-      "entrega_id": 437,
-      "pedido_id": 730,
+      "entrega_id": 465,
+      "pedido_id": 804,
       "repartidor_id": 7,
       "orden_parada": 2
     }
@@ -37136,16 +37747,16 @@ Content-Type: application/json
 ```json
 [
   {
-    "pedido_id": 729,
+    "pedido_id": 802,
     "repartidor_id": 7,
     "orden_parada": 1,
-    "salida_en": "2026-11-27 01:25:19.578305-06:00"
+    "salida_en": "2026-11-27 02:11:37.136593-06:00"
   },
   {
-    "pedido_id": 730,
+    "pedido_id": 804,
     "repartidor_id": 7,
     "orden_parada": 2,
-    "salida_en": "2026-11-27 01:25:19.578305-06:00"
+    "salida_en": "2026-11-27 02:11:37.136593-06:00"
   }
 ]
 ```
@@ -37154,11 +37765,11 @@ Content-Type: application/json
 
 **Objetivo.** El cliente no estaba: se registra la incidencia (RN29).
 
-**Petición.** `POST http://entregas:5105/api/v1/entregas/436/resultado`
+**Petición.** `POST http://entregas:5105/api/v1/entregas/464/resultado`
 
 ```http
 Accept: application/json
-X-Traza-Id: 99580f25-0c2d-40b7-abc4-bf092b85e045
+X-Traza-Id: 925f23de-ad96-442b-9a49-bbc611b6940f
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -37174,21 +37785,21 @@ Content-Type: application/json
     "longitud": -100.3611
   },
   "evidencia_ids": [
-    "6b09305ff700eb3849c5ada9"
+    "6b093b39f6e2f9fdd510ee54"
   ],
-  "capturado_en": "2026-11-27T07:25:19.749924+00:00",
-  "id_cliente_local": "b33d978a-d3b4-408c-b63a-9b340dcb13e8"
+  "capturado_en": "2026-11-27T08:11:37.320215+00:00",
+  "id_cliente_local": "143d4529-876c-4ad3-b0dc-04fb366f78a2"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 112 ms · traza `99580f25-0c2d-40b7-abc4-bf092b85e045`
+**Respuesta.** HTTP 201 (esperado 201) · 118 ms · traza `925f23de-ad96-442b-9a49-bbc611b6940f`
 
 ```json
 {
-  "entrega_id": 436,
-  "pedido_id": 729,
+  "entrega_id": 464,
+  "pedido_id": 802,
   "estado_pedido": "entrega_fallida",
-  "cerrado_en": "2026-11-27T01:25:19-06:00",
+  "cerrado_en": "2026-11-27T02:11:37-06:00",
   "duplicado": false
 }
 ```
@@ -37197,11 +37808,11 @@ Content-Type: application/json
 
 **Objetivo.** El cliente no estaba: se registra la incidencia (RN29).
 
-**Petición.** `POST http://entregas:5105/api/v1/entregas/437/resultado`
+**Petición.** `POST http://entregas:5105/api/v1/entregas/465/resultado`
 
 ```http
 Accept: application/json
-X-Traza-Id: f53858ee-9f90-42fc-97b5-b22d6eda1484
+X-Traza-Id: f2ccef84-262c-490a-a5e1-d9d21d9a4fdb
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
@@ -37217,21 +37828,21 @@ Content-Type: application/json
     "longitud": -100.3611
   },
   "evidencia_ids": [
-    "6b09305f7d5722bf7150481a"
+    "6b093b39f6e2f9fdd510ee57"
   ],
-  "capturado_en": "2026-11-27T07:25:19.920968+00:00",
-  "id_cliente_local": "6e042b4d-ab8a-4f30-a487-8a96acac8a33"
+  "capturado_en": "2026-11-27T08:11:37.495501+00:00",
+  "id_cliente_local": "3814f89e-33bf-4ee7-89d8-af9efb681f37"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 188 ms · traza `f53858ee-9f90-42fc-97b5-b22d6eda1484`
+**Respuesta.** HTTP 201 (esperado 201) · 124 ms · traza `f2ccef84-262c-490a-a5e1-d9d21d9a4fdb`
 
 ```json
 {
-  "entrega_id": 437,
-  "pedido_id": 730,
+  "entrega_id": 465,
+  "pedido_id": 804,
   "estado_pedido": "entrega_fallida",
-  "cerrado_en": "2026-11-27T01:25:19-06:00",
+  "cerrado_en": "2026-11-27T02:11:37-06:00",
   "duplicado": false
 }
 ```
@@ -37246,7 +37857,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 28dd2696-1bba-43e0-880e-7a0dabfed53d
+X-Traza-Id: 81e7c099-26aa-4a73-91ce-ed5d766c5b81
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 Content-Type: application/json
 ```
@@ -37263,16 +37874,16 @@ Content-Type: application/json
       "cantidad": 3
     }
   ],
-  "operacion_uuid": "623b9fcd-ec21-4cb4-9010-246168aa118b"
+  "operacion_uuid": "de036c46-b0c5-4c0a-818a-bbda406b4064"
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 285 ms · traza `28dd2696-1bba-43e0-880e-7a0dabfed53d`
+**Respuesta.** HTTP 201 (esperado 201) · 249 ms · traza `81e7c099-26aa-4a73-91ce-ed5d766c5b81`
 
 ```json
 {
-  "id": 766,
-  "folio": "PED-20261127-000766",
+  "id": 805,
+  "folio": "PED-20261127-000805",
   "estado": "asignado",
   "zona_id": 3,
   "microhub_id": 2,
@@ -37290,13 +37901,13 @@ Content-Type: application/json
 ```json
 [
   {
-    "pedido_id": 766,
+    "pedido_id": 805,
     "producto_id": 32,
     "cantidad": 3,
     "precio_unitario": "72.00"
   },
   {
-    "pedido_id": 766,
+    "pedido_id": 805,
     "producto_id": 51,
     "cantidad": 3,
     "precio_unitario": "68.00"
@@ -37312,7 +37923,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: 92c11123-4b82-4979-8433-3334ba9da0e5
+X-Traza-Id: 2696c6ed-bb1c-4fa8-9576-ee009f4b81c0
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 Content-Type: application/json
 ```
@@ -37329,16 +37940,16 @@ Content-Type: application/json
       "cantidad": 3
     }
   ],
-  "operacion_uuid": "623b9fcd-ec21-4cb4-9010-246168aa118b"
+  "operacion_uuid": "de036c46-b0c5-4c0a-818a-bbda406b4064"
 }
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 55 ms · traza `92c11123-4b82-4979-8433-3334ba9da0e5`
+**Respuesta.** HTTP 200 (esperado 200) · 51 ms · traza `2696c6ed-bb1c-4fa8-9576-ee009f4b81c0`
 
 ```json
 {
-  "id": 766,
-  "folio": "PED-20261127-000766",
+  "id": 805,
+  "folio": "PED-20261127-000805",
   "estado": "asignado",
   "zona_id": 3,
   "microhub_id": 2,
@@ -37359,7 +37970,7 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: bab3c4a8-2608-4817-997f-40ff4603531a
+X-Traza-Id: 1c55c79c-9bb4-4e23-ab64-bdc90b689050
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5Iiwi…(291 caracteres)
 Content-Type: application/json
 ```
@@ -37375,14 +37986,14 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta.** HTTP 422 (esperado 422) · 130 ms · traza `bab3c4a8-2608-4817-997f-40ff4603531a`
+**Respuesta.** HTTP 422 (esperado 422) · 116 ms · traza `1c55c79c-9bb4-4e23-ab64-bdc90b689050`
 
 ```json
 {
   "error": {
     "codigo": "REGLA_NEGOCIO",
     "mensaje": "El subtotal (7.50) no alcanza el pedido mínimo de la zona (90.00).",
-    "traza_id": "bab3c4a8-2608-4817-997f-40ff4603531a"
+    "traza_id": "1c55c79c-9bb4-4e23-ab64-bdc90b689050"
   }
 }
 ```
@@ -37395,7 +38006,7 @@ Content-Type: application/json
     "tipo": "bajo_ticket_minimo",
     "zona_id": 3,
     "origen": "api",
-    "fecha": "2026-11-27 01:25:20.637813-06:00"
+    "fecha": "2026-11-27 02:11:38.090312-06:00"
   }
 ]
 ```
@@ -37404,11 +38015,11 @@ Content-Type: application/json
 
 **Objetivo.** El operador libera el pedido para despacho.
 
-**Petición.** `POST http://pedidos:5104/api/v1/pedidos/766/listo`
+**Petición.** `POST http://pedidos:5104/api/v1/pedidos/805/listo`
 
 ```http
 Accept: application/json
-X-Traza-Id: f18e0a8c-637e-457f-ab93-c8a57d1c4bab
+X-Traza-Id: 2a9ef01c-f343-4cda-81f8-eefae382d5d3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(310 caracteres)
 Content-Type: application/json
 ```
@@ -37417,13 +38028,13 @@ Content-Type: application/json
 {}
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 113 ms · traza `f18e0a8c-637e-457f-ab93-c8a57d1c4bab`
+**Respuesta.** HTTP 200 (esperado 200) · 65 ms · traza `2a9ef01c-f343-4cda-81f8-eefae382d5d3`
 
 ```json
 {
-  "id": 766,
+  "id": 805,
   "estado": "en_preparacion",
-  "listo_en": "2026-11-27T01:25:21-06:00"
+  "listo_en": "2026-11-27T02:11:38-06:00"
 }
 ```
 
@@ -37437,24 +38048,24 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: f9a20c49-30d0-40f0-bde2-581cf809af66
+X-Traza-Id: 6c0d2093-6030-459a-961e-7d1c40bbafb2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(310 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "pedido_id": 766,
+  "pedido_id": 805,
   "repartidor_id": 7
 }
 ```
 
-**Respuesta.** HTTP 201 (esperado 201) · 94 ms · traza `f9a20c49-30d0-40f0-bde2-581cf809af66`
+**Respuesta.** HTTP 201 (esperado 201) · 62 ms · traza `6c0d2093-6030-459a-961e-7d1c40bbafb2`
 
 ```json
 {
-  "entrega_id": 438,
-  "pedido_id": 766,
+  "entrega_id": 466,
+  "pedido_id": 805,
   "repartidor_id": 7,
   "estado_pedido": "en_ruta"
 }
@@ -37465,10 +38076,10 @@ Content-Type: application/json
 ```json
 [
   {
-    "id": 438,
+    "id": 466,
     "repartidor_id": 7,
     "turno_fecha": "2026-11-27",
-    "salida_en": "2026-11-27 01:25:21.404391-06:00"
+    "salida_en": "2026-11-27 02:11:38.632893-06:00"
   }
 ]
 ```
@@ -37481,26 +38092,26 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: f13119f8-97b3-4609-89a0-5bd3603716ad
+X-Traza-Id: 57931d6e-78e0-489b-b2fd-db2ce757a7a6
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwi…(310 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "pedido_id": 766,
+  "pedido_id": 805,
   "repartidor_id": 7
 }
 ```
 
-**Respuesta.** HTTP 409 (esperado 409) · 36 ms · traza `f13119f8-97b3-4609-89a0-5bd3603716ad`
+**Respuesta.** HTTP 409 (esperado 409) · 25 ms · traza `57931d6e-78e0-489b-b2fd-db2ce757a7a6`
 
 ```json
 {
   "error": {
     "codigo": "CONFLICTO",
     "mensaje": "Ese pedido ya tiene una entrega asignada.",
-    "traza_id": "f13119f8-97b3-4609-89a0-5bd3603716ad"
+    "traza_id": "57931d6e-78e0-489b-b2fd-db2ce757a7a6"
   }
 }
 ```
@@ -37513,26 +38124,26 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: bde82936-feef-4df3-890f-b7120255e958
+X-Traza-Id: 911ec8af-3363-4807-aa25-33a0fe8cd82b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3Iiwi…(298 caracteres)
 Content-Type: application/json
 ```
 
 ```json
 {
-  "pedido_id": 766,
+  "pedido_id": 805,
   "repartidor_id": 7
 }
 ```
 
-**Respuesta.** HTTP 403 (esperado 403) · 43 ms · traza `bde82936-feef-4df3-890f-b7120255e958`
+**Respuesta.** HTTP 403 (esperado 403) · 26 ms · traza `911ec8af-3363-4807-aa25-33a0fe8cd82b`
 
 ```json
 {
   "error": {
     "codigo": "PROHIBIDO",
     "mensaje": "Tu perfil no tiene permiso para esta operación.",
-    "traza_id": "bde82936-feef-4df3-890f-b7120255e958"
+    "traza_id": "911ec8af-3363-4807-aa25-33a0fe8cd82b"
   }
 }
 ```
@@ -37547,10 +38158,10 @@ Content-Type: application/json
 
 ```http
 Accept: application/json
-X-Traza-Id: a963b242-61a4-4d22-8c61-6fcf9c8bdaba
+X-Traza-Id: bfda061d-788d-4b25-a8da-58e0c0a9774d
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `a963b242-61a4-4d22-8c61-6fcf9c8bdaba`
+**Respuesta.** HTTP 200 (esperado 200) · 18 ms · traza `bfda061d-788d-4b25-a8da-58e0c0a9774d`
 
 ```json
 {
@@ -37577,10 +38188,10 @@ X-Traza-Id: a963b242-61a4-4d22-8c61-6fcf9c8bdaba
 
 ```http
 Accept: application/json
-X-Traza-Id: 50236b1b-c837-4205-8924-4e0ac3b13fda
+X-Traza-Id: 31511d52-8ac5-4c4f-a297-37f6109aa7ae
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 18 ms · traza `50236b1b-c837-4205-8924-4e0ac3b13fda`
+**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `31511d52-8ac5-4c4f-a297-37f6109aa7ae`
 
 ```json
 {
@@ -37593,7 +38204,7 @@ X-Traza-Id: 50236b1b-c837-4205-8924-4e0ac3b13fda
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 15.7
+  "tiempo_ms": 15.4
 }
 ```
 
@@ -37607,10 +38218,10 @@ X-Traza-Id: 50236b1b-c837-4205-8924-4e0ac3b13fda
 
 ```http
 Accept: application/json
-X-Traza-Id: 8f1e9e6c-58de-4b48-840b-10a531fa0163
+X-Traza-Id: 62789fcc-9852-476f-b046-f9f0896fb235
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `8f1e9e6c-58de-4b48-840b-10a531fa0163`
+**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `62789fcc-9852-476f-b046-f9f0896fb235`
 
 ```json
 {
@@ -37623,7 +38234,7 @@ X-Traza-Id: 8f1e9e6c-58de-4b48-840b-10a531fa0163
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 15.2
+  "tiempo_ms": 14.1
 }
 ```
 
@@ -37637,10 +38248,10 @@ X-Traza-Id: 8f1e9e6c-58de-4b48-840b-10a531fa0163
 
 ```http
 Accept: application/json
-X-Traza-Id: 065a354e-ebbb-4420-99ab-f0686843840a
+X-Traza-Id: b16c64d0-78e1-4254-82c1-2a25d50a5e04
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 19 ms · traza `065a354e-ebbb-4420-99ab-f0686843840a`
+**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `b16c64d0-78e1-4254-82c1-2a25d50a5e04`
 
 ```json
 {
@@ -37653,7 +38264,7 @@ X-Traza-Id: 065a354e-ebbb-4420-99ab-f0686843840a
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 16.0
+  "tiempo_ms": 13.8
 }
 ```
 
@@ -37667,10 +38278,10 @@ X-Traza-Id: 065a354e-ebbb-4420-99ab-f0686843840a
 
 ```http
 Accept: application/json
-X-Traza-Id: 07e01b64-efab-4615-81a4-4fb93055fb56
+X-Traza-Id: 0ef30bf2-f351-447f-a90d-9ba89b440c30
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `07e01b64-efab-4615-81a4-4fb93055fb56`
+**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `0ef30bf2-f351-447f-a90d-9ba89b440c30`
 
 ```json
 {
@@ -37683,7 +38294,7 @@ X-Traza-Id: 07e01b64-efab-4615-81a4-4fb93055fb56
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 14.2
+  "tiempo_ms": 15.1
 }
 ```
 
@@ -37697,10 +38308,10 @@ X-Traza-Id: 07e01b64-efab-4615-81a4-4fb93055fb56
 
 ```http
 Accept: application/json
-X-Traza-Id: a03f8193-f259-4b11-ae27-88da100605e1
+X-Traza-Id: 31695d54-c03b-4f09-93ec-caceb90f6ae8
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 15 ms · traza `a03f8193-f259-4b11-ae27-88da100605e1`
+**Respuesta.** HTTP 200 (esperado 200) · 18 ms · traza `31695d54-c03b-4f09-93ec-caceb90f6ae8`
 
 ```json
 {
@@ -37713,7 +38324,7 @@ X-Traza-Id: a03f8193-f259-4b11-ae27-88da100605e1
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 13.4
+  "tiempo_ms": 14.9
 }
 ```
 
@@ -37727,10 +38338,10 @@ X-Traza-Id: a03f8193-f259-4b11-ae27-88da100605e1
 
 ```http
 Accept: application/json
-X-Traza-Id: aa6ea163-10d5-4704-a0de-71d6e18ee28e
+X-Traza-Id: 5e9c8d02-7364-4666-b4eb-a8816393284c
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `aa6ea163-10d5-4704-a0de-71d6e18ee28e`
+**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `5e9c8d02-7364-4666-b4eb-a8816393284c`
 
 ```json
 {
@@ -37743,7 +38354,7 @@ X-Traza-Id: aa6ea163-10d5-4704-a0de-71d6e18ee28e
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 14.8
+  "tiempo_ms": 14.7
 }
 ```
 
@@ -37757,10 +38368,10 @@ X-Traza-Id: aa6ea163-10d5-4704-a0de-71d6e18ee28e
 
 ```http
 Accept: application/json
-X-Traza-Id: 75daaa5e-663e-4a1d-ba82-a0ca2772eeab
+X-Traza-Id: dfa8a93a-361e-48c3-a98e-516379c23e15
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `75daaa5e-663e-4a1d-ba82-a0ca2772eeab`
+**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `dfa8a93a-361e-48c3-a98e-516379c23e15`
 
 ```json
 {
@@ -37773,7 +38384,7 @@ X-Traza-Id: 75daaa5e-663e-4a1d-ba82-a0ca2772eeab
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 13.8
+  "tiempo_ms": 14.9
 }
 ```
 
@@ -37787,10 +38398,10 @@ X-Traza-Id: 75daaa5e-663e-4a1d-ba82-a0ca2772eeab
 
 ```http
 Accept: application/json
-X-Traza-Id: 614dba92-72ca-47ff-b898-72f7a5aa4152
+X-Traza-Id: 035d19b8-9461-4c19-b14f-42b372adfa94
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `614dba92-72ca-47ff-b898-72f7a5aa4152`
+**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `035d19b8-9461-4c19-b14f-42b372adfa94`
 
 ```json
 {
@@ -37803,7 +38414,7 @@ X-Traza-Id: 614dba92-72ca-47ff-b898-72f7a5aa4152
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 13.9
+  "tiempo_ms": 15.1
 }
 ```
 
@@ -37817,10 +38428,10 @@ X-Traza-Id: 614dba92-72ca-47ff-b898-72f7a5aa4152
 
 ```http
 Accept: application/json
-X-Traza-Id: af5e5015-56ab-42f1-a43c-75ad569ddea9
+X-Traza-Id: 3977483f-5011-4bf0-9ddc-041a8258ad23
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 19 ms · traza `af5e5015-56ab-42f1-a43c-75ad569ddea9`
+**Respuesta.** HTTP 200 (esperado 200) · 19 ms · traza `3977483f-5011-4bf0-9ddc-041a8258ad23`
 
 ```json
 {
@@ -37833,7 +38444,7 @@ X-Traza-Id: af5e5015-56ab-42f1-a43c-75ad569ddea9
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 16.2
+  "tiempo_ms": 16.9
 }
 ```
 
@@ -37847,10 +38458,10 @@ X-Traza-Id: af5e5015-56ab-42f1-a43c-75ad569ddea9
 
 ```http
 Accept: application/json
-X-Traza-Id: 744993f9-98ad-41b9-84eb-7c8a3e169cd0
+X-Traza-Id: c14ca606-2dda-4413-b471-efceb70b95b9
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `744993f9-98ad-41b9-84eb-7c8a3e169cd0`
+**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `c14ca606-2dda-4413-b471-efceb70b95b9`
 
 ```json
 {
@@ -37863,7 +38474,7 @@ X-Traza-Id: 744993f9-98ad-41b9-84eb-7c8a3e169cd0
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 14.5
+  "tiempo_ms": 14.2
 }
 ```
 
@@ -37877,10 +38488,10 @@ X-Traza-Id: 744993f9-98ad-41b9-84eb-7c8a3e169cd0
 
 ```http
 Accept: application/json
-X-Traza-Id: 354d4fee-d5c2-49d6-bb7b-015c3896cf91
+X-Traza-Id: 44742096-62b5-45a8-8ffa-5ddb3c957dcd
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 19 ms · traza `354d4fee-d5c2-49d6-bb7b-015c3896cf91`
+**Respuesta.** HTTP 200 (esperado 200) · 15 ms · traza `44742096-62b5-45a8-8ffa-5ddb3c957dcd`
 
 ```json
 {
@@ -37893,7 +38504,7 @@ X-Traza-Id: 354d4fee-d5c2-49d6-bb7b-015c3896cf91
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 16.5
+  "tiempo_ms": 13.0
 }
 ```
 
@@ -37907,10 +38518,10 @@ X-Traza-Id: 354d4fee-d5c2-49d6-bb7b-015c3896cf91
 
 ```http
 Accept: application/json
-X-Traza-Id: 0a686787-0efa-4046-b71e-8ae77eddd3a2
+X-Traza-Id: d6c52678-1ad1-4702-bbad-9bc7f8cdb7e1
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `0a686787-0efa-4046-b71e-8ae77eddd3a2`
+**Respuesta.** HTTP 200 (esperado 200) · 15 ms · traza `d6c52678-1ad1-4702-bbad-9bc7f8cdb7e1`
 
 ```json
 {
@@ -37923,7 +38534,7 @@ X-Traza-Id: 0a686787-0efa-4046-b71e-8ae77eddd3a2
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 13.7
+  "tiempo_ms": 13.3
 }
 ```
 
@@ -37937,10 +38548,10 @@ X-Traza-Id: 0a686787-0efa-4046-b71e-8ae77eddd3a2
 
 ```http
 Accept: application/json
-X-Traza-Id: d12c92c8-dbce-4360-9270-ee3922282955
+X-Traza-Id: c50b650d-c70e-4796-9a77-38ae4d293441
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `d12c92c8-dbce-4360-9270-ee3922282955`
+**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `c50b650d-c70e-4796-9a77-38ae4d293441`
 
 ```json
 {
@@ -37953,7 +38564,7 @@ X-Traza-Id: d12c92c8-dbce-4360-9270-ee3922282955
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 14.5
+  "tiempo_ms": 13.8
 }
 ```
 
@@ -37967,10 +38578,10 @@ X-Traza-Id: d12c92c8-dbce-4360-9270-ee3922282955
 
 ```http
 Accept: application/json
-X-Traza-Id: 4cafb483-d653-4934-8d3b-02a7778717e3
+X-Traza-Id: d5f6833e-cca9-4a98-8cab-94205b9c1ca5
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `4cafb483-d653-4934-8d3b-02a7778717e3`
+**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `d5f6833e-cca9-4a98-8cab-94205b9c1ca5`
 
 ```json
 {
@@ -37983,7 +38594,7 @@ X-Traza-Id: 4cafb483-d653-4934-8d3b-02a7778717e3
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 13.4
+  "tiempo_ms": 13.3
 }
 ```
 
@@ -37997,10 +38608,10 @@ X-Traza-Id: 4cafb483-d653-4934-8d3b-02a7778717e3
 
 ```http
 Accept: application/json
-X-Traza-Id: 40876775-6abc-4dab-b648-e3de0d2e9c81
+X-Traza-Id: b6435804-7677-4bcd-90f7-a8db7c01809a
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `40876775-6abc-4dab-b648-e3de0d2e9c81`
+**Respuesta.** HTTP 200 (esperado 200) · 14 ms · traza `b6435804-7677-4bcd-90f7-a8db7c01809a`
 
 ```json
 {
@@ -38013,7 +38624,7 @@ X-Traza-Id: 40876775-6abc-4dab-b648-e3de0d2e9c81
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 13.9
+  "tiempo_ms": 12.4
 }
 ```
 
@@ -38027,10 +38638,10 @@ X-Traza-Id: 40876775-6abc-4dab-b648-e3de0d2e9c81
 
 ```http
 Accept: application/json
-X-Traza-Id: 745d2ae2-56f0-4291-b4ff-1e9239ba3270
+X-Traza-Id: f5c0a573-c896-422a-9ab7-5d8abcdeb5ea
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 19 ms · traza `745d2ae2-56f0-4291-b4ff-1e9239ba3270`
+**Respuesta.** HTTP 200 (esperado 200) · 20 ms · traza `f5c0a573-c896-422a-9ab7-5d8abcdeb5ea`
 
 ```json
 {
@@ -38043,7 +38654,7 @@ X-Traza-Id: 745d2ae2-56f0-4291-b4ff-1e9239ba3270
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 16.4
+  "tiempo_ms": 17.4
 }
 ```
 
@@ -38057,10 +38668,10 @@ X-Traza-Id: 745d2ae2-56f0-4291-b4ff-1e9239ba3270
 
 ```http
 Accept: application/json
-X-Traza-Id: 5fc34f99-80e9-4adc-9dd4-b405b8bf607b
+X-Traza-Id: 05aa08b4-5a11-4db8-8449-c7bc57fb34e8
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `5fc34f99-80e9-4adc-9dd4-b405b8bf607b`
+**Respuesta.** HTTP 200 (esperado 200) · 15 ms · traza `05aa08b4-5a11-4db8-8449-c7bc57fb34e8`
 
 ```json
 {
@@ -38073,7 +38684,7 @@ X-Traza-Id: 5fc34f99-80e9-4adc-9dd4-b405b8bf607b
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 14.2
+  "tiempo_ms": 13.2
 }
 ```
 
@@ -38087,10 +38698,10 @@ X-Traza-Id: 5fc34f99-80e9-4adc-9dd4-b405b8bf607b
 
 ```http
 Accept: application/json
-X-Traza-Id: f09aa6ef-d654-480a-a174-43f2c70db2e1
+X-Traza-Id: d467e101-3ab9-4e85-bf2c-545b7fb53bae
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `f09aa6ef-d654-480a-a174-43f2c70db2e1`
+**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `d467e101-3ab9-4e85-bf2c-545b7fb53bae`
 
 ```json
 {
@@ -38103,7 +38714,7 @@ X-Traza-Id: f09aa6ef-d654-480a-a174-43f2c70db2e1
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 13.3
+  "tiempo_ms": 13.5
 }
 ```
 
@@ -38117,10 +38728,10 @@ X-Traza-Id: f09aa6ef-d654-480a-a174-43f2c70db2e1
 
 ```http
 Accept: application/json
-X-Traza-Id: a045c4a0-6ca8-40af-ac3a-d5928a0e7989
+X-Traza-Id: 78b5560a-3c1f-42af-ba39-5fd84add5373
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `a045c4a0-6ca8-40af-ac3a-d5928a0e7989`
+**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `78b5560a-3c1f-42af-ba39-5fd84add5373`
 
 ```json
 {
@@ -38133,7 +38744,7 @@ X-Traza-Id: a045c4a0-6ca8-40af-ac3a-d5928a0e7989
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 14.6
+  "tiempo_ms": 13.6
 }
 ```
 
@@ -38147,10 +38758,10 @@ X-Traza-Id: a045c4a0-6ca8-40af-ac3a-d5928a0e7989
 
 ```http
 Accept: application/json
-X-Traza-Id: 5283ede8-8a02-4b7c-bdaa-25f08c2c79bb
+X-Traza-Id: 6c689f10-d8aa-4c66-a374-3bb10ca2ac8f
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `5283ede8-8a02-4b7c-bdaa-25f08c2c79bb`
+**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `6c689f10-d8aa-4c66-a374-3bb10ca2ac8f`
 
 ```json
 {
@@ -38163,7 +38774,7 @@ X-Traza-Id: 5283ede8-8a02-4b7c-bdaa-25f08c2c79bb
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 14.1
+  "tiempo_ms": 14.4
 }
 ```
 
@@ -38177,10 +38788,10 @@ X-Traza-Id: 5283ede8-8a02-4b7c-bdaa-25f08c2c79bb
 
 ```http
 Accept: application/json
-X-Traza-Id: 9951bb63-7d1b-415d-88df-c23440e4c974
+X-Traza-Id: fabe6435-b0aa-4f01-a257-2ad77efff14c
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `9951bb63-7d1b-415d-88df-c23440e4c974`
+**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `fabe6435-b0aa-4f01-a257-2ad77efff14c`
 
 ```json
 {
@@ -38193,7 +38804,7 @@ X-Traza-Id: 9951bb63-7d1b-415d-88df-c23440e4c974
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 14.4
+  "tiempo_ms": 13.7
 }
 ```
 
@@ -38207,10 +38818,10 @@ X-Traza-Id: 9951bb63-7d1b-415d-88df-c23440e4c974
 
 ```http
 Accept: application/json
-X-Traza-Id: 4a613ac8-47d3-494f-939e-4b7068112937
+X-Traza-Id: 6536d8a9-abaf-4631-a658-ca0af5cbd012
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 18 ms · traza `4a613ac8-47d3-494f-939e-4b7068112937`
+**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `6536d8a9-abaf-4631-a658-ca0af5cbd012`
 
 ```json
 {
@@ -38223,7 +38834,7 @@ X-Traza-Id: 4a613ac8-47d3-494f-939e-4b7068112937
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 15.6
+  "tiempo_ms": 14.4
 }
 ```
 
@@ -38237,10 +38848,10 @@ X-Traza-Id: 4a613ac8-47d3-494f-939e-4b7068112937
 
 ```http
 Accept: application/json
-X-Traza-Id: f3a3838a-7632-484e-981e-e0ba23083312
+X-Traza-Id: 07fbfa94-a273-43b7-806f-eb3dccbeb0a0
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `f3a3838a-7632-484e-981e-e0ba23083312`
+**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `07fbfa94-a273-43b7-806f-eb3dccbeb0a0`
 
 ```json
 {
@@ -38253,7 +38864,7 @@ X-Traza-Id: f3a3838a-7632-484e-981e-e0ba23083312
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 14.4
+  "tiempo_ms": 13.7
 }
 ```
 
@@ -38267,10 +38878,10 @@ X-Traza-Id: f3a3838a-7632-484e-981e-e0ba23083312
 
 ```http
 Accept: application/json
-X-Traza-Id: 1c346d37-24f9-4e83-9fb6-7138aab999f1
+X-Traza-Id: f4678f57-6001-4a44-877e-5da4954059cb
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 17 ms · traza `1c346d37-24f9-4e83-9fb6-7138aab999f1`
+**Respuesta.** HTTP 200 (esperado 200) · 16 ms · traza `f4678f57-6001-4a44-877e-5da4954059cb`
 
 ```json
 {
@@ -38283,7 +38894,7 @@ X-Traza-Id: 1c346d37-24f9-4e83-9fb6-7138aab999f1
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 14.8
+  "tiempo_ms": 14.2
 }
 ```
 
@@ -38297,10 +38908,10 @@ X-Traza-Id: 1c346d37-24f9-4e83-9fb6-7138aab999f1
 
 ```http
 Accept: application/json
-X-Traza-Id: 92c33efd-a575-4608-b163-eecdc7869e30
+X-Traza-Id: f9aff627-12f7-47a0-b4a2-9c3950a060b0
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 19 ms · traza `92c33efd-a575-4608-b163-eecdc7869e30`
+**Respuesta.** HTTP 200 (esperado 200) · 21 ms · traza `f9aff627-12f7-47a0-b4a2-9c3950a060b0`
 
 ```json
 {
@@ -38313,7 +38924,7 @@ X-Traza-Id: 92c33efd-a575-4608-b163-eecdc7869e30
     "mongo": "ok",
     "bucket": "ok"
   },
-  "tiempo_ms": 16.6
+  "tiempo_ms": 18.4
 }
 ```
 
@@ -38327,16 +38938,16 @@ X-Traza-Id: 92c33efd-a575-4608-b163-eecdc7869e30
 
 ```http
 Accept: application/json
-X-Traza-Id: e24149a2-508b-4f59-8392-76bb78da9f6b
+X-Traza-Id: e2c65ee4-4860-4f7a-be6f-a9b8af95b624
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(300 caracteres)
 ```
 
-**Respuesta.** HTTP 200 (esperado 200) · 7 ms · traza `e24149a2-508b-4f59-8392-76bb78da9f6b`
+**Respuesta.** HTTP 200 (esperado 200) · 6 ms · traza `e2c65ee4-4860-4f7a-be6f-a9b8af95b624`
 
 ```json
 {
   "valido": true,
-  "expira_en": 842,
+  "expira_en": 834,
   "usuario": {
     "id": 1,
     "rol": "administrador",
@@ -38347,14 +38958,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 **Explicación.** El X-Traza-Id de la petición se recupera en logs_tecnicos.correlacion_id.
 
-**Evidencia en MongoDB.** `db.logs_tecnicos.findOne({correlacion_id: 'e24149a2-508b-4f59-8392-76bb78da9f6b'})`
+**Evidencia en MongoDB.** `db.logs_tecnicos.findOne({correlacion_id: 'e2c65ee4-4860-4f7a-be6f-a9b8af95b624'})`
 
 ```json
 {
   "nivel": "INFO",
   "componente": "auth",
-  "registrado_en": "2026-11-27 07:25:22.302000+00:00",
-  "correlacion_id": "e24149a2-508b-4f59-8392-76bb78da9f6b",
+  "registrado_en": "2026-11-27 08:11:39.367000+00:00",
+  "correlacion_id": "e2c65ee4-4860-4f7a-be6f-a9b8af95b624",
   "mensaje": "GET /api/v1/auth/validar -> 200",
   "usuario_id": 1,
   "ruta": "/api/v1/auth/validar",
@@ -38375,133 +38986,133 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 [
   {
     "_id": "abastecimiento",
-    "peticiones": 1056,
-    "ms_promedio": 106.0596590909091
+    "peticiones": 1180,
+    "ms_promedio": 106.35084745762713
   },
   {
     "_id": "auditoria-monitoreo",
-    "peticiones": 2854,
-    "ms_promedio": 59.89173090399439
+    "peticiones": 3030,
+    "ms_promedio": 60.15346534653465
   },
   {
     "_id": "auth",
-    "peticiones": 3399,
-    "ms_promedio": 275.8355398646661
+    "peticiones": 3676,
+    "ms_promedio": 275.9899347116431
   },
   {
     "_id": "capacidad",
-    "peticiones": 1217,
-    "ms_promedio": 65.93179950698439
+    "peticiones": 1296,
+    "ms_promedio": 65.64043209876543
   },
   {
     "_id": "cobertura",
-    "peticiones": 2004,
-    "ms_promedio": 53.30588822355289
+    "peticiones": 2125,
+    "ms_promedio": 53.35670588235294
   },
   {
     "_id": "costos",
-    "peticiones": 2425,
-    "ms_promedio": 45.084123711340204
+    "peticiones": 2573,
+    "ms_promedio": 45.01593470656821
   },
   {
     "_id": "demanda",
-    "peticiones": 2190,
-    "ms_promedio": 101.78493150684932
+    "peticiones": 2327,
+    "ms_promedio": 101.54963472281908
   },
   {
     "_id": "documentos",
-    "peticiones": 681,
-    "ms_promedio": 32.61820851688693
+    "peticiones": 756,
+    "ms_promedio": 32.42063492063492
   },
   {
     "_id": "entregas",
-    "peticiones": 1422,
-    "ms_promedio": 75.44303797468355
+    "peticiones": 1535,
+    "ms_promedio": 75.29837133550488
   },
   {
     "_id": "inventario",
-    "peticiones": 2558,
-    "ms_promedio": 59.606333072713056
+    "peticiones": 2777,
+    "ms_promedio": 59.72092185812027
   },
   {
     "_id": "microhubs",
-    "peticiones": 523,
-    "ms_promedio": 24.81261950286807
+    "peticiones": 572,
+    "ms_promedio": 25.3986013986014
   },
   {
     "_id": "notificaciones",
-    "peticiones": 582,
-    "ms_promedio": 31.80068728522337
+    "peticiones": 639,
+    "ms_promedio": 31.453834115805947
   },
   {
     "_id": "pedidos",
-    "peticiones": 3610,
-    "ms_promedio": 83.61828254847646
+    "peticiones": 3890,
+    "ms_promedio": 82.50077120822623
   },
   {
     "_id": "planeacion",
-    "peticiones": 1083,
-    "ms_promedio": 52.257617728531855
+    "peticiones": 1151,
+    "ms_promedio": 52.158123370981755
   },
   {
     "_id": "precios",
-    "peticiones": 1115,
-    "ms_promedio": 50.91838565022422
+    "peticiones": 1215,
+    "ms_promedio": 52.129218106995886
   },
   {
     "_id": "productos",
-    "peticiones": 552,
-    "ms_promedio": 30.297101449275363
+    "peticiones": 603,
+    "ms_promedio": 30.829187396351575
   },
   {
     "_id": "proveedores",
-    "peticiones": 853,
-    "ms_promedio": 50.5662368112544
+    "peticiones": 945,
+    "ms_promedio": 50.72910052910053
   },
   {
     "_id": "punto-equilibrio",
-    "peticiones": 1473,
-    "ms_promedio": 179.5661914460285
+    "peticiones": 1564,
+    "ms_promedio": 179.4571611253197
   },
   {
     "_id": "reportes",
-    "peticiones": 1538,
-    "ms_promedio": 188.41092327698308
+    "peticiones": 1646,
+    "ms_promedio": 186.57837181044957
   },
   {
     "_id": "rutas",
-    "peticiones": 1239,
-    "ms_promedio": 102.7134786117837
+    "peticiones": 1320,
+    "ms_promedio": 102.31666666666666
   },
   {
     "_id": "seguimiento",
-    "peticiones": 252,
-    "ms_promedio": 31.726190476190474
+    "peticiones": 273,
+    "ms_promedio": 31.615384615384617
   },
   {
     "_id": "simulacion",
-    "peticiones": 1887,
-    "ms_promedio": 149.2109167991521
+    "peticiones": 2007,
+    "ms_promedio": 149.58495266567016
   },
   {
     "_id": "sincronizacion",
-    "peticiones": 889,
-    "ms_promedio": 102.25196850393701
+    "peticiones": 957,
+    "ms_promedio": 102.59038662486938
   },
   {
     "_id": "surtido",
-    "peticiones": 936,
-    "ms_promedio": 185.08653846153845
+    "peticiones": 997,
+    "ms_promedio": 184.76830491474422
   },
   {
     "_id": "usuarios",
-    "peticiones": 371,
-    "ms_promedio": 44.3989218328841
+    "peticiones": 420,
+    "ms_promedio": 44.36190476190476
   },
   {
     "_id": "zonas",
-    "peticiones": 4082,
-    "ms_promedio": 3.359137677609015
+    "peticiones": 4366,
+    "ms_promedio": 3.4312872194228126
   }
 ]
 ```
@@ -38516,34 +39127,34 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwi…(3
 
 ```http
 Accept: application/json
-X-Traza-Id: 29b8224b-ff9c-4072-a486-e2ae162a7498
+X-Traza-Id: 8d68f198-5b49-45b6-9066-6eba4be7707e
 ```
 
-**Respuesta.** HTTP 429 (esperado 429) · 3 ms · traza `29b8224b-ff9c-4072-a486-e2ae162a7498`
+**Respuesta.** HTTP 429 (esperado 429) · 3 ms · traza `8d68f198-5b49-45b6-9066-6eba4be7707e`
 
 ```json
 {
   "error": {
     "codigo": "LIMITE_EXCEDIDO",
-    "mensaje": "Máximo 240 solicitudes por minuto. Espera 36 segundos.",
-    "traza_id": "29b8224b-ff9c-4072-a486-e2ae162a7498"
+    "mensaje": "Máximo 240 solicitudes por minuto. Espera 19 segundos.",
+    "traza_id": "8d68f198-5b49-45b6-9066-6eba4be7707e"
   }
 }
 ```
 
 **Explicación.** Contador rate:zonas:{ip}:{minuto} en Redis (db 1) con TTL de 120 s; responde Retry-After.
 
-**Evidencia en Redis.** `db1 GET rate:zonas:2b30bb50d78e82c5:29929405; db1 TTL rate:zonas:2b30bb50d78e82c5:29929405`
+**Evidencia en Redis.** `db1 GET rate:zonas:2b30bb50d78e82c5:29929450; db1 TTL rate:zonas:2b30bb50d78e82c5:29929450`
 
 ```json
 [
   {
-    "comando": "db1 GET rate:zonas:2b30bb50d78e82c5:29929405",
-    "valor": "242"
+    "comando": "db1 GET rate:zonas:2b30bb50d78e82c5:29929450",
+    "valor": "4"
   },
   {
-    "comando": "db1 TTL rate:zonas:2b30bb50d78e82c5:29929405",
-    "valor": 114
+    "comando": "db1 TTL rate:zonas:2b30bb50d78e82c5:29929450",
+    "valor": 54
   }
 ]
 ```

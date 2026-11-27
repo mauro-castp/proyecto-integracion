@@ -1,0 +1,85 @@
+{
+  "microhub": {
+    "id": 1,
+    "nombre": "Microhub San Bernabé Centro"
+  },
+  "llegadas_hora": 10.0,
+  "servicio_min": 10.0,
+  "atencion_hora": 6.0,
+  "espera_max_min": 5.0,
+  "actual": {
+    "servidores": 2,
+    "modelo": "M/M/c",
+    "estable": true,
+    "utilizacion_pct": 83.3,
+    "prob_vacio": 0.0909,
+    "prob_espera": 0.7576,
+    "en_cola": 3.788,
+    "en_sistema": 5.455,
+    "espera_cola_min": 22.73,
+    "tiempo_sistema_min": 32.73
+  },
+  "comparacion": [
+    {
+      "servidores": 1,
+      "modelo": "M/M/1",
+      "estable": false,
+      "utilizacion_pct": 166.7,
+      "prob_vacio": null,
+      "prob_espera": null,
+      "en_cola": null,
+      "en_sistema": null,
+      "espera_cola_min": null,
+      "tiempo_sistema_min": null
+    },
+    {
+      "servidores": 2,
+      "modelo": "M/M/c",
+      "estable": true,
+      "utilizacion_pct": 83.3,
+      "prob_vacio": 0.0909,
+      "prob_espera": 0.7576,
+      "en_cola": 3.788,
+      "en_sistema": 5.455,
+      "espera_cola_min": 22.73,
+      "tiempo_sistema_min": 32.73
+    },
+    {
+      "servidores": 3,
+      "modelo": "M/M/c",
+      "estable": true,
+      "utilizacion_pct": 55.6,
+      "prob_vacio": 0.1727,
+      "prob_espera": 0.2998,
+      "en_cola": 0.375,
+      "en_sistema": 2.041,
+      "espera_cola_min": 2.25,
+      "tiempo_sistema_min": 12.25
+    },
+    {
+      "servidores": 4,
+      "modelo": "M/M/c",
+      "estable": true,
+      "utilizacion_pct": 41.7,
+      "prob_vacio": 0.1859,
+      "prob_espera": 0.1025,
+      "en_cola": 0.073,
+      "en_sistema": 1.74,
+      "espera_cola_min": 0.44,
+      "tiempo_sistema_min": 10.44
+    }
+  ],
+  "servidores_necesarios": 3,
+  "lectura": "Con 2 persona(s) la utilización es 83 %, se espera en fila 22.7 min y la probabilidad de esperar es 76 %. Para esperar 5 min o menos hacen falta 3 persona(s).",
+  "valores_modificados": [
+    "llegadas_hora",
+    "servicio_min"
+  ],
+  "supuestos_usados": [
+    {
+      "clave": "cap_factor_pico",
+      "valor": 1.35,
+      "modificado": false
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% block titulo %}Mi catálogo{% endblock %}
+{% block cuerpo %}
+<h1>{{ p.nombre }}</h1>
+<p class="sub">Proveedor {{ p.clave }} · entrega en {{ p.dias_entrega }} día(s) · pedido mínimo {{ p.pedido_minimo|dinero }} · {{ p.condiciones_pago or 'sin condiciones registradas' }}</p>
+<div class="kpis">
+  <div class="kpi"><div class="v">{{ catalogo|length }}</div><div class="l">Productos que surtes</div></div>
+  <div class="kpi"><div class="v">{{ resumen.abiertas }}</div><div class="l">Órdenes por entregar</div></div>
+  <div class="kpi"><div class="v">{{ resumen.total }}</div><div class="l">Órdenes en total</div></div>
+</div>
+<p><a class="btn sec" href="{{ url_for('proveedor.ordenes') }}">Ver órdenes de compra</a></p>
+<div class="panel" style="overflow:auto"><h2>Mi catálogo y mi oferta</h2>
+<table><thead><tr><th>Clave</th><th>Producto</th><th>Unidad</th><th>Mínimo</th><th>Precio de compra y capacidad semanal</th><th>Actualizado</th></tr></thead><tbody>
+{% for c in catalogo %}<tr><td>{{ c.clave_interna }}</td><td>{{ c.nombre }}</td><td>{{ c.unidad_compra }}</td><td class="num">{{ c.minimo_compra }}</td>
+<td><form method="post" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+  <input type="hidden" name="csrf" value="{{ token_formulario }}"><input type="hidden" name="producto_id" value="{{ c.producto_id }}">
+  <input name="precio_compra" type="number" step="0.01" min="0.01" value="{{ c.precio_compra }}" aria-label="Precio de compra de {{ c.nombre }}" style="width:110px">
+  <input name="capacidad_semanal" type="number" step="1" min="1" value="{{ c.capacidad_semanal }}" aria-label="Capacidad semanal de {{ c.nombre }}" style="width:100px">
+  <button class="btn sec">Guardar</button></form></td>
+<td>{{ c.actualizado_en.strftime('%d/%m/%Y') }}</td></tr>
+{% else %}<tr><td colspan="6">Todavía no tienes productos registrados.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

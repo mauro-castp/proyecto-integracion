@@ -13,16 +13,12 @@ Servicio de planeación · puerto 5106 · contrato v1
   POST /api/v1/escenarios                     guardar escenario (planeacion.editar)
   DELETE /api/v1/candidatos/{id}              baja lógica del candidato · DELETE /api/v1/escenarios/{id}
 
-No duplica fórmulas: usa planeacion_calc.py (funciones puras y probadas) y
-las consultas de planeacion.py del sistema web. Por eso el portal, este
-servicio y la app de escritorio dan exactamente los mismos números.
+Usa comun/planeacion_calc.py (funciones puras y probadas, idénticas a las del portal) y comun/consultas_planeacion.py.
+No depende del sistema web, y el portal, este servicio y la app de escritorio dan los mismos números.
 Cada simulación deja su rastro en MongoDB (ejecuciones_analiticas).
 """
-import importlib.util
 import json
-import sys
 import time
-from pathlib import Path
 
 from flask import g
 
@@ -30,20 +26,11 @@ from comun import config
 from comun.base import (crear_app, documentar, filtro_entero, filtro_opcion, leer_cuerpo, leer_paginacion, lista,
                         paginacion, requiere, responder, texto_busqueda)
 from comun.base_errores import ErrorApi, invalido, no_encontrado
+from comun import consultas_planeacion as consultas_pl
+from comun.calculo import pc
 from comun.datos import ahora, conexion, consultar, mongo, mongo_insertar
 from comun.formatos import dinero, fecha, numero
 from comun.validar import Campo, validar
-
-# Código del sistema web: en Docker se copia a /app/web; en desarrollo se lee de sistema_web/.
-_web = Path("/app/web") if Path("/app/web").is_dir() else Path(__file__).resolve().parents[2] / "sistema_web"
-if str(_web) not in sys.path:
-    sys.path.append(str(_web))        # al final: rutas.py y otros módulos del web no deben tapar a los paquetes de los servicios
-import planeacion_calc as pc          # noqa: E402
-
-# planeacion.py del web se carga con otro nombre: este paquete también se llama «planeacion».
-_spec = importlib.util.spec_from_file_location("web_planeacion", _web / "planeacion.py")
-web_plan = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(web_plan)
 
 app = crear_app("planeacion", "Microhubs · Planeación",
                 "Ubicaciones candidatas, simulación, punto de equilibrio y escenarios.", 5106,
@@ -223,13 +210,13 @@ def candidato_baja(cid):
 # --------------------------------------------------------------------
 def _supuestos_candidato(cid):
     """Supuestos iniciales del candidato: demanda cubierta, costos fijos, distancia y capacidad física."""
-    p = web_plan.parametros()
-    hist = web_plan.historial(p)
-    c = web_plan.get_candidato(cid)
+    p = consultas_pl.parametros()
+    hist = consultas_pl.historial(p)
+    c = consultas_pl.get_candidato(cid)
     if not c:
         raise no_encontrado("No existe el candidato.")
-    ev = web_plan.evaluar_candidatos(p, hist, [c])[0]
-    return web_plan.supuestos_de(ev, hist, p), p, hist
+    ev = consultas_pl.evaluar_candidatos(p, hist, [c])[0]
+    return consultas_pl.supuestos_de(ev, hist, p), p, hist
 
 
 def _simular(sup, p, escenario_id, nombre, datos_suficientes=True):
@@ -269,7 +256,7 @@ def simulacion_libre():
     sup = validar(d["supuestos"], campos_supuestos(), prefijo="supuestos.")
     if d.get("candidato_id"):
         _candidato(d["candidato_id"])
-    _, salida = _simular(sup, web_plan.parametros(), f"candidato-{d['candidato_id']}" if d.get("candidato_id") else "libre",
+    _, salida = _simular(sup, consultas_pl.parametros(), f"candidato-{d['candidato_id']}" if d.get("candidato_id") else "libre",
                          "Simulación libre")
     return responder(salida, raiz="resultados")
 
@@ -328,7 +315,7 @@ def escenario_crear():
     sup = validar(d["supuestos"], campos_supuestos(), prefijo="supuestos.")
     if d.get("candidato_id"):
         _candidato(d["candidato_id"])
-    r, _ = _simular(sup, web_plan.parametros(), "escenario-nuevo", d["nombre"])
+    r, _ = _simular(sup, consultas_pl.parametros(), "escenario-nuevo", d["nombre"])
     guardado = {**sup, **({"candidato_id": d["candidato_id"]} if d.get("candidato_id") else {})}
     with conexion() as con, con.cursor() as cur:
         cur.execute("INSERT INTO escenario_planeacion (nombre, ubicacion_candidata_id, supuestos, resultados, creado_por) "

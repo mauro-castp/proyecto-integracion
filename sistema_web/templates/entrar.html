@@ -8,9 +8,10 @@
     <div class="campo"><label for="clave">Contraseña</label><input id="clave" name="clave" type="password" required></div>
     <button class="btn" style="width:100%">Entrar</button>
     <p style="margin-top:14px;font-size:13.5px;color:var(--ink2)">¿No tienes cuenta? <a href="{{ url_for('auth.registro') }}">Crea una</a>.</p>
+    {% if hay('recuperacion.recuperar') %}<p style="font-size:13.5px;color:var(--ink2)"><a href="{{ url_for('recuperacion.recuperar') }}">¿Olvidaste tu contraseña?</a></p>{% endif %}
   </form>
-  <div class="aviso info"><b>Cuentas de demostración</b>
-    <code>admin@codex.mx</code>, <code>operador.mh01@codex.mx</code>, <code>planeador@codex.mx</code>, <code>auditor@codex.mx</code><br>
-    Contraseña: <code>Codex#2026</code></div>
+  {% if config.get('MOSTRAR_CUENTAS_DEMO', True) %}<div class="aviso info"><b>Cuentas de demostración</b>
+    <code>admin@codex.mx</code>, <code>operador.mh01@codex.mx</code>, <code>planeador@codex.mx</code>, <code>auditor@codex.mx</code>, <code>proveedor@codex.mx</code><br>
+    Contraseña: <code>Codex#2026</code></div>{% endif %}
 </div>
 {% endblock %}

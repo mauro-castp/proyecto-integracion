@@ -118,6 +118,16 @@ def percentil(valores, p):
     return orden[int(k)]
 
 
+def texto_fallo(f):
+    """Qué pasó en la última verificación que no salió bien: la dependencia que falló o el error."""
+    if not f:
+        return None
+    malas = dependencias_con_error(f.get("dependencias"))
+    if malas:
+        return f"{f['estado']}: falla {', '.join(malas)}"[:200]
+    return f"{f['estado']}: {f.get('error') or 'sin detalle'}"[:200]
+
+
 def agrupar_dependencias_caidas(servicios):
     """[{dependencia, afectados}]: qué dependencia falla y a quiénes alcanza (una caída de PostgreSQL se ve una vez, no 26)."""
     por_dep = {}
@@ -296,8 +306,12 @@ def estado():
         "SELECT DISTINCT ON (servicio) servicio, verificado_en, estado, http_status, tiempo_ms, version, dependencias, error "
         "FROM monitoreo_verificacion ORDER BY servicio, verificado_en DESC")}
     disp = {f["servicio"]: f for f in consultar(
-        "SELECT servicio, count(*) AS n, count(*) FILTER (WHERE estado <> 'caido') AS responde FROM monitoreo_verificacion "
+        "SELECT servicio, count(*) AS n, count(*) FILTER (WHERE estado <> 'caido') AS responde, "
+        "avg(tiempo_ms) FILTER (WHERE estado <> 'caido') AS promedio FROM monitoreo_verificacion "
         "WHERE verificado_en >= now() - interval '24 hours' GROUP BY servicio")}
+    fallos = {f["servicio"]: f for f in consultar(
+        "SELECT DISTINCT ON (servicio) servicio, verificado_en, estado, error, dependencias FROM monitoreo_verificacion "
+        "WHERE estado <> 'ok' AND verificado_en >= now() - interval '24 hours' ORDER BY servicio, verificado_en DESC")}
     tasas = tasas_errores(60)
     ahora_ = ahora()
     servicios = []
@@ -314,7 +328,10 @@ def estado():
             "dependencias": _dep(f["dependencias"]) if f else None, "error": f["error"] if f else None,
             "peticiones_hora": t["peticiones"] if t else None, "errores_5xx_hora": t["errores_5xx"] if t else None,
             "disponibilidad_24h_pct": pct,
-            "bajo_objetivo": bool(pct is not None and pct < u["mon_disponibilidad_objetivo_pct"])})
+            "bajo_objetivo": bool(pct is not None and pct < u["mon_disponibilidad_objetivo_pct"]),
+            "tiempo_promedio_ms": _num(d["promedio"]) if d else None,
+            "ultimo_error": texto_fallo(fallos.get(nombre)),
+            "ultimo_error_en": fecha(fallos[nombre]["verificado_en"]) if nombre in fallos else None})
     ultima = max((f["verificado_en"] for f in ultimas.values()), default=None)
     activo = bool(ultima and (ahora_ - ultima).total_seconds() <= 3 * u["mon_intervalo_seg"] + 5)
     cuenta = {e: sum(1 for s in servicios if s["estado"] == e) for e in ("ok", "degradado", "caido", "sin_datos")}

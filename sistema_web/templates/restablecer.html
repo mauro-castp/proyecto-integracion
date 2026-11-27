@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block titulo %}Contraseña nueva{% endblock %}
+{% block cuerpo %}
+<div style="max-width:420px;margin:0 auto">
+  <h1>Elige tu contraseña nueva</h1>
+  <p class="sub">De 8 a 72 caracteres, con al menos una letra y un número. Se cerrarán tus sesiones abiertas.</p>
+  <form class="panel" method="post">
+    <input type="hidden" name="csrf" value="{{ token_formulario }}">
+    <div class="campo"><label for="clave">Contraseña nueva</label><input id="clave" name="clave" type="password" minlength="8" maxlength="72" autocomplete="new-password" required autofocus></div>
+    <div class="campo"><label for="repetida">Repítela</label><input id="repetida" name="repetida" type="password" minlength="8" maxlength="72" autocomplete="new-password" required></div>
+    <button class="btn" style="width:100%">Cambiar contraseña</button>
+  </form>
+</div>
+{% endblock %}
