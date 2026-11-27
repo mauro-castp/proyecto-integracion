@@ -44,6 +44,7 @@ x-servicio: &servicio
 services:
   postgres:
     image: postgres:16-alpine
+    restart: unless-stopped                   # vuelve a encender solo al reiniciar la máquina
     environment:
       POSTGRES_DB: microhubs_p1
       POSTGRES_USER: microhubs
@@ -60,6 +61,7 @@ services:
 
   redis:
     image: redis:7-alpine
+    restart: unless-stopped                   # vuelve a encender solo al reiniciar la máquina
     command: redis-server --save "" --appendonly no --maxmemory 256mb --maxmemory-policy noeviction
     networks: [datos]
     healthcheck:
@@ -70,6 +72,7 @@ services:
 
   mongo:
     image: mongo:7
+    restart: unless-stopped                   # vuelve a encender solo al reiniciar la máquina
     volumes:
       - datos_mongo:/data/db
       - ./bloque_c/mongo:/docker-entrypoint-initdb.d:ro    # 01, 02 y 03 en el primer arranque
