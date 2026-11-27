@@ -2,7 +2,8 @@
 
 > Responsables según lo que cada integrante describe en su reflexión (`docs/reflexiones/`) y el historial de Git (27 de noviembre de 2026).
 > Todos participamos en el proyecto. Las confirmaciones **no miden** el trabajo real: quien sube o une archivos figura como autor, y el
-> análisis, las pruebas con personas, la revisión o la presentación pueden no dejar rastro. Las horas no se registraron. La cuenta
+> análisis, las pruebas con personas, la revisión o la presentación pueden no dejar rastro. Parte del código de las apps lo escribieron María José y
+> Vanessa y lo subió Mauro, por lo que figura a su nombre. Las horas no se registraron. La cuenta
 > `SrTequila` es la de Jorge.
 
 Integrantes: Ruth Elizabeth Soriano Barrera · Vanessa Morante López · Mauro Castillo Peña · María José Cedillo Mata · Jorge Antonio Arreola Cantú
@@ -19,14 +20,14 @@ Integrantes: Ruth Elizabeth Soriano Barrera · Vanessa Morante López · Mauro C
 | Microservicios: Ola 1 | Ruth | Mauro | `servicios/…` · confirmaciones: Ruth 3, Mauro 2 |
 | Microservicios: Ola 2 (algoritmos: rutas, simulación, surtido) | Ruth | Mauro (colas M/M/1 y M/M/c en capacidad) | `servicios/…` · confirmaciones: Ruth 3, Mauro 1 |
 | Microservicios: Ola 3 (reportes, sincronización, monitoreo) | Ruth | Mauro | `servicios/…` · confirmaciones: Ruth 7, Mauro 1 |
-| App Android | Ruth (base y flujo del repartidor) | Mauro (perfil cliente, pruebas en el emulador) | `app_movil` · confirmaciones: Ruth 16, Mauro 4 |
-| App de escritorio | Ruth (base y módulos de análisis) | Mauro (módulos de operación, manifiesto, permisos, pruebas en Windows) | `app_escritorio` · confirmaciones: Ruth 9, Mauro 3 |
+| App Android | Ruth (base y flujo del repartidor) | Mauro (perfil cliente, pruebas en el emulador), María José y Vanessa (archivos para el emulador y corrección de errores, entregados a Mauro) | `app_movil` · confirmaciones: Ruth 16, Mauro 4 |
+| App de escritorio | Ruth (base y módulos de análisis) | Mauro (módulos de operación, manifiesto, permisos, pruebas en Windows), María José y Vanessa (archivos y corrección de errores, entregados a Mauro) | `app_escritorio` · confirmaciones: Ruth 9, Mauro 3 |
 | Despliegue en GCP | Ruth | Mauro (pruebas de las apps contra la nube) | `deploy` · confirmaciones: Ruth 8 |
 | Pruebas de volumen, carga (Locust) y fallos | Ruth | Mauro (pruebas de las apps) | `rendimiento, pruebas_carga, evidencias` · confirmaciones: Ruth 19 |
 | Prueba de usabilidad con personas | Mauro | — | `entrega/FORMATO_USABILIDAD.md` |
 | Instaladores y Release v1.0 | Mauro | — | `entrega/INSTALADORES.md`, Release `v1.0-entrega-final` |
 | Reportes técnicos y expediente | Ruth | Mauro (correcciones del Primer Parcial y reporte 4.2), Vanessa (reporte del Segundo Parcial), María José (reporte del Primer Parcial) | `reporte_tecnico, docs` |
-| Presentaciones y videos | María José (presentación final, video de demostración) | Mauro (presentación del Segundo Parcial, grabación de la demostración final), Jorge (video del Segundo Parcial), Vanessa (publicación del video final), Ruth (presentación del Primer Parcial) | `presentacion, entrega` · confirmaciones: Ruth 24, Mauro 13, María José 4, Vanessa 2, Jorge 1 |
+| Presentaciones y videos | María José (presentación final; edición y elaboración del video final) | Vanessa (presentación final; edición y elaboración del video final), Mauro (presentación del Segundo Parcial, grabación de la demostración final), Jorge (video del Segundo Parcial), Ruth (presentación del Primer Parcial) | `presentacion, entrega` · confirmaciones: Ruth 24, Mauro 13, María José 4, Vanessa 2, Jorge 1 |
 | Reflexión individual | Cada integrante | — | `docs/reflexiones/` |
 
 ## Registro de sesiones de trabajo
