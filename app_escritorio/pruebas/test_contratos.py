@@ -31,7 +31,12 @@ class Contratos(unittest.TestCase):
         return etree.parse(str(RAIZ / 'ejemplos' / nombre))
 
     def test_hay_un_xsd_por_servicio_mas_comun(self):
-        self.assertEqual(set(self.esq), {'comun', 'auth', 'usuarios', 'catalogos', 'pedidos', 'entregas', 'planeacion', 'documentos', 'notificaciones'})
+        # Las olas 1 a 3 agregaron un XSD por servicio nuevo: se exige que estén los del escritorio (incluidas las pantallas de
+        # análisis y reportes) y que todos los de la carpeta carguen, en lugar de una lista cerrada que se quedaba vieja.
+        base = {'comun', 'auth', 'usuarios', 'catalogos', 'pedidos', 'entregas', 'planeacion', 'documentos', 'notificaciones'}
+        analisis = {'reportes', 'cobertura', 'capacidad', 'rutas', 'costos', 'punto_equilibrio', 'simulacion'}
+        self.assertTrue(base | analisis <= set(self.esq), sorted(base | analisis - set(self.esq)))
+        self.assertEqual(len(self.esq), len(list(RAIZ.glob('*.xsd'))))
 
     def test_todos_los_ejemplos_validan(self):
         ejemplos = sorted((RAIZ / 'ejemplos').glob('*.xml'))
