@@ -4,6 +4,7 @@ docker compose -p microhubs-web-prueba exec -e WEB_PRUEBA_AISLADA=1 web python p
 """
 import io
 import os
+import re
 from pathlib import Path
 import unittest
 
@@ -43,13 +44,16 @@ class IntegracionWeb(unittest.TestCase):
         hoy = date.today()
         self.assertEqual(self.c.get(f"/web/pedidos/{pedido['id']}?desde={hoy-timedelta(days=90)}&hasta={hoy}").status_code, 200)
 
-    def test_03_archivo_bytea_y_aislamiento(self):
+    def test_03_archivo_en_el_almacen_y_aislamiento(self):
         data = b'%PDF-1.4\nDocumento de prueba'
         r = self.c.post('/web/archivos', data={'csrf':self.csrf,'archivo':(io.BytesIO(data),'prueba.pdf')})
         self.assertEqual(r.status_code, 302)
         with app.test_request_context():
-            archivo = consultar("SELECT id FROM web_archivo WHERE nombre='prueba.pdf' ORDER BY creado_en DESC LIMIT 1", una=True)
-        url = '/web/archivos/' + archivo['id']
+            tabla = consultar("SELECT to_regclass('microhubs.web_archivo') IS NOT NULL AS hay", una=True)
+        self.assertFalse(tabla['hay'], 'la base ya no tiene la tabla que guardaba el contenido')
+        html = self.c.get('/web/archivos').get_data(as_text=True)
+        self.assertIn('prueba.pdf', html)
+        url = re.search(r'/web/archivos/[0-9a-f]{24}', html).group(0)         # el más reciente va primero
         self.assertEqual(self.c.get(url).data, data)
         otro = app.test_client()
         self.assertEqual(otro.post('/entrar',data={'correo':'operador.mh01@codex.mx','clave':'Codex#2026'}).status_code, 302)
