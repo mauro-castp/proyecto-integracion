@@ -179,6 +179,8 @@ class Estilo(val ctx: Context) {
     }
 }
 
+data class Pestana(val icono: String, val nombre: String, val actual: Boolean, val insignia: Int? = null, val ir: () -> Unit)
+
 /** Una pantalla: barra superior con título e indicador de conexión, aviso, progreso, contenido con scroll y pie opcional. */
 class Pantalla(val e: Estilo, private val activity: Activity, titulo: String, subtitulo: String? = null, atras: (() -> Unit)? = null) {
     val raiz = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; setBackgroundColor(e.fondo) }
@@ -200,6 +202,11 @@ class Pantalla(val e: Estilo, private val activity: Activity, titulo: String, su
         isIndeterminate = true; visibility = View.GONE
         indeterminateTintList = ColorStateList.valueOf(e.primario)
         layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, e.dp(4))
+    }
+    /** Barra de navegación inferior: las secciones principales siempre a la vista (la del perfil que entró). */
+    private val navegacion = LinearLayout(activity).apply {
+        orientation = LinearLayout.HORIZONTAL; visibility = View.GONE; elevation = e.dp(8).toFloat(); setBackgroundColor(e.superficie)
+        setPadding(e.dp(4), e.dp(6), e.dp(4), e.dp(6))
     }
     private val banner = TextView(activity).apply {
         textSize = 14f; visibility = View.GONE; setPadding(e.dp(16), e.dp(10), e.dp(16), e.dp(10))
@@ -228,13 +235,16 @@ class Pantalla(val e: Estilo, private val activity: Activity, titulo: String, su
         raiz.addView(progreso); raiz.addView(banner)
         raiz.addView(scroll, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
         raiz.addView(pie, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+        raiz.addView(navegacion, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         // Android 15 dibuja bajo las barras del sistema: se compensa con sus márgenes.
         raiz.setOnApplyWindowInsetsListener { _, ins ->
             val (arriba, abajo) = if (Build.VERSION.SDK_INT >= 30) ins.getInsets(WindowInsets.Type.systemBars()).let { it.top to it.bottom }
             else @Suppress("DEPRECATION") (ins.systemWindowInsetTop to ins.systemWindowInsetBottom)
             encabezado.setPadding(encabezado.paddingLeft, arriba + e.dp(10), encabezado.paddingRight, e.dp(10))
-            pie.setPadding(e.dp(16), e.dp(8), e.dp(16), e.dp(12) + abajo)
-            contenido.setPadding(e.dp(16), e.dp(16), e.dp(16), e.dp(24) + if (pie.visibility == View.GONE) abajo else 0)
+            val conNav = navegacion.visibility == View.VISIBLE
+            navegacion.setPadding(e.dp(4), e.dp(6), e.dp(4), e.dp(6) + if (conNav) abajo else 0)
+            pie.setPadding(e.dp(16), e.dp(8), e.dp(16), e.dp(12) + if (conNav) 0 else abajo)
+            contenido.setPadding(e.dp(16), e.dp(16), e.dp(16), e.dp(24) + if (pie.visibility == View.GONE && !conNav) abajo else 0)
             ins
         }
     }
@@ -264,4 +274,33 @@ class Pantalla(val e: Estilo, private val activity: Activity, titulo: String, su
     fun conPie(vararg vistas: View) { pie.removeAllViews(); vistas.forEach { pie.addView(it) }; pie.visibility = View.VISIBLE }
 
     fun agregar(vararg vistas: View) { vistas.forEach { contenido.addView(it) } }
+
+    /** Pestañas inferiores: icono arriba y nombre abajo; la actual se resalta. */
+    fun navegacion(pestanas: List<Pestana>) {
+        navegacion.removeAllViews()
+        pestanas.forEach { t ->
+            val color = if (t.actual) e.primario else e.tintaSec
+            navegacion.addView(LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER; isClickable = true; isFocusable = true
+                contentDescription = t.nombre + if (t.actual) " (pantalla actual)" else ""
+                background = RippleDrawable(ColorStateList.valueOf(0x22000000), null, null)
+                layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+                setPadding(0, e.dp(4), 0, e.dp(4))
+                addView(TextView(activity).apply { text = t.icono; textSize = 20f; gravity = Gravity.CENTER; alpha = if (t.actual) 1f else 0.6f })
+                addView(TextView(activity).apply {
+                    text = t.nombre; textSize = 11f; gravity = Gravity.CENTER; setTextColor(color); maxLines = 1
+                    typeface = Typeface.create(Typeface.DEFAULT, if (t.actual) Typeface.BOLD else Typeface.NORMAL)
+                })
+                if (t.insignia != null && t.insignia > 0) addView(TextView(activity).apply {
+                    text = "${t.insignia}"; textSize = 10f; setTextColor(Color.WHITE); gravity = Gravity.CENTER
+                    background = GradientDrawable().apply { setColor(e.peligro); cornerRadius = e.dp(10).toFloat() }
+                    setPadding(e.dp(6), 0, e.dp(6), 0)
+                    layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { gravity = Gravity.CENTER_HORIZONTAL }
+                })
+                setOnClickListener { if (!t.actual) t.ir() }
+            })
+        }
+        navegacion.visibility = View.VISIBLE
+        raiz.requestApplyInsets()
+    }
 }

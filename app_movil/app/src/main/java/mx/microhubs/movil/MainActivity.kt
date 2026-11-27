@@ -227,6 +227,23 @@ class MainActivity : Activity() {
     }
 
     private fun role() = api.session!!.getJSONObject("usuario").getString("rol")
+
+    /** Menú inferior siempre visible con las secciones de cada perfil (antes había que volver al inicio para cambiar de sección). */
+    private fun menu(actual: String) {
+        val secciones = when (role()) {
+            "cliente" -> listOf(Triple("inicio", "🏠", "Inicio"), Triple("catalogo", "🛒", "Catálogo"), Triple("carrito", "🧺", "Carrito"),
+                                Triple("pedidos", "🧾", "Pedidos"), Triple("avisos", "🔔", "Avisos"))
+            else -> listOf(Triple("inicio", "🏠", "Inicio"), Triple("entregas", "📦", "Entregas"), Triple("avisos", "🔔", "Avisos"), Triple("perfil", "👤", "Perfil"))
+        }
+        p.navegacion(secciones.map { (clave, icono, nombre) ->
+            Pestana(icono, nombre, clave == actual, if (clave == "carrito" && !carrito.vacio) carrito.piezas else null) { accion { ir(clave) }() }
+        })
+    }
+
+    private fun ir(clave: String) = when (clave) {
+        "entregas" -> deliveries(1); "avisos" -> avisosScreen(1); "perfil" -> profile(); "catalogo" -> catalogoScreen()
+        "carrito" -> carritoScreen(); "pedidos" -> pedidosScreen(1); else -> home()
+    }
     private fun rolLegible(r: String) = r.replaceFirstChar { it.uppercase() }
 
     // ------------------------------------------------------------------------------------------ menú
@@ -244,6 +261,7 @@ class MainActivity : Activity() {
     private fun home() {
         val u = api.session!!.getJSONObject("usuario")
         nueva("Hola, ${u.getString("nombre")}", rolLegible(u.getString("rol")))
+        menu("inicio")
         if (role() == "repartidor") {
             // Cada repartidor pertenece a un microhub fijo y solo recibe entregas de ese microhub (RN41).
             val sede = ui.texto(if (u.isNull("microhub_id")) "Sin microhub asignado: pide a tu supervisor que te asigne uno" else "Microhub ${u.getInt("microhub_id")}", 16f, ui.tinta, true)
@@ -298,6 +316,7 @@ class MainActivity : Activity() {
     private fun pintarAvisos(r: Pagina<Aviso>) {
         val pagina = r.pagina
         nueva("Avisos", "${r.total} aviso(s) · página $pagina de ${maxOf(1, r.paginas)}") { home() }
+        menu("avisos")
         if (r.items.isEmpty()) p.agregar(ui.tarjeta().apply {
             addView(ui.texto("No tienes avisos", 16f, ui.tinta, true))
             addView(ui.texto("Aquí llegan las entregas que te asignan y los mensajes del equipo.", 14f, ui.tintaSec)) })
@@ -379,6 +398,7 @@ class MainActivity : Activity() {
         val actual = catalogo
         if (actual == null) { work({ tienda.catalogo() }) { catalogo = it; catalogoScreen(categoria, texto) }; return }
         nueva("Catálogo", "${actual.productos.size} productos" + (categoria?.let { " · $it" } ?: "")) { home() }
+        menu("catalogo")
         actual.guardadoEn?.let { p.aviso("Sin conexión: catálogo guardado a las ${hora(it)}. Puedes armar tu pedido; se enviará al volver la red.", Mensaje.INFO) }
         val buscar = ui.campo("Buscar producto", texto)
         p.agregar(ui.fila(ui.flexible(buscar), ui.botonCompacto("Buscar", Tipo.SECUNDARIO) { catalogoScreen(categoria, buscar.text.toString()) }))
@@ -409,6 +429,7 @@ class MainActivity : Activity() {
     private fun carritoScreen() {
         val c = catalogo
         nueva("Mi carrito", "${carrito.piezas} pieza(s)") { home() }
+        menu("carrito")
         if (carrito.vacio || c == null) {
             p.agregar(ui.tarjeta().apply { addView(ui.texto("Tu carrito está vacío", 16f, ui.tinta, true)); addView(ui.texto("Agrega productos desde el catálogo.", 14f, ui.tintaSec)) })
             p.conPie(ui.boton("Ir al catálogo", Tipo.PRIMARIO) { catalogoScreen() })
@@ -438,6 +459,7 @@ class MainActivity : Activity() {
     private fun pedidosScreen(pagina: Int) {
         work({ tienda.misPedidos(pagina) }) { r ->
             nueva("Mis pedidos", "${r.total} pedido(s) · página $pagina de ${maxOf(1, r.paginas)}") { home() }
+            menu("pedidos")
             r.guardadaEn?.let { p.aviso("Sin conexión: lista guardada a las ${hora(it)}.", Mensaje.INFO) }
             if (r.items.isEmpty()) p.agregar(ui.tarjeta().apply { addView(ui.texto("Todavía no tienes pedidos", 16f, ui.tinta, true)) })
             r.items.forEach { ped ->
@@ -492,6 +514,7 @@ class MainActivity : Activity() {
 
     private fun profileForm(perfil: Perfil) {
         nueva("Mi perfil", perfil.correo) { home() }
+        menu("perfil")
         val cabecera = ui.tarjeta()
         val datos = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
@@ -530,6 +553,7 @@ class MainActivity : Activity() {
     private fun deliveries(page: Int) {
         work({ entregas.mias(page) }) { r ->
             nueva("Mis entregas", "${r.total} parada(s) · página $page de ${maxOf(1, r.paginas)}") { home() }
+            menu("entregas")
             r.guardadaEn?.let { p.aviso("Sin conexión: lista guardada a las ${hora(it)}. Puedes cerrar entregas; se enviarán al volver la red.", Mensaje.INFO) }
             if (r.guardadaEn == null && !api.demo) fondo.execute { try { entregas.guardarParaSinRed(r.items) } catch (_: Exception) {} }
             if (r.items.isEmpty()) p.agregar(ui.tarjeta().apply {
