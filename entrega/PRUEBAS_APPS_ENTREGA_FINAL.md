@@ -173,7 +173,7 @@ Salidas completas en `entrega/_local/` de la PC (no se suben: traen rutas locale
 ## 8. Lo que faltaba del enunciado (27 de noviembre, rama `mauro-faltantes`)
 
 Al revisar el proyecto contra el enunciado del Proyecto 11 faltaban funciones de las apps y dos algoritmos. Se hicieron en el entorno de
-Claude (Linux, los 26 servicios con la base recreada desde `bloque_c/sql/01…16`) y **falta comprobarlas en Windows y en el emulador**.
+Claude (Linux, los 26 servicios con la base recreada desde `bloque_c/sql/01…16`) y después se comprobaron en la PC de Mauro (abajo).
 
 | Qué | Dónde | Pruebas (todas aprobadas) |
 |---|---|---|
@@ -185,10 +185,12 @@ Claude (Linux, los 26 servicios con la base recreada desde `bloque_c/sql/01…16
 | **Navegar** del repartidor (`geo:`) | `Entregas.kt` (`destinoMapa`), `MainActivity.kt` | JVM |
 | Servicios: `POST entregas/recepciones`, tipo `pedido_nuevo` en sincronización, `16_apps_cliente.sql` | `servicios/entregas`, `servicios/sincronizacion`, `bloque_c/sql` | `test_apps_cliente` 4/4; suites completas sin fallas: unitarias 37 + 72, contrato 7, ola1 24, ola2 103, ola3 74, ola4 12 |
 
-Verificación de tipos: las pantallas Android compilan con `kotlinc` contra `android.jar` (API 35); las ventanas de escritorio, contra el
-Windows Forms de Mono (solo el error conocido de `PlaceholderText`). **No** se compiló con Gradle ni se corrió el emulador aquí: hay que
-correr `build.ps1`, `connectedDebugAndroidTest` y las pruebas de Windows en la PC antes de unir.
+**En la PC de Mauro (27-nov, 03:25–03:32, rama `mauro-faltantes`):** Docker reconstruido (aplicó `16_apps_cliente.sql`); Android
+`build.ps1` con lint y unitarias sin fallas (79 aprobadas, 6 omitidas por no tener las variables del backend); `connectedDebugAndroidTest`
+**8/8** en el emulador API 36; escritorio en Windows **218/218** contra los servicios, incluido el recorrido del operador (pedido 29: a
+preparación, listo, asignado al repartidor 7 y manifiesto de 7 paradas). A mano: el cliente compró desde el emulador y vio su pedido en
+«Mis pedidos»; el operador generó el manifiesto y calculó las colas M/M/c en el escritorio. Todo funcionó.
 
 **Qué no se hizo:** perfil **proveedor** con cuenta (sería un portal propio); el ensayo sin red en teléfono real; las pantallas del cliente
-no tienen prueba de emulador (las cubre la lógica en JVM y el recorrido real `flujoDelCliente`).
+no tienen prueba automática de emulador (las cubren la lógica en JVM, el recorrido real `flujoDelCliente` y la prueba a mano).
 

@@ -54,8 +54,8 @@ Estado al 27 de noviembre (detalle y resultados en `entrega/PRUEBAS_APPS_ENTREGA
 - [x] **Escritorio para operadores:** inventario, preparar pedidos, asignar repartidores, manifiestos, revisar surtido y configurar capacidad.
 - [x] **Algoritmos M/M/1 y M/M/c** (servicio de capacidad, documentados en `docs/ALGORITMOS.md` §3).
 - [ ] **Perfil proveedor con cuenta:** no se hizo (los proveedores son un catálogo); queda en Limitaciones del expediente.
-- [ ] **Después de unir:** reconstruir Docker (`up -d --build`, corre `16_apps_cliente.sql`), volver a desplegar en la nube, regenerar los
-      instaladores desde `main` y probar en el emulador las pantallas del cliente. El Word del expediente no se regeneró.
+- [x] **Probado en la PC de Mauro:** Docker con `16_apps_cliente.sql`, Android 8/8 en el emulador, escritorio 218/218 y prueba a mano.
+- [ ] **Después de unir:** volver a desplegar en la nube, regenerar los instaladores desde `main` (Release v1.1) y el Word del expediente.
 
 ## Parte de Ruth · entrega
 
