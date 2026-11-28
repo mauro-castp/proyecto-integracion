@@ -81,7 +81,7 @@ Ruth Elizabeth Soriano Barrera · Vanessa Morante López · Mauro Castillo Peña
 ## Videos
 
 - Segundo Parcial: [Presentación Equipo 4 Microhubs en YouTube](https://youtu.be/wEvJhCQN4rM).
-- Entrega final: [Demostración Proyecto Final Equipo 04 Microhubs en YouTube](https://youtu.be/Q1Rm-Kr09Vw). Guion en [`docs/GUION_VIDEO_Y_PRESENTACION.md`](docs/GUION_VIDEO_Y_PRESENTACION.md).
+- Entrega final (corregida después de la retroalimentación): [Demostración Proyecto Final Equipo 04 Microhubs en YouTube](https://youtu.be/zwWkkMCn0qc). Versión anterior: <https://youtu.be/Q1Rm-Kr09Vw>. Guion en [`docs/GUION_VIDEO_Y_PRESENTACION.md`](docs/GUION_VIDEO_Y_PRESENTACION.md).
 
 ## Historial de la documentación
 

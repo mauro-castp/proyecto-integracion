@@ -1,5 +1,7 @@
 # Correcciones después de la retroalimentación del profesor (27 de noviembre de 2026)
 
+Video con las correcciones: https://youtu.be/zwWkkMCn0qc
+
 | Observación del profesor | Qué cambiamos | Dónde verlo |
 |---|---|---|
 | ¿Cómo identifican dónde poner los microhubs? | Algoritmo de **facility location** (cobertura máxima con p microhubs: voraz + intercambio de Teitz y Bart) que propone las sedes | Portal: Planeación → **★ Dónde poner microhubs** · servicio `ubicacion` (5127) `POST /api/v1/ubicacion/propuestas` · `servicios/comun/ubicacion_calc.py` |

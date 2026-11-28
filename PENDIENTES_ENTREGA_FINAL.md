@@ -45,7 +45,7 @@ Estado al 27 de noviembre (detalle y resultados en `entrega/PRUEBAS_APPS_ENTREGA
 - [x] **Capturas:** las de escritorio y `movil_avisos`. Faltan las cuatro del ensayo sin red (no hay teléfono).
 - [x] **Instaladores:** publicados desde `main` en el *Release* `v1.0-entrega-final`.
 - [x] **Pruebas de usabilidad:** 3 personas, una tarea cada una (27-nov); resultados al final de `entrega/FORMATO_USABILIDAD.md`. Hallazgo: en el escritorio cuesta llegar al PDF del reporte.
-- [x] **Video:** <https://youtu.be/Q1Rm-Kr09Vw> (guion en `docs/GUION_VIDEO_Y_PRESENTACION.md`, parte A, y `entrega/GUION_VIDEO.md`).
+- [x] **Video:** <https://youtu.be/zwWkkMCn0qc> (corregido; el anterior era <https://youtu.be/Q1Rm-Kr09Vw>) (guion en `docs/GUION_VIDEO_Y_PRESENTACION.md`, parte A, y `entrega/GUION_VIDEO.md`).
 
 **Revisión contra el enunciado del Proyecto 11 (27-nov, rama `mauro-faltantes`).** Faltaban funciones que pide el enunciado; se agregaron:
 
