@@ -2,7 +2,7 @@
 
 Fuente: servicios/*/app.py y docker-compose.integrado.yml.
 
-223 pares método HTTP y ruta de negocio. Excluye salud, OpenAPI, Swagger, HEAD y OPTIONS.
+227 pares método HTTP y ruta de negocio. Excluye salud, OpenAPI, Swagger, HEAD y OPTIONS.
 
 La última columna indica los casos de petición y respuesta que ejercitan cada operación: la corrida principal (`evidencias/ola4/`) y la complementaria (`evidencias/ola4/complementarias/`). Este archivo lo escribe `servicios/pruebas/generar_inventario.py` a partir del código y de esos casos.
 
@@ -30,7 +30,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | auditoria-monitoreo | GET | `/api/v1/auditoria` | AUD-01, AUD-06 |
 | auditoria-monitoreo | GET | `/api/v1/auditoria/accesos` | AUD-02 |
 | auditoria-monitoreo | GET | `/api/v1/auditoria/trazabilidad/pedido/<int:pid>` | AUD-03, F1-19 |
-| auditoria-monitoreo | GET | `/api/v1/auditoria/trazabilidad/entrega/<int:eid>` | AUD-04 |
+| auditoria-monitoreo | GET | `/api/v1/auditoria/trazabilidad/entrega/<int:eid>` | AUD-04, F3-06 |
 | auditoria-monitoreo | GET | `/api/v1/auditoria/trazabilidad/inventario` | AUD-05, F2-09 |
 | auth | POST | `/api/v1/auth/login` | AUTH-01, AUTH-02, AUTH-03, AUTH-04, AUTH-05 |
 | auth | POST | `/api/v1/auth/renovar` | AUTH-08, AUTH-09 |
@@ -85,7 +85,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | entregas | GET | `/api/v1/entregas/mias` | ENT-01, F1-14 |
 | entregas | GET | `/api/v1/entregas` | ENT-11 |
 | entregas | GET | `/api/v1/entregas/<int:eid>` | ENT-02, ENT-03, ENT-08 |
-| entregas | POST | `/api/v1/entregas` | F1-13 |
+| entregas | POST | `/api/v1/entregas` | F1-13, F3-02 |
 | entregas | POST | `/api/v1/entregas/asignaciones` | ENT-B1, ENT-B2, ENT-B3 |
 | entregas | POST | `/api/v1/entregas/recepciones` | ENT-12, ENT-13 |
 | entregas | POST | `/api/v1/entregas/<int:eid>/resultado` | ENT-04, ENT-05, ENT-06, ENT-07, ENT-09 y 4 más |
@@ -93,7 +93,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | inventario | GET | `/api/v1/inventario/<int:mid>/<int:pid>` | INV-06 |
 | inventario | PATCH | `/api/v1/inventario/<int:mid>/<int:pid>/minimo` | INV-18, INV-19, F2-02 |
 | inventario | PUT | `/api/v1/inventario/<int:mid>/<int:pid>/minimo` | INV-23 |
-| inventario | GET | `/api/v1/inventario/movimientos` | INV-22 |
+| inventario | GET | `/api/v1/inventario/movimientos` | INV-22, F3-07 |
 | inventario | POST | `/api/v1/inventario/movimientos` | INV-07, INV-08, INV-09, INV-10, INV-11 y 1 más |
 | inventario | POST | `/api/v1/inventario/transferencias` | INV-12, INV-13, F1-08a, F1-08b |
 | inventario | GET | `/api/v1/inventario/reservas` | INV-16 |
@@ -107,7 +107,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | microhubs | PATCH | `/api/v1/microhubs/<int:mid>` | MIC-A2 |
 | microhubs | PUT | `/api/v1/microhubs/<int:mid>` | MIC-A3 |
 | microhubs | DELETE | `/api/v1/microhubs/<int:mid>` | MIC-A5, F1-21 |
-| notificaciones | GET | `/api/v1/notificaciones` | NOT-04, NOT-05, F1-18 |
+| notificaciones | GET | `/api/v1/notificaciones` | NOT-04, NOT-05, F1-18, F3-05 |
 | notificaciones | GET | `/api/v1/notificaciones/conteo` | NOT-06 |
 | notificaciones | POST | `/api/v1/notificaciones/<int:nid>/leer` | NOT-07, NOT-08 |
 | notificaciones | POST | `/api/v1/notificaciones/leer-todas` | NOT-09 |
@@ -178,7 +178,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | reportes | GET | `/api/v1/reportes` | REP-01, REP-09 |
 | reportes | GET | `/api/v1/reportes/<clave>` | REP-03, REP-04, REP-08 |
 | reportes | GET | `/api/v1/reportes/<clave>/grafica` | REP-05, F1-20 |
-| reportes | GET | `/api/v1/reportes/<clave>/exportar` | REP-06, F2-10 |
+| reportes | GET | `/api/v1/reportes/<clave>/exportar` | REP-06, F2-10, F3-08 |
 | reportes | GET | `/api/v1/reportes/exportaciones/<int:eid>/enlace` | REP-A1, REP-A2 |
 | reportes | GET | `/api/v1/reportes/descarga` | REP-A3, REP-A4 |
 | reportes | GET | `/api/v1/reportes/exportaciones` | REP-07 |
@@ -200,7 +200,7 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | simulacion | POST | `/api/v1/simulacion/ejecuciones/<eid>/repetir` | SIM-03 |
 | simulacion | GET | `/api/v1/simulacion/comparacion` | SIM-06 |
 | simulacion | GET | `/api/v1/simulacion/supuestos` | SIM-18 |
-| sincronizacion | POST | `/api/v1/sincronizacion/lotes` | SYN-01, SYN-02, SYN-03, SYN-10, SYN-11 |
+| sincronizacion | POST | `/api/v1/sincronizacion/lotes` | SYN-01, SYN-02, SYN-03, SYN-10, SYN-11 y 2 más |
 | sincronizacion | GET | `/api/v1/sincronizacion/lotes` | SYN-05 |
 | sincronizacion | GET | `/api/v1/sincronizacion/lotes/<int:lid>` | SYN-06 |
 | sincronizacion | GET | `/api/v1/sincronizacion/pendientes` | SYN-07 |
@@ -216,12 +216,16 @@ La última columna indica los casos de petición y respuesta que ejercitan cada 
 | surtido | PATCH | `/api/v1/surtido/restricciones/<int:mid>` | SUR-19 |
 | surtido | PUT | `/api/v1/surtido/restricciones/<int:mid>` | SUR-10, SUR-11, SUR-12 |
 | surtido | GET | `/api/v1/surtido/supuestos` | SUR-17 |
+| ubicacion | GET | `/api/v1/ubicacion/colonias` | UBI-01 |
+| ubicacion | GET | `/api/v1/ubicacion/mapa` | UBI-02 |
+| ubicacion | POST | `/api/v1/ubicacion/propuestas` | UBI-03, UBI-05 |
+| ubicacion | GET | `/api/v1/ubicacion/supuestos` | UBI-04 |
 | usuarios | GET | `/api/v1/usuarios/yo` | AUTH-11, AUTH-13, USR-01, USR-02 |
 | usuarios | PATCH | `/api/v1/usuarios/yo` | USR-03, USR-04 |
 | usuarios | PUT | `/api/v1/usuarios/yo` | USR-08 |
 | usuarios | GET | `/api/v1/usuarios` | USR-05, USR-06 |
 | usuarios | GET | `/api/v1/usuarios/<int:uid>` | USR-07 |
-| usuarios | POST | `/api/v1/usuarios` | USR-A1, F1-07 |
+| usuarios | POST | `/api/v1/usuarios` | USR-A1, F1-07, F1-07b |
 | usuarios | PATCH | `/api/v1/usuarios/<int:uid>` | USR-A2 |
 | usuarios | PUT | `/api/v1/usuarios/<int:uid>` | USR-A3 |
 | usuarios | DELETE | `/api/v1/usuarios/<int:uid>` | USR-A4, USR-A5 |

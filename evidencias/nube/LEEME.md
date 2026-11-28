@@ -3,6 +3,11 @@
 Corridas del 26 de noviembre de 2026 sobre la VM `microhubs-vm` con los 26 microservicios. La VM se apagó al terminar cada una. La **versión final
 desplegada es `0b6bebd`** (27 de noviembre); lo que se midió con una versión anterior lo dice.
 
+
+**Última versión desplegada: `35f4b1e`** (27 de noviembre, 27 microservicios): `salud_servicios.txt` (27 de 27), `health_rutas.txt`
+(162 de 162), `ola4/pruebas.md` (450 de 450), `flujos/` (41 de 41), `pruebas_bucket.txt` (9 de 9) y `archivos_portal.txt` (el portal guarda en el
+bucket). `procesos/` y lo demás son de versiones anteriores.
+
 ## Versión final (`0b6bebd`)
 
 | Archivo | Qué demuestra |
