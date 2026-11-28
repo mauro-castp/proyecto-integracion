@@ -62,6 +62,20 @@ def ejecutar_ola4(ev, h):
     def uno(sql, args=()):
         return bd.consultar(sql, args, una=True)
 
+    # Dónde poner microhubs: colonias de bajos ingresos (CONAPO), facility location, demanda simulada y equilibrio
+    plan_ubi, ub = ev.entrar("planeador@codex.mx"), "ubicacion"
+    ev.caso("UBI-01", ub, "Colonias de bajos ingresos", "Grado de marginación CONAPO 2020 Medio, Alto o Muy alto.", "GET",
+            "ubicacion/colonias?bajos_ingresos=1", token=plan_ubi,
+            verificar=lambda r: r.json["total"] > 0 and all(c["bajos_ingresos"] for c in r.json["datos"]))
+    ev.caso("UBI-02", ub, "Mapa de marginación", "GeoJSON para dibujar las colonias.", "GET", "ubicacion/mapa?bajos_ingresos=1", token=plan_ubi,
+            verificar=lambda r: r.json["type"] == "FeatureCollection" and len(r.json["features"]) > 0)
+    ev.caso("UBI-03", ub, "Dónde poner tres microhubs", "Demanda simulada, cobertura máxima y punto de equilibrio, con los dos escenarios de costo.", "POST",
+            "ubicacion/propuestas", cuerpo={"p": 3}, token=plan_ubi,
+            verificar=lambda r: len(r.json["propuestas"]) == 3 and "todos_los_costos" in r.json["resumen"])
+    ev.caso("UBI-04", ub, "Supuestos de ubicación", "De dónde sale cada valor.", "GET", "ubicacion/supuestos", token=plan_ubi,
+            verificar=lambda r: any(x["clave"] == "bajos_ingresos" for x in r.json["datos"]))
+    ev.caso("UBI-05", ub, "El cliente no planea ubicaciones", "Sin planeacion.ver.", "POST", "ubicacion/propuestas", cuerpo={"p": 3}, token=cli, esperado=403)
+
     catalogos = [
         ("PRD", "productos", "producto", {"clave_interna": f"EV-{m}", "nombre": f"Producto de evidencia {m}", "categoria_id": 1, "unidad": "pieza", "precio": 19.5},
          {"precio": 21.0}),
