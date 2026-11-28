@@ -18,6 +18,29 @@ data class Parada(
     val total: Double, val distanciaKm: Double = 0.0, val minutos: Double = 0.0
 )
 data class Linea(val pedidoDetalleId: Int, val nombre: String, val cantidad: Int)
+
+/** El microhub del repartidor (servicio de microhubs): dónde está y hasta dónde cubre. Solo informa: la regla la aplica el servidor. */
+data class Sede(val clave: String, val nombre: String, val latitud: Double, val longitud: Double, val radioKm: Double) {
+    /** Distancia en línea recta (Haversine, km), la misma medida con la que el sistema calcula la cobertura. */
+    fun distanciaKm(lat: Double, lng: Double): Double {
+        val dLat = Math.toRadians(lat - latitud); val dLng = Math.toRadians(lng - longitud)
+        val h = Math.sin(dLat / 2).let { it * it } +
+            Math.cos(Math.toRadians(latitud)) * Math.cos(Math.toRadians(lat)) * Math.sin(dLng / 2).let { it * it }
+        return 2 * 6371.0088 * Math.asin(Math.sqrt(h))
+    }
+
+    fun cobertura(lat: Double, lng: Double): String {
+        val d = distanciaKm(lat, lng)
+        val estado = if (d <= radioKm) "Dentro de la cobertura" else "Fuera de la cobertura"
+        return "$estado: a %.2f km de tu microhub %s (cubre %.1f km)".format(d, clave, radioKm)
+    }
+
+    val destinoMapa: String get() = "geo:$latitud,$longitud?q=$latitud,$longitud(" + java.net.URLEncoder.encode("$clave $nombre", "UTF-8") + ")"
+
+    companion object {
+        fun leer(o: JSONObject) = Sede(o.getString("clave"), o.getString("nombre"), o.getDouble("latitud"), o.getDouble("longitud"), o.getDouble("radio_km"))
+    }
+}
 data class Detalle(
     val id: Int, val pedidoId: Int, val folio: String, val estado: String, val cliente: String, val telefono: String,
     val direccion: String, val total: Double, val lineas: List<Linea>, val latitud: Double? = null, val longitud: Double? = null
@@ -272,6 +295,8 @@ data class Perfil(
 /** Perfil de la persona que inició sesión: lectura y edición de nombre, apellidos y teléfono (PATCH usuarios/yo). */
 class Usuarios(private val api: Api) {
     fun yo(): Perfil = leer(api.call("usuarios", "usuarios/yo"))
+
+    fun sede(microhubId: Int): Sede = Sede.leer(api.call("microhubs", "microhubs/$microhubId"))
 
     /** Solo se envía lo que cambió; las mismas reglas del servicio (nombre y apellidos obligatorios, teléfono de 10 dígitos). */
     fun actualizar(actual: Perfil, nombre: String, apellidos: String, telefono: String): Perfil {

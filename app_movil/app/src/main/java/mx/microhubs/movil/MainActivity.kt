@@ -36,6 +36,7 @@ class MainActivity : Activity() {
     private lateinit var api: Api
     private lateinit var entregas: Entregas
     private lateinit var usuarios: Usuarios
+    private var sede: Sede? = null
     private lateinit var cola: ColaEnArchivos
     private lateinit var sync: Sincronizador
     private lateinit var avisos: Avisos
@@ -194,6 +195,7 @@ class MainActivity : Activity() {
 
     // ------------------------------------------------------------------------------------------ acceso
     private fun loginScreen() {
+        sede = null
         nueva("Microhubs", "Entregas de proximidad")
         p.agregar(ui.espacio(8))
         val email = ui.campo("Correo").apply { inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS }
@@ -258,23 +260,36 @@ class MainActivity : Activity() {
         return tarjeta
     }
 
+    /** Por qué le toca ese microhub: la asignación es de su cuenta (RN41) y cada pedido se asigna al más cercano que puede surtirlo. */
+    private fun textoSede(s: Sede) = "Cubre %.1f km a la redonda. Es el microhub asignado a tu cuenta: solo recibes sus pedidos, ".format(s.radioKm) +
+        "que el sistema le asignó por ser el más cercano al domicilio con cobertura, existencia y capacidad."
+
     private fun home() {
         val u = api.session!!.getJSONObject("usuario")
         nueva("Hola, ${u.getString("nombre")}", rolLegible(u.getString("rol")))
         menu("inicio")
         if (role() == "repartidor") {
             // Cada repartidor pertenece a un microhub fijo y solo recibe entregas de ese microhub (RN41).
-            val sede = ui.texto(if (u.isNull("microhub_id")) "Sin microhub asignado: pide a tu supervisor que te asigne uno" else "Microhub ${u.getInt("microhub_id")}", 16f, ui.tinta, true)
+            val titulo = ui.texto(sede?.let { "${it.clave} · ${it.nombre}" }
+                ?: if (u.isNull("microhub_id")) "Sin microhub asignado: pide a tu supervisor que te asigne uno" else "Microhub ${u.getInt("microhub_id")}", 16f, ui.tinta, true)
+            val detalleSede = ui.texto(sede?.let { textoSede(it) } ?: "Solo recibes entregas de este microhub.", 13f, ui.tintaSec)
             val tarjeta = ui.tarjeta()
             tarjeta.addView(ui.fila(ui.circulo("🏪", ui.primario, 44), LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL; layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
-                addView(ui.texto("Tu microhub", 13f, ui.tintaSec, true)); addView(sede)
-                addView(ui.texto("Solo recibes entregas de este microhub.", 13f, ui.tintaSec))
+                addView(ui.texto("Tu microhub", 13f, ui.tintaSec, true)); addView(titulo); addView(detalleSede)
             }))
+            val mapa = ui.botonCompacto("🗺️ Ver mi microhub en el mapa", Tipo.SECUNDARIO) { sede?.let { navegar(it.destinoMapa) } }
+                .apply { visibility = if (sede == null) View.GONE else View.VISIBLE }
+            tarjeta.addView(mapa)
             p.agregar(tarjeta)
             if (!u.isNull("microhub_id") && redActual() != Red.SIN_RED) fondo.execute {
-                val nombre = try { usuarios.yo().microhub } catch (_: Exception) { null }
-                runOnUiThread { if (alive && nombre != null) sede.text = nombre }
+                val hallada = try { usuarios.sede(u.getInt("microhub_id")) } catch (_: Exception) { null }
+                runOnUiThread {
+                    if (alive && hallada != null) {
+                        sede = hallada; titulo.text = "${hallada.clave} · ${hallada.nombre}"
+                        detalleSede.text = textoSede(hallada); mapa.visibility = View.VISIBLE
+                    }
+                }
             }
         }
         p.agregar(ui.titulo("¿Qué quieres hacer?"))
@@ -297,7 +312,7 @@ class MainActivity : Activity() {
         p.conPie(ui.boton("Cerrar sesión", Tipo.PELIGRO) {
             if (busy) return@boton
             val pendientes = sync.porEnviar()
-            fun salir() = work({ try { api.logout() } finally { cola.borrarCopias() } }) { resetEvidence(); detalle = null; carrito.vaciar(); catalogo = null; loginScreen() }
+            fun salir() = work({ try { api.logout() } finally { cola.borrarCopias() } }) { resetEvidence(); detalle = null; sede = null; carrito.vaciar(); catalogo = null; loginScreen() }
             if (pendientes == 0) salir()
             else AlertDialog.Builder(this).setTitle("Hay $pendientes operación(es) sin enviar")
                 .setMessage("Se quedan guardadas en el teléfono y se enviarán cuando vuelvas a entrar con esta misma cuenta y haya red.")
@@ -623,6 +638,11 @@ class MainActivity : Activity() {
             if (d.telefono.isNotBlank()) addView(ui.texto("Tel. ${d.telefono}", 14f, ui.tintaSec))
         }
         cliente.addView(ui.fila(datos, ui.chip(rotulo, colorEstado)))
+        val base = sede
+        if (base != null && d.latitud != null && d.longitud != null) {
+            val dentro = base.distanciaKm(d.latitud, d.longitud) <= base.radioKm
+            cliente.addView(ui.texto(base.cobertura(d.latitud, d.longitud), 13f, if (dentro) ui.primario else ui.peligro, true))
+        }
         d.destinoMapa?.let { destino -> cliente.addView(ui.botonCompacto("🧭 Navegar al domicilio", Tipo.SECUNDARIO) { navegar(destino) }) }
         cliente.addView(ui.espacio(10))
         cliente.addView(ui.fila(ui.flexible(ui.texto("Total a cobrar", 14f, ui.tintaSec)), ui.texto("$%.2f".format(d.total), 24f, ui.tinta, true).apply {
