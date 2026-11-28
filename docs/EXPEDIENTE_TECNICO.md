@@ -53,6 +53,13 @@ Resultados principales:
   ~150 pedidos diarios. Las conclusiones dependen de supuestos que hoy son «supuesto» y no «medido», y el sistema lo dice en cada
   resultado.
 
+**Actualización tras la retroalimentación (27 de noviembre).** Son ahora **27 microservicios**: se agregó `ubicacion` (puerto 5127), que
+responde **dónde poner los microhubs** con el índice de marginación por colonia 2020 de CONAPO (un indicador aproximado de bajos ingresos),
+facility location (cobertura máxima), demanda simulada y punto de equilibrio. El portal ya **no llama** a los microservicios. Con tres
+microhubs propuestos se cubre el 94 % de la demanda de bajos ingresos; contando solo el reparto salen viables ajustados y **con todos
+los costos ninguno es viable** (harían falta 462 pedidos al día o un margen bruto de 35.3 %). Donde las secciones siguientes digan
+26 servicios o que el portal los consume, vale esta actualización. Corrida final en la nube: 450/450 casos y 41/41 pasos.
+
 # 3. Descripción del problema
 
 El abasto de barrio en México se hace en el canal tradicional (~1 millón de tienditas). Los hogares de San Bernabé hacen compras

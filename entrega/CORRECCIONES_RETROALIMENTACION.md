@@ -1,5 +1,12 @@
 # Correcciones después de la retroalimentación del profesor (27 de noviembre de 2026)
 
+> **Segunda ronda (versión `35f4b1e`, desplegada en la nube).** Al verificar lo anterior se corrigió: la pantalla de simulación y equilibrio
+> daba error 500; «Mis archivos» había vuelto a guardarse dentro de PostgreSQL (ahora va al almacén de objetos, directo desde el portal);
+> y las pruebas no usaban un repartidor del microhub del pedido. La viabilidad se muestra en **dos escenarios**: contando solo el reparto
+> (22 por pedido) 3 de 3 son viables ajustados; **con todos los costos (32.6) ninguno lo es**: harían falta 462 pedidos al día o un margen
+> bruto de 35.3 %. En la nube: 27/27 sanos, 450/450 evidencias, 41/41 flujos y 9/9 del bucket. El video no muestra esta segunda ronda.
+> Pendiente: la app (microhub y cobertura del repartidor) está en el PR 33, sin compilar; los instaladores publicados son anteriores.
+
 Video con las correcciones: https://youtu.be/zwWkkMCn0qc
 
 | Observación del profesor | Qué cambiamos | Dónde verlo |

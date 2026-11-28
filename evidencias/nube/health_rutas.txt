@@ -1,4 +1,4 @@
-# Rutas /health/* por servicio (version 0b6bebd): codigo HTTP de live, ready, database, redis, mongodb y storage
+# Rutas /health/* por servicio (version 35f4b1e): codigo HTTP de live, ready, database, redis, mongodb y storage
 auth                   live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
 usuarios               live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
 productos              live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
@@ -25,3 +25,4 @@ reportes               live=200 ready=200 database=200 redis=200 mongodb=200 sto
 notificaciones         live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
 sincronizacion         live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
 auditoria-monitoreo    live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
+ubicacion              live=200 ready=200 database=200 redis=200 mongodb=200 storage=200
