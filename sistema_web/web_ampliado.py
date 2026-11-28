@@ -1,6 +1,7 @@
-"""Reportes, archivos, avisos y perfiles. Solo los archivos usan un microservicio (documentos), porque viven en el bucket."""
+"""Reportes, archivos, avisos y perfiles. El portal solo usa sus bases de datos y su almacén de archivos: no llama microservicios."""
 import csv
 import datetime as dt
+import hashlib
 import io
 import secrets
 import sqlite3
@@ -13,6 +14,7 @@ from flask import (Blueprint, Response, abort, current_app, flash, g, redirect,
                    render_template, request, send_file, session, url_for)
 from werkzeug.utils import secure_filename
 from paginacion import paginar, enlace_pagina, limites
+import almacen_portal
 
 web_bp = Blueprint('web', __name__, url_prefix='/web')
 PERMISOS = ('reportes.ver', 'reportes.exportar', 'archivos.ver', 'archivos.crear',
@@ -288,9 +290,23 @@ def archivos():
             abort(400, 'Selecciona un archivo.')
         contenido = archivo.read(5 * 1024 * 1024 + 1)
         nombre, tipo = validar_archivo(archivo.filename or '', contenido)
-        # El portal guarda el archivo en su propia base (PostgreSQL en la plataforma, SQLite en la demostración local).
-        ejecutar('INSERT INTO web_archivo(id,propietario_id,nombre,tipo,contenido,tamano) VALUES(%s,%s,%s,%s,%s,%s)',
-                 (secrets.token_hex(16), g.usuario['id'], nombre, tipo, contenido, len(contenido)))
+        aid = secrets.token_hex(16)
+        if local():                                                    # demostración sin Docker: todo en su SQLite
+            ejecutar('INSERT INTO web_archivo(id,propietario_id,nombre,tipo,contenido,tamano) VALUES(%s,%s,%s,%s,%s,%s)',
+                     (aid, g.usuario['id'], nombre, tipo, contenido, len(contenido)))
+        else:                                                          # el contenido al almacén; a la base, solo sus datos
+            ruta = almacen_portal.clave_objeto(aid, tipo)
+            try:
+                almacen_portal.guardar(ruta, contenido, tipo)
+            except almacen_portal.ErrorAlmacen:
+                current_app.logger.exception('almacén de archivos no disponible')
+                abort(503, 'El almacén de archivos no responde. No se guardó nada; inténtalo más tarde.')
+            try:
+                ejecutar('INSERT INTO web_archivo(id,propietario_id,nombre,tipo,tamano,ruta,almacen,sha256) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)',
+                         (aid, g.usuario['id'], nombre, tipo, len(contenido), ruta, almacen_portal.nombre(), hashlib.sha256(contenido).hexdigest()))
+            except Exception:
+                almacen_portal.borrar(ruta)                            # sin datos en la base no debe quedar el objeto
+                raise
         flash('Archivo guardado.', 'ok')
         return redirect(url_for('web.archivos'))
     filas = paginar('SELECT id,nombre,tipo,tamano,creado_en FROM web_archivo WHERE propietario_id=%s ORDER BY creado_en DESC,id DESC', (g.usuario['id'],), consulta, filtrar=False)
@@ -300,10 +316,21 @@ def archivos():
 @web_bp.get('/archivos/<aid>')
 @protegido('archivos.ver')
 def descargar(aid):
-    archivo = consulta('SELECT nombre,tipo,contenido FROM web_archivo WHERE id=%s AND propietario_id=%s', (aid, g.usuario['id']), una=True)
+    columnas = 'nombre,tipo,contenido' if local() else 'nombre,tipo,contenido,ruta,sha256'
+    archivo = consulta(f'SELECT {columnas} FROM web_archivo WHERE id=%s AND propietario_id=%s', (aid, g.usuario['id']), una=True)
     if not archivo:
         abort(404)
-    response = send_file(io.BytesIO(bytes(archivo['contenido'])), mimetype=archivo['tipo'], as_attachment=True, download_name=archivo['nombre'], max_age=0)
+    if local() or not archivo['ruta']:
+        contenido = bytes(archivo['contenido'])
+    else:
+        try:
+            contenido = almacen_portal.leer(archivo['ruta'])
+        except almacen_portal.ErrorAlmacen:
+            current_app.logger.exception('almacén de archivos no disponible')
+            abort(503, 'El almacén de archivos no responde. Inténtalo más tarde.')
+        if hashlib.sha256(contenido).hexdigest() != archivo['sha256']:
+            abort(503, 'El archivo no coincide con su huella registrada.')
+    response = send_file(io.BytesIO(contenido), mimetype=archivo['tipo'], as_attachment=True, download_name=archivo['nombre'], max_age=0)
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['Cache-Control'] = 'private, no-store'
     return response

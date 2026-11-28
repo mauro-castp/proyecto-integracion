@@ -39,6 +39,7 @@ PARAMS = {
     "ticket": 135.0,
     "margen_bruto": 0.28,
     "costo_entrega": 22.0,
+    "costo_variable_completo": 32.6,  # todos los costos por pedido (servicio de costos): reparto, empaque 3.50 y comisión de tarjeta 2.9 %
     "costos_fijos_mes": 72000.0,     # renta 18 000 + nómina 42 000 + servicios 7 000 + otros 5 000
     "dias_mes": 30,
     "margen_seguridad_min": 0.10,
@@ -154,6 +155,17 @@ def equilibrio_diario(p):
     return margen, p["costos_fijos_mes"] / margen / p["dias_mes"]
 
 
+def escenario_todos_los_costos(p, propuestas):
+    """El mismo resultado si cada pedido carga todos sus costos, no solo el reparto, y qué margen bruto haría falta con esa capacidad."""
+    margen = p["ticket"] * p["margen_bruto"] - p["costo_variable_completo"]
+    eq = None if margen <= 0 else p["costos_fijos_mes"] / margen / p["dias_mes"]
+    necesario = (p["costo_variable_completo"] + p["costos_fijos_mes"] / p["dias_mes"] / p["capacidad_diaria"]) / p["ticket"]
+    return {"costo_variable_pedido": p["costo_variable_completo"], "margen_pedido": round(margen, 2),
+            "equilibrio_diario": None if eq is None else round(eq, 1),
+            "viables": 0 if eq is None else sum(1 for x in propuestas if x["demanda_simulada"]["p50"] >= eq),
+            "margen_bruto_necesario": round(necesario, 4)}
+
+
 def proponer(colonias, microhubs_actuales=(), parametros=None):
     """Recorrido completo: demanda → ubicación → simulación → equilibrio. `colonias`: dicts con cve, nombre, lat, lng, poblacion, grado."""
     p = con_defecto(parametros)
@@ -216,6 +228,7 @@ def proponer(colonias, microhubs_actuales=(), parametros=None):
             "cobertura_pct": round(100 * cubierta / total_dem, 1) if total_dem else 0.0,
             "equilibrio_diario": None if eq is None else round(eq, 1),
             "viables": sum(1 for pr in propuestas if pr["veredicto"] != "NO VIABLE"),
+            "todos_los_costos": escenario_todos_los_costos(p, propuestas),
         },
         "propuestas": propuestas,
         "pasos": pasos,

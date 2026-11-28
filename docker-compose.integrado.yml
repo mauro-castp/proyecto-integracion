@@ -99,9 +99,11 @@ services:
     build: ./sistema_web
     environment:
       <<: *entorno
+      ALMACEN_DIR: /app/almacen_web          # con ALMACEN=local, los archivos del portal viven en su volumen
     volumes:
       - ./bloque_c/sql/06_planeacion.sql:/app/06_planeacion.sql:ro
       - ./bloque_c/sql/07_web_ampliado.sql:/app/07_web_ampliado.sql:ro
+      - datos_archivos_web:/app/almacen_web
     command: >
       sh -c "python migrar_planeacion.py && python migrar_web.py &&
              exec gunicorn -b 0.0.0.0:5000 -w 3 --timeout 60 app:app"
@@ -290,4 +292,5 @@ networks:
 volumes:
   datos_pg:
   datos_mongo:
+  datos_archivos_web:
   datos_archivos:
