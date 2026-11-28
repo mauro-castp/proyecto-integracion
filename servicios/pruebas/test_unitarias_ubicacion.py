@@ -3,13 +3,12 @@ Pruebas unitarias de comun/ubicacion_calc.py (sin base de datos), con números q
 
   cd servicios && python -m unittest -v pruebas.test_unitarias_ubicacion
 """
-import filecmp
 import unittest
 from pathlib import Path
 
 from comun import ubicacion_calc as uc
 
-RAIZ = Path(__file__).resolve().parents[2]
+SERVICIOS = Path(__file__).resolve().parents[1]
 
 
 def colonia(cve, lat, lng, poblacion, grado):
@@ -18,7 +17,17 @@ def colonia(cve, lat, lng, poblacion, grado):
 
 class Ubicacion(unittest.TestCase):
     def test_portal_y_servicio_usan_la_misma_funcion(self):
-        self.assertTrue(filecmp.cmp(RAIZ / "servicios/comun/ubicacion_calc.py", RAIZ / "sistema_web/ubicacion_calc.py", shallow=False))
+        propia = SERVICIOS / "comun" / "ubicacion_calc.py"
+        portal = next((p for p in (Path("/sistema_web/ubicacion_calc.py"), SERVICIOS.parent / "sistema_web" / "ubicacion_calc.py") if p.is_file()), None)
+        if portal is None:
+            self.skipTest("el código del portal no está disponible en este contenedor")
+        self.assertEqual(propia.read_text(encoding="utf-8").splitlines(), portal.read_text(encoding="utf-8").splitlines())
+
+    def test_con_todos_los_costos_a_mano(self):
+        # margen = 135 × 0.28 − 32.6 = 5.20; 72 000 ÷ 5.20 ÷ 30 = 461.54 pedidos/día; margen necesario = (32.6 + 72 000/30/160) ÷ 135 = 35.26 %
+        r = uc.escenario_todos_los_costos(uc.con_defecto(), [{"demanda_simulada": {"p50": 160}}])
+        self.assertEqual((r["margen_pedido"], r["equilibrio_diario"], r["viables"]), (5.2, 461.5, 0))
+        self.assertAlmostEqual(r["margen_bruto_necesario"], 0.3526, places=4)
 
     def test_demanda_esperada_a_mano(self):
         # 3 600 habitantes ÷ 3.6 = 1 000 hogares × 8 % × 1.2 pedidos/semana ÷ 7 = 13.714 pedidos/día

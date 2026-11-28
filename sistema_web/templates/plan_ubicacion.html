@@ -8,7 +8,7 @@
 <div class="aviso info"><b>¿Qué es una colonia de bajos ingresos?</b>
 <span>Usamos el <strong>índice de marginación urbana por colonia 2020 de CONAPO</strong> (dato oficial, calculado con el Censo 2020 del INEGI: educación, salud, vivienda,
 hacinamiento e internet). Una colonia es de <strong>bajos ingresos</strong> si su grado de marginación es <strong>Medio, Alto o Muy alto</strong>. En la zona de San Bernabé son
-<strong>{{ r.resumen.colonias_bajos_ingresos }} de {{ r.resumen.colonias_zona }}</strong> colonias, con <strong>{{ "{:,}".format(r.resumen.poblacion_bajos_ingresos) }}</strong> habitantes.</span></div>
+<strong>{{ r.resumen.colonias_bajos_ingresos }} de {{ r.resumen.colonias_zona }}</strong> colonias, con <strong>{{ "{:,}".format(r.resumen.poblacion_bajos_ingresos) }}</strong> habitantes. <em>Ojo: el índice mide carencias (marginación), no el ingreso en pesos; lo usamos como indicador aproximado de bajos ingresos.</em></span></div>
 
 <form method="get" class="panel formgrid" style="align-items:end">
   <label>Microhubs a proponer<input name="p" type="number" min="1" max="8" value="{{ params.p }}"></label>
@@ -31,8 +31,16 @@ hacinamiento e internet). Una colonia es de <strong>bajos ingresos</strong> si s
   <div class="panel"><div class="ayuda">Demanda de bajos ingresos</div><b style="font-size:22px">{{ r.resumen.demanda_bajos_ingresos_dia }}</b> pedidos/día</div>
   <div class="panel"><div class="ayuda">Cubierta con {{ params.p }} microhub(s)</div><b style="font-size:22px">{{ r.resumen.cobertura_pct }} %</b> ({{ r.resumen.demanda_cubierta_dia }}/día)</div>
   <div class="panel"><div class="ayuda">Equilibrio por microhub</div><b style="font-size:22px">{{ r.resumen.equilibrio_diario }}</b> pedidos/día</div>
-  <div class="panel"><div class="ayuda">Propuestas viables</div><b style="font-size:22px">{{ r.resumen.viables }} de {{ r.propuestas|length }}</b></div>
+  <div class="panel"><div class="ayuda">Viables contando solo el reparto</div><b style="font-size:22px">{{ r.resumen.viables }} de {{ r.propuestas|length }}</b></div>
 </div>
+
+{% set c = r.resumen.todos_los_costos %}
+<div class="aviso {{ 'ok' if c.viables == r.propuestas|length else 'alto' }}"><b>Con todos los costos: {{ c.viables }} de {{ r.propuestas|length }} serían viables</b>
+<span>La tabla de abajo cuenta solo el costo de reparto (${{ '%.2f' % r.parametros.costo_entrega }} por pedido). Si además se cargan empaque, comisión de tarjeta y el
+reparto completo (${{ '%.2f' % c.costo_variable_pedido }} por pedido), cada microhub necesitaría
+<strong>{{ c.equilibrio_diario if c.equilibrio_diario is not none else 'un volumen imposible de' }} pedidos al día</strong> y su capacidad es de {{ r.parametros.capacidad_diaria }}.
+Para alcanzar el equilibrio con esa capacidad haría falta un margen bruto de <strong>{{ '%.1f' % (c.margen_bruto_necesario * 100) }} %</strong>
+(hoy se supone {{ '%.0f' % (r.parametros.margen_bruto * 100) }} %). Son supuestos, no mediciones.</span></div>
 
 <h2>Microhubs propuestos</h2>
 <div class="panel" style="overflow:auto"><table>

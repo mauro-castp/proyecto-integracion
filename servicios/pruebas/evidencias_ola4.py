@@ -113,7 +113,10 @@ def ejecutar_ola4(ev, h):
     pid, mh, total = r.json["id"], r.json["microhub_id"], r.json["total"]
     correo_op = uno("SELECT u.correo FROM usuario u JOIN rol rl ON rl.id = u.rol_id WHERE rl.clave = 'operador' AND u.microhub_id = %s AND u.estatus = 'activo' ORDER BY u.id LIMIT 1", (mh,))["correo"]
     op2 = ev.entrar(correo_op)
-    rid = uno("SELECT id FROM usuario WHERE correo = 'repartidor1@codex.mx'")["id"]
+    correo_rep = uno("SELECT u.correo FROM usuario u JOIN rol rl ON rl.id = u.rol_id WHERE rl.clave = 'repartidor' AND u.microhub_id = %s "
+        "AND u.estatus = 'activo' ORDER BY u.id LIMIT 1", (mh,))["correo"]      # RN41: del mismo microhub que el pedido
+    rep_p = ev.entrar(correo_rep)
+    rid = uno("SELECT id FROM usuario WHERE correo = %s", (correo_rep,))["id"]
     ev.http("pedidos", "POST", f"pedidos/{pid}/estado", {"estado": "en_preparacion"}, token=op2)
     ev.caso("PED-A4", "pedidos", "Marcar listo", "El operador libera el pedido para despacho.", "POST", f"pedidos/{pid}/listo", cuerpo={}, token=op2)
     r = ev.caso("ENT-A1", "entregas", "Asignar la entrega", "Queda en ruta y el repartidor recibe el aviso.", "POST", "entregas",
@@ -122,11 +125,11 @@ def ejecutar_ola4(ev, h):
     ev.caso("ENT-A2", "entregas", "Asignar dos veces", "El pedido ya tiene entrega.", "POST", "entregas", cuerpo={"pedido_id": pid, "repartidor_id": rid},
             token=op2, esperado=409)
     ev.caso("ENT-A3", "entregas", "El repartidor no asigna", "Sin entregas.asignar.", "POST", "entregas", cuerpo={"pedido_id": pid, "repartidor_id": rid},
-            token=rep, esperado=403)
+            token=rep_p, esperado=403)
     if r is not None and r.status == 201:
         eid = r.json["entrega_id"]
         doc = ev.http("documentos", "POST", "documentos", {"nombre": f"cierre-{eid}.pdf", "tipo_mime": "application/pdf",
-                      "contenido_base64": "JVBERi0xLjQgZXZpZGVuY2lhICUlRU9G", "referencia": {"tipo": "entrega", "id": str(eid)}}, token=rep)[0].json["id"]
+                      "contenido_base64": "JVBERi0xLjQgZXZpZGVuY2lhICUlRU9G", "referencia": {"tipo": "entrega", "id": str(eid)}}, token=rep_p)[0].json["id"]
         ev.http("entregas", "POST", f"entregas/{eid}/resultado", {"resultado": "entregado", "monto_cobrado": total, "cambio_entregado": 0,
                 "ubicacion": {"latitud": 25.7491, "longitud": -100.3611}, "evidencia_ids": [doc], "capturado_en": dt.datetime.now(dt.timezone.utc).isoformat(),
-                "id_cliente_local": str(uuid.uuid4())}, token=rep)
+                "id_cliente_local": str(uuid.uuid4())}, token=rep_p)

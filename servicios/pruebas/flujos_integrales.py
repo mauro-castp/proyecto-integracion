@@ -88,7 +88,7 @@ def flujo1(ev):
     if r is None or r.status != 201:
         return
     mh = r.json["id"]
-    operador = None
+    operador = repartidor = None
     try:
         ev.caso("F1-06", "capacidad", "Asignar personal al microhub", "Operadores, repartidores y capacidad física.", "PUT", f"capacidad/recursos/{mh}",
                 cuerpo={"operadores": 2, "repartidores": 2, "capacidad_fisica": 120}, token=adm)
@@ -115,7 +115,14 @@ def flujo1(ev):
         ev.caso("F1-10", "pedidos", "El operador prepara el pedido", "La transición la valida el motor.", "POST", f"pedidos/{pid}/estado",
                 cuerpo={"estado": "en_preparacion"}, token=op)
         ev.caso("F1-11", "pedidos", "El operador lo marca listo", "Queda disponible para despacho.", "POST", f"pedidos/{pid}/listo", cuerpo={}, token=op)
-        rid = uno("SELECT id FROM usuario WHERE correo = 'repartidor1@codex.mx'")["id"]
+        correo_rep, clave_rep = f"repartidor.{marca.lower()}@ejemplo.mx", "Rp-" + uuid.uuid4().hex[:12]
+        r = ev.caso("F1-07b", "usuarios", "Crear la cuenta del repartidor del microhub", "RN41: cada repartidor pertenece a un microhub.", "POST", "usuarios",
+                    cuerpo={"nombre": "Repartidor", "apellidos": marca, "correo": correo_rep, "clave": clave_rep, "rol": "repartidor", "microhub_id": mh},
+                    token=adm, esperado=201)
+        if r is None or r.status != 201:
+            return
+        repartidor = rid = r.json["id"]
+        rep = ev.http("auth", "POST", "auth/login", {"correo": correo_rep, "clave": clave_rep, "dispositivo": "android"})[0].json["token_acceso"]
         ev.caso("F1-12", "rutas", "Proponer la ruta de despacho", "Agrupa, asigna repartidor y ordena las paradas (algoritmo de rutas).", "POST", "rutas/planes",
                 cuerpo={"microhub_id": mh, "pedido_ids": [pid], "repartidor_ids": [rid], "metodo": "automatico", "guardar": True}, token=op,
                 esperado=201, verificar=lambda x: "ruta" in x.texto)
@@ -151,8 +158,9 @@ def flujo1(ev):
             ev.http("pedidos", "POST", f"pedidos/{p['id']}/estado", {"estado": "cancelado", "motivo": "Cierre del flujo de demostración"}, token=adm)
         ev.caso("F1-21", "microhubs", "Cierre: dar de baja el microhub de la demostración", "Baja lógica; conserva su historia.", "DELETE", f"microhubs/{mh}",
                 token=adm, esperado=204)
-        if operador:
-            ev.http("usuarios", "DELETE", f"usuarios/{operador}", token=adm)
+        for cuenta in (operador, repartidor):
+            if cuenta:
+                ev.http("usuarios", "DELETE", f"usuarios/{cuenta}", token=adm)
 
 
 # ====================================================================
@@ -217,6 +225,10 @@ def flujo3(ev):
     if r is None or r.status != 201 or not r.json["asignado"]:
         return
     pid, mh = r.json["id"], r.json["microhub_id"]
+    correo_rep = uno("SELECT u.correo FROM usuario u JOIN rol rl ON rl.id = u.rol_id WHERE rl.clave = 'repartidor' AND u.microhub_id = %s "
+        "AND u.estatus = 'activo' ORDER BY u.id LIMIT 1", (mh,))["correo"]      # RN41
+    rep = ev.entrar(correo_rep)
+    rid = uno("SELECT id FROM usuario WHERE correo = %s", (correo_rep,))["id"]
     correo = uno("SELECT u.correo FROM usuario u JOIN rol rl ON rl.id = u.rol_id WHERE rl.clave = 'operador' AND u.microhub_id = %s AND u.estatus = 'activo' ORDER BY u.id LIMIT 1", (mh,))["correo"]
     op = ev.entrar(correo)
     ev.http("pedidos", "POST", f"pedidos/{pid}/estado", {"estado": "en_preparacion"}, token=op)

@@ -385,7 +385,7 @@ def cobertura():
 # Dónde poner los microhubs: colonias de bajos ingresos (CONAPO 2020) + facility location + simulación de demanda + equilibrio
 # El portal lee sus tablas directamente (no llama al servicio de ubicación); el cálculo es la misma función pura (ubicacion_calc).
 # ====================================================================
-def _num(nombre, defecto, minimo, maximo, entero=False):
+def _num_url(nombre, defecto, minimo, maximo, entero=False):
     v = (request.args.get(nombre) or "").strip().replace(",", ".")
     try:
         x = int(v) if entero else float(v)
@@ -403,8 +403,8 @@ def ubicacion():
     filas = consultar("SELECT cve_col, colonia, codigo_postal, poblacion, indice_2020::float AS indice, grado_2020, sin_salud_pct::float AS sin_salud, "
                       "hacinamiento_pct::float AS hacinamiento, sin_internet_pct::float AS sin_internet, latitud::float AS lat, longitud::float AS lng, contorno "
                       "FROM colonia_marginacion ORDER BY colonia")
-    params = {"p": _num("p", 3, 1, 8, True), "penetracion": _num("penetracion", uc.PARAMS["penetracion"] * 100, 0.5, 50) / 100,
-              "radio_km": _num("radio_km", uc.PARAMS["radio_km"], 0.5, 3), "capacidad_diaria": _num("capacidad", uc.PARAMS["capacidad_diaria"], 20, 2000, True)}
+    params = {"p": _num_url("p", 3, 1, 8, True), "penetracion": _num_url("penetracion", uc.PARAMS["penetracion"] * 100, 0.5, 50) / 100,
+              "radio_km": _num_url("radio_km", uc.PARAMS["radio_km"], 0.5, 3), "capacidad_diaria": _num_url("capacidad", uc.PARAMS["capacidad_diaria"], 20, 2000, True)}
     cols = [{"cve": f["cve_col"], "nombre": f["colonia"], "lat": f["lat"], "lng": f["lng"], "poblacion": f["poblacion"], "grado": f["grado_2020"]} for f in filas]
     hubs = microhubs_activos()
     r = uc.proponer(cols, [{"clave": h["clave"], "lat": h["lat"], "lng": h["lng"]} for h in hubs], params)

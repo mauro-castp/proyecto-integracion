@@ -50,11 +50,14 @@ class IntegracionWeb(unittest.TestCase):
         r = self.c.post('/web/archivos', data={'csrf':self.csrf,'archivo':(io.BytesIO(data),'prueba.pdf')})
         self.assertEqual(r.status_code, 302)
         with app.test_request_context():
-            tabla = consultar("SELECT to_regclass('microhubs.web_archivo') IS NOT NULL AS hay", una=True)
-        self.assertFalse(tabla['hay'], 'la base ya no tiene la tabla que guardaba el contenido')
+            fila = consultar("SELECT contenido IS NULL AS sin_contenido, ruta, almacen, sha256, tamano FROM web_archivo "
+                             "WHERE nombre='prueba.pdf' ORDER BY creado_en DESC, id DESC LIMIT 1", una=True)
+        self.assertTrue(fila['sin_contenido'], 'la base no debe guardar el contenido del archivo')
+        self.assertTrue(fila['ruta'].startswith('web/'))
+        self.assertEqual((len(fila['sha256']), fila['tamano']), (64, len(data)))
         html = self.c.get('/web/archivos').get_data(as_text=True)
         self.assertIn('prueba.pdf', html)
-        url = re.search(r'/web/archivos/[0-9a-f]{24}', html).group(0)         # el más reciente va primero
+        url = re.search(r'/web/archivos/[0-9a-f]{32}', html).group(0)         # el más reciente va primero
         self.assertEqual(self.c.get(url).data, data)
         otro = app.test_client()
         self.assertEqual(otro.post('/entrar',data={'correo':'operador.mh01@codex.mx','clave':'Codex#2026'}).status_code, 302)

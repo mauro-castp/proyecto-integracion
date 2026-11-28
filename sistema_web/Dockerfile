@@ -10,7 +10,7 @@ COPY . .
 
 # No corre como root: si alguien logra ejecutar código en el contenedor,
 # no debe encontrarse con privilegios de administrador.
-RUN useradd --create-home --shell /bin/false microhubs && chown -R microhubs /app
+RUN useradd --create-home --shell /bin/false microhubs && mkdir -p /app/almacen_web && chown -R microhubs /app
 USER microhubs
 
 EXPOSE 5000

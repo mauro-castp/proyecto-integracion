@@ -110,13 +110,15 @@ def propuestas():
 def supuestos():
     datos = [
         {"clave": "bajos_ingresos", "valor": "Medio, Alto, Muy alto", "fuente": "CONAPO, índice de marginación urbana por colonia 2020",
-         "nota": "Una colonia es de bajos ingresos si su grado de marginación es Medio o mayor."},
+         "nota": "Una colonia es de bajos ingresos si su grado de marginación es Medio o mayor. El índice mide carencias, no ingreso en pesos: es un indicador aproximado."},
         {"clave": "personas_por_hogar", "valor": uc.PARAMS["personas_por_hogar"], "fuente": "INEGI, Censo 2020", "nota": "Hogares = población ÷ este valor."},
         {"clave": "penetracion", "valor": uc.PARAMS["penetracion"], "fuente": "Supuesto del equipo",
          "nota": "Se calibra con los pedidos reales; la propuesta da la penetración mínima para llegar al equilibrio."},
         {"clave": "pedidos_semana_hogar", "valor": uc.PARAMS["pedidos_semana_hogar"], "fuente": "Supuesto del equipo", "nota": "Compra de reposición de abarrotes."},
         {"clave": "radio_km", "valor": uc.PARAMS["radio_km"], "fuente": "RN05", "nota": "Radio de servicio de un microhub."},
         {"clave": "capacidad_diaria", "valor": uc.PARAMS["capacidad_diaria"], "fuente": "Servicio de capacidad", "nota": "Tope de pedidos al día por microhub."},
+        {"clave": "costo_variable_completo", "valor": uc.PARAMS["costo_variable_completo"], "fuente": "Servicio de costos",
+         "nota": "Escenario con todos los costos por pedido; el veredicto principal cuenta solo el reparto."},
         {"clave": "costos_fijos_mes", "valor": uc.PARAMS["costos_fijos_mes"], "fuente": "Escenario base de costos",
          "nota": "Renta 18 000 + nómina 42 000 + servicios 7 000 + otros 5 000."},
     ]
